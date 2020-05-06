@@ -1,0 +1,205 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, “Helvetica Neue”, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”;
+    /* default is 1rem or 16px */
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
+    /* background-color: #000; */
+}
+
+h6 {
+    padding: 0.5rem;
+    line-height: 1;
+}
+
+p,
+.alert {
+    margin-bottom: 0.33rem;
+}
+
+.title {
+    margin-left: 10px;
+    /* color: white; */
+}
+
+.gbg-table td {
+    padding-right: 10px;
+}
+
+.badge {}
+
+.alert-error {
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+}
+
+.alert-indigo {
+    color: #8c4cf5;
+    background-color: #e6d9fc;
+    border-color: #b388f9;
+}
+
+.alert-orange {
+    color: #b94a48;
+    background-color: #ffdfc4;
+    border-color: #febf8a;
+}
+
+.alert-grey {
+    color: #5d5957;
+    background-color: #f0f0f0;
+    border-color: #cbc5c2;
+}
+
+.green {
+    color: #007E33;
+    font-weight: bold;
+}
+
+.red {
+    color: #CC0000;
+    font-weight: bold;
+}
+
+.invest-good {
+    color: #007E33;
+}
+
+.invest-fair {
+    color: #FF8800;
+}
+
+.invest-bad {
+    color: #CC0000;
+}
+
+
+/* [data-toggle="collapse"] i:before {
+    content: "\f146";
+}
+
+[data-toggle="collapse"].collapsed i:before {
+    content: "\f0fe";
+} */
+
+.alert-dismissible {
+    padding-right: 1.25rem;
+}
+
+.alert-dismissible .close {
+    padding: .5rem .5rem 0rem 0rem;
+}
+
+hr {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.top5 td {
+    padding: 1px;
+}
+
+.hidden {
+    display: none;
+}
+
+.citystats-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 2rem;
+    margin-right: 0.5rem;
+    /* padding: .5rem 0.5rem; */
+}
+
+.right-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.65rem;
+    margin-right: 2rem;
+    /* padding: .5rem 1rem; */
+}
+
+.mid-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.65rem;
+    margin-right: 4.5rem;
+    /* padding: .5rem 1rem; */
+}
+
+.left-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.65rem;
+    margin-right: 6.75rem;
+    /* padding: .5rem 1rem; */
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+}
+
+.button-container {
+    width: 400px;
+    height: 15em;
+    border: 5px solid rgb(111, 41, 97);
+    border-radius: .5em;
+    padding: 10px;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+.row {
+    line-height: 1.5;
+}
+
+.copy-button2 {
+    /* position: absolute; */
+    /* top: 0; */
+    /* right: 0; */
+    /* margin-top: 0.65rem; */
+    /* margin-right: 2rem; */
+    /* padding: .5rem 1rem; */
+}
+
+.post-button2 {
+    /* position: absolute; */
+    /* top: 0; */
+    /* right: 0; */
+    /* margin-top: 0.65rem; */
+    /* margin-right: 4.5rem; */
+    /* padding: .5rem 1rem; */
+}
+
+.trio-button {
+    /* position: absolute; */
+    /* top: 0; */
+    /* right: 0; */
+    /* margin-top: 0.65rem; */
+    /* margin-right: 7rem; */
+    /* padding: .5rem 1rem; */
+}
+
+.container {
+    overflow: hidden;
+    width: 100%;
+}
+
+.cell {
+    width: 33%;
+    float: center;
+}
+
+#snipeName {
+    float: left;
+}
+
+#snipeLevel {
+    float: right;
+}
