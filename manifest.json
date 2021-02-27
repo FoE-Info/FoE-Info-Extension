@@ -4,7 +4,7 @@
   },
   "name": "FoE-Info",
   "short_name": "FoE-Info",
-  "version": "0.0.21",
+  "version": "0.0.26",
   "manifest_version": 2,
   "minimum_chrome_version": "10.0",
   "description": "Essential Info for Forge of Empires addicts",
