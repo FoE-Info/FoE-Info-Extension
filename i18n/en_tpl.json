@@ -4,8 +4,8 @@
             ""
         ],
         "last-updated": "",
-        "locale": "en",
-        "message-documentation": "qqq",
+        "locale": "de",
+        "message-documentation": "qqq"
     },
     "bonus": "Bonus",
     "diamonds": "Diamonds",
@@ -51,7 +51,9 @@
     "leaderboard": "GBG Leaderboard",
     "guildgoods": "Guild Goods",
     "guildpower": "Guild Power",
-    "shield": "Shield",
+    "shield": "SHIELD",
+    "inactive": "INACTIVE",
+    "plunder": "PLUNDER",
     "att": "Att",
     "def": "Def",
     "soh": "SoH",
