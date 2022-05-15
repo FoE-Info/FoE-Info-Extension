@@ -1,0 +1,37 @@
+{
+    "browser_action": {
+        "default_popup": "popup.html"
+    },
+    "name": "",
+    "short_name": "",
+    "version": "",
+    "manifest_version": 2,
+    "minimum_chrome_version": "10.0",
+    "description": "Essential Info for Forge of Empires addicts",
+    "homepage_url": "https://foe-info.tk",
+    "externally_connectable": {
+        "matches": ["https://*.forgeofempires.com/game/*"]
+    },
+    "devtools_page": "devtools.html",
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": false
+    },
+    "icons": {
+        "16": "icons/Icon16.png",
+        "24": "icons/Icon24.png",
+        "32": "icons/Icon32.png",
+        "48": "icons/Icon48.png",
+        "64": "icons/Icon64.png",
+        "128": "icons/Icon128.png"
+    },
+    "permissions": [
+        "storage",
+        "unlimitedStorage",
+        "clipboardWrite",
+        "https://*.google.com/*",
+        "https://*.googleusercontent.com/",
+        "https://*.forgeofempires.com/game/*"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
