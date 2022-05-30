@@ -11,6 +11,8 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
+import browser from 'webextension-polyfill';
+import '../css/main.scss';
 
 const showOptions = {
 	showFriends: true,
@@ -47,7 +49,7 @@ const showOptions = {
 	collectionTimes : false
 };
 
-// Saves options to chrome.storage
+// Saves options to browser.storage
 function save_options() {
   var showOptions = [];
   var tool = [];
@@ -108,7 +110,7 @@ function save_options() {
 
      setStorage(showOptions);
 
-     chrome.storage.local.set({
+     browser.storage.local.set({
         tool: {
           language: tool.language
         },
@@ -125,17 +127,17 @@ function save_options() {
         sheetCityURL: url.sheetCityURL,
         sheetGameURL: url.sheetGameURL
         },
-      }, function() {
+      }).then( () => {
     // console.debug(`Value is set to`, value);
     });
 
-    // chrome.storage.local.set({
+    // browser.storage.local.set({
     //   'targets': targets
     // }, function() {
     // // console.debug(`Value is set to`, value);
     // });
 
-    // chrome.storage.local.set({
+    // browser.storage.local.set({
     //   'toolOptions': {
     //     'minSize': toolOptions.minSize
     //           }
@@ -143,7 +145,7 @@ function save_options() {
     // // console.debug(`Value is set to`, value);
     // });
 
-    //  chrome.storage.local.set({
+    //  browser.storage.local.set({
     //   showOptions: showOptions
     // }, function() {
     //   // Update status to let user know options were saved.
@@ -155,19 +157,19 @@ function save_options() {
       }, 2000);
     //   console.debug(showOptions);
     // });
-    // chrome.storage.local.get(null, function(items) {
+    // browser.storage.local.get(null, function(items) {
     //   console.debug(items);
     // });		
       }
   
   // Restores select box and checkbox state using the preferences
-  // stored in chrome.storage.
+  // stored in browser.storage.
   function restore_options() {
     // Use default value color = 'red' and likesColor = true.
 
     // if(DEV) document.getElementById('urlDiv').style.display = "none";
 
-    chrome.storage.local.get(['showOptions','tool','url','targets','targetText','toolOptions','donationPercent','donationSuffix'], function(items) {
+    browser.storage.local.get(['showOptions','tool','url','targets','targetText','toolOptions','donationPercent','donationSuffix']).then( (items) => {
     if(items.showOptions){
       const showOptions = items.showOptions;
       fnShowOptions(showOptions);
@@ -254,7 +256,7 @@ function fnShowOptions(showOptions){
 
   // function setStorage(value){
   //   // console.debug(value);
-  //     chrome.storage.local.set({
+  //     browser.storage.local.set({
   //       showOptions: {
   //         'showIncidents': value.showIncidents,
   //         'showGVG': value.showGVG,
@@ -283,7 +285,7 @@ function fnShowOptions(showOptions){
   //     // console.debug(`Value is set to`, value);
   //     });
   
-  //   // chrome.storage.local.get(null, function(items) {
+  //   // browser.storage.local.get(null, function(items) {
   //     // console.debug(items);
   //   // });		
   // }
@@ -291,12 +293,12 @@ function fnShowOptions(showOptions){
   
   function setStorage(value){
     // console.debug(value);
-    chrome.permissions.request({
+    browser.permissions.request({
       permissions: ['storage']
-      }, function(granted) {
+      }).then( (granted) => {
       if (granted) {
         // The extension has the permissions.
-        chrome.storage.local.set({
+        browser.storage.local.set({
           showOptions: {
             'showBonus': value.showBonus,
             'showIncidents': value.showIncidents,
@@ -330,7 +332,7 @@ function fnShowOptions(showOptions){
             'buildingCosts' : value.buildingCosts,
             'collectionTimes' : value.collectionTimes
                     }
-        }, function() {
+        }).then( () => {
         // console.debug(`Value is set to`, value);
         });
       } else {
@@ -338,7 +340,7 @@ function fnShowOptions(showOptions){
       }
       });
   
-    // chrome.storage.local.get(null, function(items) {
+    // browser.storage.local.get(null, function(items) {
       // console.debug(items);
     // });		
   }

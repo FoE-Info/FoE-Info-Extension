@@ -236,7 +236,7 @@ if(msg.responseData.city_map.entities.length) {
 					const entityAge = helper.fAgefromLevel(mapID.level)
 					var forgePoints = 0;
 					// console.debug(entity.name,entity,mapID);
-					// clipboard.innerHTML += `<p>${CityEntityDefs[mapID.cityentity_id].name}`;
+					// debug.innerHTML += `<p>${CityEntityDefs[mapID.cityentity_id].name}`;
 					// if(entity.type == 'street' || entity.type == 'hub_main' || entity.type == 'hub_part' || entity.type == 'off_grid'){
 						// break;
 					// }
@@ -474,14 +474,14 @@ if(msg.responseData.city_map.entities.length) {
 						visitDefense += mapID.bonus.value;
 						visitAttack += mapID.bonus.value;
 						// console.debug(mapID);
-						// clipboard.innerHTML += `<p>${CityEntityDefs[mapID.cityentity_id]} ${mapID.bonus.value}</p>`;
+						// debug.innerHTML += `<p>${CityEntityDefs[mapID.cityentity_id]} ${mapID.bonus.value}</p>`;
 					}
 					if(mapID.bonus.type == "fierce_resistance"){
 						// += mapID.bonus.value;
 						visitCityDefense += mapID.bonus.value;
 						visitCityAttack += mapID.bonus.value;
 						// console.debug(mapID);
-						// clipboard.innerHTML += `<p>${mapID.bonus.value}</p>`;
+						// debug.innerHTML += `<p>${mapID.bonus.value}</p>`;
 					}
 					if(mapID.bonus.type == "advanced_tactics"){
 						// += mapID.bonus.value;
@@ -490,7 +490,7 @@ if(msg.responseData.city_map.entities.length) {
 						visitCityDefense += mapID.bonus.value;
 						visitCityAttack += mapID.bonus.value;
 						// console.debug(mapID);
-						// clipboard.innerHTML += `<p>${mapID.bonus.value}</p>`;
+						// debug.innerHTML += `<p>${mapID.bonus.value}</p>`;
 					}
 					if(DEV && checkDebug() && (mapID.bonus.type == "military_boost" || mapID.bonus.type == "fierce_resistance" || mapID.bonus.type == "advanced_tactics")){
 						visitbetaad += `<br>#${id}: ${mapID.bonus.value}% ${visitAttack}/${visitDefense}/${visitCityAttack}/${visitCityDefense} ${helper.fGBname(mapID.cityentity_id)}`;
@@ -898,7 +898,7 @@ function fBoost(boost){
     if(boost.type == "att_boost_attacker"){
         visitAttack += boost.value;
         // console.debug('visitAttack:', visitAttack, boost.value);
-        // clipboard.innerHTML += ` ${boost.value}</p>`;
+        // debug.innerHTML += ` ${boost.value}</p>`;
     }
     else if(boost.type == "att_boost_defender"){
         visitCityAttack += boost.value;
@@ -911,7 +911,7 @@ function fBoost(boost){
     else if(boost.type == "def_boost_defender"){
         visitCityDefense += boost.value;
         // console.debug('visitCityDefense:', visitCityDefense, boost.value);
-        // clipboard.innerHTML += ` ${boost.value}</p>`;
+        // debug.innerHTML += ` ${boost.value}</p>`;
     }
     // else if(boost.type == "att_def_boost_attacker"){
     //     visitAttack += boost.value;
@@ -958,9 +958,9 @@ function fGoodsTally(age,good){
 	function checkInactivePlunder(friends){
 		var html = '';
 		friends.forEach(entry => {
-			if(player.player_id == entry.player_id && entry.is_active != true)
+			if(PlayerID == entry.player_id && entry.is_active != true)
 			html += `<span class='red'>*** <span data-i18n="inactive">INACTIVE</span> ***</span><br>`;
-			if(player.player_id == entry.player_id && entry.canSabotage == true)
+			if(PlayerID == entry.player_id && entry.canSabotage == true)
 			html += `<span class='red'>*** <span data-i18n="plunder">PLUNDER</span> ***</span><br>`;
 		});
 		return html;

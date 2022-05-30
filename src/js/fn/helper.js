@@ -11,18 +11,21 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
+import $ from "jquery";
+import 'bootstrap';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
-import {incidents,donationDIV,CityEntityDefs,Goods,hiddenRewards,GameOrigin,url} from '../index.js';
-import {toolOptions,setBattlegroundSize} from './globals.js';
-import {BattlegroundPerformance,GuildMembers,BGtime} from '../msg/GuildBattlegroundService.js';
-import {ResourceNames} from '../msg/ResourceService.js';
-import {fCollapseIncidents} from './collapse.js';
-import * as storage from './storage.js';
-import {showOptions} from '../vars/showOptions.js';
-import * as copy from './copy.js';
+// import crypto  from 'crypto';
+import { CityEntityDefs, donationDIV, GameOrigin, Goods, hiddenRewards, incidents, url } from '../index.js';
+import { BattlegroundPerformance, BGtime, GuildMembers } from '../msg/GuildBattlegroundService.js';
+import { ResourceNames } from '../msg/ResourceService.js';
+import { showOptions } from '../vars/showOptions.js';
 import * as collapse from './collapse.js';
-import collapseOptions from './collapse.js';
+import { fCollapseIncidents } from './collapse.js';
+import * as copy from './copy.js';
+import { setBattlegroundSize, toolOptions } from './globals.js';
 import * as post_webstore from './post_webstore.js';
+import * as storage from './storage.js';
+import { browser } from 'webextension-polyfill';
      
 var heightGBG = toolOptions.battlegroundsSize;
 export var MyGuildPermissions = 0;
@@ -994,7 +997,7 @@ export function fshowBattleground(){
     // GuildMembers[entry.player.name] = BattlegroundPerformance[entry.player.name];
     // localStorage.setItem(entry.player.name,JSON.stringify({'wonNegotiations': wonNegotiations,'wonBattles': wonBattles}));
     // storage.set(entry.player.name,BattlegroundPerformance[entry.player.name]);
-    // chrome.storage.local.set(entry.player.name,{'wonNegotiations': wonNegotiations,'wonBattles': wonBattles});
+    // browser.storage.local.set(entry.player.name,{'wonNegotiations': wonNegotiations,'wonBattles': wonBattles});
     // console.debug(entry.player.name,BattlegroundPerformance[entry.player.name],GuildMembers[entry.player.name]);
     // console.debug(data);
     // storage.set(GameOrigin,data);
@@ -1040,3 +1043,9 @@ export function setMyGuildPermissions(permissions){
 }
 
 
+// export function getKey(text){
+// 	var key = crypto.createCipher('aes-128-cbc', salt);
+// 	var str = key.update(text, 'utf8', 'hex')
+// 	str += key.final('hex');
+// 	return str;
+// }

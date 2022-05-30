@@ -55,7 +55,7 @@ export function getPlayerLeaderboard(msg){
 
 	if(showOptions.showBattleground) {
 
-		chrome.storage.local.get([GameOrigin,GameOrigin+'BGtime'], function(items) {
+		browser.storage.local.get([GameOrigin,GameOrigin+'BGtime'], function(items) {
 			console.debug('items',items);
 			if(items[GameOrigin]) GuildMembers = items[GameOrigin];
 			// console.debug('GuildMembers',GuildMembers);
