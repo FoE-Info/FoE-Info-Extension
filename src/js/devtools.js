@@ -11,8 +11,24 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-chrome.devtools.panels.create(EXT_NAME, null, 'panel.html',
-    function(panel) {
-        // panel.themeName("dark");
-    }
-);
+import browser from 'webextension-polyfill';
+
+console.debug()
+browser.devtools.panels.create(EXT_NAME, null, 'panel.html');
+
+// browser.devtools.panels.create(EXT_NAME, null, 'panel.html',
+//     function(panel) {
+//         // panel.themeName("dark");
+//     }
+// );
+
+// browser.storage.local.get('tool').then( (result) => {
+//     // post.log('result', result);
+//     // console.log('result', result);
+//     // console.log('showIncidents', showIncidents);
+//         if(result.tool && result.tool.hasOwnProperty('mode')){
+//             // console.log('stealth mode is ' + toolMode);
+//             if(result.tool.mode)
+//                 browser.devtools.panels.create(EXT_NAME, null, 'panel.html');
+//         }
+// });

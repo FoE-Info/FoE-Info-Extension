@@ -44,6 +44,7 @@ export var collapseLists  = false;
 export var collapseRewards = false;
 export var collapseBonus = true;
 export var collapseCultural = true;
+export var collapseClipboard = true;
 
 
 
@@ -61,7 +62,7 @@ export var collapseCultural = true;
 
 
 export default function set (key, value) {
-	console.debug(key, value);
+	// console.debug(key, value);
 	switch (key) {
 		case 'collapseFriends':
 			collapseFriends = value;
@@ -152,7 +153,10 @@ export default function set (key, value) {
 		case 'collapseCultural':
 			collapseCultural = value;
 			break;
-
+		case 'collapseClipboard':
+			collapseClipboard = value;
+			break;
+	
 		default:
 			console.debug(key, value);
 			break;
@@ -172,7 +176,7 @@ export function fCollapseFriends(){
 	}else{
 		document.getElementById("friendsCopyID").style.display = "block";
 	}
-	console.debug('collapseFriends',collapseFriends);
+	// console.debug('collapseFriends',collapseFriends);
 	// document.getElementById("friendsicon").outerHTML = `<svg id="friendsicon" href="#friendsText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseFriends ? dash : plus}"/></svg>`;
 }				
 
@@ -192,7 +196,7 @@ export function fCollapseHood(){
 		// document.getElementById("hoodCopy").innerHTML = '<button type="button" class="badge badge-pill badge-success float-right right-button" id="hoodCopyID"><span data-i18n="copy">Copy</span></button>';
 		// document.getElementById("hoodCopyID").addEventListener("click", copy.fHoodCopy);
 	}
-	console.debug('collapseHood',collapseHood);
+	// console.debug('collapseHood',collapseHood);
 	// document.getElementById("hoodicon").outerHTML = `<svg id="hoodicon" href="#hoodText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseHood ? dash : plus}"/></svg>`;
 }				
 
@@ -217,13 +221,13 @@ export function fCollapseGuild(){
 		// document.getElementById("guildCopyID").addEventListener("click", copy.fGuildCopy);
 		document.getElementById("guildCopyID").style.display = "block";
 	}
-	console.debug('collapseGuild',collapseGuild);
+	// console.debug('collapseGuild',collapseGuild);
 	// document.getElementById("guildicon").outerHTML = `<svg id="guildicon" href="#guildText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGuild ? dash : plus}"/></svg>`;
 }				
 
 export function fCollapseIncidents(){
 	collapseIncidents = !collapseIncidents;
-	console.debug('collapseIncidents',collapseIncidents);
+	// console.debug('collapseIncidents',collapseIncidents);
 	document.getElementById("incidentsicon").outerHTML = `<svg id="incidentsicon" href="#incidentsText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseIncidents ? dash : plus}"/></svg>`;
 	// console.debug(document.getElementById("incidentsTextLabel").innerHTML);
 	// console.debug(document.getElementById("incidentsicon").outerHTML);
@@ -265,7 +269,7 @@ export function fCollapseGoods(){
 	
 	export function fCollapseStats(){
 		collapseStats = !collapseStats;
-		console.debug('collapseStats',collapseStats);
+		// console.debug('collapseStats',collapseStats);
 		if(collapseStats){
 			// document.getElementById("citystatsCopy").innerHTML = '';
 			document.getElementById("citystatsCopyID").style.display = "none";
@@ -283,7 +287,7 @@ export function fCollapseGoods(){
 	
 	export function fCollapseRewards(){
 		collapseRewards = !collapseRewards;
-		console.debug('collapseRewards',collapseRewards);
+		// console.debug('collapseRewards',collapseRewards);
 		if(collapseRewards){
 			// document.getElementById("citystatsCopy").innerHTML = '';
 			// document.getElementById("citystatsCopyID").style.display = "none";
@@ -307,7 +311,7 @@ export function fCollapseGoods(){
 	export function fCollapseGBDonors(){
 		collapseGBDonors = !collapseGBDonors;
 		storage.set('collapseGBDonors',collapseGBDonors);
-		document.getElementById("donorCopyID").style.display = `${collapse.collapseExpedition ? 'none' : 'block'}`;
+		document.getElementById("donorCopyID").style.display = `${collapseGBDonors ? 'none' : 'block'}`;
 		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGBDonors ? dash : plus}"/>
 		// </svg>`;
 	}				
@@ -349,19 +353,19 @@ export function fCollapseGoods(){
 	export function fCollapseBuildingCost(){
 		collapseBuildingCost = !collapseBuildingCost;
 		storage.set('collapseBuildingCost',collapseBuildingCost);
-		console.debug('collapseBuildingCost',collapseBuildingCost);
+		// console.debug('collapseBuildingCost',collapseBuildingCost);
 	}				
 	
 	export function fCollapseBuildings(){
 		collapseBuildings = !collapseBuildings;
 		storage.set('collapseBuildings',collapseBuildings);
-		console.debug('collapseBuildings',collapseBuildings);
+		// console.debug('collapseBuildings',collapseBuildings);
 	}				
 	
 	export function fCollapseExpedition(){
 		collapseExpedition = !collapseExpedition;
 		storage.set('collapseExpedition',collapseExpedition);
-		document.getElementById("expeditionCopyID").style.display = `${collapse.collapseExpedition ? 'none' : 'block'}`;
+		document.getElementById("expeditionCopyID").style.display = `${collapseExpedition ? 'none' : 'block'}`;
 	}				
 	
 	export function fCollapseTreasury(){
@@ -399,4 +403,9 @@ export function fCollapseGoods(){
 		collapseCultural = !collapseCultural;
 		storage.set('collapseCultural',collapseCultural);
 	}				
-	
+
+	export function fCollapseClipboard(){
+		collapseClipboard = !collapseClipboard;
+		storage.set('collapseClipboard',collapseClipboard);
+		document.getElementById("clipboardCopyID").style.display = `${collapseClipboard ? 'none' : 'block'}`;
+	}				

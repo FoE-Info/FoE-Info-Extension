@@ -16,7 +16,7 @@
 
 
 
-import $ from "jquery";
+// import $ from "jquery";
 // import 'bootstrap';
 // import Discord  from 'discord.js';
 import {alerts,EpocTime,MyInfo,GameOrigin,url} from '../index.js';
@@ -55,12 +55,13 @@ async function postData(url = '', data = {}) {
 
 
 export function postToDiscord(text) {
-	// const Hook = new webhook.Webhook("https://discordapp.com/api/webhooks/683802868406419494/G2bononJk-SMzXGy90l_JZZIVcaAcTVgIjjZ8ba6gwzOzyylNEQAb_pOc3zzFUWdbIRd");
 
 	// test-test channel
-	var webHookUrl = "https://discordapp.com/api/webhooks/687279023335800877/rtsthZ8GIxsD9LYhlluZHyqOQGQtZmOkaiNLKcAHRshWLPoUZqO1_XTuOObFeJqL4zyQ";
+	var webHookUrl = "https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij";
 
-
+	const hook = getKey(webHookUrl);
+	
+	console.log(hook); 	
 		
 	
 	/*

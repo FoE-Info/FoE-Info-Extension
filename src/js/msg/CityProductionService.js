@@ -23,10 +23,10 @@ export function pickupProduction(msg){
         // var numUnits = msg.responseData.militaryProducts.length;
         // var unitsList = {};
         units.forEach(unit => {
-            const name = "";
+            var name = "";
             if(MilitaryDefs[unit.unitTypeId])
                 name = MilitaryDefs[unit.unitTypeId].name;
-                else
+            else
                 name = unit.unitTypeId;
             console.debug(unit.unitTypeId,name)
             if(rewardsArmy[name])

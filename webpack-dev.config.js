@@ -109,6 +109,11 @@ module.exports = {
       template: './src/chrome/devtools.html',
       chunks: ['devtools']
     }),
+    // new CopyPlugin({
+    //   patterns: [{
+    //     from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js',
+    //   }],
+    // }),
     new CopyPlugin({
       patterns: [
         { from: './src/i18n', to: 'i18n' }
@@ -139,6 +144,9 @@ module.exports = {
   ],
   resolve: {
     fallback: {
-      fs: false
+      fs: false,
+      // crypto: require.resolve('crypto-browserify'),
+      // buffer: false,
+      // stream: false
     }
   }};
