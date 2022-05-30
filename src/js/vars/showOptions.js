@@ -30,6 +30,7 @@
 	export var hideUnsafe  = true;
 	export var buildingCosts  = false;
 	export var collectionTimes  = false
+	export var clipboard = true;
 
 	export default function set (name, state) {
 		console.debug(name,state);
@@ -78,7 +79,8 @@
 		showGuildPosition ,
 		hideUnsafe ,
 		buildingCosts ,
-		collectionTimes  	
+		collectionTimes,
+		clipboard  	
 	}
 
 	export {items as showOptions}
