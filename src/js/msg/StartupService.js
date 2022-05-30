@@ -20,7 +20,7 @@ import "@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.language.js";
 import BigNumber from "bignumber.js";
 
-import 'bootstrap';
+// import 'bootstrap';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 
 
@@ -507,9 +507,9 @@ export function startupService(msg){
             }
             if(DEV && found == false){
             	if(CityEntityDefs[mapID.cityentity_id]){
-            		clipboard.innerHTML += `<br>#${id}: ${CityEntityDefs[mapID.cityentity_id].name}`;
+            		debug.innerHTML += `<br>#${id}: ${CityEntityDefs[mapID.cityentity_id].name}`;
             	}else{
-            		clipboard.innerHTML += `<br>#${id}: ${mapID.cityentity_id}`;
+            		debug.innerHTML += `<br>#${id}: ${mapID.cityentity_id}`;
             	}
                 if(DEV && checkDebug())
                     console.debug('NOT FOUND: ', id,mapID.cityentity_id,mapID);
@@ -719,7 +719,8 @@ export function startupService(msg){
         //     $('body').tooltip({html: true,placement: 'bottom'});
         //     });
 
-            showTooltips();
+  
+                showTooltips();
             
             // fLoadi18n();
             $('body').i18n();
