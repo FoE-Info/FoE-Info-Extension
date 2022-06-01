@@ -105,36 +105,36 @@ export function fCityStatsCopy() {
 }
 
 export function fFriendsCopy() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("friendsText2");
-	// range.selectNode(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('div#friendsText2');
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	var range = document.createRange();
+	var copytext = document.getElementById("friendsText2");
+	range.selectNode(copytext);
+	selection.addRange(range);
+	document.execCommand("copy");
+	// copyToClipboard('div#friendsText');
 }
 
 export function fGuildCopy() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("guildText2");
-	// range.selectNode(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('div#guildText2');
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	var range = document.createRange();
+	var copytext = document.getElementById("guildText2");
+	range.selectNode(copytext);
+	selection.addRange(range);
+	document.execCommand("copy");
+	// copyToClipboard('div#guildText');
 }
 
 export function fHoodCopy() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("hoodText2");
-	// range.selectNode(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('div#hoodText2');
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	var range = document.createRange();
+	var copytext = document.getElementById("hoodText2");
+	range.selectNode(copytext);
+	selection.addRange(range);
+	document.execCommand("copy");
+	// copyToClipboard('div#hoodText');
 }
 
 export function BattlegroundCopy() {
@@ -177,7 +177,7 @@ function copyToClipboard(element) {
 	var $temp = $("<textarea>");
 	$("body").append($temp);
 	var html = $(element).html();
-	if (!element.equals("clipboardText"))
+	// if (!element.equals("clipboardText"))
 		addToClipboard(element, html);
 	html = html.replace(/<br>/g, "\n"); // or \r\n
 	console.debug(html);

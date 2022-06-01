@@ -384,6 +384,7 @@ treasury.id="treasuryLog";
 export var clipboard = document.createElement('div');
 content.appendChild(clipboard);
 clipboard.id="clipboard";
+clipboard.style.display = "none";
 export var alerts_bottom = document.createElement('div');
 alerts_bottom.id="alerts_bottom";
 content.appendChild(alerts_bottom);
