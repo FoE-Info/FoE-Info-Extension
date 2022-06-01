@@ -12,7 +12,8 @@
  * ________________________________________________________________
  */
 import browser from 'webextension-polyfill';
-import '../css/main.scss';
+import '../css/options.scss';
+// import "bootstrap/scss/bootstrap";
 
 const showOptions = {
 	showFriends: true,

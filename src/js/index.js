@@ -478,6 +478,7 @@ document.querySelector('#go-to-options').addEventListener("click", function() {
 
 	
 export var language = window.navigator.userLanguage || window.navigator.language;
+console.debug(language);
 if (process.env.NODE_ENV === 'development') 
 {
 	$.i18n.debug = true;
@@ -516,11 +517,13 @@ browser.permissions.contains({
 
 		// browser.storage.local.get(['showOptions','collapseOptions','CityEntityDefs','tool','targets','toolOptions','donationPercent','url'], 
 		browser.storage.local.get(null).then((result) => {
-				// post.log('result', result);
+				// console.debug('result', result);
 				receiveStorage(result);
-				$.i18n({
-					locale: language
-				});
+				if(language != "auto"){
+					$.i18n({
+						locale: language
+					});
+				}
 				console.debug(language, $.i18n().locale, $.i18n.debug);
 				$.i18n().load({
 					//     'fr' : {
@@ -548,7 +551,10 @@ browser.permissions.contains({
 						'load': 'Учитајте игру да бисте видели статистику града'
 					},
 					'ru': {
-						'load': 'Загрузите игру, чтобы увидеть статистику вашего города'
+						'load': 'Слава Украине!'
+					},
+					'ua': {
+						'load': 'Слава Україні!'
 					},
 					'en': 'i18n/en.json',
 					'es': 'i18n/es.json',
@@ -1745,8 +1751,10 @@ function storageChange(changes, namespace)  {
 
 			// showOptions = storageChange.newValue;
 			// console.debug(changes);
-			else if (key == 'tool')
+			else if (key == 'tool'){
 				language = storageChange.newValue.language;
+				console.debug(language);
+			}
 			else if (key == 'targets') {
 				// console.debug(storageChange.newValue,targetsTopic);
 				targetsTopic = storageChange.newValue;
@@ -2023,9 +2031,9 @@ function receiveStorage(result){
 	// console.debug('result', result);
 	Object.entries(result).forEach(element => {
 			// if(element.toString)
-			console.debug(element);
+			// console.debug(element);
 			const [key,value] = element;
-			console.debug(key,value,key.substring(0,8));
+			// console.debug(key,value,key.substring(0,8));
 			if(key.substring(0,8) == "collapse"){
 				// console.debug(key,value);
 				collapseOptions(key,value);
@@ -2042,8 +2050,9 @@ function receiveStorage(result){
 					console.debug(key,value);
 				}
 			else if(key == 'tool'){
-				if(key == tool.language != 'auto'){
-					language = value;
+				if(value.language != 'auto'){
+					language = value.language;
+					console.debug(language);
 				}
 			}
 			else if(key == 'targets'){
