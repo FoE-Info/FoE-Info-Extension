@@ -71,15 +71,6 @@ var fpBuildings= [];
 var goodsBuildings = [];
 var clanGoodsBuildings = [];
 
-    // const language = window.navigator.userLanguage || window.navigator.language;
-    // console.debug(language);
-    // fLoadi18n();
-
-// $.i18n( {
-//     locale: language
-// } );
-
-
 export function startupService(msg){
 				// console.debug('parsed:', parsed);
 						// console.debug('msg:', msg);
@@ -106,10 +97,12 @@ export function startupService(msg){
     console.debug('window',window);
 
     console.debug('user :', MyInfo);
-    $.i18n( {
-        locale: language
-    } );
-    // console.debug(language,$.i18n().locale,$.i18n.debug);
+    if(language != "auto"){
+        $.i18n({
+            locale: language
+        });
+    }
+console.debug(language,$.i18n().locale,$.i18n.debug);
 
     // console.log('checkBeta:', users.checkBeta());
     if(DEV){
@@ -649,12 +642,12 @@ export function startupService(msg){
         });
     }
     userTooltipHTML += `</p>`;
-    var fpHTML = `<span role="button" id="fp" class="pop" data-container="body" data-html="true" data-toggle="popover" data-trigger="focus" title="Daily FP" data-content="${tooltipHTML.fp}"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
-    var userHTML = `<span id="user" data-html="true" class="pop" data-container="body" data-html="true" data-toggle="popover" 
+    var fpHTML = `<span role="button" id="fp" class="pop" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" data-trigger="focus" title="Daily FP" data-content="${tooltipHTML.fp}"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
+    var userHTML = `<span id="user" data-html="true" class="pop" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" 
         data-trigger="focus" title="Playing <strong>FoE</strong> since<br>${(new Date(MyInfo.createdAt * 1000)).toLocaleString()}" 
         data-content='${userTooltipHTML}</p>'><strong>${GameOrigin.toUpperCase()} ${MyInfo.name}</strong></span>`;
-    var clanGoodsHTML = `<span id="clanGoods" data-html="true" class="pop" data-container="body" data-html="true" data-toggle="popover" data-trigger="focus" title="Guild Goods" data-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
-    var totalGoodsHTML = `<span id="goods" data-html="true" class="pop" data-container="body" data-html="true" data-toggle="popover" data-trigger="focus" title="Daily Goods" data-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
+    var clanGoodsHTML = `<span id="clanGoods" data-html="true" class="pop" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" data-trigger="focus" title="Guild Goods" data-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
+    var totalGoodsHTML = `<span id="goods" data-html="true" class="pop" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" data-trigger="focus" title="Daily Goods" data-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
     citystatsHTML = `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <button type="button" class="badge badge-pill badge-warning float-right right-button" id="citystatsCopyID" style="display: ${collapse.collapseStats ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button>
@@ -986,13 +979,21 @@ function showTooltips(){
                 var element = $( this );
                 return element.attr('title')
             },
-            delay: { "show": 200, "hide": 1000 }
+            delay: { "show": 500, "hide": 1000 }
         });
 
-        $(".pop").popover({ trigger: "manual" , html: true, animation:false})
+        $(".pop").popover({ 
+            trigger: "manual" , 
+            html: true, 
+            animation:true})
         .on("mouseenter", function () {
             var _this = this;
-            $(this).popover("show");
+            // $(this).popover("show");
+            setTimeout(function () {
+                $(_this).on("mouseover", function () {
+                    $(_this).popover('show');
+                });
+            }, 1000);
             $(".popover").on("mouseleave", function () {
                 $(_this).popover('hide');
             });
@@ -1002,7 +1003,7 @@ function showTooltips(){
                 if (!$(".popover:hover").length) {
                     $(_this).popover("hide");
                 }
-            }, 300);
+            }, 500);
     });
 
 
