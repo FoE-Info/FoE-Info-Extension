@@ -628,7 +628,7 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
         
     // console.debug('Ignored By:',msg.responseData.ignoredByPlayerIds);
 	// console.debug('Ignoring:',msg.responseData.ignoredPlayerIds);
-    var userTooltipHTML = `<p class="user-popover">`;
+    var userTooltipHTML = `<p class="pop">`;
     if(ignoredPlayers.ignoredByPlayerIds.length > 0){
         userTooltipHTML += `<strong>Ignored By:</strong><br>`;
         Object.values(ignoredPlayers.ignoredByPlayerIds).forEach(element => {
@@ -979,32 +979,15 @@ function showTooltips(){
                 var element = $( this );
                 return element.attr('title')
             },
-            delay: { "show": 500, "hide": 1000 }
+            delay: { "show": 500, "hide": 500 }
         });
 
         $(".pop").popover({ 
-            trigger: "manual" , 
+            trigger: "hover", 
             html: true, 
-            animation:true})
-        .on("mouseenter", function () {
-            var _this = this;
-            // $(this).popover("show");
-            setTimeout(function () {
-                $(_this).on("mouseover", function () {
-                    $(_this).popover('show');
-                });
-            }, 1000);
-            $(".popover").on("mouseleave", function () {
-                $(_this).popover('hide');
-            });
-        }).on("mouseleave", function () {
-            var _this = this;
-            setTimeout(function () {
-                if (!$(".popover:hover").length) {
-                    $(_this).popover("hide");
-                }
-            }, 500);
-    });
+            animation:true,
+            delay: { "show": 500, "hide": 500 }
+        });
 
 
         // $('#fp').popover({
