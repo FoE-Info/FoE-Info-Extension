@@ -11,6 +11,7 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
+import browser from 'webextension-polyfill';
 import {showOptions} from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
@@ -55,25 +56,27 @@ export function getPlayerLeaderboard(msg){
 
 	if(showOptions.showBattleground) {
 
-		browser.storage.local.get([GameOrigin,GameOrigin+'BGtime'], function(items) {
-			console.debug('items',items);
-			if(items[GameOrigin]) GuildMembers = items[GameOrigin];
-			// console.debug('GuildMembers',GuildMembers);
-			storage.set(GameOrigin+'BGtime',EpocTime);
-            if(items[GameOrigin+'BGtime'])
-			    BGtime = new Date(items[GameOrigin+'BGtime'] * 1000).toLocaleString();
-            else
-                BGtime = 'not set';
+		browser.storage.local.get([GameOrigin,GameOrigin+'BGtime']).then((items) => {
+                console.debug('items', items);
+                if (items[GameOrigin])
+                    GuildMembers = items[GameOrigin];
+                // console.debug('GuildMembers',GuildMembers);
+                storage.set(GameOrigin + 'BGtime', EpocTime);
+                if (items[GameOrigin + 'BGtime'])
+                    BGtime = new Date(items[GameOrigin + 'BGtime'] * 1000).toLocaleString();
 
-			BattlegroundPerformance.forEach( entry => {
-				// console.debug('entry',entry);
-				if(GuildMembers.find(id => id.name == entry.name) == null)
-					GuildMembers.push({'name':entry.name,'wonNegotiations': 0,'wonBattles': 0});		// if member not listed, add new member
-			});
-			console.debug('save GBG',GameOrigin,BattlegroundPerformance);
-			storage.set(GameOrigin,BattlegroundPerformance);
-			helper.fshowBattleground();
-		});		
+                else
+                    BGtime = 'not set';
+
+                BattlegroundPerformance.forEach(entry => {
+                    // console.debug('entry',entry);
+                    if (GuildMembers.find(id => id.name == entry.name) == null)
+                        GuildMembers.push({ 'name': entry.name, 'wonNegotiations': 0, 'wonBattles': 0 }); // if member not listed, add new member
+                });
+                console.debug('save GBG', GameOrigin, BattlegroundPerformance);
+                storage.set(GameOrigin, BattlegroundPerformance);
+                helper.fshowBattleground();
+            });		
 		// console.debug('BattlegroundPerformance',GBGdata);
         $('body').i18n();
 	}
