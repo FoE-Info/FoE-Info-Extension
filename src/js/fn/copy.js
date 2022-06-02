@@ -25,14 +25,14 @@ export function fClipboardCopy() {
 }
 
 export function DonorCopy() {
-	var selection = window.getSelection();
-	selection.removeAllRanges();
-	var range = document.createRange();
-	var copytext = document.getElementById("donorText");
-	range.selectNode(copytext);
-	selection.addRange(range);
-	document.execCommand("copy");
-	// copyToClipboard('div#donorText');
+	// var selection = window.getSelection();
+	// selection.removeAllRanges();
+	// var range = document.createRange();
+	// var copytext = document.getElementById("donorText");
+	// range.selectNode(copytext);
+	// selection.addRange(range);
+	// document.execCommand("copy");
+	copyToClipboard('div#donorText');
 }
 
 export function DonorCopy2() {
@@ -180,6 +180,10 @@ function copyToClipboard(element) {
 	// if (!element.equals("clipboardText"))
 		addToClipboard(element, html);
 	html = html.replace(/<br>/g, "\n"); // or \r\n
+	html = html.replace(/<p>/g, ""); // or \r\n
+	html = html.replace(/<\/p>/g, "\n"); // or \r\n
+	html = html.replace(/<span>/g, "\n"); // or \r\n
+	html = html.replace(/<\/span>/g, "\n"); // or \r\n
 	console.debug(html);
 	$temp.val(html).select();
 	document.execCommand("copy");
