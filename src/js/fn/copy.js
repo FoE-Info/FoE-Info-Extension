@@ -25,14 +25,14 @@ export function fClipboardCopy() {
 }
 
 export function DonorCopy() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("donorText");
-	// range.selectNode(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('div#donorText');
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	var range = document.createRange();
+	var copytext = document.getElementById("donorText");
+	range.selectNode(copytext);
+	selection.addRange(range);
+	document.execCommand("copy");
+	// copyToClipboard('div#donorText');
 }
 
 export function DonorCopy2() {
