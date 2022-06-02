@@ -159,7 +159,7 @@ export var url = [];
 var rewardsGE = [];
 var rewardsGBG = [];
 var rewardsGeneric = [];
-var rewardsArmy = [];
+export var rewardsArmy = [];
 export var rewardsCity = [];
 var rewardsOtherPlayer = [];
 
@@ -384,6 +384,7 @@ treasury.id="treasuryLog";
 export var clipboard = document.createElement('div');
 content.appendChild(clipboard);
 clipboard.id="clipboard";
+clipboard.style.display = "none";
 export var alerts_bottom = document.createElement('div');
 alerts_bottom.id="alerts_bottom";
 content.appendChild(alerts_bottom);
@@ -478,6 +479,7 @@ document.querySelector('#go-to-options').addEventListener("click", function() {
 
 	
 export var language = window.navigator.userLanguage || window.navigator.language;
+console.debug(language);
 if (process.env.NODE_ENV === 'development') 
 {
 	$.i18n.debug = true;
@@ -516,11 +518,13 @@ browser.permissions.contains({
 
 		// browser.storage.local.get(['showOptions','collapseOptions','CityEntityDefs','tool','targets','toolOptions','donationPercent','url'], 
 		browser.storage.local.get(null).then((result) => {
-				// post.log('result', result);
+				// console.debug('result', result);
 				receiveStorage(result);
-				$.i18n({
-					locale: language
-				});
+				if(language != "auto"){
+					$.i18n({
+						locale: language
+					});
+				}
 				console.debug(language, $.i18n().locale, $.i18n.debug);
 				$.i18n().load({
 					//     'fr' : {
@@ -548,7 +552,10 @@ browser.permissions.contains({
 						'load': 'Учитајте игру да бисте видели статистику града'
 					},
 					'ru': {
-						'load': 'Загрузите игру, чтобы увидеть статистику вашего города'
+						'load': 'Слава Украине!'
+					},
+					'ua': {
+						'load': 'Слава Україні!'
 					},
 					'en': 'i18n/en.json',
 					'es': 'i18n/es.json',
@@ -1112,7 +1119,7 @@ if (msg.requestClass == "BlueprintService" && msg.requestMethod == "newReward") 
 										} else {
 											cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
 										<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseRewards ? 'plus' : 'dash'}-circle"/></svg>
-										<strong><span data-i18n="collection">REWARDS:</span></strong></p>
+										<strong><span data-i18n="reward">REWARDS:</span></strong></p>
 										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 										<div id="rewardsText" class="overflow resize collapse ${collapse.collapseRewards ? '' : 'show'}"><p class="overflow" id="rewardsText">${msg.responseData.building_owner.name} ${helper.fGBsname(GBname)} ${msg.responseData.level} - ${msg.responseData.strategy_point_amount}FP</p></div></div>`;
 
@@ -1123,6 +1130,16 @@ if (msg.requestClass == "BlueprintService" && msg.requestMethod == "newReward") 
 										// document.getElementById("infoTextLabel").addEventListener("click", collapse.fCollapseGBRewards);
 										rewardObserve();
 									}
+
+									// if (msg.responseData.length) {
+									// 	var reward = msg.responseData[0][0];
+									// 	reward.source = msg.responseData[1];
+									// 	console.debug(msg.responseData[1], reward);
+									// 	if (showOptions.showGBGrewards) {
+									// 		showRewards(reward);
+									// 	}
+									// }
+
 
 									/*GB Donors */ } else
 if (msg.requestClass == "GreatBuildingsService" && msg.requestMethod == "getConstructionRanking") {
@@ -1745,8 +1762,10 @@ function storageChange(changes, namespace)  {
 
 			// showOptions = storageChange.newValue;
 			// console.debug(changes);
-			else if (key == 'tool')
+			else if (key == 'tool'){
 				language = storageChange.newValue.language;
+				console.debug(language);
+			}
 			else if (key == 'targets') {
 				// console.debug(storageChange.newValue,targetsTopic);
 				targetsTopic = storageChange.newValue;
@@ -2023,9 +2042,9 @@ function receiveStorage(result){
 	// console.debug('result', result);
 	Object.entries(result).forEach(element => {
 			// if(element.toString)
-			console.debug(element);
+			// console.debug(element);
 			const [key,value] = element;
-			console.debug(key,value,key.substring(0,8));
+			// console.debug(key,value,key.substring(0,8));
 			if(key.substring(0,8) == "collapse"){
 				// console.debug(key,value);
 				collapseOptions(key,value);
@@ -2042,8 +2061,9 @@ function receiveStorage(result){
 					console.debug(key,value);
 				}
 			else if(key == 'tool'){
-				if(key == tool.language != 'auto'){
-					language = value;
+				if(value.language != 'auto'){
+					language = value.language;
+					console.debug(language);
 				}
 			}
 			else if(key == 'targets'){
@@ -2185,7 +2205,7 @@ export function showRewards(reward){
 
 	cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
 	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseRewards ? 'plus' : 'dash'}-circle"/></svg>
-	<strong><span data-i18n="collection">REWARDS:</span></strong></p>
+	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	<div id="rewardsText" class="overflow resize collapse ${collapse.collapseRewards ? '' : 'show'}">${text}</div></div>`;
 	rewardObserve();
