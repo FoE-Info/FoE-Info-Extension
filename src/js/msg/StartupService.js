@@ -1113,7 +1113,7 @@ export function showGalaxy(){
     var galaxy = document.getElementById("galaxy");
     galaxy.innerHTML = Galaxy.html +`</p></div></div>`;
     document.getElementById("galaxyTextLabel").addEventListener("click", collapse.fCollapseGalaxy);
-    if (Galaxy.amount)
+    if (Galaxy.amount > 0)
         galaxy.style.display = "block";
     else
         galaxy.style.display = "none";
