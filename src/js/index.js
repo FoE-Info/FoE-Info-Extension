@@ -159,7 +159,7 @@ export var url = [];
 var rewardsGE = [];
 var rewardsGBG = [];
 var rewardsGeneric = [];
-var rewardsArmy = [];
+export var rewardsArmy = [];
 export var rewardsCity = [];
 var rewardsOtherPlayer = [];
 
