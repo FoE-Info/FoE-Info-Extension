@@ -75,33 +75,33 @@ export function DonorCopy3() {
 
 
 export function DonationCopy() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("copyText");
-	// range.selectNode(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('div#copyText');
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	var range = document.createRange();
+	var copytext = document.getElementById("copyText");
+	range.selectNode(copytext);
+	selection.addRange(range);
+	document.execCommand("copy");
+	// copyToClipboard('div#copyText');
 }
 
 export function fCityStatsCopy() {
-	// var cityStatsHTML = '';
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
+	var cityStatsHTML = '';
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	var range = document.createRange();
 	
-	// var copytext = document.getElementById("citystatsLabel");
-	// cityStatsHTML = copytext.innerHTML + '<br>';
-	// copytext = document.getElementById("citystatsText");
-	// cityStatsHTML += copytext.innerHTML;
-	// // console.debug(cityStatsHTML);
-	// debug.innerHTML = cityStatsHTML;
-	// range.selectNode(debug);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	// debug.innerHTML = '';
-	copyToClipboard('div#citystatsText');
+	var copytext = document.getElementById("citystatsLabel");
+	cityStatsHTML = copytext.innerHTML + '<br>';
+	copytext = document.getElementById("citystatsText");
+	cityStatsHTML += copytext.innerHTML;
+	// console.debug(cityStatsHTML);
+	debug.innerHTML = cityStatsHTML;
+	range.selectNode(debug);
+	selection.addRange(range);
+	document.execCommand("copy");
+	debug.innerHTML = '';
+	// copyToClipboard('div#citystatsText');
 }
 
 export function fFriendsCopy() {
@@ -163,14 +163,14 @@ export function ExpeditionCopy() {
 }
 
 export function TreasuryCopy() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("treasuryText");
-	// range.selectNode(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('div#treasuryText');
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	var range = document.createRange();
+	var copytext = document.getElementById("treasuryText");
+	range.selectNode(copytext);
+	selection.addRange(range);
+	document.execCommand("copy");
+	// copyToClipboard('div#treasuryText');
 }
 
 function copyToClipboard(element) {
