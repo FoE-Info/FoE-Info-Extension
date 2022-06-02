@@ -88,6 +88,8 @@ export function otherPlayerService(msg){
 	var visitHCLevel = null;
 	var visitSCLevel = null;
 	var visitAILevel = null;
+	var visitAtomLevel = null;
+	var visitToRLevel = null;
 	var visitstatsHTML = ``;
 	var clanPower = 0;
 	var clanBuildings = 0;
@@ -209,18 +211,20 @@ if(msg.responseData.city_map.entities.length) {
 					visitPenal = mapID.state.current_product.amount;
 					visitTrazLevel = mapID.level;
 				}
-				else if(mapID.cityentity_id == "X_FutureEra_Landmark1") visitArcLevel = mapID.level;
+				else if(mapID.cityentity_id == "X_AllAge_Expedition") visitToRLevel = mapID.level;
 				else if(mapID.cityentity_id == "X_AllAge_EasterBonus4") visitObsLevel = mapID.level;
-				else if(mapID.cityentity_id == "X_LateMiddleAge_Landmark3") visitCdMLevel = mapID.level;
-				else if(mapID.cityentity_id == "X_PostModernEra_Landmark1") visitCAPELevel = mapID.level;
-				else if(mapID.cityentity_id == "X_EarlyMiddleAge_Landmark2") visitCoALevel = mapID.level;
 				else if(mapID.cityentity_id == "X_BronzeAge_Landmark2") visitZeusLevel = mapID.level;
-				else if(mapID.cityentity_id == "X_ContemporaryEra_Landmark2") visitINNOLevel = mapID.level;
-				else if(mapID.cityentity_id == "X_ArcticFuture_Landmark2") visitAOLevel = mapID.level;
 				else if(mapID.cityentity_id == "X_EarlyMiddleAge_Landmark1") visitHSLevel = mapID.level;
+				else if(mapID.cityentity_id == "X_EarlyMiddleAge_Landmark2") visitCoALevel = mapID.level;
+				else if(mapID.cityentity_id == "X_LateMiddleAge_Landmark3") visitCdMLevel = mapID.level;
+				else if(mapID.cityentity_id == "X_ProgressiveEra_Landmark2") visitCFLevel = mapID.level;
+				else if(mapID.cityentity_id == "X_ModernEra_Landmark2") visitAtomLevel = mapID.level;
+				else if(mapID.cityentity_id == "X_PostModernEra_Landmark1") visitCAPELevel = mapID.level;
+				else if(mapID.cityentity_id == "X_ContemporaryEra_Landmark2") visitINNOLevel = mapID.level;
+				else if(mapID.cityentity_id == "X_FutureEra_Landmark1") visitArcLevel = mapID.level;
+				else if(mapID.cityentity_id == "X_ArcticFuture_Landmark2") visitAOLevel = mapID.level;
 				else if(mapID.cityentity_id == "X_OceanicFuture_Landmark2") visitKrakenLevel = mapID.level;
 				else if(mapID.cityentity_id == "X_VirtualFuture_Landmark1") visitTerraLevel = mapID.level;
-				else if(mapID.cityentity_id == "X_ProgressiveEra_Landmark2") visitCFLevel = mapID.level;
 				else if(mapID.cityentity_id == "X_VirtualFuture_Landmark2") visitHCLevel = mapID.level;
 				else if(mapID.cityentity_id == "X_SpaceAgeAsteroidBelt_Landmark1") visitSCLevel = mapID.level;
 				else if(mapID.cityentity_id == "X_SpaceAgeJupiterMoon_Landmark1") visitAILevel = mapID.level;
@@ -685,7 +689,9 @@ if(msg.responseData.city_map.entities.length) {
 			'CF':visitCFLevel,
 			'HC':visitHCLevel,
 			'SC':visitSCLevel,
-			'AI':visitAILevel
+			'AI':visitAILevel,
+			'ATOM':visitAtomLevel,
+			'TOR':visitToRLevel
 		}); 
 		// console.debug(visitData);
 		if(googleSheetAPI) {
