@@ -92,8 +92,8 @@ export function getContinent(msg){
 									}
 								})
 								if(count){
-									// const siege = Math.round((3 * Math.pow(count,1.5) + 0.045 * Math.pow(count,3.1)) / 5 + 1) * 5;
-									const siege = BigNumber((3 * Math.pow(count,1.5) + 0.045 * Math.pow(count,3.1)) / 5 + 1).times(5).dp(0);
+									const siege = Math.round((3 * Math.pow(count,1.5) + 0.045 * Math.pow(count,3.1)) / 5 + 1) * 5;
+									// const siege = BigNumber((3 * Math.pow(count,1.5) + 0.045 * Math.pow(count,3.1)) / 5 + 1).times(5).dp(0);
 									const eraName = fGVGagesname(era.era);
 									if(era.era == 'AllAge')
 										clanHTML += `<br>AA: ${count} sect, ${siege * 5} medals`;

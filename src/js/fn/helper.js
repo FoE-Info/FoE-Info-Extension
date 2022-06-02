@@ -25,7 +25,7 @@ import * as copy from './copy.js';
 import { setBattlegroundSize, toolOptions } from './globals.js';
 import * as post_webstore from './post_webstore.js';
 import * as storage from './storage.js';
-import { browser } from 'webextension-polyfill';
+import browser from 'webextension-polyfill';
      
 var heightGBG = toolOptions.battlegroundsSize;
 export var MyGuildPermissions = 0;
@@ -525,6 +525,10 @@ export function fIncidentName(incidentName) {
 			else if(incidentName == 'incident_floating_chest'){
 				incident.type = 'w';
 				incident.text = 'Floating Chest';
+			}
+			else if(incidentName == 'incident_chest'){
+				incident.type = '<strong>N</strong>';
+				incident.text = 'Chest';
 			}
 			else{
 				incident.type = '?';
