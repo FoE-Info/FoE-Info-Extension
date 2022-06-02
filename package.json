@@ -1,6 +1,6 @@
 {
     "name": "FoE-Info",
-    "version": "0.0.74",
+    "version": "0.0.75",
     "dependencies": {
         "@types/webextension-polyfill": "^0.8.3",
         "@wikimedia/jquery.i18n": "^1.0.7",
