@@ -141,25 +141,27 @@ export function BattlegroundCopy() {
 	// var selection = window.getSelection();
 	// selection.removeAllRanges();
 	// var range = document.createRange();
-	// var copytext = document.getElementById("battlegroundText");
+	// var copytext = document.getElementById("gbg-table");
 	// // var numrows = copytext.rows.length;
 	// // range.setStartBefore(copytext.rows[0]);
 	// // range.setEndAfter(copytext.rows[numrows-1]);  
 	// range.selectNode(copytext);
 	// selection.addRange(range);
 	// document.execCommand("copy");
-	copyToClipboard('div#battlegroundText');
+	// copyTextToClipboard('#gbg-table');
+	let node = document.querySelector('#gbg-table');
+	copyNode(node);
 }
 
 export function ExpeditionCopy() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("expeditionText");
-	// range.selectNode(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('div#expeditionText');
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	var range = document.createRange();
+	var copytext = document.getElementById("expeditionText");
+	range.selectNode(copytext);
+	selection.addRange(range);
+	document.execCommand("copy");
+	// copyToClipboard('div#expeditionText');
 }
 
 export function TreasuryCopy() {
@@ -203,3 +205,11 @@ function addToClipboard(element, html) {
 	clipboard.innerHTML += '<br>' + html;
 }
 
+function copyNode(node){
+  let range  =  document.createRange();
+  range.selectNodeContents(node)
+  let select =  window.getSelection()
+  select.removeAllRanges()
+  select.addRange(range)
+  document.execCommand('copy')
+}  
