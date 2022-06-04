@@ -136,7 +136,7 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [{
-        from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js',
+        from: 'node_modules/webextension-polyfill/dist/browser-polyfill.min.js',
       }],
     }),
     new CopyPlugin({

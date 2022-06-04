@@ -34,10 +34,16 @@ import {fArcname} from './StartupService.js';
 var friendsHTML = '';
 
 var visitData = [];
+var visitAD = [];
 var visitAttack = 0;
 var visitDefense = 0;
 var visitCityAttack = 0;
 var visitCityDefense = 0;
+
+var entityVisitAttack = 0;
+var entityVisitDefense = 0;
+var entityVisitCityAttack = 0;
+var entityVisitCityDefense = 0;
 var tooltipHTML = [];
 var goodsList = [];
 var Goods = {
@@ -108,8 +114,7 @@ export function otherPlayerService(msg){
 	visitCityAttack = 0;
 	visitCityDefense = 0;
 	visitData = [];
-	// var plunderList = [];
-	// var plunderHTML = '';
+	visitAD = [];
 	Goods = {
 		'sajm':0,
 		'sav':0,
@@ -401,15 +406,31 @@ if(msg.responseData.city_map.entities.length) {
 								// console.debug(CityEntityDefs[mapID.cityentity_id].name,entity,mapID);
 							}
 						}
-						if(totalboost){
-							if(DEV && checkDebug()){
-								visitbetaad += `<br>#${id}: ${mapID.x}/${mapID.y} ${totalboost}% ${visitAttack}/${visitDefense}/${visitCityAttack}/${visitCityDefense} ${helper.fGBname(mapID.cityentity_id)}`;
-										// console.debug(CityEntityDefs[mapID.cityentity_id].name,entity,mapID);
-							}
+					}
+
+					if(entity.hasOwnProperty('components')){
+						const comp = entity.components[entityAge];
+						if(comp.hasOwnProperty('boosts')){
+							const boost = comp.boosts.boosts[0];
+							totalboost += fBoost(boost);
 						}
 					}
 
-				}
+					if(totalboost){
+						if(DEV && checkDebug()){
+							// visitbetaad += `<br>#${id}: ${mapID.x}/${mapID.y} ${totalboost}% ${visitAttack}/${visitDefense}/${visitCityAttack}/${visitCityDefense} ${helper.fGBname(mapID.cityentity_id)}`;
+							visitbetaad += `<br>#${id}: ${totalboost}% ${entityVisitAttack}/${entityVisitDefense}/${entityVisitCityAttack}/${entityVisitCityDefense} ${visitAttack}/${visitDefense}/${visitCityAttack}/${visitCityDefense} ${helper.fGBname(mapID.cityentity_id)}`;
+							console.debug(entity.name,entity,mapID);
+							visitAD.push({
+								'name': entity.name,
+								'att': entityVisitAttack,
+								'def': entityVisitDefense,
+								'defatt': entityVisitCityAttack,
+								'defdef': entityVisitCityDefense
+							});
+						}
+					}
+			}
 				else{
 					// console.debug(mapID.cityentity_id,CityEntityDefs[mapID.cityentity_id]);
 				}
@@ -475,34 +496,67 @@ if(msg.responseData.city_map.entities.length) {
 					// 	CoinBoost += mapID.bonus.value;
 					if(mapID.bonus.type == "military_boost"){
 						// += mapID.bonus.value;
-						visitDefense += mapID.bonus.value;
 						visitAttack += mapID.bonus.value;
+						visitDefense += mapID.bonus.value;
+						entityVisitAttack = mapID.bonus.value;
+						entityVisitDefense = mapID.bonus.value;
 						// console.debug(mapID);
 						// debug.innerHTML += `<p>${CityEntityDefs[mapID.cityentity_id]} ${mapID.bonus.value}</p>`;
 					}
 					if(mapID.bonus.type == "fierce_resistance"){
 						// += mapID.bonus.value;
-						visitCityDefense += mapID.bonus.value;
 						visitCityAttack += mapID.bonus.value;
+						visitCityDefense += mapID.bonus.value;
+						entityVisitCityAttack = mapID.bonus.value;
+						entityVisitCityDefense = mapID.bonus.value;
 						// console.debug(mapID);
 						// debug.innerHTML += `<p>${mapID.bonus.value}</p>`;
 					}
 					if(mapID.bonus.type == "advanced_tactics"){
 						// += mapID.bonus.value;
-						visitDefense += mapID.bonus.value;
 						visitAttack += mapID.bonus.value;
-						visitCityDefense += mapID.bonus.value;
+						visitDefense += mapID.bonus.value;
 						visitCityAttack += mapID.bonus.value;
+						visitCityDefense += mapID.bonus.value;
+						entityVisitAttack = mapID.bonus.value;
+						entityVisitDefense = mapID.bonus.value;
+						entityVisitCityAttack = mapID.bonus.value;
+						entityVisitCityDefense = mapID.bonus.value;
 						// console.debug(mapID);
 						// debug.innerHTML += `<p>${mapID.bonus.value}</p>`;
 					}
 					if(DEV && checkDebug() && (mapID.bonus.type == "military_boost" || mapID.bonus.type == "fierce_resistance" || mapID.bonus.type == "advanced_tactics")){
-						visitbetaad += `<br>#${id}: ${mapID.bonus.value}% ${visitAttack}/${visitDefense}/${visitCityAttack}/${visitCityDefense} ${helper.fGBname(mapID.cityentity_id)}`;
-								// console.debug(CityEntityDefs[mapID.cityentity_id].name,entity,mapID);
+						visitbetaad += `<br>#${id}: ${mapID.bonus.value}% ${entityVisitAttack}/${entityVisitDefense}/${entityVisitCityAttack}/${entityVisitCityDefense} ${visitAttack}/${visitDefense}/${visitCityAttack}/${visitCityDefense} ${helper.fGBname(mapID.cityentity_id)}`;
+						console.debug(id,helper.fGBname(mapID.cityentity_id),mapID);
+						// visitAD.push({
+						// 	'name': helper.fGBname(mapID.cityentity_id),
+						// 	'att': entityVisitAttack,
+						// 	'def': entityVisitDefense,
+						// 	'defatt': entityVisitCityAttack,
+						// 	'defdef': entityVisitCityDefense
+						// });
 					}
 				}
+
+				// if(!visitAD.some(item => item.name === helper.fGBname(mapID.cityentity_id))){
+				// 	visitAD.push({
+				// 		'name': helper.fGBname(mapID.cityentity_id),
+				// 		'att': null,
+				// 		'def': null,
+				// 		'defatt': null,
+				// 		'defdef': null
+				// 	});
+				// }
+				// if( helper.fGBname(mapID.cityentity_id).includes("Sun Temple")){
+				// 	console.debug("Sun Temple",CityEntityDefs[mapID.cityentity_id],mapID)
+				// }
+				
 		});
 
+	    // if(visitAD.length > 0){
+		// 	visitAD.sort(function(b, a){return a.att - b.att});
+		// 	console.debug('visitAD',visitAD);
+		// }
 		// console.debug(motivated,notmotivated,canBeMotivated,canBePolished);
 	}
 	// if(msg.responseData.armies[2].units[0].bonuses.length) {
@@ -901,21 +955,29 @@ function getFriendsHTML(list){
 
 function fBoost(boost){
     // console.debug(boost);
+	entityVisitAttack = 0;
+	entityVisitDefense = 0;
+	entityVisitCityAttack = 0;
+	entityVisitCityDefense = 0;
     if(boost.type == "att_boost_attacker"){
         visitAttack += boost.value;
-        // console.debug('visitAttack:', visitAttack, boost.value);
+        entityVisitAttack = boost.value;
+				// console.debug('visitAttack:', visitAttack, boost.value);
         // debug.innerHTML += ` ${boost.value}</p>`;
     }
     else if(boost.type == "att_boost_defender"){
         visitCityAttack += boost.value;
+        entityVisitCityAttack = boost.value;
         // console.debug('CityAttack:', CityAttack, boost[j].value);
     }
     else if(boost.type == "def_boost_attacker"){
         visitDefense += boost.value;
+        entityVisitDefense = boost.value;
         // console.debug('Defense:', Defense, boost[j].value);
     }
     else if(boost.type == "def_boost_defender"){
         visitCityDefense += boost.value;
+        entityVisitCityDefense = boost.value;
         // console.debug('visitCityDefense:', visitCityDefense, boost.value);
         // debug.innerHTML += ` ${boost.value}</p>`;
     }
@@ -929,8 +991,12 @@ function fBoost(boost){
     //     visitCityDefense += boost.value;
     //     // console.debug('CityAttack:', CityAttack, boost[j].value);
     // }
+	else if(boost.type == "happiness_amount"){
+		return 0;
+	}
 	else if(boost.type != "coin_production" && boost.type != "happiness_amount" && boost.type != "city_shield" && boost.type != "life_support" && boost.type != "supply_production" && boost.type != "tavern_visit_silver_drop" && boost.type != "tavern_silver_collect_bonus" && boost.type != "tavern_visit_fp_drop" && boost.type != "construction_time"){
 		console.debug('other:', boost.type);
+		return 0;
 	}
     return boost.value;
 }
