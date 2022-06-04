@@ -32,7 +32,7 @@ export function DonorCopy() {
 	// range.selectNode(copytext);
 	// selection.addRange(range);
 	// document.execCommand("copy");
-	copyToClipboard('div#donorText');
+	copyToClipboard('#donorText');
 }
 
 export function DonorCopy2() {
