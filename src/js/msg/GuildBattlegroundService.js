@@ -310,8 +310,8 @@ function checkProvinces(){
     //     targetsHTML += `<button type="button" class="badge badge-pill badge-primary right-button" id="targetPostID"><span data-i18n="post">Post</span></button>`;
     // else
         targetsHTML += `<button type="button" class="badge badge-pill badge-primary right-button" id="targetCopyID"><span data-i18n="copy">Copy</span></button>
-        <p id="targetGenLabel" href="#targetGenText" aria-expanded="true" data-toggle="collapse">
-        <svg class="bi header-icon" id="targetGenicon" href="#targetGenText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTargetGen ? 'plus' : 'dash'}-circle"/></svg>
+        <p id="targetGenLabel" href="#targetGenCollapse" aria-expanded="true" data-toggle="collapse">
+        <svg class="bi header-icon" id="targetGenicon" href="#targetGenCollapse" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTargetGen ? 'plus' : 'dash'}-circle"/></svg>
         <strong>GBG Target Generator:</strong></p>`;
 
         var mapSorted = Array.from(map);
@@ -392,20 +392,23 @@ function checkProvinces(){
                 if(province.lockedUntil && showOptions.GBGprovinceTime){
                     var time = new Date(province.lockedUntil * 1000);
                     text += ` ${timeGBG(time)}`;
+                    if(textProvinceLocked != '') textProvinceLocked += '<br>';
                     textProvinceLocked += text + campsText + '<br>';
                     // console.debug(province.lockedUntil,time);
                 }
                 else{
-                    textProvinceUnlocked += text + campsText + '<br>';
+                    
+                    if(textProvinceUnlocked != '') textProvinceUnlocked += '<br>';
+                    textProvinceUnlocked += text + campsText;
                 }
                 // console.debug(text);
             }
         });
     });
-    if(textProvinceUnlocked + textProvinceLocked && (helper.checkGBG || helper.MyGuildPermissions & 64)) {
+    if((textProvinceUnlocked || textProvinceLocked) && (helper.checkGBG || helper.MyGuildPermissions & 64)) {
             // targetsHTML += `<button type="button" class="badge badge-pill badge-primary right-button" id="targetPostID">Post</button>`;
     
-        targetGenerator.innerHTML = targetsHTML + `<div id="targetGenText" class="collapse ${collapse.collapseTargetGen == false ? 'show' : ''}"><p>` + textProvinceUnlocked + textProvinceLocked + `</p></div>`;
+        targetGenerator.innerHTML = targetsHTML + `<div id="targetGenCollapse" class="collapse ${collapse.collapseTargetGen == false ? 'show' : ''}"><p id="targetGenText">` + textProvinceUnlocked + textProvinceLocked + `</p></div>`;
 
 
         document.getElementById("targetCopyID").addEventListener("click", targetCopy);

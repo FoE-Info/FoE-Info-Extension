@@ -59,15 +59,16 @@ export function contributeForgePoints(msg){
 export function showGreatBuldingDonation(){
 
     var outputHTML = '';
+    var donorsHTML = '';
     overview.innerHTML = "";
 //greatbuilding.innerHTML = ``;
     outputHTML = `<div class="alert alert-success alert-dismissible" role="alert">
-    <p id="donorTextLabel" data-toggle="collapse" href="#donorText">
-    <svg class="bi header-icon" id="donoricon" href="#donorText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGBDonors ? 'plus' : 'dash'}-circle"/></svg>
+    <p id="donorTextLabel" data-toggle="collapse" href="#donorcollapse">
+    <svg class="bi header-icon" id="donoricon" href="#donorcollapse" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGBDonors ? 'plus' : 'dash'}-circle"/></svg>
     <strong><span data-i18n="gb">GB</span> Donors:</strong></p>
     <button type="button" class="badge badge-pill badge-success float-right right-button" id="donorCopyID"><span data-i18n="copy">Copy</span></button>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
-    outputHTML += `<div id="donorText" class="collapse ${collapse.collapseGBDonors ? '' : 'show'}"><p>`;
+    outputHTML += `<div id="donorcollapse" class="collapse ${collapse.collapseGBDonors ? '' : 'show'}"><p id="donorText">`;
 
     // if (debug == true)
     // 	greatbuilding.innerHTML += `<div>${contentType} : ${msg.requestClass} : ${msg.requestMethod}</div>`;
@@ -77,6 +78,10 @@ export function showGreatBuldingDonation(){
 
         for(var j = 0; j < rankings.length; j++) {
             const place = rankings[j];
+            if(donorsHTML != '' && place.player.name != 'No contributor yet'){
+                donorsHTML += '<br>';
+                // console.debug(j,place,donorsHTML);
+            }
             if (place.rank)
                 Rank = place.rank;
             else
@@ -105,10 +110,10 @@ export function showGreatBuldingDonation(){
                         // console.debug('place.forge_points:', place.player.name,place.forge_points,place.reward.strategy_point_amount);
                         if(place.player.name != 'No contributor yet'){
                             if(place.reward && place.reward.strategy_point_amount){
-                                outputHTML += `${place.player.name} ${place.forge_points}FP ${BigNumber(place.forge_points).times(100).div(place.reward.strategy_point_amount).toFormat(0)}%<br>`;
+                                donorsHTML += `${place.player.name} ${place.forge_points}FP ${BigNumber(place.forge_points).times(100).div(place.reward.strategy_point_amount).toFormat(0)}%`;
                             }
                             else{
-                                outputHTML += `${place.player.name} ${place.forge_points}FP<br>`;
+                                donorsHTML += `${place.player.name} ${place.forge_points}FP>`;
                                 // clipboardHTML += `<p>${place.player.name} ${place.forge_points}FP</p>`;
 
                             }
@@ -124,12 +129,11 @@ export function showGreatBuldingDonation(){
         }
         // console.debug('Reward',Reward);
 
-        console.debug('outputHTML',outputHTML)
+        console.debug('outputHTML',outputHTML,donorsHTML)
         if(showOptions.showGBDonors){
             fCheckOutput();
 
-            outputHTML += `</div></div>`;
-            greatbuilding.innerHTML = outputHTML;
+            greatbuilding.innerHTML = outputHTML + donorsHTML;
             document.getElementById("donorCopyID").addEventListener("click", copy.DonorCopy);
             document.getElementById("donorTextLabel").addEventListener("click", collapse.fCollapseGBDonors);
         }
