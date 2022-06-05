@@ -1,11 +1,11 @@
 {
-    "browser_action": {
+    "action": {
         "default_popup": "popup.html"
     },
     "name": "",
     "short_name": "",
     "version": "",
-    "manifest_version": 2,
+    "manifest_version": 3,
     "minimum_chrome_version": "10.0",
     "description": "Essential Info for Forge of Empires addicts",
     "homepage_url": "https://foe-info.github.io/FoE-Info-Docs/",
@@ -29,7 +29,9 @@
         "contextMenus",
         "storage",
         "unlimitedStorage",
-        "clipboardWrite",
+        "clipboardWrite"
+    ],
+    "host_permissions": [
         "https://*.forgeofempires.com/game/*",
         "wss://*.forgeofempires.com/socket",
         "https://*.google.com/*",
@@ -37,6 +39,11 @@
         "https://discordapp.com/api/webhooks/*",
         "https://discord.com/api/webhooks/*"
     ],
-    "web_accessible_resources": ["browser-polyfill.js"],
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+    "web_accessible_resources": [{
+        "resources": [ "browser-polyfill.js" ],
+        "matches": [ "https://*.forgeofempires.com/*" ]
+      }],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self' ; object-src 'self'"
+      }
 }
