@@ -111,30 +111,14 @@ module.exports = {
       chunks: ['devtools']
     }),
     new CopyPlugin({
-      patterns: [{
-        from: 'node_modules/webextension-polyfill/dist/browser-polyfill.*',
-      }],
-    }),
-    new CopyPlugin({
       patterns: [
-        { from: './src/i18n', to: 'i18n' }
-      ],
-    }),
-    new CopyPlugin({
-      patterns: [
-        { from: './src/icons/common', to: 'icons' }
-      ],
-    }),
-    new CopyPlugin({
-      patterns: [
-        { from: './src/icons/foe-info', to: 'icons' }
-      ],
-    }),
-    new CopyPlugin({
-      patterns: [
+        { from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js', to: './'},
+        { from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js.map', to: './'},
+        { from: './src/i18n', to: 'i18n' },
+        { from: './src/icons/common', to: 'icons' },
+        { from: './src/icons/foe-info', to: 'icons' },
         { from: 'src/images/logo90.png', to: 'icons/' }
-      ],
-    }),
+    ]}),
     new WebpackExtensionManifestPlugin({
       config: {
         base: baseManifest,
