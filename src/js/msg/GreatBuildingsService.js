@@ -78,7 +78,7 @@ export function showGreatBuldingDonation(){
 
         for(var j = 0; j < rankings.length; j++) {
             const place = rankings[j];
-            if (place.hasOwnProperty(rank)){
+            if (place.hasOwnProperty('rank')){
                 Rank = place.rank;
                 if(donorsHTML != '' && place.player.name != 'No contributor yet'){
                     donorsHTML += '<br>';
