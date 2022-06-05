@@ -78,12 +78,13 @@ export function showGreatBuldingDonation(){
 
         for(var j = 0; j < rankings.length; j++) {
             const place = rankings[j];
-            if(donorsHTML != '' && place.player.name != 'No contributor yet'){
-                donorsHTML += '<br>';
-                // console.debug(j,place,donorsHTML);
-            }
-            if (place.rank)
+            if (place.hasOwnProperty(rank)){
                 Rank = place.rank;
+                if(donorsHTML != '' && place.player.name != 'No contributor yet'){
+                    donorsHTML += '<br>';
+                    // console.debug(j,place,donorsHTML);
+                }
+            }
             else
                 Rank = 0;
             if(Rank>0){
