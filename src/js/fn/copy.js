@@ -165,14 +165,16 @@ export function ExpeditionCopy() {
 }
 
 export function TreasuryCopy() {
-	var selection = window.getSelection();
-	selection.removeAllRanges();
-	var range = document.createRange();
-	var copytext = document.getElementById("treasuryText");
-	range.selectNode(copytext);
-	selection.addRange(range);
-	document.execCommand("copy");
-	// copyToClipboard('div#treasuryText');
+	// var selection = window.getSelection();
+	// selection.removeAllRanges();
+	// var range = document.createRange();
+	// var copytext = document.getElementById("treasurytable");
+	// range.selectNode(copytext);
+	// selection.addRange(range);
+	// document.execCommand("copy");
+	copyToClipboard('#treasurytable > tbody');
+	// let node = document.querySelector('#treasurytable');
+	// copyNode(node);
 }
 
 function copyToClipboard(element) {
@@ -181,11 +183,15 @@ function copyToClipboard(element) {
 	var html = $(element).html();
 	// if (!element.equals("clipboardText"))
 		addToClipboard(element, html);
-	html = html.replace(/<br>/g, "\n"); // or \r\n
+		html = html.replace(/<br>/g, "\n"); // or \r\n
+		html = html.replace(/<\/tr>/g, "\n"); // or \r\n
 	html = html.replace(/<p>/g, ""); // or \r\n
+	html = html.replace(/<tr>/g, ""); // or \r\n
+	html = html.replace(/<td>/g, ""); // or \r\n
+	html = html.replace(/<\/td>/g, ""); // or \r\n
 	html = html.replace(/<\/p>/g, "\n"); // or \r\n
-	html = html.replace(/<span>/g, "\n"); // or \r\n
-	html = html.replace(/<\/span>/g, "\n"); // or \r\n
+	html = html.replace(/<span>/g, ""); // or \r\n
+	html = html.replace(/<\/span>/g, ""); // or \r\n
 	console.debug(html);
 	$temp.val(html).select();
 	document.execCommand("copy");
