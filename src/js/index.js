@@ -862,8 +862,8 @@ else if (msg.requestClass == "CityMapService") {
 	
 													else
 														GBselected.current = 0;
-													levelText += `<table class="table alert-dark">`;
-													levelText += `<tr><td colspan="2">Level ${GBselected.level + 1} (Max ${GBselected.max_level})</td></tr><tr><td>${GBselected.current} of ${GBselected.total} FP <span data-i18n="total">total</span></td><td><span data-i18n="remaining">remaining</span>: ${GBselected.total - GBselected.current}FP</td></tr>`;
+													levelText += `<table>`;
+													levelText += `<tr><td colspan="2">Level ${GBselected.level} (Max ${GBselected.max_level})</td></tr><tr><td>${GBselected.current} of ${GBselected.total} FP <span data-i18n="total">total</span></td><td><span data-i18n="remaining">remaining</span>: ${GBselected.total - GBselected.current}FP</td></tr>`;
 													// levelText += `</table></div></div>`;
 													var date = selected.state.next_state_transition_at;
 													// console.debug(date);
