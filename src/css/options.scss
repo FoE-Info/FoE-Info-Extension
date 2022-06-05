@@ -4,3 +4,16 @@
 label {
   display: block;
 }
+
+div.card {
+  margin: 15px auto 20px auto;
+}
+
+button#save {
+  margin: 5px auto;
+  display: inherit;
+}
+
+input#donationPercent {
+  width: auto;
+}
