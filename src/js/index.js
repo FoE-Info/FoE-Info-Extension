@@ -1549,7 +1549,7 @@ else if (msg.requestClass == "ClanService") {
 						<p id="treasuryTextLabel" href="#treasuryText" data-toggle="collapse">
 						<svg class="bi header-icon" id="treasuryicon" href="#treasuryText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTreasury ? 'plus' : 'dash'}-circle"/></svg>
 						<strong>Guild Treasury:</strong></p>`;
-												treasuryHTML += `<div id="treasuryText" class="collapse ${collapse.collapseTreasury ? '' : 'show'}"><table class="overflow table collapse show"><tr><th>Name</th><th>Medals Spent</th><th>Medals Returned</th><th>Medals Donated</th><th>Medals Total</th><th>Goods Spent GVG</th><th>Goods Returned GVG</th><th>Goods Spent GBG</th><th>Goods Spent GE</th><th>Goods Donated Building</th><th>Goods Donated ???</th><th>Goods Donated</th><th>SAV</th><th>SAAB</th><th>SAM</th><th>VF</th><th>OF</th><th>AF</th><th>TF</th><th>TE</th><th>CE</th><th>PME</th><th>ME</th><th>PE</th><th>IndA</th><th>CA</th><th>LMA</th><th>HMA</th><th>EMA</th><th>IA</th></tr>`;
+												treasuryHTML += `<div id="treasuryText" class="collapse ${collapse.collapseTreasury ? '' : 'show'}"><table id="treasurytable" class="overflow table collapse show"><tr><th>Name</th><th>Medals Spent</th><th>Medals Returned</th><th>Medals Donated</th><th>Medals Total</th><th>Goods Spent GVG</th><th>Goods Returned GVG</th><th>Goods Spent GBG</th><th>Goods Spent GE</th><th>Goods Donated Building</th><th>Goods Donated ???</th><th>Goods Donated</th><th>SAV</th><th>SAAB</th><th>SAM</th><th>VF</th><th>OF</th><th>AF</th><th>TF</th><th>TE</th><th>CE</th><th>PME</th><th>ME</th><th>PE</th><th>IndA</th><th>CA</th><th>LMA</th><th>HMA</th><th>EMA</th><th>IA</th></tr>`;
 												GuildDonations.forEach(member => {
 													// rank,name,medals: spent,returned,donated, goods: spent,returned,donated
 													if (member[0] != MyInfo.guild)
@@ -1616,7 +1616,7 @@ else if (msg.requestClass == "ClanService") {
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><p id="treasuryTextLabel" href="#treasuryText" data-toggle="collapse">
 						<svg class="bi header-icon" id="treasuryicon" href="#treasuryText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTreasury ? 'plus' : 'dash'}-circle"/></svg>
 						<strong>Guild Treasury:</strong></p><button type="button" class="badge badge-pill badge-success float-right right-button" id="treasuryCopyID"><span data-i18n="copy">Copy</span></button>`;
-											treasuryHTML += `<div id="treasuryText" style="height: ${toolOptions.treasurySize}px" class="overflow collapse ${collapse.collapseTreasury ? '' : 'show'}"><table>`;
+											treasuryHTML += `<div id="treasuryText" style="height: ${toolOptions.treasurySize}px" class="overflow collapse ${collapse.collapseTreasury ? '' : 'show'}"><table id="treasurytable">`;
 											// }
 											// else{
 											// treasuryHTML = treasuryHTML.substring(0, treasuryHTML.length - 8);
