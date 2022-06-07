@@ -134,7 +134,11 @@ module.exports = {
       template: './src/chrome/devtools.html',
       chunks: ['devtools']
     }),
-    // new LicenseWebpackPlugin(),
+    new CopyPlugin({
+      patterns: [{
+        from: 'node_modules/webextension-polyfill/dist/browser-polyfill.min.js',
+      }],
+    }),
     new CopyPlugin({
       patterns: [
         { from: './src/i18n', to: 'i18n' }
