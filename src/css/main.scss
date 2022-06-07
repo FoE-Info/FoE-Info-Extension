@@ -1,15 +1,11 @@
 @import "bootstrap/scss/bootstrap";
 @import "custom.scss";
 .bootstrap-styles {
-    // all: revert;
-    // @import "nord/src/nord.scss";
     @import "bootstrap/scss/bootstrap";
     @import "custom.scss";
 }
 
 .nord-styles {
-    // all: revert;
-    // @import "bootstrap/scss/bootstrap";
     @import "bootstrap/scss/functions";
     @import "bootstrap/scss/variables";
     @import "nord/src/sass/nord";
@@ -19,7 +15,6 @@
     $link-color: $nord10;
     @import "bootstrap/scss/bootstrap";
     @import "custom.scss";
-    // @import "nordbootstrap.css";
 }
 
 
