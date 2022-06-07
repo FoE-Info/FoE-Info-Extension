@@ -959,11 +959,11 @@ export function fshowBattleground(){
     else
         battlegroundHTML += `<button type="button" class="badge badge-pill badge-info float-right right-button" id="battlegroundCopyID"><span data-i18n="copy">Copy</span></button>`;
 
-    battlegroundHTML += `<div class="showGBGchanges"><input type="checkbox" id="showGBGchanges">
-	<label for="showGBGchanges">show changes only</label></div>
-	<div id="battlegroundCollapse" class="alert-info overflow collapse ${collapse.collapseBattleground ? '' : 'show'}"><div id="battlegroundText">`;
+    battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info overflow collapse ${collapse.collapseBattleground ? '' : 'show'}"><div id="battlegroundText">`;
 
-    battlegroundHTML += `<p>${BGtime ? 'Last Saved: ' + BGtime +'</p>': ''}<table class="gbg-table"><tr><th>Member</th><th>Negs</th><th>Fights</th></tr>`;
+    battlegroundHTML += `<p class="showGBGchanges"><input type="checkbox" id="showGBGchanges"><label for="showGBGchanges">show changes only</label></p>
+	${BGtime ? "<p>Last Saved: " + BGtime +"</p>" : ""}
+	<div><table id="gbg-table" class="gbg-table"><tr><th>Member</th><th>Negs</th><th>Fights</th></tr>`;
     BattlegroundPerformance.forEach( entry => {
         // console.debug(entry);
         var wonNegotiations = 0;
@@ -1007,8 +1007,7 @@ export function fshowBattleground(){
     // storage.set(GameOrigin,data);
 
     {/* donationDIV.innerHTML = battlegroundHTML + `</table></div><p class="showGBGchanges"><input type="checkbox" id="showGBGchanges" value="${showOptions.showBattlegroundChanges}"/> <label for="showGBGchanges">show changes only</label></p></div>`; */}
-    donationDIV.innerHTML = battlegroundHTML + `</table></div></div>			
-    </div>`;
+    donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div></div>`;
     if(url.sheetGuildURL)
         document.getElementById("battlegroundPostID").addEventListener("click", post_webstore.postGBGtoSS);
     else

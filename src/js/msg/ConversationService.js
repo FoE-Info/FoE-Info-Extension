@@ -80,26 +80,54 @@ export function conversationService(msg){
 
 export function getConversation(msg){
     // console.debug(msg);
-    var title = msg.responseData.title;
-    if(title && title.toLowerCase().includes('195%') || title.toLowerCase().includes('1.95'))
-        setCurrentPercent(195);
-    else if(title && title.toLowerCase().includes('194%') || title.toLowerCase().includes('1.94'))
-        setCurrentPercent(194);
-    else if(title && title.toLowerCase().includes('193%') || title.toLowerCase().includes('1.93'))
-        setCurrentPercent(193);
-    else if(title && title.toLowerCase().includes('192%') || title.toLowerCase().includes('1.92'))
-        setCurrentPercent(192);
-    else if(title && (title.toLowerCase().includes('190%') || title.toLowerCase().includes('1.9')))
-        setCurrentPercent(190);
-    else if(title && (title.toLowerCase().includes('196%') || title.toLowerCase().includes('1.96')))
-        setCurrentPercent(196);
-    else if(title && (title.toLowerCase().includes('198%') || title.toLowerCase().includes('1.98')))
-        setCurrentPercent(198);
-    else if(title && (title.toLowerCase().includes('200%')))
-        setCurrentPercent(200);
-    else if(title && (title.toLowerCase().includes('185%') || title.toLowerCase().includes('1.85')))
-        setCurrentPercent(185);
-    else if(title && (title.toLowerCase().includes('180%') || title.toLowerCase().includes('1.8')))
-        setCurrentPercent(180);
-    
+    if(msg.hasOwnProperty('responseData') && msg.hasOwnProperty('adminIds')){
+        
+    }
+
+    // if title includes donation %, setCurrentPercent for dontation helper
+    getPercent(msg.responseData.title);
+}
+
+function getPercent(title){
+    try {
+        if (!title || title == '') return;
+        else if (title.includes('%')){
+            var text = title.split('%')[0];
+            if(parseInt(text) > 0){
+                setCurrentPercent(parseInt(text));
+                return;
+            }
+            if(text.includes(' ')){
+                text = text.split(' ')[1];
+                if(parseInt(text) > 0){
+                    setCurrentPercent(parseInt(text));
+                    return;
+                }
+            }
+        }
+        else if (title.includes('1.85'))
+            setCurrentPercent(185);
+        else if (title.includes('1.8'))
+            setCurrentPercent(180);
+        else if (title.includes('1.91'))
+            setCurrentPercent(191);
+        else if (title.includes('1.92'))
+            setCurrentPercent(192);
+        else if (title.includes('1.93'))
+            setCurrentPercent(193);
+        else if (title.includes('1.94'))
+            setCurrentPercent(194);
+        else if (title.includes('1.95'))
+            setCurrentPercent(195);
+        else if (title.includes('1.96'))
+            setCurrentPercent(196);
+        else if (title.includes('1.98'))
+            setCurrentPercent(198);
+        else if (title.includes('1.9'))
+            setCurrentPercent(190);
+        else if (title.includes('200%'))
+            setCurrentPercent(200);        
+    } catch (error) {
+        console.log(error);
+    }
 }

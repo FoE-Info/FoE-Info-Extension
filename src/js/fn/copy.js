@@ -32,7 +32,7 @@ export function DonorCopy() {
 	// range.selectNode(copytext);
 	// selection.addRange(range);
 	// document.execCommand("copy");
-	copyToClipboard('div#donorText');
+	copyToClipboard('#donorText');
 }
 
 export function DonorCopy2() {
@@ -141,36 +141,40 @@ export function BattlegroundCopy() {
 	// var selection = window.getSelection();
 	// selection.removeAllRanges();
 	// var range = document.createRange();
-	// var copytext = document.getElementById("battlegroundText");
+	// var copytext = document.getElementById("gbg-table");
 	// // var numrows = copytext.rows.length;
 	// // range.setStartBefore(copytext.rows[0]);
 	// // range.setEndAfter(copytext.rows[numrows-1]);  
 	// range.selectNode(copytext);
 	// selection.addRange(range);
 	// document.execCommand("copy");
-	copyToClipboard('div#battlegroundText');
+	// copyTextToClipboard('#gbg-table');
+	let node = document.querySelector('#gbg-table');
+	copyNode(node);
 }
 
 export function ExpeditionCopy() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("expeditionText");
-	// range.selectNode(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('div#expeditionText');
-}
-
-export function TreasuryCopy() {
 	var selection = window.getSelection();
 	selection.removeAllRanges();
 	var range = document.createRange();
-	var copytext = document.getElementById("treasuryText");
+	var copytext = document.getElementById("expeditionText");
 	range.selectNode(copytext);
 	selection.addRange(range);
 	document.execCommand("copy");
-	// copyToClipboard('div#treasuryText');
+	// copyToClipboard('div#expeditionText');
+}
+
+export function TreasuryCopy() {
+	// var selection = window.getSelection();
+	// selection.removeAllRanges();
+	// var range = document.createRange();
+	// var copytext = document.getElementById("treasurytable");
+	// range.selectNode(copytext);
+	// selection.addRange(range);
+	// document.execCommand("copy");
+	copyToClipboard('#treasurytable > tbody');
+	// let node = document.querySelector('#treasurytable');
+	// copyNode(node);
 }
 
 function copyToClipboard(element) {
@@ -179,11 +183,15 @@ function copyToClipboard(element) {
 	var html = $(element).html();
 	// if (!element.equals("clipboardText"))
 		addToClipboard(element, html);
-	html = html.replace(/<br>/g, "\n"); // or \r\n
+		html = html.replace(/<br>/g, "\n"); // or \r\n
+		html = html.replace(/<\/tr>/g, "\n"); // or \r\n
 	html = html.replace(/<p>/g, ""); // or \r\n
+	html = html.replace(/<tr>/g, ""); // or \r\n
+	html = html.replace(/<td>/g, ""); // or \r\n
+	html = html.replace(/<\/td>/g, ""); // or \r\n
 	html = html.replace(/<\/p>/g, "\n"); // or \r\n
-	html = html.replace(/<span>/g, "\n"); // or \r\n
-	html = html.replace(/<\/span>/g, "\n"); // or \r\n
+	html = html.replace(/<span>/g, ""); // or \r\n
+	html = html.replace(/<\/span>/g, ""); // or \r\n
 	console.debug(html);
 	$temp.val(html).select();
 	document.execCommand("copy");
@@ -203,3 +211,11 @@ function addToClipboard(element, html) {
 	clipboard.innerHTML += '<br>' + html;
 }
 
+function copyNode(node){
+  let range  =  document.createRange();
+  range.selectNodeContents(node)
+  let select =  window.getSelection()
+  select.removeAllRanges()
+  select.addRange(range)
+  document.execCommand('copy')
+}  
