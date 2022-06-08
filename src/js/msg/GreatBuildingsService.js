@@ -63,11 +63,11 @@ export function showGreatBuldingDonation(){
     overview.innerHTML = "";
 //greatbuilding.innerHTML = ``;
     outputHTML = `<div class="alert alert-success alert-dismissible" role="alert">
-    <p id="donorTextLabel" data-toggle="collapse" href="#donorcollapse">
-    <svg class="bi header-icon" id="donoricon" href="#donorcollapse" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGBDonors ? 'plus' : 'dash'}-circle"/></svg>
+    <p id="donorTextLabel" data-bs-toggle="collapse" href="#donorcollapse">
+    <svg class="bi header-icon" id="donoricon" href="#donorcollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGBDonors ? 'plus' : 'dash'}-circle"/></svg>
     <strong><span data-i18n="gb">GB</span> Donors:</strong></p>
-    <button type="button" class="badge badge-pill badge-success float-right right-button" id="donorCopyID"><span data-i18n="copy">Copy</span></button>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+    <button type="button" class="badge rounded-pill bg-success float-end right-button" id="donorCopyID"><span data-i18n="copy">Copy</span></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
     outputHTML += `<div id="donorcollapse" class="collapse ${collapse.collapseGBDonors ? '' : 'show'}"><p id="donorText">`;
 
     // if (debug == true)
@@ -143,11 +143,11 @@ export function showGreatBuldingDonation(){
             var newdonationHTML = ""; 
             var copyText = `<div id='copyText'>${showOptions.showGuildPosition && PlayerName == MyInfo.name && MyInfo.guildPosition ? '#' + MyInfo.guildPosition + ' ' : ''}${playerShortName ? playerShortName :PlayerName} ${helper.fGBsname(GBselected.name)} `;
             var olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <p id="freeTextLabel" href="#donationText3" aria-controls="donationText3" data-toggle="collapse">
-            <svg class="bi header-icon" id="donationicon" href="#donationText3" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseDonation ? 'plus' : 'dash'}-circle"/></svg>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <p id="freeTextLabel" href="#donationText3" aria-controls="donationText3" data-bs-toggle="collapse">
+            <svg class="bi header-icon" id="donationicon" href="#donationText3" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseDonation ? 'plus' : 'dash'}-circle"/></svg>
             <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>
-            <button type="button" class="badge badge-pill badge-secondary float-right right-button" id="donationCopyID"><span data-i18n="copy">Copy</span></button>`;
+            <button type="button" class="badge rounded-pill bg-secondary float-end right-button" id="donationCopyID"><span data-i18n="copy">Copy</span></button>`;
             olddonationHTML += `<div id="donationText3" class="collapse ${collapse.collapseDonation ? '' : 'show'}"><p>${getPlayerLink()}<br>`;
             olddonationHTML += `<span id="GBselected">${GBselected.name} ${GBselected.level+1}</span></p>`;
             if(GBselected.connected == null){
@@ -340,8 +340,8 @@ export function getConstructionRanking(msg,data){
     overview.innerHTML = "";
     //greatbuilding.innerHTML = ``;
     outputHTML = `<div class="alert alert-success alert-dismissible show" role="alert">`;
-    outputHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
-    outputHTML += `<button type="button" class="badge badge-pill badge-success right-button" id="donorCopyID2"><span data-i18n="copy">Copy</span></button>`;
+    outputHTML += `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+    outputHTML += `<button type="button" class="badge rounded-pill bg-success right-button" id="donorCopyID2"><span data-i18n="copy">Copy</span></button>`;
     
     if(msg.responseData.length) {
         // var total = 0;
@@ -376,7 +376,7 @@ export function getConstructionRanking(msg,data){
     }
 
     // else{
-        outputHTML += `<p id="donorTextLabel2" data-toggle="collapse" href="#donorTextCollapse"><strong><span data-i18n="gb">GB</span> Donors:</strong></p>`;
+        outputHTML += `<p id="donorTextLabel2" data-bs-toggle="collapse" href="#donorTextCollapse"><strong><span data-i18n="gb">GB</span> Donors:</strong></p>`;
         outputHTML += `<div id="donorTextCollapse" class="collapse ${collapse.collapseGBDonors ? '' : 'show'}">`;
         outputHTML += `<p><span>${PlayerName} ${GBselected.name} ${GBselected.level}</span><br>`;
         outputHTML += rowsHTML += '</p></div></div>';
@@ -463,9 +463,9 @@ function gbTabSafe(place, currentPercent, donation, rewardFP, donateCustom, dona
     footer += `<p>Remaining <strong>${GBselected.total - GBselected.current}</strong> FPs</p>`;
   }
   let htmlText = `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0" >
-    <div class="card-header font-weight-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [${getPlayerLink()}]${connected == null ? '<br><span class="red">*** DISCONNECTED ***</span>' : ""}${checkInactive()}${maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : ""} 
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <button type="button" class="badge badge-pill badge-info float-right mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button> 
+    <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [${getPlayerLink()}]${connected == null ? '<br><span class="red">*** DISCONNECTED ***</span>' : ""}${checkInactive()}${maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : ""} 
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button> 
     </div>
     <div class="card-body alert-success p-2">
       <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${GBselected.level}/${GBselected.max_level}] (${GBselected.current}/${GBselected.total} FPs)</span></h6>
@@ -517,9 +517,9 @@ function gbTabNotSafe(place, currentPercent, donation, rewardFP, donateCustom, d
     footer += `<p>Remaining <strong>${GBselected.total - GBselected.current}</strong> FPs</p>`;
   }
   let htmlText = `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0 "  >
-           <div class="card-header font-weight-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span> [${getPlayerLink()}]
-           <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-           <button type="button" class="badge badge-pill badge-info float-right mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button> 
+           <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span> [${getPlayerLink()}]
+           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+           <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button> 
            </div>
            <div class="card-body alert-danger p-2">
            <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${GBselected.level}/${GBselected.max_level}] (${GBselected.current}/${GBselected.total})</span></h6>
@@ -548,7 +548,7 @@ function gbTabNotSafe(place, currentPercent, donation, rewardFP, donateCustom, d
   <h6 class="card-title mb-0">Information</h6>
        <table class="table alert-primary mb-1">
         <tr>
-          <td class="font-weight-bold">Level:</td>
+          <td class="fw-bold">Level:</td>
           <td class="text-right">${GBselected.level}/${GBselected.max_level}</td>
           <td></td>
           <td></td>
@@ -559,7 +559,7 @@ function gbTabNotSafe(place, currentPercent, donation, rewardFP, donateCustom, d
           <td></td>
         </tr>
         <tr>
-          <td class="font-weight-bold">FPs:</td>
+          <td class="fw-bold">FPs:</td>
           <td class="text-right">${GBselected.current}/${GBselected.total}</td>
           <td class="">(${GBselected.total - GBselected.current})</td>
           <td></td>
@@ -585,7 +585,7 @@ function gbTabEmpty(
   maxlevel
 ) {
   let htmlText = `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0 " >
-           <div class="card-header font-weight-bold"> GB Donation [${getPlayerLink()}]<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+           <div class="card-header fw-bold"> GB Donation [${getPlayerLink()}]<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
            <div class="card-body alert-danger p-2">
            <h6 class="card-title mb-0""> <span id="GBselected">${GBselected.name} [${GBselected.level + 1}]</span></h6>
            <table class="table mb-1">

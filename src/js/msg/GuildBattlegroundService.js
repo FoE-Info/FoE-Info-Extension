@@ -92,7 +92,7 @@ export function getLeaderboard(msg){
             // console.debug(guild.clan.name,guild.victoryPointsHourly,guild.victoryPointsTotal)
             leaderboardHTML += `<tr><td>${guild.clan.name}</td><td>${guild.victoryPointsHourly ? guild.victoryPointsHourly : 0}</td><td>${guild.victoryPointsTotal ? guild.victoryPointsTotal : 0}</td></tr>`;
         });
-        output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>GBG Leaderboard:</strong> 
+        output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><strong>GBG Leaderboard:</strong> 
             <p id="leaderboardText"><table>` + leaderboardHTML + `</table></p></div>`;
 
 }
@@ -108,11 +108,11 @@ export function getState(msg){
         var totalFights = 0;
         var totalNegs = 0;
         var battlegroundHTML = `<div id="battlegroundResultTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <p id="battlegroundResultTextLabel" href="#battlegroundTextCollapse" data-toggle="collapse">
-        <svg class="bi header-icon" id="battlegroundicon" href="#battlegroundTextCollapse" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBattleground ? 'plus' : 'dash'}-circle"/></svg>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <p id="battlegroundResultTextLabel" href="#battlegroundTextCollapse" data-bs-toggle="collapse">
+        <svg class="bi header-icon" id="battlegroundicon" href="#battlegroundTextCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBattleground ? 'plus' : 'dash'}-circle"/></svg>
         <strong>Battleground Result:</strong></p>`;
-        battlegroundHTML += `<button type="button" class="badge badge-pill badge-info float-right right-button" id="battlegroundPostID"><span data-i18n="${url.sheetGuildURL ? 'post">Post' : 'copy">Copy'}</span></button>`;
+        battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundPostID"><span data-i18n="${url.sheetGuildURL ? 'post">Post' : 'copy">Copy'}</span></button>`;
         battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive collapse ${collapse.collapseBattleground ? '' : 'show'}"><div class="overflow-y" id="battlegroundText"><table class="gbg-table"><tr><th>Rank</th><th>Member</th><th>Negs</th><th>Fights</th></tr>`
         msg.responseData.playerLeaderboardEntries.forEach(entry => {
             var wonNegotiations = 0;
@@ -305,13 +305,13 @@ function checkProvinces(){
     }
     var timerId = Math.random().toString(36).substr(2, 5);
     var targetsHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
     // if(url.sheetGuildURL)
-    //     targetsHTML += `<button type="button" class="badge badge-pill badge-primary right-button" id="targetPostID"><span data-i18n="post">Post</span></button>`;
+    //     targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID"><span data-i18n="post">Post</span></button>`;
     // else
-        targetsHTML += `<button type="button" class="badge badge-pill badge-primary right-button" id="targetCopyID"><span data-i18n="copy">Copy</span></button>
-        <p id="targetGenLabel" href="#targetGenCollapse" aria-expanded="true" data-toggle="collapse">
-        <svg class="bi header-icon" id="targetGenicon" href="#targetGenCollapse" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTargetGen ? 'plus' : 'dash'}-circle"/></svg>
+        targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetCopyID"><span data-i18n="copy">Copy</span></button>
+        <p id="targetGenLabel" href="#targetGenCollapse" aria-expanded="true" data-bs-toggle="collapse">
+        <svg class="bi header-icon" id="targetGenicon" href="#targetGenCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTargetGen ? 'plus' : 'dash'}-circle"/></svg>
         <strong>GBG Target Generator:</strong></p>`;
 
         var mapSorted = Array.from(map);
@@ -378,7 +378,7 @@ function checkProvinces(){
                 if(showOptions.GBGshowSC && (campsReady || campsNotReady)){
                     campsText = ' (';
                     if(campsReady && !campsNotReady)
-                        campsText += campsReady + ` <span id="siegecamp_tooltip" data-html="true" title="Siege Camp">SC</span>)`;
+                        campsText += campsReady + ` <span id="siegecamp_tooltip" title="Siege Camp">SC</span>)`;
                     else if(campsNotReady && !campsReady)
                         campsText += campsNotReady + ' UC)';
                     else if(campsReady && campsNotReady)
@@ -406,7 +406,7 @@ function checkProvinces(){
         });
     });
     if((textProvinceUnlocked || textProvinceLocked) && (helper.checkGBG || helper.MyGuildPermissions & 64)) {
-            // targetsHTML += `<button type="button" class="badge badge-pill badge-primary right-button" id="targetPostID">Post</button>`;
+            // targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID">Post</button>`;
     
         targetGenerator.innerHTML = targetsHTML + `<div id="targetGenCollapse" class="collapse ${collapse.collapseTargetGen == false ? 'show' : ''}"><p id="targetGenText">` + textProvinceUnlocked + textProvinceLocked + `</p></div>`;
 
@@ -432,7 +432,7 @@ function showBuildingCost(msg){
         // costsHTML = document.getElementById("buildingCostText").innerHTML;
     }
     else{
-        // costsDiv.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><p id="buildingCostTextLabel" href="#buildingCostCollapse" aria-expanded="true" aria-controls="buildingCostText" data-toggle="collapse"><svg class="bi alert-warning" id="citystatsicon" href="#citystatsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg><strong>GBG Building Costs:</strong></p><button type="button" class="badge badge-pill badge-primary right-button" id="buildingCostID"><span data-i18n="copy">Copy</span></button><table id="buildingCostText" class="table"></table></div>`;
+        // costsDiv.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><p id="buildingCostTextLabel" href="#buildingCostCollapse" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse"><svg class="bi alert-warning" id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg><strong>GBG Building Costs:</strong></p><button type="button" class="badge rounded-pill bg-primary right-button" id="buildingCostID"><span data-i18n="copy">Copy</span></button><table id="buildingCostText" class="table"></table></div>`;
         costsDiv.id="costs";
         content.appendChild(costsDiv);
     }
@@ -462,7 +462,7 @@ function showBuildingCost(msg){
         }
 
 
-        // costsHTML += `<tr><td class="font-weight-bold col-auto">${name[0] + name[1]}</td></tr>`;
+        // costsHTML += `<tr><td class="fw-bold col-auto">${name[0] + name[1]}</td></tr>`;
         costsHTML += `<tr><th>${name[0] + name[1]}${slots ? ' [' + slots +']' : ''}</th><th>Resource 1</th><th>Qty</th><th>Resource 2</th><th>Qty</th><th>Resource 3</th><th>Qty</th></tr>`;
         costs.forEach(building => {
             // console.debug(guild.clan.name,guild.victoryPointsHourly,guild.victoryPointsTotal)
@@ -481,14 +481,14 @@ function showBuildingCost(msg){
         });
     });
     // let htmlText = `<div class="card bg-light alert show collapsed p-0" >
-    // <div class="card-header font-weight-bold"><span data-i18  
+    // <div class="card-header fw-bold"><span data-i18  
     
     costsDiv.innerHTML = `<div class="alert alert-info alert-dismissible  show collapsed" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <p id="buildingCostTextLabel" href="#buildingCostText" aria-expanded="true" aria-controls="buildingCostText" data-toggle="collapse">
-    <svg class="bi header-icon" id="buildingCosticon" href="#buildingCostText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBuildingCost ? 'plus' : 'dash'}-circle"/></svg>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <p id="buildingCostTextLabel" href="#buildingCostText" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse">
+    <svg class="bi header-icon" id="buildingCosticon" href="#buildingCostText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBuildingCost ? 'plus' : 'dash'}-circle"/></svg>
     <strong>GBG Building Costs:</strong></p> 
-    <button type="button" class="badge badge-pill badge-primary right-button" id="buildingCostID"><span data-i18n="copy">Copy</span></button>
+    <button type="button" class="badge rounded-pill bg-primary right-button" id="buildingCostID"><span data-i18n="copy">Copy</span></button>
     <table style="height: ${toolOptions.buildingCostSize}px"  id="buildingCostText" class="overflow-y table collapse ${collapse.collapseBuildingCost == false ? 'show' : ''}">` + costsHTML + `</table></div>`;
     document.getElementById("buildingCostID").addEventListener("click", buildingCostCopy);
     document.getElementById("buildingCostTextLabel").addEventListener("click", collapse.fCollapseBuildingCost);
