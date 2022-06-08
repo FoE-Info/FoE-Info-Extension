@@ -21,11 +21,11 @@ import icons from 'bootstrap-icons/bootstrap-icons.svg';
 export function guildExpeditionService(msg){
 		var ExpeditionPerformance = [];
 		var expeditionHTML = `<div id="expeditionTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<p id="expeditionTextLabel" href="#expeditionText" aria-expanded="true" aria-controls="expeditionText" data-toggle="collapse">
-		<svg class="bi header-icon" id="expeditionicon" href="#expeditionText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseExpedition ? 'plus' : 'dash'}-circle"/></svg>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		<p id="expeditionTextLabel" href="#expeditionText" aria-expanded="true" aria-controls="expeditionText" data-bs-toggle="collapse">
+		<svg class="bi header-icon" id="expeditionicon" href="#expeditionText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseExpedition ? 'plus' : 'dash'}-circle"/></svg>
 		<strong>Guild Expedition:</strong></p>
-		<button type="button" class="badge badge-pill badge-info float-right right-button" id="expeditionCopyID"><span data-i18n="copy">Copy</span></button>`;
+		<button type="button" class="badge rounded-pill bg-info float-end right-button" id="expeditionCopyID"><span data-i18n="copy">Copy</span></button>`;
 		expeditionHTML += `<div id="expeditionText" style="height: ${toolOptions.expeditionSize}px" class="alert-info overflow collapse ${collapse.collapseExpedition ? '' : 'show'}"><table><tr><th>Member</th><th>Points</th><th>Encounters</th></tr>`
 		msg.responseData.forEach(entry => {
             var	solvedEncounters = 0;
