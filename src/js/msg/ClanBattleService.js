@@ -262,3 +262,7 @@ export function getProvinceDetailed(msg){
 export function deploySiegeArmy(msg){
     console.debug('Siege Placed',msg);
 }
+export function grantIndependence(msg){
+    console.debug('Grant Freedom',msg);
+}
+
