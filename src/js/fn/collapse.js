@@ -177,7 +177,7 @@ export function fCollapseFriends(){
 		document.getElementById("friendsCopyID").style.display = "block";
 	}
 	// console.debug('collapseFriends',collapseFriends);
-	// document.getElementById("friendsicon").outerHTML = `<svg id="friendsicon" href="#friendsText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseFriends ? dash : plus}"/></svg>`;
+	// document.getElementById("friendsicon").outerHTML = `<svg id="friendsicon" href="#friendsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseFriends ? dash : plus}"/></svg>`;
 }				
 
 export function fCollapseLists(){
@@ -193,11 +193,11 @@ export function fCollapseHood(){
 		document.getElementById("hoodCopyID").style.display = "none";
 	}else{
 		document.getElementById("hoodCopyID").style.display = "block";
-		// document.getElementById("hoodCopy").innerHTML = '<button type="button" class="badge badge-pill badge-success float-right right-button" id="hoodCopyID"><span data-i18n="copy">Copy</span></button>';
+		// document.getElementById("hoodCopy").innerHTML = '<button type="button" class="badge rounded-pill bg-success float-end right-button" id="hoodCopyID"><span data-i18n="copy">Copy</span></button>';
 		// document.getElementById("hoodCopyID").addEventListener("click", copy.fHoodCopy);
 	}
 	// console.debug('collapseHood',collapseHood);
-	// document.getElementById("hoodicon").outerHTML = `<svg id="hoodicon" href="#hoodText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseHood ? dash : plus}"/></svg>`;
+	// document.getElementById("hoodicon").outerHTML = `<svg id="hoodicon" href="#hoodText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseHood ? dash : plus}"/></svg>`;
 }				
 
 export function fCollapseGalaxy(){
@@ -217,18 +217,18 @@ export function fCollapseGuild(){
 		// document.getElementById("guildCopy").innerHTML = '';
 		document.getElementById("guildCopyID").style.display = "none";
 	}else{
-		// document.getElementById("guildCopy").innerHTML = '<button type="button" class="badge badge-pill badge-success float-right right-button" id="guildCopyID"><span data-i18n="copy">Copy</span></button>';
+		// document.getElementById("guildCopy").innerHTML = '<button type="button" class="badge rounded-pill bg-success float-end right-button" id="guildCopyID"><span data-i18n="copy">Copy</span></button>';
 		// document.getElementById("guildCopyID").addEventListener("click", copy.fGuildCopy);
 		document.getElementById("guildCopyID").style.display = "block";
 	}
 	// console.debug('collapseGuild',collapseGuild);
-	// document.getElementById("guildicon").outerHTML = `<svg id="guildicon" href="#guildText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGuild ? dash : plus}"/></svg>`;
+	// document.getElementById("guildicon").outerHTML = `<svg id="guildicon" href="#guildText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGuild ? dash : plus}"/></svg>`;
 }				
 
 export function fCollapseIncidents(){
 	collapseIncidents = !collapseIncidents;
 	// console.debug('collapseIncidents',collapseIncidents);
-	document.getElementById("incidentsicon").outerHTML = `<svg id="incidentsicon" href="#incidentsText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseIncidents ? dash : plus}"/></svg>`;
+	document.getElementById("incidentsicon").outerHTML = `<svg id="incidentsicon" href="#incidentsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseIncidents ? dash : plus}"/></svg>`;
 	// console.debug(document.getElementById("incidentsTextLabel").innerHTML);
 	// console.debug(document.getElementById("incidentsicon").outerHTML);
 	storage.set('collapseIncidents',collapseIncidents);
@@ -276,11 +276,11 @@ export function fCollapseGoods(){
 
 		}else{
 			document.getElementById("citystatsCopyID").style.display = "block";
-			// document.getElementById("citystatsCopy").innerHTML = '<button type="button" class="badge badge-pill badge-warning float-right right-button" id="citystatsCopyID"><span data-i18n="copy">Copy</span></button>';
+			// document.getElementById("citystatsCopy").innerHTML = '<button type="button" class="badge rounded-pill bg-warning float-end right-button" id="citystatsCopyID"><span data-i18n="copy">Copy</span></button>';
 			// document.getElementById("citystatsCopyID").addEventListener("click", copy.fCityStatsCopy);
 		}
-		document.getElementById("citystatsicon").outerHTML = `<svg class="bi header-icon" id="citystatsicon" href="#citystatsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapseStats ? 'plus' : 'dash'}-circle"/></svg>`;
-		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseStats ? dash : plus}"/>
+		document.getElementById("citystatsicon").outerHTML = `<svg class="bi header-icon" id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapseStats ? 'plus' : 'dash'}-circle"/></svg>`;
+		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseStats ? dash : plus}"/>
 		// </svg>`;
 		storage.set('collapseStats',collapseStats);
 	}				
@@ -294,11 +294,11 @@ export function fCollapseGoods(){
 
 		}else{
 			// document.getElementById("citystatsCopyID").style.display = "block";
-			// document.getElementById("citystatsCopy").innerHTML = '<button type="button" class="badge badge-pill badge-warning float-right right-button" id="citystatsCopyID"><span data-i18n="copy">Copy</span></button>';
+			// document.getElementById("citystatsCopy").innerHTML = '<button type="button" class="badge rounded-pill bg-warning float-end right-button" id="citystatsCopyID"><span data-i18n="copy">Copy</span></button>';
 			// document.getElementById("citystatsCopyID").addEventListener("click", copy.fCityStatsCopy);
 		}
-		document.getElementById("rewardsicon").outerHTML = `<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapseRewards ? 'plus' : 'dash'}-circle"/></svg>`;
-		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseStats ? dash : plus}"/>
+		document.getElementById("rewardsicon").outerHTML = `<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapseRewards ? 'plus' : 'dash'}-circle"/></svg>`;
+		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseStats ? dash : plus}"/>
 		// </svg>`;
 		storage.set('collapseRewards',collapseRewards);
 	}				
@@ -312,14 +312,14 @@ export function fCollapseGoods(){
 		collapseGBDonors = !collapseGBDonors;
 		storage.set('collapseGBDonors',collapseGBDonors);
 		document.getElementById("donorCopyID").style.display = `${collapseGBDonors ? 'none' : 'block'}`;
-		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGBDonors ? dash : plus}"/>
+		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGBDonors ? dash : plus}"/>
 		// </svg>`;
 	}				
 	
 	// export function fCollapseGBclub(){
 	// 	collapseGBclub = !collapseGBclub;
 	// 	storage.set('collapseOptions',collapseOptions);
-	// 	document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGBclub ? dash : plus}"/>
+	// 	document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGBclub ? dash : plus}"/>
 	// 	</svg>`;
 	// }				
 	
