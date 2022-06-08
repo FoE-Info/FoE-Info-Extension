@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -42,8 +42,8 @@ const showOptions = {
 	GBGshowSC: true,
 	showGErewards: false,
 	showRewards: false,
-	showLogs: false, 
-	showContributions: false, 
+	showLogs: false,
+	showContributions: false,
   showGuildPosition : false,
   hideUnsafe: true,
 	buildingCosts : false,
@@ -90,7 +90,7 @@ function save_options() {
     //  showOptions.show = document.getElementById('').checked;
     //  showOptions.show = document.getElementById('').checked;
     //  showOptions.show = document.getElementById('').checked;
-  
+
      tool.language = document.getElementById('language').value;
      var targets = document.getElementById('targets').value;
      var targetText = document.getElementById('targetText').value;
@@ -106,8 +106,8 @@ function save_options() {
 
      // Google Sheets
      url.sheetGuildURL = document.getElementById('sheetGuildURL').value;
-     url.sheetCityURL = document.getElementById('sheetCityURL').value;
-     url.sheetGameURL = document.getElementById('sheetGameURL').value;
+     // url.sheetCityURL = document.getElementById('sheetCityURL').value;
+     // url.sheetGameURL = document.getElementById('sheetGameURL').value;
 
      setStorage(showOptions);
 
@@ -125,8 +125,8 @@ function save_options() {
         url: {
         discordTargetURL: url.discordTargetURL,
         sheetGuildURL: url.sheetGuildURL,
-        sheetCityURL: url.sheetCityURL,
-        sheetGameURL: url.sheetGameURL
+        // sheetCityURL: url.sheetCityURL,
+        // sheetGameURL: url.sheetGameURL
         },
       }).then( () => {
     // console.debug(`Value is set to`, value);
@@ -160,9 +160,9 @@ function save_options() {
     // });
     // browser.storage.local.get(null, function(items) {
     //   console.debug(items);
-    // });		
+    // });
       }
-  
+
   // Restores select box and checkbox state using the preferences
   // stored in browser.storage.
   function restore_options() {
@@ -209,10 +209,10 @@ function save_options() {
           document.getElementById('discordTargetURL').value = url.discordTargetURL;
         if(url.sheetGuildURL)
           document.getElementById('sheetGuildURL').value = url.sheetGuildURL;
-        if(url.sheetCityURL)
-           document.getElementById('sheetCityURL').value = url.sheetCityURL;
-        if(url.sheetGameURL)
-           document.getElementById('sheetGameURL').value = url.sheetGameURL;
+        // if(url.sheetCityURL)
+        //    document.getElementById('sheetCityURL').value = url.sheetCityURL;
+        // if(url.sheetGameURL)
+        //    document.getElementById('sheetGameURL').value = url.sheetGameURL;
 
       }
     });
@@ -248,10 +248,10 @@ function fnShowOptions(showOptions){
   document.getElementById('logs').checked = showOptions.showLogs;
   document.getElementById('contributions').checked = showOptions.showContributions;
   document.getElementById('donationGuildPosition').checked = showOptions.showGuildPosition;
-  document.getElementById('hideUnsafe').checked = showOptions.hideUnsafe;  
-  document.getElementById('buildingCosts').checked = showOptions.buildingCosts;  
-  document.getElementById('collectionTimes').checked = showOptions.collectionTimes;  
-  
+  document.getElementById('hideUnsafe').checked = showOptions.hideUnsafe;
+  document.getElementById('buildingCosts').checked = showOptions.buildingCosts;
+  document.getElementById('collectionTimes').checked = showOptions.collectionTimes;
+
 }
 
 
@@ -280,18 +280,18 @@ function fnShowOptions(showOptions){
   //         'showGBGrewards': value.showGBGrewards,
   //         'showGErewards': value.showGErewards,
   //         'showRewards': value.showRewards,
-  //         'showLogs': value.showLogs 
+  //         'showLogs': value.showLogs
   //                    }
   //     }, function() {
   //     // console.debug(`Value is set to`, value);
   //     });
-  
+
   //   // browser.storage.local.get(null, function(items) {
   //     // console.debug(items);
-  //   // });		
+  //   // });
   // }
-  
-  
+
+
   function setStorage(value){
     // console.debug(value);
     browser.permissions.request({
@@ -340,10 +340,10 @@ function fnShowOptions(showOptions){
         // The extension doesn't have the permissions.
       }
       });
-  
+
     // browser.storage.local.get(null, function(items) {
       // console.debug(items);
-    // });		
+    // });
   }
 
 
