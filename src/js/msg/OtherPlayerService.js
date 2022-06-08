@@ -173,9 +173,9 @@ if(msg.responseData.city_map.entities.length) {
 		var canBePolished = 0;
 		map_entities.forEach( (mapID,id) => {
 
-				if(mapID.type != 'street' 
-					&& mapID.type != 'off_grid')
-				// console.debug(id,mapID);
+				// if(mapID.type != 'street' && mapID.type != 'off_grid')
+				if(mapID.type == 'off_grid')
+					console.debug(id,helper.fGBname(mapID.cityentity_id),mapID);
 
 				if(mapID.state && mapID.state.is_motivated == true) motivated++;
 				if(mapID.state && mapID.state.is_motivated != true) notmotivated++;
@@ -409,8 +409,9 @@ if(msg.responseData.city_map.entities.length) {
 					}
 
 					if(entity.hasOwnProperty('components')){
+						console.debug(entity.name,entity,mapID);
 						const comp = entity.components[entityAge];
-						if(comp.hasOwnProperty('boosts')){
+						if(comp && comp.hasOwnProperty('boosts')){
 							const boost = comp.boosts.boosts[0];
 							totalboost += fBoost(boost);
 						}

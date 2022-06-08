@@ -11,7 +11,7 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import {showRewards,rewardsArmy,rewardsCity,MilitaryDefs} from "../index.js";
+import {showReward,rewardsArmy,rewardsCity,MilitaryDefs} from "../index.js";
 import { updateGalaxy } from "./StartupService.js";
 import {showOptions} from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
@@ -61,7 +61,7 @@ export function pickupProduction(msg){
     reward.amount = 0;
 
     if(showOptions.showRewards){
-        showRewards(reward);
+        showReward(reward);
     }					
 
 }

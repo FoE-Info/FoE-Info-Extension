@@ -696,7 +696,7 @@ else if (msg.requestClass == "OtherPlayerService") {
 		reward.amount = 0;
 
 		if (showOptions.showGErewards) {
-			showRewards(reward);
+			showReward(reward);
 		}
 	} 
 	else if (msg.requestMethod == "rewardResources") {
@@ -721,7 +721,7 @@ else if (msg.requestClass == "OtherPlayerService") {
 		reward.amount = 0;
 
 		if (showOptions.showGErewards) {
-			showRewards(reward);
+			showReward(reward);
 		}
 
 		/*openChest */ 
@@ -1073,17 +1073,36 @@ else if (msg.requestClass == "BoostService") {
 										/*rewardPlunder */ 
 	} 
 }
-else if (msg.requestClass == "RewardService" && msg.requestMethod == "collectReward") {
+else if (msg.requestClass == "RewardService") {
 	/*collectReward */
 	//console.debug('cityentity_id:', msg.responseData.cityentity_id);
-	if (msg.responseData.length) {
-		var reward = msg.responseData[0][0];
-		reward.source = msg.responseData[1];
-		console.debug(msg.responseData[1], reward);
-		if (showOptions.showGBGrewards) {
-			showRewards(reward);
+	if (msg.requestMethod == "collectReward") {
+		/**/
+		if (msg.responseData.length) {
+			var reward = msg.responseData[0][0];
+			reward.source = msg.responseData[1];
+			console.debug(msg.responseData[1], reward);
+			if (showOptions.showGBGrewards) {
+				showReward(reward);
+			}
 		}
 	}
+	else if (msg.requestMethod == "collectRewardSet") {
+		/**/
+		if (msg.responseData.hasOwnProperty('reward') && msg.responseData.reward.rewards.length) {
+			var rewards = msg.responseData.reward.rewards;
+			rewards.source = msg.responseData.context;
+			console.debug(rewards);
+			if (showOptions.showRewards) {
+				showRewards(rewards);
+			}
+		}
+	}
+	else if (msg.requestMethod == "") {
+		/**/
+	}
+	else
+		console.debug('RewardService', msg);
 } 
 else if (msg.requestClass == "CityProductionService" && msg.requestMethod == "pickupProduction") {
 	/*pickupProduction */
@@ -1123,7 +1142,7 @@ else if (msg.requestClass == "BlueprintService" && msg.requestMethod == "newRewa
 									// 	reward.source = msg.responseData[1];
 									// 	console.debug(msg.responseData[1], reward);
 									// 	if (showOptions.showGBGrewards) {
-									// 		showRewards(reward);
+									// 		showReward(reward);
 									// 	}
 									// }
 
@@ -1224,6 +1243,10 @@ else if (msg.requestClass == "ClanBattleService") {
 		/* GvG Siege*/
 		deploySiegeArmy(msg);
 	} 
+	else if (msg.requestMethod == "grantIndependence") {
+		/* GvG grant freedom to sector*/
+		grantIndependence(msg);
+	} 
 }
 else if (msg.requestClass == "GuildExpeditionService") {
 	if (msg.requestMethod == "getOverview") {
@@ -1249,7 +1272,7 @@ else if (msg.requestClass == "GuildExpeditionService") {
 		rewardsGE[name] += qty;
 		console.debug(reward);
 		if (showOptions.showGErewards) {
-			showRewards(reward);
+			showReward(reward);
 		}
 		console.debug('rewardsGE:', rewardsGE, reward);
 	} 
@@ -1659,6 +1682,19 @@ else if (msg.requestClass == "ClanService") {
 	
 	} 
 }            
+else if (msg.requestClass == "AutoAidService") {
+	// Auto Aid
+	console.debug('AutoAidService', msg);
+	if (msg.requestMethod == "collect") {
+		/**/
+		console.debug('AutoAidService', msg.responseData.id,msg.responseData.totalPeers);
+	}
+	else if (msg.requestMethod == "") {
+		/**/
+	}
+	else
+		console.debug('AutoAidService', msg);
+}
 else
 {
 									//output.innerHTML += `<div>*** ${msg.requestClass}</div>`;
@@ -1677,6 +1713,7 @@ else
 				|| msg.__class__ == 'InfoScreen'
 				|| msg.type == 'off_grid')) {
 			// ignore these
+			console.debug(msg.name, msg);
 		}
 		else if (msg.__class__ && msg.__class__.substring(0, 10) == 'CityEntity') {
 			if (!CityEntityDefs[msg.id]) {
@@ -1710,7 +1747,7 @@ else
 		}
 		else if (msg.__class__ && msg.__class__ == 'CastleSystemLevelMetadata') {
 			CastleDefs.push(msg);
-			// console.debug(`CastleSystemLevelMetadata`, msg,CastleDefs);
+			console.debug(`CastleSystemLevelMetadata`, msg,CastleDefs);
 		}
 		else if (msg.__class__ && msg.__class__ == 'SelectionKitMetadata') {
 			SelectionKitDefs.push(msg);
@@ -2126,7 +2163,7 @@ export function initTreasury(resources){
 
 }
 
-export function showRewards(reward){
+export function showReward(reward){
 	var rewardId = 'collectRewardText';
 	var rewardTitle = '';
 	// var rewards = [];
@@ -2215,6 +2252,109 @@ export function showRewards(reward){
 		});
 		text += '</p>';
 	}
+
+	cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
+	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseRewards ? 'plus' : 'dash'}-circle"/></svg>
+	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<div id="rewardsText" class="overflow resize collapse ${collapse.collapseRewards ? '' : 'show'}">${text}</div></div>`;
+	rewardObserve();
+	document.getElementById("rewardsTextLabel").addEventListener("click", collapse.fCollapseRewards);
+}
+
+export function showRewards(rewards){
+	var rewardTitle = '';
+	// var rewards = [];
+
+	rewards.forEach(reward => {
+		var name = helper.fRewardShortName(reward.name);
+		var qty = reward.amount;
+		if(reward.source == 'autoAid'){
+			rewardTitle = 'City ';
+			if(reward.type == 'resource'){
+				console.debug('autoAid:resource', reward.subType,qty,reward);
+				if(rewardsCity[reward.subType])
+					rewardsCity[reward.subType] += qty;
+				else
+					rewardsCity[reward.subType] = qty;
+			}
+			else if(reward.type == 'blueprint'){
+				console.debug('autoAid:resource', helper.fGBsname(reward.subType) + " " + name,qty,reward);
+				if(rewardsCity[helper.fGBsname(reward.subType) + " " + name])
+					rewardsCity[helper.fGBsname(reward.subType) + " " + name] += qty;
+				else
+					rewardsCity[helper.fGBsname(reward.subType) + " " + name] = qty;			
+			}
+			else{				
+				if(rewardsCity[reward.subType])
+					rewardsCity[reward.subType] += qty;
+				else
+					rewardsCity[reward.subType] = qty;
+			}
+
+			console.debug('autoAid:', rewardsCity,reward);
+			// rewards = rewardsGE;
+		}
+		else {
+			rewardTitle = 'Other ';
+			if(reward.type == 'resource')
+				name = helper.fResourceShortName(reward.subType);
+			if(!rewardsGeneric[name]) 
+				rewardsGeneric[name] = 0;
+			rewardsGeneric[name] += qty;
+			console.debug('rewardsGeneric:', rewardsGeneric,reward);
+			// rewards = rewardsGeneric;
+		}
+		var text = '';
+		if(Object.keys(rewardsGE).length){	
+			text += '<p><em>GE</em><br>';
+			Object.keys(rewardsGE).forEach(item => {
+				console.debug(item);
+				text += `${rewardsGE[item]} ${item}<br>`;
+			});
+			text += '</p>';
+		}
+		if(Object.keys(rewardsGBG).length){
+			text += '<p><em>GBG</em><br>';
+			Object.keys(rewardsGBG).forEach(item => {
+				console.debug(item);
+				text += `${rewardsGBG[item]} ${item}<br>`;
+			});
+			text += '</p>';
+		}
+		if(Object.keys(rewardsGeneric).length){
+			text += '<p><em>Event/City</em><br>';
+			Object.keys(rewardsGeneric).forEach(item => {
+				console.debug(item);
+				text += `${rewardsGeneric[item]} ${item}<br>`;
+			});
+			text += '</p>';
+		}
+		if(Object.keys(rewardsOtherPlayer).length){
+			text += '<p><em>Aid/Plunder</em><br>';
+			Object.keys(rewardsOtherPlayer).forEach(item => {
+				console.debug(item);
+				text += `${rewardsOtherPlayer[item]} ${item}<br>`;
+			});
+			text += '</p>';
+		}
+		if(Object.keys(rewardsCity).length){
+			text += '<p><em>City</em><br>';
+			Object.keys(rewardsCity).forEach(item => {
+				console.debug(item);
+				text += `${rewardsCity[item]} ${item}<br>`;
+			});
+			text += '</p>';
+		}
+		if(Object.keys(rewardsArmy).length){
+			text += '<p><em>Army</em><br>';
+			Object.keys(rewardsArmy).forEach(item => {
+				console.debug(item);
+				text += `${rewardsArmy[item]} ${item}<br>`;
+			});
+			text += '</p>';
+		}		
+	});
 
 	cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
 	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseRewards ? 'plus' : 'dash'}-circle"/></svg>
