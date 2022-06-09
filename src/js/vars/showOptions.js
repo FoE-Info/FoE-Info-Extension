@@ -19,11 +19,11 @@
 	export var showArmy = true;
 	export var showGoods = false;
 	export var showLeaderboard = false;
-	export var showGBGrewards = false;
+	export var showGBGrewards = true;
 	export var GBGprovinceTime = true;
 	export var GBGshowSC = true;
-	export var showGErewards = false;
-	export var showRewards = false;
+	export var showGErewards = true;
+	export var showRewards = true;
 	export var showLogs = false; 
 	export var showContributions = false; 
 	export var showGuildPosition  = false;
