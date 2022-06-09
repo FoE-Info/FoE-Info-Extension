@@ -43,9 +43,9 @@ export function getContinent(msg){
 		gvgContainer = document.createElement('div');
 		gvgContainer.id="gvgInfo";
 		gvgContainer.className="alert alert-success alert-dismissible show collapsed";
-		gvgContainer.innerHTML = `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
-        </button><p id="gvgInfoTextLabel" href="#gvgInfoText" data-toggle="collapse">
-        <svg class="bi header-icon" id="gvgInfoIcon" href="#gvgInfoText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGVGinfo ? 'plus' : 'dash'}-circle"/></svg>
+		gvgContainer.innerHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <p id="gvgInfoTextLabel" href="#gvgInfoText" data-bs-toggle="collapse">
+        <svg class="bi header-icon" id="gvgInfoIcon" href="#gvgInfoText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGVGinfo ? 'plus' : 'dash'}-circle"/></svg>
         <strong><span data-i18n="summary">GvG Summary</span>:</strong></p>`;
 		gvg.appendChild(gvgContainer);
 		gvgSummary = document.createElement('div');
@@ -124,7 +124,7 @@ export function getContinent(msg){
 
 export function getProvinceDetailed(msg){
 	// if(!clanHTML){
-		// clanHTML = `<div id="gvgTitle" class="alert alert-success alert-dismissible show collapsed" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><p id="gvgTextLabel" href="#gvgText" data-toggle="collapse"><svg class="bi alert-warning" id="citystatsicon" href="#citystatsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg><strong>GvG Power:</strong></p>`;
+		// clanHTML = `<div id="gvgTitle" class="alert alert-success alert-dismissible show collapsed" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><p id="gvgTextLabel" href="#gvgText" data-bs-toggle="collapse"><svg class="bi alert-warning" id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg><strong>GvG Power:</strong></p>`;
 	// }
 // var clanHTML = `<p class="alert-success">`;
 	// console.debug(msg.responseData);
@@ -214,8 +214,8 @@ export function getProvinceDetailed(msg){
             // else
             Object.keys(gvgPower).forEach(age => {
                 if(age == map.era)
-                    clanHTML += `<br><span id="gvgTextLabel" href="#gvgText" data-toggle="collapse">
-                    <svg class="bi header-icon" id="gvgicon" href="#gvgText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGVG ? 'plus' : 'dash'}-circle"/></svg>
+                    clanHTML += `<br><span id="gvgTextLabel" href="#gvgText" data-bs-toggle="collapse">
+                    <svg class="bi header-icon" id="gvgicon" href="#gvgText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGVG ? 'plus' : 'dash'}-circle"/></svg>
                     <strong>${fGVGagesname(map.era)}</strong>:</span> ${gvgPower[age]}`;
                 else
                     clanHTML += `<br>${fGVGagesname(age)}: ${gvgPower[age]}`;

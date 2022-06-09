@@ -313,7 +313,7 @@ export function postPlayerToSS(visitData) {
 	var googleSheetAPI = url.sheetGuildURL;
 		
 	alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		<p id="alertText"><strong>Posting Guild Stats to SS ... </strong><br>${visitData[0].Name}</p></div>`;
 
 	var reqData = {
@@ -332,7 +332,7 @@ export function postPlayerToSS(visitData) {
 			console.debug(oReq.responseText);
 			try{
 				alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				<p id="alertText"><strong>Guild Stats: </strong><br>${JSON.parse(oReq.responseText).result}
 				</p></div>`;
 			}
