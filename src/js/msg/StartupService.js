@@ -21,6 +21,7 @@ import "@wikimedia/jquery.i18n/src/jquery.i18n.language.js";
 import BigNumber from "bignumber.js";
 
 // import 'bootstrap';
+import { Tooltip, Alert, Popover } from 'bootstrap';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 
 
@@ -516,10 +517,10 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
 
     if(showOptions.collectionTimes){
         buildingsReady.sort(function(a, b){return a.ready - b.ready});
-        var buildingsHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="buildingsTextLabel" href="#buildingsText" data-toggle="collapse">
-        <svg class="bi header-icon" id="buildingsicon" href="#buildingsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBuildings ? 'plus' : 'dash'}-circle"/></svg>
+        var buildingsHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="buildingsTextLabel" href="#buildingsText" data-bs-toggle="collapse">
+        <svg class="bi header-icon" id="buildingsicon" href="#buildingsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBuildings ? 'plus' : 'dash'}-circle"/></svg>
         <strong><span data-i18n="collection">Building Collection Times</span>:</strong></p>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
         buildingsHTML += `<div id="buildingsText" class="resize collapse ${collapse.collapseBuildings ? '' : 'show'}">`;
         buildingsReady.forEach( (entry,id) => {
             var timer = new Date(entry.ready * 1000);
@@ -603,27 +604,27 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
     });
     // console.debug('tooltipHTML.goods',tooltipHTML.goods);
 
-    // if(Goods.sav) goodsHTML += `<span data-toggle="tooltip" data-html="true" title="<p>${tooltipHTML.goods['SpaceAgeVenus']}</p>">SAV:${Goods.sav}</span> `;	
-    if(Goods.sajm) goodsHTML += `<span id="sajm" data-html="true" title="${fGoodsText('sajm',tooltipHTML.goods)}">SAJM:${Goods.sajm}</span> `;	
-    if(Goods.sav) goodsHTML += `<span id="sav" data-html="true" title="${fGoodsText('sav',tooltipHTML.goods)}">SAV:${Goods.sav}</span> `;	
-    if(Goods.saab) goodsHTML += `<span id="saab" data-html="true" title="${fGoodsText('saab',tooltipHTML.goods)}">SAAB:${Goods.saab}</span> `;	
-    if(Goods.sam) goodsHTML += `<span id="sam" data-html="true" title="${fGoodsText('sam',tooltipHTML.goods)}">SAM:${Goods.sam}</span> `;	
-    if(Goods.vf) goodsHTML += `<span id="vf" data-html="true" title="${fGoodsText('vf',tooltipHTML.goods)}">VF:${Goods.vf}</span> `;	
-    if(Goods.of) goodsHTML += `<span id="of" data-html="true" title="${fGoodsText('of',tooltipHTML.goods)}">OF:${Goods.of}</span> `;	
-    if(Goods.af) goodsHTML += `<span id="af" data-html="true" title="${fGoodsText('af',tooltipHTML.goods)}">AF:${Goods.af}</span> `;	
-    if(Goods.tf) goodsHTML += `<span id="tf" data-html="true" title="${fGoodsText('tf',tooltipHTML.goods)}">FE:${Goods.tf}</span> `;	
-    if(Goods.te) goodsHTML += `<span id="te" data-html="true" title="${fGoodsText('te',tooltipHTML.goods)}">TE:${Goods.te}</span> `;	
-    if(Goods.ce) goodsHTML += `<span id="ce" data-html="true" title="${fGoodsText('ce',tooltipHTML.goods)}">CE:${Goods.ce}</span> `;	
-    if(Goods.pme) goodsHTML += `<span id="pme" data-html="true" title="${fGoodsText('pme',tooltipHTML.goods)}">PME:${Goods.pme}</span> `;	
-    if(Goods.me) goodsHTML += `<span id="me" data-html="true" title="${fGoodsText('me',tooltipHTML.goods)}">ME:${Goods.me}</span> `;	
-    if(Goods.pe) goodsHTML += `<span id="pe" data-html="true" title="${fGoodsText('pe',tooltipHTML.goods)}">PE:${Goods.pe}</span> `;	
-    if(Goods.ina) goodsHTML += `<span id="ina" data-html="true" title="${fGoodsText('ina',tooltipHTML.goods)}">IndA:${Goods.ina}</span> `;	
-    if(Goods.cma) goodsHTML += `<span id="cma" data-html="true" title="${fGoodsText('ca',tooltipHTML.goods)}">CA:${Goods.cma}</span> `;	
-    if(Goods.lma) goodsHTML += `<span id="lma" data-html="true" title="${fGoodsText('lma',tooltipHTML.goods)}">LMA:${Goods.lma}</span> `;	
-    if(Goods.hma) goodsHTML += `<span id="hma" data-html="true" title="${fGoodsText('hma',tooltipHTML.goods)}">HMA:${Goods.hma}</span> `;	
-    if(Goods.ema) goodsHTML += `<span id="ema" data-html="true" title="${fGoodsText('ema',tooltipHTML.goods)}">EMA:${Goods.ema}</span> `;	
-    if(Goods.ia) goodsHTML += `<span id="ia" data-html="true" title="${fGoodsText('ia',tooltipHTML.goods)}">IA:${Goods.ia}</span> `;	
-    if(Goods.ba) goodsHTML += `<span id="ba" data-html="true" title="${fGoodsText('ba',tooltipHTML.goods)}">BA:${Goods.ba}</span>`;
+    // if(Goods.sav) goodsHTML += `<span data-bs-toggle="tooltip" title="<p>${tooltipHTML.goods['SpaceAgeVenus']}</p>">SAV:${Goods.sav}</span> `;	
+    if(Goods.sajm) goodsHTML += `<span id="sajm" title="${fGoodsText('sajm',tooltipHTML.goods)}">SAJM:${Goods.sajm}</span> `;	
+    if(Goods.sav) goodsHTML += `<span id="sav" title="${fGoodsText('sav',tooltipHTML.goods)}">SAV:${Goods.sav}</span> `;	
+    if(Goods.saab) goodsHTML += `<span id="saab" title="${fGoodsText('saab',tooltipHTML.goods)}">SAAB:${Goods.saab}</span> `;	
+    if(Goods.sam) goodsHTML += `<span id="sam" title="${fGoodsText('sam',tooltipHTML.goods)}">SAM:${Goods.sam}</span> `;	
+    if(Goods.vf) goodsHTML += `<span id="vf" title="${fGoodsText('vf',tooltipHTML.goods)}">VF:${Goods.vf}</span> `;	
+    if(Goods.of) goodsHTML += `<span id="of" title="${fGoodsText('of',tooltipHTML.goods)}">OF:${Goods.of}</span> `;	
+    if(Goods.af) goodsHTML += `<span id="af" title="${fGoodsText('af',tooltipHTML.goods)}">AF:${Goods.af}</span> `;	
+    if(Goods.tf) goodsHTML += `<span id="tf" title="${fGoodsText('tf',tooltipHTML.goods)}">FE:${Goods.tf}</span> `;	
+    if(Goods.te) goodsHTML += `<span id="te" title="${fGoodsText('te',tooltipHTML.goods)}">TE:${Goods.te}</span> `;	
+    if(Goods.ce) goodsHTML += `<span id="ce" title="${fGoodsText('ce',tooltipHTML.goods)}">CE:${Goods.ce}</span> `;	
+    if(Goods.pme) goodsHTML += `<span id="pme" title="${fGoodsText('pme',tooltipHTML.goods)}">PME:${Goods.pme}</span> `;	
+    if(Goods.me) goodsHTML += `<span id="me" title="${fGoodsText('me',tooltipHTML.goods)}">ME:${Goods.me}</span> `;	
+    if(Goods.pe) goodsHTML += `<span id="pe" title="${fGoodsText('pe',tooltipHTML.goods)}">PE:${Goods.pe}</span> `;	
+    if(Goods.ina) goodsHTML += `<span id="ina" title="${fGoodsText('ina',tooltipHTML.goods)}">IndA:${Goods.ina}</span> `;	
+    if(Goods.cma) goodsHTML += `<span id="cma" title="${fGoodsText('ca',tooltipHTML.goods)}">CA:${Goods.cma}</span> `;	
+    if(Goods.lma) goodsHTML += `<span id="lma" title="${fGoodsText('lma',tooltipHTML.goods)}">LMA:${Goods.lma}</span> `;	
+    if(Goods.hma) goodsHTML += `<span id="hma" title="${fGoodsText('hma',tooltipHTML.goods)}">HMA:${Goods.hma}</span> `;	
+    if(Goods.ema) goodsHTML += `<span id="ema" title="${fGoodsText('ema',tooltipHTML.goods)}">EMA:${Goods.ema}</span> `;	
+    if(Goods.ia) goodsHTML += `<span id="ia" title="${fGoodsText('ia',tooltipHTML.goods)}">IA:${Goods.ia}</span> `;	
+    if(Goods.ba) goodsHTML += `<span id="ba" title="${fGoodsText('ba',tooltipHTML.goods)}">BA:${Goods.ba}</span>`;
     // if(Goods.noage) goodsHTML += `Special:${Goods.noage}`;
         
     // console.debug('Ignored By:',msg.responseData.ignoredByPlayerIds);
@@ -642,25 +643,25 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
         });
     }
     userTooltipHTML += `</p>`;
-    var fpHTML = `<span role="button" id="fp" class="pop" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" data-trigger="focus" title="Daily FP" data-content="${tooltipHTML.fp}"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
-    var userHTML = `<span id="user" data-html="true" class="pop" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" 
-        data-trigger="focus" title="Playing <strong>FoE</strong> since<br>${(new Date(MyInfo.createdAt * 1000)).toLocaleString()}" 
-        data-content='${userTooltipHTML}</p>'><strong>${GameOrigin.toUpperCase()} ${MyInfo.name}</strong></span>`;
-    var clanGoodsHTML = `<span id="clanGoods" data-html="true" class="pop" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" data-trigger="focus" title="Guild Goods" data-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
-    var totalGoodsHTML = `<span id="goods" data-html="true" class="pop" data-container="body" data-html="true" data-toggle="popover" data-placement="bottom" data-trigger="focus" title="Daily Goods" data-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
+    var fpHTML = `<span tabindex="0" id="fp" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${tooltipHTML.fp}"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
+    var userHTML = `<span tabindex="0" id="user" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
+        title="Playing <strong>FoE</strong> since<br>${(new Date(MyInfo.createdAt * 1000)).toLocaleString()}" 
+        data-bs-content='${userTooltipHTML}</p>'><strong>${GameOrigin.toUpperCase()} ${MyInfo.name}</strong></span>`;
+    var clanGoodsHTML = `<span tabindex="0" id="clanGoods" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
+    var totalGoodsHTML = `<span tabindex="0" id="goods" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
-    citystatsHTML = `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <button type="button" class="badge badge-pill badge-warning float-right right-button" id="citystatsCopyID" style="display: ${collapse.collapseStats ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button>
-    <p href="#citystatsText" data-toggle="collapse" id="citystatsLabel"><svg class="bi header-icon" id="citystatsicon" href="#citystatsText" 
-    data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg>`;
+    citystatsHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <button type="button" class="badge rounded-pill bg-warning float-end right-button" id="citystatsCopyID" style="display: ${collapse.collapseStats ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button>
+    <p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel"><svg class="bi header-icon" id="citystatsicon" href="#citystatsText" 
+    data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg>`;
     citystatsHTML += userHTML;
     citystatsHTML += `<div id="citystatsText" class="collapse ${collapse.collapseStats ? '' : 'show'}"><div>`;
     // citystatsHTML += `<p id="citystatsText"><br>`;
     if(City.ForgePoints)
         citystatsHTML += `<p>${fpHTML}, ${City.Coins > 1000000 ? Math.floor(City.Coins * (1 + City.CoinBoost/100)/1000000) + 'M' : Math.floor(City.Coins * (1 + City.CoinBoost/100))} <span data-i18n="coins">Coins</span><br>`;
-    // citystatsHTML += `<a href="#" data-toggle="tooltip" data-html="true" title="<p>${tooltipHTML.goods}</p>">Goods:</a> ${Goods.sam}/${Goods.vf}/${Goods.of}/${Goods.af}<br>`;
+    // citystatsHTML += `<a href="#" data-bs-toggle="tooltip" title="<p>${tooltipHTML.goods}</p>">Goods:</a> ${Goods.sam}/${Goods.vf}/${Goods.of}/${Goods.af}<br>`;
     citystatsHTML += `${totalGoodsHTML}<br>`;
-    // citystatsHTML += `<span data-toggle="tooltip" data-html="true" title="<b>bold</b>">Goods: </span>${Goods.sam} SAM / ${Goods.vf} VF / ${Goods.of} OF / ${Goods.af} AF<br>`;
+    // citystatsHTML += `<span data-bs-toggle="tooltip" title="<b>bold</b>">Goods: </span>${Goods.sam} SAM / ${Goods.vf} VF / ${Goods.of} OF / ${Goods.af} AF<br>`;
     // <span data-i18n=""></span>
     if(diamonds)
         citystatsHTML += `<span class='green'><span data-i18n="diamonds">Diamonds</span>: ${diamonds}</span><br>`;
@@ -793,7 +794,7 @@ export function boostService(msg){
             }
         }
     // if(showBoosts)
-        // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Boosts:<br>Coins ${CoinBoost}%<br>Supply ${SupplyBoost}%<br>Attacking ${Attack}%/${Defense}%<br>Defending ${CityAttack}%/${CityDefense}%</div>`;
+        // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>Boosts:<br>Coins ${CoinBoost}%<br>Supply ${SupplyBoost}%<br>Attacking ${Attack}%/${Defense}%<br>Defending ${CityAttack}%/${CityDefense}%</div>`;
     //console.debug('CoinBoost:', CoinBoost);
     //console.debug('Attack:', Attack);
     //console.debug('CityDefense:', CityDefense);
@@ -847,7 +848,7 @@ export function boostServiceAllBoosts(msg){
                 
         }
     // if(showBoosts)
-        // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Boosts:<p>Coins ${CoinBoost}%</p><p>Attack ${Attack}%</p><p>Defense ${Defense}%</p></div>`;
+        // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>Boosts:<p>Coins ${CoinBoost}%</p><p>Attack ${Attack}%</p><p>Defense ${Defense}%</p></div>`;
     // console.debug('CoinBoost:', CoinBoost);
     // console.debug('Attack:', Attack);
     // console.debug('CityDefense:', CityDefense);
@@ -964,30 +965,54 @@ function showTooltips(){
     //     });
 
     for (var age = 0; age < Ages.length; age++) {
-            if(document.getElementById(Ages[age]))
-                $('#'+Ages[age]).tooltip({
-                    content: function(){
-                        var element = $( this );
-                        return element.attr('title')
-                    },
-                    delay: { "show": 200, "hide": 500 }
-                });
+        const tip = document.getElementById(Ages[age]);
+        if(tip){
+            const options = {
+                html: true,
+                delay: { "show": 200, "hide": 2000 }
+            };
+            const tooltip = new Tooltip(tip, options);
         }
+    }
+    
+            // $('#'+Ages[age]).tooltip({
+            //         content: function(){
+            //             var element = $( this );
+            //             return element.attr('title')
+            //         },
+            //         delay: { "show": 200, "hide": 500 }
+            //     });
 
-        $('#user').tooltip({
-            content: function(){
-                var element = $( this );
-                return element.attr('title')
-            },
-            delay: { "show": 500, "hide": 500 }
-        });
+        // const user = document.getElementById('user');
+        // if(user){
+        //     const options = {
+        //         html: true,
+        //         delay: { "show": 500, "hide": 2000 }
+        //     };
+        //     const tooltip = new Tooltip(user, options);
+        // }
 
-        $(".pop").popover({ 
-            trigger: "hover", 
-            html: true, 
-            animation:true,
-            delay: { "show": 500, "hide": 500 }
-        });
+        // $('#user').tooltip({
+        //     content: function(){
+        //         var element = $( this );
+        //         return element.attr('title')
+        //     },
+        //     delay: { "show": 500, "hide": 500 }
+        // });
+
+        const options = {
+            html: true,
+            // delay: { "show": 500, "hide": 2000 }
+        };
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl,options));
+
+        // $(".pop").popover({ 
+        //     trigger: "hover", 
+        //     html: true, 
+        //     animation:true,
+        //     delay: { "show": 500, "hide": 500 }
+        // });
 
 
         // $('#fp').popover({
@@ -1028,7 +1053,7 @@ function showTooltips(){
 function fGoodsText(age,tooltipHTML){
     // console.debug(age,good);
         
-        // var text = `<span data-toggle="tooltip" data-html="true" title="<p>`;
+        // var text = `<span data-bs-toggle="tooltip" title="<p>`;
         if (age == "ba"){
             return`<p>`+ tooltipHTML["BronzeAge"] + `</p>`;
         } 
@@ -1100,10 +1125,10 @@ export function updateGalaxy(id){
 export function showGalaxy(){
     Galaxy.bonus.sort(function(a, b){return b.fp - a.fp});
     console.debug('showGalaxy',Galaxy);
-    Galaxy.html = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="galaxyTextLabel" href="#galaxyText" data-toggle="collapse">
-    <svg class="bi header-icon" id="galaxyicon" href="#galaxyText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGalaxy ? 'plus' : 'dash'}-circle"/></svg>
+    Galaxy.html = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="galaxyTextLabel" href="#galaxyText" data-bs-toggle="collapse">
+    <svg class="bi header-icon" id="galaxyicon" href="#galaxyText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGalaxy ? 'plus' : 'dash'}-circle"/></svg>
     <strong>Galaxy Double Collection:</strong></p>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
     Galaxy.html += `<div id="galaxyText" class="resize  collapse ${collapse.collapseGalaxy == false ? 'show' : ''}">`;
     Galaxy.html += `<p>Tries Remaining: <span id='galaxyID'>${Galaxy.amount}</span></p><p>`; 
     Galaxy.bonus.forEach( (entry,id) => {
