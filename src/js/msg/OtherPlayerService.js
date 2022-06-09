@@ -11,7 +11,8 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import $ from "jquery";
+// import $ from "jquery";
+import { Tooltip, Alert, Popover } from 'bootstrap';
 import "@wikimedia/jquery.i18n/libs/CLDRPluralRuleParser/src/CLDRPluralRuleParser.js"
 import "@wikimedia/jquery.i18n/src/jquery.i18n";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.messagestore.js";
@@ -576,11 +577,11 @@ if(msg.responseData.city_map.entities.length) {
 	
 	// if (users.checkGC())
 	visitstatsHTML = `<div  role="alert">
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<p href="#visitstatsText" data-toggle="collapse"><a href="https://foe.scoredb.io/${GameOrigin}/Player/${PlayerID}" target="_blank"><strong>${PlayerName}</strong></a> (${player.clan && player.clan.name ? player.clan.name : 'NO GUILD'})</p>`;
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	<p href="#visitstatsText" data-bs-toggle="collapse"><a href="https://foe.scoredb.io/${GameOrigin}/Player/${PlayerID}" target="_blank"><strong>${PlayerName}</strong></a> (${player.clan && player.clan.name ? player.clan.name : 'NO GUILD'})</p>`;
 
 	if(googleSheetAPI && MyInfo.guild == player.clan.name) {
-		visitstatsHTML += `<button type="button" class="badge badge-pill badge-dark right-button" id="guildPostID">Guild</button>`;
+		visitstatsHTML += `<button type="button" class="badge rounded-pill bg-dark right-button" id="guildPostID">Guild</button>`;
 	}
 
 	
@@ -679,7 +680,7 @@ if(msg.responseData.city_map.entities.length) {
 	visitstatsHTML += `<span data-i18n="attackers">Attackers</span>: ${visitAttack}% Att, ${visitDefense}% Def<br>`;
 	visitstatsHTML += `<span data-i18n="defenders">Defenders</span>: ${visitCityAttack}% Att, ${visitCityDefense}% Def<br>`;
 	if(clanGoods)
-		visitstatsHTML += `<span id="guildgoods" data-html="true" title="${clanGoodsHTML}" data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}<br>`;
+		visitstatsHTML += `<span id="guildgoods" title="${clanGoodsHTML}" data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}<br>`;
 	if(clanBuildings)
 		visitstatsHTML += `<span data-i18n="guildpower">Guild Power</span>: ${clanPower} ${clanSOHcount ? clanSOHcount + ` <span data-i18n="soh">SoH/TGE</span>` : ''}  ${clanHOFcount ? clanHOFcount + ` <span data-i18n="hof">HoF</span>` : ''}  <br>`;
 	// if(clanHOFcount)
@@ -701,15 +702,18 @@ if(msg.responseData.city_map.entities.length) {
 		visitstats.className = "alert alert-dark alert-dismissible show collapsed";
 		// console.debug('clanGoodsHTML',clanGoodsHTML);
 		$('body').i18n();
-		$('#guildgoods').tooltip({
-			content: function(){
-				var element = $( this );
-				return element.attr('title')
-			}
-		});
+
+        const guildgoods = document.getElementById('guildgoods');
+        if(guildgoods){
+            const options = {
+                html: true,
+                delay: { "show": 200, "hide": 500 }
+            };
+            const tooltip = new Tooltip(guildgoods, options);
+        }
 
 		if(DEV && checkDebug()){
-			beta.innerHTML = `<div><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><h6>BETA</h6><div class='overflow'>` + visitbetafp + visitbetaad + visitbetagoods + visitbetapower + '</div></div>';
+			beta.innerHTML = `<div><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><h6>BETA</h6><div class='overflow'>` + visitbetafp + visitbetaad + visitbetagoods + visitbetapower + '</div></div>';
 			beta.className = 'alert alert-dismissible alert-success';
 		}
 
@@ -781,8 +785,8 @@ export function otherPlayerServiceUpdateActions(msg){
 			// else 
 				// title = '???';
 				// console.debug(title,friends);
-				// <svg id="friendsicon" href="#friendsText" data-toggle="collapse" class="alert-success bi header-icon" width="22" height="10">
-				// <svg id="friendsicon" href="#friendsText" data-toggle="collapse" class="bi bi-tools text-success" width="22" height="10" xmlns="http://www.w3.org/2000/svg">
+				// <svg id="friendsicon" href="#friendsText" data-bs-toggle="collapse" class="alert-success bi header-icon" width="22" height="10">
+				// <svg id="friendsicon" href="#friendsText" data-bs-toggle="collapse" class="bi bi-tools text-success" width="22" height="10" xmlns="http://www.w3.org/2000/svg">
 				//     <img href="${!collapse.collapseFriends ? dash : plus}" width="22" height="10"></img>
 				// </svg>
 				// <svg width="22" height="10"><img class="bi header-icon" src="${!collapse.collapseFriends ? dash : plus}"></svg>
@@ -792,39 +796,39 @@ export function otherPlayerServiceUpdateActions(msg){
 			
 			if(showOptions.showGuild || showOptions.showHood || showOptions.showFriends)
 			{
-				friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="listTextLabel" href="#listsText" data-toggle="collapse">
-				<svg class="bi header-icon" id="listsicon" href="#listsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseLists ? 'plus' : 'dash'}-circle"/></svg>
+				friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="listTextLabel" href="#listsText" data-bs-toggle="collapse">
+				<svg class="bi header-icon" id="listsicon" href="#listsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseLists ? 'plus' : 'dash'}-circle"/></svg>
 				<strong>Lists:</strong></p>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				<div id="listsText" class="collapse ${collapse.collapseLists ? '' : 'show'} resize">`;
 				
 				if(showOptions.showFriends)
 				{				
 					console.debug(collapse.collapseFriends);
-					friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="friendsTextLabel" href="#friendsText" data-toggle="collapse">
-					<svg class="bi header-icon" id="friendsicon" href="#friendsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseFriends ? 'plus' : 'dash'}-circle"/></svg>
+					friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="friendsTextLabel" href="#friendsText" data-bs-toggle="collapse">
+					<svg class="bi header-icon" id="friendsicon" href="#friendsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseFriends ? 'plus' : 'dash'}-circle"/></svg>
 					<strong>Friends</strong></p>`;
-					friendsHTML += `<div id="friendsCopy"><button type="button" class="badge badge-pill badge-success right-button" id="friendsCopyID" style="display: ${collapse.collapseFriends ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button></div>`;
+					friendsHTML += `<div id="friendsCopy"><button type="button" class="badge rounded-pill bg-success right-button" id="friendsCopyID" style="display: ${collapse.collapseFriends ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button></div>`;
 					friendsHTML += `<div id="friendsText" class="collapse ${collapse.collapseFriends ? '' : 'show'}"><table id="friendsText2">`;
 					friendsHTML += getFriendsHTML(friends);
 					friendsHTML += `</table></div></div>`;
 				}
 				if(showOptions.showGuild)
 				{				
-					friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="guildTextLabel" href="#guildText" data-toggle="collapse">
-					<svg class="bi header-icon" id="guildicon" href="#guildText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGuild ? 'plus' : 'dash'}-circle"/></svg>
+					friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="guildTextLabel" href="#guildText" data-bs-toggle="collapse">
+					<svg class="bi header-icon" id="guildicon" href="#guildText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGuild ? 'plus' : 'dash'}-circle"/></svg>
 					<strong>Guild</strong></p>`;
-					friendsHTML += `<div id="guildCopy"><button type="button" class="badge badge-pill badge-success right-button" id="guildCopyID" style="display: ${collapse.collapseGuild ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button></div>`;
+					friendsHTML += `<div id="guildCopy"><button type="button" class="badge rounded-pill bg-success right-button" id="guildCopyID" style="display: ${collapse.collapseGuild ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button></div>`;
 					friendsHTML += `<div id="guildText" class="collapse ${collapse.collapseGuild ? '' : 'show'}"><table id="guildText2">`;
 					friendsHTML += getFriendsHTML(guildMembers);
 					friendsHTML += `</table></div></div>`;
 				}
 				if(showOptions.showHood)
 				{
-					friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="hoodTextLabel" href="#hoodText" data-toggle="collapse">
-					<svg class="bi header-icon" id="hoodicon" href="#hoodText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseHood ? 'plus' : 'dash'}-circle"/></svg>
+					friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="hoodTextLabel" href="#hoodText" data-bs-toggle="collapse">
+					<svg class="bi header-icon" id="hoodicon" href="#hoodText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseHood ? 'plus' : 'dash'}-circle"/></svg>
 					<strong>Hood</strong></p>
-					<div id="hoodCopy"><button type="button" class="badge badge-pill badge-success right-button" id="hoodCopyID" style="display: ${collapse.collapseHood ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button></div>`;
+					<div id="hoodCopy"><button type="button" class="badge rounded-pill bg-success right-button" id="hoodCopyID" style="display: ${collapse.collapseHood ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button></div>`;
 					friendsHTML += `<div id="hoodText" class="collapse ${collapse.collapseHood ? '' : 'show'}"><table id="hoodText2">`;
 				friendsHTML += getFriendsHTML(hoodlist);
 				friendsHTML += `</table></div></div></div></div>`;
