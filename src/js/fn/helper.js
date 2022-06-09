@@ -11,8 +11,9 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import $ from "jquery";
-import 'bootstrap';
+// import $ from "jquery";
+import { Tooltip } from 'bootstrap';
+// import 'bootstrap';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 // import crypto  from 'crypto';
 import { CityEntityDefs, donationDIV, GameOrigin, Goods, hiddenRewards, incidents, url } from '../index.js';
@@ -901,10 +902,10 @@ export function fShowIncidents(){
 			tooltipHTML = `<p><strong>Available Now:</strong><br>${textCurrent}</p>${textComing != '' ? '<p><strong>Coming Soon:</strong><br>' + textComing + '</p>' : ''}`;
 			tooltipHTML += '<p><strong>Legend:</strong><br>n/N - Nature<br>s/S - Shore<br>w/W - Water<br>r/R - Road<br> E - Event<br>Capitals = Uncommon/Rare Reward</p>';
             incidents.innerHTML = `<div id="incidentsTip" class="alert alert-light alert-dismissible show collapsed" role="alert">
-            <p id="incidentsTextLabel" href="#incidentsText" data-toggle="collapse">
-			<svg class="bi header-icon" id="incidentsicon" href="#incidentsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseIncidents ? 'plus' : 'dash'}-circle"/></svg>
-			<span id="incidents_tooltip" data-html="true" title="${tooltipHTML}"><strong><span data-i18n="incident">Incidents</span>:</strong></span> ${type}</p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p id="incidentsTextLabel" href="#incidentsText" data-bs-toggle="collapse">
+			<svg class="bi header-icon" id="incidentsicon" href="#incidentsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseIncidents ? 'plus' : 'dash'}-circle"/></svg>
+			<span id="incidents_tooltip" title="${tooltipHTML}"><strong><span data-i18n="incident">Incidents</span>:</strong></span> ${type}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <div id="incidentsText" class="collapse ${collapse.collapseIncidents ? '' : 'show'} alert-light">
             ${tooltipHTML}</div></div>`;
             // outputHTML += '<div id="incidentsText" class="collapse show">';
@@ -916,13 +917,24 @@ export function fShowIncidents(){
             //   });
             document.getElementById("incidentsTextLabel").addEventListener("click", fCollapseIncidents);
             document.getElementById("incidentsTip").addEventListener("onmouseleave", fHideTooltips);
-            $('#incidents_tooltip').tooltip({
-                content: function(){
-                    var element = $( this );
-                    return element.attr('title')
-                },
-				delay: { "show": 200, "hide": 500 }
-            });
+
+			const incidents_tooltip = document.getElementById('incidents_tooltip');
+			if(incidents_tooltip){
+				const options = {
+					html: true,
+					delay: { "show": 200, "hide": 500 }
+				};
+				const tooltip = new Tooltip(incidents_tooltip, options);
+			}
+
+			// $('#incidents_tooltip').tooltip({
+            //     content: function(){
+            //         var element = $( this );
+            //         return element.attr('title')
+            //     },
+			// 	delay: { "show": 200, "hide": 500 }
+            // });
+
         }
         else
         {
@@ -934,7 +946,17 @@ export function fShowIncidents(){
 
 
 export function fHideTooltips(){
-    $('#incidents_tooltip').tooltip('hide');
+    // jQuery('#incidents_tooltip').tooltip('hide');
+	const incidents_tooltip = document.getElementById('incidents_tooltip');
+	if(incidents_tooltip){
+		const tooltip = Tooltip.getOrCreateInstance(incidents_tooltip);
+		
+		// myTooltipEl.addEventListener('hidden.bs.tooltip', () => {
+		//   // do something...
+		// })
+		
+		tooltip.hide();
+	}
 }
 
 export function fshowBattlegroundChanges(){
@@ -950,14 +972,14 @@ export function fshowBattlegroundChanges(){
 export function fshowBattleground(){
     // console.debug(data,BattlegroundPerformance);
     var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
-	<p id="battlegroundTextLabel" href="#battlegroundCollapse" aria-expanded="true" aria-controls="battlegroundText" data-toggle="collapse">
-	<svg class="bi header-icon" id="battlegroundicon" href="#battlegroundCollapse" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBattleground ? 'plus' : 'dash'}-circle"/></svg>
-	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+	<p id="battlegroundTextLabel" href="#battlegroundCollapse" aria-expanded="true" aria-controls="battlegroundText" data-bs-toggle="collapse">
+	<svg class="bi header-icon" id="battlegroundicon" href="#battlegroundCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBattleground ? 'plus' : 'dash'}-circle"/></svg>
+	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
     
     if(url.sheetGuildURL)
-        battlegroundHTML += `<button type="button" class="badge badge-pill badge-info float-right right-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
+        battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
     else
-        battlegroundHTML += `<button type="button" class="badge badge-pill badge-info float-right right-button" id="battlegroundCopyID"><span data-i18n="copy">Copy</span></button>`;
+        battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundCopyID"><span data-i18n="copy">Copy</span></button>`;
 
     battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info overflow collapse ${collapse.collapseBattleground ? '' : 'show'}"><div id="battlegroundText">`;
 

@@ -51,10 +51,10 @@ export function getPlayerResources(msg){
 
         if(showOptions.showGoods){
             var goodsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <button type="button" class="badge badge-pill badge-success right-button" id="goodsCopyID"><span data-i18n="copy">Copy</span></button>
-            <p id="goodsTextLabel" href="#goodsText" data-toggle="collapse">
-            <svg class="bi header-icon" id="goodsicon" href="#goodsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGoods ? 'plus' : 'dash'}-circle"/></svg>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="badge rounded-pill bg-success right-button" id="goodsCopyID"><span data-i18n="copy">Copy</span></button>
+            <p id="goodsTextLabel" href="#goodsText" data-bs-toggle="collapse">
+            <svg class="bi header-icon" id="goodsicon" href="#goodsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGoods ? 'plus' : 'dash'}-circle"/></svg>
             <strong><span data-i18n="inventory">Goods Inventory</span>:</strong></p>`;
             goodsHTML += `<div id="goodsText" style="height: ${toolOptions.goodsSize}px" class="overflow-y collapse ${collapse.collapseGoods ? '' : 'show'}"><table><tr><th>Good</th><th>Qty</th><th>Era</th></tr>`;
             goodsDIV.innerHTML = goodsHTML + goodsText + `</table></div></div>`;

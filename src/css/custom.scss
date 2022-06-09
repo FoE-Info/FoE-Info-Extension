@@ -4,7 +4,7 @@ body {
     /* font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, “Helvetica Neue”, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”; */
     /* default is 1rem or 16px */
     font-size: 0.8em;
-    /* font-weight: 400; */
+    /* fw: 400; */
     line-height: 1.25;
     /* background-color: #000; */
     /* background-color: white; */
@@ -101,7 +101,7 @@ svg {
     border-color: #b388f9;
 }
 
-.badge-indigo {
+.bg-indigo {
     background-color: #8c4cf5;
     color: #e6d9fc;
     border-color: #b388f9;
@@ -122,13 +122,13 @@ svg {
 .green {
     /* color: var(--teal, #007E33); */
     color: #007E33;
-    font-weight: bold;
+    fw: bold;
 }
 
 .red {
     /* color: var(--purple, #CC0000); */
     color: #CC0000;
-    font-weight: bold;
+    fw: bold;
 }
 
 .invest-good {
@@ -147,11 +147,11 @@ svg {
 }
 
 
-/* [data-toggle="collapse"] i:before {
+/* [data-bs-toggle="collapse"] i:before {
     content: "\f146";
 }
 
-[data-toggle="collapse"].collapsed i:before {
+[data-bs-toggle="collapse"].collapsed i:before {
     content: "\f0fe";
 } */
 
@@ -162,8 +162,8 @@ svg {
     padding-bottom: 0.5em;
 }
 
-.alert-dismissible .close {
-    padding: 0rem .25rem 0rem 0em;
+.alert-dismissible .btn-close {
+    padding: 0.6rem 0.6rem;
 }
 
 hr {
@@ -334,7 +334,7 @@ hr {
     //         /* font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, “Helvetica Neue”, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”; */
     //         /* default is 1rem or 16px */
     //         font-size: 16px;
-    //         /* font-weight: 400; */
+    //         /* fw: 400; */
     //         line-height: 1.25;
     //         /* background-color: #000; */
     //     }
@@ -522,7 +522,7 @@ hr {
         
     //     .notice {
     //         color: red;
-    //         font-weight: bold;
+    //         fw: bold;
     //         display: table-cell;
     //         padding: 0px 5px;
     //     }
