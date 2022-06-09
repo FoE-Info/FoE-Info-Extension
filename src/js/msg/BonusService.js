@@ -38,7 +38,7 @@ export function getBonuses(msg){
 
         if(msg.responseData.length > 1 && msg.responseData[2].value){
                 City.ForgePoints += msg.responseData[2].value;
-                beta.innerHTML = `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><p><strong>Town Hall</strong> ${msg.responseData[2].value}FP Total: ${City.ForgePoints}FP</p>`;
+                beta.innerHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><p><strong>Town Hall</strong> ${msg.responseData[2].value}FP Total: ${City.ForgePoints}FP</p>`;
                 beta.className = 'alert alert-dismissible alert-success';
             // console.debug('getBonuses',msg.responseData[2].value,ForgePoints);
         }
@@ -101,10 +101,10 @@ export function getLimitedBonuses(msg){
 		if(bonus.innerHTML == `` && (Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike))
         {
             bonus.innerHTML = `<div id="bonusTip" class="alert alert-light alert-dismissible" role="alert">
-            <p id="bonusTextLabel" href="#bonusText" data-toggle="collapse">
-			<svg class="bi header-icon" id="bonusicon" href="#bonusText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBonus ? 'plus' : 'dash'}-circle"/></svg>
+            <p id="bonusTextLabel" href="#bonusText" data-bs-toggle="collapse">
+			<svg class="bi header-icon" id="bonusicon" href="#bonusText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBonus ? 'plus' : 'dash'}-circle"/></svg>
 			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <div id="bonusText" class="alert-light collapse"><p><strong>Legend:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
         }
         else if(!(Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike))
