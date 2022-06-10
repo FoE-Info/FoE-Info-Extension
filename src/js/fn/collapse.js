@@ -27,7 +27,6 @@ export var collapseStats  = false;
 export var collapseGBInfo  = false;
 export var collapseGBRewards  = false;
 export var collapseGBDonors  = false;
-export var collapseGBclub  = false;
 export var collapseGBinvest  = false;
 export var collapseInvested  = true;
 export var collapseDonation  = false;
@@ -101,9 +100,6 @@ export default function set (key, value) {
 			break;
 		case 'collapseGBDonors':
 			collapseGBDonors = value;
-			break;
-		case 'collapseGBclub':
-			collapseGBclub = value;
 			break;
 		case 'collapseGBinvest':
 			collapseGBinvest = value;
@@ -315,13 +311,6 @@ export function fCollapseGoods(){
 		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGBDonors ? dash : plus}"/>
 		// </svg>`;
 	}
-
-	// export function fCollapseGBclub(){
-	// 	collapseGBclub = !collapseGBclub;
-	// 	storage.set('collapseOptions',collapseOptions);
-	// 	document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGBclub ? dash : plus}"/>
-	// 	</svg>`;
-	// }
 
 	export function fCollapseInvested(){
 		collapseInvested = !collapseInvested;
