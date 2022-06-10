@@ -18,29 +18,28 @@ import * as storage from './storage.js';
 export var collapseFriends = false;
 export var collapseGuild = false;
 export var collapseHood = false;
-export var collapseIncidents = true;
-export var collapseArmy = false;
-export var collapseGoods = true;
-export var collapseGVG = false;
-export var collapseGVGinfo = false;
-export var collapseStats = false;
-export var collapseGBInfo = false;
-export var collapseGBRewards = false;
-export var collapseGBDonors = false;
-export var collapseGBclub = false;
-export var collapseGBinvest = false;
-export var collapseInvested = true;
-export var collapseDonation = false;
-export var collapseBattleground = false;
-export var collapseBuildingCost = true;
-export var collapseExpedition = false;
-export var collapseTreasury = true;
-export var collapseTreasuryLog = true;
-export var collapseGalaxy = false;
-export var collapseTarget = false;
-export var collapseTargetGen = false;
-export var collapseBuildings = false;
-export var collapseLists = false;
+export var collapseIncidents  = true;
+export var collapseArmy  = false;
+export var collapseGoods  = true;
+export var collapseGVG  = false;
+export var collapseGVGinfo  = false;
+export var collapseStats  = false;
+export var collapseGBInfo  = false;
+export var collapseGBRewards  = false;
+export var collapseGBDonors  = false;
+export var collapseGBinvest  = false;
+export var collapseInvested  = true;
+export var collapseDonation  = false;
+export var collapseBattleground  = false;
+export var collapseBuildingCost  = true;
+export var collapseExpedition  = false;
+export var collapseTreasury  = true;
+export var collapseTreasuryLog  = true;
+export var collapseGalaxy  = false;
+export var collapseTarget  = false;
+export var collapseTargetGen  = false;
+export var collapseBuildings  = false;
+export var collapseLists  = false;
 export var collapseRewards = false;
 export var collapseBonus = true;
 export var collapseCultural = true;
@@ -101,9 +100,6 @@ export default function set(key, value) {
 			break;
 		case 'collapseGBDonors':
 			collapseGBDonors = value;
-			break;
-		case 'collapseGBclub':
-			collapseGBclub = value;
 			break;
 		case 'collapseGBinvest':
 			collapseGBinvest = value;
@@ -323,12 +319,12 @@ export function fCollapseGBDonors() {
 // 	</svg>`;
 // }
 
-export function fCollapseInvested() {
-	collapseInvested = !collapseInvested;
-	storage.set('collapseInvested', collapseInvested);
-	if (collapseInvested) {
-		document.getElementById("onHandFP").innerHTML = '';
-	} else
+	export function fCollapseInvested(){
+		collapseInvested = !collapseInvested;
+		storage.set('collapseInvested',collapseInvested);
+		if(collapseInvested){
+			document.getElementById("onHandFP").innerHTML = '';
+		}else
 		document.getElementById("onHandFP").innerHTML = document.getElementById("onHandFP2").innerHTML;
 }
 
