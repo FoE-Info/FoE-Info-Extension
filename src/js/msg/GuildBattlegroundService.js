@@ -11,6 +11,7 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
+import { Tooltip, Alert, Popover } from 'bootstrap';
 import browser from 'webextension-polyfill';
 import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
@@ -196,13 +197,16 @@ export function getBuildings(msg) {
     // console.debug('getBuildings',msg.responseData,map);
 }
 
-export function setSignal(msg) {
+export function setSignal(msg,payload) {
     console.debug('setSignal', msg, signals);
-
+    signals.push({'provinceId':payload[0],'signal':'focus'});
+    checkProvinces();
 }
-export function removeSignal(msg) {
+export function removeSignal(msg,payload) {
     console.debug('removeSignal', msg, signals);
-
+    signals = signals.filter(p => p.provinceId != payload[0]);
+    console.debug(payload,signals);
+    checkProvinces();
 }
 
 
@@ -335,7 +339,7 @@ function checkProvinces() {
                 var campsReady = 0;
                 var campsNotReady = 0;
                 var name = thisdef.name.split(" ");
-                console.debug(thisdef.name, name);
+                console.debug(thisdef.name, name, thisdef);
                 // if(name[0].charAt(1) == '1')
                 //     name[1] = '';
                 // else
@@ -392,8 +396,10 @@ function checkProvinces() {
                 if (province.lockedUntil && showOptions.GBGprovinceTime) {
                     var time = new Date(province.lockedUntil * 1000);
                     text += ` ${timeGBG(time)}`;
-                    if (textProvinceLocked != '') textProvinceLocked += '<br>';
-                    textProvinceLocked += text + campsText + '<br>';
+                    if (textProvinceLocked != '') {
+                        textProvinceLocked += '<br>';
+                    }
+                    textProvinceLocked += text + campsText;
                     // console.debug(province.lockedUntil,time);
                 }
                 else {
@@ -408,17 +414,21 @@ function checkProvinces() {
     if ((textProvinceUnlocked || textProvinceLocked) && (helper.checkGBG || helper.MyGuildPermissions & 64)) {
         // targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID">Post</button>`;
 
-        targetGenerator.innerHTML = targetsHTML + `<div id="targetGenCollapse" class="collapse ${collapse.collapseTargetGen == false ? 'show' : ''}"><p id="targetGenText">` + textProvinceUnlocked + textProvinceLocked + `</p></div>`;
+        targetGenerator.innerHTML = targetsHTML + `<div id="targetGenCollapse" class="collapse 
+            ${collapse.collapseTargetGen == false ? 'show' : ''}"><p id="targetGenText">` + 
+            textProvinceUnlocked + (textProvinceUnlocked != '' ? '<br>' : '') + textProvinceLocked + `</p></div>`;
 
 
         document.getElementById("targetCopyID").addEventListener("click", targetCopy);
         document.getElementById("targetGenLabel").addEventListener("click", collapse.fCollapseTargetGen);
-        $('#siegecamp_tooltip').tooltip({
-            content: function () {
-                var element = $(this);
-                return element.attr('title')
+        const siegecamp_tooltip = document.getElementById('siegecamp_tooltip');
+        if(siegecamp_tooltip){
+            const options = {
+                html: true,
+                delay: { "show": 200, "hide": 500 }
+            };
+            const tooltip = new Tooltip(siegecamp_tooltip, options);
             }
-        });
     }
 }
 
