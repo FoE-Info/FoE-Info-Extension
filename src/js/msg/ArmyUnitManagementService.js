@@ -10,48 +10,48 @@
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
- */import {MilitaryDefs,armyDIV} from '../index.js';
-import {toolOptions,setArmySize} from '../fn/globals.js';
-import {showOptions} from '../vars/showOptions.js';
+ */import { MilitaryDefs, armyDIV } from '../index.js';
+import { toolOptions, setArmySize } from '../fn/globals.js';
+import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 
 var ArmyUnits = [];
 
-export function armyUnitManagementService(msg){
+export function armyUnitManagementService(msg) {
 
-	var armyHTML = ``;
-	var allUnits = 0;
-	var rogues = 0;
+    var armyHTML = ``;
+    var allUnits = 0;
+    var rogues = 0;
 
 
-    if(msg.responseData.counts.length) {
+    if (msg.responseData.counts.length) {
         const army = msg.responseData.counts;
         var armyText = '';
-        for(var j = army.length -1; j >= 0 ; j--) {
+        for (var j = army.length - 1; j >= 0; j--) {
             var units = 0;
             var eraText = helper.fGVGagesname(MilitaryDefs[army[j].unitTypeId].era);
-            if(MilitaryDefs[army[j].unitTypeId].era != 'NoAge' || army[j].unitTypeId == 'rogue'){
-                if(army[j].unattached)
+            if (MilitaryDefs[army[j].unitTypeId].era != 'NoAge' || army[j].unitTypeId == 'rogue') {
+                if (army[j].unattached)
                     units += army[j].unattached;
-                if(army[j].attached)
+                if (army[j].attached)
                     units += army[j].attached;
-                if(army[j].unitTypeId == 'rogue') {
+                if (army[j].unitTypeId == 'rogue') {
                     rogues += units;
-                    if(ArmyUnits[army[j].unitTypeId] == null){
+                    if (ArmyUnits[army[j].unitTypeId] == null) {
                         ArmyUnits[army[j].unitTypeId] = units;
                     }
-                }else{
-                    if(ArmyUnits[army[j].unitTypeId] == null){
+                } else {
+                    if (ArmyUnits[army[j].unitTypeId] == null) {
                         // ArmyUnits.push({'name':entry.player.name});
                         ArmyUnits[army[j].unitTypeId] = units;
                         armyText += `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units}<br>`;
-                    }else{
-                        if(units != ArmyUnits[army[j].unitTypeId]){
+                    } else {
+                        if (units != ArmyUnits[army[j].unitTypeId]) {
                             var diff = units - ArmyUnits[army[j].unitTypeId];
                             armyHTML = `<span class="red">${diff > 0 ? "+" : ""}${diff}</span>`;
-                        }else{
+                        } else {
                             armyHTML = ``;
                         }
                         armyText += `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units} ` + armyHTML + `<br>`;
@@ -63,7 +63,7 @@ export function armyUnitManagementService(msg){
             }
         }
 
-        if(showOptions.showArmy && units){
+        if (showOptions.showArmy && units) {
             var diff = rogues - ArmyUnits["rogue"];
             armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
             <p id="armyTextLabel" href="#armyText" data-bs-toggle="collapse">
@@ -74,7 +74,7 @@ export function armyUnitManagementService(msg){
             armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class="red">${diff > 0 ? "+" : ""}${diff != 0 ? diff : ""}</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
             armyDIV.innerHTML = armyHTML + armyText + `</p></div></div>`;
             document.getElementById("armyTextLabel").addEventListener("click", collapse.fCollapseArmy);
-            const  armyDiv = document.getElementById("armyText");
+            const armyDiv = document.getElementById("armyText");
             const resizeObserver = new ResizeObserver(entries => {
                 for (const entry of entries) {
                     if (entry.contentRect && entry.contentRect.height) setArmySize(entry.contentRect.height);
@@ -87,6 +87,6 @@ export function armyUnitManagementService(msg){
     console.debug(ArmyUnits);
 }
 
-export function clearArmyUnits(){
-	ArmyUnits = [];
+export function clearArmyUnits() {
+    ArmyUnits = [];
 }
