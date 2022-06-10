@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -156,7 +156,7 @@ export default function set (key, value) {
 		case 'collapseClipboard':
 			collapseClipboard = value;
 			break;
-	
+
 		default:
 			console.debug(key, value);
 			break;
@@ -166,7 +166,7 @@ export default function set (key, value) {
 export function fCollapseGBInfo(){
 	collapseGBInfo = !collapseGBInfo;
 	storage.set('collapseGBInfo',collapseGBInfo);
-}				
+}
 
 export function fCollapseFriends(){
 	collapseFriends = !collapseFriends;
@@ -178,12 +178,12 @@ export function fCollapseFriends(){
 	}
 	// console.debug('collapseFriends',collapseFriends);
 	// document.getElementById("friendsicon").outerHTML = `<svg id="friendsicon" href="#friendsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseFriends ? dash : plus}"/></svg>`;
-}				
+}
 
 export function fCollapseLists(){
 	collapseLists = !collapseLists;
 	storage.set('collapseLists',collapseLists);
-}				
+}
 
 export function fCollapseHood(){
 	collapseHood = !collapseHood;
@@ -198,17 +198,17 @@ export function fCollapseHood(){
 	}
 	// console.debug('collapseHood',collapseHood);
 	// document.getElementById("hoodicon").outerHTML = `<svg id="hoodicon" href="#hoodText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseHood ? dash : plus}"/></svg>`;
-}				
+}
 
 export function fCollapseGalaxy(){
 	collapseGalaxy = !collapseGalaxy;
 	storage.set('collapseGalaxy',collapseGalaxy);
-}				
+}
 
 // export function fCollapseGuild(){
 // 	collapseGuild = !collapseGuild;
 // 	storage.set('collapseOptions',collapseOptions);
-// }				
+// }
 
 export function fCollapseGuild(){
 	collapseGuild = !collapseGuild;
@@ -223,7 +223,7 @@ export function fCollapseGuild(){
 	}
 	// console.debug('collapseGuild',collapseGuild);
 	// document.getElementById("guildicon").outerHTML = `<svg id="guildicon" href="#guildText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGuild ? dash : plus}"/></svg>`;
-}				
+}
 
 export function fCollapseIncidents(){
 	collapseIncidents = !collapseIncidents;
@@ -232,20 +232,20 @@ export function fCollapseIncidents(){
 	// console.debug(document.getElementById("incidentsTextLabel").innerHTML);
 	// console.debug(document.getElementById("incidentsicon").outerHTML);
 	storage.set('collapseIncidents',collapseIncidents);
-}				
+}
 
 export function fCollapseGVG(){
 	collapseGVG = !collapseGVG;
 	storage.set('collapseGVG',collapseGVG);
 	// console.debug('fCollapseGVG',collapseOptions);
-}				
+}
 
 export function fCollapseGVGinfo(){
 	// console.debug('fCollapseGVGinfo',collapseGVGinfo,collapseOptions);
 	collapseGVGinfo = !collapseGVGinfo;
 	storage.set('collapseGVGinfo',collapseGVGinfo);
 	// console.debug('fCollapseGVGinfo',collapseGVGinfo,collapseOptions);
-}				
+}
 
 export function fCollapseArmy(){
 	collapseArmy = !collapseArmy;
@@ -255,7 +255,7 @@ export function fCollapseArmy(){
 		document.getElementById("armyUnits").innerHTML = '';
 	}else
 	document.getElementById("armyUnits").innerHTML = document.getElementById("armyUnits2").innerHTML + ' ' + document.getElementById("armyUnits3").innerHTML;
-}				
+}
 
 export function fCollapseGoods(){
 	collapseGoods = !collapseGoods;
@@ -265,8 +265,8 @@ export function fCollapseGoods(){
 		// 	document.getElementById("Goods").innerHTML = '';
 		// }else
 		// 	document.getElementById("Goods").innerHTML = document.getElementById("armyUnits2").innerHTML + ' ' + document.getElementById("armyUnits3").innerHTML;
-	}				
-	
+	}
+
 	export function fCollapseStats(){
 		collapseStats = !collapseStats;
 		// console.debug('collapseStats',collapseStats);
@@ -283,8 +283,8 @@ export function fCollapseGoods(){
 		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseStats ? dash : plus}"/>
 		// </svg>`;
 		storage.set('collapseStats',collapseStats);
-	}				
-	
+	}
+
 	export function fCollapseRewards(){
 		collapseRewards = !collapseRewards;
 		// console.debug('collapseRewards',collapseRewards);
@@ -301,28 +301,28 @@ export function fCollapseGoods(){
 		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseStats ? dash : plus}"/>
 		// </svg>`;
 		storage.set('collapseRewards',collapseRewards);
-	}				
-	
+	}
+
 	export function fCollapseGBRewards(){
 		collapseGBRewards = !collapseGBRewards;
 		storage.set('collapseGBRewards',collapseGBRewards);
-	}				
-	
+	}
+
 	export function fCollapseGBDonors(){
 		collapseGBDonors = !collapseGBDonors;
 		storage.set('collapseGBDonors',collapseGBDonors);
 		document.getElementById("donorCopyID").style.display = `${collapseGBDonors ? 'none' : 'block'}`;
 		// document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGBDonors ? dash : plus}"/>
 		// </svg>`;
-	}				
-	
+	}
+
 	// export function fCollapseGBclub(){
 	// 	collapseGBclub = !collapseGBclub;
 	// 	storage.set('collapseOptions',collapseOptions);
 	// 	document.getElementById("citystatsicon").outerHTML = `<svg id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" class="bi header-icon" width="22" height="10"><use xlink:href="${!collapseGBclub ? dash : plus}"/>
 	// 	</svg>`;
-	// }				
-	
+	// }
+
 	export function fCollapseInvested(){
 		collapseInvested = !collapseInvested;
 		storage.set('collapseInvested',collapseInvested);
@@ -330,54 +330,54 @@ export function fCollapseGoods(){
 			document.getElementById("onHandFP").innerHTML = '';
 		}else
 		document.getElementById("onHandFP").innerHTML = document.getElementById("onHandFP2").innerHTML;
-	}				
-	
+	}
+
 	export function fcollapseGBinvest(){
 		collapseGBinvest = !collapseGBinvest;
 		storage.set('collapseGBinvest',collapseGBinvest);
 		// console.debug('fcollapseGBinvest',collapseOptions);
-	}				
-	
+	}
+
 	export function fCollapseDonation(){
 		collapseDonation = !collapseDonation;
 		storage.set('collapseDonation',collapseDonation);
 		// console.debug('fCollapseDonation',collapseOptions);
-	}				
-	
+	}
+
 	export function fCollapseBattleground(){
 		collapseBattleground = !collapseBattleground;
 		storage.set('collapseBattleground',collapseBattleground);
 		// console.debug('fCollapseBattleground',collapseOptions);
-	}				
-	
+	}
+
 	export function fCollapseBuildingCost(){
 		collapseBuildingCost = !collapseBuildingCost;
 		storage.set('collapseBuildingCost',collapseBuildingCost);
 		// console.debug('collapseBuildingCost',collapseBuildingCost);
-	}				
-	
+	}
+
 	export function fCollapseBuildings(){
 		collapseBuildings = !collapseBuildings;
 		storage.set('collapseBuildings',collapseBuildings);
 		// console.debug('collapseBuildings',collapseBuildings);
-	}				
-	
+	}
+
 	export function fCollapseExpedition(){
 		collapseExpedition = !collapseExpedition;
 		storage.set('collapseExpedition',collapseExpedition);
 		document.getElementById("expeditionCopyID").style.display = `${collapseExpedition ? 'none' : 'block'}`;
-	}				
-	
+	}
+
 	export function fCollapseTreasury(){
 		collapseTreasury = !collapseTreasury;
 		storage.set('collapseTreasury',collapseTreasury);
-	}				
-	
+	}
+
 	export function fCollapseTreasuryLog(){
 		collapseTreasuryLog = !collapseTreasuryLog;
 		storage.set('collapseTreasuryLog',collapseTreasuryLog);
-	}				
-	
+	}
+
 	export function fCollapseTarget(){
 		collapseTarget = !collapseTarget;
 		storage.set('collapseTarget',collapseTarget);
@@ -386,26 +386,26 @@ export function fCollapseGoods(){
 		}else{
 			document.getElementById("targetPostID").style.display = "block";
 		}
-	}				
-	
+	}
+
 	export function fCollapseTargetGen(){
 		collapseTargetGen = !collapseTargetGen;
 		storage.set('collapseTargetGen',collapseTargetGen);
-	}				
-	
-	
+	}
+
+
 	export function fCollapseBonus(){
 		collapseBonus = !collapseBonus;
 		storage.set('collapseBonus',collapseBonus);
-	}				
-	
+	}
+
 	export function fCollapseCultural(){
 		collapseCultural = !collapseCultural;
 		storage.set('collapseCultural',collapseCultural);
-	}				
+	}
 
 	export function fCollapseClipboard(){
 		collapseClipboard = !collapseClipboard;
 		storage.set('collapseClipboard',collapseClipboard);
 		document.getElementById("clipboardCopyID").style.display = `${collapseClipboard ? 'none' : 'block'}`;
-	}				
+	}
