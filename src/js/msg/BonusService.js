@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -60,38 +60,38 @@ export function getLimitedBonuses(msg){
 			if(entry.type == "spoils_of_war"){
 				Bonus.spoils = entry.amount;
 				if(document.getElementById("spoilsID"))
-					document.getElementById("spoilsID").textContent = entry.amount;    
+					document.getElementById("spoilsID").textContent = entry.amount;
 				if(entry.amount) bonusHTML += `Spoils <span id="spoilsID">${Bonus.spoils}</span> `;
 			}
 			else if(entry.type == "diplomatic_gifts"){
 				Bonus.diplomatic = entry.amount;
 				if(document.getElementById("diplomaticID"))
-					document.getElementById("diplomaticID").textContent = entry.amount;    
+					document.getElementById("diplomaticID").textContent = entry.amount;
 				if(entry.amount) bonusHTML += `Dip <span id="diplomaticID">${Bonus.diplomatic}</span> `;
 			}
 			else if(entry.type == "first_strike"){
 				Bonus.strike = entry.amount;
 				if(document.getElementById("firststrikeID"))
-					document.getElementById("firststrikeID").textContent = entry.amount;    
+					document.getElementById("firststrikeID").textContent = entry.amount;
 				if(entry.amount) bonusHTML += `Strike <span id="firststrikeID">${Bonus.strike}</span> `;
 			}
 			else if(entry.type == "aid_goods"){
 				Bonus.aid = entry.amount;
 				if(document.getElementById("aidID"))
-					document.getElementById("aidID").textContent = entry.amount;    
+					document.getElementById("aidID").textContent = entry.amount;
 				if(entry.amount) bonusHTML += `Aid <span id="aidID">${Bonus.aid}</span> `;
 			}
 			else if(entry.type == "double_collection"){
                 Galaxy.amount = entry.amount;
                 showGalaxy();
 				// if(document.getElementById("galaxyID")){
-				// 	document.getElementById("galaxyID").textContent = entry.amount;    
+				// 	document.getElementById("galaxyID").textContent = entry.amount;
 				// 	if(entry.amount) {
-				// 		document.getElementById("galaxyID").textContent = entry.amount; 
+				// 		document.getElementById("galaxyID").textContent = entry.amount;
 				// 		document.getElementById("galaxy").style.display = "block";
 				// 	}
 				// 	else
-				// 		// document.getElementById("galaxy").innerHTML = ''; 
+				// 		// document.getElementById("galaxy").innerHTML = '';
 				// 		// document.getElementById("galaxy").className="hidden";
 				// 		document.getElementById("galaxy").style.display = "none";
 				// }
@@ -114,4 +114,3 @@ export function getLimitedBonuses(msg){
     }
 
 }
-
