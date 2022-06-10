@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -37,7 +37,7 @@ export var GBGdata = [];
 
 export function getPlayerLeaderboard(msg){
 
-	
+
 		BattlegroundPerformance = [];
 		GBGdata = [];
 		// GuildMembers = BattlegroundPerformance;		// save old values
@@ -47,11 +47,11 @@ export function getPlayerLeaderboard(msg){
 			var	wonBattles = 0;
 			if(entry.negotiationsWon) wonNegotiations = entry.negotiationsWon;
 			if(entry.battlesWon) wonBattles = entry.battlesWon;
-			GBGdata.push({'name':entry.player.name,'total':wonNegotiations*2+wonBattles}); 
-			BattlegroundPerformance.push({'name':entry.player.name,'wonNegotiations': wonNegotiations,'wonBattles': wonBattles}); 
+			GBGdata.push({'name':entry.player.name,'total':wonNegotiations*2+wonBattles});
+			BattlegroundPerformance.push({'name':entry.player.name,'wonNegotiations': wonNegotiations,'wonBattles': wonBattles});
 		});
 		// console.debug('BattlegroundPerformance',BattlegroundPerformance,GBGdata);
-	
+
 	console.debug('2',showOptions.showBattleground);
 
 	if(showOptions.showBattleground) {
@@ -76,7 +76,7 @@ export function getPlayerLeaderboard(msg){
                 console.debug('save GBG', GameOrigin, BattlegroundPerformance);
                 storage.set(GameOrigin, BattlegroundPerformance);
                 helper.fshowBattleground();
-            });		
+            });
 		// console.debug('BattlegroundPerformance',GBGdata);
         $('body').i18n();
 	}
@@ -92,7 +92,7 @@ export function getLeaderboard(msg){
             // console.debug(guild.clan.name,guild.victoryPointsHourly,guild.victoryPointsTotal)
             leaderboardHTML += `<tr><td>${guild.clan.name}</td><td>${guild.victoryPointsHourly ? guild.victoryPointsHourly : 0}</td><td>${guild.victoryPointsTotal ? guild.victoryPointsTotal : 0}</td></tr>`;
         });
-        output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><strong>GBG Leaderboard:</strong> 
+        output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><strong>GBG Leaderboard:</strong>
             <p id="leaderboardText"><table>` + leaderboardHTML + `</table></p></div>`;
 
 }
@@ -119,7 +119,7 @@ export function getState(msg){
             var	wonBattles = 0;
             if(entry.negotiationsWon) wonNegotiations = entry.negotiationsWon;
             if(entry.battlesWon) wonBattles = entry.battlesWon;
-            BattlegroundPerformance.push([entry.rank,entry.player.name,wonNegotiations,wonBattles]); 
+            BattlegroundPerformance.push([entry.rank,entry.player.name,wonNegotiations,wonBattles]);
             battlegroundHTML += `<tr><td>${entry.rank}</td><td>${entry.player.name}</td><td>${wonNegotiations}</td><td>${wonBattles}</td></tr>`;
             // console.debug(entry.rank,entry.name,wonNegotiations,wonBattles);
             totalFights += wonBattles;
@@ -143,8 +143,8 @@ export function getState(msg){
             // GBGdata[i] = {'name':entry.player.name,
             // 'wonNegotiations': wonNegotiations,
             // 'wonBattles': wonBattles,
-            // 'total':wonNegotiations*2+wonBattles}; 
-            GBGdata.push({'name':entry.player.name,'total':wonNegotiations*2+wonBattles}); 
+            // 'total':wonNegotiations*2+wonBattles};
+            GBGdata.push({'name':entry.player.name,'total':wonNegotiations*2+wonBattles});
         });
         // console.debug('GBGdata',GBGdata);
     }
@@ -157,7 +157,7 @@ export function getBattleground(msg){
         ProvinceDefs =  VolcanoProvinceDefs;
     else if(mapName == 'waterfall')
         ProvinceDefs =  WaterfallProvinceDefs;
-        
+
     var oldMap = map;
     currentParticipantId = msg.responseData.currentParticipantId;
     map = msg.responseData.map.provinces;
@@ -191,7 +191,7 @@ export function getBuildings(msg){
     map.find(province => province.id == provinceId).placedBuildings = msg.responseData.placedBuildings;
     map.find(province => province.id == provinceId).availableBuildings = msg.responseData.availableBuildings;
     checkProvinces();
-    if(showOptions.buildingCosts && msg.responseData.availableBuildings) 
+    if(showOptions.buildingCosts && msg.responseData.availableBuildings)
         showBuildingCost(msg.responseData);
         // console.debug('getBuildings',msg.responseData,map);
 }
@@ -212,8 +212,8 @@ export function clearBattleground(){
     map = {};
     if(document.getElementById("costs")) document.getElementById("costs").innerHTML = '';
 }
-    
-    
+
+
 function buildingCostCopy() {
 	var selection = window.getSelection();
 	selection.removeAllRanges();
@@ -270,23 +270,23 @@ function timeGBG(time){
         return '';
 console.debug(time);
     var timeText = '@ ' +  time.toLocaleTimeString([], { timeZone: 'Europe/Amsterdam', hour: '2-digit', minute: '2-digit' });
-    
-		if(GameOrigin.substr(0,2) == 'en' || GameOrigin.substr(0,2) == 'zz') 
+
+		if(GameOrigin.substr(0,2) == 'en' || GameOrigin.substr(0,2) == 'zz')
             timeText = '@ ' +  time.toLocaleTimeString('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit' });
-		if(GameOrigin.substr(0,2) == 'us') 
+		if(GameOrigin.substr(0,2) == 'us')
             timeText = '@ ' +  time.toLocaleTimeString('en-US', { timeZone: 'US/Eastern', hour12: true});
-		else if(GameOrigin.substr(0,2) == 'de') 
+		else if(GameOrigin.substr(0,2) == 'de')
             timeText = '@ ' +  time.toLocaleTimeString([], { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit' });
-		else if(GameOrigin.substr(0,2) == 'fr') 
+		else if(GameOrigin.substr(0,2) == 'fr')
             timeText = '@ ' +  time.toLocaleTimeString([], { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit' });
-        else if(GameOrigin.substr(0,2) == 'gr') 
+        else if(GameOrigin.substr(0,2) == 'gr')
             timeText = '@ ' +  time.toLocaleTimeString([], { timeZone: 'Europe/Athens', hour: '2-digit', minute: '2-digit' });
-        else if(GameOrigin.substr(0,2) == 'fi') 
+        else if(GameOrigin.substr(0,2) == 'fi')
             timeText = '@ ' +  time.toLocaleTimeString([], { timeZone: 'Europe/Helsinki', hour: '2-digit', minute: '2-digit' });
-        else if(GameOrigin.substr(0,2) == 'ru') 
+        else if(GameOrigin.substr(0,2) == 'ru')
             timeText = '@ ' +  time.toLocaleTimeString([], { timeZone: 'Europe/Moscow', hour: '2-digit', minute: '2-digit' });
 
-		// if(GameOrigin.substr(0,2) == 'en') 
+		// if(GameOrigin.substr(0,2) == 'en')
 
     return  timeText;
 }
@@ -397,7 +397,7 @@ function checkProvinces(){
                     // console.debug(province.lockedUntil,time);
                 }
                 else{
-                    
+
                     if(textProvinceUnlocked != '') textProvinceUnlocked += '<br>';
                     textProvinceUnlocked += text + campsText;
                 }
@@ -407,7 +407,7 @@ function checkProvinces(){
     });
     if((textProvinceUnlocked || textProvinceLocked) && (helper.checkGBG || helper.MyGuildPermissions & 64)) {
             // targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID">Post</button>`;
-    
+
         targetGenerator.innerHTML = targetsHTML + `<div id="targetGenCollapse" class="collapse ${collapse.collapseTargetGen == false ? 'show' : ''}"><p id="targetGenText">` + textProvinceUnlocked + textProvinceLocked + `</p></div>`;
 
 
@@ -481,13 +481,13 @@ function showBuildingCost(msg){
         });
     });
     // let htmlText = `<div class="card bg-light alert show collapsed p-0" >
-    // <div class="card-header fw-bold"><span data-i18  
-    
+    // <div class="card-header fw-bold"><span data-i18
+
     costsDiv.innerHTML = `<div class="alert alert-info alert-dismissible  show collapsed" role="alert">
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     <p id="buildingCostTextLabel" href="#buildingCostText" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse">
     <svg class="bi header-icon" id="buildingCosticon" href="#buildingCostText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBuildingCost ? 'plus' : 'dash'}-circle"/></svg>
-    <strong>GBG Building Costs:</strong></p> 
+    <strong>GBG Building Costs:</strong></p>
     <button type="button" class="badge rounded-pill bg-primary right-button" id="buildingCostID"><span data-i18n="copy">Copy</span></button>
     <table style="height: ${toolOptions.buildingCostSize}px"  id="buildingCostText" class="overflow-y table collapse ${collapse.collapseBuildingCost == false ? 'show' : ''}">` + costsHTML + `</table></div>`;
     document.getElementById("buildingCostID").addEventListener("click", buildingCostCopy);
