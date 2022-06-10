@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -46,7 +46,7 @@ export function DonorCopy2() {
 	// var row1 = copytext.rows[0];
 	// var row2 = copytext.rows[numrows-1];
 	// range.setStartBefore(row1);
-	// range.setEndAfter(row2);  
+	// range.setEndAfter(row2);
 	// // range.selectNode(copytext);
 	// // range.selectNodeContents(copytext);
 	// selection.addRange(range);
@@ -65,7 +65,7 @@ export function DonorCopy3() {
 	// var row1 = copytext.rows[0];
 	// var row2 = copytext.rows[numrows-1];
 	// range.setStartBefore(row1);
-	// range.setEndAfter(row2);  
+	// range.setEndAfter(row2);
 	// // range.selectNode(copytext);
 	// // range.selectNodeContents(copytext);
 	// selection.addRange(range);
@@ -90,7 +90,7 @@ export function fCityStatsCopy() {
 	var selection = window.getSelection();
 	selection.removeAllRanges();
 	var range = document.createRange();
-	
+
 	var copytext = document.getElementById("citystatsLabel");
 	cityStatsHTML = copytext.innerHTML + '<br>';
 	copytext = document.getElementById("citystatsText");
@@ -144,7 +144,7 @@ export function BattlegroundCopy() {
 	// var copytext = document.getElementById("gbg-table");
 	// // var numrows = copytext.rows.length;
 	// // range.setStartBefore(copytext.rows[0]);
-	// // range.setEndAfter(copytext.rows[numrows-1]);  
+	// // range.setEndAfter(copytext.rows[numrows-1]);
 	// range.selectNode(copytext);
 	// selection.addRange(range);
 	// document.execCommand("copy");
@@ -197,7 +197,7 @@ function copyToClipboard(element) {
 	document.execCommand("copy");
 	$temp.remove();
   }
-  
+
 function addToClipboard(element, html) {
 	var clipboard = document.getElementById("clipboard");
 
@@ -218,4 +218,4 @@ function copyNode(node){
   select.removeAllRanges()
   select.addRange(range)
   document.execCommand('copy')
-}  
+}

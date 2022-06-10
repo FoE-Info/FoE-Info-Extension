@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -156,12 +156,12 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
                     if(entity && entity.abilities && entity.abilities.find(id => id.__class__ == 'RandomUnitOfAgeWhenMotivatedAbility')){
                         City.TrazUnits += entity.abilities.find(id => id.__class__ == 'RandomUnitOfAgeWhenMotivatedAbility').amount;
                         // console.debug(entity.name, entity.abilities.find(id => id.__class__ == 'RandomUnitOfAgeWhenMotivatedAbility').amount);
-                    }				
+                    }
                     if(entity && entity.abilities && entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility')){
-                        // clanGoods += entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility').additionalResources['AllAge'].resources.all_goods_of_age;       
+                        // clanGoods += entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility').additionalResources['AllAge'].resources.all_goods_of_age;
                         // clanGoodsBuildings.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'goods': entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility').additionalResources['AllAge'].resources.all_goods_of_age});
                         // console.debug(entity.name, entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility').additionalResources['AllAge'].resources.all_goods_of_age);
-                    }				
+                    }
                 }
             }
             else if(mapID.cityentity_id == "X_OceanicFuture_Landmark3")
@@ -170,7 +170,7 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
                 //     Galaxy.amount = mapID.bonus.amount;
                   console.debug('Galaxy.amount',mapID);
             }
-            
+
             if(mapID.state.hasOwnProperty('next_state_transition_at')){
                 buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
                 // console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID,);
@@ -291,7 +291,7 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
                                     else
                                         goodsList[`${entry}`] = entryGoods;
                                 }
-                                
+
                                     // if()
                                 // goodsList.push([entry,mapID.state.current_product.product.resources[entry]]);
                                 // goodsList.forEach(good => {
@@ -319,9 +319,9 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
                 if(mapID.state.current_product.asset_name == 'penal_unit'){
                     City.TrazUnits += mapID.state.current_product.amount;
                 }
-                
+
             }
-            
+
             if(mapID.state.productionOption)
             {
                 if (DEV && checkDebug()) {
@@ -329,7 +329,7 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
                         console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID.state.productionOption.name, mapID);
                     else
                         console.debug(mapID.cityentity_id, mapID.state.productionOption.name, mapID);
-                }                
+                }
                 if(mapID.state.productionOption.guildProduct){
                     // if(CityEntityDefs[mapID.cityentity_id])
                     //     console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID.state.productionOption.name,mapID);
@@ -387,7 +387,7 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
                 }
                 if(mapID.state.productionOption.products.length > 0){
                     if (DEV && checkDebug()) console.debug(mapID.state.productionOption);
-                    if(mapID.state.productionOption.products[0].playerResources && 
+                    if(mapID.state.productionOption.products[0].playerResources &&
                         mapID.state.productionOption.products[0].playerResources.resources)
                     {
                         if(mapID.state.productionOption.products[0].playerResources.resources.premium)
@@ -435,7 +435,7 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
                                     goodsList[`${entry}`] += entryGoods;
                                 else
                                     goodsList[`${entry}`] = entryGoods;
-                                
+
                                 // if()
                                 // goodsList.push([entry,mapID.state.productionOption.products[0].playerResources.resources[entry]]);
                                 // goodsList.forEach(good => {
@@ -463,9 +463,9 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
                 if(mapID.state.productionOption.asset_name == 'penal_unit'){
                     City.TrazUnits += mapID.state.productionOption.amount;
                 }
-                
+
             }
-            
+
             // if(mapID.ability.__class__ == 'RandomUnitOfAgeWhenMotivatedAbility') {
             // 	console.debug(entity.name,ability,ability.amount)
             // 	trazUnits += ability.amount;
@@ -507,7 +507,7 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
             	}
                 if(DEV && checkDebug())
                     console.debug('NOT FOUND: ', id,mapID.cityentity_id,mapID);
-            }	
+            }
         }
     }
 
@@ -604,29 +604,29 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
     });
     // console.debug('tooltipHTML.goods',tooltipHTML.goods);
 
-    // if(Goods.sav) goodsHTML += `<span data-bs-toggle="tooltip" title="<p>${tooltipHTML.goods['SpaceAgeVenus']}</p>">SAV:${Goods.sav}</span> `;	
-    if(Goods.sajm) goodsHTML += `<span id="sajm" title="${fGoodsText('sajm',tooltipHTML.goods)}">SAJM:${Goods.sajm}</span> `;	
-    if(Goods.sav) goodsHTML += `<span id="sav" title="${fGoodsText('sav',tooltipHTML.goods)}">SAV:${Goods.sav}</span> `;	
-    if(Goods.saab) goodsHTML += `<span id="saab" title="${fGoodsText('saab',tooltipHTML.goods)}">SAAB:${Goods.saab}</span> `;	
-    if(Goods.sam) goodsHTML += `<span id="sam" title="${fGoodsText('sam',tooltipHTML.goods)}">SAM:${Goods.sam}</span> `;	
-    if(Goods.vf) goodsHTML += `<span id="vf" title="${fGoodsText('vf',tooltipHTML.goods)}">VF:${Goods.vf}</span> `;	
-    if(Goods.of) goodsHTML += `<span id="of" title="${fGoodsText('of',tooltipHTML.goods)}">OF:${Goods.of}</span> `;	
-    if(Goods.af) goodsHTML += `<span id="af" title="${fGoodsText('af',tooltipHTML.goods)}">AF:${Goods.af}</span> `;	
-    if(Goods.tf) goodsHTML += `<span id="tf" title="${fGoodsText('tf',tooltipHTML.goods)}">FE:${Goods.tf}</span> `;	
-    if(Goods.te) goodsHTML += `<span id="te" title="${fGoodsText('te',tooltipHTML.goods)}">TE:${Goods.te}</span> `;	
-    if(Goods.ce) goodsHTML += `<span id="ce" title="${fGoodsText('ce',tooltipHTML.goods)}">CE:${Goods.ce}</span> `;	
-    if(Goods.pme) goodsHTML += `<span id="pme" title="${fGoodsText('pme',tooltipHTML.goods)}">PME:${Goods.pme}</span> `;	
-    if(Goods.me) goodsHTML += `<span id="me" title="${fGoodsText('me',tooltipHTML.goods)}">ME:${Goods.me}</span> `;	
-    if(Goods.pe) goodsHTML += `<span id="pe" title="${fGoodsText('pe',tooltipHTML.goods)}">PE:${Goods.pe}</span> `;	
-    if(Goods.ina) goodsHTML += `<span id="ina" title="${fGoodsText('ina',tooltipHTML.goods)}">IndA:${Goods.ina}</span> `;	
-    if(Goods.cma) goodsHTML += `<span id="cma" title="${fGoodsText('ca',tooltipHTML.goods)}">CA:${Goods.cma}</span> `;	
-    if(Goods.lma) goodsHTML += `<span id="lma" title="${fGoodsText('lma',tooltipHTML.goods)}">LMA:${Goods.lma}</span> `;	
-    if(Goods.hma) goodsHTML += `<span id="hma" title="${fGoodsText('hma',tooltipHTML.goods)}">HMA:${Goods.hma}</span> `;	
-    if(Goods.ema) goodsHTML += `<span id="ema" title="${fGoodsText('ema',tooltipHTML.goods)}">EMA:${Goods.ema}</span> `;	
-    if(Goods.ia) goodsHTML += `<span id="ia" title="${fGoodsText('ia',tooltipHTML.goods)}">IA:${Goods.ia}</span> `;	
+    // if(Goods.sav) goodsHTML += `<span data-bs-toggle="tooltip" title="<p>${tooltipHTML.goods['SpaceAgeVenus']}</p>">SAV:${Goods.sav}</span> `;
+    if(Goods.sajm) goodsHTML += `<span id="sajm" title="${fGoodsText('sajm',tooltipHTML.goods)}">SAJM:${Goods.sajm}</span> `;
+    if(Goods.sav) goodsHTML += `<span id="sav" title="${fGoodsText('sav',tooltipHTML.goods)}">SAV:${Goods.sav}</span> `;
+    if(Goods.saab) goodsHTML += `<span id="saab" title="${fGoodsText('saab',tooltipHTML.goods)}">SAAB:${Goods.saab}</span> `;
+    if(Goods.sam) goodsHTML += `<span id="sam" title="${fGoodsText('sam',tooltipHTML.goods)}">SAM:${Goods.sam}</span> `;
+    if(Goods.vf) goodsHTML += `<span id="vf" title="${fGoodsText('vf',tooltipHTML.goods)}">VF:${Goods.vf}</span> `;
+    if(Goods.of) goodsHTML += `<span id="of" title="${fGoodsText('of',tooltipHTML.goods)}">OF:${Goods.of}</span> `;
+    if(Goods.af) goodsHTML += `<span id="af" title="${fGoodsText('af',tooltipHTML.goods)}">AF:${Goods.af}</span> `;
+    if(Goods.tf) goodsHTML += `<span id="tf" title="${fGoodsText('tf',tooltipHTML.goods)}">FE:${Goods.tf}</span> `;
+    if(Goods.te) goodsHTML += `<span id="te" title="${fGoodsText('te',tooltipHTML.goods)}">TE:${Goods.te}</span> `;
+    if(Goods.ce) goodsHTML += `<span id="ce" title="${fGoodsText('ce',tooltipHTML.goods)}">CE:${Goods.ce}</span> `;
+    if(Goods.pme) goodsHTML += `<span id="pme" title="${fGoodsText('pme',tooltipHTML.goods)}">PME:${Goods.pme}</span> `;
+    if(Goods.me) goodsHTML += `<span id="me" title="${fGoodsText('me',tooltipHTML.goods)}">ME:${Goods.me}</span> `;
+    if(Goods.pe) goodsHTML += `<span id="pe" title="${fGoodsText('pe',tooltipHTML.goods)}">PE:${Goods.pe}</span> `;
+    if(Goods.ina) goodsHTML += `<span id="ina" title="${fGoodsText('ina',tooltipHTML.goods)}">IndA:${Goods.ina}</span> `;
+    if(Goods.cma) goodsHTML += `<span id="cma" title="${fGoodsText('ca',tooltipHTML.goods)}">CA:${Goods.cma}</span> `;
+    if(Goods.lma) goodsHTML += `<span id="lma" title="${fGoodsText('lma',tooltipHTML.goods)}">LMA:${Goods.lma}</span> `;
+    if(Goods.hma) goodsHTML += `<span id="hma" title="${fGoodsText('hma',tooltipHTML.goods)}">HMA:${Goods.hma}</span> `;
+    if(Goods.ema) goodsHTML += `<span id="ema" title="${fGoodsText('ema',tooltipHTML.goods)}">EMA:${Goods.ema}</span> `;
+    if(Goods.ia) goodsHTML += `<span id="ia" title="${fGoodsText('ia',tooltipHTML.goods)}">IA:${Goods.ia}</span> `;
     if(Goods.ba) goodsHTML += `<span id="ba" title="${fGoodsText('ba',tooltipHTML.goods)}">BA:${Goods.ba}</span>`;
     // if(Goods.noage) goodsHTML += `Special:${Goods.noage}`;
-        
+
     // console.debug('Ignored By:',msg.responseData.ignoredByPlayerIds);
 	// console.debug('Ignoring:',msg.responseData.ignoredPlayerIds);
     var userTooltipHTML = `<p class="pop">`;
@@ -644,15 +644,15 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
     }
     userTooltipHTML += `</p>`;
     var fpHTML = `<span tabindex="0" id="fp" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${tooltipHTML.fp}"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
-    var userHTML = `<span tabindex="0" id="user" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" 
-        title="Playing <strong>FoE</strong> since<br>${(new Date(MyInfo.createdAt * 1000)).toLocaleString()}" 
+    var userHTML = `<span tabindex="0" id="user" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom"
+        title="Playing <strong>FoE</strong> since<br>${(new Date(MyInfo.createdAt * 1000)).toLocaleString()}"
         data-bs-content='${userTooltipHTML}</p>'><strong>${GameOrigin.toUpperCase()} ${MyInfo.name}</strong></span>`;
     var clanGoodsHTML = `<span tabindex="0" id="clanGoods" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
     var totalGoodsHTML = `<span tabindex="0" id="goods" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
     citystatsHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     <button type="button" class="badge rounded-pill bg-warning float-end right-button" id="citystatsCopyID" style="display: ${collapse.collapseStats ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button>
-    <p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel"><svg class="bi header-icon" id="citystatsicon" href="#citystatsText" 
+    <p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel"><svg class="bi header-icon" id="citystatsicon" href="#citystatsText"
     data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg>`;
     citystatsHTML += userHTML;
     citystatsHTML += `<div id="citystatsText" class="collapse ${collapse.collapseStats ? '' : 'show'}"><div>`;
@@ -665,12 +665,12 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
     // <span data-i18n=""></span>
     if(diamonds)
         citystatsHTML += `<span class='green'><span data-i18n="diamonds">Diamonds</span>: ${diamonds}</span><br>`;
-    
+
     if(City.ArcBonus)
         citystatsHTML += `${fArcname()} <span data-i18n="bonus">Bonus</span>: ${City.ArcBonus}%<br>`;
     if(City.ChatBonus)
         citystatsHTML += `${fCFname()} <span data-i18n="bonus">Bonus</span>: ${City.ChatBonus}% / ${BigNumber(City.ChatBonus).div(20).plus(5).toFormat(0)} <span data-i18n="goods">Goods</span><br>`;
-        
+
     if(clanGoods)
         citystatsHTML += `${clanGoodsHTML}<br>`;
     if(clanPower)
@@ -693,8 +693,8 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
         if( citystats == null){
             // console.debug('2');
             citystats = document.createElement('div');
-            var list = document.getElementById("content");    
-            list.insertBefore(citystats, list.childNodes[0]);  
+            var list = document.getElementById("content");
+            list.insertBefore(citystats, list.childNodes[0]);
             citystats.id = 'citystats';
         }
 
@@ -713,9 +713,9 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
         //     $('body').tooltip({html: true,placement: 'bottom'});
         //     });
 
-  
+
                 showTooltips();
-            
+
             // fLoadi18n();
             $('body').i18n();
             // $('#bonus').i18n();
@@ -727,7 +727,7 @@ console.debug(language,$.i18n().locale,$.i18n.debug);
             //   };
     }
     // console.debug('tooltipHTML:',tooltipHTML);
-										
+
 }
 
 export function emissaryService(msg){
@@ -845,7 +845,7 @@ export function boostServiceAllBoosts(msg){
             }
             else if(boost[j].type != "city_shield" && boost[j].type != "life_support" && boost[j].type != "supply_production" && boost[j].type != "tavern_visit_silver_drop" && boost[j].type != "tavern_silver_collect_bonus" && boost[j].type != "tavern_visit_fp_drop" && boost[j].type != "construction_time")
                 console.debug('other boost:', boost[j].type,boost[j]);
-                
+
         }
     // if(showBoosts)
         // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>Boosts:<p>Coins ${CoinBoost}%</p><p>Attack ${Attack}%</p><p>Defense ${Defense}%</p></div>`;
@@ -945,7 +945,7 @@ function showTooltips(){
 
     const Ages = [ 'sajm', 'sav', 'saab', 'sam', 'vf', 'of', 'af', 'tf', 'te', 'ce', 'pme',
         'me', 'pe', 'ina', 'cma', 'lma', 'hma', 'ema', 'ia', 'ba'];
-        
+
     // $('#demo').tooltip({
     //     text: '',
     //     cls: '',
@@ -957,7 +957,7 @@ function showTooltips(){
     //     dontHideOnTooltipHover: false,
     //     selector: ''
     //   });
-    
+
 
     //   $('#sav').tooltip({
     //     content: tooltipHTML['SpaceAgeVenus'],
@@ -974,7 +974,7 @@ function showTooltips(){
             const tooltip = new Tooltip(tip, options);
         }
     }
-    
+
             // $('#'+Ages[age]).tooltip({
             //         content: function(){
             //             var element = $( this );
@@ -1007,9 +1007,9 @@ function showTooltips(){
         const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
         const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl,options));
 
-        // $(".pop").popover({ 
-        //     trigger: "hover", 
-        //     html: true, 
+        // $(".pop").popover({
+        //     trigger: "hover",
+        //     html: true,
         //     animation:true,
         //     delay: { "show": 500, "hide": 500 }
         // });
@@ -1047,75 +1047,75 @@ function showTooltips(){
         //     classes: {
         //       "ui-tooltip": "highlight"
         //     }
-        //   });        
+        //   });
 }
 
 function fGoodsText(age,tooltipHTML){
     // console.debug(age,good);
-        
+
         // var text = `<span data-bs-toggle="tooltip" title="<p>`;
         if (age == "ba"){
             return`<p>`+ tooltipHTML["BronzeAge"] + `</p>`;
-        } 
+        }
         else if (age == "ia"){
             return`<p>`+ tooltipHTML["IronAge"] + `</p>`;
-        } 
+        }
         else if (age == "ema"){
             return`<p>`+ tooltipHTML["EarlyMiddleAge"] + `</p>`;
-        } 
+        }
         else if (age == "hma"){
             return`<p>`+ tooltipHTML["HighMiddleAge"] + `</p>`;
-        } 
+        }
         else if (age == "lma"){
             return`<p>`+ tooltipHTML["LateMiddleAge"] + `</p>`;
-        } 
+        }
         else if (age == "ca"){
             return`<p>`+ tooltipHTML["ColonialAge"] + `</p>`;
-        } 
+        }
         else if (age == "ina"){
             return`<p>`+ tooltipHTML["IndustrialAge"] + `</p>`;
-        } 
+        }
         else if (age == "pe"){
             return`<p>`+ tooltipHTML["ProgressiveEra"] + `</p>`;
-        } 
+        }
         else if (age == "me"){
             return`<p>`+ tooltipHTML["ModernEra"] + `</p>`;
-        } 
+        }
         else if (age == "pme"){
             return`<p>`+ tooltipHTML["PostModernEra"] + `</p>`;
-        } 
+        }
         else if (age == "ce"){
             return`<p>`+ tooltipHTML["ContemporaryEra"] + `</p>`;
-        } 
+        }
         else if (age == "te"){
             return`<p>`+ tooltipHTML["TomorrowEra"] + `</p>`;
-        } 
+        }
         else if (age == "tf"){
             return`<p>`+ tooltipHTML["FutureEra"] + `</p>`;
-        } 
+        }
         else if (age == "af"){
             return`<p>`+ tooltipHTML["ArcticFuture"] + `</p>`;
-        } 
+        }
         else if (age == "of"){
             return`<p>`+ tooltipHTML["OceanicFuture"] + `</p>`;
-        } 
+        }
         else if (age == "vf"){
             return`<p>`+ tooltipHTML["VirtualFuture"] + `</p>`;
-        } 
+        }
         else if (age == "sam"){
             return`<p>`+ tooltipHTML["SpaceAgeMars"] + `</p>`;
-        } 
+        }
         else if (age == "saab"){
             return`<p>`+ tooltipHTML["SpaceAgeAsteroidBelt"] + `</p>`;
-        } 
+        }
         else if (age == "sav"){
             return`<p>`+ tooltipHTML["SpaceAgeVenus"] + `</p>`;
-        } 
+        }
         else if (age == "sajm"){
             return`<p>`+ tooltipHTML["SpaceAgeJupiterMoon"] + `</p>`;
-        } 
+        }
         else console.debug(age);
-    } 
+    }
 
 export function updateGalaxy(id){
     Galaxy.bonus = Galaxy.bonus.filter(item => item.id !== id);
@@ -1130,7 +1130,7 @@ export function showGalaxy(){
     <strong>Galaxy Double Collection:</strong></p>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
     Galaxy.html += `<div id="galaxyText" class="resize  collapse ${collapse.collapseGalaxy == false ? 'show' : ''}">`;
-    Galaxy.html += `<p>Tries Remaining: <span id='galaxyID'>${Galaxy.amount}</span></p><p>`; 
+    Galaxy.html += `<p>Tries Remaining: <span id='galaxyID'>${Galaxy.amount}</span></p><p>`;
     Galaxy.bonus.forEach( (entry,id) => {
         if(id<Galaxy.amount) Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
     });
