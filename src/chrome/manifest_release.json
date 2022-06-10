@@ -10,7 +10,9 @@
     "description": "Essential Info for Forge of Empires addicts",
     "homepage_url": "https://foe-info.github.io/FoE-Info-Docs/",
     "externally_connectable": {
-        "matches": ["https://*.forgeofempires.com/game/*"]
+        "matches": [
+            "https://*.forgeofempires.com/game/*"
+        ]
     },
     "devtools_page": "devtools.html",
     "options_ui": {
