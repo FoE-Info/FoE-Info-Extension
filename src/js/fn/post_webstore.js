@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -51,7 +51,7 @@ async function postData(url = '', data = {}) {
 	  console.debug(response);
 	return response.json(); // parses JSON response into native JavaScript objects
   }
-  
+
 
 
 export function postToDiscord(text) {
@@ -60,15 +60,15 @@ export function postToDiscord(text) {
 	var webHookUrl = "https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij";
 
 	const hook = getKey(webHookUrl);
-	
-	console.log(hook); 	
-		
-	
+
+	console.log(hook);
+
+
 	/*
  * Create a new webhook
  * The Webhooks ID and token can be found in the URL, when you request that URL, or in the response body.
  * https://discord.com/api/webhooks/12345678910/T0kEn0fw3Bh00K
- *                                  ^^^^^^^^^^  ^^^^^^^^^^^^ 
+ *                                  ^^^^^^^^^^  ^^^^^^^^^^^^
  *                                  Webhook ID  Webhook Token
  */
 // const hook = new Discord.WebhookClient('687279023335800877', 'rtsthZ8GIxsD9LYhlluZHyqOQGQtZmOkaiNLKcAHRshWLPoUZqO1_XTuOObFeJqL4zyQ');
@@ -139,7 +139,7 @@ export function postToDiscord(text) {
 		// const embed = new Discord.MessageEmbed()
 		// .setTitle('Some Title')
 		// .setColor('#0099ff');
-	
+
 		// hook.send('Webhook test', {
 		// username: 'some-username',
 		// avatarURL: 'https://i.imgur.com/wSTFkRM.png',
@@ -163,7 +163,7 @@ export function postToDiscord(text) {
 		// .catch((error) => {
 		//   console.error('Error:', error);
 		// });
-		
+
 			var reqText = {
 				"content": "Welcome to <:discohook:735474274458140705>Discohook, a free message and embed builder for Discord!\nThere's additional info in the embeds below, or you can use the *Clear all* button in the editor to start making embeds.\nHave questions? Discohook has a support server at <https://discohook.org/discord>.",
 				"embeds": [
@@ -219,7 +219,7 @@ export function postToDiscord(text) {
 		//   console.debug(data); // JSON data parsed by `data.json()` call
 		// });
 
-			
+
 }
 
 export function postTargetsToDiscord() {
@@ -232,7 +232,7 @@ export function postTargetsToDiscord() {
 
 	if(DEV && webHookUrl == "")
 		webHookUrl = "https://discordapp.com/api/webhooks/802491154448252939/6fjCqY1Nt6dOEXJJd7BiMa_FcigDyWXK5ffnmL7Dr-xjN1-Ghs3h7q72fwiVitLoNUYu";
-		
+
 	var selection = window.getSelection();
 	selection.removeAllRanges();
 
@@ -250,7 +250,7 @@ export function postTargetsToDiscord() {
 				console.debug(oReq.readyState,oReq.responseText);
 		}
 		oReq.send(JSON.stringify(params));
-		console.debug(oReq,params,document.getElementById("targetText").innerHTML.replace(/<br\s*\/?>/ig, "\n").replace(/(<([^>]+)>)/gi, ""));	
+		console.debug(oReq,params,document.getElementById("targetText").innerHTML.replace(/<br\s*\/?>/ig, "\n").replace(/(<([^>]+)>)/gi, ""));
 }
 
 
@@ -258,7 +258,7 @@ export function postGBGtoSS() {
 	// console.debug(data[0]);
 		var googleSheetAPI = url.sheetGuildURL;
         var copytext = document.getElementById("battlegroundText");
-		
+
 	var reqData = {
 		'sheet': 'GBG',
 		'epoc': EpocTime,
@@ -288,7 +288,7 @@ export function postAlerttoDsicord(){
 export function logToDiscord(text){
 	var webHookUrl = "https://discordapp.com/api/webhooks/690589445145231410/XQehmPTFdg82ijxxXMXMeYDuIkCuKokSDOVLztN737J60NCJ6nN3qzBlMjIxMJG0N-jq";
 	// log channel
-	
+
 	var selection = window.getSelection();
 	selection.removeAllRanges();
 
@@ -311,7 +311,7 @@ export function logToDiscord(text){
 export function postPlayerToSS(visitData) {
 	// console.debug(visitData);
 	var googleSheetAPI = url.sheetGuildURL;
-		
+
 	alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		<p id="alertText"><strong>Posting Guild Stats to SS ... </strong><br>${visitData[0].Name}</p></div>`;
@@ -351,4 +351,3 @@ export function postPlayerToSS(visitData) {
 	// oReq.send(reqData.toString);
 	console.debug(reqData,JSON.stringify(reqData));
 }
-
