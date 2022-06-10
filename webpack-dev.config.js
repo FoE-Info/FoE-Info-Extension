@@ -13,7 +13,7 @@ var webpack = require('webpack'),
   const pkg = require('./package.json');
   // const tools = 'bootstrap-icons/icons/tools.svg';
 
-  
+
   const PACKAGE_NAME = 'FoE-Info-DEV';
   process.env.NODE_ENV = 'development'
 
@@ -92,19 +92,19 @@ module.exports = {
       template: "./src/chrome/panel.html",
       chunks: ['app']
     }),
-    new HtmlWebpackPlugin({  
+    new HtmlWebpackPlugin({
       title: PACKAGE_NAME,
       filename: 'options.html',
       template: './src/chrome/options.html',
       chunks: ['options']
     }),
-    new HtmlWebpackPlugin({  
+    new HtmlWebpackPlugin({
       title: PACKAGE_NAME,
       filename: 'popup.html',
       template: './src/chrome/popup.html',
       chunks: ['popup']
     }),
-    new HtmlWebpackPlugin({  
+    new HtmlWebpackPlugin({
       title: PACKAGE_NAME,
       filename: 'devtools.html',
       template: './src/chrome/devtools.html',

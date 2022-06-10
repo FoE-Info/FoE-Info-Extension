@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -97,7 +97,7 @@ export function showGreatBuldingDonation(){
                         GBrewards[Rank-1] = new BigNumber(place.reward.strategy_point_amount).dp(0);
                     else
                         GBrewards[Rank-1] = 0;
-                    Reward[Rank-1] = BigNumber(GBrewards[Rank-1]).times(1.9).dp(0); 
+                    Reward[Rank-1] = BigNumber(GBrewards[Rank-1]).times(1.9).dp(0);
                     // console.debug(place.reward.strategy_point_amount,BigNumber(place.reward.strategy_point_amount).dp(0),GBrewards[Rank-1]);
                  }
                 else if (Rank==6){
@@ -140,7 +140,7 @@ export function showGreatBuldingDonation(){
         }
 
             var playerShortName = PlayerName.length > 5 ? PlayerName.substr(0, PlayerName.indexOf(" ")) : PlayerName;
-            var newdonationHTML = ""; 
+            var newdonationHTML = "";
             var copyText = `<div id='copyText'>${showOptions.showGuildPosition && PlayerName == MyInfo.name && MyInfo.guildPosition ? '#' + MyInfo.guildPosition + ' ' : ''}${playerShortName ? playerShortName :PlayerName} ${helper.fGBsname(GBselected.name)} `;
             var olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -161,7 +161,7 @@ export function showGreatBuldingDonation(){
             donationDIV.innerHTML = '';
             donationDIV.style.display = "block";
 
-            
+
             // Check Top1
             getPlaceValues(1);
             getSafe(1);
@@ -177,7 +177,7 @@ export function showGreatBuldingDonation(){
                         GBselected.connected, GBselected.level == GBselected.max_level, safe);
                 }
                 if(GBrewards[0]){
-                        olddonationHTML += getFriendlyDonation(donateCustom,RewardFP,currentPercent,Donation);   
+                        olddonationHTML += getFriendlyDonation(donateCustom,RewardFP,currentPercent,Donation);
                     olddonationHTML += `BE: ${RewardFP}FP</p>`;
                 }else
                     olddonationHTML += `</p>`;
@@ -224,7 +224,7 @@ export function showGreatBuldingDonation(){
                                 GBselected.connected, GBselected.level == GBselected.max_level, safe);
                         }
                         if(GBrewards[2]){
-                                olddonationHTML += getFriendlyDonation(donateCustom,RewardFP,currentPercent,Donation);   
+                                olddonationHTML += getFriendlyDonation(donateCustom,RewardFP,currentPercent,Donation);
                             olddonationHTML += `BE: ${RewardFP}FP<br></p>`;
                             if(PlayerName == MyInfo.name && Donation - donateSuggest[2] > 0)
                                 olddonationHTML += `<p class="">Add ${(Donation - donateCustom) * 2}FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : '1.9'}</p>`;
@@ -247,7 +247,7 @@ export function showGreatBuldingDonation(){
                                     GBselected.connected, GBselected.level == GBselected.max_level, safe);
                             }
                             if(GBrewards[3]){
-                                    olddonationHTML += getFriendlyDonation(donateCustom,RewardFP,currentPercent,Donation);   
+                                    olddonationHTML += getFriendlyDonation(donateCustom,RewardFP,currentPercent,Donation);
                                 olddonationHTML += `BE: ${RewardFP}FP<br></p>`;
                                 if(PlayerName == MyInfo.name && Donation - donateSuggest[3] > 0)
                                     olddonationHTML += `<p class="">Add ${(Donation - donateCustom) * 2}FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : '1.9'}</p>`;
@@ -270,7 +270,7 @@ export function showGreatBuldingDonation(){
                                         GBselected.connected, GBselected.level == GBselected.max_level, safe);
                                 }
                                 if(GBrewards[4]){
-                                        olddonationHTML += getFriendlyDonation(donateCustom,RewardFP,currentPercent,Donation);   
+                                        olddonationHTML += getFriendlyDonation(donateCustom,RewardFP,currentPercent,Donation);
                                     olddonationHTML += `BE: ${RewardFP}FP<br></p>`;
                                     if(PlayerName == MyInfo.name && Donation - donateSuggest[4] > 0)
                                         olddonationHTML += `<p class="">Add ${(Donation - donateCustom) * 2}FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : '1.9'}</p>`;
@@ -299,13 +299,13 @@ export function showGreatBuldingDonation(){
                 else
                     $('#donationCopyID').hide();
                     // $('#donationCopyID').prop('disabled', true);
-    
-    
+
+
                 if(document.getElementById("freeTextLabel"))
                     document.getElementById("freeTextLabel").addEventListener("click", collapse.fCollapseDonation);
             }
             document.getElementById("GBselected").addEventListener("click", clickDonation);
-            
+
             $('body').i18n();
         }
     }
@@ -314,7 +314,7 @@ export function showGreatBuldingDonation(){
 
 export function getConstructionRanking(msg,data){
 
-    for(var j = 0; j < data.length; j++) 
+    for(var j = 0; j < data.length; j++)
     {
         // console.debug(data[j].requestData[2]);
         GBselected.level = data[j].requestData[2];
@@ -342,10 +342,10 @@ export function getConstructionRanking(msg,data){
     outputHTML = `<div class="alert alert-success alert-dismissible show" role="alert">`;
     outputHTML += `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
     outputHTML += `<button type="button" class="badge rounded-pill bg-success right-button" id="donorCopyID2"><span data-i18n="copy">Copy</span></button>`;
-    
+
     if(msg.responseData.length) {
         // var total = 0;
-        for(var j = 0; j < msg.responseData.length; j++) 
+        for(var j = 0; j < msg.responseData.length; j++)
         {
             const place = msg.responseData[j];
             // total += place.forge_points;
@@ -384,7 +384,7 @@ export function getConstructionRanking(msg,data){
 
 
         // console.debug('outputHTML',outputHTML)
-    if(showOptions.showGBDonors){ 
+    if(showOptions.showGBDonors){
         fCheckOutput();
         // else{
             greatbuilding.innerHTML = outputHTML;
@@ -398,7 +398,7 @@ export function getConstructionRanking(msg,data){
 
 
 function fPercentBanded(Percent){
-    if (Percent>=20) return 'green' 
+    if (Percent>=20) return 'green'
     else if (Percent>=10) return 'invest-good'
     else if (Percent>5) return 'invest-fair'
     return '';
@@ -428,7 +428,7 @@ function fDonationSuggest(reward){
 }
 
 export function setCurrentPercent(percent){
-    if(percent) 
+    if(percent)
         currentPercent = percent;
     else
         currentPercent = donationPercent;
@@ -447,10 +447,10 @@ function gbTabSafe(place, currentPercent, donation, rewardFP, donateCustom, dona
   var remainingOwner = GBselected.total - GBselected.current - remainingInvestors;
 
   var footer = "";
-  if (PlayerName == MyInfo.name) 
+  if (PlayerName == MyInfo.name)
   {
     footer = `<div class="card-footer text-muted">`;
-    if (donation - donateSuggest[place - 1] > 0) 
+    if (donation - donateSuggest[place - 1] > 0)
     {
       footer += `Add <strong>${(donation - donateCustom) * 2} FP </strong> <span data-i18n="safe">to make safe for</span> ${ currentPercent ? currentPercent / 100 : "1.9" }`;
     }
@@ -463,9 +463,9 @@ function gbTabSafe(place, currentPercent, donation, rewardFP, donateCustom, dona
     footer += `<p>Remaining <strong>${GBselected.total - GBselected.current}</strong> FPs</p>`;
   }
   let htmlText = `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0" >
-    <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [${getPlayerLink()}]${connected == null ? '<br><span class="red">*** DISCONNECTED ***</span>' : ""}${checkInactive()}${maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : ""} 
+    <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [${getPlayerLink()}]${connected == null ? '<br><span class="red">*** DISCONNECTED ***</span>' : ""}${checkInactive()}${maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : ""}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button> 
+      <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button>
     </div>
     <div class="card-body alert-success p-2">
       <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${GBselected.level}/${GBselected.max_level}] (${GBselected.current}/${GBselected.total} FPs)</span></h6>
@@ -500,11 +500,11 @@ function gbTabNotSafe(place, currentPercent, donation, rewardFP, donateCustom, d
     remainingInvestors += fDonationSuggest(bgrewards[i]);
   }
   var remainingOwner = GBselected.total - GBselected.current - remainingInvestors;
-  var footer = "";  
-  if (PlayerName == MyInfo.name) 
+  var footer = "";
+  if (PlayerName == MyInfo.name)
   {
     footer = `<div class="card-footer text-muted">`;
-    if (donation - donateSuggest[place - 1] > 0) 
+    if (donation - donateSuggest[place - 1] > 0)
     {
       footer += `Add <strong>${(donation - donateCustom) * 2} FP </strong> <span data-i18n="safe">to make safe for</span> ${ currentPercent ? currentPercent / 100 : "1.9" }`;
     }
@@ -519,7 +519,7 @@ function gbTabNotSafe(place, currentPercent, donation, rewardFP, donateCustom, d
   let htmlText = `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0 "  >
            <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span> [${getPlayerLink()}]
            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-           <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button> 
+           <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button>
            </div>
            <div class="card-body alert-danger p-2">
            <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${GBselected.level}/${GBselected.max_level}] (${GBselected.current}/${GBselected.total})</span></h6>
@@ -544,7 +544,7 @@ function gbTabNotSafe(place, currentPercent, donation, rewardFP, donateCustom, d
     </tbody>
   </table>
   </div>` + footer + `</div>`
-  /*`<div class="card-body alert-primary p-2"> 
+  /*`<div class="card-body alert-primary p-2">
   <h6 class="card-title mb-0">Information</h6>
        <table class="table alert-primary mb-1">
         <tr>
@@ -614,7 +614,7 @@ function gbTabEmpty(
 
 function checkInactive(){
     var html = inactiveHTML(hoodlist);
-	if(html == '')	html += inactiveHTML(friends);		
+	if(html == '')	html += inactiveHTML(friends);
 	if(html == '')	html += inactiveHTML(guildMembers);
 	return html;
 
@@ -664,7 +664,7 @@ function clickDonation(event){
 
 function getFriendlyDonation(donation,reward,percent,lock){
     console.debug(donation,reward,percent,lock,(donation.isGreaterThan(reward) || lock.isGreaterThan(donation)),donation.isGreaterThan(reward),lock.isGreaterThan(donation));
-    return `<span class="${(donation.isGreaterThan(reward) || lock.isGreaterThan(donation)) ? 'red' : 'green'}">${percent / 100}: ${donation}FP</span><br>`;   
+    return `<span class="${(donation.isGreaterThan(reward) || lock.isGreaterThan(donation)) ? 'red' : 'green'}">${percent / 100}: ${donation}FP</span><br>`;
 }
 
 function getSafe(place){

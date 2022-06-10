@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -72,7 +72,7 @@ export function getContinent(msg){
 				// console.debug(gvg,gvgContainer,document.getElementById("gvgInfoText"));
 			}
 
-		
+
 			// console.debug(gvg,gvgContainer,document.getElementById("gvgInfo"));
 	// var clanHTML = gvg.outerHTML;
 						// console.debug(clanHTML);
@@ -152,62 +152,62 @@ export function getProvinceDetailed(msg){
             const power3 = map.power_values[3];
             map.clans.forEach(clan => {
                 // console.debug(clan);
-    
+
                 Guilds[clan.id] = clan.name;
             });
-    
+
             map.sectors.forEach(sector => {
                 // if(sector.__class__ == 'ClanBattleProvinceBaseSector')
                 // if(sector.is_landing_zone == true)
                 //     console.debug(sector);
-    
+
                 if(sector.is_fogged != true && sector.owner_id > 0){
                     power = 0;
-    
+
                     if(sector.power === 1)
                         power = power1;
                     else if(sector.power === 2)
                         power = power2;
                     else if(sector.power === 3)
                         power = power3;
-                    else 
+                    else
                         power = power0;
-    
+
                     if(GuildSectors[sector.owner_id])
                         GuildSectors[sector.owner_id]++;
                     else
                         GuildSectors[sector.owner_id] = 1;
-    
+
                     if(GuildPower[sector.owner_id])
                         GuildPower[sector.owner_id] += power;
                     else
                         GuildPower[sector.owner_id] = power;
-    
+
                     // console.debug(sector, GuildPower,power);
                     // console.debug(sector, Guilds[sector.owner_id],GuildPower[sector.owner_id],power);
-                }		
+                }
             });
                 // console.debug(MyInfo.guildID,Guilds[MyInfo.guildID],GuildPower[MyInfo.guildID],GuildPower);
-    
+
             // map.top_clans.forEach( (clan,j) => {
             // 	if(clan.id == MyInfo.guildID)
             // 		 power = GuildPower[MyInfo.guildID] * (1 + ((3 - j)/20));
             // });
-    
+
             Guilds.forEach( (clan,j) => {
                 // console.debug(clan);
                 // console.debug(clan,GuildSectors[j],GuildPower[j]);
                 GVGstatus.push({'name': clan,'sectors': GuildSectors[j],'power': GuildPower[j]});
             });
-    
+
             GVGstatus.sort(function(a, b){return b.power - a.power});
-    
+
             GVGstatus.forEach( (clan,j) => {
                 // if(j < 3) clan.power =  Math.round(clan.power*(1 + ((3 - j)/20)));
                 if(j < 3) clan.power = BigNumber(clan.power).times(1 + ((3 - j)/20)).dp(0);
                 if(clan.name == MyInfo.guild) gvgPower[map.era] = clan.power;
             });
-    
+
             // if(!gvgPower[map.era]){
             // 	gvgPower.push([map.era,Math.round(power)]);
             // }
@@ -224,13 +224,13 @@ export function getProvinceDetailed(msg){
             });
                 // console.debug(gvgPower);
             clanHTML += `<br>Total: ${total}</p>`;
-    
+
             // GuildPower.forEach( (clan,j) => {
             // 	// console.debug(clan);
             // 	console.debug(Guilds[j],GuildSectors[j],clan);
             // });
-    
-    
+
+
                 clanHTML += `<br>`;
                 clanHTML += `<div id="gvgText" class="collapse ${collapse.collapseGVG ? '' : 'show'}"><p><strong>${fGVGagesname(map.era)} <span data-i18n="livestatus">Live Status</span></strong></p><p id="gvgAgeText" style="height: ${toolOptions.gvgSize}px" class="overflow">`;
                 // clanHTML += `<strong>${map.era}</strong><br>`;
@@ -239,7 +239,7 @@ export function getProvinceDetailed(msg){
                 });
             // }
             // clanHTML += `<br>`;
-    
+
             gvgAges.innerHTML = clanHTML + `</p></div>`;
             if(document.getElementById("gvgTextLabel"))
                 document.getElementById("gvgTextLabel").addEventListener("click", collapse.fCollapseGVG);
@@ -251,7 +251,7 @@ export function getProvinceDetailed(msg){
             });
             resizeObserver.observe(gvgAgeDiv);
             $('body').i18n();
-    
+
         // console.debug(Guilds,GuildSectors,GuildPower,GVGstatus);
         }
         else{
@@ -265,4 +265,3 @@ export function deploySiegeArmy(msg){
 export function grantIndependence(msg){
     console.debug('Grant Freedom',msg);
 }
-
