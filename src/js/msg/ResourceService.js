@@ -85,4 +85,3 @@ function goodsCopy() {
 	selection.addRange(range);
 	document.execCommand("copy");
 }
-

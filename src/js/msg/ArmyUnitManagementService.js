@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -25,7 +25,7 @@ export function armyUnitManagementService(msg){
 	var allUnits = 0;
 	var rogues = 0;
 
-	
+
     if(msg.responseData.counts.length) {
         const army = msg.responseData.counts;
         var armyText = '';
@@ -44,7 +44,7 @@ export function armyUnitManagementService(msg){
                     }
                 }else{
                     if(ArmyUnits[army[j].unitTypeId] == null){
-                        // ArmyUnits.push({'name':entry.player.name}); 
+                        // ArmyUnits.push({'name':entry.player.name});
                         ArmyUnits[army[j].unitTypeId] = units;
                         armyText += `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units}<br>`;
                     }else{
@@ -55,14 +55,14 @@ export function armyUnitManagementService(msg){
                             armyHTML = ``;
                         }
                         armyText += `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units} ` + armyHTML + `<br>`;
-                        
+
                     }
                     // console.debug(army[j],army[j].unitTypeId,army[j].unattached,army[j].attached,units);
                     allUnits += units;
                 }
             }
-        } 
-        
+        }
+
         if(showOptions.showArmy && units){
             var diff = rogues - ArmyUnits["rogue"];
             armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
