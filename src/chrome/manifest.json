@@ -10,7 +10,9 @@
     "description": "Essential Info for Forge of Empires addicts",
     "homepage_url": "https://foe-info.github.io/FoE-Info-Docs/",
     "externally_connectable": {
-        "matches": ["https://*.forgeofempires.com/game/*"]
+        "matches": [
+            "https://*.forgeofempires.com/game/*"
+        ]
     },
     "devtools_page": "devtools.html",
     "options_ui": {
@@ -39,11 +41,17 @@
         "https://discordapp.com/api/webhooks/*",
         "https://discord.com/api/webhooks/*"
     ],
-    "web_accessible_resources": [{
-        "resources": [ "browser-polyfill.js" ],
-        "matches": [ "https://*.forgeofempires.com/*" ]
-      }],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "browser-polyfill.js"
+            ],
+            "matches": [
+                "https://*.forgeofempires.com/*"
+            ]
+        }
+    ],
     "content_security_policy": {
         "extension_pages": "script-src 'self' ; object-src 'self'"
-      }
+    }
 }
