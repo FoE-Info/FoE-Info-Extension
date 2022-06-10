@@ -132,35 +132,6 @@ function save_options() {
     // console.debug(`Value is set to`, value);
   });
 
-  // browser.storage.local.set({
-  //   'targets': targets
-  // }, function() {
-  // // console.debug(`Value is set to`, value);
-  // });
-
-  // browser.storage.local.set({
-  //   'toolOptions': {
-  //     'minSize': toolOptions.minSize
-  //           }
-  // }, function() {
-  // // console.debug(`Value is set to`, value);
-  // });
-
-  //  browser.storage.local.set({
-  //   showOptions: showOptions
-  // }, function() {
-  //   // Update status to let user know options were saved.
-  var status = document.getElementById('status');
-  status.textContent = 'Options saved.';
-  setTimeout(function () {
-    status.innerHTML = '<button class="p-2" id="save">Save</button>';
-    document.getElementById('save').addEventListener('click', save_options);
-  }, 2000);
-  //   console.debug(showOptions);
-  // });
-  // browser.storage.local.get(null, function(items) {
-  //   console.debug(items);
-  // });
 }
 
 // Restores select box and checkbox state using the preferences

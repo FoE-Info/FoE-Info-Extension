@@ -11,7 +11,6 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-// import $ from "jquery";
 import { Tooltip, Alert, Popover } from 'bootstrap';
 import "@wikimedia/jquery.i18n/libs/CLDRPluralRuleParser/src/CLDRPluralRuleParser.js"
 import "@wikimedia/jquery.i18n/src/jquery.i18n";
@@ -568,7 +567,6 @@ export function otherPlayerService(msg) {
 	// MyInfo.guild = msg.responseData.user_data.clan_name;
 	// console.debug('user :', MyInfo.id,MyInfo.name,MyInfo.guild);
 
-	// if (users.checkGC())
 	visitstatsHTML = `<div  role="alert">
 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	<p href="#visitstatsText" data-bs-toggle="collapse"><a href="https://foe.scoredb.io/${GameOrigin}/Player/${PlayerID}" target="_blank"><strong>${PlayerName}</strong></a> (${player.clan && player.clan.name ? player.clan.name : 'NO GUILD'})</p>`;
