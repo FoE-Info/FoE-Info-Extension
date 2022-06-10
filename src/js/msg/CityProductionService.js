@@ -11,42 +11,42 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import {showReward,rewardsArmy,rewardsCity,MilitaryDefs} from "../index.js";
+import { showReward, rewardsArmy, rewardsCity, MilitaryDefs } from "../index.js";
 import { updateGalaxy } from "./StartupService.js";
-import {showOptions} from '../vars/showOptions.js';
+import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
 
-export function pickupProduction(msg){
+export function pickupProduction(msg) {
 
-    if(msg.responseData.militaryProducts.length){
+    if (msg.responseData.militaryProducts.length) {
         var units = msg.responseData.militaryProducts;
         // var numUnits = msg.responseData.militaryProducts.length;
         // var unitsList = {};
         units.forEach(unit => {
             var name = "";
-            if(MilitaryDefs[unit.unitTypeId])
+            if (MilitaryDefs[unit.unitTypeId])
                 name = MilitaryDefs[unit.unitTypeId].name;
             else
                 name = unit.unitTypeId;
-            console.debug(unit.unitTypeId,name)
-            if(rewardsArmy[name])
+            console.debug(unit.unitTypeId, name)
+            if (rewardsArmy[name])
                 rewardsArmy[name]++;
             else
                 rewardsArmy[name] = 1;
         });
     }
-    if(msg.responseData.updatedEntities.length){
+    if (msg.responseData.updatedEntities.length) {
         var rewards = msg.responseData.updatedEntities;
         rewards.forEach(reward => {
             // console.debug(reward.state.current_product.hasOwnProperty('product') , reward.state.current_product.product.hasOwnProperty('resources'));
-            if(reward.state.hasOwnProperty('current_product') && reward.state.current_product.hasOwnProperty('product') && reward.state.current_product.product.hasOwnProperty('resources')){
+            if (reward.state.hasOwnProperty('current_product') && reward.state.current_product.hasOwnProperty('product') && reward.state.current_product.product.hasOwnProperty('resources')) {
                 updateGalaxy(reward.cityentity_id);
                 // var resources = reward.state.current_product.product.resources;
                 // console.debug(resources);
                 Object.keys(reward.state.current_product.product.resources).forEach(resource => {
                     const name = helper.fResourceShortName(resource);
                     // console.debug(name,resource)
-                    if(rewardsCity[name])
+                    if (rewardsCity[name])
                         rewardsCity[name] += reward.state.current_product.product.resources[resource];
                     else
                         rewardsCity[name] = reward.state.current_product.product.resources[resource];
@@ -60,7 +60,7 @@ export function pickupProduction(msg){
     reward.name = '';
     reward.amount = 0;
 
-    if(showOptions.showRewards){
+    if (showOptions.showRewards) {
         showReward(reward);
     }
 

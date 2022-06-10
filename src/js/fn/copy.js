@@ -182,9 +182,9 @@ function copyToClipboard(element) {
 	$("body").append($temp);
 	var html = $(element).html();
 	// if (!element.equals("clipboardText"))
-		addToClipboard(element, html);
-		html = html.replace(/<br>/g, "\n"); // or \r\n
-		html = html.replace(/<\/tr>/g, "\n"); // or \r\n
+	addToClipboard(element, html);
+	html = html.replace(/<br>/g, "\n"); // or \r\n
+	html = html.replace(/<\/tr>/g, "\n"); // or \r\n
 	html = html.replace(/<p>/g, ""); // or \r\n
 	html = html.replace(/<tr>/g, ""); // or \r\n
 	html = html.replace(/<td>/g, ""); // or \r\n
@@ -196,7 +196,7 @@ function copyToClipboard(element) {
 	$temp.val(html).select();
 	document.execCommand("copy");
 	$temp.remove();
-  }
+}
 
 function addToClipboard(element, html) {
 	var clipboard = document.getElementById("clipboard");
@@ -211,11 +211,11 @@ function addToClipboard(element, html) {
 	clipboard.innerHTML += '<br>' + html;
 }
 
-function copyNode(node){
-  let range  =  document.createRange();
-  range.selectNodeContents(node)
-  let select =  window.getSelection()
-  select.removeAllRanges()
-  select.addRange(range)
-  document.execCommand('copy')
+function copyNode(node) {
+	let range = document.createRange();
+	range.selectNodeContents(node)
+	let select = window.getSelection()
+	select.removeAllRanges()
+	select.addRange(range)
+	document.execCommand('copy')
 }
