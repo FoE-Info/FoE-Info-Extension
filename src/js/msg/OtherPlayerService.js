@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -70,7 +70,7 @@ var Goods = {
 	'ba':0,
 	'noage':0
 	};
-	
+
 	export var friends = [];
 	export var guildMembers = [];
 	export var hoodlist = [];
@@ -181,14 +181,14 @@ if(msg.responseData.city_map.entities.length) {
 				if(mapID.state && mapID.state.is_motivated == true) motivated++;
 				if(mapID.state && mapID.state.is_motivated != true) notmotivated++;
 
-				if(CityEntityDefs[mapID.cityentity_id] 
-					&& CityEntityDefs[mapID.cityentity_id].abilities.find(id => id.__class__ == 'PolishableAbility')) 
+				if(CityEntityDefs[mapID.cityentity_id]
+					&& CityEntityDefs[mapID.cityentity_id].abilities.find(id => id.__class__ == 'PolishableAbility'))
 						canBePolished++;
 
-				if(CityEntityDefs[mapID.cityentity_id] 
-					&& CityEntityDefs[mapID.cityentity_id].abilities.find(id => id.__class__ == 'MotivatableAbility')) 
+				if(CityEntityDefs[mapID.cityentity_id]
+					&& CityEntityDefs[mapID.cityentity_id].abilities.find(id => id.__class__ == 'MotivatableAbility'))
 						canBeMotivated++;
-		
+
 				if(cityBuidings[mapID.cityentity_id]){
 					// console.debug(cityBuidings[mapID.cityentity_id]);
 					cityBuidings[mapID.cityentity_id].qty++;
@@ -199,7 +199,7 @@ if(msg.responseData.city_map.entities.length) {
 				}
 				// if(!mapID.connected){
 					// console.debug('disconnected'.mapID);
-				// }else 
+				// }else
 				if(mapID.cityentity_id.substring(0,24) == 'R_MultiAge_Battlegrounds')
 				{
 					// SoH & Great Elephant
@@ -250,7 +250,7 @@ if(msg.responseData.city_map.entities.length) {
 					// if(entity.type == 'street' || entity.type == 'hub_main' || entity.type == 'hub_part' || entity.type == 'off_grid'){
 						// break;
 					// }
-					
+
 					if(entity.entity_levels){
 						forgePoints = 0;
 						const production = entity.entity_levels;
@@ -262,10 +262,10 @@ if(msg.responseData.city_map.entities.length) {
 									// console.debug(production[mapID.level].production_values[value].value);
 								}
 							}
-							if(forgePoints && 
-								mapID.state.current_product && 
-								mapID.state.current_product.product && 
-								mapID.state.current_product.product.resources && 
+							if(forgePoints &&
+								mapID.state.current_product &&
+								mapID.state.current_product.product &&
+								mapID.state.current_product.product.resources &&
 								mapID.state.current_product.product.resources.strategy_points){
 									console.debug(mapID);
 									visitForgePoints +=  forgePoints;
@@ -279,10 +279,10 @@ if(msg.responseData.city_map.entities.length) {
 							}
 						}
 					}
-					
+
 					if(entity.available_products && entity.available_products[0].__class__ == 'CityEntityClanPowerProduct'){
 					// console.debug(CityEntityDefs[mapID.cityentity_id].name,entity);
-						
+
 						if(entity.entity_levels[mapID.level].__class__ == 'ClanPowerProductionEntityLevel')
 							clanPower += entity.entity_levels[mapID.level].clan_power;
 						if(DEV && checkDebug()){
@@ -344,7 +344,7 @@ if(msg.responseData.city_map.entities.length) {
 								for(var j = 0; j < bonusAr.boostHints.length; j++){
 									if(bonusAr.boostHints[j].boostHintEraMap[entityAge])
 										boost = bonusAr.boostHints[j].boostHintEraMap[entityAge];
-									else 
+									else
 										boost = bonusAr.boostHints[j].boostHintEraMap['AllAge'];
 									totalboost += fBoost(boost);
 								}
@@ -436,7 +436,7 @@ if(msg.responseData.city_map.entities.length) {
 				else{
 					// console.debug(mapID.cityentity_id,CityEntityDefs[mapID.cityentity_id]);
 				}
-				
+
 				if(mapID.state.current_product)
 				{
 					forgePoints = 0;
@@ -456,7 +456,7 @@ if(msg.responseData.city_map.entities.length) {
 							// 	Coins += mapID.state.current_product.product.resources.money;
 						}
 					}
-					
+
 					if(mapID.state.current_product.goods)
 					{
 						// console.debug(mapID.state.current_product.goods);
@@ -489,7 +489,7 @@ if(msg.responseData.city_map.entities.length) {
 						// 	Coins += mapID.state.current_product.product.resources.money;
 					}
 				}
-				
+
 				if(mapID.bonus)
 				{
 					if(mapID.bonus.type == "contribution_boost")
@@ -552,7 +552,7 @@ if(msg.responseData.city_map.entities.length) {
 				// if( helper.fGBname(mapID.cityentity_id).includes("Sun Temple")){
 				// 	console.debug("Sun Temple",CityEntityDefs[mapID.cityentity_id],mapID)
 				// }
-				
+
 		});
 
 	    // if(visitAD.length > 0){
@@ -574,7 +574,7 @@ if(msg.responseData.city_map.entities.length) {
 	// MyInfo.id = msg.responseData.user_data.player_id;
 	// MyInfo.guild = msg.responseData.user_data.clan_name;
 	// console.debug('user :', MyInfo.id,MyInfo.name,MyInfo.guild);
-	
+
 	// if (users.checkGC())
 	visitstatsHTML = `<div  role="alert">
 	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -584,7 +584,7 @@ if(msg.responseData.city_map.entities.length) {
 		visitstatsHTML += `<button type="button" class="badge rounded-pill bg-dark right-button" id="guildPostID">Guild</button>`;
 	}
 
-	
+
 
 	visitstatsHTML += '<div id="visitstatsText" class="collapse show">';
 	// else
@@ -593,7 +593,7 @@ if(msg.responseData.city_map.entities.length) {
 	// console.debug(player.name,player.player_id,friends,CityProtections);
 
 	html += checkInactivePlunder(hoodlist);
-	if(html == '')	html += checkInactivePlunder(friends);		
+	if(html == '')	html += checkInactivePlunder(friends);
 	if(html == '')	html += checkInactivePlunder(guildMembers);
 	visitstatsHTML += html;
 	if(CityProtections.length){
@@ -611,19 +611,19 @@ if(msg.responseData.city_map.entities.length) {
 				var days = Math.floor(diff / 86400);
 				if (days) diffText += `${days} ${days > 1 ? 'Days' : 'Day'} `;
 
-				// get hours        
-				var hours = Math.floor(diff / 3600) % 24;        
-				// document.write("<br>Difference (Hours): "+hours);  
+				// get hours
+				var hours = Math.floor(diff / 3600) % 24;
+				// document.write("<br>Difference (Hours): "+hours);
 				if(hours) diffText += `${hours}hr `;
-				
+
 				// get minutes
 				var minutes = Math.floor(diff / 60) % 60;
-				// document.write("<br>Difference (Minutes): "+minutes);  
+				// document.write("<br>Difference (Minutes): "+minutes);
 				if(!days && minutes) diffText += `${minutes}min `;
-			
+
 				// get seconds
 				var seconds = Math.floor(diff) % 60;
-				// document.write("<br>Difference (Seconds): "+seconds);  
+				// document.write("<br>Difference (Seconds): "+seconds);
 				if(!days && !hours && seconds) diffText += `${seconds}sec`;
 				visitstatsHTML += `<span class='red'>*** <span data-i18n="shield">SHIELD</span> ***</span> ${diffText}<br>`;
 			}
@@ -648,27 +648,27 @@ if(msg.responseData.city_map.entities.length) {
 	// 		}
 	// 	});
 
-	if(Goods.sajm) clanGoodsHTML += `SAJM:${Goods.sajm}<br>`;	
-	if(Goods.sav) clanGoodsHTML += `SAV:${Goods.sav}<br>`;	
+	if(Goods.sajm) clanGoodsHTML += `SAJM:${Goods.sajm}<br>`;
+	if(Goods.sav) clanGoodsHTML += `SAV:${Goods.sav}<br>`;
 		if(Goods.saab) clanGoodsHTML += `SAAB:${Goods.saab}<br>`;
-		if(Goods.sam) clanGoodsHTML += `SAM:${Goods.sam}<br>`;	
-		if(Goods.vf) clanGoodsHTML += `VF:${Goods.vf}<br>`;	
-		if(Goods.of) clanGoodsHTML += `OF:${Goods.of}<br>`;	
-		if(Goods.af) clanGoodsHTML += `AF:${Goods.af}<br>`;	
-		if(Goods.tf) clanGoodsHTML += `FE:${Goods.tf}<br>`;	
-		if(Goods.te) clanGoodsHTML += `TE:${Goods.te}<br>`;	
-		if(Goods.ce) clanGoodsHTML += `CE:${Goods.ce}<br>`;	
-		if(Goods.pme) clanGoodsHTML += `PME:${Goods.pme}<br>`;	
-		if(Goods.me) clanGoodsHTML += `ME:${Goods.me}<br>`;	
-		if(Goods.pe) clanGoodsHTML += `PE:${Goods.pe}<br>`;	
-		if(Goods.ina) clanGoodsHTML += `IndA:${Goods.ina}<br>`;	
-		if(Goods.cma) clanGoodsHTML += `CA:${Goods.cma}<br>`;	
-		if(Goods.lma) clanGoodsHTML += `LMA:${Goods.lma}<br>`;	
-		if(Goods.hma) clanGoodsHTML += `HMA:${Goods.hma}<br>`;	
-		if(Goods.ema) clanGoodsHTML += `EMA:${Goods.ema}<br>`;	
-		if(Goods.ia) clanGoodsHTML += `IA:${Goods.ia}<br>`;	
+		if(Goods.sam) clanGoodsHTML += `SAM:${Goods.sam}<br>`;
+		if(Goods.vf) clanGoodsHTML += `VF:${Goods.vf}<br>`;
+		if(Goods.of) clanGoodsHTML += `OF:${Goods.of}<br>`;
+		if(Goods.af) clanGoodsHTML += `AF:${Goods.af}<br>`;
+		if(Goods.tf) clanGoodsHTML += `FE:${Goods.tf}<br>`;
+		if(Goods.te) clanGoodsHTML += `TE:${Goods.te}<br>`;
+		if(Goods.ce) clanGoodsHTML += `CE:${Goods.ce}<br>`;
+		if(Goods.pme) clanGoodsHTML += `PME:${Goods.pme}<br>`;
+		if(Goods.me) clanGoodsHTML += `ME:${Goods.me}<br>`;
+		if(Goods.pe) clanGoodsHTML += `PE:${Goods.pe}<br>`;
+		if(Goods.ina) clanGoodsHTML += `IndA:${Goods.ina}<br>`;
+		if(Goods.cma) clanGoodsHTML += `CA:${Goods.cma}<br>`;
+		if(Goods.lma) clanGoodsHTML += `LMA:${Goods.lma}<br>`;
+		if(Goods.hma) clanGoodsHTML += `HMA:${Goods.hma}<br>`;
+		if(Goods.ema) clanGoodsHTML += `EMA:${Goods.ema}<br>`;
+		if(Goods.ia) clanGoodsHTML += `IA:${Goods.ia}<br>`;
 		if(Goods.ba) clanGoodsHTML += `>BA:${Goods.ba}`;
-	
+
 
 	visitstatsHTML += `Age: ${msg.responseData.other_player_era.match(/[A-Z][a-z]+|[0-9]+/g).join(" ")}<br>`;
 	visitstatsHTML += `Score: ${player.score > 1000000 ? BigNumber(player.score).div(1000000).toFormat(0) + 'M' : player.score} <br>`;
@@ -696,8 +696,8 @@ if(msg.responseData.city_map.entities.length) {
 			visitstats.id="visit";
 		}
 		// console.debug(plunderList.length,plunderList);
-		
-		
+
+
 		visitstats.innerHTML = visitstatsHTML + `</div></div>`;
 		visitstats.className = "alert alert-dark alert-dismissible show collapsed";
 		// console.debug('clanGoodsHTML',clanGoodsHTML);
@@ -751,7 +751,7 @@ if(msg.responseData.city_map.entities.length) {
 			'AI':visitAILevel,
 			'ATOM':visitAtomLevel,
 			'TOR':visitToRLevel
-		}); 
+		});
 		// console.debug(visitData);
 		if(googleSheetAPI) {
 			document.getElementById("guildPostID").addEventListener("click", () => post_webstore.postPlayerToSS(visitData));
@@ -782,7 +782,7 @@ export function otherPlayerServiceUpdateActions(msg){
 				// title = 'Hood List';
 			// else if(type == 'Friend' && showOptions.showFriends == true)
 				// title = 'Friends List';
-			// else 
+			// else
 				// title = '???';
 				// console.debug(title,friends);
 				// <svg id="friendsicon" href="#friendsText" data-bs-toggle="collapse" class="alert-success bi header-icon" width="22" height="10">
@@ -790,10 +790,10 @@ export function otherPlayerServiceUpdateActions(msg){
 				//     <img href="${!collapse.collapseFriends ? dash : plus}" width="22" height="10"></img>
 				// </svg>
 				// <svg width="22" height="10"><img class="bi header-icon" src="${!collapse.collapseFriends ? dash : plus}"></svg>
-				// <svg width="20" height="20">       
-				//    <image class="alert-success bi header-icon" xlink:href="${!collapse.collapseFriends ? dash : plus}" width="20" height="20"/>    
+				// <svg width="20" height="20">
+				//    <image class="alert-success bi header-icon" xlink:href="${!collapse.collapseFriends ? dash : plus}" width="20" height="20"/>
 				// </svg>
-			
+
 			if(showOptions.showGuild || showOptions.showHood || showOptions.showFriends)
 			{
 				friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="listTextLabel" href="#listsText" data-bs-toggle="collapse">
@@ -801,9 +801,9 @@ export function otherPlayerServiceUpdateActions(msg){
 				<strong>Lists:</strong></p>
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				<div id="listsText" class="collapse ${collapse.collapseLists ? '' : 'show'} resize">`;
-				
+
 				if(showOptions.showFriends)
-				{				
+				{
 					console.debug(collapse.collapseFriends);
 					friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="friendsTextLabel" href="#friendsText" data-bs-toggle="collapse">
 					<svg class="bi header-icon" id="friendsicon" href="#friendsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseFriends ? 'plus' : 'dash'}-circle"/></svg>
@@ -814,7 +814,7 @@ export function otherPlayerServiceUpdateActions(msg){
 					friendsHTML += `</table></div></div>`;
 				}
 				if(showOptions.showGuild)
-				{				
+				{
 					friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="guildTextLabel" href="#guildText" data-bs-toggle="collapse">
 					<svg class="bi header-icon" id="guildicon" href="#guildText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGuild ? 'plus' : 'dash'}-circle"/></svg>
 					<strong>Guild</strong></p>`;
@@ -834,7 +834,7 @@ export function otherPlayerServiceUpdateActions(msg){
 				friendsHTML += `</table></div></div></div></div>`;
 				}
 				if(showOptions.showGuild || showOptions.showHood || showOptions.showFriends)
-				{				
+				{
 					var friendsID = document.getElementById("friends");
 					friendsID.innerHTML = friendsHTML;
 					// console.debug(friendsHTML);
@@ -861,15 +861,15 @@ export function otherPlayerServiceUpdateActions(msg){
 						for (const entry of entries) {
 							if (entry.contentRect && entry.contentRect.height) {
 								setFriendsSize(entry.contentRect.height);
-						} 
+						}
 						}
 					});
 					resizeObserver.observe(friendsDiv);
-				}			
+				}
 }
 		}
-	
-	
+
+
 }
 
 function getFriendsHTML(list){
@@ -913,20 +913,20 @@ function getFriendsHTML(list){
 						// calculate (and subtract) whole days
 						var days = Math.floor(diff / 86400);
 						if (days) diffText += `${days} ${days > 1 ? 'Days' : 'Day'} `;
-						
-						// get hours        
-						var hours = Math.floor(diff / 3600) % 24;        
-						// document.write("<br>Difference (Hours): "+hours);  
+
+						// get hours
+						var hours = Math.floor(diff / 3600) % 24;
+						// document.write("<br>Difference (Hours): "+hours);
 						diffText += `${hours}:`;
-						
+
 						// get minutes
 						var minutes = Math.floor(diff / 60) % 60;
-						// document.write("<br>Difference (Minutes): "+minutes);  
+						// document.write("<br>Difference (Minutes): "+minutes);
 						if(!days) diffText += `${minutes}:`;
-						
+
 						// get seconds
 						var seconds = Math.floor(diff) % 60;
-						// document.write("<br>Difference (Seconds): "+seconds);  
+						// document.write("<br>Difference (Seconds): "+seconds);
 						if(!days && !hours) diffText += `${seconds}`;
 						html += `<tr><td>${entry.name}</td><td><span data-i18n="shield">Shield</span>: ${diffText}</td></tr>`;
 					}
@@ -936,9 +936,9 @@ function getFriendsHTML(list){
 				})
 				if(!match)	 html += `<tr><td>${entry.name}</td></tr>`;
 			}
-			else 
+			else
 			html += `<tr><td>${entry.name}</td></tr>`;
-		}									
+		}
 		else if(!entry.hasOwnProperty('is_active')){
 			html += `<tr><td>${entry.name}</td><td>INACTIVE</td></tr>`;
 			// console.debug(entry);
@@ -947,7 +947,7 @@ function getFriendsHTML(list){
 				html += `<tr><td>${entry.name}</td></tr>`;
 				// console.debug(entry);
 			}
-		else 
+		else
 				console.debug(entry,html);
 		// if(entry.is_self == true && type == 'ClanMember'){
 		// 	setMyGuildPosition(entry.rank);

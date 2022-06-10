@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -27,7 +27,7 @@ import { setBattlegroundSize, toolOptions } from './globals.js';
 import * as post_webstore from './post_webstore.js';
 import * as storage from './storage.js';
 import browser from 'webextension-polyfill';
-     
+
 var heightGBG = toolOptions.battlegroundsSize;
 export var MyGuildPermissions = 0;
 
@@ -38,234 +38,234 @@ function setHeight(){
 
 export function fResourceShortName(name) {
 
-	if (name =="sacrificial_offerings") 
+	if (name =="sacrificial_offerings")
 	{
 		return "Offerings";
-	} 
-	else if (name =="something else") 
+	}
+	else if (name =="something else")
 	{
 		return "something";
-	} 
+	}
 	else if(ResourceNames[name])
 	{
 		return ResourceNames[name];
-	} 
+	}
     else
         return name;
 }
 
 export function fRewardShortName(reward) {
 
-	if (reward =="Fragment of Statue Of Honor Selection Kit") 
+	if (reward =="Fragment of Statue Of Honor Selection Kit")
 	{
 		return "SoH Fragment";
-	} 
-	else if (reward =="Statue Of Honor Selection Kit") 
+	}
+	else if (reward =="Statue Of Honor Selection Kit")
 	{
 		return "SoH Kit";
-	}    
-	else if (reward =="Fragment of The Great Elephant Selection Kit") 
+	}
+	else if (reward =="Fragment of The Great Elephant Selection Kit")
 	{
 		return "Elephant Fragment";
-	}    
-	
-	else if (reward.split(" ")[0] == "1" || reward.split(" ")[0] == "5") 
+	}
+
+	else if (reward.split(" ")[0] == "1" || reward.split(" ")[0] == "5")
 	{
 		return reward.slice(2);
-	} 
-	else if (reward.split(" ")[0] == "5x" || reward.split(" ")[0] == "10") 
+	}
+	else if (reward.split(" ")[0] == "5x" || reward.split(" ")[0] == "10")
 	{
 		return reward.slice(3);
-	} 
-	else if (!isNaN(reward.split(" ")[0])) 
+	}
+	else if (!isNaN(reward.split(" ")[0]))
 	{
 		return reward.slice(reward.indexOf(' ')+1);
-	} 
-    
-	else if (reward.includes("Coins")) 
+	}
+
+	else if (reward.includes("Coins"))
 	{
 		return "Coins";
-	} 
-	else if (reward.includes("Goods")) 
+	}
+	else if (reward.includes("Goods"))
 	{
 		return "Goods";
-	} 
-	else if (reward.includes("Supplies")) 
+	}
+	else if (reward.includes("Supplies"))
 	{
 		return "Supplies";
-	} 
-	else if (reward.includes("Rogue")) 
+	}
+	else if (reward.includes("Rogue"))
 	{
 		return "Rogues";
-	} 
-	else if (reward.includes("Medals")) 
+	}
+	else if (reward.includes("Medals"))
 	{
 		return "Medals";
-	} 
-    
-	// else if (reward =="something else") 
+	}
+
+	// else if (reward =="something else")
 	// {
 	// 	return "something";
-	// } 
-	else if (reward.includes("Forge Points")) 
+	// }
+	else if (reward.includes("Forge Points"))
 	{
 		return "Forge Points";
-	} 
-	// else if (reward =="something else") 
+	}
+	// else if (reward =="something else")
 	// {
 	// 	return "something";
-	// } 
-	else 
+	// }
+	else
 	{
 		return reward;
-	} 
+	}
 }
 
 export function fGBsname(city_entity) {
 
-		if (city_entity =="Castel del Monte") 
+		if (city_entity =="Castel del Monte")
 		{
 			return "CdM";
-		} 
-		else if (city_entity =="Innovation Tower") 
+		}
+		else if (city_entity =="Innovation Tower")
 		{
 			return "Inno";
-		} 
-		else if (city_entity =="Alcatraz") 
+		}
+		else if (city_entity =="Alcatraz")
 		{
 			return "Traz";
-		} 
-		else if (city_entity =="Ch\u00e2teau Frontenac") 
+		}
+		else if (city_entity =="Ch\u00e2teau Frontenac")
 		{
 			return "CF";
-		} 
-		else if (city_entity =="The Arc") 
+		}
+		else if (city_entity =="The Arc")
 		{
 			return "Arc";
-		} 
-		else if (city_entity =="Cape Canaveral") 
+		}
+		else if (city_entity =="Cape Canaveral")
 		{
 			return "Cape";
-		} 
-		else if (city_entity =="Hagia Sophia") 
+		}
+		else if (city_entity =="Hagia Sophia")
 		{
 			return "Hagia";
-		} 
-		else if (city_entity =="Arctic Orangery") 
+		}
+		else if (city_entity =="Arctic Orangery")
 		{
 			return "AO";
-		} 
-		else if (city_entity =="The Kraken") 
+		}
+		else if (city_entity =="The Kraken")
 		{
 			return "Kraken";
-		} 
-		else if (city_entity =="Statue of Zeus") 
+		}
+		else if (city_entity =="Statue of Zeus")
 		{
 			return "Zeus";
-		} 
-		else if (city_entity =="Cathedral of Aachen") 
+		}
+		else if (city_entity =="Cathedral of Aachen")
 		{
 			return "CoA";
-		} 
-		else if (city_entity =="St. Mark's Basilica") 
+		}
+		else if (city_entity =="St. Mark's Basilica")
 		{
 			return "SMB";
-		} 
-		else if (city_entity =="Temple of Relics") 
+		}
+		else if (city_entity =="Temple of Relics")
 		{
 			return "ToR";
-		} 
-		else if (city_entity =="The Blue Galaxy") 
+		}
+		else if (city_entity =="The Blue Galaxy")
 		{
 			return "Galaxy";
-		} 
-		else if (city_entity =="Terracotta Army") 
+		}
+		else if (city_entity =="Terracotta Army")
 		{
 			return "Army";
-		} 
-		else if (city_entity =="Observatory") 
+		}
+		else if (city_entity =="Observatory")
 		{
 			return "Obs";
-		} 
-		else if (city_entity =="Rain Forest Project") 
+		}
+		else if (city_entity =="Rain Forest Project")
 		{
 			return "RF";
-		}	
-		else if (city_entity =="Royal Albert Hall") 
+		}
+		else if (city_entity =="Royal Albert Hall")
 		{
 			return "RAH";
-		} 
-		else if (city_entity =="Lighthouse of Alexandria") 
+		}
+		else if (city_entity =="Lighthouse of Alexandria")
 		{
 			return "LoA";
-		} 
-		else if (city_entity =="Truce Tower") 
+		}
+		else if (city_entity =="Truce Tower")
 		{
 			return "Truce";
-		} 
-		else if (city_entity =="Frauenkirche of Dresden") 
+		}
+		else if (city_entity =="Frauenkirche of Dresden")
 		{
 			return "FoD";
-		} 
-		else if (city_entity =="Saint Basil's Cathedral") 
+		}
+		else if (city_entity =="Saint Basil's Cathedral")
 		{
 			return "Basils";
-		} 
-		else if (city_entity =="Atlantis Museum") 
+		}
+		else if (city_entity =="Atlantis Museum")
 		{
 			return "Atlantis";
-		} 
-		else if (city_entity =="Tower of Babel") 
+		}
+		else if (city_entity =="Tower of Babel")
 		{
 			return "Babel";
-		} 
-		else if (city_entity =="Deal Castle") 
+		}
+		else if (city_entity =="Deal Castle")
 		{
 			return "Deal";
-		} 
-		else if (city_entity =="Himeji Castle") 
+		}
+		else if (city_entity =="Himeji Castle")
 		{
 			return "Himeji";
-		} 
-		else if (city_entity =="Star Gazer") 
+		}
+		else if (city_entity =="Star Gazer")
 		{
 			return "Gazer";
-		} 
-		else if (city_entity =="The Virgo Project") 
+		}
+		else if (city_entity =="The Virgo Project")
 		{
 			return "Virgo";
-		} 
-		else if (city_entity =="Seed Vault") 
+		}
+		else if (city_entity =="Seed Vault")
 		{
 			return "Seed";
-		} 
-		else if (city_entity =="Space Carrier") 
+		}
+		else if (city_entity =="Space Carrier")
 		{
 			return "SC";
-		} 
-		else if (city_entity =="The Habitat") 
+		}
+		else if (city_entity =="The Habitat")
 		{
 			return "Hab";
-		} 
-		else if (city_entity =="Gaea Statue") 
+		}
+		else if (city_entity =="Gaea Statue")
 		{
 			return "Gaea";
-		} 
-		else if (city_entity =="Galata Tower") 
+		}
+		else if (city_entity =="Galata Tower")
 		{
 			return "Galata";
-		} 
-		else if (city_entity =="Flying Island") 
+		}
+		else if (city_entity =="Flying Island")
 		{
 			return "Flying";
-		} 
-		else if (city_entity =="A.I Core") 
+		}
+		else if (city_entity =="A.I Core")
 		{
 			return "AI";
-		} 
-		
+		}
+
 		console.debug(city_entity);
-		return city_entity.slice(0,10);	
+		return city_entity.slice(0,10);
 }
 
 export function fEntityNameTrim(name){
@@ -295,98 +295,98 @@ export function fGBname(city_entity) {
 			return CityEntityDefs[city_entity].name;
 		}
 		// console.debug(city_entity,CityEntityDefs);
-		
-		if (GB_name =="X_AllAge_EasterBonus4") 
+
+		if (GB_name =="X_AllAge_EasterBonus4")
 			GB_name = "Observatory";
-		else if (GB_name =="X_AllAge_Expedition") 
+		else if (GB_name =="X_AllAge_Expedition")
 			GB_name = "Temple of Relics";
-		else if (GB_name =="X_AllAge_Oracle") 
+		else if (GB_name =="X_AllAge_Oracle")
 			GB_name = "Oracle of Delphi";
-		else if (GB_name =="X_AllAge_Galata") 
+		else if (GB_name =="X_AllAge_Galata")
 			GB_name = "Galata Tower";
-			
-		else if (GB_name =="X_BronzeAge_Landmark1") 
+
+		else if (GB_name =="X_BronzeAge_Landmark1")
 			GB_name = "Tower of Babel";
-		else if (GB_name =="X_BronzeAge_Landmark2") 
+		else if (GB_name =="X_BronzeAge_Landmark2")
 			GB_name = "Statue of Zeus";
-		else if (GB_name =="X_IronAge_Landmark1") 
+		else if (GB_name =="X_IronAge_Landmark1")
 			GB_name = "Colosseum";
-		else if (GB_name =="X_IronAge_Landmark2") 
+		else if (GB_name =="X_IronAge_Landmark2")
 			GB_name = "Lighthouse of Alexandria";
-		else if (GB_name =="X_EarlyMiddleAge_Landmark1") 
+		else if (GB_name =="X_EarlyMiddleAge_Landmark1")
 			GB_name = "Hagia Sophia";
-		else if (GB_name =="X_EarlyMiddleAge_Landmark2") 
+		else if (GB_name =="X_EarlyMiddleAge_Landmark2")
 			GB_name = "Cathedral of Aachen";
-        else if (GB_name =="X_EarlyMiddleAge_Landmark3") 
+        else if (GB_name =="X_EarlyMiddleAge_Landmark3")
 			GB_name = "Galata Tower";
-		else if (GB_name =="X_HighMiddleAge_Landmark1") 
+		else if (GB_name =="X_HighMiddleAge_Landmark1")
 			GB_name = "St. Mark's Basilica";
-		else if (GB_name =="X_HighMiddleAge_Landmark3") 
+		else if (GB_name =="X_HighMiddleAge_Landmark3")
 			GB_name = "Notre Dame";
-	   else if (GB_name =="X_LateMiddleAge_Landmark1") 
+	   else if (GB_name =="X_LateMiddleAge_Landmark1")
 	   		GB_name = "St. Basil's Cathedral";
-		else if (GB_name =="X_LateMiddleAge_Landmark3") 
+		else if (GB_name =="X_LateMiddleAge_Landmark3")
 			GB_name = "Castel del Monte";
-		else if (GB_name =="X_ColonialAge_Landmark1") 
+		else if (GB_name =="X_ColonialAge_Landmark1")
 			GB_name = "Frauenkirche of Dresden";
-		else if (GB_name =="X_ColonialAge_Landmark2") 
+		else if (GB_name =="X_ColonialAge_Landmark2")
 			GB_name = "Deal Castle";
-		else if (GB_name =="X_IndustrialAge_Landmark1") 
+		else if (GB_name =="X_IndustrialAge_Landmark1")
 			GB_name = "Royal Albert Hall";
-		else if (GB_name =="X_IndustrialAge_Landmark2") 
+		else if (GB_name =="X_IndustrialAge_Landmark2")
 			GB_name = "Capitol";
-		else if (GB_name =="X_ProgressiveEra_Landmark1") 
+		else if (GB_name =="X_ProgressiveEra_Landmark1")
 			GB_name = "Alcatraz";
-		else if (GB_name =="X_ProgressiveEra_Landmark2") 
+		else if (GB_name =="X_ProgressiveEra_Landmark2")
 			GB_name = "Ch\u00e2teau Frontenac";
-		else if (GB_name =="X_ModernEra_Landmark1") 
+		else if (GB_name =="X_ModernEra_Landmark1")
 			GB_name = "Space Needle";
-		else if (GB_name =="X_ModernEra_Landmark2") 
+		else if (GB_name =="X_ModernEra_Landmark2")
 			GB_name = "Atomium";
-		else if (GB_name =="X_PostModernEra_Landmark1") 
+		else if (GB_name =="X_PostModernEra_Landmark1")
 			GB_name = "Cape Canaveral";
-		else if (GB_name =="X_PostModernEra_Landmark2") 
+		else if (GB_name =="X_PostModernEra_Landmark2")
 			GB_name = "The Habitat";
-		else if (GB_name =="X_ContemporaryEra_Landmark1") 
+		else if (GB_name =="X_ContemporaryEra_Landmark1")
 			GB_name = "Lotus Temple";
-		else if (GB_name =="X_ContemporaryEra_Landmark2") 
+		else if (GB_name =="X_ContemporaryEra_Landmark2")
 			GB_name = "Innovation Tower";
-		else if (GB_name =="X_TomorrowEra_Landmark1") 
+		else if (GB_name =="X_TomorrowEra_Landmark1")
 			GB_name = "Voyager V1";
-		else if (GB_name =="X_TomorrowEra_Landmark2") 
+		else if (GB_name =="X_TomorrowEra_Landmark2")
 			GB_name = "Truce Tower";
-		else if (GB_name =="X_FutureEra_Landmark1") 
+		else if (GB_name =="X_FutureEra_Landmark1")
 			GB_name = "The Arc";
-		else if (GB_name =="X_FutureEra_Landmark2") 
+		else if (GB_name =="X_FutureEra_Landmark2")
 			GB_name = "Rain Forest Project";
-		else if (GB_name =="X_ArcticFuture_Landmark1") 
+		else if (GB_name =="X_ArcticFuture_Landmark1")
 			GB_name = "Gaea Statue";
-		else if (GB_name =="X_ArcticFuture_Landmark2") 
+		else if (GB_name =="X_ArcticFuture_Landmark2")
 			GB_name = "Arctic Orangery";
-		else if (GB_name =="X_ArcticFuture_Landmark3") 
+		else if (GB_name =="X_ArcticFuture_Landmark3")
 			GB_name = "Seed Vault";
-		else if (GB_name =="X_OceanicFuture_Landmark1") 
+		else if (GB_name =="X_OceanicFuture_Landmark1")
 			GB_name = "Atlantis Museum";
-		else if (GB_name =="X_OceanicFuture_Landmark2") 
+		else if (GB_name =="X_OceanicFuture_Landmark2")
 			GB_name = "The Kraken";
-		else if (GB_name =="X_OceanicFuture_Landmark3") 
+		else if (GB_name =="X_OceanicFuture_Landmark3")
 			GB_name = "The Blue Galaxy";
-		else if (GB_name =="X_VirtualFuture_Landmark1") 
+		else if (GB_name =="X_VirtualFuture_Landmark1")
 			GB_name = "Terracotta Army";
-		else if (GB_name =="X_VirtualFuture_Landmark2") 
+		else if (GB_name =="X_VirtualFuture_Landmark2")
 			GB_name = "Himeji Castle";
-		else if (GB_name =="X_SpaceAgeMars_Landmark1") 
+		else if (GB_name =="X_SpaceAgeMars_Landmark1")
 			GB_name = "Star Gazer";
-		else if (GB_name =="X_SpaceAgeMars_Landmark2") 
+		else if (GB_name =="X_SpaceAgeMars_Landmark2")
 			GB_name = "The Virgo Project";
-        else if (GB_name =="X_SpaceAgeVenus_Landmark1") 
+        else if (GB_name =="X_SpaceAgeVenus_Landmark1")
 			GB_name = "Flying Island";
-		else if (GB_name =="X_SpaceAgeJupiterMoon_Landmark1") 
+		else if (GB_name =="X_SpaceAgeJupiterMoon_Landmark1")
 			GB_name = "A.I. Core";
-            
+
 		// console.debug(city_entity,CityEntityDefs);
-		return GB_name;	
-}			
+		return GB_name;
+}
 
 export function fIncidentName(incidentName) {
 	var incident = {};
@@ -535,97 +535,97 @@ export function fIncidentName(incidentName) {
 				incident.type = '?';
 				incident.text = incidentName;
 			}
-			return incident;	
-		}			
+			return incident;
+		}
 
 
 export function fLevelfromAge(age) {
 
-    if (age == "BronzeAge") 
+    if (age == "BronzeAge")
     {
         return 1;
-    } 
-    else if (age == "IronAge") 
+    }
+    else if (age == "IronAge")
     {
         return 2;
-    } 
-    else if (age == "EarlyMiddleAge") 
+    }
+    else if (age == "EarlyMiddleAge")
     {
         return 3;
-    } 
-    else if (age == "HighMiddleAge") 
+    }
+    else if (age == "HighMiddleAge")
     {
         return 4;
-    } 
-    else if (age == "LateMiddleAge") 
+    }
+    else if (age == "LateMiddleAge")
     {
         return 5;
-    } 
-    else if (age == "ColonialAge") 
+    }
+    else if (age == "ColonialAge")
     {
         return 6;
-    } 
-    else if (age == "IndustrialAge") 
+    }
+    else if (age == "IndustrialAge")
     {
         return 7;
-    } 
-    else if (age == "ProgressiveEra") 
+    }
+    else if (age == "ProgressiveEra")
     {
         return 8;
-    } 
-    else if (age == "ModernEra") 
+    }
+    else if (age == "ModernEra")
     {
         return 9;
-    } 
-    else if (age == "PostModernEra") 
+    }
+    else if (age == "PostModernEra")
     {
         return 10;
-    } 
-    else if (age == "ContemporaryEra") 
+    }
+    else if (age == "ContemporaryEra")
     {
         return 11;
-    } 
-    else if (age == "TomorrowEra") 
+    }
+    else if (age == "TomorrowEra")
     {
         return 12;
-    } 
-    else if (age == "FutureEra") 
+    }
+    else if (age == "FutureEra")
     {
         return 13;
-    } 
-    else if (age == "ArcticFuture") 
+    }
+    else if (age == "ArcticFuture")
     {
         return 14;
-    } 
-    else if (age == "OceanicFuture") 
+    }
+    else if (age == "OceanicFuture")
     {
         return 15;
-    } 
-    else if (age == "VirtualFuture") 
+    }
+    else if (age == "VirtualFuture")
     {
         return 16;
-    } 
-    else if (age == "SpaceAgeMars") 
+    }
+    else if (age == "SpaceAgeMars")
     {
         return 17;
-    } 
-    else if (age == "SpaceAgeAsteroidBelt") 
+    }
+    else if (age == "SpaceAgeAsteroidBelt")
     {
         return 18;
-    } 
-    else if (age == "SpaceAgeVenus") 
+    }
+    else if (age == "SpaceAgeVenus")
     {
         return 19;
-    } 
-    else if (age == "SpaceAgeJupiterMoon") 
+    }
+    else if (age == "SpaceAgeJupiterMoon")
     {
         return 20;
-    } 
-// else if (age =="AllAge") 
+    }
+// else if (age =="AllAge")
     // {
     // 	name = "AA";
-    // } 
-    return -1;	
+    // }
+    return -1;
 }
 
 // number of numAges
@@ -635,181 +635,181 @@ export const numAges = 20;
 
 export function fAgefromLevel(level) {
 
-        if (level == 1) 
+        if (level == 1)
         {
             return "BronzeAge";
-        } 
-        else if (level == 2) 
+        }
+        else if (level == 2)
         {
             return "IronAge";
-        } 
-        else if (level == 3) 
+        }
+        else if (level == 3)
         {
             return "EarlyMiddleAge";
-        } 
-        else if (level == 4) 
+        }
+        else if (level == 4)
         {
             return "HighMiddleAge";
-        } 
-        else if (level == 5) 
+        }
+        else if (level == 5)
         {
             return "LateMiddleAge";
-        } 
-        else if (level == 6) 
+        }
+        else if (level == 6)
         {
             return "ColonialAge";
-        } 
-        else if (level == 7) 
+        }
+        else if (level == 7)
         {
             return "IndustrialAge";
-        } 
-        else if (level == 8) 
+        }
+        else if (level == 8)
         {
             return "ProgressiveEra";
-        } 
-        else if (level == 9) 
+        }
+        else if (level == 9)
         {
             return "ModernEra";
-        } 
-        else if (level == 10) 
+        }
+        else if (level == 10)
         {
             return "PostModernEra";
-        } 
-        else if (level == 11) 
+        }
+        else if (level == 11)
         {
             return "ContemporaryEra";
-        } 
-        else if (level == 12) 
+        }
+        else if (level == 12)
         {
             return "TomorrowEra";
-        } 
-        else if (level == 13) 
+        }
+        else if (level == 13)
         {
             return "FutureEra";
-        } 
-        else if (level == 14) 
+        }
+        else if (level == 14)
         {
             return "ArcticFuture";
-        } 
-        else if (level == 15) 
+        }
+        else if (level == 15)
         {
             return "OceanicFuture";
-        } 
-        else if (level == 16) 
+        }
+        else if (level == 16)
         {
             return "VirtualFuture";
-        } 
-        else if (level == 17) 
+        }
+        else if (level == 17)
         {
             return "SpaceAgeMars";
-        } 
-        else if (level == 18) 
+        }
+        else if (level == 18)
         {
             return "SpaceAgeAsteroidBelt";
-        } 
-        else if (level == 19) 
+        }
+        else if (level == 19)
         {
             return "SpaceAgeVenus";
-        } 
-		else if (level == 20) 
+        }
+		else if (level == 20)
 		{
 			return "SpaceAgeJupiterMoon";
-		} 
-			// else if (age =="AllAge") 
+		}
+			// else if (age =="AllAge")
         // {
         // 	name = "AA";
-        // } 
-        return -1;	
+        // }
+        return -1;
     }
 
 export function fGVGagesname(age) {
     var name = age;
 
-        if (age =="BronzeAge") 
+        if (age =="BronzeAge")
         {
             name = "BA";
-        } 
-        else if (age =="IronAge") 
+        }
+        else if (age =="IronAge")
         {
             name = "IA";
-        } 
-        else if (age =="EarlyMiddleAge") 
+        }
+        else if (age =="EarlyMiddleAge")
         {
             name = "EMA";
-        } 
-        else if (age =="HighMiddleAge") 
+        }
+        else if (age =="HighMiddleAge")
         {
             name = "HMA";
-        } 
-        else if (age =="LateMiddleAge") 
+        }
+        else if (age =="LateMiddleAge")
         {
             name = "LMA";
-        } 
-        else if (age =="ColonialAge") 
+        }
+        else if (age =="ColonialAge")
         {
             name = "CA";
-        } 
-        else if (age =="IndustrialAge") 
+        }
+        else if (age =="IndustrialAge")
         {
             name = "IndA";
-        } 
-        else if (age =="ProgressiveEra") 
+        }
+        else if (age =="ProgressiveEra")
         {
             name = "PE";
-        } 
-        else if (age =="ModernEra") 
+        }
+        else if (age =="ModernEra")
         {
             name = "ME";
-        } 
-        else if (age =="PostModernEra") 
+        }
+        else if (age =="PostModernEra")
         {
             name = "PME";
-        } 
-        else if (age =="ContemporaryEra") 
+        }
+        else if (age =="ContemporaryEra")
         {
             name = "CE";
-        } 
-        else if (age =="TomorrowEra") 
+        }
+        else if (age =="TomorrowEra")
         {
             name = "TE";
-        } 
-        else if (age =="FutureEra") 
+        }
+        else if (age =="FutureEra")
         {
             name = "TF";
-        } 
-        else if (age =="ArcticFuture") 
+        }
+        else if (age =="ArcticFuture")
         {
             name = "AF";
-        } 
-        else if (age =="OceanicFuture") 
+        }
+        else if (age =="OceanicFuture")
         {
             name = "OF";
-        } 
-        else if (age =="VirtualFuture") 
+        }
+        else if (age =="VirtualFuture")
         {
             name = "VF";
-        } 
-        else if (age =="SpaceAgeMars") 
+        }
+        else if (age =="SpaceAgeMars")
         {
             name = "SAM";
-        } 
-        else if (age =="SpaceAgeAsteroidBelt") 
+        }
+        else if (age =="SpaceAgeAsteroidBelt")
         {
             name = "SAAB";
-        } 
-        else if (age =="SpaceAgeVenus") 
+        }
+        else if (age =="SpaceAgeVenus")
         {
             name = "SAV";
-        } 
-        else if (age =="SpaceAgeJupiterMoon") 
+        }
+        else if (age =="SpaceAgeJupiterMoon")
         {
             name = "SAJM";
-        } 
-        else if (age =="AllAge") 
+        }
+        else if (age =="AllAge")
         {
             name = "AA";
-        } 
-        return name;	
+        }
+        return name;
     }
 
 export function fGoodsTally(age,good){
@@ -837,8 +837,8 @@ export function fGoodsTally(age,good){
         else if (age == "NoAge") Goods.noage += good;
         else console.debug(age,good);
     }
-    
-    
+
+
 export function fShowIncidents(){
     var rewards = 0;
     var type = '';
@@ -863,21 +863,21 @@ export function fShowIncidents(){
             else
                 var diff = Math.abs(finish);
             // console.debug(start,finish,diff,Date.now()/1000);
-            // get hours        
-            var hours = Math.floor(diff / 3600) % 24;        
-            // document.write("<br>Difference (Hours): "+hours);  
+            // get hours
+            var hours = Math.floor(diff / 3600) % 24;
+            // document.write("<br>Difference (Hours): "+hours);
             diffText += `${hours}:`;
-            
+
             // get minutes
             var minutes = Math.floor(diff / 60) % 60;
-            // document.write("<br>Difference (Minutes): "+minutes);  
+            // document.write("<br>Difference (Minutes): "+minutes);
             diffText += `${minutes}:`;
-        
+
             // get seconds
             var seconds = Math.floor(diff) % 60;
-            // document.write("<br>Difference (Seconds): "+seconds);  
+            // document.write("<br>Difference (Seconds): "+seconds);
             diffText += `${seconds}`;
-    
+
             if(start<0)
             {
                 rewards++;
@@ -950,11 +950,11 @@ export function fHideTooltips(){
 	const incidents_tooltip = document.getElementById('incidents_tooltip');
 	if(incidents_tooltip){
 		const tooltip = Tooltip.getOrCreateInstance(incidents_tooltip);
-		
+
 		// myTooltipEl.addEventListener('hidden.bs.tooltip', () => {
 		//   // do something...
 		// })
-		
+
 		tooltip.hide();
 	}
 }
@@ -975,7 +975,7 @@ export function fshowBattleground(){
 	<p id="battlegroundTextLabel" href="#battlegroundCollapse" aria-expanded="true" aria-controls="battlegroundText" data-bs-toggle="collapse">
 	<svg class="bi header-icon" id="battlegroundicon" href="#battlegroundCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBattleground ? 'plus' : 'dash'}-circle"/></svg>
 	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
-    
+
     if(url.sheetGuildURL)
         battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
     else
@@ -994,7 +994,7 @@ export function fshowBattleground(){
         var negotiationsDiff = 0;
         if(entry.wonNegotiations) wonNegotiations = entry.wonNegotiations;
         if(entry.wonBattles) wonBattles = entry.wonBattles;
-        
+
         // console.debug(playerInfo);
         // console.debug(entry.player.name,BattlegroundPerformance);
 

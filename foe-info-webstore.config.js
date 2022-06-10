@@ -14,7 +14,7 @@ var webpack = require('webpack'),
   // const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin;
   const PACKAGE_NAME = 'FoE-Info';
   const date = new Date().toISOString().substr(0,10);
-    
+
 // const PUBLIC_PATH = process.env.PUBLIC_PATH || '/';
 
 module.exports = {
@@ -28,12 +28,12 @@ module.exports = {
         parse: {},
         compress: {
           pure_funcs: [
-            'console.info', 
+            'console.info',
             'console.debug']},
         format: {
           comments: false,
         },
-        mangle: true, 
+        mangle: true,
         module: true,
         // Deprecated
         output: null,
@@ -116,19 +116,19 @@ module.exports = {
       chunks: ['app'],
       hash: true
     }),
-    new HtmlWebpackPlugin({  
+    new HtmlWebpackPlugin({
       title: PACKAGE_NAME,
       filename: 'options.html',
       template: './src/chrome/options.html',
       chunks: ['options']
     }),
-    new HtmlWebpackPlugin({  
+    new HtmlWebpackPlugin({
       title: PACKAGE_NAME,
       filename: 'popup.html',
       template: './src/chrome/popup.html',
       chunks: ['popup']
     }),
-    new HtmlWebpackPlugin({  
+    new HtmlWebpackPlugin({
       title: PACKAGE_NAME,
       filename: 'devtools.html',
       template: './src/chrome/devtools.html',

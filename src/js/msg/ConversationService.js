@@ -2,10 +2,10 @@
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
  * this source-code uses a copy-left license
- * 
+ *
  * you are welcome to contribute changes here:
  * https://github.com/FoE-Info/FoE-Info-Extension
- * 
+ *
  * AGPL license info:
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
@@ -53,7 +53,7 @@ export function conversationService(msg){
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 `;
 
-                if(helper.checkGBG()) 
+                if(helper.checkGBG())
                     targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID" style="display: ${collapse.collapseTarget ? 'none' : 'block'}">Post</button>`;
 
                 targetsGBG.innerHTML = targetsHTML + `<p id="targetLabel" href="#targetText" aria-expanded="true" data-bs-toggle="collapse">
@@ -70,7 +70,7 @@ export function conversationService(msg){
                     }, 600000);
                 });
                 document.getElementById("targetLabel").addEventListener("click", collapse.fCollapseTarget);
-                if(helper.checkGBG()) 
+                if(helper.checkGBG())
                     document.getElementById("targetPostID").addEventListener("click", post_webstore.postTargetsToDiscord);
             }
           });
@@ -81,7 +81,7 @@ export function conversationService(msg){
 export function getConversation(msg){
     // console.debug(msg);
     if(msg.hasOwnProperty('responseData') && msg.hasOwnProperty('adminIds')){
-        
+
     }
 
     // if title includes donation %, setCurrentPercent for dontation helper
@@ -126,7 +126,7 @@ function getPercent(title){
         else if (title.includes('1.9'))
             setCurrentPercent(190);
         else if (title.includes('200%'))
-            setCurrentPercent(200);        
+            setCurrentPercent(200);
     } catch (error) {
         console.log(error);
     }
