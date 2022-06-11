@@ -2476,6 +2476,7 @@ export function showRewards(rewards) {
 
 
 function rewardObserve() {
+	$("#rewards").i18n();
 	const rewardDiv = document.getElementById("rewardsText");
 	rewardDiv.addEventListener("mouseup", setHeight);
 	const resizeObserver = new ResizeObserver(entries => {
