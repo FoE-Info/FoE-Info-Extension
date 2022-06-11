@@ -2468,7 +2468,7 @@ export function showRewards(rewards) {
 	cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
 	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseRewards ? 'plus' : 'dash'}-circle"/></svg>
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
-	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 	<div id="rewardsText" class="overflow resize collapse ${collapse.collapseRewards ? '' : 'show'}">${text}</div></div>`;
 	rewardObserve();
 	document.getElementById("rewardsTextLabel").addEventListener("click", collapse.fCollapseRewards);
