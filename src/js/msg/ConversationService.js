@@ -11,7 +11,8 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import $ from "jquery";
+// import $ from "jquery";
+import { Tooltip, Alert, Popover } from 'bootstrap';
 import dayjs from 'dayjs';
 import { targets, targetsTopic } from '../index.js';
 import * as collapse from '../fn/collapse.js';
@@ -49,10 +50,8 @@ export function conversationService(msg) {
             // console.debug(message.lastMessage.text);
 
             var timerId = Math.random().toString(36).substr(2, 5);
-            targetsHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                `;
-
+            targetsHTML = `<div id="alert-${timerId}" class="alert alert-info alert-dismissible show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
             if (helper.checkGBG())
                 targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID" style="display: ${collapse.collapseTarget ? 'none' : 'block'}">Post</button>`;
 
@@ -63,10 +62,10 @@ export function conversationService(msg) {
             // <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             // <p id="alertText"><strong>GBG Targets @ ${moment().format('LT')}</strong><br>${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>')}</p></div>`;
             // document.getElementById("targetsText").textContent = message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-            $(document).ready(function () {
+            $('#targets').ready(function () {
                 // show the alert
                 setTimeout(function () {
-                    $(`.alert-${timerId}`).alert('close');
+                    $(`#alert-${timerId}`).alert('close');
                 }, 600000);
             });
             document.getElementById("targetLabel").addEventListener("click", collapse.fCollapseTarget);
