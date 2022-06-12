@@ -73,6 +73,9 @@ export function DonorCopy3() {
 	copyToClipboard('div#donorTextCollapse2');
 }
 
+export function fInvestedCopy() {
+	copyToClipboard('div#investedText');
+}
 
 export function DonationCopy() {
 	var selection = window.getSelection();
@@ -190,8 +193,8 @@ function copyToClipboard(element) {
 	html = html.replace(/<td>/g, ""); // or \r\n
 	html = html.replace(/<\/td>/g, ""); // or \r\n
 	html = html.replace(/<\/p>/g, "\n"); // or \r\n
-	html = html.replace(/<span>/g, ""); // or \r\n
-	html = html.replace(/<\/span>/g, ""); // or \r\n
+	html = html.replace(/<\/?span[^>]*>/g,""); // or \r\n
+	// html = html.replace(/<\/span>/g, ""); // or \r\n
 	console.debug(html);
 	$temp.val(html).select();
 	document.execCommand("copy");

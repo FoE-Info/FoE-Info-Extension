@@ -16,12 +16,13 @@ import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 import * as copy from '../fn/copy.js';
+import * as storage from '../fn/storage.js';
+import * as element from '../fn/AddElement';
 import { City } from './StartupService.js';
 import { setPlayerName, MyInfo, PlayerID, PlayerName, donationDIV, donation2DIV, donationDIV2, GBselected, greatbuilding, donationPercent, donationSuffix, GameOrigin, url } from '../index.js';
 // import '../../css/main.css';
 import BigNumber from "bignumber.js";
 import { friends, guildMembers, hoodlist } from './OtherPlayerService';
-import * as storage from '../fn/storage.js';
 var Top = [0, 0, 0, 0, 0, 0];
 var GBrewards = [0, 0, 0, 0, 0];
 var Reward = [0, 0, 0, 0, 0];
@@ -66,8 +67,8 @@ export function showGreatBuldingDonation() {
     <p id="donorTextLabel" data-bs-toggle="collapse" href="#donorcollapse">
     <svg class="bi header-icon" id="donoricon" href="#donorcollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGBDonors ? 'plus' : 'dash'}-circle"/></svg>
     <strong><span data-i18n="gb">GB</span> Donors:</strong></p>
-    <button type="button" class="badge rounded-pill bg-success float-end right-button" id="donorCopyID"><span data-i18n="copy">Copy</span></button>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+    <button type="button" class="badge rounded-pill bg-success float-end right-button" id="donorCopyID"><span data-i18n="copy">Copy</span></button>`;
+    outputHTML += element.close();
     outputHTML += `<div id="donorcollapse" class="collapse ${collapse.collapseGBDonors ? '' : 'show'}"><p id="donorText">`;
 
     // if (debug == true)
@@ -143,7 +144,7 @@ export function showGreatBuldingDonation() {
         var newdonationHTML = "";
         var copyText = `<div id='copyText'>${showOptions.showGuildPosition && PlayerName == MyInfo.name && MyInfo.guildPosition ? '#' + MyInfo.guildPosition + ' ' : ''}${playerShortName ? playerShortName : PlayerName} ${helper.fGBsname(GBselected.name)} `;
         var olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            ${element.close()}
             <p id="freeTextLabel" href="#donationText3" aria-controls="donationText3" data-bs-toggle="collapse">
             <svg class="bi header-icon" id="donationicon" href="#donationText3" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseDonation ? 'plus' : 'dash'}-circle"/></svg>
             <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>
@@ -339,7 +340,7 @@ export function getConstructionRanking(msg, data) {
     overview.innerHTML = "";
     //greatbuilding.innerHTML = ``;
     outputHTML = `<div class="alert alert-success alert-dismissible show" role="alert">`;
-    outputHTML += `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+    outputHTML += element.close();
     outputHTML += `<button type="button" class="badge rounded-pill bg-success right-button" id="donorCopyID2"><span data-i18n="copy">Copy</span></button>`;
 
     if (msg.responseData.length) {
@@ -459,7 +460,7 @@ function gbTabSafe(place, currentPercent, donation, rewardFP, donateCustom, dona
     }
     let htmlText = `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0" >
     <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [${getPlayerLink()}]${connected == null ? '<br><span class="red">*** DISCONNECTED ***</span>' : ""}${checkInactive()}${maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : ""}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      ${element.close()}
       <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button>
     </div>
     <div class="card-body alert-success p-2">
@@ -510,7 +511,7 @@ function gbTabNotSafe(place, currentPercent, donation, rewardFP, donateCustom, d
     }
     let htmlText = `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0 "  >
            <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span> [${getPlayerLink()}]
-           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+           ${element.close()}
            <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button>
            </div>
            <div class="card-body alert-danger p-2">
@@ -576,7 +577,7 @@ function gbTabEmpty(
     maxlevel
 ) {
     let htmlText = `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0 " >
-           <div class="card-header fw-bold"> GB Donation [${getPlayerLink()}]<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+           <div class="card-header fw-bold"> GB Donation [${getPlayerLink()}]${element.close()}</div>
            <div class="card-body alert-danger p-2">
            <h6 class="card-title mb-0""> <span id="GBselected">${GBselected.name} [${GBselected.level + 1}]</span></h6>
            <table class="table mb-1">

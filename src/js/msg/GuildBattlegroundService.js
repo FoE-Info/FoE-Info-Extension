@@ -17,10 +17,11 @@ import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
+import * as element from '../fn/AddElement';
+import * as storage from '../fn/storage.js';
+import * as post_webstore from '../fn/post.js';
 import { BuildingDefs, VolcanoProvinceDefs, WaterfallProvinceDefs, targets, donationDIV, GameOrigin, EpocTime, url, targetText } from '../index.js';
 import { toolOptions, setBuildingCostSize } from '../fn/globals.js';
-import * as storage from '../fn/storage.js';
-import * as post_webstore from '../fn/post_webstore.js';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 
 export var BattlegroundPerformance = [];
@@ -93,7 +94,7 @@ export function getLeaderboard(msg) {
         // console.debug(guild.clan.name,guild.victoryPointsHourly,guild.victoryPointsTotal)
         leaderboardHTML += `<tr><td>${guild.clan.name}</td><td>${guild.victoryPointsHourly ? guild.victoryPointsHourly : 0}</td><td>${guild.victoryPointsTotal ? guild.victoryPointsTotal : 0}</td></tr>`;
     });
-    output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><strong>GBG Leaderboard:</strong>
+    output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<strong>GBG Leaderboard:</strong>
             <p id="leaderboardText"><table>` + leaderboardHTML + `</table></p></div>`;
 
 }
@@ -109,7 +110,7 @@ export function getState(msg) {
         var totalFights = 0;
         var totalNegs = 0;
         var battlegroundHTML = `<div id="battlegroundResultTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        ${element.close()}
         <p id="battlegroundResultTextLabel" href="#battlegroundTextCollapse" data-bs-toggle="collapse">
         <svg class="bi header-icon" id="battlegroundicon" href="#battlegroundTextCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBattleground ? 'plus' : 'dash'}-circle"/></svg>
         <strong>Battleground Result:</strong></p>`;
@@ -308,8 +309,8 @@ function checkProvinces() {
         targets.appendChild(targetGenerator);
     }
     var timerId = Math.random().toString(36).substr(2, 5);
-    var targetsHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+    var targetsHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="alert">`;
+    targetsHTML += element.close();
     // if(url.sheetGuildURL)
     //     targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID"><span data-i18n="post">Post</span></button>`;
     // else
@@ -362,14 +363,14 @@ function checkProvinces() {
                             provinceData.placedBuildings.forEach(building => {
                                 if (building.id == 'siege_camp') {
                                     if (building.readyAt < EpocTime) {
-                                        // console.debug('siege camp');
+                                        console.debug('siege camp');
                                         campsReady++;
                                     }
                                     else {
                                         var time = new Date(building.readyAt);
                                         campsNotReady++;
-                                        // console.debug(building.readyAt,time);
-                                        // console.debug('siege camp ready ' + timeGBG(time));
+                                        console.debug(building.readyAt,time);
+                                        console.debug('siege camp ready ' + timeGBG(time));
                                     }
                                 }
                             });
@@ -442,7 +443,7 @@ function showBuildingCost(msg) {
         // costsHTML = document.getElementById("buildingCostText").innerHTML;
     }
     else {
-        // costsDiv.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><p id="buildingCostTextLabel" href="#buildingCostCollapse" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse"><svg class="bi alert-warning" id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg><strong>GBG Building Costs:</strong></p><button type="button" class="badge rounded-pill bg-primary right-button" id="buildingCostID"><span data-i18n="copy">Copy</span></button><table id="buildingCostText" class="table"></table></div>`;
+        // costsDiv.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<p id="buildingCostTextLabel" href="#buildingCostCollapse" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse"><svg class="bi alert-warning" id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg><strong>GBG Building Costs:</strong></p><button type="button" class="badge rounded-pill bg-primary right-button" id="buildingCostID"><span data-i18n="copy">Copy</span></button><table id="buildingCostText" class="table"></table></div>`;
         costsDiv.id = "costs";
         content.appendChild(costsDiv);
     }
@@ -494,7 +495,7 @@ function showBuildingCost(msg) {
     // <div class="card-header fw-bold"><span data-i18
 
     costsDiv.innerHTML = `<div class="alert alert-info alert-dismissible  show collapsed" role="alert">
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    ${element.close()}
     <p id="buildingCostTextLabel" href="#buildingCostText" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse">
     <svg class="bi header-icon" id="buildingCosticon" href="#buildingCostText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBuildingCost ? 'plus' : 'dash'}-circle"/></svg>
     <strong>GBG Building Costs:</strong></p>

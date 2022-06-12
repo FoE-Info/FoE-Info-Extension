@@ -13,6 +13,7 @@
  */
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
+import * as element from '../fn/AddElement';
 import { donationDIV2 } from '../index.js';
 import { toolOptions, setExpeditionSize } from '../fn/globals.js';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
@@ -21,7 +22,7 @@ import icons from 'bootstrap-icons/bootstrap-icons.svg';
 export function guildExpeditionService(msg) {
 	var ExpeditionPerformance = [];
 	var expeditionHTML = `<div id="expeditionTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		${element.close()}
 		<p id="expeditionTextLabel" href="#expeditionText" aria-expanded="true" aria-controls="expeditionText" data-bs-toggle="collapse">
 		<svg class="bi header-icon" id="expeditionicon" href="#expeditionText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseExpedition ? 'plus' : 'dash'}-circle"/></svg>
 		<strong>Guild Expedition:</strong></p>
