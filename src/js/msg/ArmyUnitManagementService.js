@@ -15,6 +15,7 @@ import { toolOptions, setArmySize } from '../fn/globals.js';
 import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
+import * as element from '../fn/AddElement';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 
 var ArmyUnits = [];
@@ -68,8 +69,8 @@ export function armyUnitManagementService(msg) {
             armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
             <p id="armyTextLabel" href="#armyText" data-bs-toggle="collapse">
             <svg class="bi header-icon" id="army" href="#armyText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseArmy ? 'plus' : 'dash'}-circle"/></svg>
-            <strong>Army:</strong><span id="armyUnits">${collapse.collapseArmy ? `Rogues: ${rogues} Units: ${allUnits}` : ''}</span></p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+            <strong>Army:</strong><span id="armyUnits">${collapse.collapseArmy ? `Rogues: ${rogues} Units: ${allUnits}` : ''}</span></p>`;
+            armyHTML += element.close();
             armyHTML += `<div id="armyText" style="height: ${toolOptions.armySize}px" class="overflow-y collapse ${collapse.collapseArmy ? '' : 'show'}"><p class="" >`;
             armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class="red">${diff > 0 ? "+" : ""}${diff != 0 ? diff : ""}</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
             armyDIV.innerHTML = armyHTML + armyText + `</p></div></div>`;
