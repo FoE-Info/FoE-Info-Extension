@@ -32,6 +32,7 @@ import { ResourceDefs, availableFP } from './ResourceService.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
+import * as element from '../fn/AddElement';
 import { showOptions } from '../vars/showOptions.js';
 import { clearArmyUnits } from './ArmyUnitManagementService.js';
 
@@ -508,8 +509,8 @@ export function startupService(msg) {
         buildingsReady.sort(function (a, b) { return a.ready - b.ready });
         var buildingsHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="buildingsTextLabel" href="#buildingsText" data-bs-toggle="collapse">
         <svg class="bi header-icon" id="buildingsicon" href="#buildingsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBuildings ? 'plus' : 'dash'}-circle"/></svg>
-        <strong><span data-i18n="collection">Building Collection Times</span>:</strong></p>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+        <strong><span data-i18n="collection">Building Collection Times</span>:</strong></p>`;
+        buildingsHTML += element.close();
         buildingsHTML += `<div id="buildingsText" class="resize collapse ${collapse.collapseBuildings ? '' : 'show'}">`;
         buildingsReady.forEach((entry, id) => {
             var timer = new Date(entry.ready * 1000);
@@ -621,14 +622,14 @@ export function startupService(msg) {
     var userTooltipHTML = `<p class="pop">`;
     if (ignoredPlayers.ignoredByPlayerIds.length > 0) {
         userTooltipHTML += `<strong>Ignored By:</strong><br>`;
-        Object.values(ignoredPlayers.ignoredByPlayerIds).forEach(element => {
-            userTooltipHTML += `<a href="https://foe.scoredb.io/${GameOrigin}/Player/${element}" target="_blank"><strong>${element}</strong></a><br>`;
+        Object.values(ignoredPlayers.ignoredByPlayerIds).forEach(elem => {
+            userTooltipHTML += `<a href="https://foe.scoredb.io/${GameOrigin}/Player/${elem}" target="_blank"><strong>${elem}</strong></a><br>`;
         });
     }
     if (ignoredPlayers.ignoredPlayerIds.length > 0) {
         userTooltipHTML += `<strong>Ignoring:</strong><br>`;
-        Object.values(ignoredPlayers.ignoredPlayerIds).forEach(element => {
-            userTooltipHTML += `<a href="https://foe.scoredb.io/${GameOrigin}/Player/${element}" target="_blank"><strong>${element}</strong></a><br>`;
+        Object.values(ignoredPlayers.ignoredPlayerIds).forEach(elem => {
+            userTooltipHTML += `<a href="https://foe.scoredb.io/${GameOrigin}/Player/${elem}" target="_blank"><strong>${elem}</strong></a><br>`;
         });
     }
     userTooltipHTML += `</p>`;
@@ -639,8 +640,8 @@ export function startupService(msg) {
     var clanGoodsHTML = `<span tabindex="0" id="clanGoods" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
     var totalGoodsHTML = `<span tabindex="0" id="goods" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
-    citystatsHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    <button type="button" class="badge rounded-pill bg-warning float-end right-button" id="citystatsCopyID" style="display: ${collapse.collapseStats ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button>
+    citystatsHTML = element.close();
+    citystatsHTML += `<button type="button" class="badge rounded-pill bg-warning float-end right-button" id="citystatsCopyID" style="display: ${collapse.collapseStats ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button>
     <p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel"><svg class="bi header-icon" id="citystatsicon" href="#citystatsText"
     data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg>`;
     citystatsHTML += userHTML;
@@ -783,7 +784,7 @@ export function boostService(msg) {
             }
         }
         // if(showBoosts)
-        // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>Boosts:<br>Coins ${CoinBoost}%<br>Supply ${SupplyBoost}%<br>Attacking ${Attack}%/${Defense}%<br>Defending ${CityAttack}%/${CityDefense}%</div>`;
+        // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}Boosts:<br>Coins ${CoinBoost}%<br>Supply ${SupplyBoost}%<br>Attacking ${Attack}%/${Defense}%<br>Defending ${CityAttack}%/${CityDefense}%</div>`;
         //console.debug('CoinBoost:', CoinBoost);
         //console.debug('Attack:', Attack);
         //console.debug('CityDefense:', CityDefense);
@@ -837,7 +838,7 @@ export function boostServiceAllBoosts(msg) {
 
         }
         // if(showBoosts)
-        // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>Boosts:<p>Coins ${CoinBoost}%</p><p>Attack ${Attack}%</p><p>Defense ${Defense}%</p></div>`;
+        // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}Boosts:<p>Coins ${CoinBoost}%</p><p>Attack ${Attack}%</p><p>Defense ${Defense}%</p></div>`;
         // console.debug('CoinBoost:', CoinBoost);
         // console.debug('Attack:', Attack);
         // console.debug('CityDefense:', CityDefense);
@@ -1116,8 +1117,8 @@ export function showGalaxy() {
     console.debug('showGalaxy', Galaxy);
     Galaxy.html = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="galaxyTextLabel" href="#galaxyText" data-bs-toggle="collapse">
     <svg class="bi header-icon" id="galaxyicon" href="#galaxyText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGalaxy ? 'plus' : 'dash'}-circle"/></svg>
-    <strong>Galaxy Double Collection:</strong></p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+    <strong>Galaxy Double Collection:</strong></p>}`;
+    Galaxy.html += element.close();
     Galaxy.html += `<div id="galaxyText" class="resize  collapse ${collapse.collapseGalaxy == false ? 'show' : ''}">`;
     Galaxy.html += `<p>Tries Remaining: <span id='galaxyID'>${Galaxy.amount}</span></p><p>`;
     Galaxy.bonus.forEach((entry, id) => {

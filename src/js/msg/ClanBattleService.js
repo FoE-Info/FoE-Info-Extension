@@ -14,6 +14,7 @@
 import { toolOptions, setGVGSize } from '../fn/globals.js';
 import { showOptions } from '../vars/showOptions.js';
 import * as collapse from '../fn/collapse.js';
+import * as element from '../fn/AddElement';
 import { fGVGagesname } from '../fn/helper.js';
 import BigNumber from "bignumber.js";
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
@@ -43,7 +44,7 @@ export function getContinent(msg) {
         gvgContainer = document.createElement('div');
         gvgContainer.id = "gvgInfo";
         gvgContainer.className = "alert alert-success alert-dismissible show collapsed";
-        gvgContainer.innerHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        gvgContainer.innerHTML = `${element.close()}
         <p id="gvgInfoTextLabel" href="#gvgInfoText" data-bs-toggle="collapse">
         <svg class="bi header-icon" id="gvgInfoIcon" href="#gvgInfoText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGVGinfo ? 'plus' : 'dash'}-circle"/></svg>
         <strong><span data-i18n="summary">GvG Summary</span>:</strong></p>`;
@@ -124,7 +125,7 @@ export function getContinent(msg) {
 
 export function getProvinceDetailed(msg) {
     // if(!clanHTML){
-    // clanHTML = `<div id="gvgTitle" class="alert alert-success alert-dismissible show collapsed" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><p id="gvgTextLabel" href="#gvgText" data-bs-toggle="collapse"><svg class="bi alert-warning" id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg><strong>GvG Power:</strong></p>`;
+    // clanHTML = `<div id="gvgTitle" class="alert alert-success alert-dismissible show collapsed" role="alert">${element.close()}<p id="gvgTextLabel" href="#gvgText" data-bs-toggle="collapse"><svg class="bi alert-warning" id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg><strong>GvG Power:</strong></p>`;
     // }
     // var clanHTML = `<p class="alert-success">`;
     // console.debug(msg.responseData);
