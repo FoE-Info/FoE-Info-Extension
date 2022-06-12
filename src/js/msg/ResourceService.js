@@ -3,6 +3,7 @@ import { toolOptions, setGoodsSize } from '../fn/globals.js';
 import * as collapse from '../fn/collapse.js';
 import { fGVGagesname } from '../fn/helper.js';
 import * as storage from '../fn/storage.js';
+import * as element from '../fn/AddElement';
 import { showOptions } from '../vars/showOptions.js';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 
@@ -51,7 +52,7 @@ export function getPlayerResources(msg) {
 
         if (showOptions.showGoods) {
             var goodsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            ${element.close()}
             <button type="button" class="badge rounded-pill bg-success right-button" id="goodsCopyID"><span data-i18n="copy">Copy</span></button>
             <p id="goodsTextLabel" href="#goodsText" data-bs-toggle="collapse">
             <svg class="bi header-icon" id="goodsicon" href="#goodsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGoods ? 'plus' : 'dash'}-circle"/></svg>

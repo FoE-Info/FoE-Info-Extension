@@ -25,8 +25,9 @@ import icons from 'bootstrap-icons/bootstrap-icons.svg';
 import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
-import * as post_webstore from '../fn/post_webstore.js';
+import * as post_webstore from '../fn/post.js';
 import * as copy from '../fn/copy.js';
+import * as element from '../fn/AddElement';
 import { setPlayerName, CityProtections, CityEntityDefs, PlayerName, checkDebug, url, MyInfo, GameOrigin, PlayerID } from '../index.js';
 import { toolOptions, setFriendsSize } from '../fn/globals.js';
 import { fArcname } from './StartupService.js';
@@ -568,7 +569,7 @@ export function otherPlayerService(msg) {
 	// console.debug('user :', MyInfo.id,MyInfo.name,MyInfo.guild);
 
 	visitstatsHTML = `<div  role="alert">
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	${element.close()}
 	<p href="#visitstatsText" data-bs-toggle="collapse"><a href="https://foe.scoredb.io/${GameOrigin}/Player/${PlayerID}" target="_blank"><strong>${PlayerName}</strong></a> (${player.clan && player.clan.name ? player.clan.name : 'NO GUILD'})</p>`;
 
 	if (googleSheetAPI && MyInfo.guild == player.clan.name) {
@@ -704,7 +705,7 @@ export function otherPlayerService(msg) {
 		}
 
 		if (DEV && checkDebug()) {
-			beta.innerHTML = `<div><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><h6>BETA</h6><div class='overflow'>` + visitbetafp + visitbetaad + visitbetagoods + visitbetapower + '</div></div>';
+			beta.innerHTML = `<div>${element.close()}<h6>BETA</h6><div class='overflow'>` + visitbetafp + visitbetaad + visitbetagoods + visitbetapower + '</div></div>';
 			beta.className = 'alert alert-dismissible alert-success';
 		}
 
@@ -789,7 +790,7 @@ export function otherPlayerServiceUpdateActions(msg) {
 			friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="listTextLabel" href="#listsText" data-bs-toggle="collapse">
 				<svg class="bi header-icon" id="listsicon" href="#listsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseLists ? 'plus' : 'dash'}-circle"/></svg>
 				<strong>Lists:</strong></p>
-				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				${element.close()}
 				<div id="listsText" class="collapse ${collapse.collapseLists ? '' : 'show'} resize">`;
 
 			if (showOptions.showFriends) {

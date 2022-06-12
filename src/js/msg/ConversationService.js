@@ -18,7 +18,8 @@ import { targets, targetsTopic } from '../index.js';
 import * as collapse from '../fn/collapse.js';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 import * as helper from '../fn/helper.js';
-import * as post_webstore from '../fn/post_webstore.js';
+import * as post_webstore from '../fn/post.js';
+import * as element from '../fn/AddElement';
 import { setCurrentPercent } from './GreatBuildingsService.js';
 
 
@@ -50,8 +51,8 @@ export function conversationService(msg) {
             // console.debug(message.lastMessage.text);
 
             var timerId = Math.random().toString(36).substr(2, 5);
-            targetsHTML = `<div id="alert-${timerId}" class="alert alert-info alert-dismissible show" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+            targetsHTML = `<div id="alert-${timerId}" class="alert alert-info alert-dismissible show" role="alert">`;
+            targetsHTML += element.close();
             if (helper.checkGBG())
                 targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID" style="display: ${collapse.collapseTarget ? 'none' : 'block'}">Post</button>`;
 
@@ -59,7 +60,7 @@ export function conversationService(msg) {
                 <svg class="bi header-icon" id="targeticon" href="#targetText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTarget ? 'plus' : 'dash'}-circle"/></svg>
                 <strong>GBG Targets</strong> ${message.lastMessage.date}</p><p id="targetText" class="collapse ${collapse.collapseTarget ? '' : 'show'}">${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br><span class="text-muted">by ${message.lastMessage.sender.name}. alert @ ${dayjs().format("HH:mm:ss")}</span></p></div>`;
             // targetsGBG.innerHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="alert">
-            // <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            // ${element.close()}
             // <p id="alertText"><strong>GBG Targets @ ${moment().format('LT')}</strong><br>${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>')}</p></div>`;
             // document.getElementById("targetsText").textContent = message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>');
             $('#targets').ready(function () {

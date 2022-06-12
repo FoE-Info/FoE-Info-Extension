@@ -24,8 +24,9 @@ import * as collapse from './collapse.js';
 import { fCollapseIncidents } from './collapse.js';
 import * as copy from './copy.js';
 import { setBattlegroundSize, toolOptions } from './globals.js';
-import * as post_webstore from './post_webstore.js';
+import * as post_webstore from './post.js';
 import * as storage from './storage.js';
+import * as element from './AddElement';
 import browser from 'webextension-polyfill';
 
 var heightGBG = toolOptions.battlegroundsSize;
@@ -791,7 +792,7 @@ export function fShowIncidents() {
             <p id="incidentsTextLabel" href="#incidentsText" data-bs-toggle="collapse">
 			<svg class="bi header-icon" id="incidentsicon" href="#incidentsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseIncidents ? 'plus' : 'dash'}-circle"/></svg>
 			<span id="incidents_tooltip" title="${tooltipHTML}"><strong><span data-i18n="incident">Incidents</span>:</strong></span> ${type}</p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            ${element.close()}
             <div id="incidentsText" class="collapse ${collapse.collapseIncidents ? '' : 'show'} alert-light">
             ${tooltipHTML}</div></div>`;
 			// outputHTML += '<div id="incidentsText" class="collapse show">';
@@ -859,7 +860,7 @@ export function fshowBattleground() {
 	var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
 	<p id="battlegroundTextLabel" href="#battlegroundCollapse" aria-expanded="true" aria-controls="battlegroundText" data-bs-toggle="collapse">
 	<svg class="bi header-icon" id="battlegroundicon" href="#battlegroundCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBattleground ? 'plus' : 'dash'}-circle"/></svg>
-	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p>${element.close()}`;
 
 	if (url.sheetGuildURL)
 		battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;

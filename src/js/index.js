@@ -34,6 +34,7 @@ import * as copy from './fn/copy.js';
 import { setRewardSize, setToolOptions, setTreasurySize, toolOptions } from './fn/globals.js';
 import * as helper from './fn/helper.js';
 import * as storage from './fn/storage.js';
+import * as element from './fn/AddElement';
 import { armyUnitManagementService } from './msg/ArmyUnitManagementService.js';
 import { getBonuses, getLimitedBonuses } from './msg/BonusService.js';
 import { pickupProduction } from './msg/CityProductionService.js';
@@ -202,28 +203,28 @@ if (darkMode == 'dark') {
 // </div>
 // </div>`;
 
-var element = document.body;
+var newelement = document.body;
 // TODO fix dark theme
 if (darkMode == 'dark') {
-	// 	element.classList.toggle("nord-styles");
-	// 	element.classList.toggle("dark-mode");
-	element.classList.toggle("bg-dark");
+	// 	newelement.classList.toggle("nord-styles");
+	// 	newelement.classList.toggle("dark-mode");
+	newelement.classList.toggle("bg-dark");
 }
 // else
-element.classList.toggle("bootstrap-styles");
-element = document.createElement("div");
-element.className = "p-2";
-title.appendChild(element);
+newelement.classList.toggle("bootstrap-styles");
+newelement = document.createElement("div");
+newelement.className = "p-2";
+title.appendChild(newelement);
 var child = document.createElement("img");
 child.src = "/icons/Icon48.png";
 child.width = '24';
 child.height = '24';
 child.id = "logo";
 if (DEV) child.addEventListener("click", toggleDebug);
-element.appendChild(child);
-element = document.createElement("div");
-element.className = "p-8 title";
-title.appendChild(element);
+newelement.appendChild(child);
+newelement = document.createElement("div");
+newelement.className = "p-8 title";
+title.appendChild(newelement);
 child = document.createElement("h6");
 // TODO fix dark theme
 if (darkMode == 'dark')
@@ -232,16 +233,16 @@ else
 	child.className = 'title';
 // child.innerHTML = pkg.name;
 child.textContent = EXT_NAME;
-element.appendChild(child);
-element = document.createElement("div");
-element.innerHTML = `<svg class="bi text-light" width="24" height="24" fill="currentColor"><use xlink:href="${icons}#tools"/></svg>`;
-element.classList.toggle("p-2");
-// element.className = "p-2";
+newelement.appendChild(child);
+newelement = document.createElement("div");
+newelement.innerHTML = `<svg class="bi text-light" width="24" height="24" fill="currentColor"><use xlink:href="${icons}#tools"/></svg>`;
+newelement.classList.toggle("p-2");
+// newelement.className = "p-2";
 // child = document.createElement("img");
 var svgNS = "http://www.w3.org/2000/svg";
 // child = document.createElementNS(svgNS,"svg");
 // child = document.createElement("div");
-element.id = "go-to-options";
+newelement.id = "go-to-options";
 // child.className = 'text-light';
 // child.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi ${darkMode == 'dark' ? 'text-light bg-dark' : ''}" viewBox="0 0 16 16">
 // <path d="M1 0L0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.356 3.356a1 1 0 0 0 1.414 0l1.586-1.586a1 1 0 0 0 0-1.414l-3.356-3.356a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0zm9.646 10.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708zM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11z"/>
@@ -253,11 +254,11 @@ element.id = "go-to-options";
 //   child.height = '24';
 //   child.id = "tools";
 //   if(DEV)	child.addEventListener("click", toggleDebug);
-//   element.appendChild(child);
+//   newelement.appendChild(child);
 
 
-// element.width = '20';
-// element.height = '20';
+// newelement.width = '20';
+// newelement.height = '20';
 // child.setAttribute("color", "red");
 // child.setAttribute("fill", "blue");
 // child.setAttribute('src',tools );
@@ -265,8 +266,8 @@ element.id = "go-to-options";
 
 
 
-title.appendChild(element);
-console.debug(element, child, tools);
+title.appendChild(newelement);
+console.debug(newelement, child, tools);
 
 
 // city info
@@ -382,11 +383,11 @@ export var modal = document.createElement('div');
 content.appendChild(modal);
 modal.id = "modal";
 
-var element = document.createElement("div");
-element.className = "modal-dialog modal-sm";
-element.id = 'testModal';
-// element.innerHTML = '<div class="modal-dialog modal-sm">...</div>';
-modal.appendChild(element);
+var newelement = document.createElement("div");
+newelement.className = "modal-dialog modal-sm";
+newelement.id = 'testModal';
+// newelement.innerHTML = '<div class="modal-dialog modal-sm">...</div>';
+modal.appendChild(newelement);
 
 
 console.debug('clipboard', clipboard.innerHTML);
@@ -403,8 +404,8 @@ if (showOptions.clipboard) {
 
 	var clipboardHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="clipboardTextLabel" href="#buildingsText" data-bs-toggle="collapse">
 	<svg class="bi header-icon" id="clipboardicon" href="#clipboardText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseClipboard ? 'plus' : 'dash'}-circle"/></svg>
-	<strong><span data-i18n="clipboard">Clipboard</span>:</strong></p>
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+	<strong><span data-i18n="clipboard">Clipboard</span>:</strong></p>`;
+	clipboardHTML += element.close();
 	clipboardHTML += `<button type="button" class="badge rounded-pill bg-warning float-end right-button" id="clipboardCopyID" style="display: ${collapse.collapseClipboard ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button>`
 	clipboardHTML += `<div id="clipboardText" class="resize collapse ${collapse.collapseClipboard ? '' : 'show'}"><p>`;
 
@@ -877,7 +878,7 @@ function handleRequestFinished(request) {
 									// levelText = '';
 									// console.debug(levelText);
 								}
-								outputHTML = `<div class="alert alert-dark alert-dismissible show collapsed" href="#infoText" aria-expanded="true" aria-controls="infoText" data-bs-toggle="collapse" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><p id="infoTextLabel"><strong><span data-i18n="gb">GB</span> <span data-i18n="info">Info</span>:</strong> ${PlayerName} | ${GBselected.name} [${GBselected.level}/${GBselected.max_level}]</p>`;
+								outputHTML = `<div class="alert alert-dark alert-dismissible show collapsed" href="#infoText" aria-expanded="true" aria-controls="infoText" data-bs-toggle="collapse" role="alert">${element.close()}<p id="infoTextLabel"><strong><span data-i18n="gb">GB</span> <span data-i18n="info">Info</span>:</strong> ${PlayerName} | ${GBselected.name} [${GBselected.level}/${GBselected.max_level}]</p>`;
 								outputHTML += `<div id="infoText" class="alert-dark collapse ${collapse.collapseGBInfo ? '' : 'show'}">`;
 							}
 							console.debug(GBselected);
@@ -1005,7 +1006,7 @@ function handleRequestFinished(request) {
 						});
 
 						var culturalHTML = `<div  role="alert">
-								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								${element.close()}
 								<p href="#culturalText" data-bs-toggle="collapse">
 								<svg class="bi header-icon" id="culturalicon" href="#culturalText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseCultural ? 'plus' : 'dash'}-circle"/></svg>
 								<strong><span data-i18n="cultural">Cultural Settlement</span></strong></p>`;
@@ -1135,7 +1136,7 @@ function handleRequestFinished(request) {
         collapse.collapseRewards ? "plus" : "dash"
       }-circle"/></svg>
 										<strong><span data-i18n="reward">REWARDS:</span></strong></p>
-										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+										${element.close()}
 										<div id="rewardsText" class="overflow resize collapse ${
                       collapse.collapseRewards ? "" : "show"
                     }"><p class="overflow" id="rewardsText">${
@@ -1144,7 +1145,7 @@ function handleRequestFinished(request) {
         msg.responseData.strategy_point_amount
       }FP</p></div></div>`;
 
-      // cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><strong><span data-i18n="gb">GB</span> REWARDS:</strong>
+      // cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show" role="alert">${element.close()}<strong><span data-i18n="gb">GB</span> REWARDS:</strong>
       // <p class="overflow" id="rewardsText">${msg.responseData.building_owner.name} ${helper.fGBsname(GBname)} ${msg.responseData.level} - ${msg.responseData.strategy_point_amount}FP</p></div>` + cityrewards.innerHTML;
       document
         .getElementById("rewardsTextLabel")
@@ -1223,28 +1224,19 @@ function handleRequestFinished(request) {
         invested,
         rewardBonus
       );
-      cityinvestedHTML = `<div id="investedTextLabel" class="alert alert-success alert-dismissible collapsed" role="alert"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
-      cityinvestedHTML += `<p id="investedTextLabel" href="#investedText" aria-expanded="true" aria-controls="investedText" data-bs-toggle="collapse">
-										<svg class="bi header-icon" id="investedicon" href="#investedText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-        collapse.collapseInvested ? "plus" : "dash"
-      }-circle"/></svg>
-										<strong>FP Status:</strong>
-										<span id="onHandFP">${
-                      !collapse.collapseInvested
-                        ? availablePacksFP + availableFP
-                        : ""
-                    }</span></p>`;
-      cityinvestedHTML += `<div id="investedText" class="collapse ${
-        collapse.collapseInvested ? "show" : ""
-      }">`;
-      cityinvestedHTML += `On Hand FP: <span id="onHandFP2">${
-        availablePacksFP + availableFP
-      }</span><br>`;
+      cityinvestedHTML = `<div id="investedDiv" class="alert alert-success alert-dismissible collapsed" role="alert">`;
+	  cityinvestedHTML += element.close();
+      cityinvestedHTML += `<p id="investedTextLabel" href="#investedText" aria-expanded="true" aria-controls="investedText" data-bs-toggle="collapse">`;
+	  cityinvestedHTML += element.icon('investedicon','investedText',collapse.collapseInvested);
+	  cityinvestedHTML += `<strong>FP Status: </strong><span id="onHandFP">${collapse.collapseInvested ? availablePacksFP + availableFP : ""}</span></p>`;
+		cityinvestedHTML += element.copy('investedCopyID','info','right',collapse.collapseInvested);
+		cityinvestedHTML += `<div id="investedText" class="collapse ${collapse.collapseInvested ? "" : "show"}">`;
+      cityinvestedHTML += `On Hand FP: <span id="onHandFP2">${availablePacksFP + availableFP}</span><br>`;
       cityinvestedHTML += `FP Invested: ${invested} (${numGB} GB)<br>`;
       if (City.ArcBonus > 90)
-        cityinvestedHTML += `<span data-i18n="gb">GB</span> Rewards: ${rewardBonus} (+${City.ArcBonus}%)`;
+        cityinvestedHTML += `<span data-i18n="gb">GB</span> <span data-i18n="reward">REWARDS:</span>: ${rewardBonus} (+${City.ArcBonus}%)`;
       else
-        cityinvestedHTML += `<span data-i18n="gb">GB</span> Rewards: ${rewardBonus}`;
+        cityinvestedHTML += `<span data-i18n="gb">GB</span> <span data-i18n="reward">REWARDS:</span>: ${rewardBonus}`;
       cityinvestedHTML += `<br>Total FP: ${
         availablePacksFP + availableFP + Number(rewardBonus)
       }</p>`;
@@ -1253,6 +1245,9 @@ function handleRequestFinished(request) {
       document
         .getElementById("investedTextLabel")
         .addEventListener("click", collapse.fCollapseInvested);
+		document
+        .getElementById("investedCopyID")
+		.addEventListener("click", copy.fInvestedCopy);
     }
 
     /* GvG Info*/
@@ -1471,18 +1466,13 @@ function handleRequestFinished(request) {
       // if(title){
       var friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="friendsTextLabel" href="#friendsText" data-bs-toggle="collapse">
 						<svg class="bi header-icon" id="friendsicon" href="#friendsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-        collapse.collapseFriends ? "plus" : "dash"
-      }-circle"/></svg>
+        collapse.collapseFriends ? "plus" : "dash"}-circle"/></svg>
 						<strong>Guild Members</strong></p>
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						<div id="friendsCopy">${
-              collapse.collapseFriends == false
-                ? '<button type="button" class="badge rounded-pill bg-success right-button" id="friendsCopyID"><span data-i18n="copy">Copy</span></button>'
-                : ""
-            }</div>`;
-      friendsHTML += `<div id="friendsText" class="overflow-y collapse ${
-        collapse.collapseFriends == false ? "show" : ""
-      }"><table id="friendsText2"><tr><th>Name</th><th>Title</th><th>ID</th><th>Era</th><th>Battles</th><th>Score</th></tr>`;
+						${element.close()}
+						<div id="friendsCopy">${collapse.collapseFriends == false
+                ? '<button type="button" class="badge rounded-pill bg-success right-button" id="friendsCopyID"><span data-i18n="copy">Copy</span></button>' : ""}</div>`;
+      friendsHTML += `<div id="friendsText" class="overflow-y collapse ${collapse.collapseFriends == false ? "show" : ""}">
+	  <table id="friendsText2"><tr><th>Name</th><th>Title</th><th>ID</th><th>Era</th><th>Battles</th><th>Score</th></tr>`;
       guildlist.forEach((entry) => {
         friendsHTML += `<tr><td>${entry.name}</td><td>${entry.title}</td><td>${
           entry.player_id
@@ -1514,7 +1504,7 @@ function handleRequestFinished(request) {
         // console.debug('treasury',msg);
         if (!treasuryHTML) {
           treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							${element.close()}
 							<p href="#treasuryLogText" aria-expanded="true" aria-controls="treasuryLogText" data-bs-toggle="collapse">
 							<svg class="bi header-icon" id="treasuryLogicon" href="#treasuryLogText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
             collapse.collapseTreasuryLog ? "plus" : "dash"
@@ -1652,17 +1642,14 @@ function handleRequestFinished(request) {
         treasuryLog.innerHTML = treasuryHTML + `</table>`;
 
       if (showOptions.showContributions) {
-        treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" data-bs-toggle="collapse" role="alert">
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						<button type="button" class="badge rounded-pill bg-success float-end right-button" id="treasuryCopyID"><span data-i18n="copy">Copy</span></button>
-						<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">
-						<svg class="bi header-icon" id="treasuryicon" href="#treasuryText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-          collapse.collapseTreasury ? "plus" : "dash"
-        }-circle"/></svg>
-						<strong>Guild Treasury:</strong></p>`;
-        treasuryHTML += `<div id="treasuryText" class="collapse ${
-          collapse.collapseTreasury ? "" : "show"
-        }"><table id="treasurytable" class="overflow table collapse show"><tr><th>Name</th><th>Medals Spent</th><th>Medals Returned</th><th>Medals Donated</th><th>Medals Total</th><th>Goods Spent GVG</th><th>Goods Returned GVG</th><th>Goods Spent GBG</th><th>Goods Spent GE</th><th>Goods Donated Building</th><th>Goods Donated ???</th><th>Goods Donated</th><th>SAV</th><th>SAAB</th><th>SAM</th><th>VF</th><th>OF</th><th>AF</th><th>TF</th><th>TE</th><th>CE</th><th>PME</th><th>ME</th><th>PE</th><th>IndA</th><th>CA</th><th>LMA</th><th>HMA</th><th>EMA</th><th>IA</th></tr>`;
+        treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" data-bs-toggle="collapse" role="alert">`;
+		treasuryHTML += element.close();
+		treasuryHTML += element.copy('treasuryCopyID','success','right',collapse.collapseTreasury);
+		treasuryHTML += `<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">`;
+		treasuryHTML += element.icon('treasuryicon','treasuryText',collapse.collapseTreasury);
+		treasuryHTML += `<strong>Guild Treasury:</strong></p>`;
+        treasuryHTML += `<div id="treasuryText" class="collapse ${collapse.collapseTreasury ? "" : "show"}">
+			<table id="treasurytable" class="overflow table collapse show"><tr><th>Name</th><th>Medals Spent</th><th>Medals Returned</th><th>Medals Donated</th><th>Medals Total</th><th>Goods Spent GVG</th><th>Goods Returned GVG</th><th>Goods Spent GBG</th><th>Goods Spent GE</th><th>Goods Donated Building</th><th>Goods Donated ???</th><th>Goods Donated</th><th>SAV</th><th>SAAB</th><th>SAM</th><th>VF</th><th>OF</th><th>AF</th><th>TF</th><th>TE</th><th>CE</th><th>PME</th><th>ME</th><th>PE</th><th>IndA</th><th>CA</th><th>LMA</th><th>HMA</th><th>EMA</th><th>IA</th></tr>`;
         GuildDonations.forEach((member) => {
           // rank,name,medals: spent,returned,donated, goods: spent,returned,donated
           if (member[0] != MyInfo.guild)
@@ -1742,18 +1729,14 @@ function handleRequestFinished(request) {
       var treasuryHTML = "";
 
       // if (!treasuryHTML){
-      treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button><p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">
-						<svg class="bi header-icon" id="treasuryicon" href="#treasuryText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-        collapse.collapseTreasury ? "plus" : "dash"
-      }-circle"/></svg>
-						<strong>Guild Treasury:</strong></p><button type="button" class="badge rounded-pill bg-success float-end right-button" id="treasuryCopyID"><span data-i18n="copy">Copy</span></button>`;
-      treasuryHTML += `<div id="treasuryText" style="height: ${
-        toolOptions.treasurySize
-      }px" class="overflow collapse ${
-        collapse.collapseTreasury ? "" : "show"
-      }"><table id="treasurytable">`;
-      // }
+	treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
+						${element.close()}<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">
+						<svg class="bi header-icon" id="treasuryicon" href="#treasuryText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTreasury ? "plus" : "dash"}-circle"/></svg><strong>Guild Treasury:</strong></p>`;
+	treasuryHTML += element.copy('treasuryCopyID', 'success', 'right',collapse.collapseTreasury);
+	treasuryHTML += `<div id="treasuryText" style="height: ${toolOptions.treasurySize}px" class="overflow collapse ${collapse.collapseTreasury ? "" : "show"}"><table id="treasurytable">`;
+	  
+
+	  // }
       // else{
       // treasuryHTML = treasuryHTML.substring(0, treasuryHTML.length - 8);
       // }
@@ -2365,7 +2348,7 @@ export function showReward(reward) {
 	cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-bs-toggle="collapse">
 	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseRewards ? 'plus' : 'dash'}-circle"/></svg>
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	${element.close()}
 	<div id="rewardsText" class="overflow resize collapse ${collapse.collapseRewards ? '' : 'show'}">${text}</div></div>`;
 	rewardObserve();
 	document.getElementById("rewardsTextLabel").addEventListener("click", collapse.fCollapseRewards);
@@ -2373,6 +2356,7 @@ export function showReward(reward) {
 
 export function showRewards(rewards) {
 	var rewardTitle = '';
+	var text = '';
 	// var rewards = [];
 
 	rewards.forEach(reward => {
@@ -2414,7 +2398,6 @@ export function showRewards(rewards) {
 			console.debug('rewardsGeneric:', rewardsGeneric, reward);
 			// rewards = rewardsGeneric;
 		}
-		var text = '';
 		if (Object.keys(rewardsGE).length) {
 			text += '<p><em>GE</em><br>';
 			Object.keys(rewardsGE).forEach(item => {
@@ -2468,7 +2451,7 @@ export function showRewards(rewards) {
 	cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
 	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseRewards ? 'plus' : 'dash'}-circle"/></svg>
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	${element.close()}
 	<div id="rewardsText" class="overflow resize collapse ${collapse.collapseRewards ? '' : 'show'}">${text}</div></div>`;
 	rewardObserve();
 	document.getElementById("rewardsTextLabel").addEventListener("click", collapse.fCollapseRewards);
