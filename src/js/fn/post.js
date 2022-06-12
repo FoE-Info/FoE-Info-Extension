@@ -20,6 +20,7 @@
 // import 'bootstrap';
 // import Discord  from 'discord.js';
 import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index.js';
+import * as element from './AddElement';
 import * as helper from './helper.js';
 import { GBGdata } from '../msg/GuildBattlegroundService.js';
 
@@ -313,7 +314,7 @@ export function postPlayerToSS(visitData) {
 	var googleSheetAPI = url.sheetGuildURL;
 
 	alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		${element.close()}
 		<p id="alertText"><strong>Posting Guild Stats to SS ... </strong><br>${visitData[0].Name}</p></div>`;
 
 	var reqData = {
@@ -332,7 +333,7 @@ export function postPlayerToSS(visitData) {
 			console.debug(oReq.responseText);
 			try {
 				alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
-				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				${element.close()}
 				<p id="alertText"><strong>Guild Stats: </strong><br>${JSON.parse(oReq.responseText).result}
 				</p></div>`;
 			}
