@@ -66,11 +66,11 @@ export function armyUnitManagementService(msg) {
 
         if (showOptions.showArmy && units) {
             var diff = rogues - ArmyUnits["rogue"];
-            armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-            <p id="armyTextLabel" href="#armyText" data-bs-toggle="collapse">
-            <svg class="bi header-icon" id="army" href="#armyText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseArmy ? 'plus' : 'dash'}-circle"/></svg>
-            <strong>Army:</strong><span id="armyUnits">${collapse.collapseArmy ? `Rogues: ${rogues} Units: ${allUnits}` : ''}</span></p>`;
+            armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">`;
             armyHTML += element.close();
+            armyHTML += `<p id="armyTextLabel" href="#armyText" data-bs-toggle="collapse">`;
+            armyHTML += element.icon('armyicon','armyText',collapse.collapseArmy);
+            armyHTML += `<strong>Army:</strong><span id="armyUnits">${collapse.collapseArmy ? `Rogues: ${rogues} Units: ${allUnits}` : ''}</span></p>`;
             armyHTML += `<div id="armyText" style="height: ${toolOptions.armySize}px" class="overflow-y collapse ${collapse.collapseArmy ? '' : 'show'}"><p class="" >`;
             armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class="red">${diff > 0 ? "+" : ""}${diff != 0 ? diff : ""}</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
             armyDIV.innerHTML = armyHTML + armyText + `</p></div></div>`;
