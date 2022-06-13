@@ -634,7 +634,7 @@ export function startupService(msg) {
     }
     userTooltipHTML += `</p>`;
     var fpHTML = `<span tabindex="0" id="fp" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${tooltipHTML.fp}"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
-    var userHTML = `<span tabindex="0" id="user" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom"
+    var userHTML = `<span tabindex="0" id="user" class="pop" data-container="body" data-bs-toggle="" data-bs-placement="bottom"
         title="Playing <strong>FoE</strong> since<br>${(new Date(MyInfo.createdAt * 1000)).toLocaleString()}"
         data-bs-content='${userTooltipHTML}</p>'><strong>${GameOrigin.toUpperCase()} ${MyInfo.name}</strong></span>`;
     var clanGoodsHTML = `<span tabindex="0" id="clanGoods" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
