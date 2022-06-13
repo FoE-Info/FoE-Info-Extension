@@ -38,7 +38,7 @@ import * as element from './fn/AddElement';
 import { armyUnitManagementService } from './msg/ArmyUnitManagementService.js';
 import { getBonuses, getLimitedBonuses } from './msg/BonusService.js';
 import { pickupProduction } from './msg/CityProductionService.js';
-import { deploySiegeArmy, getContinent, getProvinceDetailed, gvgAges, gvgSummary } from './msg/ClanBattleService.js';
+import { deploySiegeArmy, getContinent, getProvinceDetailed, gvgAges, gvgSummary, grantIndependence } from './msg/ClanBattleService.js';
 import { conversationService, getConversation } from './msg/ConversationService.js';
 import { contributeForgePoints, getConstruction, getConstructionRanking, setCurrentPercent } from './msg/GreatBuildingsService.js';
 import { clearBattleground, getBattleground, getBuildings, getLeaderboard, getPlayerLeaderboard, getState, removeSignal, setSignal } from './msg/GuildBattlegroundService.js';
@@ -1229,7 +1229,7 @@ function handleRequestFinished(request) {
       cityinvestedHTML += `<p id="investedTextLabel" href="#investedText" aria-expanded="true" aria-controls="investedText" data-bs-toggle="collapse">`;
 	  cityinvestedHTML += element.icon('investedicon','investedText',collapse.collapseInvested);
 	  cityinvestedHTML += `<strong>FP Status: </strong><span id="onHandFP">${collapse.collapseInvested ? availablePacksFP + availableFP : ""}</span></p>`;
-		cityinvestedHTML += element.copy('investedCopyID','info','right',collapse.collapseInvested);
+		cityinvestedHTML += element.copy('investedCopyID','success','right',collapse.collapseInvested);
 		cityinvestedHTML += `<div id="investedText" class="collapse ${collapse.collapseInvested ? "" : "show"}">`;
       cityinvestedHTML += `On Hand FP: <span id="onHandFP2">${availablePacksFP + availableFP}</span><br>`;
       cityinvestedHTML += `FP Invested: ${invested} (${numGB} GB)<br>`;
