@@ -66,8 +66,10 @@ export function conversationService(msg) {
           document.getElementById("targetLabel").addEventListener("click", collapse.fCollapseTarget);
             if (helper.checkGBG())
                 document.getElementById("targetPostID").addEventListener("click", post_webstore.postTargetsToDiscord);
-                const target = Alert.getOrCreateInstance(`target-list`);
-                target.show();
+                
+                // create alarms for sectors when they open
+                // const target = Alert.getOrCreateInstance(`target-list`);
+                // target.show();
 
         }
     });
