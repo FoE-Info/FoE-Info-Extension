@@ -223,7 +223,7 @@ export function fCollapseArmy() {
       " " +
       document.getElementById("armyUnits3").innerHTML
     : "";
-  element.updateIcon("army", "armyText", collapseArmy);
+  element.updateIcon("armyicon", "armyText", collapseArmy);
 }
 
 export function fCollapseGoods() {
