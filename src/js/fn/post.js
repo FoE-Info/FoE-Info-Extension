@@ -22,6 +22,7 @@
 import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index.js';
 import * as element from './AddElement';
 import * as helper from './helper.js';
+import { Tooltip, Alert, Popover } from 'bootstrap';
 import { GBGdata } from '../msg/GuildBattlegroundService.js';
 
 
@@ -340,12 +341,10 @@ export function postPlayerToSS(visitData) {
 			catch {
 				alerts.innerHTML = oReq.responseText;
 			}
-			$(document).ready(function () {
-				// show the alert
-				setTimeout(function () {
-					$(`.alertText`).alert('close');
-				}, 60000);
-			});
+			setTimeout(function () {
+                const alert = Alert.getOrCreateInstance(`#alertText`);
+                alert.close();
+			}, 60000);
 		}
 	}
 	oReq.send(JSON.stringify(reqData));
