@@ -403,7 +403,7 @@ if (showOptions.clipboard) {
 	//  }
 
 	var clipboardHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="clipboardTextLabel" href="#buildingsText" data-bs-toggle="collapse">
-	<svg class="bi header-icon" id="clipboardicon" href="#clipboardText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseClipboard ? 'plus' : 'dash'}-circle"/></svg>
+	${element.icon('clipboardicon','clipboardText',collapse.collapseClipboard)}
 	<strong><span data-i18n="clipboard">Clipboard</span>:</strong></p>`;
 	clipboardHTML += element.close();
 	clipboardHTML += `<button type="button" class="badge rounded-pill bg-warning float-end right-button" id="clipboardCopyID" style="display: ${collapse.collapseClipboard ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button>`
@@ -1008,7 +1008,7 @@ function handleRequestFinished(request) {
 						var culturalHTML = `<div  role="alert">
 								${element.close()}
 								<p href="#culturalText" data-bs-toggle="collapse">
-								<svg class="bi header-icon" id="culturalicon" href="#culturalText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseCultural ? 'plus' : 'dash'}-circle"/></svg>
+								${element.icon('culturalicon','culturalText',collapse.collapseCultural)}
 								<strong><span data-i18n="cultural">Cultural Settlement</span></strong></p>`;
 
 
@@ -1132,10 +1132,8 @@ function handleRequestFinished(request) {
         oldText.innerHTML;
     } else {
       cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-bs-toggle="collapse">
-										<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-        collapse.collapseRewards ? "plus" : "dash"
-      }-circle"/></svg>
-										<strong><span data-i18n="reward">REWARDS:</span></strong></p>
+	  ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
+	  <strong><span data-i18n="reward">REWARDS:</span></strong></p>
 										${element.close()}
 										<div id="rewardsText" class="overflow resize collapse ${
                       collapse.collapseRewards ? "" : "show"
@@ -1465,13 +1463,10 @@ function handleRequestFinished(request) {
       // console.debug('guildlist',guildlist);
       // if(title){
       var friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="friendsTextLabel" href="#friendsText" data-bs-toggle="collapse">
-						<svg class="bi header-icon" id="friendsicon" href="#friendsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-        collapse.collapseFriends ? "plus" : "dash"}-circle"/></svg>
-						<strong>Guild Members</strong></p>
-						${element.close()}
-						<div id="friendsCopy">${collapse.collapseFriends == false
-                ? '<button type="button" class="badge rounded-pill bg-success right-button" id="friendsCopyID"><span data-i18n="copy">Copy</span></button>' : ""}</div>`;
-      friendsHTML += `<div id="friendsText" class="overflow-y collapse ${collapse.collapseFriends == false ? "show" : ""}">
+		${element.icon('friendsicon','friendsText',collapse.collapseFriends)}<strong>Guild Members</strong></p>
+		${element.close()}<div id="friendsCopy">
+		${element.copy('friendsCopyID','success','right',collapse.collapseFriends)}</div>`;
+      friendsHTML += `<div id="friendsText" class="overflow-y collapse ${collapse.collapseFriends ? "" : "show"}">
 	  <table id="friendsText2"><tr><th>Name</th><th>Title</th><th>ID</th><th>Era</th><th>Battles</th><th>Score</th></tr>`;
       guildlist.forEach((entry) => {
         friendsHTML += `<tr><td>${entry.name}</td><td>${entry.title}</td><td>${
@@ -1730,8 +1725,9 @@ function handleRequestFinished(request) {
 
       // if (!treasuryHTML){
 	treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-						${element.close()}<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">
-						<svg class="bi header-icon" id="treasuryicon" href="#treasuryText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTreasury ? "plus" : "dash"}-circle"/></svg><strong>Guild Treasury:</strong></p>`;
+	${element.close()}<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">`;
+	treasuryHTML += element.icon('treasuryicon','treasuryText',collapse.collapseTreasury);
+	treasuryHTML += `<strong>Guild Treasury:</strong></p>`;
 	treasuryHTML += element.copy('treasuryCopyID', 'success', 'right',collapse.collapseTreasury);
 	treasuryHTML += `<div id="treasuryText" style="height: ${toolOptions.treasurySize}px" class="overflow collapse ${collapse.collapseTreasury ? "" : "show"}"><table id="treasurytable">`;
 	  
