@@ -147,8 +147,9 @@ export function showGreatBuldingDonation() {
             ${element.close()}
             <p id="freeTextLabel" href="#donationText3" aria-controls="donationText3" data-bs-toggle="collapse">
             <svg class="bi header-icon" id="donationicon" href="#donationText3" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseDonation ? 'plus' : 'dash'}-circle"/></svg>
-            <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>
-            <button type="button" class="badge rounded-pill bg-secondary float-end right-button" id="donationCopyID"><span data-i18n="copy">Copy</span></button>`;
+            <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>`;
+            olddonationHTML += element.copy('donationCopyID','secondary','right',collapse.collapseDonation);
+            olddonationHTML += `<div id="donationText3" class="collapse ${collapse.collapseDonation ? '' : 'show'}"><p>${getPlayerLink()}<br>`;
         olddonationHTML += `<div id="donationText3" class="collapse ${collapse.collapseDonation ? '' : 'show'}"><p>${getPlayerLink()}<br>`;
         olddonationHTML += `<span id="GBselected">${GBselected.name} ${GBselected.level + 1}</span></p>`;
         if (GBselected.connected == null) {
