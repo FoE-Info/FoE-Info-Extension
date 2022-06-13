@@ -228,11 +228,8 @@ export function fCollapseArmy() {
 
 export function fCollapseGoods() {
 	collapseGoods = !collapseGoods;
+	document.getElementById("goodsCopyID").style.display = collapseGoods ? 'none' : 'block';
 	element.updateIcon("goodsicon","goodsText",collapseGoods);
-	// console.debug('fCollapseArmy',collapseOptions);
-    // document.getElementById("Goods").innerHTML = collapseGoods
-    //   ? document.getElementById("").innerHTML
-    //   : "";
 }
 
 export function fCollapseStats() {
@@ -304,6 +301,7 @@ export function fCollapseExpedition() {
 
 export function fCollapseTreasury() {
 	collapseTreasury = !collapseTreasury;
+	document.getElementById("treasuryCopyID").style.display = collapseTreasury ? 'none' : 'block';
 	element.updateIcon("treasuryicon","treasuryText",collapseTreasury);
 }
 
