@@ -59,19 +59,16 @@ export function conversationService(msg) {
             targetsGBG.innerHTML = targetsHTML + `<p id="targetLabel" href="#targetText" aria-expanded="true" data-bs-toggle="collapse">
                 <svg class="bi header-icon" id="targeticon" href="#targetText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTarget ? 'plus' : 'dash'}-circle"/></svg>
                 <strong>GBG Targets</strong> ${message.lastMessage.date}</p><p id="targetText" class="collapse ${collapse.collapseTarget ? '' : 'show'}">${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br><span class="text-muted">by ${message.lastMessage.sender.name}. alert @ ${dayjs().format("HH:mm:ss")}</span></p></div>`;
-            // targetsGBG.innerHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="alert">
-            // ${element.close()}
-            // <p id="alertText"><strong>GBG Targets @ ${moment().format('LT')}</strong><br>${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>')}</p></div>`;
-            // document.getElementById("targetsText").textContent = message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-            $('#targets').ready(function () {
-                // show the alert
-                setTimeout(function () {
-                    $(`#alert-${timerId}`).alert('close');
-                }, 600000);
-            });
-            document.getElementById("targetLabel").addEventListener("click", collapse.fCollapseTarget);
+            setTimeout(function () {
+                const alert = Alert.getOrCreateInstance(`#alert-${timerId}`);
+                alert.close();
+            }, 600000);
+          document.getElementById("targetLabel").addEventListener("click", collapse.fCollapseTarget);
             if (helper.checkGBG())
                 document.getElementById("targetPostID").addEventListener("click", post_webstore.postTargetsToDiscord);
+                const target = Alert.getOrCreateInstance(`target-list`);
+                target.show();
+
         }
     });
 
