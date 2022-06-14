@@ -1489,7 +1489,7 @@ function handleRequestFinished(request) {
       $("body").i18n();
     }
   } else if (msg.requestMethod == "getTreasuryLogs") {
-    /*Guild Treasury Logs*/
+    /*Treasury Logs*/
     // var users.checkNull = null;
     if (showOptions.showContributions || showOptions.showLogs) {
       // if(users.checkNull) {
@@ -1504,7 +1504,7 @@ function handleRequestFinished(request) {
 							<svg class="bi header-icon" id="treasuryLogicon" href="#treasuryLogText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
             collapse.collapseTreasuryLog ? "plus" : "dash"
           }-circle"/></svg>
-							<strong>Guild Treasury Log:</strong></p>`;
+							<strong>Treasury Logs:</strong></p>`;
           treasuryHTML += `<table id="treasuryLogText" class="overflow collapse show">`;
         } else {
           treasuryHTML = treasuryHTML.substring(0, treasuryHTML.length - 8);
@@ -1642,8 +1642,8 @@ function handleRequestFinished(request) {
 		treasuryHTML += element.copy('treasuryCopyID','success','right',collapse.collapseTreasury);
 		treasuryHTML += `<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">`;
 		treasuryHTML += element.icon('treasuryicon','treasuryText',collapse.collapseTreasury);
-		treasuryHTML += `<strong>Guild Treasury Contributions:</strong></p>`;
-        treasuryHTML += `<div id="treasuryText" class="collapse ${collapse.collapseTreasury ? "" : "show"}">
+		treasuryHTML += `<strong>Treasury Contributions:</strong></p>`;
+    treasuryHTML += `<div id="treasuryText" class="collapse ${collapse.collapseTreasury ? "" : "show"}">
 			<table id="treasurytable" class="overflow table collapse show"><tr><th>Name</th><th>Medals Spent</th><th>Medals Returned</th><th>Medals Donated</th><th>Medals Total</th><th>Goods Spent GVG</th><th>Goods Returned GVG</th><th>Goods Spent GBG</th><th>Goods Spent GE</th><th>Goods Donated Building</th><th>Goods Donated ???</th><th>Goods Donated</th><th>SAV</th><th>SAAB</th><th>SAM</th><th>VF</th><th>OF</th><th>AF</th><th>TF</th><th>TE</th><th>CE</th><th>PME</th><th>ME</th><th>PE</th><th>IndA</th><th>CA</th><th>LMA</th><th>HMA</th><th>EMA</th><th>IA</th></tr>`;
         GuildDonations.forEach((member) => {
           // rank,name,medals: spent,returned,donated, goods: spent,returned,donated
