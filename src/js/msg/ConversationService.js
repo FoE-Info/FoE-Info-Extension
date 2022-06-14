@@ -62,6 +62,8 @@ export function conversationService(msg) {
             setTimeout(function () {
                 const alert = Alert.getOrCreateInstance(`#alert-${timerId}`);
                 alert.close();
+                alert.dispose();
+                targetsGBG.innerHTML = '';
             }, 600000);
           document.getElementById("targetLabel").addEventListener("click", collapse.fCollapseTarget);
             if (helper.checkGBG())
