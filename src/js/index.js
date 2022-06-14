@@ -943,7 +943,7 @@ function handleRequestFinished(request) {
 						// console.debug('msg:', msg);
 						if (msg.responseData.rankings.length && msg.responseData.category != "clan_battle_clan_global") {
 							for (var j = 0; j < msg.responseData.rankings.length; j++) {
-								if (msg.responseData.rankings[j].player.is_self) {
+								if (msg.responseData.rankings[j].player.hasOwnProperty('is_self')) {
 									if (MyInfo.name != msg.responseData.rankings[j].player.name || MyInfo.id != msg.responseData.rankings[j].player.player_id) {
 										MyInfo.name = msg.responseData.rankings[j].player.name;
 										MyInfo.id = msg.responseData.rankings[j].player.player_id;
@@ -954,15 +954,6 @@ function handleRequestFinished(request) {
 									}
 								}
 							}
-							// 	output.innerHTML = ``;
-							// overview.innerHTML = ``;
-							// cityinvested.innerHTML = ``;
-							// // cityrewards.innerHTML = ``;
-							// incidents.innerHTML = ``;
-							// donationDIV.innerHTML = ``;
-							// greatbuilding.innerHTML = ``;
-							// gvg.innerHTML = ``;
-							// guild.innerHTML = ``;
 						}
 
 						/*OtherPlayer Info/Stats */
