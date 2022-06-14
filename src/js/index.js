@@ -1489,7 +1489,7 @@ function handleRequestFinished(request) {
       $("body").i18n();
     }
   } else if (msg.requestMethod == "getTreasuryLogs") {
-    /*Guild Treasury Logs*/
+    /*Treasury Contributions*/
     // var users.checkNull = null;
     if (showOptions.showContributions || showOptions.showLogs) {
       // if(users.checkNull) {
@@ -1504,7 +1504,7 @@ function handleRequestFinished(request) {
 							<svg class="bi header-icon" id="treasuryLogicon" href="#treasuryLogText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
             collapse.collapseTreasuryLog ? "plus" : "dash"
           }-circle"/></svg>
-							<strong>Guild Treasury Log:</strong></p>`;
+							<strong>Treasury Contributions:</strong></p>`;
           treasuryHTML += `<table id="treasuryLogText" class="overflow collapse show">`;
         } else {
           treasuryHTML = treasuryHTML.substring(0, treasuryHTML.length - 8);
