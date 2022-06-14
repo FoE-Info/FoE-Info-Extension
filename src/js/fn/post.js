@@ -227,13 +227,11 @@ export function postToDiscord(text) {
 export function postTargetsToDiscord() {
 
 	if (!document.getElementById("targetText")) return;
-	// battlegrounds channel
-	// Testing Webhook https://discord.com/api/webhooks/802491154448252939/6fjCqY1Nt6dOEXJJd7BiMa_FcigDyWXK5ffnmL7Dr-xjN1-Ghs3h7q72fwiVitLoNUYu
 
 	var webHookUrl = url.discordTargetURL;
 
-	if (DEV && webHookUrl == "")
-		webHookUrl = "https://discordapp.com/api/webhooks/802491154448252939/6fjCqY1Nt6dOEXJJd7BiMa_FcigDyWXK5ffnmL7Dr-xjN1-Ghs3h7q72fwiVitLoNUYu";
+	// if (DEV && webHookUrl == "")
+	// 	webHookUrl = "";
 
 	var selection = window.getSelection();
 	selection.removeAllRanges();
@@ -344,6 +342,8 @@ export function postPlayerToSS(visitData) {
 			setTimeout(function () {
                 const alert = Alert.getOrCreateInstance(`#alertText`);
                 alert.close();
+                alert.dispose();
+				alerts.innerHTML = '';
 			}, 60000);
 		}
 	}
