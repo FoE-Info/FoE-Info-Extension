@@ -60,9 +60,6 @@ export function conversationService(msg) {
                 <svg class="bi header-icon" id="targeticon" href="#targetText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseTarget ? 'plus' : 'dash'}-circle"/></svg>
                 <strong>GBG Targets</strong> ${message.lastMessage.date}</p><p id="targetText" class="collapse ${collapse.collapseTarget ? '' : 'show'}">${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br><span class="text-muted">by ${message.lastMessage.sender.name}. alert @ ${dayjs().format("HH:mm:ss")}</span></p></div>`;
             setTimeout(function () {
-                const alert = Alert.getOrCreateInstance(`#alert-${timerId}`);
-                alert.close();
-                alert.dispose();
                 targetsGBG.innerHTML = '';
             }, 600000);
           document.getElementById("targetLabel").addEventListener("click", collapse.fCollapseTarget);
