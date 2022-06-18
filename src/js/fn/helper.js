@@ -12,7 +12,7 @@
  * ________________________________________________________________
  */
 // import $ from "jquery";
-import { Tooltip } from 'bootstrap';
+import { Tooltip, Popover } from 'bootstrap';
 // import 'bootstrap';
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
 // import crypto  from 'crypto';
@@ -481,6 +481,10 @@ export function fIncidentName(incidentName) {
 		incident.type = '<strong>N</strong>';
 		incident.text = 'Chest';
 	}
+	else if (incidentName == 'incident_hero') {
+		incident.type = '<strong>E</strong>';
+		incident.text = 'Travel Rations';
+	}
 	else {
 		incident.type = '?';
 		incident.text = incidentName;
@@ -785,13 +789,14 @@ export function fShowIncidents() {
 		// var timer = new Date(Date.now());
 		// output.innerHTML += `<div>Now: ${timer.toUTCString()}</div>`;
 		// console.debug(rewards,type,textCurrent,textComing);
+		// data-bs-placement="bottom"
 		if (rewards) {
-			tooltipHTML = `<p><strong>Available Now:</strong><br>${textCurrent}</p>${textComing != '' ? '<p><strong>Coming Soon:</strong><br>' + textComing + '</p>' : ''}`;
-			tooltipHTML += '<p><strong>Legend:</strong><br>n/N - Nature<br>s/S - Shore<br>w/W - Water<br>r/R - Road<br> E - Event<br>Capitals = Uncommon/Rare Reward</p>';
+			tooltipHTML = `<div><p>${textCurrent}</p>${textComing != '' ? '<p><strong>Coming Soon:</strong><br>' + textComing + '</p>' : ''}`;
+			tooltipHTML += '<p><strong>Legend:</strong><br>n/N - Nature<br>s/S - Shore<br>w/W - Water<br>r/R - Road<br> E - Event<br>Capitals = Uncommon/Rare Reward</p></div>';
 			incidents.innerHTML = `<div id="incidentsTip" class="alert alert-light alert-dismissible show collapsed" role="alert">
             <p id="incidentsTextLabel" href="#incidentsText" data-bs-toggle="collapse">
-			<svg class="bi header-icon" id="incidentsicon" href="#incidentsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseIncidents ? 'plus' : 'dash'}-circle"/></svg>
-			<span id="incidents_tooltip" title="${tooltipHTML}"><strong><span data-i18n="incident">Incidents</span>:</strong></span> ${type}</p>
+			${element.icon('incidentsicon','incidentsText',collapse.collapseIncidents)}
+			<span id="incidents_tooltip" class="pop" data-bs-container="#incidents_tooltip" data-bs-toggle="popover" data-bs-placement="bottom" title="Incidents" data-bs-content="${tooltipHTML}"><strong><span data-i18n="incident">Incidents</span>:</strong></span> ${type}</p>
             ${element.close()}
             <div id="incidentsText" class="collapse ${collapse.collapseIncidents ? '' : 'show'} alert-light">
             ${tooltipHTML}</div></div>`;
@@ -808,11 +813,14 @@ export function fShowIncidents() {
 			const incidents_tooltip = document.getElementById('incidents_tooltip');
 			if (incidents_tooltip) {
 				const options = {
+					trigger: "hover focus",
 					html: true,
-					delay: { "show": 200, "hide": 500 }
+					delay: { "show": 100, "hide": 300 }
 				};
-				const tooltip = new Tooltip(incidents_tooltip, options);
+				// const tooltip = new Tooltip(incidents_tooltip, options);
+				const popover = new Popover(incidents_tooltip, options);
 			}
+
 
 			// $('#incidents_tooltip').tooltip({
 			//     content: function(){
@@ -832,16 +840,10 @@ export function fShowIncidents() {
 
 
 export function fHideTooltips() {
-	// jQuery('#incidents_tooltip').tooltip('hide');
 	const incidents_tooltip = document.getElementById('incidents_tooltip');
 	if (incidents_tooltip) {
-		const tooltip = Tooltip.getOrCreateInstance(incidents_tooltip);
-
-		// myTooltipEl.addEventListener('hidden.bs.tooltip', () => {
-		//   // do something...
-		// })
-
-		tooltip.hide();
+		const popover = Popover.getOrCreateInstance(incidents_tooltip);
+		popover.hide();
 	}
 }
 
@@ -859,12 +861,12 @@ export function fshowBattleground() {
 	// console.debug(data,BattlegroundPerformance);
 	var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
 	<p id="battlegroundTextLabel" href="#battlegroundCollapse" aria-expanded="true" aria-controls="battlegroundText" data-bs-toggle="collapse">
-	<svg class="bi header-icon" id="battlegroundicon" href="#battlegroundCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBattleground ? 'plus' : 'dash'}-circle"/></svg>
+	${element.icon('battlegroundicon','battlegroundCollapse',collapse.collapseBattleground)}
 	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p>${element.close()}`;
 
 	if (url.sheetGuildURL)
-		battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
-	else
+		battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end mid-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
+	// else
 		battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundCopyID"><span data-i18n="copy">Copy</span></button>`;
 
 	battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info overflow collapse ${collapse.collapseBattleground ? '' : 'show'}"><div id="battlegroundText">`;
@@ -918,7 +920,7 @@ export function fshowBattleground() {
 	donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div></div>`;
 	if (url.sheetGuildURL)
 		document.getElementById("battlegroundPostID").addEventListener("click", post_webstore.postGBGtoSS);
-	else
+	// else
 		document.getElementById("battlegroundCopyID").addEventListener("click", copy.BattlegroundCopy);
 
 	document.getElementById("battlegroundTextLabel").addEventListener("click", collapse.fCollapseBattleground);
