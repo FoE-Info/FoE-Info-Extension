@@ -114,7 +114,9 @@ export function getState(msg) {
         <p id="battlegroundResultTextLabel" href="#battlegroundTextCollapse" data-bs-toggle="collapse">
         <svg class="bi header-icon" id="battlegroundicon" href="#battlegroundTextCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseBattleground ? 'plus' : 'dash'}-circle"/></svg>
         <strong>Battleground Result:</strong></p>`;
-        battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundPostID"><span data-i18n="${url.sheetGuildURL ? 'post">Post' : 'copy">Copy'}</span></button>`;
+        if(url.sheetGuildURL)
+        battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end mid-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
+        battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundCopyID"><span data-i18n="copy">Copy</span></button>`;
         battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive collapse ${collapse.collapseBattleground ? '' : 'show'}"><div class="overflow-y" id="battlegroundText"><table class="gbg-table"><tr><th>Rank</th><th>Member</th><th>Negs</th><th>Fights</th></tr>`
         msg.responseData.playerLeaderboardEntries.forEach(entry => {
             var wonNegotiations = 0;
@@ -133,7 +135,7 @@ export function getState(msg) {
         donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div>`;
         if (url.sheetGuildURL)
             document.getElementById("battlegroundPostID").addEventListener("click", post_webstore.postGBGtoSS);
-        else
+        // else
             document.getElementById("battlegroundCopyID").addEventListener("click", copy.BattlegroundCopy);
         document.getElementById("battlegroundResultTextLabel").addEventListener("click", collapse.fCollapseBattleground);
         msg.responseData.playerLeaderboardEntries.forEach(entry => {
