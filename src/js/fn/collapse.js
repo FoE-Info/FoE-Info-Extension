@@ -12,9 +12,11 @@
  * ________________________________________________________________
  */
 import icons from 'bootstrap-icons/bootstrap-icons.svg';
+import { checkDebug } from '..';
 import * as element from './AddElement';
 
 import * as storage from './storage.js';
+import { Tooltip, Alert, Popover } from 'bootstrap';
 
 export var collapseFriends = false;
 export var collapseGuild = false;
@@ -199,6 +201,7 @@ export function fCollapseGuild() {
 }
 
 export function fCollapseIncidents() {
+	fHideAllTooltips();
 	collapseIncidents = !collapseIncidents;
 	element.updateIcon("incidentsicon","incidentsText",collapseIncidents);
 	// console.debug('collapseIncidents',collapseIncidents);
@@ -233,6 +236,7 @@ export function fCollapseGoods() {
 }
 
 export function fCollapseStats() {
+	fHideAllTooltips();
 	collapseStats = !collapseStats;
 	// console.debug('collapseStats',collapseStats);
 	document.getElementById("citystatsCopyID").style.display = collapseStats ? 'none' : 'block';
@@ -337,3 +341,13 @@ export function fCollapseClipboard() {
 	document.getElementById("clipboardCopyID").style.display = collapseClipboard ? 'none' : 'block';
 	element.updateIcon("clipboardicon","clipboardText",collapseClipboard);
 }
+
+function fHideAllTooltips(){
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+    const popoverList = [...popoverTriggerList].map(popoverEl => Popover.getOrCreateInstance(popoverEl).hide());
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipEl => Tooltip.getOrCreateInstance(tooltipEl).hide());
+	if(checkDebug()) console.debug("fHideAllTooltips");
+}
+
+
