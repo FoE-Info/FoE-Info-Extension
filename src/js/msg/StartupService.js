@@ -595,26 +595,26 @@ export function startupService(msg) {
     // console.debug('tooltipHTML.goods',tooltipHTML.goods);
 
     // if(Goods.sav) goodsHTML += `<span data-bs-toggle="tooltip" title="<p>${tooltipHTML.goods['SpaceAgeVenus']}</p>">SAV:${Goods.sav}</span> `;
-    if (Goods.sajm) goodsHTML += `<span id="sajm" title="${fGoodsText('sajm', tooltipHTML.goods)}">SAJM:${Goods.sajm}</span> `;
-    if (Goods.sav) goodsHTML += `<span id="sav" title="${fGoodsText('sav', tooltipHTML.goods)}">SAV:${Goods.sav}</span> `;
-    if (Goods.saab) goodsHTML += `<span id="saab" title="${fGoodsText('saab', tooltipHTML.goods)}">SAAB:${Goods.saab}</span> `;
-    if (Goods.sam) goodsHTML += `<span id="sam" title="${fGoodsText('sam', tooltipHTML.goods)}">SAM:${Goods.sam}</span> `;
-    if (Goods.vf) goodsHTML += `<span id="vf" title="${fGoodsText('vf', tooltipHTML.goods)}">VF:${Goods.vf}</span> `;
-    if (Goods.of) goodsHTML += `<span id="of" title="${fGoodsText('of', tooltipHTML.goods)}">OF:${Goods.of}</span> `;
-    if (Goods.af) goodsHTML += `<span id="af" title="${fGoodsText('af', tooltipHTML.goods)}">AF:${Goods.af}</span> `;
-    if (Goods.tf) goodsHTML += `<span id="tf" title="${fGoodsText('tf', tooltipHTML.goods)}">FE:${Goods.tf}</span> `;
-    if (Goods.te) goodsHTML += `<span id="te" title="${fGoodsText('te', tooltipHTML.goods)}">TE:${Goods.te}</span> `;
-    if (Goods.ce) goodsHTML += `<span id="ce" title="${fGoodsText('ce', tooltipHTML.goods)}">CE:${Goods.ce}</span> `;
-    if (Goods.pme) goodsHTML += `<span id="pme" title="${fGoodsText('pme', tooltipHTML.goods)}">PME:${Goods.pme}</span> `;
-    if (Goods.me) goodsHTML += `<span id="me" title="${fGoodsText('me', tooltipHTML.goods)}">ME:${Goods.me}</span> `;
-    if (Goods.pe) goodsHTML += `<span id="pe" title="${fGoodsText('pe', tooltipHTML.goods)}">PE:${Goods.pe}</span> `;
-    if (Goods.ina) goodsHTML += `<span id="ina" title="${fGoodsText('ina', tooltipHTML.goods)}">IndA:${Goods.ina}</span> `;
-    if (Goods.cma) goodsHTML += `<span id="cma" title="${fGoodsText('ca', tooltipHTML.goods)}">CA:${Goods.cma}</span> `;
-    if (Goods.lma) goodsHTML += `<span id="lma" title="${fGoodsText('lma', tooltipHTML.goods)}">LMA:${Goods.lma}</span> `;
-    if (Goods.hma) goodsHTML += `<span id="hma" title="${fGoodsText('hma', tooltipHTML.goods)}">HMA:${Goods.hma}</span> `;
-    if (Goods.ema) goodsHTML += `<span id="ema" title="${fGoodsText('ema', tooltipHTML.goods)}">EMA:${Goods.ema}</span> `;
-    if (Goods.ia) goodsHTML += `<span id="ia" title="${fGoodsText('ia', tooltipHTML.goods)}">IA:${Goods.ia}</span> `;
-    if (Goods.ba) goodsHTML += `<span id="ba" title="${fGoodsText('ba', tooltipHTML.goods)}">BA:${Goods.ba}</span>`;
+    if (Goods.sajm) goodsHTML += fGoodsHTML('sav', tooltipHTML.goods);
+    if (Goods.sav) goodsHTML += fGoodsHTML('sav', tooltipHTML.goods);
+    if (Goods.saab) goodsHTML += fGoodsHTML('saab', tooltipHTML.goods);
+    if (Goods.sam) goodsHTML += fGoodsHTML('sam', tooltipHTML.goods);
+    if (Goods.vf) goodsHTML += fGoodsHTML('vf', tooltipHTML.goods);
+    if (Goods.of) goodsHTML += fGoodsHTML('of', tooltipHTML.goods);
+    if (Goods.af) goodsHTML += fGoodsHTML('af', tooltipHTML.goods);
+    if (Goods.tf) goodsHTML += fGoodsHTML('tf', tooltipHTML.goods);
+    if (Goods.te) goodsHTML += fGoodsHTML('te', tooltipHTML.goods);
+    if (Goods.ce) goodsHTML += fGoodsHTML('ce', tooltipHTML.goods);
+    if (Goods.pme) goodsHTML += fGoodsHTML('pme', tooltipHTML.goods);
+    if (Goods.me) goodsHTML += fGoodsHTML('me', tooltipHTML.goods);
+    if (Goods.pe) goodsHTML += fGoodsHTML('pe', tooltipHTML.goods);
+    if (Goods.ina) goodsHTML += fGoodsHTML('ina', tooltipHTML.goods);
+    if (Goods.cma) goodsHTML += fGoodsHTML('cma', tooltipHTML.goods);
+    if (Goods.lma) goodsHTML += fGoodsHTML('lma', tooltipHTML.goods);
+    if (Goods.hma) goodsHTML += fGoodsHTML('hma', tooltipHTML.goods);
+    if (Goods.ema) goodsHTML += fGoodsHTML('ema', tooltipHTML.goods);
+    if (Goods.ia) goodsHTML += fGoodsHTML('ia', tooltipHTML.goods);
+    if (Goods.ba) goodsHTML += fGoodsHTML('ba', tooltipHTML.goods);
     // if(Goods.noage) goodsHTML += `Special:${Goods.noage}`;
 
     // console.debug('Ignored By:',msg.responseData.ignoredByPlayerIds);
@@ -633,17 +633,17 @@ export function startupService(msg) {
         });
     }
     userTooltipHTML += `</p>`;
-    var fpHTML = `<span tabindex="0" id="fp" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${tooltipHTML.fp}"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
-    var userHTML = `<span tabindex="0" id="user" class="pop" data-container="body" data-bs-toggle="" data-bs-placement="bottom"
+    var fpHTML = `<span id="fp" class="pop" data-bs-container="#fp" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${tooltipHTML.fp}"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
+    var userHTML = `<span id="user" class="pop" data-bs-container="#user" data-bs-toggle="popover" data-bs-placement="bottom"
         title="Playing <strong>FoE</strong> since<br>${(new Date(MyInfo.createdAt * 1000)).toLocaleString()}"
         data-bs-content='${userTooltipHTML}</p>'><strong>${GameOrigin.toUpperCase()} ${MyInfo.name}</strong></span>`;
-    var clanGoodsHTML = `<span tabindex="0" id="clanGoods" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
-    var totalGoodsHTML = `<span tabindex="0" id="goods" class="pop" data-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
+    var clanGoodsHTML = `<span id="clanGoods" class="pop" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
+    var totalGoodsHTML = `<span id="goods" class="pop" data-bs-container="#goods" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
-    citystatsHTML = element.close();
-    citystatsHTML += `<button type="button" class="badge rounded-pill bg-warning float-end right-button" id="citystatsCopyID" style="display: ${collapse.collapseStats ? 'none' : 'block'}"><span data-i18n="copy">Copy</span></button>
-    <p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel"><svg class="bi header-icon" id="citystatsicon" href="#citystatsText"
-    data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg>`;
+    citystatsHTML = `<p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel">`;
+    citystatsHTML += element.icon('citystatsicon','citystatsText',collapse.collapseStats);
+    citystatsHTML += element.copy('citystatsCopyID','warning','right',collapse.collapseStats);
+    citystatsHTML += element.close();
     citystatsHTML += userHTML;
     citystatsHTML += `<div id="citystatsText" class="collapse ${collapse.collapseStats ? '' : 'show'}"><div>`;
     // citystatsHTML += `<p id="citystatsText"><br>`;
@@ -959,7 +959,8 @@ function showTooltips() {
         if (tip) {
             const options = {
                 html: true,
-                delay: { "show": 200, "hide": 2000 }
+                delay: { "show": 100, "hide": 500 },
+                container: '#' + Ages[age]
             };
             const tooltip = new Tooltip(tip, options);
         }
@@ -991,8 +992,9 @@ function showTooltips() {
     // });
 
     const options = {
+        trigger: "hover focus",
         html: true,
-        // delay: { "show": 500, "hide": 2000 }
+        delay: { "show": 200, "hide": 500 }
     };
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl, options));
@@ -1040,69 +1042,73 @@ function showTooltips() {
     //   });
 }
 
-function fGoodsText(age, tooltipHTML) {
+function fGoodsHTML(age, goods){
+    return `<span id="${age}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${fGoodsText(age, goods)}">${age.toUpperCase()}:${Goods[age]}</span> `;
+}
+
+function fGoodsText(age, goods) {
     // console.debug(age,good);
 
     // var text = `<span data-bs-toggle="tooltip" title="<p>`;
     if (age == "ba") {
-        return `<p>` + tooltipHTML["BronzeAge"] + `</p>`;
+        return `<p>` + goods["BronzeAge"] + `</p>`;
     }
     else if (age == "ia") {
-        return `<p>` + tooltipHTML["IronAge"] + `</p>`;
+        return `<p>` + goods["IronAge"] + `</p>`;
     }
     else if (age == "ema") {
-        return `<p>` + tooltipHTML["EarlyMiddleAge"] + `</p>`;
+        return `<p>` + goods["EarlyMiddleAge"] + `</p>`;
     }
     else if (age == "hma") {
-        return `<p>` + tooltipHTML["HighMiddleAge"] + `</p>`;
+        return `<p>` + goods["HighMiddleAge"] + `</p>`;
     }
     else if (age == "lma") {
-        return `<p>` + tooltipHTML["LateMiddleAge"] + `</p>`;
+        return `<p>` + goods["LateMiddleAge"] + `</p>`;
     }
     else if (age == "ca") {
-        return `<p>` + tooltipHTML["ColonialAge"] + `</p>`;
+        return `<p>` + goods["ColonialAge"] + `</p>`;
     }
     else if (age == "ina") {
-        return `<p>` + tooltipHTML["IndustrialAge"] + `</p>`;
+        return `<p>` + goods["IndustrialAge"] + `</p>`;
     }
     else if (age == "pe") {
-        return `<p>` + tooltipHTML["ProgressiveEra"] + `</p>`;
+        return `<p>` + goods["ProgressiveEra"] + `</p>`;
     }
     else if (age == "me") {
-        return `<p>` + tooltipHTML["ModernEra"] + `</p>`;
+        return `<p>` + goods["ModernEra"] + `</p>`;
     }
     else if (age == "pme") {
-        return `<p>` + tooltipHTML["PostModernEra"] + `</p>`;
+        return `<p>` + goods["PostModernEra"] + `</p>`;
     }
     else if (age == "ce") {
-        return `<p>` + tooltipHTML["ContemporaryEra"] + `</p>`;
+        return `<p>` + goods["ContemporaryEra"] + `</p>`;
     }
     else if (age == "te") {
-        return `<p>` + tooltipHTML["TomorrowEra"] + `</p>`;
+        return `<p>` + goods["TomorrowEra"] + `</p>`;
     }
     else if (age == "tf") {
-        return `<p>` + tooltipHTML["FutureEra"] + `</p>`;
+        return `<p>` + goods["FutureEra"] + `</p>`;
     }
     else if (age == "af") {
-        return `<p>` + tooltipHTML["ArcticFuture"] + `</p>`;
+        return `<p>` + goods["ArcticFuture"] + `</p>`;
     }
     else if (age == "of") {
-        return `<p>` + tooltipHTML["OceanicFuture"] + `</p>`;
+        return `<p>` + goods["OceanicFuture"] + `</p>`;
     }
     else if (age == "vf") {
-        return `<p>` + tooltipHTML["VirtualFuture"] + `</p>`;
+        return `<p>` + goods["VirtualFuture"] + `</p>`;
     }
     else if (age == "sam") {
-        return `<p>` + tooltipHTML["SpaceAgeMars"] + `</p>`;
+        return `<p>` + goods["SpaceAgeMars"] + `</p>`;
     }
     else if (age == "saab") {
-        return `<p>` + tooltipHTML["SpaceAgeAsteroidBelt"] + `</p>`;
+        return `<p>` + goods["SpaceAgeAsteroidBelt"] + `</p>`;
     }
     else if (age == "sav") {
-        return `<p>` + tooltipHTML["SpaceAgeVenus"] + `</p>`;
+        return `<p>` + goods["SpaceAgeVenus"] + `</p>`;
     }
     else if (age == "sajm") {
-        return `<p>` + tooltipHTML["SpaceAgeJupiterMoon"] + `</p>`;
+        return `<p>` + goods["SpaceAgeJupiterMoon"] + `</p>`;
     }
     else console.debug(age);
 }
