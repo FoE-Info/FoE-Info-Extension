@@ -220,7 +220,8 @@ child.src = "/icons/Icon48.png";
 child.width = '24';
 child.height = '24';
 child.id = "logo";
-if (DEV) child.addEventListener("click", toggleDebug);
+// if (DEV) 
+	child.addEventListener("click", toggleDebug);
 newelement.appendChild(child);
 newelement = document.createElement("div");
 newelement.className = "p-8 title";
@@ -1223,9 +1224,9 @@ function handleRequestFinished(request) {
       cityinvestedHTML += `On Hand FP: <span id="onHandFP2">${availablePacksFP + availableFP}</span><br>`;
       cityinvestedHTML += `FP Invested: ${invested} (${numGB} GB)<br>`;
       if (City.ArcBonus > 90)
-        cityinvestedHTML += `<span data-i18n="gb">GB</span> <span data-i18n="reward">REWARDS:</span>: ${rewardBonus} (+${City.ArcBonus}%)`;
+        cityinvestedHTML += `<span data-i18n="gb">GB</span> <span data-i18n="reward">Rewards:</span>: ${rewardBonus} (+${City.ArcBonus}%)`;
       else
-        cityinvestedHTML += `<span data-i18n="gb">GB</span> <span data-i18n="reward">REWARDS:</span>: ${rewardBonus}`;
+        cityinvestedHTML += `<span data-i18n="gb">GB</span> <span data-i18n="reward">Rewards:</span>: ${rewardBonus}`;
       cityinvestedHTML += `<br>Total FP: ${
         availablePacksFP + availableFP + Number(rewardBonus)
       }</p>`;
@@ -1237,6 +1238,7 @@ function handleRequestFinished(request) {
 		document
         .getElementById("investedCopyID")
 		.addEventListener("click", copy.fInvestedCopy);
+		$("#investedDiv").i18n();
     }
 
     /* GvG Info*/
@@ -2516,7 +2518,6 @@ export function removeDebug() {
 }
 
 export function checkDebug() {
-
 	return debugEnabled;
 }
 
