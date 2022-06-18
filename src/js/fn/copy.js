@@ -54,25 +54,6 @@ export function DonorCopy2() {
 	copyToClipboard('div#donorTextCollapse');
 }
 
-export function DonorCopy3() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("donorTextCollapse2");
-	// //var copytext1 = document.getElementById("donorText1")
-	// var numrows = copytext.rows.length;
-	// //console.debug(numrows);
-	// var row1 = copytext.rows[0];
-	// var row2 = copytext.rows[numrows-1];
-	// range.setStartBefore(row1);
-	// range.setEndAfter(row2);
-	// // range.selectNode(copytext);
-	// // range.selectNodeContents(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('div#donorTextCollapse2');
-}
-
 export function fInvestedCopy() {
 	copyToClipboard('div#investedText');
 }
