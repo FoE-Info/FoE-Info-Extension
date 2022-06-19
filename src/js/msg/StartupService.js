@@ -594,28 +594,10 @@ export function startupService(msg) {
     });
     // console.debug('tooltipHTML.goods',tooltipHTML.goods);
 
-    // if(Goods.sav) goodsHTML += `<span data-bs-toggle="tooltip" title="<p>${tooltipHTML.goods['SpaceAgeVenus']}</p>">SAV:${Goods.sav}</span> `;
-    if (Goods.sajm) goodsHTML += fGoodsHTML('sav', tooltipHTML.goods);
-    if (Goods.sav) goodsHTML += fGoodsHTML('sav', tooltipHTML.goods);
-    if (Goods.saab) goodsHTML += fGoodsHTML('saab', tooltipHTML.goods);
-    if (Goods.sam) goodsHTML += fGoodsHTML('sam', tooltipHTML.goods);
-    if (Goods.vf) goodsHTML += fGoodsHTML('vf', tooltipHTML.goods);
-    if (Goods.of) goodsHTML += fGoodsHTML('of', tooltipHTML.goods);
-    if (Goods.af) goodsHTML += fGoodsHTML('af', tooltipHTML.goods);
-    if (Goods.tf) goodsHTML += fGoodsHTML('tf', tooltipHTML.goods);
-    if (Goods.te) goodsHTML += fGoodsHTML('te', tooltipHTML.goods);
-    if (Goods.ce) goodsHTML += fGoodsHTML('ce', tooltipHTML.goods);
-    if (Goods.pme) goodsHTML += fGoodsHTML('pme', tooltipHTML.goods);
-    if (Goods.me) goodsHTML += fGoodsHTML('me', tooltipHTML.goods);
-    if (Goods.pe) goodsHTML += fGoodsHTML('pe', tooltipHTML.goods);
-    if (Goods.ina) goodsHTML += fGoodsHTML('ina', tooltipHTML.goods);
-    if (Goods.cma) goodsHTML += fGoodsHTML('cma', tooltipHTML.goods);
-    if (Goods.lma) goodsHTML += fGoodsHTML('lma', tooltipHTML.goods);
-    if (Goods.hma) goodsHTML += fGoodsHTML('hma', tooltipHTML.goods);
-    if (Goods.ema) goodsHTML += fGoodsHTML('ema', tooltipHTML.goods);
-    if (Goods.ia) goodsHTML += fGoodsHTML('ia', tooltipHTML.goods);
-    if (Goods.ba) goodsHTML += fGoodsHTML('ba', tooltipHTML.goods);
-    // if(Goods.noage) goodsHTML += `Special:${Goods.noage}`;
+    for (let index = 0; index < helper.numAges; index++) {
+        const age = (helper.fGVGagesname(helper.fAgefromLevel(helper.numAges - index))).toLowerCase();
+        if (Goods[age]) goodsHTML += fGoodsHTML(age, tooltipHTML.goods);
+    }
 
     // console.debug('Ignored By:',msg.responseData.ignoredByPlayerIds);
     // console.debug('Ignoring:',msg.responseData.ignoredPlayerIds);
