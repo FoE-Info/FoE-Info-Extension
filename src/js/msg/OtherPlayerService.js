@@ -640,26 +640,10 @@ export function otherPlayerService(msg) {
 	// 		}
 	// 	});
 
-	if (Goods.sajm) clanGoodsHTML += `SAJM:${Goods.sajm}<br>`;
-	if (Goods.sav) clanGoodsHTML += `SAV:${Goods.sav}<br>`;
-	if (Goods.saab) clanGoodsHTML += `SAAB:${Goods.saab}<br>`;
-	if (Goods.sam) clanGoodsHTML += `SAM:${Goods.sam}<br>`;
-	if (Goods.vf) clanGoodsHTML += `VF:${Goods.vf}<br>`;
-	if (Goods.of) clanGoodsHTML += `OF:${Goods.of}<br>`;
-	if (Goods.af) clanGoodsHTML += `AF:${Goods.af}<br>`;
-	if (Goods.tf) clanGoodsHTML += `FE:${Goods.tf}<br>`;
-	if (Goods.te) clanGoodsHTML += `TE:${Goods.te}<br>`;
-	if (Goods.ce) clanGoodsHTML += `CE:${Goods.ce}<br>`;
-	if (Goods.pme) clanGoodsHTML += `PME:${Goods.pme}<br>`;
-	if (Goods.me) clanGoodsHTML += `ME:${Goods.me}<br>`;
-	if (Goods.pe) clanGoodsHTML += `PE:${Goods.pe}<br>`;
-	if (Goods.ina) clanGoodsHTML += `IndA:${Goods.ina}<br>`;
-	if (Goods.cma) clanGoodsHTML += `CA:${Goods.cma}<br>`;
-	if (Goods.lma) clanGoodsHTML += `LMA:${Goods.lma}<br>`;
-	if (Goods.hma) clanGoodsHTML += `HMA:${Goods.hma}<br>`;
-	if (Goods.ema) clanGoodsHTML += `EMA:${Goods.ema}<br>`;
-	if (Goods.ia) clanGoodsHTML += `IA:${Goods.ia}<br>`;
-	if (Goods.ba) clanGoodsHTML += `>BA:${Goods.ba}`;
+    for (let index = 0; index < helper.numAges; index++) {
+        const age = (helper.fGVGagesname(helper.fAgefromLevel(helper.numAges - index)));
+        if (Goods[age.toLowerCase()]) clanGoodsHTML += (age + `:${Goods.sajm}<br>`);
+	}
 
 
 	visitstatsHTML += `Age: ${msg.responseData.other_player_era.match(/[A-Z][a-z]+|[0-9]+/g).join(" ")}<br>`;

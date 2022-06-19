@@ -658,7 +658,7 @@ export function fGVGagesname(age) {
 		name = "CA";
 	}
 	else if (age == "IndustrialAge") {
-		name = "IndA";
+		name = "InA";
 	}
 	else if (age == "ProgressiveEra") {
 		name = "PE";
