@@ -1916,7 +1916,6 @@ function storageChange(changes, namespace) {
 		}
 		else if (key == 'donationSuffix') {
 			donationSuffix = storageChange.newValue;
-			setCurrentPercent(storageChange.newValue);
 			// console.debug(storageChange.newValue);
 		}
 		else if (key == 'url') {
@@ -2216,7 +2215,6 @@ function receiveStorage(result) {
 		}
 		else if (key == 'donationSuffix') {
 			donationSuffix = value;
-			setCurrentPercent(value);
 			// console.debug(value);
 		}
 		else if (key == 'url') {
