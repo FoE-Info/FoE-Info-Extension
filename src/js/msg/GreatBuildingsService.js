@@ -115,8 +115,7 @@ export function showGreatBuldingDonation() {
                             donorsHTML += `${place.player.name} ${place.forge_points}FP ${BigNumber(place.forge_points).times(100).div(place.reward.strategy_point_amount).toFormat(0)}%`;
                         }
                         else {
-                            donorsHTML += `${place.player.name} ${place.forge_points}FP>`;
-                            // clipboardHTML += `<p>${place.player.name} ${place.forge_points}FP</p>`;
+                            donorsHTML += `${place.player.name} ${place.forge_points}FP`;
 
                         }
                     }
