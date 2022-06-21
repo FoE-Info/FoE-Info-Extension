@@ -117,7 +117,7 @@ export function getState(msg) {
         if(url.sheetGuildURL)
         battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end mid-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
         battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundCopyID"><span data-i18n="copy">Copy</span></button>`;
-        battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive collapse ${collapse.collapseBattleground ? '' : 'show'}"><div class="overflow-y" id="battlegroundText"><table class="gbg-table"><tr><th>Rank</th><th>Member</th><th>Negs</th><th>Fights</th></tr>`
+        battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive collapse ${collapse.collapseBattleground ? '' : 'show'}"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table"><tr><th>Rank</th><th>Member</th><th>Negs</th><th>Fights</th></tr>`
         msg.responseData.playerLeaderboardEntries.forEach(entry => {
             var wonNegotiations = 0;
             var wonBattles = 0;
