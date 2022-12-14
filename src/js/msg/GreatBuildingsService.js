@@ -653,6 +653,7 @@ function clickDonation(event) {
 }
 
 function getFriendlyDonation(donation, reward, percent, lock) {
+    //console.debug('getFriendlyDonation', percent);
     console.debug(donation, reward, percent, lock, (donation.isGreaterThan(reward) || lock.isGreaterThan(donation)), donation.isGreaterThan(reward), lock.isGreaterThan(donation));
     return `<span class="${(donation.isGreaterThan(reward) || lock.isGreaterThan(donation)) ? 'red' : 'green'}">${percent / 100}: ${donation}FP</span><br>`;
 }
