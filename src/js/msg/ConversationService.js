@@ -88,6 +88,7 @@ export function getConversation(msg) {
 
 function getPercent(title) {
     try {
+        console.debug('title', title);
         if (!title || title == '') return;
         else if (title.includes('%')) {
             var text = title.split('%')[0];
@@ -101,7 +102,12 @@ function getPercent(title) {
                     setCurrentPercent(parseInt(text));
                     return;
                 }
-            }
+                else {
+                    console.debug('in else 1');
+                    const arrtitletext = title.split(' ');
+                    arrtitletext.forEach(getIntValue);
+                }
+                }
         }
         else if (title.includes('1.85'))
             setCurrentPercent(185);
@@ -149,9 +155,22 @@ function getPercent(title) {
             setCurrentPercent(199);
         else if (title.includes('200%'))
             setCurrentPercent(200);
-        else if (title.includes('1.9'))
-            setCurrentPercent(190);
+        else {
+                console.debug('in else 2');
+                const arrtitletext = title.split(' ');
+                arrtitletext.forEach(getIntValue);
+            }
     } catch (error) {
         console.log(error);
+    }
+}
+
+function getIntValue(item, index) {
+    console.debug('getIntValue 1',item,' ',index);
+    item = item.replace('%','')
+    console.debug('getIntValue 2',item,' ',index);
+    if (parseInt(item) > 0) {
+        setCurrentPercent(parseInt(item));
+        console.debug('setCurrentPercent getIntValue',parseInt(item),' ',index);
     }
 }
