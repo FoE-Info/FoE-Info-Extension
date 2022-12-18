@@ -113,6 +113,8 @@ function getPercent(title) {
             setCurrentPercent(185);
         else if (title.includes('1.8'))
             setCurrentPercent(180);
+        else if (title.includes('1.9'))
+            setCurrentPercent(190);
         else if (title.includes('1.91'))
             setCurrentPercent(191);
         else if (title.includes('1.92'))
@@ -135,6 +137,8 @@ function getPercent(title) {
             setCurrentPercent(200);
         else if (title.includes('2.00'))
             setCurrentPercent(200);
+        else if (title.includes('190%'))
+            setCurrentPercent(190);
         else if (title.includes('191%'))
             setCurrentPercent(191);
         else if (title.includes('192%'))
@@ -157,6 +161,7 @@ function getPercent(title) {
             setCurrentPercent(200);
         else {
                 console.debug('in else 2');
+                setCurrentPercent(190);
                 const arrtitletext = title.split(' ');
                 arrtitletext.forEach(getIntValue);
             }
@@ -167,6 +172,8 @@ function getPercent(title) {
 
 function getIntValue(item, index) {
     console.debug('getIntValue 1',item,' ',index);
+    if (item.includes('Hr'))
+        return;
     item = item.replace('%','')
     console.debug('getIntValue 2',item,' ',index);
     if (parseInt(item) > 0) {
