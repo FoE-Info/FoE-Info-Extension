@@ -172,7 +172,7 @@ export function fCollapseFriends() {
 	collapseFriends = !collapseFriends;
 	document.getElementById("friendsCopyID").style.display = collapseFriends ? 'none' : 'block';
 	// console.debug('collapseFriends',collapseFriends);
-	updateIcon("friendsicon","friendsText",collapseFriends);
+	element.updateIcon("friendsicon","friendsText",collapseFriends);
 }
 
 export function fCollapseLists() {
