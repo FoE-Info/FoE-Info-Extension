@@ -149,14 +149,14 @@ export function ExpeditionCopy() {
 }
 
 export function TreasuryCopy() {
-	// var selection = window.getSelection();
-	// selection.removeAllRanges();
-	// var range = document.createRange();
-	// var copytext = document.getElementById("treasurytable");
-	// range.selectNode(copytext);
-	// selection.addRange(range);
-	// document.execCommand("copy");
-	copyToClipboard('#treasurytable > tbody');
+	var selection = window.getSelection();
+	selection.removeAllRanges();
+	var range = document.createRange();
+	var copytext = document.getElementById("treasurytable");
+	range.selectNode(copytext);
+	selection.addRange(range);
+	document.execCommand("copy");
+	//copyToClipboard('#treasurytable > tbody');
 	// let node = document.querySelector('#treasurytable');
 	// copyNode(node);
 }
