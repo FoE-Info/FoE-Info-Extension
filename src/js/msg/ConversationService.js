@@ -113,8 +113,6 @@ function getPercent(title) {
             setCurrentPercent(185);
         else if (title.includes('1.8'))
             setCurrentPercent(180);
-        else if (title.includes('1.9'))
-            setCurrentPercent(190);
         else if (title.includes('1.91'))
             setCurrentPercent(191);
         else if (title.includes('1.92'))
@@ -159,6 +157,8 @@ function getPercent(title) {
             setCurrentPercent(199);
         else if (title.includes('200%'))
             setCurrentPercent(200);
+        else if (title.includes('1.9'))
+            setCurrentPercent(190);
         else {
                 console.debug('in else 2');
                 setCurrentPercent(190);
