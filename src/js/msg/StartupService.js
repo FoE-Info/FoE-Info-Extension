@@ -622,11 +622,12 @@ export function startupService(msg) {
     var clanGoodsHTML = `<span id="clanGoods" class="pop" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
     var totalGoodsHTML = `<span id="goods" class="pop" data-bs-container="#goods" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
-    citystatsHTML = `<p href="#citystatsText" id="citystatsLabel">`;
+    citystatsHTML = `<p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel">`;
     citystatsHTML += element.icon('citystatsicon','citystatsText',collapse.collapseStats);
-    citystatsHTML += element.copy('citystatsCopyID','warning','right',collapse.collapseStats);
     citystatsHTML += element.close();
     citystatsHTML += userHTML;
+    citystatsHTML += `</p>`;
+    citystatsHTML += element.copy('citystatsCopyID','warning','right',collapse.collapseStats);
     citystatsHTML += `<div id="citystatsText" class="collapse ${collapse.collapseStats ? '' : 'show'}"><div>`;
     // citystatsHTML += `<p id="citystatsText"><br>`;
     if (City.ForgePoints)
@@ -671,13 +672,13 @@ export function startupService(msg) {
         }
 
         citystats.innerHTML = citystatsHTML;
-        citystats.className = "alert alert-dismissible alert-warning collapsed";
+        citystats.className = "alert alert-dismissible alert-warning show collapsed";
         // citystats.title=`<p>${tooltipHTML}</p>`;
         // document.querySelector('#citystats').addEventListener("click", function() {
         // console.debug('citystats toggle');
         // $(this).find('span.toggle-icon').toggleClass('glyphicon-collapse-up glyphicon-collapse-down');
         // });
-        //document.getElementById("citystatsLabel").addEventListener("click", collapse.fCollapseStats);
+        document.getElementById("citystatsLabel").addEventListener("click", collapse.fCollapseStats);
         //document.getElementById("citystatsicon").addEventListener("click", collapse.fCollapseStats);
         if (!collapse.collapseStats)
             document.getElementById("citystatsCopyID").addEventListener("click", copy.fCityStatsCopy);

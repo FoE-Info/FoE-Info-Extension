@@ -24,6 +24,7 @@ export var gvgContainer = null;
 export var gvgSummary = null;
 export var gvgAges = null;
 var gvgPower = [];
+var gvgPowerAll = [];
 
 export function getContinent(msg) {
     // console.debug(gvg,gvgContainer,gvgSummary,document.getElementById("gvgInfo"));
@@ -93,13 +94,13 @@ export function getContinent(msg) {
                 }
             })
             if (count) {
-                const siege = Math.round((3 * Math.pow(count, 1.5) + 0.045 * Math.pow(count, 3.1)) / 5 + 1) * 5;
+                const siege = Math.round((3 * Math.pow(count, 1.5) + 0.045 * Math.pow(count, 3.1)) / 5 + 1) * 5 * 5;
                 // const siege = BigNumber((3 * Math.pow(count,1.5) + 0.045 * Math.pow(count,3.1)) / 5 + 1).times(5).dp(0);
                 const eraName = fGVGagesname(era.era);
                 if (era.era == 'AllAge')
-                    clanHTML += `<br>AA: ${count} sect, ${siege * 5} medals`;
+                    clanHTML += `<br>AA: ${count} sect, ${siege} medals`;
                 else
-                    clanHTML += `<br>${eraName}: ${count} sect, ${siege} goods`;
+                    clanHTML += `<br>${eraName}: ${count} sect, ${siege} total goods`;
             }
         });
         clanHTML += `</p></div></div>`;
@@ -142,6 +143,7 @@ export function getProvinceDetailed(msg) {
         var GuildSectors = [];
         var GuildPower = [];
         var GVGstatus = [];
+        var gvgPowerAllSorted = [];
         // console.debug(Guilds,GuildSectors,GuildPower,GVGstatus);
         const map = msg.responseData.province_detailed;
         // console.debug(map);
@@ -198,7 +200,7 @@ export function getProvinceDetailed(msg) {
         Guilds.forEach((clan, j) => {
             // console.debug(clan);
             // console.debug(clan,GuildSectors[j],GuildPower[j]);
-            GVGstatus.push({ 'name': clan, 'sectors': GuildSectors[j], 'power': GuildPower[j] });
+            GVGstatus.push({ 'id': j, 'name': clan, 'sectors': GuildSectors[j], 'power': GuildPower[j] });
         });
 
         GVGstatus.sort(function (a, b) { return b.power - a.power });
@@ -207,6 +209,9 @@ export function getProvinceDetailed(msg) {
             // if(j < 3) clan.power =  Math.round(clan.power*(1 + ((3 - j)/20)));
             if (j < 3) clan.power = BigNumber(clan.power).times(1 + ((3 - j) / 20)).dp(0);
             if (clan.name == MyInfo.guild) gvgPower[map.era] = clan.power;
+            if (!gvgPowerAll[clan.id])
+                gvgPowerAll[clan.id] = {name: clan.name, powerList: []};
+            gvgPowerAll[clan.id].powerList[map.era] = clan.power;
         });
 
         // if(!gvgPower[map.era]){
@@ -226,6 +231,17 @@ export function getProvinceDetailed(msg) {
         // console.debug(gvgPower);
         clanHTML += `<br>Total: ${total}</p>`;
 
+        Object.keys(gvgPowerAll).forEach(clan => {
+            let clanTotal = 0;
+            Object.keys(gvgPowerAll[clan].powerList).forEach(era => {
+                clanTotal += +gvgPowerAll[clan].powerList[era];
+            });
+            gvgPowerAll[clan].total=clanTotal
+        });
+        gvgPowerAllSorted = copy(gvgPowerAll);
+        gvgPowerAllSorted.sort(function (a, b) { return b.total - a.total });
+
+
         // GuildPower.forEach( (clan,j) => {
         // 	// console.debug(clan);
         // 	console.debug(Guilds[j],GuildSectors[j],clan);
@@ -240,8 +256,21 @@ export function getProvinceDetailed(msg) {
         });
         // }
         // clanHTML += `<br>`;
+        clanHTML += `</p></div>`;
 
-        gvgAges.innerHTML = clanHTML + `</p></div>`;
+        clanHTML += `<br>`;
+        clanHTML += `<div id="gvgAllPowerText" class="collapse ${collapse.collapseGVG ? '' : 'show'}"><p><strong>Guild Ranking <span data-i18n="livestatus">Live Status</span></strong></p><p id="gvgAllPowerText" style="height: ${toolOptions.gvgSize}px" class="overflow">`;
+        // clanHTML += `<strong>${map.era}</strong><br>`;
+        Object.keys(gvgPowerAllSorted).forEach((clan, j) => {
+            clanHTML += `${j + 1} ${gvgPowerAllSorted[clan].name}:  ${Math.round(gvgPowerAllSorted[clan].total)}<br>`;
+        });
+        // }
+        // clanHTML += `<br>`;
+        clanHTML += `</p></div>`;        
+
+
+        gvgAges.innerHTML = clanHTML;
+
         if (document.getElementById("gvgTextLabel"))
             document.getElementById("gvgTextLabel").addEventListener("click", collapse.fCollapseGVG);
         const gvgAgeDiv = document.getElementById("gvgAgeText");
@@ -259,6 +288,26 @@ export function getProvinceDetailed(msg) {
         console.debug(msg.responseData.length);
     }
 }
+
+function copy(aObject) {
+    // Prevent undefined objects
+    // if (!aObject) return aObject;
+  
+    let bObject = Array.isArray(aObject) ? [] : {};
+  
+    let value;
+    for (const key in aObject) {
+  
+      // Prevent self-references to parent object
+      // if (Object.is(aObject[key], aObject)) continue;
+      
+      value = aObject[key];
+  
+      bObject[key] = (typeof value === "object") ? copy(value) : value;
+    }
+  
+    return bObject;
+  }
 
 export function deploySiegeArmy(msg) {
     console.debug('Siege Placed', msg);
