@@ -259,7 +259,7 @@ export function getProvinceDetailed(msg) {
         clanHTML += `</p></div>`;
 
         clanHTML += `<br>`;
-        clanHTML += `<div id="gvgAllPowerText" class="collapse ${collapse.collapseGVG ? '' : 'show'}"><p><strong>All Guilds <span data-i18n="livestatus">Live Status</span></strong></p><p id="gvgAllPowerText" style="height: ${toolOptions.gvgSize}px" class="overflow">`;
+        clanHTML += `<div id="gvgAllPowerText" class="collapse ${collapse.collapseGVG ? '' : 'show'}"><p><strong>Guild Ranking <span data-i18n="livestatus">Live Status</span></strong></p><p id="gvgAllPowerText" style="height: ${toolOptions.gvgSize}px" class="overflow">`;
         // clanHTML += `<strong>${map.era}</strong><br>`;
         Object.keys(gvgPowerAllSorted).forEach((clan, j) => {
             clanHTML += `${j + 1} ${gvgPowerAllSorted[clan].name}:  ${Math.round(gvgPowerAllSorted[clan].total)}<br>`;
