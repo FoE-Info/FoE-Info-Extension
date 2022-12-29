@@ -201,14 +201,19 @@ export function getBuildings(msg) {
 }
 
 export function setSignal(msg,payload) {
-    console.debug('setSignal', msg, signals);
-    signals.push({'provinceId':payload[0],'signal':'focus'});
+    //console.debug('setSignal', msg, signals);
+    if (payload[1] == "ignore") {
+        signals = signals.filter(p => p.provinceId != payload[0]);
+    }
+    if (payload[1] == "focus") {
+        signals.push({'provinceId':payload[0],'signal':'focus'});
+    }
     checkProvinces();
 }
 export function removeSignal(msg,payload) {
-    console.debug('removeSignal', msg, signals);
+    //console.debug('removeSignal', msg, signals);
     signals = signals.filter(p => p.provinceId != payload[0]);
-    console.debug(payload,signals);
+    //console.debug(payload,signals);
     checkProvinces();
 }
 
