@@ -1333,12 +1333,14 @@ function handleRequestFinished(request) {
 } else if (msg.requestClass == "GuildBattlegroundSignalsService") {
   // GuildBattleground
   const payload = JSON.parse(request.request.postData.text)[0].requestData;
-//   console.debug("GuildBattlegroundSignalsService", msg,payload);
+  // console.debug("GuildBattlegroundSignalsService", msg,payload);
   if (msg.requestMethod == "setSignal") {
     /*Guild Battleground*/
+	//console.debug("set msg.requestMethod", msg.requestMethod);
     setSignal(msg,payload);
   } else if (msg.requestMethod == "removeSignal") {
     /*Guild Battleground*/
+	//console.debug("remove msg.requestMethod", msg.requestMethod);
     removeSignal(msg,payload);
   } else console.debug("GuildBattlegroundSignalsService", msg);
   // console.debug("GuildBattlegroundSignalsService", msg,JSON.parse(request.request.postData.text));
