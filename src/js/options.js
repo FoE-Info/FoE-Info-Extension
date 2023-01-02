@@ -43,7 +43,7 @@ const showOptions = {
   showGErewards: true,
   showRewards: true,
   showLogs: false,
-  showContributions: false,
+  showContributions: true,
   showGuildPosition: false,
   hideUnsafe: true,
   buildingCosts: false,
