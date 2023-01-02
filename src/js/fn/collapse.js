@@ -26,6 +26,10 @@ export var collapseArmy  = false;
 export var collapseGoods  = true;
 export var collapseGVG  = false;
 export var collapseGVGinfo  = false;
+export var collapseGVGOverview  = false;
+export var collapseGVGGuildPower  = false;
+export var collapseGVGCurrAge  = false;
+export var collapseGVGAllGuildsPower  = false;
 export var collapseStats  = false;
 export var collapseGBInfo  = false;
 export var collapseGBRewards  = false;
@@ -81,6 +85,18 @@ export default function set(key, value) {
 			break;
 		case 'collapseGVG':
 			collapseGVG = value;
+			break;
+		case 'collapseGVGOverview':
+			collapseGVGOverview = value;
+			break;
+		case 'collapseGVGGuildPower':
+			collapseGVGGuildPower = value;
+			break;
+		case 'collapseGVGCurrAge':
+			collapseGVGCurrAge = value;
+			break;
+		case 'collapseGVGAllGuildsPower':
+			collapseGVGAllGuildsPower = value;
 			break;
 		case 'collapseGoods':
 			collapseGoods = value;
@@ -217,6 +233,27 @@ export function fCollapseGVGinfo() {
 	collapseGVGinfo = !collapseGVGinfo;
 	element.updateIcon("gvgInfoIcon","gvgInfoText",collapseGVGinfo);
 	// console.debug('fCollapseGVGinfo',collapseGVGinfo,collapseOptions);
+}
+
+export function fcollapseGVGOverview() {
+	collapseGVGOverview = !collapseGVGOverview;
+	element.updateIcon("gvgOverviewIcon","gvgOverviewText",collapseGVGOverview);
+	// console.debug('fcollapseGVGOverview',collapseGVGinfo,collapseOptions);
+}
+export function fcollapseGVGGuildPower() {
+	collapseGVGGuildPower = !collapseGVGGuildPower;
+	element.updateIcon("gvgGuildPowerIcon","gvgGuildPowerText",collapseGVGGuildPower);
+	// console.debug('fcollapseGVGGuildPower',collapseGVGinfo,collapseOptions);
+}
+export function fcollapseGVGCurrAge() {
+	collapseGVGCurrAge = !collapseGVGCurrAge;
+	element.updateIcon("gvgCurrAgeIcon","gvgCurrAgeText",collapseGVGCurrAge);
+	// console.debug('fcollapseGVGCurrAge',collapseGVGinfo,collapseOptions);
+}
+export function fcollapseGVGAllGuildsPower() {
+	collapseGVGAllGuildsPower = !collapseGVGAllGuildsPower;
+	element.updateIcon("gvgAllGuildsPowerIcon","gvgAllGuildsPowerText",collapseGVGAllGuildsPower);
+	// console.debug('fcollapseGVGAllGuildsPower',collapseGVGinfo,collapseOptions);
 }
 
 export function fCollapseArmy() {
