@@ -676,7 +676,7 @@ export function fGVGagesname(age) {
 		name = "TE";
 	}
 	else if (age == "FutureEra") {
-		name = "TF";
+		name = "FE";
 	}
 	else if (age == "ArcticFuture") {
 		name = "AF";
