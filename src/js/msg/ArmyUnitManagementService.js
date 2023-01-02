@@ -51,7 +51,7 @@ export function armyUnitManagementService(msg) {
                     } else {
                         if (units != ArmyUnits[army[j].unitTypeId]) {
                             var diff = units - ArmyUnits[army[j].unitTypeId];
-                            armyHTML = `<span class="red">${diff > 0 ? "+" : ""}${diff}</span>`;
+                            armyHTML = `<span class=${diff > 0 ? '"green">+' : '"red">'}${diff}</span>`;
                         } else {
                             armyHTML = ``;
                         }
@@ -72,7 +72,7 @@ export function armyUnitManagementService(msg) {
             armyHTML += element.icon('armyicon','armyText',collapse.collapseArmy);
             armyHTML += `<strong>Army:</strong><span id="armyUnits">${collapse.collapseArmy ? `Rogues: ${rogues} Units: ${allUnits}` : ''}</span></p>`;
             armyHTML += `<div id="armyText" style="height: ${toolOptions.armySize}px" class="overflow-y collapse ${collapse.collapseArmy ? '' : 'show'}"><p class="" >`;
-            armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class="red">${diff > 0 ? "+" : ""}${diff != 0 ? diff : ""}</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
+            armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class=${diff > 0 ? '"green">+' : '"red">'}${diff != 0 ? diff : ""}</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
             armyDIV.innerHTML = armyHTML + armyText + `</p></div></div>`;
             document.getElementById("armyTextLabel").addEventListener("click", collapse.fCollapseArmy);
             const armyDiv = document.getElementById("armyText");
