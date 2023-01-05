@@ -89,9 +89,7 @@ export function getContinent(msg) {
         // console.debug(msg.responseData);
         // }
         let count = 0;
-        clanHTML += `<strong>Guild rank: #${msg.responseData.clan_data.global_clan_rank}</strong>
-          <table id="gvgGuildPowerTextT" class="overflow gvgTable">
-           <tr><th>Age</th><th>Sectors</th><th>Total goods</th></tr>`
+        clanHTML += `Rank ${msg.responseData.clan_data.global_clan_rank}`
         map.provinces.forEach(era => {
             // console.debug(era.era);
             count = 0;
@@ -106,9 +104,9 @@ export function getContinent(msg) {
                 // const siege = BigNumber((3 * Math.pow(count,1.5) + 0.045 * Math.pow(count,3.1)) / 5 + 1).times(5).dp(0);
                 const eraName = fGVGagesname(era.era);
                 if (era.era == 'AllAge')
-                    clanHTML += `<tr><td>AA</td><td>${count}</td><td>${siege} medals</td></tr>`;
+                    clanHTML += `<br>AA: ${count} sect, ${siege} medals`;
                 else
-                    clanHTML += `<tr><td>${eraName}</td><td>${count}</td><td>${siege}</td></tr>`;
+                    clanHTML += `<br>${eraName}: ${count} sect, ${siege} total goods`;
             }
         });
         clanHTML += `</p>`;
@@ -206,7 +204,7 @@ export function getProvinceDetailed(msg) {
         Guilds.forEach((clan, j) => {
             // console.debug(clan);
             // console.debug(clan,GuildSectors[j],GuildPower[j]);
-            GVGstatus.push({ 'id': j, 'name': clan, 'sectors': GuildSectors[j] || 0, 'power': GuildPower[j] || 0 });
+            GVGstatus.push({ 'id': j, 'name': clan, 'sectors': GuildSectors[j], 'power': GuildPower[j] });
         });
 
         GVGstatus.sort(function (a, b) { return b.power - a.power });
@@ -225,14 +223,14 @@ export function getProvinceDetailed(msg) {
         // 	gvgPower.push([map.era,Math.round(power)]);
         // }
         // else
-        clanHTML = `<p id="gvgGuildPowerTextP" class="overflow">
-            <table id="gvgGuildPowerTextT" class="overflow gvgTable">
-            <tr><th>Age</th><th>Points</th><th>Updated At</th></tr>`;
+        clanHTML = '<p id="gvgGuildPowerTextP" class="overflow">';
         gvgPower.forEach((age) => {
-            clanHTML += `<tr><td>${fGVGagesname(age.era)}</td><td>${age.power}</td><td>${age.time}</td></tr>`;
+            if (age.era == map.era)
+                clanHTML += `<strong>${fGVGagesname(map.era)}</strong>:</span> ${age.power} (Updated at ${age.time})<br>`;                
+            else
+                clanHTML += `${fGVGagesname(age.era)}: ${age.power} (Updated at ${age.time}<br>`;
             total += +age.power;
         });
-        clanHTML += `</table>`
         
         clanHTML += `Total: ${total}</p>`;
         gvgGuildPowerTextDiv.innerHTML = clanHTML;
@@ -259,23 +257,21 @@ export function getProvinceDetailed(msg) {
         var gvgGuildPowerTextDiv = document.getElementById("gvgCurrAgeHeadlineText")
         gvgGuildPowerTextDiv.innerHTML = clanHTML;
 
-        clanHTML = `<table id="gvgCurrAgeTextT" class="overflow gvgTable">
-            <tr><th>Pos</th><th>Guild Name</th><th>Power</th><th>Sectors</th></tr>`;
+        clanHTML = '<p id="gvgCurrAgeTextP" style="height: 200px" class="overflow">';
         // clanHTML += `<strong>${map.era}</strong><br>`;
         GVGstatus.forEach((clan, j) => {
-            clanHTML += `<tr><td>${j + 1}</td><td>${clan.name}</td><td>${Math.round(clan.power)}</td><td>${clan.sectors}</td></tr>`;
+            clanHTML += `${j + 1} ${clan.name}:  ${Math.round(clan.power)} (${clan.sectors})<br>`;
         });
         // }
         // clanHTML += `<br>`;
-        clanHTML += `</table>`;
+        clanHTML += `</p>`;
         
         var gvgCurrAgeTextDiv = document.getElementById("gvgCurrAgeText")
         gvgCurrAgeTextDiv.innerHTML = clanHTML;
 
         var gvgAllGuildsPowerTextDiv = document.getElementById("gvgAllGuildsPowerText")
 
-        clanHTML = `<table id="gvgAllGuildsPowerTextT" class="overflow gvgTable">
-            <tr><th>Pos</th><th>Guild Name</th><th>Power</th></tr>`;
+        clanHTML = `<p id="gvgAllGuildsPowerTextP" style="height: 200px" class="overflow">`;
         document.getElementById('gvgWarnGuildPower')?.remove();
         document.getElementById('gvgWarnAllGuildPower')?.remove();
         if (gvgAgeNotloadList.length > 0){
@@ -287,12 +283,11 @@ export function getProvinceDetailed(msg) {
         }
 
         Object.keys(gvgPowerAllSorted).forEach((clan, j) => {
-            clanHTML += `<tr><td>${j + 1}</td><td>${gvgPowerAllSorted[clan].name}</td><td>${Math.round(gvgPowerAllSorted[clan].total)}</td></tr>`;
-            //clanHTML += `${j + 1} ${gvgPowerAllSorted[clan].name}:  ${Math.round(gvgPowerAllSorted[clan].total)}<br>`;
+            clanHTML += `${j + 1} ${gvgPowerAllSorted[clan].name}:  ${Math.round(gvgPowerAllSorted[clan].total)}<br>`;
         });
         // }
         // clanHTML += `<br>`;
-        clanHTML += `</table>`;    
+        clanHTML += `</p>`;    
         gvgAllGuildsPowerTextDiv.innerHTML = clanHTML;
 
         const resizeObserver = new ResizeObserver(entries => {
@@ -302,8 +297,8 @@ export function getProvinceDetailed(msg) {
         });
         resizeObserver.observe(document.getElementById("gvgOverviewTextP"));
         resizeObserver.observe(document.getElementById("gvgGuildPowerTextP"));
-        resizeObserver.observe(document.getElementById("gvgCurrAgeTextT"));
-        resizeObserver.observe(document.getElementById("gvgAllGuildsPowerTextT"));
+        resizeObserver.observe(document.getElementById("gvgCurrAgeTextP"));
+        resizeObserver.observe(document.getElementById("gvgAllGuildsPowerTextP"));
         $('body').i18n();
 
         // console.debug(Guilds,GuildSectors,GuildPower,GVGstatus);
