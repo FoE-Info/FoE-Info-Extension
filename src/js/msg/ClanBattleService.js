@@ -302,8 +302,8 @@ export function getProvinceDetailed(msg) {
         });
         resizeObserver.observe(document.getElementById("gvgOverviewTextP"));
         resizeObserver.observe(document.getElementById("gvgGuildPowerTextP"));
-        resizeObserver.observe(document.getElementById("gvgCurrAgeText"));
-        resizeObserver.observe(document.getElementById("gvgAllGuildsPowerText"));
+        resizeObserver.observe(document.getElementById("gvgCurrAgeTextT"));
+        resizeObserver.observe(document.getElementById("gvgAllGuildsPowerTextT"));
         $('body').i18n();
 
         // console.debug(Guilds,GuildSectors,GuildPower,GVGstatus);
@@ -357,8 +357,7 @@ function buildGvgInnerDiv(parentDiv, collapseFunc, collapseVar, name, text){
             <span id=gvg${name}HeadlineText><strong>${text}:</strong></span></p>`;
         textDiv = document.createElement('div');
         textDiv.id = `gvg${name}Text`;
-        textDiv.className = `collapsed${!collapseVar ? ' show' : ''} overflow`;
-        textDiv.style=`max-height: ${toolOptions.gvgSize}px`;
+        textDiv.className = `collapsed${!collapseVar ? ' show' : ''}`;
         wrapperDiv.appendChild(textDiv);
     }
 }
