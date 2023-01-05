@@ -113,7 +113,7 @@ export function getContinent(msg) {
         });
         clanHTML += `</p>`;
         var gvgOverviewText = document.getElementById("gvgOverviewText");
-        if (gvgOverviewText) gvgOverviewText.innerHTML = clanHTML;            
+        gvgOverviewText.innerHTML = clanHTML;
         
         $('body').i18n();
     }
@@ -257,7 +257,7 @@ export function getProvinceDetailed(msg) {
         
         clanHTML = `<strong>${fGVGagesname(map.era)} <span data-i18n="livestatus">Live Status</span></strong>`;
         var gvgGuildPowerTextDiv = document.getElementById("gvgCurrAgeHeadlineText")
-        if (gvgGuildPowerTextDiv) gvgGuildPowerTextDiv.innerHTML = clanHTML;            
+        gvgGuildPowerTextDiv.innerHTML = clanHTML;
 
         clanHTML = `<table id="gvgCurrAgeTextT" class="overflow gvgTable">
             <tr><th>Pos</th><th>Guild Name</th><th>Power</th><th>Sectors</th></tr>`;
@@ -270,8 +270,9 @@ export function getProvinceDetailed(msg) {
         clanHTML += `</table>`;
         
         var gvgCurrAgeTextDiv = document.getElementById("gvgCurrAgeText")
-        if (gvgCurrAgeTextDiv) gvgCurrAgeTextDiv.innerHTML = clanHTML;
-        
+        gvgCurrAgeTextDiv.innerHTML = clanHTML;
+
+        var gvgAllGuildsPowerTextDiv = document.getElementById("gvgAllGuildsPowerText")
 
         clanHTML = `<table id="gvgAllGuildsPowerTextT" class="overflow gvgTable">
             <tr><th>Pos</th><th>Guild Name</th><th>Power</th></tr>`;
@@ -280,9 +281,9 @@ export function getProvinceDetailed(msg) {
         if (gvgAgeNotloadList.length > 0){
            var gvgWarnFunc = (id) => `<span id="gvgWarn${id}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${gvgAgeNotloadList.toString()} were not loaded yet"><span>    </span><svg class="bi bi-exclamation-diamond-fill" fill="#808000" width="16" height="16"><use xlink:href="${icons}#exclamation-diamond-fill"/></svg></span> `
            var headlineSpan = document.getElementById("gvgGuildPowerHeadlineText")
-           if (headlineSpan) headlineSpan.innerHTML = gvgWarnFunc("GuildPower") + headlineSpan.innerHTML
+           if (headlineSpan.innerHTML) headlineSpan.innerHTML = gvgWarnFunc("GuildPower") + headlineSpan.innerHTML
            headlineSpan = document.getElementById("gvgAllGuildsPowerHeadlineText")
-           if (headlineSpan) headlineSpan.innerHTML = gvgWarnFunc("AllGuildPower") + headlineSpan.innerHTML
+           if (headlineSpan.innerHTML) headlineSpan.innerHTML = gvgWarnFunc("AllGuildPower") + headlineSpan.innerHTML
         }
 
         Object.keys(gvgPowerAllSorted).forEach((clan, j) => {
@@ -292,8 +293,7 @@ export function getProvinceDetailed(msg) {
         // }
         // clanHTML += `<br>`;
         clanHTML += `</table>`;    
-        var gvgAllGuildsPowerTextDiv = document.getElementById("gvgAllGuildsPowerText")
-        if (gvgAllGuildsPowerTextDiv) gvgAllGuildsPowerTextDiv.innerHTML = clanHTML;
+        gvgAllGuildsPowerTextDiv.innerHTML = clanHTML;
 
         const resizeObserver = new ResizeObserver(entries => {
             for (const entry of entries) {
@@ -353,8 +353,8 @@ function buildGvgInnerDiv(parentDiv, collapseFunc, collapseVar, name, text){
         headlineDiv.className = `collapsed${!collapse.collapseGVGinfo ? ' show' : ''}`;
         wrapperDiv.appendChild(headlineDiv);
         headlineDiv.innerHTML = `<p id="gvg${name}TextLabel" href="#gvg${name}Text" data-bs-toggle="collapse">
-            <svg class="bi header-icon" id="gvg${name}Icon" href="#gvg${name}Text" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGVGinfo ? 'plus' : 'dash'}-circle"/></svg>
-            <span id=gvg${name}HeadlineText><strong>${text}:</strong></span></p>`;
+        <svg class="bi header-icon" id="gvg${name}Icon" href="#gvg${name}Text" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseGVGinfo ? 'plus' : 'dash'}-circle"/></svg>
+        <span id=gvg${name}HeadlineText><strong>${text}:</strong></span></p>`;
         textDiv = document.createElement('div');
         textDiv.id = `gvg${name}Text`;
         textDiv.className = `collapsed${!collapseVar ? ' show' : ''}`;
