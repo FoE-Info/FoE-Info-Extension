@@ -168,7 +168,7 @@ export function showGreatBuldingDonation() {
         console.debug('RewardFP/Donation/Profit ', RewardFP, Donation, Profit);
         if (Donation.isLessThan(BigNumber(remaining))) {
             if (Profit >= 0) {
-                olddonationHTML += `<p class="invest-good">1st Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit}<br>`;
+                olddonationHTML += `<p class="invest-good">1st Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
                 newdonationHTML += gbTabSafe(1, currentPercent, Donation, RewardFP, donateCustom, donateSuggest, GBrewards,
                     GBselected.connected, GBselected.level == GBselected.max_level, safe);
             } else {
@@ -191,7 +191,7 @@ export function showGreatBuldingDonation() {
             getSafe(2);
             if (Donation.isLessThan(BigNumber(remaining))) {
                 if (Profit >= 0) {
-                    olddonationHTML += `<p class="invest-good">2nd Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit}<br>`;
+                    olddonationHTML += `<p class="invest-good">2nd Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
                     newdonationHTML += gbTabSafe(2, currentPercent, Donation, RewardFP, donateCustom, donateSuggest, GBrewards,
                         GBselected.connected, GBselected.level == GBselected.max_level, safe);
                 } else {
@@ -215,7 +215,7 @@ export function showGreatBuldingDonation() {
                 console.debug('RewardFP/Donation/Profit ', RewardFP, Donation, Profit, donateCustom, currentPercent);
                 if (Donation.isLessThan(BigNumber(remaining))) {
                     if (Profit >= 0) {
-                        olddonationHTML += `<p class="invest-good">3rd Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit}<br>`;
+                        olddonationHTML += `<p class="invest-good">3rd Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
                         newdonationHTML += gbTabSafe(3, currentPercent, Donation, RewardFP, donateCustom, donateSuggest, GBrewards,
                             GBselected.connected, GBselected.level == GBselected.max_level, safe);
                     } else {
@@ -238,7 +238,7 @@ export function showGreatBuldingDonation() {
                     getSafe(4);
                     if (Donation.isLessThan(BigNumber(remaining))) {
                         if (Profit >= 0) {
-                            olddonationHTML += `<p class="invest-good">4th Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit}<br>`;
+                            olddonationHTML += `<p class="invest-good">4th Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
                             newdonationHTML += gbTabSafe(4, currentPercent, Donation, RewardFP, donateCustom, donateSuggest, GBrewards,
                                 GBselected.connected, GBselected.level == GBselected.max_level, safe);
                         } else {
@@ -261,7 +261,7 @@ export function showGreatBuldingDonation() {
                         getSafe(5);
                         if (Donation.isLessThan(BigNumber(remaining))) {
                             if (Profit >= 0) {
-                                olddonationHTML += `<p class="invest-good">5th Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit}<br>`;
+                                olddonationHTML += `<p class="invest-good">5th Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
                                 newdonationHTML += gbTabSafe(5, currentPercent, Donation, RewardFP, donateCustom, donateSuggest, GBrewards,
                                     GBselected.connected, GBselected.level == GBselected.max_level, safe);
                             } else {
