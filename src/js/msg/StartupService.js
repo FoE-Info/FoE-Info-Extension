@@ -26,7 +26,7 @@ import icons from 'bootstrap-icons/bootstrap-icons.svg';
 
 
 // import icons from 'bootstrap-icons/bootstrap-icons.svg';
-import { setMyInfo, MyInfo, GameOrigin, EpocTime, checkDebug, removeDebug, ignoredPlayers } from '../index.js';
+import { setMyInfo, MyInfo, GameOrigin, EpocTime, debugEnabled, checkDebug, removeDebug, ignoredPlayers } from '../index.js';
 import { availablePacksFP, CityEntityDefs, Goods, language } from '../index.js';
 import { ResourceDefs, availableFP } from './ResourceService.js';
 import * as helper from '../fn/helper.js';
@@ -145,6 +145,14 @@ export function startupService(msg) {
             var forgePoints = 0;
             var found = null; // this IS used
             // console.debug('mapID: ', mapID);
+
+            if (mapID.cityentity_id.substring(0, 24) == "W_MultiAge_WIN22A11b"){
+                console.info(mapID.name, mapID);
+            }
+            if (mapID.cityentity_id.substring(0, 10) == "W_MultiAge"){
+                console.info(mapID.name, mapID);
+            }
+                   
             if (mapID.cityentity_id.substring(0, 24) == "R_MultiAge_SummerBonus20"
                 || mapID.cityentity_id.substring(0, 27) == "R_MultiAge_CulturalBuilding") {
                 // console.debug(mapID);
@@ -457,7 +465,22 @@ export function startupService(msg) {
 
             }
 
-            // if(mapID.ability.__class__ == 'RandomUnitOfAgeWhenMotivatedAbility') {
+            if (mapID.hasOwnProperty('components')) {
+                console.debug(mapID.name, mapID);
+                const comp = mapID.components[user.era];
+                if (comp && comp.hasOwnProperty('boosts')) {
+                }
+                if (comp && comp.hasOwnProperty('production')) {
+                    if (comp.production.hasOwnProperty('options')){
+                        const products = comp.production.options[0];
+                        products.array.forEach(product => {
+                            console.debug(product);
+                        });
+                    }
+                }
+            }
+
+        // if(mapID.ability.__class__ == 'RandomUnitOfAgeWhenMotivatedAbility') {
             // 	console.debug(entity.name,ability,ability.amount)
             // 	trazUnits += ability.amount;
             // }
@@ -1112,13 +1135,13 @@ export function showGalaxy() {
     Galaxy.html += `<div id="galaxyText" class="resize  collapse ${collapse.collapseGalaxy == false ? 'show' : ''}">`;
     Galaxy.html += `<p>Tries Remaining: <span id='galaxyID'>${Galaxy.amount}</span></p><p>`;
     Galaxy.bonus.forEach((entry, id) => {
-        if (id < Galaxy.amount) Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
+        if (id < Galaxy.amount || debugEnabled == true) Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
     });
 
     var galaxy = document.getElementById("galaxy");
     galaxy.innerHTML = Galaxy.html + `</p></div></div>`;
     document.getElementById("galaxyTextLabel").addEventListener("click", collapse.fCollapseGalaxy);
-    if (Galaxy.amount > 0)
+    if (Galaxy.amount > 0 || debugEnabled == true)
         galaxy.style.display = "block";
     else
         galaxy.style.display = "none";
