@@ -27,6 +27,9 @@ export function getBonuses(msg) {
 	City.ChatBonus = 0;
 	City.TrazUnits = 0;
 
+	// TODO
+	// add daily_strategypoint to city info (Daily FP)
+
 	if (DEV && checkDebug()) {
 		var beta = document.getElementById("beta");
 
