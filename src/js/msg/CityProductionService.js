@@ -38,9 +38,10 @@ export function pickupProduction(msg) {
     if (msg.responseData.updatedEntities.length) {
         var rewards = msg.responseData.updatedEntities;
         rewards.forEach(reward => {
+            updateGalaxy(reward.cityentity_id);
             // console.debug(reward.state.current_product.hasOwnProperty('product') , reward.state.current_product.product.hasOwnProperty('resources'));
             if (reward.state.hasOwnProperty('current_product') && reward.state.current_product.hasOwnProperty('product') && reward.state.current_product.product.hasOwnProperty('resources')) {
-                updateGalaxy(reward.cityentity_id);
+                // updateGalaxy(reward.cityentity_id);
                 // var resources = reward.state.current_product.product.resources;
                 // console.debug(resources);
                 Object.keys(reward.state.current_product.product.resources).forEach(resource => {
@@ -50,6 +51,22 @@ export function pickupProduction(msg) {
                         rewardsCity[name] += reward.state.current_product.product.resources[resource];
                     else
                         rewardsCity[name] = reward.state.current_product.product.resources[resource];
+                });
+            }
+            if (reward.state.hasOwnProperty('productionOption') && reward.state.productionOption.hasOwnProperty('products')) {
+                // updateGalaxy(reward.cityentity_id);
+                // var resources = reward.state.current_product.product.resources;
+                // console.debug(resources);
+                reward.state.productionOption.products.array.forEach(element => {
+                    if(element.hasOwnProperty('playerResources') && element.playerResources.hasOwnProperty('resources'))
+                        Object.keys(element.playerResources.resources).forEach(resource => {
+                            const name = helper.fResourceShortName(resource);
+                            // console.debug(name,resource)
+                            if (rewardsCity[name])
+                                rewardsCity[name] += reward.state.current_product.product.resources[resource];
+                            else
+                                rewardsCity[name] = reward.state.current_product.product.resources[resource];
+                        });                    
                 });
             }
         });

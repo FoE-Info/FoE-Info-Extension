@@ -51,7 +51,7 @@ import '../css/main.scss';
 console.debug(toolOptions);
 
 let contentTypes = {};
-var debugEnabled = false;
+export var debugEnabled = false;
 export var availablePacksFP = 0;
 export var PlayerName = "";
 export var PlayerID = 0;
@@ -1064,6 +1064,10 @@ function handleRequestFinished(request) {
 
 							/*rewardPlunder */
 						}
+						else if (msg.requestMethod == "getTimerBoost"){
+							// TODO
+							// add getTimerBoost att/def to A/D info
+						}
 					}
 					else if (msg.requestClass == "RewardService") {
   /*collectReward */
@@ -1789,8 +1793,10 @@ function handleRequestFinished(request) {
 } else {
   //output.innerHTML += `<div>*** ${msg.requestClass}</div>`;
   if (msg.requestClass == null) {
-    if (
-      msg.__class__ &&
+	if (msg.id == "W_MultiAge_WIN22A11b"){
+		console.info(msg.name, msg);
+	}
+	if (msg.__class__ &&
       (msg.__class__ == "CityEntityCulturalGoodsBuilding" ||
         msg.__class__ == "CityEntityImpediment" ||
         msg.__class__ == "CityEntityDiplomacy" ||
@@ -1805,7 +1811,7 @@ function handleRequestFinished(request) {
         msg.type == "off_grid")
     ) {
       // ignore these
-      console.debug(msg.name, msg);
+    //   console.debug(msg.name, msg);
     } else if (
       msg.__class__ &&
       msg.__class__.substring(0, 10) == "CityEntity"
@@ -1836,7 +1842,7 @@ function handleRequestFinished(request) {
       MilitaryDefs[msg.unitTypeId] = { name: msg.name, era: msg.minEra };
     } else if (msg.__class__ && msg.__class__ == "CastleSystemLevelMetadata") {
       CastleDefs.push(msg);
-      console.debug(`CastleSystemLevelMetadata`, msg, CastleDefs);
+    //   console.debug(`CastleSystemLevelMetadata`, msg, CastleDefs);
     } else if (msg.__class__ && msg.__class__ == "SelectionKitMetadata") {
       SelectionKitDefs.push(msg);
       // console.debug(`SelectionKitMetadata`, msg,SelectionKitDefs);
@@ -1850,7 +1856,12 @@ function handleRequestFinished(request) {
       // console.debug(`CityEntityCultural`, msg.name,msg);
     } else if (msg.__class__ && msg.__class__ == "BuildingUpgrade") {
       // console.debug(`BuildingUpgrade`, msg.name,msg);
-    } else if (!msg.__class__) {
+	} else if (msg.__class__ && msg.__class__ == "CityMapEntity"){
+		//
+		if (msg.id == "W_MultiAge_WIN22A11b"){
+			console.info(msg.name, msg);
+		}
+	} else if (!msg.__class__) {
       // console.debug(`NO __class__`, msg.name,msg);
     } else console.debug(msg.name, msg);
   }
