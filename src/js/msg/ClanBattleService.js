@@ -225,11 +225,15 @@ export function getProvinceDetailed(msg) {
         // else
         clanHTML = '<p id="gvgGuildPowerTextP" class="overflow">';
         gvgPower.forEach((age) => {
-            if (age.era == map.era)
-                clanHTML += `<strong>${fGVGagesname(map.era)}</strong>:</span> ${age.power} (Updated at ${age.time})<br>`;                
-            else
-                clanHTML += `${fGVGagesname(age.era)}: ${age.power} (Updated at ${age.time}<br>`;
-            total += +age.power;
+            if (age.power > 0){
+                if (age.era == map.era)
+                    clanHTML += `<strong>${fGVGagesname(map.era)}</strong>:</span> ${age.power}<br>`;                
+                    // clanHTML += `<strong>${fGVGagesname(map.era)}</strong>:</span> ${age.power} (Updated at ${age.time})<br>`;                
+                else
+                    clanHTML += `${fGVGagesname(age.era)}: ${age.power}<br>`;
+                    // clanHTML += `${fGVGagesname(age.era)}: ${age.power} (Updated at ${age.time}<br>`;
+                total += +age.power;
+            }
         });
         
         clanHTML += `Total: ${total}</p>`;
