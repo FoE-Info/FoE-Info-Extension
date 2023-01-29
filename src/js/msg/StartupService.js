@@ -135,20 +135,17 @@ export function startupService(msg) {
         console.debug(map_entities, CityEntityDefs);
         for (var id = 0; id < map_entities.length; id++) {
             const mapID = map_entities[id];
-            if (DEV && checkDebug()) {
-                if (CityEntityDefs[mapID.cityentity_id])
-                    console.debug(CityEntityDefs[mapID.cityentity_id].name, CityEntityDefs[mapID.cityentity_id], mapID,);
-                else
-                    console.debug(mapID);
-            }
+            // if (DEV && checkDebug()) {
+            //     if (CityEntityDefs[mapID.cityentity_id])
+            //         console.debug(CityEntityDefs[mapID.cityentity_id].name, CityEntityDefs[mapID.cityentity_id], mapID,);
+            //     else
+            //         console.debug(mapID);
+            // }
             // console.debug(mapID.cityentity_id,mapID,);
             var forgePoints = 0;
             var found = null; // this IS used
             // console.debug('mapID: ', mapID);
 
-            if (mapID.cityentity_id.substring(0, 24) == "W_MultiAge_WIN22A11b"){
-                console.info(mapID.name, mapID);
-            }
             if (mapID.cityentity_id.substring(0, 10) == "W_MultiAge"){
                 console.info(mapID.name, mapID);
             }
@@ -268,7 +265,7 @@ export function startupService(msg) {
                                     Galaxy.bonus.push({ 'id': mapID.cityentity_id, 'name': helper.fEntityNameTrim(mapID.cityentity_id), 'fp': mapID.state.current_product.product.resources.strategy_points });
                                 }
                                 // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
-                                // console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID,);
+                                console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID,);
                             }
                         }
                         if (mapID.state.current_product.product.resources.money)
@@ -387,63 +384,49 @@ export function startupService(msg) {
                 }
                 if (mapID.state.productionOption.products.length > 0) {
                     if (DEV && checkDebug()) console.debug(mapID.state.productionOption);
-                    if (mapID.state.productionOption.products[0].playerResources &&
-                        mapID.state.productionOption.products[0].playerResources.resources) {
-                        if (mapID.state.productionOption.products[0].playerResources.resources.premium)
-                            diamonds += mapID.state.productionOption.products[0].playerResources.resources.premium;
-                        if (mapID.state.productionOption.products[0].playerResources.resources.strategy_points) {
-                            forgePoints += mapID.state.productionOption.products[0].playerResources.resources.strategy_points;
-                            if (forgePoints > 0) {
-                                City.ForgePoints += forgePoints;
-                                found = true;
-                                // tooltipHTML.fp += `<br>${forgePoints}FP <strong>${helper.fEntityNameTrim(mapID.cityentity_id)}</strong>`;
-                                fpBuildings.push({ 'name': helper.fEntityNameTrim(mapID.cityentity_id), 'fp': forgePoints });
-                                if (DEV && checkDebug()) {
-                                    if (helper.fEntityNameTrim(mapID.cityentity_id)) {
-                                        beta.innerHTML += `<br>#${id}: ${forgePoints}FP Total: ${City.ForgePoints}FP <strong>${helper.fEntityNameTrim(mapID.cityentity_id)}</strong>`;
-                                    } else {
-                                        beta.innerHTML += `<br>#${id}: ${mapID.cityentity_id} ${forgePoints}FP Total: ${City.ForgePoints}FP`;
-                                        console.debug(mapID.cityentity_id, mapID.state.productionOption.name, mapID);
-                                    }
-                                }
-                                if (mapID.type != 'greatbuilding' && helper.fEntityNameTrim(mapID.cityentity_id)) {
-                                    Galaxy.bonus.push({ 'id': mapID.cityentity_id, 'name': helper.fEntityNameTrim(mapID.cityentity_id), 'fp': mapID.state.productionOption.products[0].playerResources.resources.strategy_points });
-                                }
-                                // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
-                                // console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID,);
+                    mapID.state.productionOption.products.forEach(product => {
+                        console.debug(product);
+                        if (product.hasOwnProperty('playerResources') && product.playerResources.hasOwnProperty('resources')){
+                            const resources = product.playerResources.resources;
+                            if (resources.hasOwnProperty('premium'))
+                                diamonds += resources.premium;
+                            if (resources.hasOwnProperty('strategy_points')) {
+                                if (DEV && checkDebug()) console.debug(mapID.state.productionOption);
+                                forgePoints += resources.strategy_points;
                             }
-                        }
-                        if (mapID.state.productionOption.products[0].playerResources.resources.money)
-                            City.Coins += mapID.state.productionOption.products[0].playerResources.resources.money;
-                        if (mapID.state.productionOption.name == "random_goods") {
-                            // console.debug('random_goods: ', mapID.state.productionOption.products[0].playerResources.resources);
-                            Object.keys(mapID.state.productionOption.products[0].playerResources.resources).forEach(entry => {
-                                // console.debug('random_goods: ', entry,mapID.state.productionOption.products[0].playerResources.resources[entry]);
-                                // randomGoods += mapID.state.productionOption.products[0].playerResources.resources[entry];
+                            if (resources.money)
+                                City.Coins += resources.money;
+                            if (mapID.state.productionOption.name == "random_goods") {
+                                // console.debug('random_goods: ', product.playerResources.resources);
+                                Object.keys(resources).forEach(entry => {
+                                    // console.debug('random_goods: ', entry,product.playerResources.resources[entry]);
+                                    // randomGoods += product.playerResources.resources[entry];
+                                });
+                            }
+                            var goods = 0;
+
+                            Object.keys(resources).forEach(entry => {
+                                if (entry != "medals" && entry != "money" && entry != "supplies" && entry != "strategy_points" && entry != "clanPower") {
+                                    // totalGoods += product.playerResources.resources[entry];
+                                    // console.debug(goodsList[entry],entry);
+                                    var entryGoods = resources[entry];
+                                    goods += entryGoods;
+                                    if (goodsList[`${entry}`])
+                                        goodsList[`${entry}`] += entryGoods;
+                                    else
+                                        goodsList[`${entry}`] = entryGoods;
+
+                                    // if()
+                                    // goodsList.push([entry,product.playerResources.resources[entry]]);
+                                    // goodsList.forEach(good => {
+                                    // 	console.debug(good,good.name,entry);
+                                    // 	// if(good === entry)
+                                    // 	entry.value
+                                    // });
+                                }
                             });
+
                         }
-                        var goods = 0;
-
-                        Object.keys(mapID.state.productionOption.products[0].playerResources.resources).forEach(entry => {
-                            if (entry != "medals" && entry != "money" && entry != "supplies" && entry != "strategy_points" && entry != "clanPower") {
-                                // totalGoods += mapID.state.productionOption.products[0].playerResources.resources[entry];
-                                // console.debug(goodsList[entry],entry);
-                                var entryGoods = mapID.state.productionOption.products[0].playerResources.resources[entry];
-                                goods += entryGoods;
-                                if (goodsList[`${entry}`])
-                                    goodsList[`${entry}`] += entryGoods;
-                                else
-                                    goodsList[`${entry}`] = entryGoods;
-
-                                // if()
-                                // goodsList.push([entry,mapID.state.productionOption.products[0].playerResources.resources[entry]]);
-                                // goodsList.forEach(good => {
-                                // 	console.debug(good,good.name,entry);
-                                // 	// if(good === entry)
-                                // 	entry.value
-                                // });
-                            }
-                        });
                         if (goods > 0) {
                             goodsBuildings.push({ 'name': helper.fEntityNameTrim(mapID.cityentity_id), 'goods': goods });
                             if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), goods, mapID.cityentity_id);
@@ -452,8 +435,27 @@ export function startupService(msg) {
                         else {
                             if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID);
                         }
-                    }
+                    });
                     // console.debug('goods: ', goodsList);
+                }
+                if (forgePoints > 0) {
+                    City.ForgePoints += forgePoints;
+                    found = true;
+                    // tooltipHTML.fp += `<br>${forgePoints}FP <strong>${helper.fEntityNameTrim(mapID.cityentity_id)}</strong>`;
+                    fpBuildings.push({ 'name': helper.fEntityNameTrim(mapID.cityentity_id), 'fp': forgePoints });
+                    if (DEV && checkDebug()) {
+                        if (helper.fEntityNameTrim(mapID.cityentity_id)) {
+                            beta.innerHTML += `<br>#${id}: ${forgePoints}FP Total: ${City.ForgePoints}FP <strong>${helper.fEntityNameTrim(mapID.cityentity_id)}</strong>`;
+                        } else {
+                            beta.innerHTML += `<br>#${id}: ${mapID.cityentity_id} ${forgePoints}FP Total: ${City.ForgePoints}FP`;
+                            console.debug(mapID.cityentity_id, mapID.state.productionOption.name, mapID);
+                        }
+                    }
+                    if (mapID.type != 'greatbuilding' && helper.fEntityNameTrim(mapID.cityentity_id)) {
+                        Galaxy.bonus.push({ 'id': mapID.cityentity_id, 'name': helper.fEntityNameTrim(mapID.cityentity_id), 'fp': forgePoints });
+                    }
+                    // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
+                    console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID,);
                 }
                 if (mapID.state.productionOption.clan_power) {
                     clanPower += mapID.state.productionOption.clan_power;
