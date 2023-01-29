@@ -206,7 +206,7 @@ export function fCollapseHood() {
 export function fCollapseGalaxy() {
 	collapseGalaxy = !collapseGalaxy;
 	// storage.set('collapseGalaxy', collapseGalaxy);
-	element.updateIcon("galaxyicon","galaxyText",collapscollapseGalaxyeGuild);
+	element.updateIcon("galaxyicon","galaxyText",collapseGalaxy);
 }
 
 export function fCollapseGuild() {
