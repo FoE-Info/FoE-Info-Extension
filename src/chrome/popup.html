@@ -1,48 +1,52 @@
 <html>
-
-<head>
+  <head>
     <style type="text/css">
-        .align-right {
-            text-align: right;
+      .align-right {
+          text-align: right;
 
-            .align-left {
-                text-align: left;
+          .align-left {
+              text-align: left;
 
-                .align-center {
-                    text-align: center;
-                }
+              .align-center {
+                  text-align: center;
+              }
     </style>
     <script type="module" src="browser-polyfill.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div style="width: 200px">
-        <div class="align-center">
-            <img width="200" src="icons/logo90.png" />
-        </div>
-        <div>
-            <h2>
-                <%= htmlWebpackPlugin.options.title %>
-            </h2>
-        </div>
-        <p>How to activate:</p>
-        <p>1) Ctrl+Shift+I (Win/Linux)<br>Command+Option+I (MAC)</p>
-        <p>2) Right-Click, then select Inspect</p>
-        <p>3) Browser Menu &gt; More Tools &gt; Developer Tools</p>
-        <p>Click on tab >> &gt;
-            <%= htmlWebpackPlugin.options.title %>
-        </p>
+      <div class="align-center">
+        <img width="200" src="icons/logo90.png" />
+      </div>
+      <div>
+        <h2><%= htmlWebpackPlugin.options.title %></h2>
+      </div>
+      <p>How to activate:</p>
+      <p>1) Ctrl+Shift+I (Win/Linux)<br />Command+Option+I (MAC)</p>
+      <p>2) Right-Click, then select Inspect</p>
+      <p>3) Browser Menu &gt; More Tools &gt; Developer Tools</p>
+      <p>Click on tab >> &gt; <%= htmlWebpackPlugin.options.title %></p>
     </div>
     <!-- <svg id="go-to-options" class="g-s-OAU7Vd" viewBox="0 0 24 24" width="16px" height="16px"><path d="M0 0h24v24H0z" fill="none"></path><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path></svg> -->
 
-    <svg id="go-to-options" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-tools" fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd"
-            d="M0 1l1-1 3.081 2.2a1 1 0 0 1 .419.815v.07a1 1 0 0 0 .293.708L10.5 9.5l.914-.305a1 1 0 0 1 1.023.242l3.356 3.356a1 1 0 0 1 0 1.414l-1.586 1.586a1 1 0 0 1-1.414 0l-3.356-3.356a1 1 0 0 1-.242-1.023L9.5 10.5 3.793 4.793a1 1 0 0 0-.707-.293h-.071a1 1 0 0 1-.814-.419L0 1zm11.354 9.646a.5.5 0 0 0-.708.708l3 3a.5.5 0 0 0 .708-.708l-3-3z" />
-        <path fill-rule="evenodd"
-            d="M15.898 2.223a3.003 3.003 0 0 1-3.679 3.674L5.878 12.15a3 3 0 1 1-2.027-2.027l6.252-6.341A3 3 0 0 1 13.778.1l-2.142 2.142L12 4l1.757.364 2.141-2.141zm-13.37 9.019L3.001 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z" />
+    <svg
+      id="go-to-options"
+      width="1em"
+      height="1em"
+      viewBox="0 0 16 16"
+      class="bi bi-tools"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M0 1l1-1 3.081 2.2a1 1 0 0 1 .419.815v.07a1 1 0 0 0 .293.708L10.5 9.5l.914-.305a1 1 0 0 1 1.023.242l3.356 3.356a1 1 0 0 1 0 1.414l-1.586 1.586a1 1 0 0 1-1.414 0l-3.356-3.356a1 1 0 0 1-.242-1.023L9.5 10.5 3.793 4.793a1 1 0 0 0-.707-.293h-.071a1 1 0 0 1-.814-.419L0 1zm11.354 9.646a.5.5 0 0 0-.708.708l3 3a.5.5 0 0 0 .708-.708l-3-3z"
+      />
+      <path
+        fill-rule="evenodd"
+        d="M15.898 2.223a3.003 3.003 0 0 1-3.679 3.674L5.878 12.15a3 3 0 1 1-2.027-2.027l6.252-6.341A3 3 0 0 1 13.778.1l-2.142 2.142L12 4l1.757.364 2.141-2.141zm-13.37 9.019L3.001 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z"
+      />
     </svg>
-
-</body>
-
+  </body>
 </html>
