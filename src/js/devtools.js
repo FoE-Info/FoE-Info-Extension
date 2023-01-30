@@ -11,10 +11,10 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import browser from 'webextension-polyfill';
+import browser from "webextension-polyfill";
 
-console.debug()
-browser.devtools.panels.create(EXT_NAME, null, 'panel.html');
+console.debug();
+browser.devtools.panels.create(EXT_NAME, null, "panel.html");
 
 // browser.devtools.panels.create(EXT_NAME, null, 'panel.html',
 //     function(panel) {

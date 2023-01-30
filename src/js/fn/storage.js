@@ -12,22 +12,23 @@
  * ________________________________________________________________
  */
 
-import browser from 'webextension-polyfill';
+import browser from "webextension-polyfill";
 
 function setStorage(name, value) {
   console.log(name, value);
 
-  browser.storage.local.set({
-    [name]: value
-  }).then(() => {
-    if (browser.runtime.lastError) {
-      console.log("error: ", browser.runtime.lastError);
-    } else {
-      // some code goes here.
-      // console.log(name,' is set to ' + value,value);
-    }
-  });
-
+  browser.storage.local
+    .set({
+      [name]: value,
+    })
+    .then(() => {
+      if (browser.runtime.lastError) {
+        console.log("error: ", browser.runtime.lastError);
+      } else {
+        // some code goes here.
+        // console.log(name,' is set to ' + value,value);
+      }
+    });
 }
 
 function getStorage(name) {
@@ -40,7 +41,6 @@ function getStorage(name) {
     }
     return result[name];
   });
-
 }
 
 function removeStorage(name) {
@@ -48,11 +48,6 @@ function removeStorage(name) {
   browser.storage.local.remove(name).then(() => {
     // console.log(name,' is deleted');
   });
-
 }
 
-export {
-  setStorage as set,
-  getStorage as get,
-  removeStorage as remove
-}
+export { setStorage as set, getStorage as get, removeStorage as remove };
