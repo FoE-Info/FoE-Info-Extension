@@ -29,58 +29,58 @@ export var showContributions = false;
 export var showGuildPosition = false;
 export var hideUnsafe = true;
 export var buildingCosts = false;
-export var collectionTimes = false
+export var collectionTimes = false;
 export var clipboard = true;
 
 export default function set(name, state) {
-	console.debug(name, state);
-	// console.debug(this,this[name]);
-	// if(name == 'showOptions'){
+  console.debug(name, state);
+  // console.debug(this,this[name]);
+  // if(name == 'showOptions'){
 
-	Object.entries(state).forEach(entry => {
-		const [key, value] = entry;
-		// console.debug(key, value);
-		items[key] = value;
-	});
+  Object.entries(state).forEach((entry) => {
+    const [key, value] = entry;
+    // console.debug(key, value);
+    items[key] = value;
+  });
 
-	console.debug(items);
-	// }
+  console.debug(items);
+  // }
 }
 
 var items = {
-	showFriends,
-	showGuild,
-	showHood,
-	showBonus,
-	showIncidents,
-	showGVG,
-	showStats,
-	showGBInfo,
-	showGBRewards,
-	showGBDonors,
-	showInvested,
-	showDonation,
-	showBattleground,
-	showBattlegroundChanges,
-	showExpedition,
-	showTreasury,
-	showVisit,
-	showSettlement,
-	showArmy,
-	showGoods,
-	showLeaderboard,
-	showGBGrewards,
-	GBGprovinceTime,
-	GBGshowSC,
-	showGErewards,
-	showRewards,
-	showLogs,
-	showContributions,
-	showGuildPosition,
-	hideUnsafe,
-	buildingCosts,
-	collectionTimes,
-	clipboard
-}
+  showFriends,
+  showGuild,
+  showHood,
+  showBonus,
+  showIncidents,
+  showGVG,
+  showStats,
+  showGBInfo,
+  showGBRewards,
+  showGBDonors,
+  showInvested,
+  showDonation,
+  showBattleground,
+  showBattlegroundChanges,
+  showExpedition,
+  showTreasury,
+  showVisit,
+  showSettlement,
+  showArmy,
+  showGoods,
+  showLeaderboard,
+  showGBGrewards,
+  GBGprovinceTime,
+  GBGshowSC,
+  showGErewards,
+  showRewards,
+  showLogs,
+  showContributions,
+  showGuildPosition,
+  hideUnsafe,
+  buildingCosts,
+  collectionTimes,
+  clipboard,
+};
 
-export { items as showOptions }
+export { items as showOptions };
