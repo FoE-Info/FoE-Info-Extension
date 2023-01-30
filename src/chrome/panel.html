@@ -1,41 +1,37 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= htmlWebpackPlugin.options.title %>
-    </title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="manifest" href="<%= htmlWebpackPlugin.options.manifest %>" />
     <style type="text/css">
-        .copy {
-            color: green;
-        }
+      .copy {
+        color: green;
+      }
 
-        .copy:hover {
-            background-color: #4CAF50;
-            color: white;
-        }
+      .copy:hover {
+        background-color: #4caf50;
+        color: white;
+      }
 
-        .notice {
-            color: red;
-            fw: bold;
-            display: table-cell;
-            padding: 0px 5px;
-        }
+      .notice {
+        color: red;
+        fw: bold;
+        display: table-cell;
+        padding: 0px 5px;
+      }
 
-        .table {
-            padding-bottom: 1px;
-        }
+      .table {
+        padding-bottom: 1px;
+      }
 
-        .table>tbody>tr>td {
-            padding-top: 1px;
-            padding-bottom: 1px;
-            border-top: 0
-        }
+      .table > tbody > tr > td {
+        padding-top: 1px;
+        padding-bottom: 1px;
+        border-top: 0;
+      }
     </style>
     <script type="module" src="browser-polyfill.js"></script>
-</head>
-
+  </head>
 </html>

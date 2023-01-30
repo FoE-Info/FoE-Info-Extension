@@ -2,18 +2,28 @@
 @import "custom.scss";
 
 .bootstrap-styles {
-    @import "bootstrap/scss/bootstrap";
-    @import "custom.scss";
+  @import "bootstrap/scss/bootstrap";
+  @import "custom.scss";
 }
 
 .nord-styles {
-    @import "bootstrap/scss/functions";
-    @import "bootstrap/scss/variables";
-    @import "nord/src/sass/nord";
-    $body_bg: $nord6;
-    $body_color: $nord0;
-    $theme-colors: ("primary": $nord10, "secondary": $nord3, "success": $nord14, "danger": $nord11, "warning": $nord13, "info": $nord8, "light": $nord5, "dark": $nord0, "white": $nord6, );
-    $link-color: $nord10;
-    @import "bootstrap/scss/bootstrap";
-    @import "custom.scss";
+  @import "bootstrap/scss/functions";
+  @import "bootstrap/scss/variables";
+  @import "nord/src/sass/nord";
+  $body_bg: $nord6;
+  $body_color: $nord0;
+  $theme-colors: (
+    "primary": $nord10,
+    "secondary": $nord3,
+    "success": $nord14,
+    "danger": $nord11,
+    "warning": $nord13,
+    "info": $nord8,
+    "light": $nord5,
+    "dark": $nord0,
+    "white": $nord6,
+  );
+  $link-color: $nord10;
+  @import "bootstrap/scss/bootstrap";
+  @import "custom.scss";
 }
