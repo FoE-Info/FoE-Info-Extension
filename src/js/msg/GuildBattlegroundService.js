@@ -533,7 +533,7 @@ function checkProvinces() {
 
     targetGenerator.innerHTML =
       targetsHTML +
-      `<div id="targetGenCollapse" class="collapse 
+      `<div id="targetGenCollapse" class="collapse
             ${
               collapse.collapseTargetGen == false ? "show" : ""
             }"><p id="targetGenText">` +
