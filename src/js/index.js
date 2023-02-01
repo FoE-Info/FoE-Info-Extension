@@ -1180,7 +1180,7 @@ function handleRequestFinished(request) {
               } else {
                 cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-bs-toggle="collapse">
 	  ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
-	  <strong><span data-i18n="reward">REWARDS:</span></strong></p>
+	  <span data-i18n="reward"><strong>REWARDS:</strong></span></p>
 										${element.close()}
 										<div id="rewardsText" class="overflow resize collapse ${
                       collapse.collapseRewards ? "" : "show"
