@@ -366,7 +366,10 @@ export function startupService(msg) {
                   });
                 }
                 // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
-                console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID);
+                if(CityEntityDefs[mapID.cityentity_id])
+                  console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID);
+                else
+                  console.debug(mapID.cityentity_id, mapID);
               }
             }
             if (mapID.state.current_product.product.resources.money)
