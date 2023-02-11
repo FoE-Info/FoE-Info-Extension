@@ -43,7 +43,7 @@ import * as copy from "../fn/copy.js";
 import * as element from "../fn/AddElement";
 import { showOptions } from "../vars/showOptions.js";
 import { clearArmyUnits } from "./ArmyUnitManagementService.js";
-
+import {clearGBlist} from "./GreatBuildingsService.js";
 export var City = {
   ArcBonus: 90,
   ChatBonus: 0,
@@ -105,6 +105,7 @@ export function startupService(msg) {
   fpBuildings = [];
   goodsBuildings = [];
   clanGoodsBuildings = [];
+  clearGBlist();
 
   console.debug("window", window);
 
@@ -205,29 +206,19 @@ export function startupService(msg) {
           name: helper.fEntityNameTrim(mapID.cityentity_id),
           ready: mapID.state.next_state_transition_at,
         });
-        // console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID,);
+        // console.debug(fEntityName(mapID.cityentity_id), mapID,);
       }
 
       if (mapID.state.current_product) {
         if (DEV && checkDebug()) {
-          if (CityEntityDefs[mapID.cityentity_id])
             console.debug(
-              CityEntityDefs[mapID.cityentity_id].name,
-              mapID.state.current_product.name,
-              mapID
-            );
-          else
-            console.debug(
-              mapID.cityentity_id,
+              fEntityName(mapID.cityentity_id),
               mapID.state.current_product.name,
               mapID
             );
         }
         if (mapID.state.current_product.guildProduct) {
-          // if(CityEntityDefs[mapID.cityentity_id])
-          //     console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID.state.current_product.name,mapID);
-          // else
-          //     console.debug(mapID.cityentity_id, mapID.state.current_product.name,mapID);
+          //     console.debug(fEntityName(mapID.cityentity_id), mapID.state.current_product.name,mapID);
           if (mapID.state.current_product.guildProduct.resources) {
             var goods = 0;
             var era = "";
@@ -316,14 +307,12 @@ export function startupService(msg) {
                 );
             }
             if (DEV && checkDebug()) {
-              if (CityEntityDefs[mapID.cityentity_id])
                 console.debug(
-                  CityEntityDefs[mapID.cityentity_id].name,
+                  fEntityName(mapID.cityentity_id),
                   goods,
                   mapID.state.current_product
                 );
-              else console.debug(goods, mapID.state.current_product);
-              // visitbetagoods += `<br>#${id}: ${goods} ${CityEntityDefs[mapID.cityentity_id].name}`;
+              // visitbetagoods += `<br>#${id}: ${goods} ${fEntityName(mapID.cityentity_id)}`;
             }
           }
         }
@@ -366,10 +355,7 @@ export function startupService(msg) {
                   });
                 }
                 // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
-                if(CityEntityDefs[mapID.cityentity_id])
-                  console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID);
-                else
-                  console.debug(mapID.cityentity_id, mapID);
+                  console.debug(fEntityName(mapID.cityentity_id), mapID);
               }
             }
             if (mapID.state.current_product.product.resources.money)
@@ -448,24 +434,14 @@ export function startupService(msg) {
 
       if (mapID.state.productionOption) {
         if (DEV && checkDebug()) {
-          if (CityEntityDefs[mapID.cityentity_id])
             console.debug(
-              CityEntityDefs[mapID.cityentity_id].name,
-              mapID.state.productionOption.name,
-              mapID
-            );
-          else
-            console.debug(
-              mapID.cityentity_id,
+              fEntityName(mapID.cityentity_id),
               mapID.state.productionOption.name,
               mapID
             );
         }
         if (mapID.state.productionOption.guildProduct) {
-          // if(CityEntityDefs[mapID.cityentity_id])
-          //     console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID.state.productionOption.name,mapID);
-          // else
-          //     console.debug(mapID.cityentity_id, mapID.state.productionOption.name,mapID);
+          //     console.debug(fEntityName(mapID.cityentity_id), mapID.state.productionOption.name,mapID);
           if (mapID.state.productionOption.guildProduct.resources) {
             var goods = 0;
             Object.keys(
@@ -537,14 +513,12 @@ export function startupService(msg) {
                 );
             }
             if (DEV && checkDebug()) {
-              if (CityEntityDefs[mapID.cityentity_id])
                 console.debug(
-                  CityEntityDefs[mapID.cityentity_id].name,
+                  fEntityName(mapID.cityentity_id),
                   goods,
                   mapID.state.productionOption
                 );
-              else console.debug(goods, mapID.state.productionOption);
-              // visitbetagoods += `<br>#${id}: ${goods} ${CityEntityDefs[mapID.cityentity_id].name}`;
+              // visitbetagoods += `<br>#${id}: ${goods} ${fEntityName(mapID.cityentity_id)}`;
             }
           }
         }
@@ -657,7 +631,7 @@ export function startupService(msg) {
             });
           }
           // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
-          console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID);
+          console.debug(fEntityName(mapID.cityentity_id), mapID);
         }
         if (mapID.state.productionOption.clan_power) {
           clanPower += mapID.state.productionOption.clan_power;
@@ -711,13 +685,7 @@ export function startupService(msg) {
         } else console.debug("mapID.bonus: ", mapID.bonus);
       }
       if (DEV && found == false) {
-        if (CityEntityDefs[mapID.cityentity_id]) {
-          debug.innerHTML += `<br>#${id}: ${
-            CityEntityDefs[mapID.cityentity_id].name
-          }`;
-        } else {
-          debug.innerHTML += `<br>#${id}: ${mapID.cityentity_id}`;
-        }
+          debug.innerHTML += `<br>#${id}: ${fEntityName(mapID.cityentity_id)}`;
         if (DEV && checkDebug())
           console.debug("NOT FOUND: ", id, mapID.cityentity_id, mapID);
       }
@@ -868,7 +836,7 @@ export function startupService(msg) {
         data-bs-content='${userTooltipHTML}</p>'><strong>${GameOrigin.toUpperCase()} ${
     MyInfo.name
   }</strong>
-        <svg class="bi info-icon" id="infoIcon" fill="currentColor" width="12" height="16"><use xlink:href="/97e6fe41382965602bd0b302d051d7f8.svg#info-circle"></use></svg></span>`;
+        <svg class="bi info-icon" id="infoIcon" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#info-circle"></use></svg></span>`;
   var clanGoodsHTML = `<span id="clanGoods" class="pop" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
   var totalGoodsHTML = `<span id="goods" class="pop" data-bs-container="#goods" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
@@ -878,15 +846,15 @@ export function startupService(msg) {
     "citystatsText",
     collapse.collapseStats
   );
-  citystatsHTML += element.close();
-  citystatsHTML += userHTML;
-  citystatsHTML += `</p>`;
   citystatsHTML += element.copy(
     "citystatsCopyID",
     "warning",
-    "right",
+    "stats-copy",
     collapse.collapseStats
   );
+  citystatsHTML += element.close();
+  citystatsHTML += userHTML;
+  citystatsHTML += `</p>`;
   citystatsHTML += `<div id="citystatsText" class="collapse ${
     collapse.collapseStats ? "" : "show"
   }"><div>`;
@@ -952,7 +920,7 @@ export function startupService(msg) {
     // $(this).find('span.toggle-icon').toggleClass('glyphicon-collapse-up glyphicon-collapse-down');
     // });
     document
-      .getElementById("citystatsLabel")
+      .getElementById("user")
       .addEventListener("click", collapse.fCollapseStats);
     //document.getElementById("citystatsicon").addEventListener("click", collapse.fCollapseStats);
     if (!collapse.collapseStats)
@@ -1407,4 +1375,11 @@ export function showGalaxy() {
     .addEventListener("click", collapse.fCollapseGalaxy);
   if (Galaxy.amount > 0 || debugEnabled == true) galaxy.style.display = "block";
   else galaxy.style.display = "none";
+}
+
+function fEntityName(entity){
+  if(CityEntityDefs[entity])
+  return CityEntityDefs[entity].name;
+else
+  return entity;
 }

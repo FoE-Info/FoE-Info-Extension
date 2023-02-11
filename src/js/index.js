@@ -279,7 +279,7 @@ else child.className = "title";
 child.textContent = EXT_NAME;
 newelement.appendChild(child);
 newelement = document.createElement("div");
-newelement.innerHTML = `<svg class="bi text-light" width="24" height="24" fill="currentColor"><use xlink:href="${icons}#tools"/></svg>`;
+newelement.innerHTML = `<svg class="bi text-light" width="16" height="16" fill="currentColor"><use xlink:href="${icons}#gear"/></svg>`;
 newelement.classList.toggle("p-2");
 // newelement.className = "p-2";
 // child = document.createElement("img");
@@ -2320,7 +2320,7 @@ function receiveStorage(result) {
     const [key, value] = element;
     // console.debug(key,value,key.substring(0,8));
     if (key.substring(0, 8) == "collapse") {
-      // console.debug(key,value);
+      console.debug(key,value);
       collapseOptions(key, value);
     } else if (key == "showOptions") setOptions("showOptions", value);
     else if (key == ResourceDefs) {

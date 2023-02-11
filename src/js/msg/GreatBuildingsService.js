@@ -52,6 +52,7 @@ var Donation = new BigNumber(0);
 var RewardFP = new BigNumber(0);
 var Profit = 0;
 var Percent = new BigNumber(0);
+var GBlist = [];
 const darkMode = false; // dont use darkMode until we sort out a dark theme to use
 
 if (storage.get("useNewDonationPanel") != null)
@@ -164,28 +165,30 @@ export function showGreatBuldingDonation() {
         ? PlayerName.substr(0, PlayerName.indexOf(" "))
         : PlayerName;
     var newdonationHTML = "";
-    var copyText = `<div id='copyText'>${
-      showOptions.showGuildPosition &&
-      PlayerName == MyInfo.name &&
-      MyInfo.guildPosition
-        ? "#" + MyInfo.guildPosition + " "
-        : ""
-    }${playerShortName ? playerShortName : PlayerName} ${helper.fGBsname(
-      GBselected.name
-    )} `;
-    var olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
-            ${element.close()}
-            <p id="freeTextLabel" href="#donationText3" aria-controls="donationText3" data-bs-toggle="collapse">
-            <svg class="bi header-icon" id="donationicon" href="#donationText3" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseDonation ? "plus" : "dash"
-    }-circle"/></svg>
-            <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>`;
+    // var copyText = `<div id='copyText'>${
+    //   showOptions.showGuildPosition &&
+    //   PlayerName == MyInfo.name &&
+    //   MyInfo.guildPosition
+    //     ? "#" + MyInfo.guildPosition + " "
+    //     : ""
+    // }${playerShortName ? playerShortName : PlayerName} ${helper.fGBsname(
+    //   GBselected.name
+    // )} `;
+    addGB(helper.fGBsname(GBselected.name),"");
+    var olddonationHTML = `<div class="alert alert-secondary alert-dismissible show" role="alert">${element.close()}<p>`;
+    olddonationHTML += element.icon("donationicon", "donationText3", collapse.collapseDonation);
+    olddonationHTML += element.clear(
+      "clearCopyID",
+      clearCopyText,
+      collapse.collapseDonation
+    );
     olddonationHTML += element.copy(
       "donationCopyID",
       "secondary",
-      "right",
+      "mid",
       collapse.collapseDonation
     );
+    olddonationHTML += `<span href="#donationText3" aria-controls="donationText3" data-bs-toggle="collapse" id="freeTextLabel"><strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></span></p>`;
     olddonationHTML += `<div id="donationText3" class="collapse ${
       collapse.collapseDonation ? "" : "show"
     }"><p>${getPlayerLink()}<br>`;
@@ -256,7 +259,7 @@ export function showGreatBuldingDonation() {
         }FP <span data-i18n="safe">to make safe for</span> ${
           currentPercent ? currentPercent / 100 : "1.9"
         }</p>`;
-      copyText += getDonations(1, safe, donateSuggest);
+      addGB(helper.fGBsname(GBselected.name),getDonations(1, safe, donateSuggest));
     }
     // not Top1, Check Top2
     else {
@@ -308,7 +311,7 @@ export function showGreatBuldingDonation() {
             }FP <span data-i18n="safe">to make safe for</span> ${
               currentPercent ? currentPercent / 100 : "1.9"
             }</p>`;
-          copyText += getDonations(2, safe, donateSuggest);
+          addGB(helper.fGBsname(GBselected.name),getDonations(2, safe, donateSuggest));
         } else olddonationHTML += `</p>`;
       }
       // not Top2, Check Top3
@@ -369,7 +372,7 @@ export function showGreatBuldingDonation() {
               }FP <span data-i18n="safe">to make safe for</span> ${
                 currentPercent ? currentPercent / 100 : "1.9"
               }</p>`;
-            copyText += getDonations(3, safe, donateSuggest);
+            addGB(helper.fGBsname(GBselected.name),getDonations(3, safe, donateSuggest));
           } else olddonationHTML += `</p>`;
         }
         // not Top3, Check Top4
@@ -422,8 +425,8 @@ export function showGreatBuldingDonation() {
                 }FP <span data-i18n="safe">to make safe for</span> ${
                   currentPercent ? currentPercent / 100 : "1.9"
                 }</p>`;
-              copyText += getDonations(4, safe, donateSuggest);
-            } else olddonationHTML += `</p>`;
+              addGB(helper.fGBsname(GBselected.name),getDonations(4, safe, donateSuggest));
+              } else olddonationHTML += `</p>`;
           }
           // not Top4, Check Top5
           else {
@@ -478,10 +481,10 @@ export function showGreatBuldingDonation() {
                   }FP <span data-i18n="safe">to make safe for</span> ${
                     currentPercent ? currentPercent / 100 : "1.9"
                   }</p>`;
-                copyText += getDonations(5, safe, donateSuggest);
-              } else olddonationHTML += `</p>`;
+                addGB(helper.fGBsname(GBselected.name),getDonations(5, safe, donateSuggest));
+                } else olddonationHTML += `</p>`;
             } else {
-              copyText = "";
+              addGB(helper.fGBsname(GBselected.name),"");
               newdonationHTML += gbTabEmpty(
                 "-",
                 currentPercent,
@@ -506,20 +509,32 @@ export function showGreatBuldingDonation() {
       } else {
         donation2DIV.innerHTML =
           olddonationHTML +
-          copyText +
-          (donationSuffix ? donationSuffix : "" + `</div>`);
-        if (copyText)
+          copyText();
+        if (GBlist.length){
+          $("#donationCopyID").show();
+          $("#clearCopyID").show();
+          document
+            .getElementById("clearCopyID")
+            .addEventListener("click", clearCopyText);
           document
             .getElementById("donationCopyID")
             .addEventListener("click", copy.DonationCopy);
-        else $("#donationCopyID").hide();
-        // $('#donationCopyID').prop('disabled', true);
+        }
+        else{
+          $("#donationCopyID").hide();
+          $("#clearCopyID").hide();
+          // $('#donationCopyID').prop('disabled', true);
+        } 
 
         if (document.getElementById("freeTextLabel"))
           document
             .getElementById("freeTextLabel")
             .addEventListener("click", collapse.fCollapseDonation);
-      }
+        if (document.getElementById("donationicon"))
+          document
+            .getElementById("donationicon")
+            .addEventListener("click", collapse.fCollapseDonation);
+        }
       document
         .getElementById("GBselected")
         .addEventListener("click", clickDonation);
@@ -652,7 +667,7 @@ function fDonationSuggest(reward) {
 }
 
 export function setCurrentPercent(percent) {
-  if (percent) currentPercent = percent;
+  if (percent >= 100) currentPercent = percent;
   else currentPercent = donationPercent;
   console.debug(percent);
 }
@@ -705,6 +720,7 @@ function gbTabSafe(
         GBselected.name
       )} `;
       footer += txt + "</div>";
+      addGB(helper.fGBsname(GBselected.name),txt);
     }
     // footer += `</div><p>Remaining <strong>${GBselected.total - GBselected.current}</strong> FPs [${remainingOwner} (owner) / ${remainingInvestors} (investors)]</p>`;
     footer += `<p>Remaining <strong>${
@@ -803,6 +819,7 @@ function gbTabNotSafe(
         GBselected.name
       )} `;
       footer += txt + "</div>";
+      addGB(helper.fGBsname(GBselected.name),txt);
     }
     // footer += `<p>Remaining <strong>${GBselected.total - GBselected.current}</strong> FPs [${remainingOwner} (owner) / ${remainingInvestors} (investors)]</p>`;
     footer += `<p>Remaining <strong>${
@@ -1046,4 +1063,60 @@ function getPlaceValues(place) {
     .div(100)
     .dp(0);
   remaining = GBselected.total - GBselected.current;
+}
+
+function addGB(gb,text){
+  var playerShortName =
+    PlayerName.length > 5
+      ? PlayerName.substr(0, PlayerName.indexOf(" "))
+      : PlayerName;
+  const key = PlayerName + "|" + gb;
+  if (text){
+    // GBlist[key] = PlayerName + " " + gb + " " +  text;
+    // if (!GBlist[key]) {
+      if (GBlist.find((entry) => entry.key == key) == null)
+        GBlist.push({
+          key: key,
+          name: PlayerName,
+          gb: gb,
+          text: (playerShortName ? playerShortName : PlayerName) + " " + gb + " " +  text
+        });
+      else
+        GBlist.find((entry) => entry.key == key).text = PlayerName + " " + gb + " " +  text;
+    // }
+    // else
+      // GBlist[key].text = PlayerName + " " + gb + " " +  text;
+  }
+
+  else
+    GBlist.filter((entry) => entry.key !== key);
+  //   GBlist = Object.keys(GBlist).filter((item) => item.key !== key);
+
+  console.debug(gb,text,GBlist);
+}
+
+function copyText(){
+  var text = "<div id='copyText'>";
+  GBlist.forEach(element => {
+    text += (showOptions.showGuildPosition &&
+    PlayerName == MyInfo.name &&
+    MyInfo.guildPosition
+      ? "#" + MyInfo.guildPosition + " "
+      : "");
+    text += element.text + (donationSuffix ? donationSuffix : "") + "<br>";
+  });
+  return text + "</div>";
+}
+
+export function clearGBlist(){
+  GBlist = [];
+}
+
+function clearCopyText(){
+  clearGBlist();
+  if (document.getElementById("copyText")) {
+    document.getElementById("copyText").innerHTML = "";
+    $("#donationCopyID").hide();
+    $("#clearCopyID").hide();
+  }
 }
