@@ -209,6 +209,7 @@ export function showGreatBuldingDonation() {
     console.debug("RewardFP/Donation/Profit ", RewardFP, Donation, Profit);
     if (Donation.isLessThan(BigNumber(remaining))) {
       if (Profit >= 0) {
+        soundOnProfit();
         olddonationHTML += `<p class="invest-good">1st Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
         newdonationHTML += gbTabSafe(
           1,
@@ -264,6 +265,7 @@ export function showGreatBuldingDonation() {
       getSafe(2);
       if (Donation.isLessThan(BigNumber(remaining))) {
         if (Profit >= 0) {
+          soundOnProfit();
           olddonationHTML += `<p class="invest-good">2nd Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
           newdonationHTML += gbTabSafe(
             2,
@@ -325,6 +327,7 @@ export function showGreatBuldingDonation() {
         );
         if (Donation.isLessThan(BigNumber(remaining))) {
           if (Profit >= 0) {
+            soundOnProfit();
             olddonationHTML += `<p class="invest-good">3rd Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
             newdonationHTML += gbTabSafe(
               3,
@@ -378,6 +381,7 @@ export function showGreatBuldingDonation() {
           getSafe(4);
           if (Donation.isLessThan(BigNumber(remaining))) {
             if (Profit >= 0) {
+              soundOnProfit();
               olddonationHTML += `<p class="invest-good">4th Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
               newdonationHTML += gbTabSafe(
                 4,
@@ -431,6 +435,7 @@ export function showGreatBuldingDonation() {
             getSafe(5);
             if (Donation.isLessThan(BigNumber(remaining))) {
               if (Profit >= 0) {
+                soundOnProfit();
                 olddonationHTML += `<p class="invest-good">5th Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
                 newdonationHTML += gbTabSafe(
                   5,
@@ -1047,3 +1052,9 @@ function getPlaceValues(place) {
     .dp(0);
   remaining = GBselected.total - GBselected.current;
 }
+
+const soundOnProfit = () => {
+  let correct = "../../sound/correct.mp3";
+  const sound = new Audio(correct);
+  sound.play();
+};
