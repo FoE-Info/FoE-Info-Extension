@@ -1,0 +1,14 @@
+node_modules
+build
+dist
+coverage
+package-lock.json
+.idea
+.vscode
+src/js/fn/constants.js
+tests/fixtures/
+src/fonts/
+src/icons/
+src/images/
+docs/har/
+docs/heap-snapshots/
