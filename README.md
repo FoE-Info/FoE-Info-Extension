@@ -6,6 +6,7 @@ How to build the project
 * Clone the repo
 * Open in your IDE (eg [VS Code](https://code.visualstudio.com/download) / [IntelliJ](https://www.jetbrains.com/idea/download/))
 * Open a terminal in your IDE, type `npm install` to install the project dependencies
+* Open your IDE, and hit the `CTRL+SHIFT+P` keybinding and type `ext install esbenp.prettier-vscode` to install prettier in your IDE
 * Type `npm run dev` to start the dev server (or you can use tasks in your IDE)
 
 Installation of the extension
