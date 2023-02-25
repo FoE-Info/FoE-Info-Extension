@@ -1410,7 +1410,10 @@ export function showGalaxy() {
   Galaxy.bonus.forEach((entry) => {
     const ready = entry.state == "ProductionFinishedState" ? true : (entry.transition <= EpocTime);
     if (ready && (count < Galaxy.amount || debugEnabled == true)){
-      Galaxy.html += `${entry.id} ${entry.fp}FP ${entry.name} ${count} ${Galaxy.amount}<br>`;
+      if (debugEnabled == true)
+        Galaxy.html += `${entry.id} ${entry.fp}FP ${entry.name} ${count} ${Galaxy.amount}<br>`;
+      else
+        Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
       count++;
     }
   });
