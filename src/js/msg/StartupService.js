@@ -828,18 +828,19 @@ export function startupService(msg) {
   }"><span data-i18n="daily">Daily</span>: ${
     City.ForgePoints ? City.ForgePoints : 0
   }FP</span>`;
-  var userHTML = `<span id="user" class="pop" data-bs-container="#user" data-bs-toggle="popover" data-bs-placement="bottom"
+  var userHTML = `<strong>${GameOrigin.toUpperCase()} ${
+    MyInfo.name
+  }</strong><span id="user" class="pop" data-bs-container="#user" data-bs-toggle="popover" data-bs-placement="bottom"
         title="Playing <strong>FoE</strong> since<br>${new Date(
           MyInfo.createdAt * 1000
         ).toLocaleString()}"
-        data-bs-content='${userTooltipHTML}</p>'><strong>${GameOrigin.toUpperCase()} ${
-    MyInfo.name
-  }</strong>
+        data-bs-content='${userTooltipHTML}</p>'>
         <svg class="bi info-icon" id="infoIcon" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#info-circle"></use></svg></span>`;
   var clanGoodsHTML = `<span id="clanGoods" class="pop" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
   var totalGoodsHTML = `<span id="goods" class="pop" data-bs-container="#goods" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
-  citystatsHTML = `<p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel">`;
+  citystatsHTML = element.close() + `<p>`;
+  // citystatsHTML = `<p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel">`;
   citystatsHTML += element.icon(
     "citystatsicon",
     "citystatsText",
@@ -851,10 +852,9 @@ export function startupService(msg) {
     "right",
     collapse.collapseStats
   );
-  citystatsHTML += element.close();
+  citystatsHTML += `<span href="#citystatsText" aria-controls="donationText3" data-bs-toggle="collapse" id="citystatsLabel">`;
   citystatsHTML += userHTML;
-  citystatsHTML += `</p>`;
-  citystatsHTML += `<div id="citystatsText" class="collapse ${
+  citystatsHTML += `</span></p><div id="citystatsText" class="collapse ${
     collapse.collapseStats ? "" : "show"
   }"><div>`;
   // citystatsHTML += `<p id="citystatsText"><br>`;
