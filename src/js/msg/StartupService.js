@@ -848,7 +848,7 @@ export function startupService(msg) {
   citystatsHTML += element.copy(
     "citystatsCopyID",
     "warning",
-    "stats-copy",
+    "right",
     collapse.collapseStats
   );
   citystatsHTML += element.close();
