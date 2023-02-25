@@ -363,6 +363,8 @@ export function startupService(msg) {
                     name: helper.fEntityNameTrim(mapID.cityentity_id),
                     fp: mapID.state.current_product.product.resources
                       .strategy_points,
+                      state: mapID.state.__class__,
+                      transition: mapID.state.__class__ == "ProducingState" ? mapID.state.next_state_transition_at : 0
                   });
                 }
                 // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
@@ -1396,7 +1398,8 @@ export function showGalaxy() {
   }">`;
   Galaxy.html += `<p>Tries Remaining: <span id='galaxyID'>${Galaxy.amount}</span></p><p>`;
   Galaxy.bonus.forEach((entry, id) => {
-    if (id < Galaxy.amount || debugEnabled == true)
+    const ready = entry.state == "ProductionFinishedState" ? true : (entry.transition <= EpocTime);
+    if (ready && (id < Galaxy.amount || debugEnabled == true))
       Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
   });
 
