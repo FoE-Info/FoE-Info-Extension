@@ -359,12 +359,12 @@ export function startupService(msg) {
                   helper.fEntityNameTrim(mapID.cityentity_id)
                 ) {
                   Galaxy.bonus.push({
-                    id: mapID.cityentity_id,
+                    cityentity_id: mapID.cityentity_id,
+                    id: mapID.id,
                     name: helper.fEntityNameTrim(mapID.cityentity_id),
-                    fp: mapID.state.current_product.product.resources
-                      .strategy_points,
-                      state: mapID.state.__class__,
-                      transition: mapID.state.__class__ == "ProducingState" ? mapID.state.next_state_transition_at : 0
+                    fp: mapID.state.current_product.product.resources.strategy_points,
+                    state: mapID.state.__class__,
+                    transition: mapID.state.__class__ == "ProducingState" ? mapID.state.next_state_transition_at : 0
                   });
                 }
                 // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
@@ -653,9 +653,12 @@ export function startupService(msg) {
             helper.fEntityNameTrim(mapID.cityentity_id)
           ) {
             Galaxy.bonus.push({
-              id: mapID.cityentity_id,
+              cityentity_id: mapID.cityentity_id,
+              id: mapID.id,
               name: helper.fEntityNameTrim(mapID.cityentity_id),
               fp: forgePoints,
+              state: mapID.state.__class__,
+              transition: mapID.state.__class__ == "ProducingState" ? mapID.state.next_state_transition_at : 0
             });
           }
           // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
@@ -1377,8 +1380,14 @@ function fGoodsText(age, goods) {
   } else console.debug(age);
 }
 
-export function updateGalaxy(id) {
-  Galaxy.bonus = Galaxy.bonus.filter((item) => item.id !== id);
+export function updateGalaxy(reward) {
+  // Galaxy.bonus = Galaxy.bonus.filter((item) => item.id !== id);
+  Galaxy.bonus.forEach((entry) => {
+    if (entry.id == reward.id){
+      entry.transition = reward.state.next_state_transition_at;
+      entry.state = reward.state.__class__;
+    }
+  });
   showGalaxy();
 }
 
@@ -1397,10 +1406,13 @@ export function showGalaxy() {
     collapse.collapseGalaxy == false ? "show" : ""
   }">`;
   Galaxy.html += `<p>Tries Remaining: <span id='galaxyID'>${Galaxy.amount}</span></p><p>`;
-  Galaxy.bonus.forEach((entry, id) => {
+  var count = 0;
+  Galaxy.bonus.forEach((entry) => {
     const ready = entry.state == "ProductionFinishedState" ? true : (entry.transition <= EpocTime);
-    if (ready && (id < Galaxy.amount || debugEnabled == true))
-      Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
+    if (ready && (count < Galaxy.amount || debugEnabled == true)){
+      Galaxy.html += `${entry.id} ${entry.fp}FP ${entry.name} ${count} ${Galaxy.amount}<br>`;
+      count++;
+    }
   });
 
   var galaxy = document.getElementById("galaxy");
