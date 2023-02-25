@@ -1,5 +1,5 @@
 {
-  "name": "FoE-Info",
+  "name": "foe-info",
   "version": "0.0.79",
   "dependencies": {
     "@popperjs/core": "^2.11.5",
@@ -24,6 +24,9 @@
     "packages/*"
   ],
   "scripts": {
+    "prepare": "husky install",
+    "check": "prettier --check .",
+    "format": "prettier --write .",
     "dev": "set NODE_ENV=development && webpack --mode development --config webpack-dev.config.js --watch",
     "start": "webpack-dev-server --open --config webpack-dev.config.js",
     "analyze": "webpack --config foe-info-analyzer.config.js",
@@ -35,7 +38,7 @@
     "build-beta": "webpack --config webpack-beta.config.js",
     "build-foe-info-beta": "webpack --config foe-info-beta.config.js",
     "deploy": "npm run build && npm run build-foe-info",
-    "verify": ""
+    "verify": "npm run check"
   },
   "devDependencies": {
     "bootstrap-icons": "^1.3.0",
@@ -45,9 +48,12 @@
     "express": "^4.17.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.0.0",
+    "husky": "^8.0.3",
     "license-webpack-plugin": "^4.0.2",
+    "lint-staged": "^13.1.2",
     "mini-css-extract-plugin": "^2.6.0",
     "postcss-loader": "^7.0.0",
+    "prettier": "2.8.4",
     "style-loader": "^3.3.1",
     "webpack": "^5.19.0",
     "webpack-bundle-analyzer": "^4.5.0",
@@ -59,5 +65,13 @@
   "sideEffects": [
     "*.css",
     "*.scss"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
 }
