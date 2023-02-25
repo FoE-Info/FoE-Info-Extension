@@ -362,16 +362,22 @@ export function startupService(msg) {
                     cityentity_id: mapID.cityentity_id,
                     id: mapID.id,
                     name: helper.fEntityNameTrim(mapID.cityentity_id),
-                    fp: mapID.state.current_product.product.resources.strategy_points,
+                    fp: mapID.state.current_product.product.resources
+                      .strategy_points,
                     state: mapID.state.__class__,
-                    transition: mapID.state.__class__ == "ProducingState" ? mapID.state.next_state_transition_at : 0
+                    transition:
+                      mapID.state.__class__ == "ProducingState"
+                        ? mapID.state.next_state_transition_at
+                        : 0,
                   });
                 }
                 // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
-                if(CityEntityDefs[mapID.cityentity_id])
-                  console.debug(CityEntityDefs[mapID.cityentity_id].name, mapID);
-                else
-                  console.debug(mapID.cityentity_id, mapID);
+                if (CityEntityDefs[mapID.cityentity_id])
+                  console.debug(
+                    CityEntityDefs[mapID.cityentity_id].name,
+                    mapID
+                  );
+                else console.debug(mapID.cityentity_id, mapID);
               }
             }
             if (mapID.state.current_product.product.resources.money)
@@ -658,7 +664,10 @@ export function startupService(msg) {
               name: helper.fEntityNameTrim(mapID.cityentity_id),
               fp: forgePoints,
               state: mapID.state.__class__,
-              transition: mapID.state.__class__ == "ProducingState" ? mapID.state.next_state_transition_at : 0
+              transition:
+                mapID.state.__class__ == "ProducingState"
+                  ? mapID.state.next_state_transition_at
+                  : 0,
             });
           }
           // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
@@ -1383,7 +1392,7 @@ function fGoodsText(age, goods) {
 export function updateGalaxy(reward) {
   // Galaxy.bonus = Galaxy.bonus.filter((item) => item.id !== id);
   Galaxy.bonus.forEach((entry) => {
-    if (entry.id == reward.id){
+    if (entry.id == reward.id) {
       entry.transition = reward.state.next_state_transition_at;
       entry.state = reward.state.__class__;
     }
@@ -1408,12 +1417,14 @@ export function showGalaxy() {
   Galaxy.html += `<p>Tries Remaining: <span id='galaxyID'>${Galaxy.amount}</span></p><p>`;
   var count = 0;
   Galaxy.bonus.forEach((entry) => {
-    const ready = entry.state == "ProductionFinishedState" ? true : (entry.transition <= EpocTime);
-    if (ready && (count < Galaxy.amount || debugEnabled == true)){
+    const ready =
+      entry.state == "ProductionFinishedState"
+        ? true
+        : entry.transition <= EpocTime;
+    if (ready && (count < Galaxy.amount || debugEnabled == true)) {
       if (debugEnabled == true)
         Galaxy.html += `${entry.id} ${entry.fp}FP ${entry.name} ${count} ${Galaxy.amount}<br>`;
-      else
-        Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
+      else Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
       count++;
     }
   });
