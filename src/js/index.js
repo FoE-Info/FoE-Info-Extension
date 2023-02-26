@@ -279,7 +279,7 @@ else child.className = "title";
 child.textContent = EXT_NAME;
 newelement.appendChild(child);
 newelement = document.createElement("div");
-newelement.innerHTML = `<span class="material-icons-outlined md-18">settings</span>`;
+newelement.innerHTML = `<span class="material-icons-outlined md-18 options-icon">settings</span>`;
 newelement.classList.toggle("p-2");
 // newelement.className = "p-2";
 // child = document.createElement("img");
