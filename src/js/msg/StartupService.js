@@ -101,6 +101,7 @@ export function startupService(msg) {
   helper.setMyGuildPermissions(user.clan_permissions);
   clearArmyUnits();
   Galaxy.bonus = [];
+  Galaxy.amount = 0;
   buildingsReady = [];
   fpBuildings = [];
   goodsBuildings = [];
@@ -316,7 +317,12 @@ export function startupService(msg) {
           }
         }
         if (mapID.state.current_product.product) {
-          if (mapID.state.current_product.product.resources) {
+          if (DEV && checkDebug())
+            console.debug(
+              helper.fEntityNameTrim(mapID.cityentity_id),
+              mapID.state.current_product.product
+            );
+         if (mapID.state.current_product.product.resources) {
             if (mapID.state.current_product.product.resources.premium)
               diamonds += mapID.state.current_product.product.resources.premium;
             if (mapID.state.current_product.product.resources.strategy_points) {
