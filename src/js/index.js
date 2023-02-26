@@ -279,7 +279,7 @@ else child.className = "title";
 child.textContent = EXT_NAME;
 newelement.appendChild(child);
 newelement = document.createElement("div");
-newelement.innerHTML = `<svg class="bi text-light" width="24" height="24" fill="currentColor"><use xlink:href="${icons}#tools"/></svg>`;
+newelement.innerHTML = `<svg class="bi text-light" width="16" height="16" fill="currentColor"><use xlink:href="${icons}#gear"/></svg>`;
 newelement.classList.toggle("p-2");
 // newelement.className = "p-2";
 // child = document.createElement("img");
