@@ -19,14 +19,9 @@ function fAddCollapseIcon(id, _href, collapse) {
 
 function fCopyButton(id, colour, pos, collapse) {
   console.debug(collapse);
-  console.debug(
-    `<button type="button" class="badge rounded-pill bg-${colour} float-end ${pos}-button" id="${id}" style="display: ${
-      collapse ? "none" : "block"
-    }"><span data-i18n="copy">Copy</span></button>`
-  );
-  return `<button type="button" class="badge rounded-pill bg-${colour} float-end ${pos}-button" id="${id}" style="display: ${
+  return `<span id="${id}" class="badge rounded-pill bg-${colour} float-end ${pos}-button" style="display: ${
     collapse ? "none" : "block"
-  }"><span data-i18n="copy">Copy</span></button>`;
+  } data-i18n="copy">Copy</span>`;
 }
 
 function fCopyIcon(id, colour, pos, collapse) {
