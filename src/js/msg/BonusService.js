@@ -85,19 +85,8 @@ export function getLimitedBonuses(msg) {
         if (entry.amount)
           bonusHTML += `Aid <span id="aidID">${Bonus.aid}</span> `;
       } else if (entry.type == "double_collection") {
-        Galaxy.amount = entry.amount;
+        Galaxy.amount = entry.amount > 0 ? entry.amount : 0;
         showGalaxy();
-        // if(document.getElementById("galaxyID")){
-        // 	document.getElementById("galaxyID").textContent = entry.amount;
-        // 	if(entry.amount) {
-        // 		document.getElementById("galaxyID").textContent = entry.amount;
-        // 		document.getElementById("galaxy").style.display = "block";
-        // 	}
-        // 	else
-        // 		// document.getElementById("galaxy").innerHTML = '';
-        // 		// document.getElementById("galaxy").className="hidden";
-        // 		document.getElementById("galaxy").style.display = "none";
-        // }
       }
     });
     // console.debug(bonusHTML);
