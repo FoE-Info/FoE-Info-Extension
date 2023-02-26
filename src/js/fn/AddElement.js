@@ -3,18 +3,18 @@ import * as storage from "./storage.js";
 
 function fCollapseIcon(id, _href, collapse) {
   if (document.getElementById(`${id}`) != null)
-    document.getElementById(
-      `${id}`
-    ).outerHTML = `<svg class="bi header-icon" id="${id}" href="#${_href}" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse ? "plus" : "dash"
-    }-circle"/></svg>`;
+    document.getElementById(`${id}`).outerHTML = fAddCollapseIcon(
+      id,
+      _href,
+      collapse
+    );
   storage.set(`${collapse}`, collapse);
 }
 
 function fAddCollapseIcon(id, _href, collapse) {
-  return `<svg class="bi header-icon" id="${id}" href="#${_href}" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse ? "plus" : "dash"
-  }-circle"/></svg>`;
+  return `<span class="header-icon material-icons-outlined md-12" id="${id}" href="#${_href}" data-bs-toggle="collapse">
+    ${collapse ? "add" : "remove"}_circle_outline
+  </span>`;
 }
 
 function fCopyButton(id, colour, pos, collapse) {
