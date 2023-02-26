@@ -101,7 +101,7 @@ export function startupService(msg) {
   helper.setMyGuildPermissions(user.clan_permissions);
   clearArmyUnits();
   Galaxy.bonus = [];
-  Galaxy.amount = 0;
+  // Galaxy.amount = 0;
   buildingsReady = [];
   fpBuildings = [];
   goodsBuildings = [];
