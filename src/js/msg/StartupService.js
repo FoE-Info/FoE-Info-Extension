@@ -1396,10 +1396,14 @@ export function showGalaxy() {
       entry.state == "ProductionFinishedState"
         ? true
         : entry.transition <= EpocTime;
-    if (ready && (count < Galaxy.amount || debugEnabled == true)) {
-      if (debugEnabled == true)
-        Galaxy.html += `${entry.id} ${entry.fp}FP ${entry.name} ${count} ${Galaxy.amount}<br>`;
-      else Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
+    if (debugEnabled == true){
+      const timer = new Date(entry.transition * 1000);
+      Galaxy.html += `${entry.fp}FP ${entry.name} ${
+        ready ? "READY" : timer.toLocaleString()
+      }<br>`;
+    }
+    else if (ready && count < Galaxy.amount){
+      Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
       count++;
     }
   });
