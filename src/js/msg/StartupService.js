@@ -870,7 +870,7 @@ export function startupService(msg) {
   );
   citystatsHTML += element.copy(
     "citystatsCopyID",
-    "warning",
+    "warning stats-copy",
     "right",
     collapse.collapseStats
   );
