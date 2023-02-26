@@ -29,6 +29,13 @@ function fCopyButton(id, colour, pos, collapse) {
   }"><span data-i18n="copy">Copy</span></button>`;
 }
 
+function fCopyIcon(id, colour, pos, collapse) {
+  console.debug(collapse);
+  return `<span class="bi ${pos}-icon float-end material-symbols-outlined" id="${id}" style="display: ${
+    collapse ? "none" : "block"
+  }">content_copy</span>`;
+}
+
 function fPostButton(id, colour, pos, collapse) {
   return `<button type="button" class="badge rounded-pill bg-${colour} float-end ${pos}-button" id="${id}" style="display: ${
     collapse ? "none" : "block"
