@@ -520,6 +520,18 @@ window.addEventListener(
   false
 );
 
+window
+  .matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", ({ matches }) => {
+    document.body.classList.toggle("bg-dark");
+    document.body.classList.toggle("text-light");
+    if (matches) {
+      console.log("change to dark mode!");
+      darkMode == "dark";
+    } else {
+      console.log("change to light mode!");
+    }
+  });
 function onEvent(message, params) {
   console.debug(message, params);
 }
