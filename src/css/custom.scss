@@ -190,31 +190,64 @@ hr {
   display: none;
 }
 
+.options-icon {
+  cursor: pointer;
+}
+
+.stats-copy {
+  color: $yellow-800;
+  cursor: pointer;
+}
+
+.stats-copy-icon {
+  // margin-top: 0em;
+  margin-right: 2em;
+  // margin-right: 3em;
+  padding: 0.25em;
+}
+
+.right-icon {
+  // margin-top: 0em;
+  margin-right: 2em;
+  // margin-right: 3em;
+  // padding: 1em;
+}
+
+.mid-icon {
+  // margin-top: 0em;
+  // margin-right: 2em;
+  // margin-right: 3em;
+  padding: 0.25em;
+}
+
 .right-button {
   position: absolute;
   top: 0;
   right: 0;
-  margin-top: 0.6em;
+  margin-top: 0.75em;
   margin-right: 3em;
   /* padding: .5rem 1em; */
+  cursor: pointer;
 }
 
 .mid-button {
   position: absolute;
   top: 0;
   right: 0;
-  margin-top: 0.6em;
+  margin-top: 0.75em;
   margin-right: 7.5em;
   /* padding: .5rem 1em; */
+  cursor: pointer;
 }
 
 .left-button {
   position: absolute;
   top: 0;
   right: 0;
-  margin-top: 0.6em;
+  margin-top: 0.75em;
   margin-right: 11em;
   /* padding: .5rem 1em; */
+  cursor: pointer;
 }
 
 .grid {
@@ -326,13 +359,21 @@ hr {
   background: #555;
 }
 
-/* svg {
-    display: inline-block;
-    fill: currentColor!important;
-    height: 1.5rem;
-    width: 1.5rem;
-    vertical-align: middle;
-} */
+/* Rules for sizing the icon. */
+.material-icons-outlined.md-12 { font-size: 12px; }
+.material-icons-outlined.md-13 { font-size: 16px; }
+.material-icons-outlined.md-18 { font-size: 18px; }
+.material-icons-outlined.md-24 { font-size: 24px; }
+.material-icons-outlined.md-36 { font-size: 36px; }
+.material-icons-outlined.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons-outlined.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons-outlined.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons-outlined.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons-outlined.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 
 //   div {
 //         /* font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, “Helvetica Neue”, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”; */
