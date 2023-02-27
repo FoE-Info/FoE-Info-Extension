@@ -338,8 +338,12 @@ export function fCollapseDonation() {
 export function fCollapseBattleground() {
   collapseBattleground = !collapseBattleground;
   // console.debug('fCollapseBattleground',collapseOptions);
-  document.getElementById("battlegroundCopyID").style.display =
-    collapseBattleground ? "none" : "block";
+  if (document.getElementById("battlegroundPostID"))
+    document.getElementById("battlegroundPostID").style.display =
+      collapseBattleground ? "none" : "block";
+  if (document.getElementById("battlegroundCopyID"))
+    document.getElementById("battlegroundCopyID").style.display =
+      collapseBattleground ? "none" : "block";
   element.updateIcon(
     "battlegroundicon",
     "battlegroundCollapse",
@@ -368,7 +372,7 @@ export function fCollapseExpedition() {
   document.getElementById("expeditionCopyID").style.display = collapseExpedition
     ? "none"
     : "block";
-  element.updateIcon("expeditionicon", "expeditionText", collapseGuild);
+  element.updateIcon("expeditionicon", "expeditionText", collapseExpedition);
 }
 
 export function fCollapseTreasury() {

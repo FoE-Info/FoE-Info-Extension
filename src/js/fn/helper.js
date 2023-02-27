@@ -688,8 +688,12 @@ export function fshowBattleground() {
 	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p>${element.close()}`;
 
   if (url.sheetGuildURL)
-    battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end mid-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
-  // else
+    battlegroundHTML += element.post(
+      "battlegroundPostID",
+      "info",
+      "mid",
+      collapse.collapseBattleground
+    );
   battlegroundHTML += element.copy(
     "battlegroundCopyID",
     "info",
