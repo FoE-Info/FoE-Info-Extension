@@ -141,13 +141,13 @@ export function getState(msg) {
         collapse.collapseBattleground
       )}
         <strong>Battleground Result:</strong></p>`;
-    if (url.sheetGuildURL)
-      battlegroundHTML += element.post(
-        "battlegroundPostID",
-        "info",
-        "mid",
-        collapse.collapseBattleground
-      );
+    // if (url.sheetGuildURL)
+    //   battlegroundHTML += element.post(
+    //     "battlegroundPostID",
+    //     "info",
+    //     "mid",
+    //     collapse.collapseBattleground
+    //   );
     battlegroundHTML += element.copy(
       "battlegroundCopyID",
       "info",
