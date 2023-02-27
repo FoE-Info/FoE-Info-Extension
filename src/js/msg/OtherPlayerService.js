@@ -20,7 +20,6 @@ import "@wikimedia/jquery.i18n/src/jquery.i18n.parser.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.language.js";
 import BigNumber from "bignumber.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 import { showOptions } from "../vars/showOptions.js";
 import * as helper from "../fn/helper.js";

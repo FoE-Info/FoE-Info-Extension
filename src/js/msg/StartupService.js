@@ -19,12 +19,7 @@ import "@wikimedia/jquery.i18n/src/jquery.i18n.parser.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.language.js";
 import BigNumber from "bignumber.js";
-
-// import 'bootstrap';
 import { Tooltip, Alert, Popover } from "bootstrap";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
-
-// import icons from 'bootstrap-icons/bootstrap-icons.svg';
 import {
   setMyInfo,
   MyInfo,

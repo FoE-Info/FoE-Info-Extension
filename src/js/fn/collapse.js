@@ -11,7 +11,6 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 import { checkDebug } from "..";
 import * as element from "./AddElement";
 

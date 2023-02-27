@@ -11,12 +11,11 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-// import $ from "jquery";
+
 import { Tooltip, Alert, Popover } from "bootstrap";
 import dayjs from "dayjs";
 import { targets, targetsTopic } from "../index.js";
 import * as collapse from "../fn/collapse.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 import * as helper from "../fn/helper.js";
 import * as post_webstore from "../fn/post.js";
 import * as element from "../fn/AddElement";

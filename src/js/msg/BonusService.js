@@ -10,7 +10,8 @@
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
- */ import icons from "bootstrap-icons/bootstrap-icons.svg";
+ */ 
+
 import { City, Galaxy, showGalaxy } from "./StartupService.js";
 import { checkDebug, Bonus } from "../index.js";
 import { showOptions } from "../vars/showOptions.js";

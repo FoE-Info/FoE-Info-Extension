@@ -1,4 +1,3 @@
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 import * as storage from "./storage.js";
 
 function fCollapseIcon(id, _href, collapse) {
