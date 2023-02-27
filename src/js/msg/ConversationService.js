@@ -61,9 +61,7 @@ export function conversationService(msg) {
       targetsGBG.innerHTML =
         targetsHTML +
         `<p id="targetLabel" href="#targetText" aria-expanded="true" data-bs-toggle="collapse">
-                <svg class="bi header-icon" id="targeticon" href="#targetText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-          collapse.collapseTarget ? "plus" : "dash"
-        }-circle"/></svg>
+      ${element.icon("targeticon", "targetText", collapse.collapseTarget)}
                 <strong>GBG Targets</strong> ${
                   message.lastMessage.date
                 }</p><p id="targetText" class="collapse ${

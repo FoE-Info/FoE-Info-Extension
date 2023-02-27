@@ -722,9 +722,11 @@ export function startupService(msg) {
       return a.ready - b.ready;
     });
     var buildingsHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="buildingsTextLabel" href="#buildingsText" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="buildingsicon" href="#buildingsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseBuildings ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon(
+        "buildingsicon",
+        "buildingsText",
+        collapse.collapseBuildings
+      )}
         <strong><span data-i18n="collection">Building Collection Times</span>:</strong></p>`;
     buildingsHTML += element.close();
     buildingsHTML += `<div id="buildingsText" class="resize collapse ${
@@ -1381,9 +1383,7 @@ export function showGalaxy() {
   });
   console.debug("showGalaxy", Galaxy);
   Galaxy.html = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="galaxyTextLabel" href="#galaxyText" data-bs-toggle="collapse">
-    <svg class="bi header-icon" id="galaxyicon" href="#galaxyText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseGalaxy ? "plus" : "dash"
-  }-circle"/></svg>
+    ${element.icon("galaxyicon", "galaxyText", collapse.collapseGalaxy)}
     <strong>Galaxy Double Collection:</strong></p>`;
   Galaxy.html += element.close();
   Galaxy.html += `<div id="galaxyText" class="resize  collapse ${

@@ -289,7 +289,9 @@ export function fCollapseStats() {
   fHideAllTooltips();
   collapseStats = !collapseStats;
   // console.debug('collapseStats',collapseStats);
-  document.getElementById("citystatsCopyID").style.display = collapseStats ? 'none' : 'block';
+  document.getElementById("citystatsCopyID").style.display = collapseStats
+    ? "none"
+    : "block";
   element.updateIcon("citystatsicon", "citystatsText", collapseStats);
 }
 
