@@ -200,7 +200,9 @@ export function getProvinceDetailed(msg) {
       (item) => item !== fGVGagesname(map.era)
     );
 
-    var ele = gvgPower.find((element) => (element.era == map.era) && (element.power > 0));
+    var ele = gvgPower.find(
+      (element) => element.era == map.era && element.power > 0
+    );
     if (ele) ele.time = new Date().toLocaleString();
     else
       gvgPower.push({
