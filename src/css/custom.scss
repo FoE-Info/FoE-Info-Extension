@@ -47,9 +47,6 @@ p,
   vertical-align: middle;
 }
 
-.badge {
-}
-
 .bi p {
   display: inline-block;
   vertical-align: middle;
@@ -86,6 +83,11 @@ p,
   // color: red;
   // stroke: green;
   // fill: blue;
+}
+
+.gvg-warn {
+  color: #808000;
+  vertical-align: middle;
 }
 
 .favorite-btn {
