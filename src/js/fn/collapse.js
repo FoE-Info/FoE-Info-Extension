@@ -289,7 +289,7 @@ export function fCollapseStats() {
   fHideAllTooltips();
   collapseStats = !collapseStats;
   // console.debug('collapseStats',collapseStats);
-  //document.getElementById("citystatsCopyID").style.display = collapseStats ? 'none' : 'block';
+  document.getElementById("citystatsCopyID").style.display = collapseStats ? 'none' : 'block';
   element.updateIcon("citystatsicon", "citystatsText", collapseStats);
 }
 
@@ -328,12 +328,17 @@ export function fCollapseInvested() {
 export function fCollapseDonation() {
   collapseDonation = !collapseDonation;
   // console.debug('fCollapseDonation',collapseOptions);
+  document.getElementById("donationCopyID").style.display = collapseDonation
+    ? "none"
+    : "block";
   element.updateIcon("donationicon", "donationText3", collapseDonation);
 }
 
 export function fCollapseBattleground() {
   collapseBattleground = !collapseBattleground;
   // console.debug('fCollapseBattleground',collapseOptions);
+  document.getElementById("battlegroundCopyID").style.display =
+    collapseBattleground ? "none" : "block";
   element.updateIcon(
     "battlegroundicon",
     "battlegroundCollapse",

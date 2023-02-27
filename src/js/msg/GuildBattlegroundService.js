@@ -185,6 +185,9 @@ export function getState(msg) {
       .getElementById("battlegroundCopyID")
       .addEventListener("click", copy.BattlegroundCopy);
     document
+      .getElementById("battlegroundicon")
+      .addEventListener("click", collapse.fCollapseBattleground);
+    document
       .getElementById("battlegroundResultTextLabel")
       .addEventListener("click", collapse.fCollapseBattleground);
     msg.responseData.playerLeaderboardEntries.forEach((entry) => {
