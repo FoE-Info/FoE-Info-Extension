@@ -1613,10 +1613,12 @@ function handleRequestFinished(request) {
                     treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
 							${element.close()}
 							<p href="#treasuryLogText" aria-expanded="true" aria-controls="treasuryLogText" data-bs-toggle="collapse">
-							<svg class="bi header-icon" id="treasuryLogicon" href="#treasuryLogText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-                      collapse.collapseTreasuryLog ? "plus" : "dash"
-                    }-circle"/></svg>
-							<strong>Treasury Logs:</strong></p>`;
+              ${element.icon(
+                "treasuryLogicon",
+                "treasuryLogText",
+                collapse.collapseTreasuryLog
+              )}
+                    <strong>Treasury Logs:</strong></p>`;
                     treasuryHTML += `<table id="treasuryLogText" class="overflow collapse show">`;
                   } else {
                     treasuryHTML = treasuryHTML.substring(
@@ -2486,9 +2488,11 @@ export function showReward(reward) {
   }
 
   cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-bs-toggle="collapse">
-	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseRewards ? "plus" : "dash"
-  }-circle"/></svg>
+  ${element.icon(
+    "rewardsicon",
+    "rewardsText",
+    collapse.collapseRewards
+  )}
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
 	${element.close()}
 	<div id="rewardsText" class="overflow resize collapse ${
@@ -2591,10 +2595,8 @@ export function showRewards(rewards) {
   });
 
   cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
-	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseRewards ? "plus" : "dash"
-  }-circle"/></svg>
-	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
+  ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
+	<span data-i18n="reward"><strong>REWARDS:</strong></span></p>
 	${element.close()}
 	<div id="rewardsText" class="overflow resize collapse ${
     collapse.collapseRewards ? "" : "show"
