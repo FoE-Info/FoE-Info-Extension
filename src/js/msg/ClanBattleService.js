@@ -10,7 +10,9 @@
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
- */ import { gvg, MyInfo } from "../index.js";
+ */ 
+
+import { gvg, MyInfo } from "../index.js";
 import { toolOptions, setGVGSize } from "../fn/globals.js";
 import { showOptions } from "../vars/showOptions.js";
 import * as collapse from "../fn/collapse.js";
@@ -347,7 +349,8 @@ export function getProvinceDetailed(msg) {
     document.getElementById("gvgWarnAllGuildPower")?.remove();
     if (gvgAgeNotloadList.length > 0) {
       var gvgWarnFunc = (id) =>
-        `<span id="gvgWarn${id}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${gvgAgeNotloadList.toString()} were not loaded yet"><span>    </span><svg class="bi bi-exclamation-diamond-fill" fill="#808000" width="16" height="16"><use xlink:href="${icons}#exclamation-diamond-fill"/></svg></span> `;
+        `<span id="gvgWarn${id}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${gvgAgeNotloadList.toString()} were not loaded yet"><span>    </span>
+        <span class="material-icons-outlined md-18 gvg-warn">warning</span></span> `;
       var headlineSpan = document.getElementById("gvgGuildPowerHeadlineText");
       if (headlineSpan.innerHTML)
         headlineSpan.innerHTML =
