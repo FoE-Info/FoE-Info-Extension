@@ -442,9 +442,12 @@ if (showOptions.clipboard) {
 	${element.icon("clipboardicon", "clipboardText", collapse.collapseClipboard)}
 	<strong><span data-i18n="clipboard">Clipboard</span>:</strong></p>`;
   clipboardHTML += element.close();
-  clipboardHTML += `<button type="button" class="badge rounded-pill bg-warning float-end right-button" id="clipboardCopyID" style="display: ${
-    collapse.collapseClipboard ? "none" : "block"
-  }"><span data-i18n="copy">Copy</span></button>`;
+  clipboardHTML += element.copy(
+    "clipboardCopyID",
+    "warning",
+    "right",
+    collapse.collapseClipboard
+  );
   clipboardHTML += `<div id="clipboardText" class="resize collapse ${
     collapse.collapseClipboard ? "" : "show"
   }"><p>`;
