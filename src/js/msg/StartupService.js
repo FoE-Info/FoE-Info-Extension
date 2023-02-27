@@ -322,7 +322,7 @@ export function startupService(msg) {
               helper.fEntityNameTrim(mapID.cityentity_id),
               mapID.state.current_product.product
             );
-         if (mapID.state.current_product.product.resources) {
+          if (mapID.state.current_product.product.resources) {
             if (mapID.state.current_product.product.resources.premium)
               diamonds += mapID.state.current_product.product.resources.premium;
             if (mapID.state.current_product.product.resources.strategy_points) {
@@ -1396,13 +1396,12 @@ export function showGalaxy() {
       entry.state == "ProductionFinishedState"
         ? true
         : entry.transition <= EpocTime;
-    if (debugEnabled == true){
+    if (debugEnabled == true) {
       const timer = new Date(entry.transition * 1000);
       Galaxy.html += `${entry.fp}FP ${entry.name} ${
         ready ? "READY" : timer.toLocaleString()
       }<br>`;
-    }
-    else if (ready && count < Galaxy.amount){
+    } else if (ready && count < Galaxy.amount) {
       Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
       count++;
     }
