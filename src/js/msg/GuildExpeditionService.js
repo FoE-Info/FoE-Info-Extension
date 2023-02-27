@@ -26,8 +26,13 @@ export function guildExpeditionService(msg) {
 		<svg class="bi header-icon" id="expeditionicon" href="#expeditionText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
     collapse.collapseExpedition ? "plus" : "dash"
   }-circle"/></svg>
-		<strong>Guild Expedition:</strong></p>
-		<button type="button" class="badge rounded-pill bg-info float-end right-button" id="expeditionCopyID"><span data-i18n="copy">Copy</span></button>`;
+		<strong>Guild Expedition:</strong></p>`;
+  expeditionHTML += element.copy(
+    "expeditionCopyID",
+    "info",
+    "right",
+    collapse.collapseExpedition
+  );
   expeditionHTML += `<div id="expeditionText" style="height: ${
     toolOptions.expeditionSize
   }px" class="alert-info overflow collapse ${

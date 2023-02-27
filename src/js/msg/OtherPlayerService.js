@@ -958,11 +958,14 @@ export function otherPlayerServiceUpdateActions(msg) {
 					<svg class="bi header-icon" id="friendsicon" href="#friendsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
           collapse.collapseFriends ? "plus" : "dash"
         }-circle"/></svg>
-					<strong>Friends</strong></p>`;
-        friendsHTML += `<div id="friendsCopy"><button type="button" class="badge rounded-pill bg-success right-button" id="friendsCopyID" style="display: ${
-          collapse.collapseFriends ? "none" : "block"
-        }"><span data-i18n="copy">Copy</span></button></div>`;
-        friendsHTML += `<div id="friendsText" class="collapse ${
+					<strong>Friends</strong></p><div id="friendsCopy">`;
+        friendsHTML += element.copy(
+          "friendsCopyID",
+          "success",
+          "right",
+          collapse.collapseFriends
+        );
+        friendsHTML += `</div><div id="friendsText" class="collapse ${
           collapse.collapseFriends ? "" : "show"
         }"><table id="friendsText2">`;
         friendsHTML += getFriendsHTML(friends);
@@ -973,11 +976,14 @@ export function otherPlayerServiceUpdateActions(msg) {
 					<svg class="bi header-icon" id="guildicon" href="#guildText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
           collapse.collapseGuild ? "plus" : "dash"
         }-circle"/></svg>
-					<strong>Guild</strong></p>`;
-        friendsHTML += `<div id="guildCopy"><button type="button" class="badge rounded-pill bg-success right-button" id="guildCopyID" style="display: ${
-          collapse.collapseGuild ? "none" : "block"
-        }"><span data-i18n="copy">Copy</span></button></div>`;
-        friendsHTML += `<div id="guildText" class="collapse ${
+					<strong>Guild</strong></p><div id="guildCopy">`;
+        friendsHTML += element.copy(
+          "guildCopyID",
+          "success",
+          "right",
+          collapse.collapseGuild
+        );
+        friendsHTML += `</div><div id="guildText" class="collapse ${
           collapse.collapseGuild ? "" : "show"
         }"><table id="guildText2">`;
         friendsHTML += getFriendsHTML(guildMembers);
@@ -988,11 +994,14 @@ export function otherPlayerServiceUpdateActions(msg) {
 					<svg class="bi header-icon" id="hoodicon" href="#hoodText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
           collapse.collapseHood ? "plus" : "dash"
         }-circle"/></svg>
-					<strong>Hood</strong></p>
-					<div id="hoodCopy"><button type="button" class="badge rounded-pill bg-success right-button" id="hoodCopyID" style="display: ${
-            collapse.collapseHood ? "none" : "block"
-          }"><span data-i18n="copy">Copy</span></button></div>`;
-        friendsHTML += `<div id="hoodText" class="collapse ${
+					<strong>Hood</strong></p><div id="hoodCopy">`;
+        friendsHTML += element.copy(
+          "hoodCopyID",
+          "success",
+          "right",
+          collapse.collapseHood
+        );
+        friendsHTML += `</div><div id="hoodText" class="collapse ${
           collapse.collapseHood ? "" : "show"
         }"><table id="hoodText2">`;
         friendsHTML += getFriendsHTML(hoodlist);

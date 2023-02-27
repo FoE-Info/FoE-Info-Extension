@@ -563,8 +563,12 @@ export function getConstructionRanking(msg, data) {
   //greatbuilding.innerHTML = ``;
   outputHTML = `<div class="alert alert-success alert-dismissible show" role="alert">`;
   outputHTML += element.close();
-  outputHTML += `<button type="button" class="badge rounded-pill bg-success right-button" id="donorCopyID2"><span data-i18n="copy">Copy</span></button>`;
-
+  outputHTML += element.copy(
+    "donorCopyID2",
+    "success",
+    "right",
+    collapse.collapseGBDonors
+  );
   if (msg.responseData.length) {
     // var total = 0;
     for (var j = 0; j < msg.responseData.length; j++) {
@@ -722,17 +726,17 @@ function gbTabSafe(
     `<div class="card ${
       darkMode == "dark" ? "text-light bg-dark" : "text-dark bg-light"
     } alert show collapsed p-0" >
-    <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [${getPlayerLink()}]${
-      connected == null
-        ? '<br><span class="red">*** DISCONNECTED ***</span>'
-        : ""
-    }${checkInactive()}${
-      maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : ""
-    }
-      ${element.close()}
-      <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button>
-    </div>
-    <div class="card-body alert-success p-2">
+    <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [` +
+    getPlayerLink() +
+    `]` +
+    (connected == null
+      ? '<br><span class="red">*** DISCONNECTED ***</span>'
+      : "") +
+    checkInactive() +
+    (maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : "") +
+    element.close() +
+    element.copy("donationCopyID", "info", "right", collapse.collapseGBDonors) +
+    `</div><div class="card-body alert-success p-2">
       <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${
       GBselected.level
     }/${GBselected.max_level}] (${GBselected.current}/${
@@ -821,10 +825,9 @@ function gbTabNotSafe(
       darkMode == "dark" ? "text-light bg-dark" : "text-dark bg-light"
     } alert show collapsed p-0 "  >
            <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span> [${getPlayerLink()}]
-           ${element.close()}
-           <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button>
-           </div>
-           <div class="card-body alert-danger p-2">
+           ${element.close()}` +
+    element.copy("donationCopyID", "info", "right", collapse.collapseGBDonors) +
+    `</div><div class="card-body alert-danger p-2">
            <h6 class="card-title mb-0"> <span id="GBselected">${
              GBselected.name
            } [${GBselected.level}/${GBselected.max_level}] (${
