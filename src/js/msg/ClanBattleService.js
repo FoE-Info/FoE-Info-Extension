@@ -62,9 +62,7 @@ export function getContinent(msg) {
       "alert alert-success alert-dismissible show collapsed";
     gvgContainer.innerHTML = `${element.close()}
         <p id="gvgInfoTextLabel" href="#gvgInfoText" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="gvgInfoIcon" href="#gvgInfoText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseGVGinfo ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon("gvgInfoIcon", "gvgInfoText", collapse.collapseGVGinfo)}
         <strong><span data-i18n="summary">GvG Summary</span>:</strong></p>`;
     gvg.appendChild(gvgContainer);
     gvgSummary = document.createElement("div");
@@ -429,9 +427,11 @@ function buildGvgInnerDiv(parentDiv, collapseFunc, collapseVar, name, text) {
     }`;
     wrapperDiv.appendChild(headlineDiv);
     headlineDiv.innerHTML = `<p id="gvg${name}TextLabel" href="#gvg${name}Text" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="gvg${name}Icon" href="#gvg${name}Text" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseGVGinfo ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon(
+        "gvg" + name + "Icon",
+        "gvg" + name + "Text",
+        collapse.collapseGVGinfo
+      )}
         <span id=gvg${name}HeadlineText><strong>${text}:</strong></span></p>`;
     textDiv = document.createElement("div");
     textDiv.id = `gvg${name}Text`;

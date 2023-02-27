@@ -943,9 +943,7 @@ export function otherPlayerServiceUpdateActions(msg) {
       showOptions.showFriends
     ) {
       friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="listTextLabel" href="#listsText" data-bs-toggle="collapse">
-				<svg class="bi header-icon" id="listsicon" href="#listsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-        collapse.collapseLists ? "plus" : "dash"
-      }-circle"/></svg>
+      ${element.icon("listsicon", "listsText", collapse.collapseLists)}
 				<strong>Lists:</strong></p>
 				${element.close()}
 				<div id="listsText" class="collapse ${
@@ -955,9 +953,7 @@ export function otherPlayerServiceUpdateActions(msg) {
       if (showOptions.showFriends) {
         console.debug(collapse.collapseFriends);
         friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="friendsTextLabel" href="#friendsText" data-bs-toggle="collapse">
-					<svg class="bi header-icon" id="friendsicon" href="#friendsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-          collapse.collapseFriends ? "plus" : "dash"
-        }-circle"/></svg>
+      ${element.icon("friendsicon", "friendsText", collapse.collapseFriends)}
 					<strong>Friends</strong></p><div id="friendsCopy">`;
         friendsHTML += element.copy(
           "friendsCopyID",
@@ -973,9 +969,7 @@ export function otherPlayerServiceUpdateActions(msg) {
       }
       if (showOptions.showGuild) {
         friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="guildTextLabel" href="#guildText" data-bs-toggle="collapse">
-					<svg class="bi header-icon" id="guildicon" href="#guildText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-          collapse.collapseGuild ? "plus" : "dash"
-        }-circle"/></svg>
+      ${element.icon("guildicon", "guildText", collapse.collapseGuild)}
 					<strong>Guild</strong></p><div id="guildCopy">`;
         friendsHTML += element.copy(
           "guildCopyID",
@@ -991,9 +985,7 @@ export function otherPlayerServiceUpdateActions(msg) {
       }
       if (showOptions.showHood) {
         friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="hoodTextLabel" href="#hoodText" data-bs-toggle="collapse">
-					<svg class="bi header-icon" id="hoodicon" href="#hoodText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-          collapse.collapseHood ? "plus" : "dash"
-        }-circle"/></svg>
+      ${element.icon("hoodicon", "hoodText", collapse.collapseHood)}
 					<strong>Hood</strong></p><div id="hoodCopy">`;
         friendsHTML += element.copy(
           "hoodCopyID",
