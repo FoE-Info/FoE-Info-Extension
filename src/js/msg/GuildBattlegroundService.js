@@ -136,9 +136,11 @@ export function getState(msg) {
     var battlegroundHTML = `<div id="battlegroundResultTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
         ${element.close()}
         <p id="battlegroundResultTextLabel" href="#battlegroundTextCollapse" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="battlegroundicon" href="#battlegroundTextCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseBattleground ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon(
+        "battlegroundicon",
+        "battlegroundTextCollapse",
+        collapse.collapseBattleground
+      )}
         <strong>Battleground Result:</strong></p>`;
     if (url.sheetGuildURL)
       battlegroundHTML += element.post(
@@ -439,9 +441,11 @@ function checkProvinces() {
     collapse.collapseBattleground
   );
   targetsHTML += `<p id="targetGenLabel" href="#targetGenCollapse" aria-expanded="true" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="targetGenicon" href="#targetGenCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseTargetGen ? "plus" : "dash"
-  }-circle"/></svg>
+      ${element.icon(
+        "targetGenicon",
+        "targetGenCollapse",
+        collapse.collapseTargetGen
+      )}
         <strong>GBG Target Generator:</strong></p>`;
 
   var mapSorted = Array.from(map);
@@ -644,9 +648,11 @@ function showBuildingCost(msg) {
     `<div class="alert alert-info alert-dismissible  show collapsed" role="alert">
     ${element.close()}
     <p id="buildingCostTextLabel" href="#buildingCostText" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse">
-    <svg class="bi header-icon" id="buildingCosticon" href="#buildingCostText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseBuildingCost ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon(
+        "buildingCosticon",
+        "buildingCostText",
+        collapse.collapseBuildingCost
+      )}
     <strong>GBG Building Costs:</strong></p>` +
     element.copy(
       "buildingCostID",

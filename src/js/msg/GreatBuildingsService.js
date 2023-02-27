@@ -183,9 +183,11 @@ export function showGreatBuldingDonation() {
     var olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
             ${element.close()}
             <p id="freeTextLabel" href="#donationText3" aria-controls="donationText3" data-bs-toggle="collapse">
-            <svg class="bi header-icon" id="donationicon" href="#donationText3" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseDonation ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon(
+        "donationicon",
+        "donationText3",
+        collapse.collapseDonation
+      )}
             <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>`;
     olddonationHTML += element.copy(
       "donationCopyID",

@@ -23,9 +23,11 @@ export function guildExpeditionService(msg) {
   var expeditionHTML = `<div id="expeditionTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
 		${element.close()}
 		<p id="expeditionTextLabel" href="#expeditionText" aria-expanded="true" aria-controls="expeditionText" data-bs-toggle="collapse">
-		<svg class="bi header-icon" id="expeditionicon" href="#expeditionText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseExpedition ? "plus" : "dash"
-  }-circle"/></svg>
+      ${element.icon(
+        "expeditionicon",
+        "expeditionText",
+        collapse.collapseExpedition
+      )}
 		<strong>Guild Expedition:</strong></p>`;
   expeditionHTML += element.copy(
     "expeditionCopyID",
