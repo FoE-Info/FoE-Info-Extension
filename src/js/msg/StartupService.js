@@ -859,7 +859,7 @@ export function startupService(msg) {
           MyInfo.createdAt * 1000
         ).toLocaleString()}"
         data-bs-content='${userTooltipHTML}</p>'>
-        <svg class="bi info-icon" id="infoIcon" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#info-circle"></use></svg></span>`;
+        <span class="material-icons-outlined md-12 info-icon" id="infoIcon">info</span>`;
   var clanGoodsHTML = `<span id="clanGoods" class="pop" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
   var totalGoodsHTML = `<span id="goods" class="pop" data-bs-container="#goods" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
