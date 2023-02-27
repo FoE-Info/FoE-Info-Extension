@@ -515,12 +515,11 @@ export function showGreatBuldingDonation() {
           olddonationHTML +
           copyText +
           (donationSuffix ? donationSuffix : "" + `</div>`);
-        if (copyText)
-          document
-            .getElementById("donationCopyID")
-            .addEventListener("click", copy.DonationCopy);
-        else $("#donationCopyID").hide();
-        // $('#donationCopyID').prop('disabled', true);
+        document
+          .getElementById("donationCopyID")
+          .addEventListener("click", copy.DonationCopy);
+        if (!copyText)
+          document.getElementById("donationCopyID").style.display = "none";
 
         if (document.getElementById("freeTextLabel"))
           document
@@ -735,7 +734,7 @@ function gbTabSafe(
     checkInactive() +
     (maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : "") +
     element.close() +
-    element.copy("donationCopyID", "info", "right", collapse.collapseGBDonors) +
+    element.copy("donationCopyID", "info", "right", collapse.collapseDonation) +
     `</div><div class="card-body alert-success p-2">
       <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${
       GBselected.level
@@ -826,7 +825,7 @@ function gbTabNotSafe(
     } alert show collapsed p-0 "  >
            <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span> [${getPlayerLink()}]
            ${element.close()}` +
-    element.copy("donationCopyID", "info", "right", collapse.collapseGBDonors) +
+    element.copy("donationCopyID", "info", "right", collapse.collapseDonation) +
     `</div><div class="card-body alert-danger p-2">
            <h6 class="card-title mb-0"> <span id="GBselected">${
              GBselected.name

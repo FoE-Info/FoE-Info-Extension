@@ -53,6 +53,9 @@ export function guildExpeditionService(msg) {
     .getElementById("expeditionCopyID")
     .addEventListener("click", copy.ExpeditionCopy);
   document
+    .getElementById("expeditionicon")
+    .addEventListener("click", collapse.fCollapseExpedition);
+  document
     .getElementById("expeditionTextLabel")
     .addEventListener("click", collapse.fCollapseExpedition);
   const expeditionDiv = document.getElementById("expeditionText");
