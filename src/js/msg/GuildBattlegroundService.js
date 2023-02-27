@@ -32,7 +32,6 @@ import {
   targetText,
 } from "../index.js";
 import { toolOptions, setBuildingCostSize } from "../fn/globals.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 export var BattlegroundPerformance = [];
 export var GuildMembers = [];

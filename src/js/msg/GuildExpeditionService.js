@@ -16,7 +16,6 @@ import * as copy from "../fn/copy.js";
 import * as element from "../fn/AddElement";
 import { donationDIV2 } from "../index.js";
 import { toolOptions, setExpeditionSize } from "../fn/globals.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 export function guildExpeditionService(msg) {
   var ExpeditionPerformance = [];

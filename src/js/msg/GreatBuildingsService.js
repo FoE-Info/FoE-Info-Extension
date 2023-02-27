@@ -14,7 +14,6 @@
 import { showOptions } from "../vars/showOptions.js";
 import * as helper from "../fn/helper.js";
 import * as collapse from "../fn/collapse.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 import * as copy from "../fn/copy.js";
 import * as storage from "../fn/storage.js";
 import * as element from "../fn/AddElement";
