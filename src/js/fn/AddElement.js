@@ -3,30 +3,32 @@ import * as storage from "./storage.js";
 
 function fCollapseIcon(id, _href, collapse) {
   if (document.getElementById(`${id}`) != null)
-    document.getElementById(
-      `${id}`
-    ).outerHTML = `<svg class="bi header-icon" id="${id}" href="#${_href}" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse ? "plus" : "dash"
-    }-circle"/></svg>`;
+    document.getElementById(`${id}`).outerHTML = fAddCollapseIcon(
+      id,
+      _href,
+      collapse
+    );
   storage.set(`${collapse}`, collapse);
 }
 
 function fAddCollapseIcon(id, _href, collapse) {
-  return `<svg class="bi header-icon" id="${id}" href="#${_href}" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse ? "plus" : "dash"
-  }-circle"/></svg>`;
+  return `<span class="header-icon material-icons-outlined md-12" id="${id}" href="#${_href}" data-bs-toggle="collapse">
+    ${collapse ? "add" : "remove"}_circle_outline
+  </span>`;
 }
 
 function fCopyButton(id, colour, pos, collapse) {
   console.debug(collapse);
-  console.debug(
-    `<button type="button" class="badge rounded-pill bg-${colour} float-end ${pos}-button" id="${id}" style="display: ${
-      collapse ? "none" : "block"
-    }"><span data-i18n="copy">Copy</span></button>`
-  );
-  return `<button type="button" class="badge rounded-pill bg-${colour} float-end ${pos}-button" id="${id}" style="display: ${
+  return `<span id="${id}" class="badge rounded-pill bg-${colour} float-end ${pos}-button" style="display: ${
     collapse ? "none" : "block"
-  }"><span data-i18n="copy">Copy</span></button>`;
+  } data-i18n="copy">Copy</span>`;
+}
+
+function fCopyIcon(id, colour, pos, collapse) {
+  console.debug(collapse);
+  return `<span class="bi ${pos}-icon float-end material-symbols-outlined" id="${id}" style="display: ${
+    collapse ? "none" : "block"
+  }">content_copy</span>`;
 }
 
 function fPostButton(id, colour, pos, collapse) {

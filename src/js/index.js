@@ -279,7 +279,7 @@ else child.className = "title";
 child.textContent = EXT_NAME;
 newelement.appendChild(child);
 newelement = document.createElement("div");
-newelement.innerHTML = `<svg class="bi text-light" width="24" height="24" fill="currentColor"><use xlink:href="${icons}#tools"/></svg>`;
+newelement.innerHTML = `<span class="material-icons-outlined md-18 options-icon">settings</span>`;
 newelement.classList.toggle("p-2");
 // newelement.className = "p-2";
 // child = document.createElement("img");
@@ -520,6 +520,18 @@ window.addEventListener(
   false
 );
 
+window
+  .matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", ({ matches }) => {
+    document.body.classList.toggle("bg-dark");
+    document.body.classList.toggle("text-light");
+    if (matches) {
+      console.log("change to dark mode!");
+      darkMode == "dark";
+    } else {
+      console.log("change to light mode!");
+    }
+  });
 function onEvent(message, params) {
   console.debug(message, params);
 }
