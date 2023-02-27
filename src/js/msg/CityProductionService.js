@@ -39,7 +39,7 @@ export function pickupProduction(msg) {
   if (msg.responseData.updatedEntities.length) {
     var rewards = msg.responseData.updatedEntities;
     rewards.forEach((reward) => {
-      updateGalaxy(reward.cityentity_id);
+      updateGalaxy(reward);
       // console.debug(reward.state.current_product.hasOwnProperty('product') , reward.state.current_product.product.hasOwnProperty('resources'));
       if (
         reward.state.hasOwnProperty("current_product") &&

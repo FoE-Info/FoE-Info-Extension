@@ -78,12 +78,19 @@ export function showGreatBuldingDonation() {
   overview.innerHTML = "";
   //greatbuilding.innerHTML = ``;
   outputHTML = `<div class="alert alert-success alert-dismissible" role="alert">
-    <p id="donorTextLabel" data-bs-toggle="collapse" href="#donorcollapse">
-    <svg class="bi header-icon" id="donoricon" href="#donorcollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseGBDonors ? "plus" : "dash"
-  }-circle"/></svg>
-    <strong><span data-i18n="gb">GB</span> Donors:</strong></p>
-    <button type="button" class="badge rounded-pill bg-success float-end right-button" id="donorCopyID"><span data-i18n="copy">Copy</span></button>`;
+    <p id="donorTextLabel" data-bs-toggle="collapse" href="#donorcollapse">`;
+  outputHTML += element.icon(
+    "donoricon",
+    "donorcollapse",
+    collapse.collapseGBDonors
+  );
+  outputHTML += `<strong><span data-i18n="gb">GB</span> Donors:</strong></p>`;
+  outputHTML += element.copy(
+    "donorCopyID",
+    "success",
+    "right",
+    collapse.collapseGBDonors
+  );
   outputHTML += element.close();
   outputHTML += `<div id="donorcollapse" class="collapse ${
     collapse.collapseGBDonors ? "" : "show"
