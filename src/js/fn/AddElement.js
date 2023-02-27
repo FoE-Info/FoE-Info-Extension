@@ -21,7 +21,7 @@ function fCopyButton(id, colour, pos, collapse) {
   console.debug(collapse);
   return `<span id="${id}" class="badge rounded-pill bg-${colour} float-end ${pos}-button" style="display: ${
     collapse ? "none" : "block"
-  } data-i18n="copy">Copy</span>`;
+  }" data-i18n="copy">Copy</span>`;
 }
 
 function fCopyIcon(id, colour, pos, collapse) {
@@ -34,7 +34,7 @@ function fCopyIcon(id, colour, pos, collapse) {
 function fPostButton(id, colour, pos, collapse) {
   return `<span id="${id}" class="badge rounded-pill bg-${colour} float-end ${pos}-button" style="display: ${
     collapse ? "none" : "block"
-  } data-i18n="post">Post</span>`;
+  }" data-i18n="post">Post</span>`;
 }
 
 function fCloseButton() {
