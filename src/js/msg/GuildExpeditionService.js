@@ -16,18 +16,24 @@ import * as copy from "../fn/copy.js";
 import * as element from "../fn/AddElement";
 import { donationDIV2 } from "../index.js";
 import { toolOptions, setExpeditionSize } from "../fn/globals.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 export function guildExpeditionService(msg) {
   var ExpeditionPerformance = [];
   var expeditionHTML = `<div id="expeditionTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
 		${element.close()}
-		<p id="expeditionTextLabel" href="#expeditionText" aria-expanded="true" aria-controls="expeditionText" data-bs-toggle="collapse">
-		<svg class="bi header-icon" id="expeditionicon" href="#expeditionText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseExpedition ? "plus" : "dash"
-  }-circle"/></svg>
-		<strong>Guild Expedition:</strong></p>
-		<button type="button" class="badge rounded-pill bg-info float-end right-button" id="expeditionCopyID"><span data-i18n="copy">Copy</span></button>`;
+		<p id="expeditionTextLabel" href="#expeditionText" data-bs-toggle="collapse">
+      ${element.icon(
+        "expeditionicon",
+        "expeditionText",
+        collapse.collapseExpedition
+      )}
+		<strong>Guild Expedition:</strong></p>`;
+  expeditionHTML += element.copy(
+    "expeditionCopyID",
+    "info",
+    "right",
+    collapse.collapseExpedition
+  );
   expeditionHTML += `<div id="expeditionText" style="height: ${
     toolOptions.expeditionSize
   }px" class="alert-info overflow collapse ${
@@ -47,6 +53,9 @@ export function guildExpeditionService(msg) {
   document
     .getElementById("expeditionCopyID")
     .addEventListener("click", copy.ExpeditionCopy);
+  document
+    .getElementById("expeditionicon")
+    .addEventListener("click", collapse.fCollapseExpedition);
   document
     .getElementById("expeditionTextLabel")
     .addEventListener("click", collapse.fCollapseExpedition);
