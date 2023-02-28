@@ -11,12 +11,11 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-// import $ from "jquery";
+
 import { Tooltip, Alert, Popover } from "bootstrap";
 import dayjs from "dayjs";
 import { targets, targetsTopic } from "../index.js";
 import * as collapse from "../fn/collapse.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 import * as helper from "../fn/helper.js";
 import * as post_webstore from "../fn/post.js";
 import * as element from "../fn/AddElement";
@@ -54,16 +53,17 @@ export function conversationService(msg) {
       targetsHTML = `<div id="alert-${timerId}" class="alert alert-info alert-dismissible show" role="alert">`;
       targetsHTML += element.close();
       if (helper.checkGBG())
-        targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID" style="display: ${
-          collapse.collapseTarget ? "none" : "block"
-        }">Post</button>`;
+        targetsHTML += element.post(
+          "targetPostID",
+          "primary",
+          "right",
+          collapse.collapseTarget
+        );
 
       targetsGBG.innerHTML =
         targetsHTML +
         `<p id="targetLabel" href="#targetText" aria-expanded="true" data-bs-toggle="collapse">
-                <svg class="bi header-icon" id="targeticon" href="#targetText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-          collapse.collapseTarget ? "plus" : "dash"
-        }-circle"/></svg>
+      ${element.icon("targeticon", "targetText", collapse.collapseTarget)}
                 <strong>GBG Targets</strong> ${
                   message.lastMessage.date
                 }</p><p id="targetText" class="collapse ${
@@ -148,7 +148,8 @@ function getPercent(title) {
     else if (title.includes("198%")) setCurrentPercent(198);
     else if (title.includes("199%")) setCurrentPercent(199);
     else if (title.includes("200%")) setCurrentPercent(200);
-    else if (title.includes("1.9") || title.includes("1,9")) setCurrentPercent(190);
+    else if (title.includes("1.9") || title.includes("1,9"))
+      setCurrentPercent(190);
     else {
       console.debug("in else 2");
       setCurrentPercent(190);

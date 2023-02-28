@@ -14,7 +14,6 @@
 import { showOptions } from "../vars/showOptions.js";
 import * as helper from "../fn/helper.js";
 import * as collapse from "../fn/collapse.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 import * as copy from "../fn/copy.js";
 import * as storage from "../fn/storage.js";
 import * as element from "../fn/AddElement";
@@ -183,9 +182,11 @@ export function showGreatBuldingDonation() {
     var olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
             ${element.close()}
             <p id="freeTextLabel" href="#donationText3" aria-controls="donationText3" data-bs-toggle="collapse">
-            <svg class="bi header-icon" id="donationicon" href="#donationText3" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseDonation ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon(
+        "donationicon",
+        "donationText3",
+        collapse.collapseDonation
+      )}
             <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>`;
     olddonationHTML += element.copy(
       "donationCopyID",
@@ -515,12 +516,11 @@ export function showGreatBuldingDonation() {
           olddonationHTML +
           copyText +
           (donationSuffix ? donationSuffix : "" + `</div>`);
-        if (copyText)
-          document
-            .getElementById("donationCopyID")
-            .addEventListener("click", copy.DonationCopy);
-        else $("#donationCopyID").hide();
-        // $('#donationCopyID').prop('disabled', true);
+        document
+          .getElementById("donationCopyID")
+          .addEventListener("click", copy.DonationCopy);
+        if (!copyText)
+          document.getElementById("donationCopyID").style.display = "none";
 
         if (document.getElementById("freeTextLabel"))
           document
@@ -563,8 +563,12 @@ export function getConstructionRanking(msg, data) {
   //greatbuilding.innerHTML = ``;
   outputHTML = `<div class="alert alert-success alert-dismissible show" role="alert">`;
   outputHTML += element.close();
-  outputHTML += `<button type="button" class="badge rounded-pill bg-success right-button" id="donorCopyID2"><span data-i18n="copy">Copy</span></button>`;
-
+  outputHTML += element.copy(
+    "donorCopyID2",
+    "success",
+    "right",
+    collapse.collapseGBDonors
+  );
   if (msg.responseData.length) {
     // var total = 0;
     for (var j = 0; j < msg.responseData.length; j++) {
@@ -722,17 +726,17 @@ function gbTabSafe(
     `<div class="card ${
       darkMode == "dark" ? "text-light bg-dark" : "text-dark bg-light"
     } alert show collapsed p-0" >
-    <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [${getPlayerLink()}]${
-      connected == null
-        ? '<br><span class="red">*** DISCONNECTED ***</span>'
-        : ""
-    }${checkInactive()}${
-      maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : ""
-    }
-      ${element.close()}
-      <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button>
-    </div>
-    <div class="card-body alert-success p-2">
+    <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [` +
+    getPlayerLink() +
+    `]` +
+    (connected == null
+      ? '<br><span class="red">*** DISCONNECTED ***</span>'
+      : "") +
+    checkInactive() +
+    (maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : "") +
+    element.close() +
+    element.copy("donationCopyID", "info", "right", collapse.collapseDonation) +
+    `</div><div class="card-body alert-success p-2">
       <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${
       GBselected.level
     }/${GBselected.max_level}] (${GBselected.current}/${
@@ -821,10 +825,9 @@ function gbTabNotSafe(
       darkMode == "dark" ? "text-light bg-dark" : "text-dark bg-light"
     } alert show collapsed p-0 "  >
            <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span> [${getPlayerLink()}]
-           ${element.close()}
-           <button type="button" class="badge rounded-pill bg-info float-end mt-1 mr-1" id="donationCopyID"><span data-i18n="copy">Copy</span></button>
-           </div>
-           <div class="card-body alert-danger p-2">
+           ${element.close()}` +
+    element.copy("donationCopyID", "info", "right", collapse.collapseDonation) +
+    `</div><div class="card-body alert-danger p-2">
            <h6 class="card-title mb-0"> <span id="GBselected">${
              GBselected.name
            } [${GBselected.level}/${GBselected.max_level}] (${
