@@ -11,11 +11,7 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-// import $ from "jquery";
-import { Tooltip, Popover } from "bootstrap";
-// import 'bootstrap';
-import icons from "bootstrap-icons/bootstrap-icons.svg";
-// import crypto  from 'crypto';
+import { Popover } from "bootstrap";
 import {
   CityEntityDefs,
   donationDIV,
@@ -692,10 +688,18 @@ export function fshowBattleground() {
 	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p>${element.close()}`;
 
   if (url.sheetGuildURL)
-    battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end mid-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
-  // else
-  battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundCopyID"><span data-i18n="copy">Copy</span></button>`;
-
+    battlegroundHTML += element.post(
+      "battlegroundPostID",
+      "info",
+      "mid",
+      collapse.collapseBattleground
+    );
+  battlegroundHTML += element.copy(
+    "battlegroundCopyID",
+    "info",
+    "right",
+    collapse.collapseBattleground
+  );
   battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info overflow collapse ${
     collapse.collapseBattleground ? "" : "show"
   }"><div id="battlegroundText">`;

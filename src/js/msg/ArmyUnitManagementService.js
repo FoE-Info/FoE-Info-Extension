@@ -10,13 +10,14 @@
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
- */ import { MilitaryDefs, armyDIV } from "../index.js";
+ */ 
+
+import { MilitaryDefs, armyDIV } from "../index.js";
 import { toolOptions, setArmySize } from "../fn/globals.js";
 import { showOptions } from "../vars/showOptions.js";
 import * as helper from "../fn/helper.js";
 import * as collapse from "../fn/collapse.js";
 import * as element from "../fn/AddElement";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 var ArmyUnits = [];
 

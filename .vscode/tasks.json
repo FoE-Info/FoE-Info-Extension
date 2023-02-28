@@ -1,86 +1,77 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "echo",
-            "type": "shell",
-            "command": "echo Hello"
-        },
-        {
-            "type": "npm",
-            "script": "build",
-            "problemMatcher": [
-                "$eslint-compact"
-            ],
-            "group": "build"
-        },
-        {
-            "type": "npm",
-            "script": "build-foe-info-beta",
-            "problemMatcher": [
-                "$eslint-compact"
-            ],
-            "group": "build"
-        },
-        {
-            "type": "npm",
-            "script": "build-foe-info",
-            "problemMatcher": [
-                "$eslint-compact"
-            ],
-            "group": "build"
-        },
-        {
-            "type": "npm",
-            "script": "build-foe-info-firefox",
-            "problemMatcher": [
-                "$eslint-compact"
-            ],
-            "group": "build"
-        },
-        {
-            "type": "npm",
-            "script": "deploy",
-            "problemMatcher": [
-                "$eslint-compact"
-            ],
-            "group": "build"
-        },
-        {
-            "type": "npm",
-            "script": "start",
-            "problemMatcher": [
-                "$eslint-compact"
-            ],
-            "label": "npm: start",
-            "detail": "webpack-dev-server --open"
-        },
-        {
-            "type": "npm",
-            "script": "dev",
-            "problemMatcher": [
-                "$eslint-compact"
-            ],
-            "label": "npm: dev",
-            "detail": "NODE_ENV=development webpack --mode development --config webpack-dev.config.js --watch"
-        },
-        {
-            "type": "npm",
-            "script": "analyze",
-            "problemMatcher": [],
-            "label": "npm: analyze",
-            "detail": "webpack --config foe-info-analyzer.config.js"
-        },
-        {
-            "type": "npm",
-            "script": "beta-analyze",
-            "problemMatcher": [
-                "$eslint-compact"
-            ],
-            "label": "npm: beta-analyze",
-            "detail": "webpack --config foe-info-beta-analyzer.config.js"
-        }
-    ]
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo",
+      "type": "shell",
+      "command": "echo Hello"
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "problemMatcher": ["$eslint-compact"],
+      "group": "build"
+    },
+    {
+      "type": "npm",
+      "script": "build-foe-info-beta",
+      "problemMatcher": ["$eslint-compact"],
+      "group": "build"
+    },
+    {
+      "type": "npm",
+      "script": "build-foe-info",
+      "problemMatcher": ["$eslint-compact"],
+      "group": "build"
+    },
+    {
+      "type": "npm",
+      "script": "build-foe-info-firefox",
+      "problemMatcher": ["$eslint-compact"],
+      "group": "build"
+    },
+    {
+      "type": "npm",
+      "script": "deploy",
+      "problemMatcher": ["$eslint-compact"],
+      "group": "build"
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "problemMatcher": ["$eslint-compact"],
+      "label": "npm: start",
+      "detail": "webpack-dev-server --open"
+    },
+    {
+      "type": "npm",
+      "script": "dev",
+      "problemMatcher": ["$eslint-compact"],
+      "label": "npm: dev",
+      "detail": "NODE_ENV=development webpack --mode development --config webpack-dev.config.js --watch"
+    },
+    {
+      "type": "npm",
+      "script": "analyze",
+      "problemMatcher": [],
+      "label": "npm: analyze",
+      "detail": "webpack --config foe-info-analyzer.config.js"
+    },
+    {
+      "type": "npm",
+      "script": "beta-analyze",
+      "problemMatcher": ["$eslint-compact"],
+      "label": "npm: beta-analyze",
+      "detail": "webpack --config foe-info-beta-analyzer.config.js"
+    },
+    {
+      "type": "npm",
+      "script": "format",
+      "problemMatcher": ["$eslint-compact"],
+      "label": "npm: format",
+      "detail": "prettier --write ."
+    }
+  ]
 }

@@ -5,7 +5,6 @@ import { fGVGagesname } from "../fn/helper.js";
 import * as storage from "../fn/storage.js";
 import * as element from "../fn/AddElement";
 import { showOptions } from "../vars/showOptions.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 export var ResourceDefs = [];
 export var ResourceNames = [];
