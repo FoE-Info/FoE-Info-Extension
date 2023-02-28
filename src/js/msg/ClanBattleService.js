@@ -10,7 +10,7 @@
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
- */ 
+ */
 
 import { gvg, MyInfo } from "../index.js";
 import { toolOptions, setGVGSize } from "../fn/globals.js";
