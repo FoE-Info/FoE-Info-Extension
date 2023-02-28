@@ -1049,7 +1049,7 @@ function handleRequestFinished(request) {
 
             var culturalHTML = `<div  role="alert">
 								${element.close()}
-								<p href="#culturalText" data-bs-toggle="collapse">
+								<p id="culturalTextLabel" href="#culturalText" data-bs-toggle="collapse">
 								${element.icon("culturalicon", "culturalText", collapse.collapseCultural)}
 								<strong><span data-i18n="cultural">Cultural Settlement</span></strong></p>`;
 
@@ -1076,6 +1076,12 @@ function handleRequestFinished(request) {
               cultural.innerHTML = culturalHTML + `</div></div>`;
               cultural.className =
                 "alert alert-info alert-dismissible show collapsed";
+              document
+                .getElementById("culturalicon")
+                .addEventListener("click", collapse.fCollapseCultural);
+              document
+                .getElementById("culturalTextLabel")
+                .addEventListener("click", collapse.fCollapseCultural);
             }
 
             /*Limited Bonuses */
@@ -2462,11 +2468,7 @@ export function showReward(reward) {
   }
 
   cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-bs-toggle="collapse">
-  ${element.icon(
-    "rewardsicon",
-    "rewardsText",
-    collapse.collapseRewards
-  )}
+  ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
 	${element.close()}
 	<div id="rewardsText" class="overflow resize collapse ${

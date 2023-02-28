@@ -21,7 +21,7 @@ export function guildExpeditionService(msg) {
   var ExpeditionPerformance = [];
   var expeditionHTML = `<div id="expeditionTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
 		${element.close()}
-		<p id="expeditionTextLabel" href="#expeditionText" aria-expanded="true" aria-controls="expeditionText" data-bs-toggle="collapse">
+		<p id="expeditionTextLabel" href="#expeditionText" data-bs-toggle="collapse">
       ${element.icon(
         "expeditionicon",
         "expeditionText",
