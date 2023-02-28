@@ -53,9 +53,12 @@ export function conversationService(msg) {
       targetsHTML = `<div id="alert-${timerId}" class="alert alert-info alert-dismissible show" role="alert">`;
       targetsHTML += element.close();
       if (helper.checkGBG())
-        targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID" style="display: ${
-          collapse.collapseTarget ? "none" : "block"
-        }">Post</button>`;
+        targetsHTML += element.post(
+          "targetPostID",
+          "primary",
+          "right",
+          collapse.collapseTarget
+        );
 
       targetsGBG.innerHTML =
         targetsHTML +
