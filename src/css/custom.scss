@@ -47,9 +47,6 @@ p,
   vertical-align: middle;
 }
 
-.badge {
-}
-
 .bi p {
   display: inline-block;
   vertical-align: middle;
@@ -67,14 +64,9 @@ p,
 }
 
 .header-icon {
-  // padding-left: 0.25em;
+  cursor: pointer;
   margin-right: 0.5em;
-  /* margin-left: -1em; */
-  /* margin-top: -2px; */
-  /* fill: currentColor; */
-  // color: red;
-  // stroke: green;
-  // fill: blue;
+  vertical-align: middle;
 }
 
 .info-icon {
@@ -86,6 +78,11 @@ p,
   // color: red;
   // stroke: green;
   // fill: blue;
+}
+
+.gvg-warn {
+  color: #808000;
+  vertical-align: middle;
 }
 
 .favorite-btn {
@@ -360,20 +357,40 @@ hr {
 }
 
 /* Rules for sizing the icon. */
-.material-icons-outlined.md-12 { font-size: 12px; }
-.material-icons-outlined.md-13 { font-size: 16px; }
-.material-icons-outlined.md-18 { font-size: 18px; }
-.material-icons-outlined.md-24 { font-size: 24px; }
-.material-icons-outlined.md-36 { font-size: 36px; }
-.material-icons-outlined.md-48 { font-size: 48px; }
+.material-icons-outlined.md-12 {
+  font-size: 12px;
+}
+.material-icons-outlined.md-13 {
+  font-size: 16px;
+}
+.material-icons-outlined.md-18 {
+  font-size: 18px;
+}
+.material-icons-outlined.md-24 {
+  font-size: 24px;
+}
+.material-icons-outlined.md-36 {
+  font-size: 36px;
+}
+.material-icons-outlined.md-48 {
+  font-size: 48px;
+}
 
 /* Rules for using icons as black on a light background. */
-.material-icons-outlined.md-dark { color: rgba(0, 0, 0, 0.54); }
-.material-icons-outlined.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+.material-icons-outlined.md-dark {
+  color: rgba(0, 0, 0, 0.54);
+}
+.material-icons-outlined.md-dark.md-inactive {
+  color: rgba(0, 0, 0, 0.26);
+}
 
 /* Rules for using icons as white on a dark background. */
-.material-icons-outlined.md-light { color: rgba(255, 255, 255, 1); }
-.material-icons-outlined.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+.material-icons-outlined.md-light {
+  color: rgba(255, 255, 255, 1);
+}
+.material-icons-outlined.md-light.md-inactive {
+  color: rgba(255, 255, 255, 0.3);
+}
 
 //   div {
 //         /* font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, “Helvetica Neue”, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”; */
