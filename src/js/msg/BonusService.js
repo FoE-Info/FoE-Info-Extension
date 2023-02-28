@@ -10,7 +10,8 @@
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
- */ import icons from "bootstrap-icons/bootstrap-icons.svg";
+ */ 
+
 import { City, Galaxy, showGalaxy } from "./StartupService.js";
 import { checkDebug, Bonus } from "../index.js";
 import { showOptions } from "../vars/showOptions.js";
@@ -96,9 +97,7 @@ export function getLimitedBonuses(msg) {
     ) {
       bonus.innerHTML = `<div id="bonusTip" class="alert alert-light alert-dismissible" role="alert">
             <p id="bonusTextLabel" href="#bonusText" data-bs-toggle="collapse">
-			<svg class="bi header-icon" id="bonusicon" href="#bonusText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-        collapse.collapseBonus ? "plus" : "dash"
-      }-circle"/></svg>
+      ${element.icon("bonusicon", "bonusText", collapse.collapseBonus)}
 			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
             ${element.close()}
             <div id="bonusText" class="alert-light collapse"><p><strong>Legend:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
