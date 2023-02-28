@@ -11,7 +11,6 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 import { checkDebug } from "..";
 import * as element from "./AddElement";
 
@@ -289,7 +288,9 @@ export function fCollapseStats() {
   fHideAllTooltips();
   collapseStats = !collapseStats;
   // console.debug('collapseStats',collapseStats);
-  //document.getElementById("citystatsCopyID").style.display = collapseStats ? 'none' : 'block';
+  document.getElementById("citystatsCopyID").style.display = collapseStats
+    ? "none"
+    : "block";
   element.updateIcon("citystatsicon", "citystatsText", collapseStats);
 }
 
@@ -328,12 +329,21 @@ export function fCollapseInvested() {
 export function fCollapseDonation() {
   collapseDonation = !collapseDonation;
   // console.debug('fCollapseDonation',collapseOptions);
+  document.getElementById("donationCopyID").style.display = collapseDonation
+    ? "none"
+    : "block";
   element.updateIcon("donationicon", "donationText3", collapseDonation);
 }
 
 export function fCollapseBattleground() {
   collapseBattleground = !collapseBattleground;
   // console.debug('fCollapseBattleground',collapseOptions);
+  if (document.getElementById("battlegroundPostID"))
+    document.getElementById("battlegroundPostID").style.display =
+      collapseBattleground ? "none" : "block";
+  if (document.getElementById("battlegroundCopyID"))
+    document.getElementById("battlegroundCopyID").style.display =
+      collapseBattleground ? "none" : "block";
   element.updateIcon(
     "battlegroundicon",
     "battlegroundCollapse",
@@ -362,7 +372,7 @@ export function fCollapseExpedition() {
   document.getElementById("expeditionCopyID").style.display = collapseExpedition
     ? "none"
     : "block";
-  element.updateIcon("expeditionicon", "expeditionText", collapseGuild);
+  element.updateIcon("expeditionicon", "expeditionText", collapseExpedition);
 }
 
 export function fCollapseTreasury() {

@@ -1,4 +1,3 @@
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 import * as storage from "./storage.js";
 
 function fCollapseIcon(id, _href, collapse) {
@@ -21,7 +20,7 @@ function fCopyButton(id, colour, pos, collapse) {
   console.debug(collapse);
   return `<span id="${id}" class="badge rounded-pill bg-${colour} float-end ${pos}-button" style="display: ${
     collapse ? "none" : "block"
-  } data-i18n="copy">Copy</span>`;
+  }" data-i18n="copy">Copy</span>`;
 }
 
 function fCopyIcon(id, colour, pos, collapse) {
@@ -32,9 +31,9 @@ function fCopyIcon(id, colour, pos, collapse) {
 }
 
 function fPostButton(id, colour, pos, collapse) {
-  return `<button type="button" class="badge rounded-pill bg-${colour} float-end ${pos}-button" id="${id}" style="display: ${
+  return `<span id="${id}" class="badge rounded-pill bg-${colour} float-end ${pos}-button" style="display: ${
     collapse ? "none" : "block"
-  }"><span data-i18n="post">Post</span></button>`;
+  }" data-i18n="post">Post</span>`;
 }
 
 function fCloseButton() {

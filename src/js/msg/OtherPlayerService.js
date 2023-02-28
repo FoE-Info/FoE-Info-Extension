@@ -20,7 +20,6 @@ import "@wikimedia/jquery.i18n/src/jquery.i18n.parser.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.language.js";
 import BigNumber from "bignumber.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 import { showOptions } from "../vars/showOptions.js";
 import * as helper from "../fn/helper.js";
@@ -943,9 +942,7 @@ export function otherPlayerServiceUpdateActions(msg) {
       showOptions.showFriends
     ) {
       friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="listTextLabel" href="#listsText" data-bs-toggle="collapse">
-				<svg class="bi header-icon" id="listsicon" href="#listsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-        collapse.collapseLists ? "plus" : "dash"
-      }-circle"/></svg>
+      ${element.icon("listsicon", "listsText", collapse.collapseLists)}
 				<strong>Lists:</strong></p>
 				${element.close()}
 				<div id="listsText" class="collapse ${
@@ -955,14 +952,15 @@ export function otherPlayerServiceUpdateActions(msg) {
       if (showOptions.showFriends) {
         console.debug(collapse.collapseFriends);
         friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="friendsTextLabel" href="#friendsText" data-bs-toggle="collapse">
-					<svg class="bi header-icon" id="friendsicon" href="#friendsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-          collapse.collapseFriends ? "plus" : "dash"
-        }-circle"/></svg>
-					<strong>Friends</strong></p>`;
-        friendsHTML += `<div id="friendsCopy"><button type="button" class="badge rounded-pill bg-success right-button" id="friendsCopyID" style="display: ${
-          collapse.collapseFriends ? "none" : "block"
-        }"><span data-i18n="copy">Copy</span></button></div>`;
-        friendsHTML += `<div id="friendsText" class="collapse ${
+      ${element.icon("friendsicon", "friendsText", collapse.collapseFriends)}
+					<strong>Friends</strong></p><div id="friendsCopy">`;
+        friendsHTML += element.copy(
+          "friendsCopyID",
+          "success",
+          "right",
+          collapse.collapseFriends
+        );
+        friendsHTML += `</div><div id="friendsText" class="collapse ${
           collapse.collapseFriends ? "" : "show"
         }"><table id="friendsText2">`;
         friendsHTML += getFriendsHTML(friends);
@@ -970,14 +968,15 @@ export function otherPlayerServiceUpdateActions(msg) {
       }
       if (showOptions.showGuild) {
         friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="guildTextLabel" href="#guildText" data-bs-toggle="collapse">
-					<svg class="bi header-icon" id="guildicon" href="#guildText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-          collapse.collapseGuild ? "plus" : "dash"
-        }-circle"/></svg>
-					<strong>Guild</strong></p>`;
-        friendsHTML += `<div id="guildCopy"><button type="button" class="badge rounded-pill bg-success right-button" id="guildCopyID" style="display: ${
-          collapse.collapseGuild ? "none" : "block"
-        }"><span data-i18n="copy">Copy</span></button></div>`;
-        friendsHTML += `<div id="guildText" class="collapse ${
+      ${element.icon("guildicon", "guildText", collapse.collapseGuild)}
+					<strong>Guild</strong></p><div id="guildCopy">`;
+        friendsHTML += element.copy(
+          "guildCopyID",
+          "success",
+          "right",
+          collapse.collapseGuild
+        );
+        friendsHTML += `</div><div id="guildText" class="collapse ${
           collapse.collapseGuild ? "" : "show"
         }"><table id="guildText2">`;
         friendsHTML += getFriendsHTML(guildMembers);
@@ -985,14 +984,15 @@ export function otherPlayerServiceUpdateActions(msg) {
       }
       if (showOptions.showHood) {
         friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="hoodTextLabel" href="#hoodText" data-bs-toggle="collapse">
-					<svg class="bi header-icon" id="hoodicon" href="#hoodText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-          collapse.collapseHood ? "plus" : "dash"
-        }-circle"/></svg>
-					<strong>Hood</strong></p>
-					<div id="hoodCopy"><button type="button" class="badge rounded-pill bg-success right-button" id="hoodCopyID" style="display: ${
-            collapse.collapseHood ? "none" : "block"
-          }"><span data-i18n="copy">Copy</span></button></div>`;
-        friendsHTML += `<div id="hoodText" class="collapse ${
+      ${element.icon("hoodicon", "hoodText", collapse.collapseHood)}
+					<strong>Hood</strong></p><div id="hoodCopy">`;
+        friendsHTML += element.copy(
+          "hoodCopyID",
+          "success",
+          "right",
+          collapse.collapseHood
+        );
+        friendsHTML += `</div><div id="hoodText" class="collapse ${
           collapse.collapseHood ? "" : "show"
         }"><table id="hoodText2">`;
         friendsHTML += getFriendsHTML(hoodlist);

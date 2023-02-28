@@ -19,12 +19,7 @@ import "@wikimedia/jquery.i18n/src/jquery.i18n.parser.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.language.js";
 import BigNumber from "bignumber.js";
-
-// import 'bootstrap';
 import { Tooltip, Alert, Popover } from "bootstrap";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
-
-// import icons from 'bootstrap-icons/bootstrap-icons.svg';
 import {
   setMyInfo,
   MyInfo,
@@ -322,7 +317,7 @@ export function startupService(msg) {
               helper.fEntityNameTrim(mapID.cityentity_id),
               mapID.state.current_product.product
             );
-         if (mapID.state.current_product.product.resources) {
+          if (mapID.state.current_product.product.resources) {
             if (mapID.state.current_product.product.resources.premium)
               diamonds += mapID.state.current_product.product.resources.premium;
             if (mapID.state.current_product.product.resources.strategy_points) {
@@ -722,9 +717,11 @@ export function startupService(msg) {
       return a.ready - b.ready;
     });
     var buildingsHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="buildingsTextLabel" href="#buildingsText" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="buildingsicon" href="#buildingsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseBuildings ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon(
+        "buildingsicon",
+        "buildingsText",
+        collapse.collapseBuildings
+      )}
         <strong><span data-i18n="collection">Building Collection Times</span>:</strong></p>`;
     buildingsHTML += element.close();
     buildingsHTML += `<div id="buildingsText" class="resize collapse ${
@@ -857,7 +854,7 @@ export function startupService(msg) {
           MyInfo.createdAt * 1000
         ).toLocaleString()}"
         data-bs-content='${userTooltipHTML}</p>'>
-        <svg class="bi info-icon" id="infoIcon" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#info-circle"></use></svg></span>`;
+        <span class="material-icons-outlined md-12 info-icon" id="infoIcon">info</span>`;
   var clanGoodsHTML = `<span id="clanGoods" class="pop" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
   var totalGoodsHTML = `<span id="goods" class="pop" data-bs-container="#goods" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
@@ -1381,9 +1378,7 @@ export function showGalaxy() {
   });
   console.debug("showGalaxy", Galaxy);
   Galaxy.html = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="galaxyTextLabel" href="#galaxyText" data-bs-toggle="collapse">
-    <svg class="bi header-icon" id="galaxyicon" href="#galaxyText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseGalaxy ? "plus" : "dash"
-  }-circle"/></svg>
+    ${element.icon("galaxyicon", "galaxyText", collapse.collapseGalaxy)}
     <strong>Galaxy Double Collection:</strong></p>`;
   Galaxy.html += element.close();
   Galaxy.html += `<div id="galaxyText" class="resize  collapse ${
@@ -1396,13 +1391,12 @@ export function showGalaxy() {
       entry.state == "ProductionFinishedState"
         ? true
         : entry.transition <= EpocTime;
-    if (debugEnabled == true){
+    if (debugEnabled == true) {
       const timer = new Date(entry.transition * 1000);
       Galaxy.html += `${entry.fp}FP ${entry.name} ${
         ready ? "READY" : timer.toLocaleString()
       }<br>`;
-    }
-    else if (ready && count < Galaxy.amount){
+    } else if (ready && count < Galaxy.amount) {
       Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
       count++;
     }

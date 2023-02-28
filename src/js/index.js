@@ -20,17 +20,9 @@ import "@wikimedia/jquery.i18n/src/jquery.i18n.messagestore.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.parser.js";
 import BigNumber from "bignumber.js";
 import "bootstrap";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
-// import "bootstrap-icons/font/bootstrap-icons.css";
-import tools from "bootstrap-icons/icons/tools.svg";
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import collapseOptions, * as collapse from "./fn/collapse.js";
 import browser from "webextension-polyfill";
 import * as copy from "./fn/copy.js";
-// import '../css/nordstrap.css';
-// @import "nordbootstrap.css";
-// import "nord";
-// @import "node_modules/nord/src/nord.css";
 import {
   setRewardSize,
   setToolOptions,
@@ -287,26 +279,8 @@ var svgNS = "http://www.w3.org/2000/svg";
 // child = document.createElementNS(svgNS,"svg");
 // child = document.createElement("div");
 newelement.id = "go-to-options";
-// child.className = 'text-light';
-// child.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi ${darkMode == 'dark' ? 'text-light bg-dark' : ''}" viewBox="0 0 16 16">
-// <path d="M1 0L0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.356 3.356a1 1 0 0 0 1.414 0l1.586-1.586a1 1 0 0 0 0-1.414l-3.356-3.356a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0zm9.646 10.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708zM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11z"/>
-//   </svg>`;
-
-//   child.width = '24';
-//   child.height = '24';
-//   child.id = "tools";
-//   if(DEV)	child.addEventListener("click", toggleDebug);
-//   newelement.appendChild(child);
-
-// newelement.width = '20';
-// newelement.height = '20';
-// child.setAttribute("color", "red");
-// child.setAttribute("fill", "blue");
-// child.setAttribute('src',tools );
-// child.setAttribute('data',`M1 0L0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.356 3.356a1 1 0 0 0 1.414 0l1.586-1.586a1 1 0 0 0 0-1.414l-3.356-3.356a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3c0-.269-.035-.53-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814L1 0zm9.646 10.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708zM3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026L3 11z` );
 
 title.appendChild(newelement);
-console.debug(newelement, child, tools);
 
 // city info
 export var content = document.createElement("div");
@@ -442,9 +416,12 @@ if (showOptions.clipboard) {
 	${element.icon("clipboardicon", "clipboardText", collapse.collapseClipboard)}
 	<strong><span data-i18n="clipboard">Clipboard</span>:</strong></p>`;
   clipboardHTML += element.close();
-  clipboardHTML += `<button type="button" class="badge rounded-pill bg-warning float-end right-button" id="clipboardCopyID" style="display: ${
-    collapse.collapseClipboard ? "none" : "block"
-  }"><span data-i18n="copy">Copy</span></button>`;
+  clipboardHTML += element.copy(
+    "clipboardCopyID",
+    "warning",
+    "right",
+    collapse.collapseClipboard
+  );
   clipboardHTML += `<div id="clipboardText" class="resize collapse ${
     collapse.collapseClipboard ? "" : "show"
   }"><p>`;
@@ -1610,10 +1587,12 @@ function handleRequestFinished(request) {
                     treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
 							${element.close()}
 							<p href="#treasuryLogText" aria-expanded="true" aria-controls="treasuryLogText" data-bs-toggle="collapse">
-							<svg class="bi header-icon" id="treasuryLogicon" href="#treasuryLogText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-                      collapse.collapseTreasuryLog ? "plus" : "dash"
-                    }-circle"/></svg>
-							<strong>Treasury Logs:</strong></p>`;
+              ${element.icon(
+                "treasuryLogicon",
+                "treasuryLogText",
+                collapse.collapseTreasuryLog
+              )}
+                    <strong>Treasury Logs:</strong></p>`;
                     treasuryHTML += `<table id="treasuryLogText" class="overflow collapse show">`;
                   } else {
                     treasuryHTML = treasuryHTML.substring(
@@ -2483,9 +2462,11 @@ export function showReward(reward) {
   }
 
   cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-bs-toggle="collapse">
-	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseRewards ? "plus" : "dash"
-  }-circle"/></svg>
+  ${element.icon(
+    "rewardsicon",
+    "rewardsText",
+    collapse.collapseRewards
+  )}
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
 	${element.close()}
 	<div id="rewardsText" class="overflow resize collapse ${
@@ -2588,10 +2569,8 @@ export function showRewards(rewards) {
   });
 
   cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
-	<svg class="bi header-icon" id="rewardsicon" href="#rewardsText" data-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseRewards ? "plus" : "dash"
-  }-circle"/></svg>
-	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
+  ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
+	<span data-i18n="reward"><strong>REWARDS:</strong></span></p>
 	${element.close()}
 	<div id="rewardsText" class="overflow resize collapse ${
     collapse.collapseRewards ? "" : "show"
@@ -2679,7 +2658,7 @@ function toggleDebug() {
   var logo = document.getElementById("logo");
   if (debugEnabled == true) {
     // logo.src = bug;
-    logo.outerHTML = `<svg id="logo" class="bi text-light" width="24" height="24" fill="currentColor"><use xlink:href="${icons}#bug"/></svg>`;
+    logo.outerHTML = `<span class="material-icons-outlined" id="logo">bug_report</span>`;
   } else {
     logo.outerHTML = `<img src="/icons/Icon48.png" width="24" height="24" id="logo">`;
     // logo.src = "/icons/Icon48.png";

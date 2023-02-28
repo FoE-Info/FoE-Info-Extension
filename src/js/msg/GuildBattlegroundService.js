@@ -32,7 +32,6 @@ import {
   targetText,
 } from "../index.js";
 import { toolOptions, setBuildingCostSize } from "../fn/globals.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 export var BattlegroundPerformance = [];
 export var GuildMembers = [];
@@ -136,13 +135,25 @@ export function getState(msg) {
     var battlegroundHTML = `<div id="battlegroundResultTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
         ${element.close()}
         <p id="battlegroundResultTextLabel" href="#battlegroundTextCollapse" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="battlegroundicon" href="#battlegroundTextCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseBattleground ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon(
+        "battlegroundicon",
+        "battlegroundTextCollapse",
+        collapse.collapseBattleground
+      )}
         <strong>Battleground Result:</strong></p>`;
-    if (url.sheetGuildURL)
-      battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end mid-button" id="battlegroundPostID"><span data-i18n="post">Post</span></button>`;
-    battlegroundHTML += `<button type="button" class="badge rounded-pill bg-info float-end right-button" id="battlegroundCopyID"><span data-i18n="copy">Copy</span></button>`;
+    // if (url.sheetGuildURL)
+    //   battlegroundHTML += element.post(
+    //     "battlegroundPostID",
+    //     "info",
+    //     "mid",
+    //     collapse.collapseBattleground
+    //   );
+    battlegroundHTML += element.copy(
+      "battlegroundCopyID",
+      "info",
+      "right",
+      collapse.collapseBattleground
+    );
     battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive collapse ${
       collapse.collapseBattleground ? "" : "show"
     }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table"><tr><th>Rank</th><th>Member</th><th>Negs</th><th>Fights</th></tr>`;
@@ -174,6 +185,9 @@ export function getState(msg) {
     document
       .getElementById("battlegroundCopyID")
       .addEventListener("click", copy.BattlegroundCopy);
+    document
+      .getElementById("battlegroundicon")
+      .addEventListener("click", collapse.fCollapseBattleground);
     document
       .getElementById("battlegroundResultTextLabel")
       .addEventListener("click", collapse.fCollapseBattleground);
@@ -419,11 +433,18 @@ function checkProvinces() {
   // if(url.sheetGuildURL)
   //     targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID"><span data-i18n="post">Post</span></button>`;
   // else
-  targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetCopyID"><span data-i18n="copy">Copy</span></button>
-        <p id="targetGenLabel" href="#targetGenCollapse" aria-expanded="true" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="targetGenicon" href="#targetGenCollapse" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-    collapse.collapseTargetGen ? "plus" : "dash"
-  }-circle"/></svg>
+  targetsHTML += element.copy(
+    "targetCopyID",
+    "primary",
+    "right",
+    collapse.collapseBattleground
+  );
+  targetsHTML += `<p id="targetGenLabel" href="#targetGenCollapse" aria-expanded="true" data-bs-toggle="collapse">
+      ${element.icon(
+        "targetGenicon",
+        "targetGenCollapse",
+        collapse.collapseTargetGen
+      )}
         <strong>GBG Target Generator:</strong></p>`;
 
   var mapSorted = Array.from(map);
@@ -566,9 +587,7 @@ function showBuildingCost(msg) {
   var costsDiv = document.createElement("div");
   if (document.getElementById("costs")) {
     costsDiv = document.getElementById("costs");
-    // costsHTML = document.getElementById("buildingCostText").innerHTML;
   } else {
-    // costsDiv.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<p id="buildingCostTextLabel" href="#buildingCostCollapse" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse"><svg class="bi alert-warning" id="citystatsicon" href="#citystatsText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${collapse.collapseStats ? 'plus' : 'dash'}-circle"/></svg><strong>GBG Building Costs:</strong></p><button type="button" class="badge rounded-pill bg-primary right-button" id="buildingCostID"><span data-i18n="copy">Copy</span></button><table id="buildingCostText" class="table"></table></div>`;
     costsDiv.id = "costs";
     content.appendChild(costsDiv);
   }
@@ -628,12 +647,19 @@ function showBuildingCost(msg) {
     `<div class="alert alert-info alert-dismissible  show collapsed" role="alert">
     ${element.close()}
     <p id="buildingCostTextLabel" href="#buildingCostText" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse">
-    <svg class="bi header-icon" id="buildingCosticon" href="#buildingCostText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseBuildingCost ? "plus" : "dash"
-    }-circle"/></svg>
-    <strong>GBG Building Costs:</strong></p>
-    <button type="button" class="badge rounded-pill bg-primary right-button" id="buildingCostID"><span data-i18n="copy">Copy</span></button>
-    <table style="height: ${
+      ${element.icon(
+        "buildingCosticon",
+        "buildingCostText",
+        collapse.collapseBuildingCost
+      )}
+    <strong>GBG Building Costs:</strong></p>` +
+    element.copy(
+      "buildingCostID",
+      "primary",
+      "right",
+      collapse.collapseBuildingCost
+    ) +
+    `<table style="height: ${
       toolOptions.buildingCostSize
     }px"  id="buildingCostText" class="overflow-y table collapse ${
       collapse.collapseBuildingCost == false ? "show" : ""
