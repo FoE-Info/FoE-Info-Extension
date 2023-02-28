@@ -10,7 +10,7 @@
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
- */ 
+ */
 
 import { City, Galaxy, showGalaxy } from "./StartupService.js";
 import { checkDebug, Bonus } from "../index.js";
@@ -101,6 +101,12 @@ export function getLimitedBonuses(msg) {
 			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
             ${element.close()}
             <div id="bonusText" class="alert-light collapse"><p><strong>Legend:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
+      document
+        .getElementById("bonusicon")
+        .addEventListener("click", collapse.fCollapseBonus);
+      document
+        .getElementById("bonusTextLabel")
+        .addEventListener("click", collapse.fCollapseBonus);
     } else if (
       !(Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
     ) {
