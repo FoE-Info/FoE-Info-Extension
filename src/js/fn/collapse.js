@@ -177,7 +177,7 @@ export default function set(key, value) {
 export function fCollapseGBInfo() {
   collapseGBInfo = !collapseGBInfo;
   storage.set("collapseGBInfo", collapseGBInfo);
-  element.updateIcon("guildicon", "guildText", collapseGuild);
+  element.updateIcon("guildicon", "guildText", collapseGBInfo);
 }
 
 export function fCollapseFriends() {
@@ -403,12 +403,12 @@ export function fCollapseTargetGen() {
 
 export function fCollapseBonus() {
   collapseBonus = !collapseBonus;
-  element.updateIcon("guildicon", "guildText", collapseGuild);
+  element.updateIcon("bonusicon", "bonusText", collapseBonus);
 }
 
 export function fCollapseCultural() {
   collapseCultural = !collapseCultural;
-  element.updateIcon("guildicon", "guildText", collapseGuild);
+  element.updateIcon("culturalicon", "culturalText", collapseCultural);
 }
 
 export function fCollapseClipboard() {
