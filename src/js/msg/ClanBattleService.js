@@ -10,14 +10,15 @@
  * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
- */ import { gvg, MyInfo } from "../index.js";
+ */ 
+
+import { gvg, MyInfo } from "../index.js";
 import { toolOptions, setGVGSize } from "../fn/globals.js";
 import { showOptions } from "../vars/showOptions.js";
 import * as collapse from "../fn/collapse.js";
 import * as element from "../fn/AddElement";
 import { fGVGagesname } from "../fn/helper.js";
 import BigNumber from "bignumber.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 export var gvgContainer = null;
 export var gvgSummary = null;
@@ -62,9 +63,7 @@ export function getContinent(msg) {
       "alert alert-success alert-dismissible show collapsed";
     gvgContainer.innerHTML = `${element.close()}
         <p id="gvgInfoTextLabel" href="#gvgInfoText" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="gvgInfoIcon" href="#gvgInfoText" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseGVGinfo ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon("gvgInfoIcon", "gvgInfoText", collapse.collapseGVGinfo)}
         <strong><span data-i18n="summary">GvG Summary</span>:</strong></p>`;
     gvg.appendChild(gvgContainer);
     gvgSummary = document.createElement("div");
@@ -200,7 +199,9 @@ export function getProvinceDetailed(msg) {
       (item) => item !== fGVGagesname(map.era)
     );
 
-    var ele = gvgPower.find((element) => (element.era == map.era) && (element.power > 0));
+    var ele = gvgPower.find(
+      (element) => element.era == map.era && element.power > 0
+    );
     if (ele) ele.time = new Date().toLocaleString();
     else
       gvgPower.push({
@@ -347,7 +348,8 @@ export function getProvinceDetailed(msg) {
     document.getElementById("gvgWarnAllGuildPower")?.remove();
     if (gvgAgeNotloadList.length > 0) {
       var gvgWarnFunc = (id) =>
-        `<span id="gvgWarn${id}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${gvgAgeNotloadList.toString()} were not loaded yet"><span>    </span><svg class="bi bi-exclamation-diamond-fill" fill="#808000" width="16" height="16"><use xlink:href="${icons}#exclamation-diamond-fill"/></svg></span> `;
+        `<span id="gvgWarn${id}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${gvgAgeNotloadList.toString()} were not loaded yet"><span>    </span>
+        <span class="material-icons-outlined md-18 gvg-warn">warning</span></span> `;
       var headlineSpan = document.getElementById("gvgGuildPowerHeadlineText");
       if (headlineSpan.innerHTML)
         headlineSpan.innerHTML =
@@ -427,9 +429,11 @@ function buildGvgInnerDiv(parentDiv, collapseFunc, collapseVar, name, text) {
     }`;
     wrapperDiv.appendChild(headlineDiv);
     headlineDiv.innerHTML = `<p id="gvg${name}TextLabel" href="#gvg${name}Text" data-bs-toggle="collapse">
-        <svg class="bi header-icon" id="gvg${name}Icon" href="#gvg${name}Text" data-bs-toggle="collapse" fill="currentColor" width="12" height="16"><use xlink:href="${icons}#${
-      collapse.collapseGVGinfo ? "plus" : "dash"
-    }-circle"/></svg>
+      ${element.icon(
+        "gvg" + name + "Icon",
+        "gvg" + name + "Text",
+        collapse.collapseGVGinfo
+      )}
         <span id=gvg${name}HeadlineText><strong>${text}:</strong></span></p>`;
     textDiv = document.createElement("div");
     textDiv.id = `gvg${name}Text`;
