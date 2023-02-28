@@ -17,9 +17,9 @@ import * as element from "./AddElement";
 import * as storage from "./storage.js";
 import { Tooltip, Alert, Popover } from "bootstrap";
 
-export var collapseFriends = false;
-export var collapseGuild = false;
-export var collapseHood = false;
+export var collapseFriends = true;
+export var collapseGuild = true;
+export var collapseHood = true;
 export var collapseIncidents = true;
 export var collapseArmy = false;
 export var collapseGoods = true;
