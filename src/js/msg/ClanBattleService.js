@@ -19,7 +19,6 @@ import * as collapse from "../fn/collapse.js";
 import * as element from "../fn/AddElement";
 import { fGVGagesname } from "../fn/helper.js";
 import BigNumber from "bignumber.js";
-import icons from "bootstrap-icons/bootstrap-icons.svg";
 
 export var gvgContainer = null;
 export var gvgSummary = null;
