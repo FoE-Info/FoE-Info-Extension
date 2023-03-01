@@ -109,13 +109,13 @@ function getPercent(title) {
     if (!title || title == "") return;
     else if (title.includes("%")) {
       var text = title.split("%")[0];
-      if (parseInt(text) > 0) {
+      if (parseInt(text) > 100) {
         setCurrentPercent(parseInt(text));
         return;
       }
       if (text.includes(" ")) {
         text = text.split(" ")[1];
-        if (parseInt(text) > 0) {
+        if (parseInt(text) > 100) {
           setCurrentPercent(parseInt(text));
           return;
         } else {
@@ -124,7 +124,8 @@ function getPercent(title) {
           arrtitletext.forEach(getIntValue);
         }
       }
-    } else if (title.includes("1.85")) setCurrentPercent(185);
+    } 
+    if (title.includes("1.85")) setCurrentPercent(185);
     else if (title.includes("1.8")) setCurrentPercent(180);
     else if (title.includes("1.91")) setCurrentPercent(191);
     else if (title.includes("1.92")) setCurrentPercent(192);
