@@ -29,6 +29,7 @@ import {
   checkDebug,
   removeDebug,
   ignoredPlayers,
+  debug
 } from "../index.js";
 import { availablePacksFP, CityEntityDefs, Goods, language } from "../index.js";
 import { ResourceDefs, availableFP } from "./ResourceService.js";
