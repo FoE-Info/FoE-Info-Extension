@@ -12,6 +12,7 @@
  * ________________________________________________________________
  */
 import $ from "jquery";
+import { debug } from "../index.js";
 
 export function fClipboardCopy() {
   // var selection = window.getSelection();
