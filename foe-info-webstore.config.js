@@ -63,12 +63,7 @@ module.exports = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "sass-loader",
-        ],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader", "sass-loader"],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -167,8 +162,7 @@ module.exports = {
 
       // OPTIONAL: defaults to the Webpack output filename (above) or,
       // if not present, the basename of the path
-      filename:
-        PACKAGE_NAME + "_WEBSTORE" + "_" + pkg.version + "_" + date + ".zip",
+      filename: PACKAGE_NAME + "_WEBSTORE" + "_" + pkg.version + "_" + date + ".zip",
     }),
   ],
   resolve: {

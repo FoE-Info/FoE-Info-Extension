@@ -324,9 +324,7 @@ export function postPlayerToSS(visitData) {
 
   alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
 		${element.close()}
-		<p id="alertText"><strong>Posting Guild Stats to SS ... </strong><br>${
-      visitData[0].Name
-    }</p></div>`;
+		<p id="alertText"><strong>Posting Guild Stats to SS ... </strong><br>${visitData[0].Name}</p></div>`;
 
   var reqData = {
     sheet: "Guild",
@@ -345,9 +343,7 @@ export function postPlayerToSS(visitData) {
       try {
         alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
 				${element.close()}
-				<p id="alertText"><strong>Guild Stats: </strong><br>${
-          JSON.parse(oReq.responseText).result
-        }
+				<p id="alertText"><strong>Guild Stats: </strong><br>${JSON.parse(oReq.responseText).result}
 				</p></div>`;
       } catch {
         alerts.innerHTML = oReq.responseText;

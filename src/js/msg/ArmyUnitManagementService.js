@@ -32,10 +32,7 @@ export function armyUnitManagementService(msg) {
     for (var j = army.length - 1; j >= 0; j--) {
       var units = 0;
       var eraText = helper.fGVGagesname(MilitaryDefs[army[j].unitTypeId].era);
-      if (
-        MilitaryDefs[army[j].unitTypeId].era != "NoAge" ||
-        army[j].unitTypeId == "rogue"
-      ) {
+      if (MilitaryDefs[army[j].unitTypeId].era != "NoAge" || army[j].unitTypeId == "rogue") {
         if (army[j].unattached) units += army[j].unattached;
         if (army[j].attached) units += army[j].attached;
         if (army[j].unitTypeId == "rogue") {
@@ -47,22 +44,15 @@ export function armyUnitManagementService(msg) {
           if (ArmyUnits[army[j].unitTypeId] == null) {
             // ArmyUnits.push({'name':entry.player.name});
             ArmyUnits[army[j].unitTypeId] = units;
-            armyText += `${eraText}: ${
-              MilitaryDefs[army[j].unitTypeId].name
-            } ${units}<br>`;
+            armyText += `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units}<br>`;
           } else {
             if (units != ArmyUnits[army[j].unitTypeId]) {
               var diff = units - ArmyUnits[army[j].unitTypeId];
-              armyHTML = `<span class=${
-                diff > 0 ? '"green">+' : '"red">'
-              }${diff}</span>`;
+              armyHTML = `<span class=${diff > 0 ? '"green">+' : '"red">'}${diff}</span>`;
             } else {
               armyHTML = ``;
             }
-            armyText +=
-              `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units} ` +
-              armyHTML +
-              `<br>`;
+            armyText += `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units} ` + armyHTML + `<br>`;
           }
           // console.debug(army[j],army[j].unitTypeId,army[j].unattached,army[j].attached,units);
           allUnits += units;
@@ -79,25 +69,18 @@ export function armyUnitManagementService(msg) {
       armyHTML += `<strong>Army:</strong><span id="armyUnits">${
         collapse.collapseArmy ? `Rogues: ${rogues} Units: ${allUnits}` : ""
       }</span></p>`;
-      armyHTML += `<div id="armyText" style="height: ${
-        toolOptions.armySize
-      }px" class="overflow-y collapse ${
+      armyHTML += `<div id="armyText" style="height: ${toolOptions.armySize}px" class="overflow-y collapse ${
         collapse.collapseArmy ? "" : "show"
       }"><p class="" >`;
-      armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class=${
-        diff > 0 ? '"green">+' : '"red">'
-      }${
+      armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class=${diff > 0 ? '"green">+' : '"red">'}${
         diff != 0 ? diff : ""
       }</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
       armyDIV.innerHTML = armyHTML + armyText + `</p></div></div>`;
-      document
-        .getElementById("armyTextLabel")
-        .addEventListener("click", collapse.fCollapseArmy);
+      document.getElementById("armyTextLabel").addEventListener("click", collapse.fCollapseArmy);
       const armyDiv = document.getElementById("armyText");
       const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
-          if (entry.contentRect && entry.contentRect.height)
-            setArmySize(entry.contentRect.height);
+          if (entry.contentRect && entry.contentRect.height) setArmySize(entry.contentRect.height);
         }
       });
       resizeObserver.observe(armyDiv);
