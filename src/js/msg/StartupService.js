@@ -29,7 +29,7 @@ import {
   checkDebug,
   removeDebug,
   ignoredPlayers,
-  debug
+  debug,
 } from "../index.js";
 import { availablePacksFP, CityEntityDefs, Goods, language } from "../index.js";
 import { ResourceDefs, availableFP } from "./ResourceService.js";
@@ -86,14 +86,7 @@ export function startupService(msg) {
   // setMyInfo.id(user.player_id);
   // setMyGuild(user.clan_name);
   // setMyGuildID(user.clan_id);
-  setMyInfo(
-    user.user_name,
-    user.player_id,
-    user.clan_name,
-    user.clan_id,
-    user.createdAt,
-    user.era
-  );
+  setMyInfo(user.user_name, user.player_id, user.clan_name, user.clan_id, user.createdAt, user.era);
   helper.setMyGuildPermissions(user.clan_permissions);
   clearArmyUnits();
   Galaxy.bonus = [];
@@ -170,9 +163,7 @@ export function startupService(msg) {
           if (
             entity &&
             entity.abilities &&
-            entity.abilities.find(
-              (id) => id.__class__ == "RandomUnitOfAgeWhenMotivatedAbility"
-            )
+            entity.abilities.find((id) => id.__class__ == "RandomUnitOfAgeWhenMotivatedAbility")
           ) {
             City.TrazUnits += entity.abilities.find(
               (id) => id.__class__ == "RandomUnitOfAgeWhenMotivatedAbility"
@@ -182,9 +173,7 @@ export function startupService(msg) {
           if (
             entity &&
             entity.abilities &&
-            entity.abilities.find(
-              (id) => id.__class__ == "AddResourcesToGuildTreasuryAbility"
-            )
+            entity.abilities.find((id) => id.__class__ == "AddResourcesToGuildTreasuryAbility")
           ) {
             // clanGoods += entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility').additionalResources['AllAge'].resources.all_goods_of_age;
             // clanGoodsBuildings.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'goods': entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility').additionalResources['AllAge'].resources.all_goods_of_age});
@@ -207,123 +196,74 @@ export function startupService(msg) {
 
       if (mapID.state.current_product) {
         if (DEV && checkDebug()) {
-          console.debug(
-            fEntityName(mapID.cityentity_id),
-            mapID.state.current_product.name,
-            mapID
-          );
+          console.debug(fEntityName(mapID.cityentity_id), mapID.state.current_product.name, mapID);
         }
         if (mapID.state.current_product.guildProduct) {
           //     console.debug(fEntityName(mapID.cityentity_id), mapID.state.current_product.name,mapID);
           if (mapID.state.current_product.guildProduct.resources) {
             var goods = 0;
             var era = "";
-            Object.keys(
-              mapID.state.current_product.guildProduct.resources
-            ).forEach((entry) => {
+            Object.keys(mapID.state.current_product.guildProduct.resources).forEach((entry) => {
               if (entry != "clan_power") {
                 if (DEV && checkDebug())
-                  console.debug(
-                    mapID.state.current_product.guildProduct.resources[entry],
-                    entry
-                  );
+                  console.debug(mapID.state.current_product.guildProduct.resources[entry], entry);
                 ResourceDefs.forEach((resource) => {
                   if (resource.id === entry) {
                     era = resource.era;
                   }
                 });
-                goods +=
-                  mapID.state.current_product.guildProduct.resources[entry];
+                goods += mapID.state.current_product.guildProduct.resources[entry];
               }
             });
             if (goods > 0) {
               clanGoods += goods;
               clanGoodsBuildings.push({
-                name:
-                  helper.fEntityNameTrim(mapID.cityentity_id) +
-                  " " +
-                  helper.fGVGagesname(era),
+                name: helper.fEntityNameTrim(mapID.cityentity_id) + " " + helper.fGVGagesname(era),
                 goods: goods,
               });
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID,
-                  goods,
-                  era
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID, goods, era);
             } else {
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID);
             }
             // console.debug(mapID.state.current_product.guildProduct.resources,mapID.state.current_product.guildProduct.resources.clan_power);
             if (mapID.state.current_product.guildProduct.resources.clan_power)
-              clanPower +=
-                mapID.state.current_product.guildProduct.resources.clan_power;
+              clanPower += mapID.state.current_product.guildProduct.resources.clan_power;
             // console.debug('clanPower: ', clanPower);
           }
         }
         if (mapID.state.current_product.goods) {
-          if (DEV && checkDebug())
-            console.debug(mapID.state.current_product.goods);
+          if (DEV && checkDebug()) console.debug(mapID.state.current_product.goods);
           if ((mapID.state.current_product.goods.name = "clan_goods")) {
             // console.debug(mapID);
             var goods = 0;
-            for (
-              var good = 0;
-              good < mapID.state.current_product.goods.length;
-              good++
-            ) {
+            for (var good = 0; good < mapID.state.current_product.goods.length; good++) {
               // console.debug(mapID.state.current_product.goods[good]);
               goods += mapID.state.current_product.goods[good].value;
             }
             if (goods > 0) {
               clanGoods += goods;
               clanGoodsBuildings.push({
-                name:
-                  helper.fEntityNameTrim(mapID.cityentity_id) +
-                  " " +
-                  helper.fGVGagesname(MyInfo.era),
+                name: helper.fEntityNameTrim(mapID.cityentity_id) + " " + helper.fGVGagesname(MyInfo.era),
                 goods: goods,
               });
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID,
-                  goods
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID, goods);
             } else {
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID);
             }
             if (DEV && checkDebug()) {
-              console.debug(
-                fEntityName(mapID.cityentity_id),
-                goods,
-                mapID.state.current_product
-              );
+              console.debug(fEntityName(mapID.cityentity_id), goods, mapID.state.current_product);
               // visitbetagoods += `<br>#${id}: ${goods} ${fEntityName(mapID.cityentity_id)}`;
             }
           }
         }
         if (mapID.state.current_product.product) {
           if (DEV && checkDebug())
-            console.debug(
-              helper.fEntityNameTrim(mapID.cityentity_id),
-              mapID.state.current_product.product
-            );
+            console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID.state.current_product.product);
           if (mapID.state.current_product.product.resources) {
             if (mapID.state.current_product.product.resources.premium)
               diamonds += mapID.state.current_product.product.resources.premium;
             if (mapID.state.current_product.product.resources.strategy_points) {
-              forgePoints +=
-                mapID.state.current_product.product.resources.strategy_points;
+              forgePoints += mapID.state.current_product.product.resources.strategy_points;
               if (forgePoints > 0) {
                 City.ForgePoints += forgePoints;
                 found = true;
@@ -336,100 +276,72 @@ export function startupService(msg) {
                   if (helper.fEntityNameTrim(mapID.cityentity_id)) {
                     beta.innerHTML += `<br>#${id}: ${forgePoints}FP Total: ${
                       City.ForgePoints
-                    }FP <strong>${helper.fEntityNameTrim(
-                      mapID.cityentity_id
-                    )}</strong>`;
+                    }FP <strong>${helper.fEntityNameTrim(mapID.cityentity_id)}</strong>`;
                   } else {
                     beta.innerHTML += `<br>#${id}: ${mapID.cityentity_id} ${forgePoints}FP Total: ${City.ForgePoints}FP`;
                     // console.debug(mapID.cityentity_id, mapID.state.current_product.name,mapID);
                   }
                 }
-                if (
-                  mapID.type != "greatbuilding" &&
-                  helper.fEntityNameTrim(mapID.cityentity_id)
-                ) {
+                if (mapID.type != "greatbuilding" && helper.fEntityNameTrim(mapID.cityentity_id)) {
                   Galaxy.bonus.push({
                     cityentity_id: mapID.cityentity_id,
                     id: mapID.id,
                     name: helper.fEntityNameTrim(mapID.cityentity_id),
-                    fp: mapID.state.current_product.product.resources
-                      .strategy_points,
+                    fp: mapID.state.current_product.product.resources.strategy_points,
                     state: mapID.state.__class__,
-                    transition:
-                      mapID.state.__class__ == "ProducingState"
-                        ? mapID.state.next_state_transition_at
-                        : 0,
+                    transition: mapID.state.__class__ == "ProducingState" ? mapID.state.next_state_transition_at : 0,
                   });
                 }
                 // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
-                console.debug(
-                  fEntityName(mapID.cityentity_id),
-                  mapID,
-                  Galaxy.bonus
-                );
+                console.debug(fEntityName(mapID.cityentity_id), mapID, Galaxy.bonus);
               }
             }
             if (mapID.state.current_product.product.resources.money)
               City.Coins += mapID.state.current_product.product.resources.money;
             if (mapID.state.current_product.name == "random_goods") {
               // console.debug('random_goods: ', mapID.state.current_product.product.resources);
-              Object.keys(
-                mapID.state.current_product.product.resources
-              ).forEach((entry) => {
+              Object.keys(mapID.state.current_product.product.resources).forEach((entry) => {
                 // console.debug('random_goods: ', entry,mapID.state.current_product.product.resources[entry]);
                 // randomGoods += mapID.state.current_product.product.resources[entry];
               });
             }
             var goods = 0;
 
-            Object.keys(mapID.state.current_product.product.resources).forEach(
-              (entry) => {
-                if (
-                  entry != "medals" &&
-                  entry != "money" &&
-                  entry != "supplies" &&
-                  entry != "strategy_points" &&
-                  entry != "clanPower"
-                ) {
-                  // totalGoods += mapID.state.current_product.product.resources[entry];
-                  // console.debug(goodsList[entry],entry);
-                  var entryGoods =
-                    mapID.state.current_product.product.resources[entry];
-                  goods += entryGoods;
-                  if (entryGoods > 0) {
-                    if (goodsList[`${entry}`])
-                      goodsList[`${entry}`] += entryGoods;
-                    else goodsList[`${entry}`] = entryGoods;
-                  }
-
-                  // if()
-                  // goodsList.push([entry,mapID.state.current_product.product.resources[entry]]);
-                  // goodsList.forEach(good => {
-                  // 	console.debug(good,good.name,entry);
-                  // 	// if(good === entry)
-                  // 	entry.value
-                  // });
+            Object.keys(mapID.state.current_product.product.resources).forEach((entry) => {
+              if (
+                entry != "medals" &&
+                entry != "money" &&
+                entry != "supplies" &&
+                entry != "strategy_points" &&
+                entry != "clanPower"
+              ) {
+                // totalGoods += mapID.state.current_product.product.resources[entry];
+                // console.debug(goodsList[entry],entry);
+                var entryGoods = mapID.state.current_product.product.resources[entry];
+                goods += entryGoods;
+                if (entryGoods > 0) {
+                  if (goodsList[`${entry}`]) goodsList[`${entry}`] += entryGoods;
+                  else goodsList[`${entry}`] = entryGoods;
                 }
+
+                // if()
+                // goodsList.push([entry,mapID.state.current_product.product.resources[entry]]);
+                // goodsList.forEach(good => {
+                // 	console.debug(good,good.name,entry);
+                // 	// if(good === entry)
+                // 	entry.value
+                // });
               }
-            );
+            });
             if (goods > 0) {
               goodsBuildings.push({
                 name: helper.fEntityNameTrim(mapID.cityentity_id),
                 goods: goods,
               });
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  goods,
-                  mapID
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), goods, mapID);
               totalGoods += goods;
             } else {
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID);
             }
           }
           // console.debug('goods: ', goodsList);
@@ -445,23 +357,16 @@ export function startupService(msg) {
 
       if (mapID.state.productionOption) {
         if (DEV && checkDebug()) {
-          console.debug(
-            fEntityName(mapID.cityentity_id),
-            mapID.state.productionOption.name,
-            mapID
-          );
+          console.debug(fEntityName(mapID.cityentity_id), mapID.state.productionOption.name, mapID);
         }
         if (mapID.state.productionOption.guildProduct) {
           //     console.debug(fEntityName(mapID.cityentity_id), mapID.state.productionOption.name,mapID);
           if (mapID.state.productionOption.guildProduct.resources) {
             var goods = 0;
-            Object.keys(
-              mapID.state.productionOption.guildProduct.resources
-            ).forEach((entry) => {
+            Object.keys(mapID.state.productionOption.guildProduct.resources).forEach((entry) => {
               if (entry != "clan_power") {
                 // console.debug(mapID.state.productionOption.guildProduct.resources[entry],entry);
-                goods +=
-                  mapID.state.productionOption.guildProduct.resources[entry];
+                goods += mapID.state.productionOption.guildProduct.resources[entry];
               }
             });
             if (goods > 0) {
@@ -470,37 +375,22 @@ export function startupService(msg) {
                 name: helper.fEntityNameTrim(mapID.cityentity_id),
                 goods: goods,
               });
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID,
-                  goods
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID, goods);
             } else {
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID);
             }
             // console.debug(mapID.state.productionOption.guildProduct.resources,mapID.state.productionOption.guildProduct.resources.clan_power);
             if (mapID.state.productionOption.guildProduct.resources.clan_power)
-              clanPower +=
-                mapID.state.productionOption.guildProduct.resources.clan_power;
+              clanPower += mapID.state.productionOption.guildProduct.resources.clan_power;
             // console.debug('clanPower: ', clanPower);
           }
         }
         if (mapID.state.productionOption.goods) {
-          if (DEV && checkDebug())
-            console.debug(mapID.state.productionOption.goods);
+          if (DEV && checkDebug()) console.debug(mapID.state.productionOption.goods);
           if ((mapID.state.productionOption.goods.name = "clan_goods")) {
             // console.debug(mapID);
             var goods = 0;
-            for (
-              var good = 0;
-              good < mapID.state.productionOption.goods.length;
-              good++
-            ) {
+            for (var good = 0; good < mapID.state.productionOption.goods.length; good++) {
               // console.debug(mapID.state.productionOption.goods[good]);
               goods += mapID.state.productionOption.goods[good].value;
             }
@@ -510,25 +400,12 @@ export function startupService(msg) {
                 name: helper.fEntityNameTrim(mapID.cityentity_id),
                 goods: goods,
               });
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID,
-                  goods
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID, goods);
             } else {
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID);
             }
             if (DEV && checkDebug()) {
-              console.debug(
-                fEntityName(mapID.cityentity_id),
-                goods,
-                mapID.state.productionOption
-              );
+              console.debug(fEntityName(mapID.cityentity_id), goods, mapID.state.productionOption);
               // visitbetagoods += `<br>#${id}: ${goods} ${fEntityName(mapID.cityentity_id)}`;
             }
           }
@@ -537,16 +414,11 @@ export function startupService(msg) {
           if (DEV && checkDebug()) console.debug(mapID.state.productionOption);
           mapID.state.productionOption.products.forEach((product) => {
             console.debug(product);
-            if (
-              product.hasOwnProperty("playerResources") &&
-              product.playerResources.hasOwnProperty("resources")
-            ) {
+            if (product.hasOwnProperty("playerResources") && product.playerResources.hasOwnProperty("resources")) {
               const resources = product.playerResources.resources;
-              if (resources.hasOwnProperty("premium"))
-                diamonds += resources.premium;
+              if (resources.hasOwnProperty("premium")) diamonds += resources.premium;
               if (resources.hasOwnProperty("strategy_points")) {
-                if (DEV && checkDebug())
-                  console.debug(mapID.state.productionOption);
+                if (DEV && checkDebug()) console.debug(mapID.state.productionOption);
                 forgePoints += resources.strategy_points;
               }
               if (resources.money) City.Coins += resources.money;
@@ -571,8 +443,7 @@ export function startupService(msg) {
                   // console.debug(goodsList[entry],entry);
                   var entryGoods = resources[entry];
                   goods += entryGoods;
-                  if (goodsList[`${entry}`])
-                    goodsList[`${entry}`] += entryGoods;
+                  if (goodsList[`${entry}`]) goodsList[`${entry}`] += entryGoods;
                   else goodsList[`${entry}`] = entryGoods;
 
                   // if()
@@ -591,18 +462,10 @@ export function startupService(msg) {
                 goods: goods,
               });
               if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  goods,
-                  mapID.cityentity_id
-                );
+                console.debug(helper.fEntityNameTrim(mapID.cityentity_id), goods, mapID.cityentity_id);
               totalGoods += goods;
             } else {
-              if (DEV && checkDebug())
-                console.debug(
-                  helper.fEntityNameTrim(mapID.cityentity_id),
-                  mapID
-                );
+              if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID);
             }
           });
           // console.debug('goods: ', goodsList);
@@ -619,32 +482,20 @@ export function startupService(msg) {
             if (helper.fEntityNameTrim(mapID.cityentity_id)) {
               beta.innerHTML += `<br>#${id}: ${forgePoints}FP Total: ${
                 City.ForgePoints
-              }FP <strong>${helper.fEntityNameTrim(
-                mapID.cityentity_id
-              )}</strong>`;
+              }FP <strong>${helper.fEntityNameTrim(mapID.cityentity_id)}</strong>`;
             } else {
               beta.innerHTML += `<br>#${id}: ${mapID.cityentity_id} ${forgePoints}FP Total: ${City.ForgePoints}FP`;
-              console.debug(
-                mapID.cityentity_id,
-                mapID.state.productionOption.name,
-                mapID
-              );
+              console.debug(mapID.cityentity_id, mapID.state.productionOption.name, mapID);
             }
           }
-          if (
-            mapID.type != "greatbuilding" &&
-            helper.fEntityNameTrim(mapID.cityentity_id)
-          ) {
+          if (mapID.type != "greatbuilding" && helper.fEntityNameTrim(mapID.cityentity_id)) {
             Galaxy.bonus.push({
               cityentity_id: mapID.cityentity_id,
               id: mapID.id,
               name: helper.fEntityNameTrim(mapID.cityentity_id),
               fp: forgePoints,
               state: mapID.state.__class__,
-              transition:
-                mapID.state.__class__ == "ProducingState"
-                  ? mapID.state.next_state_transition_at
-                  : 0,
+              transition: mapID.state.__class__ == "ProducingState" ? mapID.state.next_state_transition_at : 0,
             });
           }
           // buildingsReady.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'ready': mapID.state.next_state_transition_at});
@@ -680,10 +531,8 @@ export function startupService(msg) {
       // }
 
       if (mapID.bonus) {
-        if (mapID.bonus.type == "contribution_boost")
-          City.ArcBonus = mapID.bonus.value;
-        else if (mapID.bonus.type == "money_boost")
-          City.CoinBoost += mapID.bonus.value;
+        if (mapID.bonus.type == "contribution_boost") City.ArcBonus = mapID.bonus.value;
+        else if (mapID.bonus.type == "money_boost") City.CoinBoost += mapID.bonus.value;
         else if (mapID.bonus.type == "military_boost") {
           City.Attack += mapID.bonus.value;
           City.Defense += mapID.bonus.value;
@@ -703,8 +552,7 @@ export function startupService(msg) {
       }
       if (DEV && found == false) {
         debug.innerHTML += `<br>#${id}: ${fEntityName(mapID.cityentity_id)}`;
-        if (DEV && checkDebug())
-          console.debug("NOT FOUND: ", id, mapID.cityentity_id, mapID);
+        if (DEV && checkDebug()) console.debug("NOT FOUND: ", id, mapID.cityentity_id, mapID);
       }
     }
   }
@@ -718,28 +566,19 @@ export function startupService(msg) {
       return a.ready - b.ready;
     });
     var buildingsHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="buildingsTextLabel" href="#buildingsText" data-bs-toggle="collapse">
-      ${element.icon(
-        "buildingsicon",
-        "buildingsText",
-        collapse.collapseBuildings
-      )}
+      ${element.icon("buildingsicon", "buildingsText", collapse.collapseBuildings)}
         <strong><span data-i18n="collection">Building Collection Times</span>:</strong></p>`;
     buildingsHTML += element.close();
-    buildingsHTML += `<div id="buildingsText" class="resize collapse ${
-      collapse.collapseBuildings ? "" : "show"
-    }">`;
+    buildingsHTML += `<div id="buildingsText" class="resize collapse ${collapse.collapseBuildings ? "" : "show"}">`;
     buildingsReady.forEach((entry, id) => {
       var timer = new Date(entry.ready * 1000);
-      if (entry.ready > EpocTime)
-        buildingsHTML += `${entry.name}: ${timer.toLocaleString()}<br>`;
+      if (entry.ready > EpocTime) buildingsHTML += `${entry.name}: ${timer.toLocaleString()}<br>`;
       // console.debug(entry);
     });
 
     var buildings = document.getElementById("buildings");
     buildings.innerHTML = buildingsHTML + `</p></div></div>`;
-    document
-      .getElementById("buildingsTextLabel")
-      .addEventListener("click", collapse.fCollapseBuildings);
+    document.getElementById("buildingsTextLabel").addEventListener("click", collapse.fCollapseBuildings);
   }
 
   if (goodsBuildings.length > 0) {
@@ -771,8 +610,7 @@ export function startupService(msg) {
     tooltipHTML.clanGoods = ``;
     clanGoodsBuildings.forEach((entry, id) => {
       tooltipHTML.clanGoods += `${entry.goods} ${entry.name}<br>`;
-      if (DEV && checkDebug())
-        console.debug("clanGoodsBuildings", entry.goods, entry.name);
+      if (DEV && checkDebug()) console.debug("clanGoodsBuildings", entry.goods, entry.name);
     });
   }
 
@@ -810,8 +648,7 @@ export function startupService(msg) {
         // console.debug(resource.name,good,goodsList[good]);
         rssName = resource.name;
         helper.fGoodsTally(resource.era, goodsList[good]);
-        if (!tooltipHTML.goods[resource.era])
-          tooltipHTML.goods[resource.era] = "";
+        if (!tooltipHTML.goods[resource.era]) tooltipHTML.goods[resource.era] = "";
         tooltipHTML.goods[resource.era] += `${goodsList[good]} ${rssName}<br>`;
       }
     });
@@ -821,9 +658,7 @@ export function startupService(msg) {
   // console.debug('tooltipHTML.goods',tooltipHTML.goods);
 
   for (let index = 0; index < helper.numAges; index++) {
-    const age = helper
-      .fGVGagesname(helper.fAgefromLevel(helper.numAges - index))
-      .toLowerCase();
+    const age = helper.fGVGagesname(helper.fAgefromLevel(helper.numAges - index)).toLowerCase();
     if (Goods[age]) goodsHTML += fGoodsHTML(age, tooltipHTML.goods);
   }
 
@@ -845,15 +680,11 @@ export function startupService(msg) {
   userTooltipHTML += `</p>`;
   var fpHTML = `<span id="fp" class="pop" data-bs-container="#fp" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${
     tooltipHTML.fp
-  }"><span data-i18n="daily">Daily</span>: ${
-    City.ForgePoints ? City.ForgePoints : 0
-  }FP</span>`;
+  }"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
   var userHTML = `<strong>${GameOrigin.toUpperCase()} ${
     MyInfo.name
   }</strong><span id="user" class="pop" data-bs-container="#user" data-bs-toggle="popover" data-bs-placement="bottom"
-        title="Playing <strong>FoE</strong> since<br>${new Date(
-          MyInfo.createdAt * 1000
-        ).toLocaleString()}"
+        title="Playing <strong>FoE</strong> since<br>${new Date(MyInfo.createdAt * 1000).toLocaleString()}"
         data-bs-content='${userTooltipHTML}</p>'>
         <span class="material-icons-outlined md-12 info-icon" id="infoIcon">info</span>`;
   var clanGoodsHTML = `<span id="clanGoods" class="pop" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
@@ -861,22 +692,11 @@ export function startupService(msg) {
 
   citystatsHTML = element.close() + `<p>`;
   // citystatsHTML = `<p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel">`;
-  citystatsHTML += element.icon(
-    "citystatsicon",
-    "citystatsText",
-    collapse.collapseStats
-  );
-  citystatsHTML += element.copy(
-    "citystatsCopyID",
-    "warning stats-copy",
-    "right",
-    collapse.collapseStats
-  );
+  citystatsHTML += element.icon("citystatsicon", "citystatsText", collapse.collapseStats);
+  citystatsHTML += element.copy("citystatsCopyID", "warning stats-copy", "right", collapse.collapseStats);
   citystatsHTML += `<span href="#citystatsText" aria-controls="donationText3" data-bs-toggle="collapse" id="citystatsLabel">`;
   citystatsHTML += userHTML;
-  citystatsHTML += `</span></p><div id="citystatsText" class="collapse ${
-    collapse.collapseStats ? "" : "show"
-  }"><div>`;
+  citystatsHTML += `</span></p><div id="citystatsText" class="collapse ${collapse.collapseStats ? "" : "show"}"><div>`;
   // citystatsHTML += `<p id="citystatsText"><br>`;
   if (City.ForgePoints)
     citystatsHTML += `<p>${fpHTML}, ${
@@ -891,23 +711,18 @@ export function startupService(msg) {
   if (diamonds)
     citystatsHTML += `<span class='green'><span data-i18n="diamonds">Diamonds</span>: ${diamonds}</span><br>`;
 
-  if (City.ArcBonus)
-    citystatsHTML += `${fArcname()} <span data-i18n="bonus">Bonus</span>: ${
-      City.ArcBonus
-    }%<br>`;
+  if (City.ArcBonus) citystatsHTML += `${fArcname()} <span data-i18n="bonus">Bonus</span>: ${City.ArcBonus}%<br>`;
   if (City.ChatBonus)
-    citystatsHTML += `${fCFname()} <span data-i18n="bonus">Bonus</span>: ${
+    citystatsHTML += `${fCFname()} <span data-i18n="bonus">Bonus</span>: ${City.ChatBonus}% / ${BigNumber(
       City.ChatBonus
-    }% / ${BigNumber(City.ChatBonus)
+    )
       .div(20)
       .plus(5)
       .toFormat(0)} <span data-i18n="goods">Goods</span><br>`;
 
   if (clanGoods) citystatsHTML += `${clanGoodsHTML}<br>`;
-  if (clanPower)
-    citystatsHTML += `<span data-i18n="guildpower">Guild Power</span>: ${clanPower}<br>`;
-  if (City.TrazUnits)
-    citystatsHTML += `<span data-i18n="army">Army Units</span>: ${City.TrazUnits}<br>`;
+  if (clanPower) citystatsHTML += `<span data-i18n="guildpower">Guild Power</span>: ${clanPower}<br>`;
+  if (City.TrazUnits) citystatsHTML += `<span data-i18n="army">Army Units</span>: ${City.TrazUnits}<br>`;
   // citystatsHTML += `Army: ${Attack}% Att, ${Defense}% Def City: ${CityAttack}% Att, ${CityDefense}% Def<br>`;
   citystatsHTML += `<span data-i18n="attackers">Attackers</span>: ${City.Attack}% Att, ${City.Defense}% Def<br>`;
   citystatsHTML += `<span data-i18n="defenders">Defenders</span>: ${City.CityAttack}% Att, ${City.CityDefense}% Def<br>`;
@@ -931,21 +746,16 @@ export function startupService(msg) {
     }
 
     citystats.innerHTML = citystatsHTML;
-    citystats.className =
-      "alert alert-dismissible alert-warning show collapsed";
+    citystats.className = "alert alert-dismissible alert-warning show collapsed";
     // citystats.title=`<p>${tooltipHTML}</p>`;
     // document.querySelector('#citystats').addEventListener("click", function() {
     // console.debug('citystats toggle');
     // $(this).find('span.toggle-icon').toggleClass('glyphicon-collapse-up glyphicon-collapse-down');
     // });
-    document
-      .getElementById("user")
-      .addEventListener("click", collapse.fCollapseStats);
+    document.getElementById("user").addEventListener("click", collapse.fCollapseStats);
     //document.getElementById("citystatsicon").addEventListener("click", collapse.fCollapseStats);
     if (!collapse.collapseStats)
-      document
-        .getElementById("citystatsCopyID")
-        .addEventListener("click", copy.fCityStatsCopy);
+      document.getElementById("citystatsCopyID").addEventListener("click", copy.fCityStatsCopy);
     // $(document).ready(function(){
     //     $('body').tooltip({html: true,placement: 'bottom'});
     //     });
@@ -1007,29 +817,19 @@ export function boostService(msg) {
       // console.debug(boost[j].id);
       for (var k = 0; k < boost[j].entries.length; k++) {
         if (boost[j].id === "coinProduction")
-          City.CoinBoost +=
-            boost[j].entries[k].boostValue * boost[j].entries[k].amount;
+          City.CoinBoost += boost[j].entries[k].boostValue * boost[j].entries[k].amount;
         else if (boost[j].id === "supplyProduction")
-          City.SupplyBoost +=
-            boost[j].entries[k].boostValue * boost[j].entries[k].amount;
+          City.SupplyBoost += boost[j].entries[k].boostValue * boost[j].entries[k].amount;
         else if (boost[j].id === "attackingUnits")
           if (boost[j].entries[k].boostType === "att_def_boost_attacker") {
-            City.Attack +=
-              boost[j].entries[k].boostValue * boost[j].entries[k].amount;
-            City.Defense +=
-              boost[j].entries[k].boostValue * boost[j].entries[k].amount;
-          } else
-            City.Attack +=
-              boost[j].entries[k].boostValue * boost[j].entries[k].amount;
+            City.Attack += boost[j].entries[k].boostValue * boost[j].entries[k].amount;
+            City.Defense += boost[j].entries[k].boostValue * boost[j].entries[k].amount;
+          } else City.Attack += boost[j].entries[k].boostValue * boost[j].entries[k].amount;
         else if (boost[j].id === "defendingUnits")
           if (boost[j].entries[k].boostType === "att_def_boost_defender") {
-            City.CityAttack +=
-              boost[j].entries[k].boostValue * boost[j].entries[k].amount;
-            City.CityDefense +=
-              boost[j].entries[k].boostValue * boost[j].entries[k].amount;
-          } else
-            City.CityDefense +=
-              boost[j].entries[k].boostValue * boost[j].entries[k].amount;
+            City.CityAttack += boost[j].entries[k].boostValue * boost[j].entries[k].amount;
+            City.CityDefense += boost[j].entries[k].boostValue * boost[j].entries[k].amount;
+          } else City.CityDefense += boost[j].entries[k].boostValue * boost[j].entries[k].amount;
         // console.debug(boost[j].entries[k].boostValue, boost[j].entries[k].amount)
       }
     }
@@ -1064,10 +864,8 @@ export function boostServiceAllBoosts(msg) {
       } else if (boost[j].type == "def_boost_attacker") {
         City.Defense += boost[j].value;
         // console.debug('Defense:', Defense, boost[j].value);
-      } else if (boost[j].type == "def_boost_defender")
-        City.CityDefense += boost[j].value;
-      else if (boost[j].type == "happiness_amount")
-        AllHappiness += boost[j].value;
+      } else if (boost[j].type == "def_boost_defender") City.CityDefense += boost[j].value;
+      else if (boost[j].type == "happiness_amount") AllHappiness += boost[j].value;
       else if (boost[j].type == "att_def_boost_attacker") {
         City.Attack += boost[j].value;
         City.Defense += boost[j].value;
@@ -1098,8 +896,7 @@ export function boostServiceAllBoosts(msg) {
 function fCFname() {
   if (helper.fGBname("X_ProgressiveEra_Landmark2")) {
     var nameArray = helper.fGBname("X_ProgressiveEra_Landmark2").split(" ");
-    if (nameArray[0] == "Chateau" || nameArray[0] == "Château")
-      return nameArray[0];
+    if (nameArray[0] == "Chateau" || nameArray[0] == "Château") return nameArray[0];
     else if (nameArray[1] == "Frontenac") return nameArray[1];
     else return helper.fGBname("X_ProgressiveEra_Landmark2");
   } else return "Chateau";
@@ -1259,12 +1056,8 @@ function showTooltips() {
     html: true,
     delay: { show: 200, hide: 500 },
   };
-  const popoverTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="popover"]'
-  );
-  const popoverList = [...popoverTriggerList].map(
-    (popoverTriggerEl) => new Popover(popoverTriggerEl, options)
-  );
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+  const popoverList = [...popoverTriggerList].map((popoverTriggerEl) => new Popover(popoverTriggerEl, options));
 
   // $(".pop").popover({
   //     trigger: "hover",
@@ -1382,21 +1175,14 @@ export function showGalaxy() {
     ${element.icon("galaxyicon", "galaxyText", collapse.collapseGalaxy)}
     <strong>Galaxy Double Collection:</strong></p>`;
   Galaxy.html += element.close();
-  Galaxy.html += `<div id="galaxyText" class="resize  collapse ${
-    collapse.collapseGalaxy == false ? "show" : ""
-  }">`;
+  Galaxy.html += `<div id="galaxyText" class="resize  collapse ${collapse.collapseGalaxy == false ? "show" : ""}">`;
   Galaxy.html += `<p>Tries Remaining: <span id='galaxyID'>${Galaxy.amount}</span></p><p>`;
   var count = 0;
   Galaxy.bonus.forEach((entry) => {
-    const ready =
-      entry.state == "ProductionFinishedState"
-        ? true
-        : entry.transition <= EpocTime;
+    const ready = entry.state == "ProductionFinishedState" ? true : entry.transition <= EpocTime;
     if (debugEnabled == true) {
       const timer = new Date(entry.transition * 1000);
-      Galaxy.html += `${entry.fp}FP ${entry.name} ${
-        ready ? "READY" : timer.toLocaleString()
-      }<br>`;
+      Galaxy.html += `${entry.fp}FP ${entry.name} ${ready ? "READY" : timer.toLocaleString()}<br>`;
     } else if (ready && count < Galaxy.amount) {
       Galaxy.html += `${entry.fp}FP ${entry.name}<br>`;
       count++;
@@ -1405,9 +1191,7 @@ export function showGalaxy() {
 
   var galaxy = document.getElementById("galaxy");
   galaxy.innerHTML = Galaxy.html + `</p></div></div>`;
-  document
-    .getElementById("galaxyTextLabel")
-    .addEventListener("click", collapse.fCollapseGalaxy);
+  document.getElementById("galaxyTextLabel").addEventListener("click", collapse.fCollapseGalaxy);
   if (Galaxy.amount > 0 || debugEnabled == true) galaxy.style.display = "block";
   else galaxy.style.display = "none";
 }
