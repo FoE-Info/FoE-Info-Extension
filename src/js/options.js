@@ -68,8 +68,7 @@ function save_options() {
   showOptions.showFriends = document.getElementById("Friends").checked;
   showOptions.showGuild = document.getElementById("Guild").checked;
   showOptions.showHood = document.getElementById("Hood").checked;
-  showOptions.showBattleground =
-    document.getElementById("Battleground").checked;
+  showOptions.showBattleground = document.getElementById("Battleground").checked;
   showOptions.showExpedition = document.getElementById("Expedition").checked;
   showOptions.showTreasury = document.getElementById("Treasury").checked;
   showOptions.showVisit = document.getElementById("visit").checked;
@@ -78,21 +77,16 @@ function save_options() {
   showOptions.showGoods = document.getElementById("goods").checked;
   showOptions.showLeaderboard = document.getElementById("leaderboard").checked;
   showOptions.showGBGrewards = document.getElementById("GBGrewards").checked;
-  showOptions.GBGprovinceTime =
-    document.getElementById("GBGprovinceTime").checked;
+  showOptions.GBGprovinceTime = document.getElementById("GBGprovinceTime").checked;
   showOptions.GBGshowSC = document.getElementById("GBGshowSC").checked;
   showOptions.showGErewards = document.getElementById("GErewards").checked;
   showOptions.showRewards = document.getElementById("rewards").checked;
   showOptions.showLogs = document.getElementById("logs").checked;
-  showOptions.showContributions =
-    document.getElementById("contributions").checked;
-  showOptions.showGuildPosition = document.getElementById(
-    "donationGuildPosition"
-  ).checked;
+  showOptions.showContributions = document.getElementById("contributions").checked;
+  showOptions.showGuildPosition = document.getElementById("donationGuildPosition").checked;
   showOptions.hideUnsafe = document.getElementById("hideUnsafe").checked;
   showOptions.buildingCosts = document.getElementById("buildingCosts").checked;
-  showOptions.collectionTimes =
-    document.getElementById("collectionTimes").checked;
+  showOptions.collectionTimes = document.getElementById("collectionTimes").checked;
   //  showOptions.show = document.getElementById('').checked;
   //  showOptions.show = document.getElementById('').checked;
   //  showOptions.show = document.getElementById('').checked;
@@ -149,16 +143,7 @@ function restore_options() {
   // if(DEV) document.getElementById('urlDiv').style.display = "none";
 
   browser.storage.local
-    .get([
-      "showOptions",
-      "tool",
-      "url",
-      "targets",
-      "targetText",
-      "toolOptions",
-      "donationPercent",
-      "donationSuffix",
-    ])
+    .get(["showOptions", "tool", "url", "targets", "targetText", "toolOptions", "donationPercent", "donationSuffix"])
     .then((items) => {
       if (items.showOptions) {
         const showOptions = items.showOptions;
@@ -184,8 +169,7 @@ function restore_options() {
         console.debug(items.toolOptions);
       }
       if (items.donationPercent) {
-        document.getElementById("donationPercent").value =
-          items.donationPercent;
+        document.getElementById("donationPercent").value = items.donationPercent;
         console.debug(items.donationPercent);
       }
       if (items.donationSuffix) {
@@ -194,11 +178,8 @@ function restore_options() {
       }
       if (items.url) {
         const url = items.url;
-        if (url.discordTargetURL)
-          document.getElementById("discordTargetURL").value =
-            url.discordTargetURL;
-        if (url.sheetGuildURL)
-          document.getElementById("sheetGuildURL").value = url.sheetGuildURL;
+        if (url.discordTargetURL) document.getElementById("discordTargetURL").value = url.discordTargetURL;
+        if (url.sheetGuildURL) document.getElementById("sheetGuildURL").value = url.sheetGuildURL;
         // if(url.sheetCityURL)
         //    document.getElementById('sheetCityURL').value = url.sheetCityURL;
         // if(url.sheetGameURL)
@@ -220,8 +201,7 @@ function fnShowOptions(showOptions) {
   document.getElementById("Friends").checked = showOptions.showFriends;
   document.getElementById("Guild").checked = showOptions.showGuild;
   document.getElementById("Hood").checked = showOptions.showHood;
-  document.getElementById("Battleground").checked =
-    showOptions.showBattleground;
+  document.getElementById("Battleground").checked = showOptions.showBattleground;
   document.getElementById("Expedition").checked = showOptions.showExpedition;
   document.getElementById("Treasury").checked = showOptions.showTreasury;
   document.getElementById("visit").checked = showOptions.showVisit;
@@ -230,20 +210,16 @@ function fnShowOptions(showOptions) {
   document.getElementById("goods").checked = showOptions.showGoods;
   document.getElementById("leaderboard").checked = showOptions.showLeaderboard;
   document.getElementById("GBGrewards").checked = showOptions.showGBGrewards;
-  document.getElementById("GBGprovinceTime").checked =
-    showOptions.GBGprovinceTime;
+  document.getElementById("GBGprovinceTime").checked = showOptions.GBGprovinceTime;
   document.getElementById("GBGshowSC").checked = showOptions.GBGshowSC;
   document.getElementById("GErewards").checked = showOptions.showGErewards;
   document.getElementById("rewards").checked = showOptions.showRewards;
   document.getElementById("logs").checked = showOptions.showLogs;
-  document.getElementById("contributions").checked =
-    showOptions.showContributions;
-  document.getElementById("donationGuildPosition").checked =
-    showOptions.showGuildPosition;
+  document.getElementById("contributions").checked = showOptions.showContributions;
+  document.getElementById("donationGuildPosition").checked = showOptions.showGuildPosition;
   document.getElementById("hideUnsafe").checked = showOptions.hideUnsafe;
   document.getElementById("buildingCosts").checked = showOptions.buildingCosts;
-  document.getElementById("collectionTimes").checked =
-    showOptions.collectionTimes;
+  document.getElementById("collectionTimes").checked = showOptions.collectionTimes;
 }
 
 // function setStorage(value){

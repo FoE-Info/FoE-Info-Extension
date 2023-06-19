@@ -2,11 +2,7 @@ import * as storage from "./storage.js";
 
 function fCollapseIcon(id, _href, collapse) {
   if (document.getElementById(`${id}`) != null)
-    document.getElementById(`${id}`).outerHTML = fAddCollapseIcon(
-      id,
-      _href,
-      collapse
-    );
+    document.getElementById(`${id}`).outerHTML = fAddCollapseIcon(id, _href, collapse);
   storage.set(`${collapse}`, collapse);
 }
 
