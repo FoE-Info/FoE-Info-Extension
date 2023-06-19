@@ -224,7 +224,7 @@ export function fGBname(city_entity) {
   else if (GB_name == "X_VirtualFuture_Landmark2") GB_name = "Himeji Castle";
   else if (GB_name == "X_SpaceAgeMars_Landmark1") GB_name = "Star Gazer";
   else if (GB_name == "X_SpaceAgeMars_Landmark2") GB_name = "The Virgo Project";
-  else if (GB_name == "X_SpaceAgeMars_Landmark1") GB_name = "Space Carrier";
+  else if (GB_name == "X_SpaceAgeAsteroidBelt_Landmark1") GB_name = "Space Carrier";
   else if (GB_name == "X_SpaceAgeVenus_Landmark1") GB_name = "Flying Island";
   else if (GB_name == "X_SpaceAgeJupiterMoon_Landmark1") GB_name = "A.I. Core";
 
