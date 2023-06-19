@@ -42,9 +42,9 @@ export function getBonuses(msg) {
 
     if (msg.responseData.length > 1 && msg.responseData[2].value) {
       City.ForgePoints += msg.responseData[2].value;
-      beta.innerHTML = `${element.close()}<p><strong>Town Hall</strong> ${
-        msg.responseData[2].value
-      }FP Total: ${City.ForgePoints}FP</p>`;
+      beta.innerHTML = `${element.close()}<p><strong>Town Hall</strong> ${msg.responseData[2].value}FP Total: ${
+        City.ForgePoints
+      }FP</p>`;
       beta.className = "alert alert-dismissible alert-success";
       // console.debug('getBonuses',msg.responseData[2].value,ForgePoints);
     }
@@ -63,53 +63,37 @@ export function getLimitedBonuses(msg) {
 
       if (entry.type == "spoils_of_war") {
         Bonus.spoils = entry.amount;
-        if (document.getElementById("spoilsID"))
-          document.getElementById("spoilsID").textContent = entry.amount;
-        if (entry.amount)
-          bonusHTML += `Spoils <span id="spoilsID">${Bonus.spoils}</span> `;
+        if (document.getElementById("spoilsID")) document.getElementById("spoilsID").textContent = entry.amount;
+        if (entry.amount) bonusHTML += `Spoils <span id="spoilsID">${Bonus.spoils}</span> `;
       } else if (entry.type == "diplomatic_gifts") {
         Bonus.diplomatic = entry.amount;
-        if (document.getElementById("diplomaticID"))
-          document.getElementById("diplomaticID").textContent = entry.amount;
-        if (entry.amount)
-          bonusHTML += `Dip <span id="diplomaticID">${Bonus.diplomatic}</span> `;
+        if (document.getElementById("diplomaticID")) document.getElementById("diplomaticID").textContent = entry.amount;
+        if (entry.amount) bonusHTML += `Dip <span id="diplomaticID">${Bonus.diplomatic}</span> `;
       } else if (entry.type == "first_strike") {
         Bonus.strike = entry.amount;
         if (document.getElementById("firststrikeID"))
           document.getElementById("firststrikeID").textContent = entry.amount;
-        if (entry.amount)
-          bonusHTML += `Strike <span id="firststrikeID">${Bonus.strike}</span> `;
+        if (entry.amount) bonusHTML += `Strike <span id="firststrikeID">${Bonus.strike}</span> `;
       } else if (entry.type == "aid_goods") {
         Bonus.aid = entry.amount;
-        if (document.getElementById("aidID"))
-          document.getElementById("aidID").textContent = entry.amount;
-        if (entry.amount)
-          bonusHTML += `Aid <span id="aidID">${Bonus.aid}</span> `;
+        if (document.getElementById("aidID")) document.getElementById("aidID").textContent = entry.amount;
+        if (entry.amount) bonusHTML += `Aid <span id="aidID">${Bonus.aid}</span> `;
       } else if (entry.type == "double_collection") {
         Galaxy.amount = entry.amount > 0 ? entry.amount : 0;
         showGalaxy();
       }
     });
     // console.debug(bonusHTML);
-    if (
-      bonus.innerHTML == `` &&
-      (Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
-    ) {
+    if (bonus.innerHTML == `` && (Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)) {
       bonus.innerHTML = `<div id="bonusTip" class="alert alert-light alert-dismissible" role="alert">
             <p id="bonusTextLabel" href="#bonusText" data-bs-toggle="collapse">
       ${element.icon("bonusicon", "bonusText", collapse.collapseBonus)}
 			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
             ${element.close()}
             <div id="bonusText" class="alert-light collapse"><p><strong>Legend:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
-      document
-        .getElementById("bonusicon")
-        .addEventListener("click", collapse.fCollapseBonus);
-      document
-        .getElementById("bonusTextLabel")
-        .addEventListener("click", collapse.fCollapseBonus);
-    } else if (
-      !(Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
-    ) {
+      document.getElementById("bonusicon").addEventListener("click", collapse.fCollapseBonus);
+      document.getElementById("bonusTextLabel").addEventListener("click", collapse.fCollapseBonus);
+    } else if (!(Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)) {
       bonus.innerHTML = ``;
     }
   }

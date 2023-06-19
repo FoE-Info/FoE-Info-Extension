@@ -12,20 +12,8 @@
  * ________________________________________________________________
  */
 import { Popover } from "bootstrap";
-import {
-  CityEntityDefs,
-  donationDIV,
-  GameOrigin,
-  Goods,
-  hiddenRewards,
-  incidents,
-  url,
-} from "../index.js";
-import {
-  BattlegroundPerformance,
-  BGtime,
-  GuildMembers,
-} from "../msg/GuildBattlegroundService.js";
+import { CityEntityDefs, donationDIV, GameOrigin, Goods, hiddenRewards, incidents, url } from "../index.js";
+import { BattlegroundPerformance, BGtime, GuildMembers } from "../msg/GuildBattlegroundService.js";
 import { ResourceNames } from "../msg/ResourceService.js";
 import { showOptions } from "../vars/showOptions.js";
 import * as collapse from "./collapse.js";
@@ -176,12 +164,9 @@ export function fGBsname(city_entity) {
 export function fEntityNameTrim(name) {
   if (!CityEntityDefs[name]) return name;
   var trimName = CityEntityDefs[name].name;
-  if (trimName.includes(" - Lv."))
-    return trimName.substring(0, trimName.indexOf(" - Lv."));
-  else if (trimName.includes("Lv. 2 - "))
-    return trimName.replace("Lv. 2 - ", "");
-  else if (trimName.includes("Lv. 1 - "))
-    return trimName.replace("Lv. 1 - ", "");
+  if (trimName.includes(" - Lv.")) return trimName.substring(0, trimName.indexOf(" - Lv."));
+  else if (trimName.includes("Lv. 2 - ")) return trimName.replace("Lv. 2 - ", "");
+  else if (trimName.includes("Lv. 1 - ")) return trimName.replace("Lv. 1 - ", "");
   else return trimName;
 }
 
@@ -205,34 +190,26 @@ export function fGBname(city_entity) {
   else if (GB_name == "X_BronzeAge_Landmark1") GB_name = "Tower of Babel";
   else if (GB_name == "X_BronzeAge_Landmark2") GB_name = "Statue of Zeus";
   else if (GB_name == "X_IronAge_Landmark1") GB_name = "Colosseum";
-  else if (GB_name == "X_IronAge_Landmark2")
-    GB_name = "Lighthouse of Alexandria";
+  else if (GB_name == "X_IronAge_Landmark2") GB_name = "Lighthouse of Alexandria";
   else if (GB_name == "X_EarlyMiddleAge_Landmark1") GB_name = "Hagia Sophia";
-  else if (GB_name == "X_EarlyMiddleAge_Landmark2")
-    GB_name = "Cathedral of Aachen";
+  else if (GB_name == "X_EarlyMiddleAge_Landmark2") GB_name = "Cathedral of Aachen";
   else if (GB_name == "X_EarlyMiddleAge_Landmark3") GB_name = "Galata Tower";
-  else if (GB_name == "X_HighMiddleAge_Landmark1")
-    GB_name = "St. Mark's Basilica";
+  else if (GB_name == "X_HighMiddleAge_Landmark1") GB_name = "St. Mark's Basilica";
   else if (GB_name == "X_HighMiddleAge_Landmark3") GB_name = "Notre Dame";
-  else if (GB_name == "X_LateMiddleAge_Landmark1")
-    GB_name = "St. Basil's Cathedral";
+  else if (GB_name == "X_LateMiddleAge_Landmark1") GB_name = "St. Basil's Cathedral";
   else if (GB_name == "X_LateMiddleAge_Landmark3") GB_name = "Castel del Monte";
-  else if (GB_name == "X_ColonialAge_Landmark1")
-    GB_name = "Frauenkirche of Dresden";
+  else if (GB_name == "X_ColonialAge_Landmark1") GB_name = "Frauenkirche of Dresden";
   else if (GB_name == "X_ColonialAge_Landmark2") GB_name = "Deal Castle";
-  else if (GB_name == "X_IndustrialAge_Landmark1")
-    GB_name = "Royal Albert Hall";
+  else if (GB_name == "X_IndustrialAge_Landmark1") GB_name = "Royal Albert Hall";
   else if (GB_name == "X_IndustrialAge_Landmark2") GB_name = "Capitol";
   else if (GB_name == "X_ProgressiveEra_Landmark1") GB_name = "Alcatraz";
-  else if (GB_name == "X_ProgressiveEra_Landmark2")
-    GB_name = "Ch\u00e2teau Frontenac";
+  else if (GB_name == "X_ProgressiveEra_Landmark2") GB_name = "Ch\u00e2teau Frontenac";
   else if (GB_name == "X_ModernEra_Landmark1") GB_name = "Space Needle";
   else if (GB_name == "X_ModernEra_Landmark2") GB_name = "Atomium";
   else if (GB_name == "X_PostModernEra_Landmark1") GB_name = "Cape Canaveral";
   else if (GB_name == "X_PostModernEra_Landmark2") GB_name = "The Habitat";
   else if (GB_name == "X_ContemporaryEra_Landmark1") GB_name = "Lotus Temple";
-  else if (GB_name == "X_ContemporaryEra_Landmark2")
-    GB_name = "Innovation Tower";
+  else if (GB_name == "X_ContemporaryEra_Landmark2") GB_name = "Innovation Tower";
   else if (GB_name == "X_TomorrowEra_Landmark1") GB_name = "Voyager V1";
   else if (GB_name == "X_TomorrowEra_Landmark2") GB_name = "Truce Tower";
   else if (GB_name == "X_FutureEra_Landmark1") GB_name = "The Arc";
@@ -593,8 +570,7 @@ export function fShowIncidents() {
         // textCurrent += `Reward ${j+1}: ${msg.responseData.hiddenRewards[j].type} ${timer.toUTCString()}<br>`;
 
         type += incidentName.type;
-        if (incident.rarity != "common")
-          textCurrent += `<span class='green'>${incidentName.text}</span>`;
+        if (incident.rarity != "common") textCurrent += `<span class='green'>${incidentName.text}</span>`;
         else textCurrent += incidentName.text;
         textCurrent += ` for ` + diffText + `<br>`;
       } else {
@@ -607,9 +583,7 @@ export function fShowIncidents() {
     // data-bs-placement="bottom"
     if (rewards) {
       tooltipHTML = `<div><p>${textCurrent}</p>${
-        textComing != ""
-          ? "<p><strong>Coming Soon:</strong><br>" + textComing + "</p>"
-          : ""
+        textComing != "" ? "<p><strong>Coming Soon:</strong><br>" + textComing + "</p>" : ""
       }`;
       tooltipHTML +=
         "<p><strong>Legend:</strong><br>n/N - Nature<br>s/S - Shore<br>w/W - Water<br>r/R - Road<br> E - Event<br>Capitals = Uncommon/Rare Reward</p></div>";
@@ -618,9 +592,7 @@ export function fShowIncidents() {
 			${element.icon("incidentsicon", "incidentsText", collapse.collapseIncidents)}
 			<span id="incidents_tooltip" class="pop" data-bs-container="#incidents_tooltip" data-bs-toggle="popover" data-bs-placement="bottom" title="Incidents" data-bs-content="${tooltipHTML}"><strong><span data-i18n="incident">Incidents</span>:</strong></span> ${type}</p>
             ${element.close()}
-            <div id="incidentsText" class="collapse ${
-              collapse.collapseIncidents ? "" : "show"
-            } alert-light">
+            <div id="incidentsText" class="collapse ${collapse.collapseIncidents ? "" : "show"} alert-light">
             ${tooltipHTML}</div></div>`;
       // outputHTML += '<div id="incidentsText" class="collapse show">';
       //$('.incidents').show();
@@ -629,12 +601,8 @@ export function fShowIncidents() {
       // $(document).ready(function(){
       // $('#incidentsTip').tooltip({html: true,placement: 'bottom'});
       //   });
-      document
-        .getElementById("incidentsTextLabel")
-        .addEventListener("click", fCollapseIncidents);
-      document
-        .getElementById("incidentsTip")
-        .addEventListener("onmouseleave", fHideTooltips);
+      document.getElementById("incidentsTextLabel").addEventListener("click", fCollapseIncidents);
+      document.getElementById("incidentsTip").addEventListener("onmouseleave", fHideTooltips);
 
       const incidents_tooltip = document.getElementById("incidents_tooltip");
       if (incidents_tooltip) {
@@ -681,26 +649,12 @@ export function fshowBattleground() {
   // console.debug(data,BattlegroundPerformance);
   var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
 	<p id="battlegroundTextLabel" href="#battlegroundCollapse" aria-expanded="true" aria-controls="battlegroundText" data-bs-toggle="collapse">
-	${element.icon(
-    "battlegroundicon",
-    "battlegroundCollapse",
-    collapse.collapseBattleground
-  )}
+	${element.icon("battlegroundicon", "battlegroundCollapse", collapse.collapseBattleground)}
 	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p>${element.close()}`;
 
   if (url.sheetGuildURL)
-    battlegroundHTML += element.post(
-      "battlegroundPostID",
-      "info",
-      "mid",
-      collapse.collapseBattleground
-    );
-  battlegroundHTML += element.copy(
-    "battlegroundCopyID",
-    "info",
-    "right",
-    collapse.collapseBattleground
-  );
+    battlegroundHTML += element.post("battlegroundPostID", "info", "mid", collapse.collapseBattleground);
+  battlegroundHTML += element.copy("battlegroundCopyID", "info", "right", collapse.collapseBattleground);
   battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info overflow collapse ${
     collapse.collapseBattleground ? "" : "show"
   }"><div id="battlegroundText">`;
@@ -730,17 +684,11 @@ export function fshowBattleground() {
     negotiationsDiff = wonNegotiations - player.wonNegotiations;
     // }
     // console.debug(entry.name,battleDiff,negotiationsDiff);
-    if (
-      !showOptions.showBattlegroundChanges ||
-      battleDiff ||
-      negotiationsDiff
-    ) {
+    if (!showOptions.showBattlegroundChanges || battleDiff || negotiationsDiff) {
       battlegroundHTML += `<tr><td>${entry.name}</td><td>${wonNegotiations}`;
-      if (negotiationsDiff)
-        battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
+      if (negotiationsDiff) battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
       battlegroundHTML += `</td><td>${wonBattles}`;
-      if (battleDiff)
-        battlegroundHTML += ` <span class="red">+${battleDiff}</span>`;
+      if (battleDiff) battlegroundHTML += ` <span class="red">+${battleDiff}</span>`;
       battlegroundHTML += `</td></tr>`;
     }
   });
@@ -758,28 +706,18 @@ export function fshowBattleground() {
   }
   donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div></div>`;
   if (url.sheetGuildURL)
-    document
-      .getElementById("battlegroundPostID")
-      .addEventListener("click", post_webstore.postGBGtoSS);
+    document.getElementById("battlegroundPostID").addEventListener("click", post_webstore.postGBGtoSS);
   // else
-  document
-    .getElementById("battlegroundCopyID")
-    .addEventListener("click", copy.BattlegroundCopy);
+  document.getElementById("battlegroundCopyID").addEventListener("click", copy.BattlegroundCopy);
 
-  document
-    .getElementById("battlegroundTextLabel")
-    .addEventListener("click", collapse.fCollapseBattleground);
-  document
-    .getElementById("showGBGchanges")
-    .addEventListener("click", fshowBattlegroundChanges);
-  document.getElementById("showGBGchanges").checked =
-    showOptions.showBattlegroundChanges;
+  document.getElementById("battlegroundTextLabel").addEventListener("click", collapse.fCollapseBattleground);
+  document.getElementById("showGBGchanges").addEventListener("click", fshowBattlegroundChanges);
+  document.getElementById("showGBGchanges").checked = showOptions.showBattlegroundChanges;
   const battlegroundDiv = document.getElementById("battlegroundCollapse");
   battlegroundDiv.addEventListener("mouseup", setHeight);
   const resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        heightGBG = entry.contentRect.height;
+      if (entry.contentRect && entry.contentRect.height) heightGBG = entry.contentRect.height;
     }
   });
   resizeObserver.observe(battlegroundDiv);

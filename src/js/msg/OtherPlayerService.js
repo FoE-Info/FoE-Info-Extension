@@ -181,25 +181,20 @@ export function otherPlayerService(msg) {
     var canBePolished = 0;
     map_entities.forEach((mapID, id) => {
       // if(mapID.type != 'street' && mapID.type != 'off_grid')
-      if (mapID.type == "off_grid")
-        console.debug(id, helper.fGBname(mapID.cityentity_id), mapID);
+      if (mapID.type == "off_grid") console.debug(id, helper.fGBname(mapID.cityentity_id), mapID);
 
       if (mapID.state && mapID.state.is_motivated == true) motivated++;
       if (mapID.state && mapID.state.is_motivated != true) notmotivated++;
 
       if (
         CityEntityDefs[mapID.cityentity_id] &&
-        CityEntityDefs[mapID.cityentity_id].abilities.find(
-          (id) => id.__class__ == "PolishableAbility"
-        )
+        CityEntityDefs[mapID.cityentity_id].abilities.find((id) => id.__class__ == "PolishableAbility")
       )
         canBePolished++;
 
       if (
         CityEntityDefs[mapID.cityentity_id] &&
-        CityEntityDefs[mapID.cityentity_id].abilities.find(
-          (id) => id.__class__ == "MotivatableAbility"
-        )
+        CityEntityDefs[mapID.cityentity_id].abilities.find((id) => id.__class__ == "MotivatableAbility")
       )
         canBeMotivated++;
 
@@ -220,9 +215,7 @@ export function otherPlayerService(msg) {
         // SoH & Great Elephant
         clanBuildings++;
         clanSOHcount++;
-      } else if (
-        mapID.cityentity_id.substring(0, 19) == "Z_MultiAge_CupBonus"
-      ) {
+      } else if (mapID.cityentity_id.substring(0, 19) == "Z_MultiAge_CupBonus") {
         // HoF ?
         clanBuildings++;
         clanHOFcount++;
@@ -233,40 +226,23 @@ export function otherPlayerService(msg) {
       ) {
         visitPenal = mapID.state.current_product.amount;
         visitTrazLevel = mapID.level;
-      } else if (mapID.cityentity_id == "X_AllAge_Expedition")
-        visitToRLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_AllAge_EasterBonus4")
-        visitObsLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_BronzeAge_Landmark2")
-        visitZeusLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_EarlyMiddleAge_Landmark1")
-        visitHSLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_EarlyMiddleAge_Landmark2")
-        visitCoALevel = mapID.level;
-      else if (mapID.cityentity_id == "X_LateMiddleAge_Landmark3")
-        visitCdMLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_ProgressiveEra_Landmark2")
-        visitCFLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_ModernEra_Landmark2")
-        visitAtomLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_PostModernEra_Landmark1")
-        visitCAPELevel = mapID.level;
-      else if (mapID.cityentity_id == "X_ContemporaryEra_Landmark2")
-        visitINNOLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_FutureEra_Landmark1")
-        visitArcLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_ArcticFuture_Landmark2")
-        visitAOLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_OceanicFuture_Landmark2")
-        visitKrakenLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_VirtualFuture_Landmark1")
-        visitTerraLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_VirtualFuture_Landmark2")
-        visitHCLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_SpaceAgeAsteroidBelt_Landmark1")
-        visitSCLevel = mapID.level;
-      else if (mapID.cityentity_id == "X_SpaceAgeJupiterMoon_Landmark1")
-        visitAILevel = mapID.level;
+      } else if (mapID.cityentity_id == "X_AllAge_Expedition") visitToRLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_AllAge_EasterBonus4") visitObsLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_BronzeAge_Landmark2") visitZeusLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_EarlyMiddleAge_Landmark1") visitHSLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_EarlyMiddleAge_Landmark2") visitCoALevel = mapID.level;
+      else if (mapID.cityentity_id == "X_LateMiddleAge_Landmark3") visitCdMLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_ProgressiveEra_Landmark2") visitCFLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_ModernEra_Landmark2") visitAtomLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_PostModernEra_Landmark1") visitCAPELevel = mapID.level;
+      else if (mapID.cityentity_id == "X_ContemporaryEra_Landmark2") visitINNOLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_FutureEra_Landmark1") visitArcLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_ArcticFuture_Landmark2") visitAOLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_OceanicFuture_Landmark2") visitKrakenLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_VirtualFuture_Landmark1") visitTerraLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_VirtualFuture_Landmark2") visitHCLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeAsteroidBelt_Landmark1") visitSCLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeJupiterMoon_Landmark1") visitAILevel = mapID.level;
       else {
         // const entity = CityEntityDefs[mapID.cityentity_id];
         // if(entity.type != 'tower' && entity.type != 'street' && entity.type != 'hub_main' && entity.type != 'hub_part' && entity.type != 'off_grid'){
@@ -293,17 +269,9 @@ export function otherPlayerService(msg) {
             production[mapID.level].production_values &&
             production[mapID.level].production_values.length
           ) {
-            for (
-              var value = 0;
-              value < production[mapID.level].production_values.length;
-              value++
-            ) {
-              if (
-                production[mapID.level].production_values[value].type ==
-                "strategy_points"
-              ) {
-                forgePoints =
-                  production[mapID.level].production_values[value].value;
+            for (var value = 0; value < production[mapID.level].production_values.length; value++) {
+              if (production[mapID.level].production_values[value].type == "strategy_points") {
+                forgePoints = production[mapID.level].production_values[value].value;
                 // console.debug(production[mapID.level].production_values[value].value);
               }
             }
@@ -321,40 +289,26 @@ export function otherPlayerService(msg) {
                 if (mapID.state.__class__ == "ProductionFinishedState")
                   visitbetafp += `<br>#${id}: ${mapID.x}/${
                     mapID.y
-                  } ${forgePoints}FP Total: ${visitForgePoints}FP <strong>${helper.fGBname(
-                    mapID.cityentity_id
-                  )} ${
-                    mapID.state.current_product.product.resources
-                      .strategy_points
+                  } ${forgePoints}FP Total: ${visitForgePoints}FP <strong>${helper.fGBname(mapID.cityentity_id)} ${
+                    mapID.state.current_product.product.resources.strategy_points
                   }</strong>`;
                 else
                   visitbetafp += `<br>#${id}: ${mapID.x}/${
                     mapID.y
-                  } ${forgePoints}FP Total: ${visitForgePoints}FP ${helper.fGBname(
-                    mapID.cityentity_id
-                  )}`;
+                  } ${forgePoints}FP Total: ${visitForgePoints}FP ${helper.fGBname(mapID.cityentity_id)}`;
               }
             }
           }
         }
 
-        if (
-          entity.available_products &&
-          entity.available_products[0].__class__ == "CityEntityClanPowerProduct"
-        ) {
+        if (entity.available_products && entity.available_products[0].__class__ == "CityEntityClanPowerProduct") {
           // console.debug(CityEntityDefs[mapID.cityentity_id].name,entity);
 
-          if (
-            entity.entity_levels[mapID.level].__class__ ==
-            "ClanPowerProductionEntityLevel"
-          )
+          if (entity.entity_levels[mapID.level].__class__ == "ClanPowerProductionEntityLevel")
             clanPower += entity.entity_levels[mapID.level].clan_power;
           if (DEV && checkDebug()) {
             // console.debug(CityEntityDefs[mapID.cityentity_id].name,mapID.state.current_product);
-            if (
-              entity.entity_levels[mapID.level].__class__ ==
-              "ClanPowerProductionEntityLevel"
-            )
+            if (entity.entity_levels[mapID.level].__class__ == "ClanPowerProductionEntityLevel")
               visitbetapower += `<br>#${id}: ${mapID.x}/${mapID.y} ${
                 entity.entity_levels[mapID.level].clan_power
               } ${helper.fGBname(mapID.cityentity_id)}`;
@@ -372,69 +326,44 @@ export function otherPlayerService(msg) {
               // console.debug(entity.name,mapID);
               // console.debug(entity.name,ability,ability.additionalResources[entityAge]);
               const resources = ability.additionalResources[entityAge];
-              if (
-                resources &&
-                resources.resources &&
-                resources.resources.clan_power
-              )
-                clanPower +=
-                  ability.additionalResources[entityAge].resources.clan_power;
-              if (
-                ability.additionalResources["AllAge"].resources.all_goods_of_age
-              ) {
-                const goods =
-                  ability.additionalResources["AllAge"].resources
-                    .all_goods_of_age;
+              if (resources && resources.resources && resources.resources.clan_power)
+                clanPower += ability.additionalResources[entityAge].resources.clan_power;
+              if (ability.additionalResources["AllAge"].resources.all_goods_of_age) {
+                const goods = ability.additionalResources["AllAge"].resources.all_goods_of_age;
                 clanGoods += goods;
                 // console.debug(entity.name,mapID);
                 // console.debug(entity.name,ability,ability.additionalResources[entityAge]);
                 // console.debug(levelSoH,mapID.level,PowerSoH[levelSoH][mapID.level],GuildsGoods[levelSoH],clanPower,clanGoods);
-                clanGoodsHTML +=
-                  helper.fGBname(mapID.cityentity_id) + ": " + goods + "<br>";
+                clanGoodsHTML += helper.fGBname(mapID.cityentity_id) + ": " + goods + "<br>";
                 fGoodsTally(helper.fAgefromLevel(mapID.level), goods);
               }
               if (DEV && checkDebug()) {
                 // console.debug(CityEntityDefs[mapID.cityentity_id].name,mapID.state.current_product);
-                if (
-                  ability.additionalResources["AllAge"].resources
-                    .all_goods_of_age
-                )
+                if (ability.additionalResources["AllAge"].resources.all_goods_of_age)
                   visitbetagoods += `<br>#${id}: ${mapID.x}/${mapID.y} ${
-                    ability.additionalResources["AllAge"].resources
-                      .all_goods_of_age
+                    ability.additionalResources["AllAge"].resources.all_goods_of_age
                   } ${helper.fGBname(mapID.cityentity_id)}`;
-                if (
-                  resources &&
-                  resources.resources &&
-                  resources.resources.clan_power
-                )
+                if (resources && resources.resources && resources.resources.clan_power)
                   visitbetapower += `<br>#${id}: ${mapID.x}/${mapID.y} ${
                     ability.additionalResources[entityAge].resources.clan_power
                   } ${helper.fGBname(mapID.cityentity_id)}`;
               }
             }
-            if (
-              ability.__class__ == "AddResourcesWhenMotivatedAbility" ||
-              ability.__class__ == "AddResourcesAbility"
-            ) {
+            if (ability.__class__ == "AddResourcesWhenMotivatedAbility" || ability.__class__ == "AddResourcesAbility") {
               // console.debug(entity.name,ability,ability.additionalResources[entityAge])
               if (
                 ability.additionalResources["AllAge"] &&
                 ability.additionalResources["AllAge"].resources.strategy_points
               )
-                forgePoints +=
-                  ability.additionalResources["AllAge"].resources
-                    .strategy_points;
+                forgePoints += ability.additionalResources["AllAge"].resources.strategy_points;
               // console.debug(forgePoints);
               if (DEV && checkDebug()) {
                 if (
                   ability.additionalResources["AllAge"] &&
-                  ability.additionalResources["AllAge"].resources
-                    .strategy_points
+                  ability.additionalResources["AllAge"].resources.strategy_points
                 )
                   visitbetagoods += `<br>#${id}: ${mapID.x}/${mapID.y} ${
-                    ability.additionalResources["AllAge"].resources
-                      .strategy_points
+                    ability.additionalResources["AllAge"].resources.strategy_points
                   } ${helper.fGBname(mapID.cityentity_id)}`;
               }
             }
@@ -456,29 +385,22 @@ export function otherPlayerService(msg) {
             } else if (bonusAr.bonuses && bonusAr.bonuses.length) {
               for (var j = 0; j < bonusAr.bonuses.length; j++) {
                 // console.debug(bonusAr.bonuses[j]);
-                if (bonusAr.bonuses[j].boost[entityAge])
-                  boost = bonusAr.bonuses[j].boost[entityAge];
-                else if (bonusAr.bonuses[j].boost["AllAge"])
-                  boost = bonusAr.bonuses[j].boost["AllAge"];
+                if (bonusAr.bonuses[j].boost[entityAge]) boost = bonusAr.bonuses[j].boost[entityAge];
+                else if (bonusAr.bonuses[j].boost["AllAge"]) boost = bonusAr.bonuses[j].boost["AllAge"];
                 else boost = null;
                 if (boost) totalboost += fBoost(boost);
 
                 if (
                   bonusAr.bonuses[j].revenue[entityAge] &&
-                  bonusAr.bonuses[j].revenue[entityAge].resources
-                    .strategy_points
+                  bonusAr.bonuses[j].revenue[entityAge].resources.strategy_points
                 )
-                  forgePoints +=
-                    bonusAr.bonuses[j].revenue[entityAge].resources
-                      .strategy_points;
+                  forgePoints += bonusAr.bonuses[j].revenue[entityAge].resources.strategy_points;
                 // console.debug(forgePoints);
                 if (
                   bonusAr.bonuses[j].revenue["AllAge"] &&
                   bonusAr.bonuses[j].revenue["AllAge"].resources.strategy_points
                 )
-                  forgePoints +=
-                    bonusAr.bonuses[j].revenue["AllAge"].resources
-                      .strategy_points;
+                  forgePoints += bonusAr.bonuses[j].revenue["AllAge"].resources.strategy_points;
                 // console.debug(forgePoints);
                 // else
                 // forgePoints = 0;
@@ -486,10 +408,8 @@ export function otherPlayerService(msg) {
             } else if (bonusAr.bonusGiven) {
               // for(var j = 0; j < entity.bonusGiven.length; j++){
               // console.debug(bonusAr.bonusGiven);
-              if (bonusAr.bonusGiven.boost[entityAge])
-                boost = bonusAr.bonusGiven.boost[entityAge];
-              else if (bonusAr.bonusGiven.boost["AllAge"])
-                boost = bonusAr.bonusGiven.boost["AllAge"];
+              if (bonusAr.bonusGiven.boost[entityAge]) boost = bonusAr.bonusGiven.boost[entityAge];
+              else if (bonusAr.bonusGiven.boost["AllAge"]) boost = bonusAr.bonusGiven.boost["AllAge"];
               else boost = null;
               if (boost) {
                 bonusAr.linkPositions.forEach((element) => {
@@ -518,9 +438,7 @@ export function otherPlayerService(msg) {
             if (DEV && checkDebug()) {
               visitbetafp += `<br>#${id}: ${mapID.x}/${
                 mapID.y
-              } ${forgePoints}FP Total: ${visitForgePoints}FP ${helper.fGBname(
-                mapID.cityentity_id
-              )}`;
+              } ${forgePoints}FP Total: ${visitForgePoints}FP ${helper.fGBname(mapID.cityentity_id)}`;
               // console.debug(CityEntityDefs[mapID.cityentity_id].name,entity,mapID);
             }
           }
@@ -561,8 +479,7 @@ export function otherPlayerService(msg) {
         if (mapID.state.current_product.product) {
           if (mapID.state.current_product.product.resources) {
             if (mapID.state.current_product.product.resources.strategy_points) {
-              forgePoints =
-                mapID.state.current_product.product.resources.strategy_points;
+              forgePoints = mapID.state.current_product.product.resources.strategy_points;
               visitForgePoints += forgePoints;
               if (DEV && checkDebug()) {
                 // console.debug(CityEntityDefs[mapID.cityentity_id].name,mapID.state.current_product);
@@ -582,11 +499,7 @@ export function otherPlayerService(msg) {
             // console.debug(mapID);
             var goods = 0;
             var goodsHTML = "";
-            for (
-              var good = 0;
-              good < mapID.state.current_product.goods.length;
-              good++
-            ) {
+            for (var good = 0; good < mapID.state.current_product.goods.length; good++) {
               // console.debug(mapID.state.current_product.goods[good]);
               goods += mapID.state.current_product.goods[good].value;
               goodsHTML +=
@@ -595,27 +508,20 @@ export function otherPlayerService(msg) {
                 ": " +
                 mapID.state.current_product.goods[good].value;
 
-              if (
-                goodsList[`${mapID.state.current_product.goods[good].good_id}`]
-              )
-                goodsList[
-                  `${mapID.state.current_product.goods[good].good_id}`
-                ] += mapID.state.current_product.goods[good].value;
+              if (goodsList[`${mapID.state.current_product.goods[good].good_id}`])
+                goodsList[`${mapID.state.current_product.goods[good].good_id}`] +=
+                  mapID.state.current_product.goods[good].value;
               else
-                goodsList[
-                  `${mapID.state.current_product.goods[good].good_id}`
-                ] = mapID.state.current_product.goods[good].value;
+                goodsList[`${mapID.state.current_product.goods[good].good_id}`] =
+                  mapID.state.current_product.goods[good].value;
             }
             clanGoods += goods;
-            clanGoodsHTML +=
-              helper.fGBname(mapID.cityentity_id) + ": " + goods + "<br>";
+            clanGoodsHTML += helper.fGBname(mapID.cityentity_id) + ": " + goods + "<br>";
             fGoodsTally(msg.responseData.other_player_era, goods);
 
             if (DEV && checkDebug()) {
               // console.debug(CityEntityDefs[mapID.cityentity_id].name,mapID.state.current_product);
-              visitbetagoods += `<br>#${id}: ${goods} ${helper.fGBname(
-                mapID.cityentity_id
-              )}`;
+              visitbetagoods += `<br>#${id}: ${goods} ${helper.fGBname(mapID.cityentity_id)}`;
             }
           }
           // if(mapID.state.current_product.product.resources.money)
@@ -624,8 +530,7 @@ export function otherPlayerService(msg) {
       }
 
       if (mapID.bonus) {
-        if (mapID.bonus.type == "contribution_boost")
-          visitArcBonus = mapID.bonus.value;
+        if (mapID.bonus.type == "contribution_boost") visitArcBonus = mapID.bonus.value;
         // if(mapID.bonus.type == "money_boost")
         // 	CoinBoost += mapID.bonus.value;
         if (mapID.bonus.type == "military_boost") {
@@ -789,27 +694,17 @@ export function otherPlayerService(msg) {
   // 	});
 
   for (let index = 0; index < helper.numAges; index++) {
-    const age = helper.fGVGagesname(
-      helper.fAgefromLevel(helper.numAges - index)
-    );
+    const age = helper.fGVGagesname(helper.fAgefromLevel(helper.numAges - index));
     if (Goods[age.toLowerCase()]) clanGoodsHTML += age + `:${Goods.sajm}<br>`;
   }
 
-  visitstatsHTML += `Age: ${msg.responseData.other_player_era
-    .match(/[A-Z][a-z]+|[0-9]+/g)
-    .join(" ")}<br>`;
+  visitstatsHTML += `Age: ${msg.responseData.other_player_era.match(/[A-Z][a-z]+|[0-9]+/g).join(" ")}<br>`;
   visitstatsHTML += `Score: ${
-    player.score > 1000000
-      ? BigNumber(player.score).div(1000000).toFormat(0) + "M"
-      : player.score
+    player.score > 1000000 ? BigNumber(player.score).div(1000000).toFormat(0) + "M" : player.score
   } <br>`;
-  visitstatsHTML += `<span data-i18n="daily">Daily</span> FP: ${
-    visitForgePoints ? visitForgePoints : 0
-  } <br>`;
-  if (visitArcBonus)
-    visitstatsHTML += `${fArcname()} <span data-i18n="bonus">Bonus</span>: ${visitArcBonus}%<br>`;
-  if (visitPenal)
-    visitstatsHTML += `<span data-i18n="army">Army Units</span>: ${visitPenal}<br>`;
+  visitstatsHTML += `<span data-i18n="daily">Daily</span> FP: ${visitForgePoints ? visitForgePoints : 0} <br>`;
+  if (visitArcBonus) visitstatsHTML += `${fArcname()} <span data-i18n="bonus">Bonus</span>: ${visitArcBonus}%<br>`;
+  if (visitPenal) visitstatsHTML += `<span data-i18n="army">Army Units</span>: ${visitPenal}<br>`;
   visitstatsHTML += `<span data-i18n="attackers">Attackers</span>: ${visitAttack}% Att, ${visitDefense}% Def<br>`;
   visitstatsHTML += `<span data-i18n="defenders">Defenders</span>: ${visitCityAttack}% Att, ${visitCityDefense}% Def<br>`;
   if (clanGoods)
@@ -817,9 +712,7 @@ export function otherPlayerService(msg) {
   if (clanBuildings)
     visitstatsHTML += `<span data-i18n="guildpower">Guild Power</span>: ${clanPower} ${
       clanSOHcount ? clanSOHcount + ` <span data-i18n="soh">SoH/TGE</span>` : ""
-    }  ${
-      clanHOFcount ? clanHOFcount + ` <span data-i18n="hof">HoF</span>` : ""
-    }  <br>`;
+    }  ${clanHOFcount ? clanHOFcount + ` <span data-i18n="hof">HoF</span>` : ""}  <br>`;
   // if(clanHOFcount)
   // 	visitstatsHTML += `<br>`;
   // if(clanSOHcount)
@@ -896,11 +789,7 @@ export function otherPlayerService(msg) {
     });
     // console.debug(visitData);
     if (googleSheetAPI) {
-      document
-        .getElementById("guildPostID")
-        .addEventListener("click", () =>
-          post_webstore.postPlayerToSS(visitData)
-        );
+      document.getElementById("guildPostID").addEventListener("click", () => post_webstore.postPlayerToSS(visitData));
     }
   }
   // console.debug('showStats:',showOptions.showStats);
@@ -936,30 +825,19 @@ export function otherPlayerServiceUpdateActions(msg) {
     //    <image class="alert-success bi header-icon" xlink:href="${!collapse.collapseFriends ? dash : plus}" width="20" height="20"/>
     // </svg>
 
-    if (
-      showOptions.showGuild ||
-      showOptions.showHood ||
-      showOptions.showFriends
-    ) {
+    if (showOptions.showGuild || showOptions.showHood || showOptions.showFriends) {
       friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="listTextLabel" href="#listsText" data-bs-toggle="collapse">
       ${element.icon("listsicon", "listsText", collapse.collapseLists)}
 				<strong>Lists:</strong></p>
 				${element.close()}
-				<div id="listsText" class="collapse ${
-          collapse.collapseLists ? "" : "show"
-        } resize">`;
+				<div id="listsText" class="collapse ${collapse.collapseLists ? "" : "show"} resize">`;
 
       if (showOptions.showFriends) {
         console.debug(collapse.collapseFriends);
         friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="friendsTextLabel" href="#friendsText" data-bs-toggle="collapse">
       ${element.icon("friendsicon", "friendsText", collapse.collapseFriends)}
 					<strong>Friends</strong></p><div id="friendsCopy">`;
-        friendsHTML += element.copy(
-          "friendsCopyID",
-          "success",
-          "right",
-          collapse.collapseFriends
-        );
+        friendsHTML += element.copy("friendsCopyID", "success", "right", collapse.collapseFriends);
         friendsHTML += `</div><div id="friendsText" class="collapse ${
           collapse.collapseFriends ? "" : "show"
         }"><table id="friendsText2">`;
@@ -970,12 +848,7 @@ export function otherPlayerServiceUpdateActions(msg) {
         friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="guildTextLabel" href="#guildText" data-bs-toggle="collapse">
       ${element.icon("guildicon", "guildText", collapse.collapseGuild)}
 					<strong>Guild</strong></p><div id="guildCopy">`;
-        friendsHTML += element.copy(
-          "guildCopyID",
-          "success",
-          "right",
-          collapse.collapseGuild
-        );
+        friendsHTML += element.copy("guildCopyID", "success", "right", collapse.collapseGuild);
         friendsHTML += `</div><div id="guildText" class="collapse ${
           collapse.collapseGuild ? "" : "show"
         }"><table id="guildText2">`;
@@ -986,23 +859,14 @@ export function otherPlayerServiceUpdateActions(msg) {
         friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="hoodTextLabel" href="#hoodText" data-bs-toggle="collapse">
       ${element.icon("hoodicon", "hoodText", collapse.collapseHood)}
 					<strong>Hood</strong></p><div id="hoodCopy">`;
-        friendsHTML += element.copy(
-          "hoodCopyID",
-          "success",
-          "right",
-          collapse.collapseHood
-        );
+        friendsHTML += element.copy("hoodCopyID", "success", "right", collapse.collapseHood);
         friendsHTML += `</div><div id="hoodText" class="collapse ${
           collapse.collapseHood ? "" : "show"
         }"><table id="hoodText2">`;
         friendsHTML += getFriendsHTML(hoodlist);
         friendsHTML += `</table></div></div></div></div>`;
       }
-      if (
-        showOptions.showGuild ||
-        showOptions.showHood ||
-        showOptions.showFriends
-      ) {
+      if (showOptions.showGuild || showOptions.showHood || showOptions.showFriends) {
         var friendsID = document.getElementById("friends");
         friendsID.innerHTML = friendsHTML;
         // console.debug(friendsHTML);
@@ -1013,32 +877,18 @@ export function otherPlayerServiceUpdateActions(msg) {
           // console.debug(friendsDiv.offsetHeight,toolOptions.friendsSize);
         }
         if (showOptions.showFriends) {
-          document
-            .getElementById("friendsCopyID")
-            .addEventListener("click", copy.fFriendsCopy);
-          document
-            .getElementById("friendsTextLabel")
-            .addEventListener("click", collapse.fCollapseFriends);
+          document.getElementById("friendsCopyID").addEventListener("click", copy.fFriendsCopy);
+          document.getElementById("friendsTextLabel").addEventListener("click", collapse.fCollapseFriends);
         }
         if (showOptions.showGuild) {
-          document
-            .getElementById("guildCopyID")
-            .addEventListener("click", copy.fGuildCopy);
-          document
-            .getElementById("guildTextLabel")
-            .addEventListener("click", collapse.fCollapseGuild);
+          document.getElementById("guildCopyID").addEventListener("click", copy.fGuildCopy);
+          document.getElementById("guildTextLabel").addEventListener("click", collapse.fCollapseGuild);
         }
         if (showOptions.showHood) {
-          document
-            .getElementById("hoodCopyID")
-            .addEventListener("click", copy.fHoodCopy);
-          document
-            .getElementById("hoodTextLabel")
-            .addEventListener("click", collapse.fCollapseHood);
+          document.getElementById("hoodCopyID").addEventListener("click", copy.fHoodCopy);
+          document.getElementById("hoodTextLabel").addEventListener("click", collapse.fCollapseHood);
         }
-        document
-          .getElementById("listTextLabel")
-          .addEventListener("click", collapse.fCollapseLists);
+        document.getElementById("listTextLabel").addEventListener("click", collapse.fCollapseLists);
         const resizeObserver = new ResizeObserver((entries) => {
           for (const entry of entries) {
             if (entry.contentRect && entry.contentRect.height) {
@@ -1116,10 +966,7 @@ function getFriendsHTML(list) {
     } else if (!entry.hasOwnProperty("is_active")) {
       html += `<tr><td>${entry.name}</td><td>INACTIVE</td></tr>`;
       // console.debug(entry);
-    } else if (
-      entry.hasOwnProperty("is_friend") ||
-      entry.hasOwnProperty("is_guild_member")
-    ) {
+    } else if (entry.hasOwnProperty("is_friend") || entry.hasOwnProperty("is_guild_member")) {
       html += `<tr><td>${entry.name}</td></tr>`;
       // console.debug(entry);
     } else console.debug(entry, html);

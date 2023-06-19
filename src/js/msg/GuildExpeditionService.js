@@ -22,18 +22,9 @@ export function guildExpeditionService(msg) {
   var expeditionHTML = `<div id="expeditionTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
 		${element.close()}
 		<p id="expeditionTextLabel" href="#expeditionText" data-bs-toggle="collapse">
-      ${element.icon(
-        "expeditionicon",
-        "expeditionText",
-        collapse.collapseExpedition
-      )}
+      ${element.icon("expeditionicon", "expeditionText", collapse.collapseExpedition)}
 		<strong>Guild Expedition:</strong></p>`;
-  expeditionHTML += element.copy(
-    "expeditionCopyID",
-    "info",
-    "right",
-    collapse.collapseExpedition
-  );
+  expeditionHTML += element.copy("expeditionCopyID", "info", "right", collapse.collapseExpedition);
   expeditionHTML += `<div id="expeditionText" style="height: ${
     toolOptions.expeditionSize
   }px" class="alert-info overflow collapse ${
@@ -50,20 +41,13 @@ export function guildExpeditionService(msg) {
   });
   // console.debug(ExpeditionPerformance);
   donationDIV2.innerHTML = expeditionHTML + `</table></div></div>`;
-  document
-    .getElementById("expeditionCopyID")
-    .addEventListener("click", copy.ExpeditionCopy);
-  document
-    .getElementById("expeditionicon")
-    .addEventListener("click", collapse.fCollapseExpedition);
-  document
-    .getElementById("expeditionTextLabel")
-    .addEventListener("click", collapse.fCollapseExpedition);
+  document.getElementById("expeditionCopyID").addEventListener("click", copy.ExpeditionCopy);
+  document.getElementById("expeditionicon").addEventListener("click", collapse.fCollapseExpedition);
+  document.getElementById("expeditionTextLabel").addEventListener("click", collapse.fCollapseExpedition);
   const expeditionDiv = document.getElementById("expeditionText");
   const resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        setExpeditionSize(entry.contentRect.height);
+      if (entry.contentRect && entry.contentRect.height) setExpeditionSize(entry.contentRect.height);
     }
   });
   resizeObserver.observe(expeditionDiv);

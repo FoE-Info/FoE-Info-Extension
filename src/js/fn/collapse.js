@@ -182,9 +182,7 @@ export function fCollapseGBInfo() {
 
 export function fCollapseFriends() {
   collapseFriends = !collapseFriends;
-  document.getElementById("friendsCopyID").style.display = collapseFriends
-    ? "none"
-    : "block";
+  document.getElementById("friendsCopyID").style.display = collapseFriends ? "none" : "block";
   // console.debug('collapseFriends',collapseFriends);
   element.updateIcon("friendsicon", "friendsText", collapseFriends);
 }
@@ -196,9 +194,7 @@ export function fCollapseLists() {
 
 export function fCollapseHood() {
   collapseHood = !collapseHood;
-  document.getElementById("hoodCopyID").style.display = collapseHood
-    ? "none"
-    : "block";
+  document.getElementById("hoodCopyID").style.display = collapseHood ? "none" : "block";
   // console.debug('collapseHood',collapseHood);
   element.updateIcon("hoodicon", "hoodText", collapseHood);
 }
@@ -211,9 +207,7 @@ export function fCollapseGalaxy() {
 
 export function fCollapseGuild() {
   collapseGuild = !collapseGuild;
-  document.getElementById("guildCopyID").style.display = collapseGuild
-    ? "none"
-    : "block";
+  document.getElementById("guildCopyID").style.display = collapseGuild ? "none" : "block";
   // console.debug('collapseGuild',collapseGuild);
   element.updateIcon("guildicon", "guildText", collapseGuild);
 }
@@ -244,11 +238,7 @@ export function fcollapseGVGOverview() {
 }
 export function fcollapseGVGGuildPower() {
   collapseGVGGuildPower = !collapseGVGGuildPower;
-  element.updateIcon(
-    "gvgGuildPowerIcon",
-    "gvgGuildPowerText",
-    collapseGVGGuildPower
-  );
+  element.updateIcon("gvgGuildPowerIcon", "gvgGuildPowerText", collapseGVGGuildPower);
   // console.debug('fcollapseGVGGuildPower',collapseGVGinfo,collapseOptions);
 }
 export function fcollapseGVGCurrAge() {
@@ -258,29 +248,21 @@ export function fcollapseGVGCurrAge() {
 }
 export function fcollapseGVGAllGuildsPower() {
   collapseGVGAllGuildsPower = !collapseGVGAllGuildsPower;
-  element.updateIcon(
-    "gvgAllGuildsPowerIcon",
-    "gvgAllGuildsPowerText",
-    collapseGVGAllGuildsPower
-  );
+  element.updateIcon("gvgAllGuildsPowerIcon", "gvgAllGuildsPowerText", collapseGVGAllGuildsPower);
   // console.debug('fcollapseGVGAllGuildsPower',collapseGVGinfo,collapseOptions);
 }
 
 export function fCollapseArmy() {
   collapseArmy = !collapseArmy;
   document.getElementById("armyUnits").innerHTML = collapseArmy
-    ? document.getElementById("armyUnits2").innerHTML +
-      " " +
-      document.getElementById("armyUnits3").innerHTML
+    ? document.getElementById("armyUnits2").innerHTML + " " + document.getElementById("armyUnits3").innerHTML
     : "";
   element.updateIcon("armyicon", "armyText", collapseArmy);
 }
 
 export function fCollapseGoods() {
   collapseGoods = !collapseGoods;
-  document.getElementById("goodsCopyID").style.display = collapseGoods
-    ? "none"
-    : "block";
+  document.getElementById("goodsCopyID").style.display = collapseGoods ? "none" : "block";
   element.updateIcon("goodsicon", "goodsText", collapseGoods);
 }
 
@@ -288,9 +270,7 @@ export function fCollapseStats() {
   fHideAllTooltips();
   collapseStats = !collapseStats;
   // console.debug('collapseStats',collapseStats);
-  document.getElementById("citystatsCopyID").style.display = collapseStats
-    ? "none"
-    : "block";
+  document.getElementById("citystatsCopyID").style.display = collapseStats ? "none" : "block";
   element.updateIcon("citystatsicon", "citystatsText", collapseStats);
 }
 
@@ -302,9 +282,7 @@ export function fCollapseRewards() {
 
 export function fCollapseGBDonors() {
   collapseGBDonors = !collapseGBDonors;
-  document.getElementById("donorCopyID").style.display = collapseGBDonors
-    ? "none"
-    : "block";
+  document.getElementById("donorCopyID").style.display = collapseGBDonors ? "none" : "block";
   element.updateIcon("donoricon", "donorcollapse", collapseGBDonors);
 }
 
@@ -313,9 +291,7 @@ export function fCollapseInvested() {
   document.getElementById("onHandFP").innerHTML = collapseInvested
     ? document.getElementById("onHandFP2").innerHTML
     : "";
-  document.getElementById("investedCopyID").style.display = collapseInvested
-    ? "none"
-    : "block";
+  document.getElementById("investedCopyID").style.display = collapseInvested ? "none" : "block";
   element.updateIcon("investedicon", "investedText", collapseInvested);
 }
 
@@ -329,9 +305,7 @@ export function fCollapseInvested() {
 export function fCollapseDonation() {
   collapseDonation = !collapseDonation;
   // console.debug('fCollapseDonation',collapseOptions);
-  document.getElementById("donationCopyID").style.display = collapseDonation
-    ? "none"
-    : "block";
+  document.getElementById("donationCopyID").style.display = collapseDonation ? "none" : "block";
   element.updateIcon("donationicon", "donationText3", collapseDonation);
 }
 
@@ -339,26 +313,16 @@ export function fCollapseBattleground() {
   collapseBattleground = !collapseBattleground;
   // console.debug('fCollapseBattleground',collapseOptions);
   if (document.getElementById("battlegroundPostID"))
-    document.getElementById("battlegroundPostID").style.display =
-      collapseBattleground ? "none" : "block";
+    document.getElementById("battlegroundPostID").style.display = collapseBattleground ? "none" : "block";
   if (document.getElementById("battlegroundCopyID"))
-    document.getElementById("battlegroundCopyID").style.display =
-      collapseBattleground ? "none" : "block";
-  element.updateIcon(
-    "battlegroundicon",
-    "battlegroundCollapse",
-    collapseBattleground
-  );
+    document.getElementById("battlegroundCopyID").style.display = collapseBattleground ? "none" : "block";
+  element.updateIcon("battlegroundicon", "battlegroundCollapse", collapseBattleground);
 }
 
 export function fCollapseBuildingCost() {
   collapseBuildingCost = !collapseBuildingCost;
   // console.debug('collapseBuildingCost',collapseBuildingCost);
-  element.updateIcon(
-    "buildingCosticon",
-    "buildingCostText",
-    collapseBuildingCost
-  );
+  element.updateIcon("buildingCosticon", "buildingCostText", collapseBuildingCost);
 }
 
 export function fCollapseBuildings() {
@@ -369,17 +333,13 @@ export function fCollapseBuildings() {
 
 export function fCollapseExpedition() {
   collapseExpedition = !collapseExpedition;
-  document.getElementById("expeditionCopyID").style.display = collapseExpedition
-    ? "none"
-    : "block";
+  document.getElementById("expeditionCopyID").style.display = collapseExpedition ? "none" : "block";
   element.updateIcon("expeditionicon", "expeditionText", collapseExpedition);
 }
 
 export function fCollapseTreasury() {
   collapseTreasury = !collapseTreasury;
-  document.getElementById("treasuryCopyID").style.display = collapseTreasury
-    ? "none"
-    : "block";
+  document.getElementById("treasuryCopyID").style.display = collapseTreasury ? "none" : "block";
   element.updateIcon("treasuryicon", "treasuryText", collapseTreasury);
 }
 
@@ -390,9 +350,7 @@ export function fCollapseTreasuryLog() {
 
 export function fCollapseTarget() {
   collapseTarget = !collapseTarget;
-  document.getElementById("targetPostID").style.display = collapseTarget
-    ? "none"
-    : "block";
+  document.getElementById("targetPostID").style.display = collapseTarget ? "none" : "block";
   element.updateIcon("targeticon", "targetText", collapseTarget);
 }
 
@@ -414,24 +372,14 @@ export function fCollapseCultural() {
 export function fCollapseClipboard() {
   collapseClipboard = !collapseClipboard;
   storage.set("collapseClipboard", collapseClipboard);
-  document.getElementById("clipboardCopyID").style.display = collapseClipboard
-    ? "none"
-    : "block";
+  document.getElementById("clipboardCopyID").style.display = collapseClipboard ? "none" : "block";
   element.updateIcon("clipboardicon", "clipboardText", collapseClipboard);
 }
 
 function fHideAllTooltips() {
-  const popoverTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="popover"]'
-  );
-  const popoverList = [...popoverTriggerList].map((popoverEl) =>
-    Popover.getOrCreateInstance(popoverEl).hide()
-  );
-  const tooltipTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="tooltip"]'
-  );
-  const tooltipList = [...tooltipTriggerList].map((tooltipEl) =>
-    Tooltip.getOrCreateInstance(tooltipEl).hide()
-  );
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+  const popoverList = [...popoverTriggerList].map((popoverEl) => Popover.getOrCreateInstance(popoverEl).hide());
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  const tooltipList = [...tooltipTriggerList].map((tooltipEl) => Tooltip.getOrCreateInstance(tooltipEl).hide());
   if (checkDebug()) console.debug("fHideAllTooltips");
 }

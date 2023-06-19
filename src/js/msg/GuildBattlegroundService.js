@@ -71,32 +71,27 @@ export function getPlayerLeaderboard(msg) {
   console.debug("2", showOptions.showBattleground);
 
   if (showOptions.showBattleground) {
-    browser.storage.local
-      .get([GameOrigin, GameOrigin + "BGtime"])
-      .then((items) => {
-        console.debug("items", items);
-        if (items[GameOrigin]) GuildMembers = items[GameOrigin];
-        // console.debug('GuildMembers',GuildMembers);
-        storage.set(GameOrigin + "BGtime", EpocTime);
-        if (items[GameOrigin + "BGtime"])
-          BGtime = new Date(
-            items[GameOrigin + "BGtime"] * 1000
-          ).toLocaleString();
-        else BGtime = "not set";
+    browser.storage.local.get([GameOrigin, GameOrigin + "BGtime"]).then((items) => {
+      console.debug("items", items);
+      if (items[GameOrigin]) GuildMembers = items[GameOrigin];
+      // console.debug('GuildMembers',GuildMembers);
+      storage.set(GameOrigin + "BGtime", EpocTime);
+      if (items[GameOrigin + "BGtime"]) BGtime = new Date(items[GameOrigin + "BGtime"] * 1000).toLocaleString();
+      else BGtime = "not set";
 
-        BattlegroundPerformance.forEach((entry) => {
-          // console.debug('entry',entry);
-          if (GuildMembers.find((id) => id.name == entry.name) == null)
-            GuildMembers.push({
-              name: entry.name,
-              wonNegotiations: 0,
-              wonBattles: 0,
-            }); // if member not listed, add new member
-        });
-        console.debug("save GBG", GameOrigin, BattlegroundPerformance);
-        storage.set(GameOrigin, BattlegroundPerformance);
-        helper.fshowBattleground();
+      BattlegroundPerformance.forEach((entry) => {
+        // console.debug('entry',entry);
+        if (GuildMembers.find((id) => id.name == entry.name) == null)
+          GuildMembers.push({
+            name: entry.name,
+            wonNegotiations: 0,
+            wonBattles: 0,
+          }); // if member not listed, add new member
       });
+      console.debug("save GBG", GameOrigin, BattlegroundPerformance);
+      storage.set(GameOrigin, BattlegroundPerformance);
+      helper.fshowBattleground();
+    });
     // console.debug('BattlegroundPerformance',GBGdata);
     $("body").i18n();
   }
@@ -111,9 +106,7 @@ export function getLeaderboard(msg) {
     // console.debug(guild.clan.name,guild.victoryPointsHourly,guild.victoryPointsTotal)
     leaderboardHTML += `<tr><td>${guild.clan.name}</td><td>${
       guild.victoryPointsHourly ? guild.victoryPointsHourly : 0
-    }</td><td>${
-      guild.victoryPointsTotal ? guild.victoryPointsTotal : 0
-    }</td></tr>`;
+    }</td><td>${guild.victoryPointsTotal ? guild.victoryPointsTotal : 0}</td></tr>`;
   });
   output.innerHTML =
     `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<strong>GBG Leaderboard:</strong>
@@ -135,11 +128,7 @@ export function getState(msg) {
     var battlegroundHTML = `<div id="battlegroundResultTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
         ${element.close()}
         <p id="battlegroundResultTextLabel" href="#battlegroundTextCollapse" data-bs-toggle="collapse">
-      ${element.icon(
-        "battlegroundicon",
-        "battlegroundTextCollapse",
-        collapse.collapseBattleground
-      )}
+      ${element.icon("battlegroundicon", "battlegroundTextCollapse", collapse.collapseBattleground)}
         <strong>Battleground Result:</strong></p>`;
     // if (url.sheetGuildURL)
     //   battlegroundHTML += element.post(
@@ -148,12 +137,7 @@ export function getState(msg) {
     //     "mid",
     //     collapse.collapseBattleground
     //   );
-    battlegroundHTML += element.copy(
-      "battlegroundCopyID",
-      "info",
-      "right",
-      collapse.collapseBattleground
-    );
+    battlegroundHTML += element.copy("battlegroundCopyID", "info", "right", collapse.collapseBattleground);
     battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive collapse ${
       collapse.collapseBattleground ? "" : "show"
     }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table"><tr><th>Rank</th><th>Member</th><th>Negs</th><th>Fights</th></tr>`;
@@ -162,12 +146,7 @@ export function getState(msg) {
       var wonBattles = 0;
       if (entry.negotiationsWon) wonNegotiations = entry.negotiationsWon;
       if (entry.battlesWon) wonBattles = entry.battlesWon;
-      BattlegroundPerformance.push([
-        entry.rank,
-        entry.player.name,
-        wonNegotiations,
-        wonBattles,
-      ]);
+      BattlegroundPerformance.push([entry.rank, entry.player.name, wonNegotiations, wonBattles]);
       battlegroundHTML += `<tr><td>${entry.rank}</td><td>${entry.player.name}</td><td>${wonNegotiations}</td><td>${wonBattles}</td></tr>`;
       // console.debug(entry.rank,entry.name,wonNegotiations,wonBattles);
       totalFights += wonBattles;
@@ -178,19 +157,11 @@ export function getState(msg) {
     // console.debug(BattlegroundPerformance);
     donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div>`;
     if (url.sheetGuildURL)
-      document
-        .getElementById("battlegroundPostID")
-        .addEventListener("click", post_webstore.postGBGtoSS);
+      document.getElementById("battlegroundPostID").addEventListener("click", post_webstore.postGBGtoSS);
     // else
-    document
-      .getElementById("battlegroundCopyID")
-      .addEventListener("click", copy.BattlegroundCopy);
-    document
-      .getElementById("battlegroundicon")
-      .addEventListener("click", collapse.fCollapseBattleground);
-    document
-      .getElementById("battlegroundResultTextLabel")
-      .addEventListener("click", collapse.fCollapseBattleground);
+    document.getElementById("battlegroundCopyID").addEventListener("click", copy.BattlegroundCopy);
+    document.getElementById("battlegroundicon").addEventListener("click", collapse.fCollapseBattleground);
+    document.getElementById("battlegroundResultTextLabel").addEventListener("click", collapse.fCollapseBattleground);
     msg.responseData.playerLeaderboardEntries.forEach((entry) => {
       // console.debug(entry);
       var wonNegotiations = 0;
@@ -226,12 +197,8 @@ export function getBattleground(msg) {
     //     province.placedBuildings = oldMap[i].placedBuildings;
     // }
     if (Object.keys(oldMap).length) {
-      province.placedBuildings = oldMap.find(
-        (oldProvince) => oldProvince.id == province.id
-      ).placedBuildings;
-      province.availableBuildings = oldMap.find(
-        (oldProvince) => oldProvince.id == province.id
-      ).availableBuildings;
+      province.placedBuildings = oldMap.find((oldProvince) => oldProvince.id == province.id).placedBuildings;
+      province.availableBuildings = oldMap.find((oldProvince) => oldProvince.id == province.id).availableBuildings;
     }
   });
   // console.debug(map);
@@ -241,8 +208,7 @@ export function getBattleground(msg) {
   signals = battlegroundParticipants.find(
     (clan) => clan.participantId == msg.responseData.currentParticipantId
   ).signals;
-  if (signals.find((clan) => !clan.provinceId))
-    signals.find((clan) => !clan.provinceId).provinceId = 0;
+  if (signals.find((clan) => !clan.provinceId)) signals.find((clan) => !clan.provinceId).provinceId = 0;
   console.debug(map, signals, battlegroundParticipants);
 
   // console.debug(message.lastMessage.text);
@@ -253,13 +219,10 @@ export function getBattleground(msg) {
 export function getBuildings(msg) {
   var provinceId = 0;
   if (msg.responseData.provinceId) provinceId = msg.responseData.provinceId;
-  map.find((province) => province.id == provinceId).placedBuildings =
-    msg.responseData.placedBuildings;
-  map.find((province) => province.id == provinceId).availableBuildings =
-    msg.responseData.availableBuildings;
+  map.find((province) => province.id == provinceId).placedBuildings = msg.responseData.placedBuildings;
+  map.find((province) => province.id == provinceId).availableBuildings = msg.responseData.availableBuildings;
   checkProvinces();
-  if (showOptions.buildingCosts && msg.responseData.availableBuildings)
-    showBuildingCost(msg.responseData);
+  if (showOptions.buildingCosts && msg.responseData.availableBuildings) showBuildingCost(msg.responseData);
   // console.debug('getBuildings',msg.responseData,map);
 }
 
@@ -284,8 +247,7 @@ export function clearBattleground() {
   BattlegroundPerformance = [];
   GuildMembers = [];
   map = {};
-  if (document.getElementById("costs"))
-    document.getElementById("costs").innerHTML = "";
+  if (document.getElementById("costs")) document.getElementById("costs").innerHTML = "";
 }
 
 function buildingCostCopy() {
@@ -329,14 +291,7 @@ function copyToClipboard(element) {
   var html = $(element).html();
   console.debug(html);
   // var html = $(element).text();
-  html = $("<div />")
-    .html(html)
-    .find("span")
-    .contents()
-    .unwrap()
-    .end()
-    .end()
-    .html();
+  html = $("<div />").html(html).find("span").contents().unwrap().end().end().html();
   html = html.replace(/<\/?p[^>]*>/g, "").replace(/<br>/g, "\r\n"); // or \r\n
   console.debug(html);
   $temp.val(html).select();
@@ -433,30 +388,16 @@ function checkProvinces() {
   // if(url.sheetGuildURL)
   //     targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID"><span data-i18n="post">Post</span></button>`;
   // else
-  targetsHTML += element.copy(
-    "targetCopyID",
-    "primary",
-    "right",
-    collapse.collapseBattleground
-  );
+  targetsHTML += element.copy("targetCopyID", "primary", "right", collapse.collapseBattleground);
   targetsHTML += `<p id="targetGenLabel" href="#targetGenCollapse" aria-expanded="true" data-bs-toggle="collapse">
-      ${element.icon(
-        "targetGenicon",
-        "targetGenCollapse",
-        collapse.collapseTargetGen
-      )}
+      ${element.icon("targetGenicon", "targetGenCollapse", collapse.collapseTargetGen)}
         <strong>GBG Target Generator:</strong></p>`;
 
   var mapSorted = Array.from(map);
   mapSorted.sort(function (a, b) {
     if (!a.lockedUntil) return 1;
     else if (!b.lockedUntil) return -1;
-    else
-      return a.lockedUntil > b.lockedUntil
-        ? 1
-        : b.lockedUntil > a.lockedUntil
-        ? -1
-        : 0;
+    else return a.lockedUntil > b.lockedUntil ? 1 : b.lockedUntil > a.lockedUntil ? -1 : 0;
   });
 
   mapSorted.forEach((province) => {
@@ -489,14 +430,9 @@ function checkProvinces() {
         //check connected provinces for siege camps
         if (thisdef && thisdef.connections) {
           thisdef.connections.forEach((connection) => {
-            const provinceData = mapSorted.find(
-              (province) => province.id == connection
-            );
+            const provinceData = mapSorted.find((province) => province.id == connection);
             // console.debug(connection,provinceData);
-            if (
-              provinceData.placedBuildings &&
-              currentParticipantId == provinceData.ownerId
-            ) {
+            if (provinceData.placedBuildings && currentParticipantId == provinceData.ownerId) {
               provinceData.placedBuildings.forEach((building) => {
                 if (building.id == "siege_camp") {
                   if (building.readyAt < EpocTime) {
@@ -519,13 +455,9 @@ function checkProvinces() {
         if (showOptions.GBGshowSC && (campsReady || campsNotReady)) {
           campsText = " (";
           if (campsReady && !campsNotReady)
-            campsText +=
-              campsReady +
-              ` <span id="siegecamp_tooltip" title="Siege Camp">SC</span>)`;
-          else if (campsNotReady && !campsReady)
-            campsText += campsNotReady + " UC)";
-          else if (campsReady && campsNotReady)
-            campsText += campsReady + " SC + " + campsNotReady + " UC)";
+            campsText += campsReady + ` <span id="siegecamp_tooltip" title="Siege Camp">SC</span>)`;
+          else if (campsNotReady && !campsReady) campsText += campsNotReady + " UC)";
+          else if (campsReady && campsNotReady) campsText += campsReady + " SC + " + campsNotReady + " UC)";
           else campsText += "! SC)";
         }
         if (targetText) text += " " + targetText;
@@ -546,29 +478,20 @@ function checkProvinces() {
       }
     });
   });
-  if (
-    (textProvinceUnlocked || textProvinceLocked) &&
-    (helper.checkGBG || helper.MyGuildPermissions & 64)
-  ) {
+  if ((textProvinceUnlocked || textProvinceLocked) && (helper.checkGBG || helper.MyGuildPermissions & 64)) {
     // targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID">Post</button>`;
 
     targetGenerator.innerHTML =
       targetsHTML +
       `<div id="targetGenCollapse" class="collapse
-            ${
-              collapse.collapseTargetGen == false ? "show" : ""
-            }"><p id="targetGenText">` +
+            ${collapse.collapseTargetGen == false ? "show" : ""}"><p id="targetGenText">` +
       textProvinceUnlocked +
       (textProvinceUnlocked != "" ? "<br>" : "") +
       textProvinceLocked +
       `</p></div>`;
 
-    document
-      .getElementById("targetCopyID")
-      .addEventListener("click", targetCopy);
-    document
-      .getElementById("targetGenLabel")
-      .addEventListener("click", collapse.fCollapseTargetGen);
+    document.getElementById("targetCopyID").addEventListener("click", targetCopy);
+    document.getElementById("targetGenLabel").addEventListener("click", collapse.fCollapseTargetGen);
     const siegecamp_tooltip = document.getElementById("siegecamp_tooltip");
     if (siegecamp_tooltip) {
       const options = {
@@ -598,9 +521,7 @@ function showBuildingCost(msg) {
       console.debug(province);
       const costs = province.availableBuildings;
       const slots = province.totalBuildingSlots;
-      var name = ProvinceDefs.find((def) => def.id == province.id).name.split(
-        " "
-      );
+      var name = ProvinceDefs.find((def) => def.id == province.id).name.split(" ");
       // var slots = ProvinceDefs.find(def => def.id == province.id).totalBuildingSlots;
       // console.debug(name,costsHTML);
 
@@ -629,9 +550,7 @@ function showBuildingCost(msg) {
           // Goods[entry] = entry;
           // console.debug(entry,rss[`${entry}`]);
 
-          costsHTML += `<td>${helper.fResourceShortName(resource)}</td><td>${
-            building.costs.resources[resource]
-          }</td>`;
+          costsHTML += `<td>${helper.fResourceShortName(resource)}</td><td>${building.costs.resources[resource]}</td>`;
         });
 
         // <td>${building.costs.resources.length >= 1 ? building.costs.resources[0] : ''}</td>
@@ -647,37 +566,21 @@ function showBuildingCost(msg) {
     `<div class="alert alert-info alert-dismissible  show collapsed" role="alert">
     ${element.close()}
     <p id="buildingCostTextLabel" href="#buildingCostText" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse">
-      ${element.icon(
-        "buildingCosticon",
-        "buildingCostText",
-        collapse.collapseBuildingCost
-      )}
+      ${element.icon("buildingCosticon", "buildingCostText", collapse.collapseBuildingCost)}
     <strong>GBG Building Costs:</strong></p>` +
-    element.copy(
-      "buildingCostID",
-      "primary",
-      "right",
-      collapse.collapseBuildingCost
-    ) +
-    `<table style="height: ${
-      toolOptions.buildingCostSize
-    }px"  id="buildingCostText" class="overflow-y table collapse ${
+    element.copy("buildingCostID", "primary", "right", collapse.collapseBuildingCost) +
+    `<table style="height: ${toolOptions.buildingCostSize}px"  id="buildingCostText" class="overflow-y table collapse ${
       collapse.collapseBuildingCost == false ? "show" : ""
     }">` +
     costsHTML +
     `</table></div>`;
-  document
-    .getElementById("buildingCostID")
-    .addEventListener("click", buildingCostCopy);
-  document
-    .getElementById("buildingCostTextLabel")
-    .addEventListener("click", collapse.fCollapseBuildingCost);
+  document.getElementById("buildingCostID").addEventListener("click", buildingCostCopy);
+  document.getElementById("buildingCostTextLabel").addEventListener("click", collapse.fCollapseBuildingCost);
   const costsTextDiv = document.getElementById("buildingCostText");
   const resizeObserver = new ResizeObserver((entries) => {
     // console.debug(entries);
     for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        setBuildingCostSize(entry.contentRect.height);
+      if (entry.contentRect && entry.contentRect.height) setBuildingCostSize(entry.contentRect.height);
     }
   });
   resizeObserver.observe(costsDiv);
