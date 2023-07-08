@@ -414241,9 +414241,7 @@ const cityEntities = [
 const formattedCityEntities = {};
 
 for (let i = 0; i < cityEntities.length; i++) {
-  formattedCityEntities[cityEntities[i].id] = {
-    name: cityEntities[i].name,
-  };
+  formattedCityEntities[cityEntities[i].id] = cityEntities[i];
 }
 
 export default formattedCityEntities;
