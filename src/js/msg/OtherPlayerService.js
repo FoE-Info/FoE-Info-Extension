@@ -252,7 +252,8 @@ export function otherPlayerService(msg) {
       if (CityEntityDefs[mapID.cityentity_id]) {
         const entity = CityEntityDefs[mapID.cityentity_id];
         var boost = {};
-        const entityAge = helper.fAgefromLevel(mapID.level);
+        const entityAge = mapID.level ? helper.fAgefromLevel(mapID.level) : msg.responseData.other_player_era;
+
         var forgePoints = 0;
         // console.debug(entity.name,entity,mapID);
         // debug.innerHTML += `<p>${CityEntityDefs[mapID.cityentity_id].name}`;
@@ -382,7 +383,9 @@ export function otherPlayerService(msg) {
                 else boost = bonusAr.boostHints[j].boostHintEraMap["AllAge"];
                 totalboost += fBoost(boost);
               }
-            } else if (bonusAr.bonuses && bonusAr.bonuses.length) {
+            }
+
+            if (bonusAr.bonuses && bonusAr.bonuses.length) {
               for (var j = 0; j < bonusAr.bonuses.length; j++) {
                 // console.debug(bonusAr.bonuses[j]);
                 if (bonusAr.bonuses[j].boost[entityAge]) boost = bonusAr.bonuses[j].boost[entityAge];
@@ -405,22 +408,27 @@ export function otherPlayerService(msg) {
                 // else
                 // forgePoints = 0;
               }
-            } else if (bonusAr.bonusGiven) {
+            }
+
+            // This should be calculated if conditions for this are met.
+            if (bonusAr.bonusGiven) {
               // for(var j = 0; j < entity.bonusGiven.length; j++){
               // console.debug(bonusAr.bonusGiven);
               if (bonusAr.bonusGiven.boost[entityAge]) boost = bonusAr.bonusGiven.boost[entityAge];
               else if (bonusAr.bonusGiven.boost["AllAge"]) boost = bonusAr.bonusGiven.boost["AllAge"];
               else boost = null;
               if (boost) {
-                bonusAr.linkPositions.forEach((element) => {
-                  totalboost += fBoost(boost);
-                });
+                totalboost += fBoost(boost);
               }
               // }
-            } else if (bonusAr.boostHints) {
+            }
+            /*
+            if (bonusAr.boostHints) {
               boost = bonusAr;
               totalboost += fBoost(boost);
-            } else if (bonusAr.additionalResources) {
+            }*/
+
+            if (bonusAr.additionalResources) {
               // if(bonusAr.additionalResources[entityAge])
               // 	// boost = bonusAr.bonusGiven.boost[entityAge];
               // 	// console.debug(bonusAr.additionalResources[entityAge]);
@@ -429,8 +437,6 @@ export function otherPlayerService(msg) {
               // 	console.debug(forgePoints);
               // 	// else
               // 	// console.debug(bonusAr.additionalResources);
-            } else {
-              // console.debug(entity);
             }
           }
           if (forgePoints) {
@@ -448,8 +454,9 @@ export function otherPlayerService(msg) {
           console.debug(entity.name, entity, mapID);
           const comp = entity.components[entityAge];
           if (comp && comp.hasOwnProperty("boosts")) {
-            const boost = comp.boosts.boosts[0];
-            totalboost += fBoost(boost);
+            comp.boosts.boosts.forEach((boost) => {
+              totalboost += fBoost(boost);
+            });
           }
         }
 
