@@ -32,12 +32,20 @@
     "https://*.google.com/*",
     "https://*.googleusercontent.com/",
     "https://discordapp.com/api/webhooks/*",
-    "https://discord.com/api/webhooks/*"
+    "https://discord.com/api/webhooks/*",
+    "https://*.innogamescdn.com/*"
   ],
   "web_accessible_resources": [
     {
-      "resources": ["browser-polyfill.js"],
+      "resources": ["browser-polyfill.js", "resource.js"],
       "matches": ["https://*.forgeofempires.com/*"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.forgeofempires.com/game/*"],
+      "run_at": "document_end",
+      "js": ["content-script.js"]
     }
   ],
   "content_security_policy": {

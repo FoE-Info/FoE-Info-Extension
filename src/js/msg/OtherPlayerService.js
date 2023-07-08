@@ -27,10 +27,19 @@ import * as collapse from "../fn/collapse.js";
 import * as post_webstore from "../fn/post.js";
 import * as copy from "../fn/copy.js";
 import * as element from "../fn/AddElement";
-import { setPlayerName, CityProtections, PlayerName, checkDebug, url, MyInfo, GameOrigin, PlayerID } from "../index.js";
+import {
+  CityEntityDefs,
+  setPlayerName,
+  CityProtections,
+  PlayerName,
+  checkDebug,
+  url,
+  MyInfo,
+  GameOrigin,
+  PlayerID,
+} from "../index.js";
 import { toolOptions, setFriendsSize } from "../fn/globals.js";
 import { fArcname } from "./StartupService.js";
-import CityEntityDefs from "../data/cityEntities.js";
 
 var friendsHTML = "";
 

@@ -26,6 +26,8 @@ module.exports = {
     options: "./src/js/options.js",
     devtools: "./src/js/devtools.js",
     popup: "./src/js/popup.js",
+    popup: "./src/js/content-script.js",
+    popup: "./src/js/resource.js",
   },
   devtool: "inline-source-map",
   devServer: {
@@ -113,6 +115,14 @@ module.exports = {
         { from: "./src/icons/common", to: "icons" },
         { from: "./src/icons/foe-info", to: "icons" },
         { from: "src/images/logo90.png", to: "icons/" },
+        {
+          from: "src/js/content-script.js",
+          to: "./",
+        },
+        {
+          from: "src/js/resource.js",
+          to: "./",
+        },
       ],
     }),
     new WebpackExtensionManifestPlugin({
