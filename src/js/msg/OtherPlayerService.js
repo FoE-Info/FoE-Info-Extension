@@ -409,10 +409,13 @@ export function otherPlayerService(msg) {
               else if (bonusAr.bonusGiven.boost["AllAge"]) boost = bonusAr.bonusGiven.boost["AllAge"];
               else boost = null;
               if (boost) {
-                totalboost += fBoost(boost);
+                bonusAr.linkPositions.forEach((element) => {
+                  totalboost += fBoost(boost);
+                });
               }
               // }
             }
+
             if (bonusAr.boostHints) {
               boost = bonusAr;
               totalboost += fBoost(boost);
@@ -447,7 +450,7 @@ export function otherPlayerService(msg) {
           const comp = entity.components[entityAge];
           if (comp && comp.hasOwnProperty("boosts")) {
             comp.boosts.boosts.forEach((boost) => {
-            totalboost += fBoost(boost);
+              totalboost += fBoost(boost);
             });
           }
         }
@@ -1002,22 +1005,19 @@ function fBoost(boost) {
     entityVisitCityDefense = boost.value;
     // console.debug('visitCityDefense:', visitCityDefense, boost.value);
     // debug.innerHTML += ` ${boost.value}</p>`;
-  }
-  else if(boost.type == "att_def_boost_attacker"){
-      visitAttack += boost.value;
-      entityVisitAttack = boost.value;
-      visitDefense += boost.value;
-      entityVisitDefense = boost.value;
-      // console.debug('CityAttack:', CityAttack, boost[j].value);
-  }
-  else if(boost.type == "att_def_boost_defender"){
-      visitCityAttack += boost.value;
-      entityVisitCityAttack = boost.value;
-      visitCityDefense += boost.value;
-      entityVisitCityDefense = boost.value;
-      // console.debug('CityAttack:', CityAttack, boost[j].value);
-  }
-  else if (boost.type == "happiness_amount") {
+  } else if (boost.type == "att_def_boost_attacker") {
+    visitAttack += boost.value;
+    entityVisitAttack = boost.value;
+    visitDefense += boost.value;
+    entityVisitDefense = boost.value;
+    // console.debug('CityAttack:', CityAttack, boost[j].value);
+  } else if (boost.type == "att_def_boost_defender") {
+    visitCityAttack += boost.value;
+    entityVisitCityAttack = boost.value;
+    visitCityDefense += boost.value;
+    entityVisitCityDefense = boost.value;
+    // console.debug('CityAttack:', CityAttack, boost[j].value);
+  } else if (boost.type == "happiness_amount") {
     return 0;
   } else if (
     boost.type != "coin_production" &&
