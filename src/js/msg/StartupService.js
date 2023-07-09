@@ -31,7 +31,8 @@ import {
   ignoredPlayers,
   debug,
 } from "../index.js";
-import { availablePacksFP, CityEntityDefs, Goods, language } from "../index.js";
+import { availablePacksFP, Goods, language } from "../index.js";
+import CityEntityDefs from "../data/cityEntities.js";
 import { ResourceDefs, availableFP } from "./ResourceService.js";
 import * as helper from "../fn/helper.js";
 import * as collapse from "../fn/collapse.js";
