@@ -392,6 +392,8 @@ export function fLevelfromAge(age) {
     return 19;
   } else if (age == "SpaceAgeJupiterMoon") {
     return 20;
+  } else if (age == "SpaceAgeTitan") {
+    return 21;
   }
   // else if (age =="AllAge")
   // {
@@ -446,6 +448,8 @@ export function fAgefromLevel(level) {
     return "SpaceAgeVenus";
   } else if (level == 20) {
     return "SpaceAgeJupiterMoon";
+  } else if (level == 21) {
+    return "SpaceAgeTitan";
   }
   // else if (age =="AllAge")
   // {
@@ -497,6 +501,8 @@ export function fGVGagesname(age) {
     name = "SAV";
   } else if (age == "SpaceAgeJupiterMoon") {
     name = "SAJM";
+  } else if (age === "SpaceAgeTitan") {
+    name = "SAT";
   } else if (age == "AllAge") {
     name = "AA";
   }
