@@ -28,11 +28,12 @@ export function armyUnitManagementService(msg) {
 
   if (msg.responseData.counts.length) {
     const army = msg.responseData.counts;
-    var armyText = "";
+    const unitsPerEra = [];
     for (var j = army.length - 1; j >= 0; j--) {
       var units = 0;
       var eraText = helper.fGVGagesname(MilitaryDefs[army[j].unitTypeId].era);
-      if (MilitaryDefs[army[j].unitTypeId].era != "NoAge" || army[j].unitTypeId == "rogue") {
+      let eraId = MilitaryDefs[army[j].unitTypeId].era;
+      if (eraId != "NoAge" || army[j].unitTypeId == "rogue") {
         if (army[j].unattached) units += army[j].unattached;
         if (army[j].attached) units += army[j].attached;
         if (army[j].unitTypeId == "rogue") {
@@ -44,7 +45,11 @@ export function armyUnitManagementService(msg) {
           if (ArmyUnits[army[j].unitTypeId] == null) {
             // ArmyUnits.push({'name':entry.player.name});
             ArmyUnits[army[j].unitTypeId] = units;
-            armyText += `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units}<br>`;
+
+            unitsPerEra.push({
+              era: eraId,
+              text: `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units}`,
+            });
           } else {
             if (units != ArmyUnits[army[j].unitTypeId]) {
               var diff = units - ArmyUnits[army[j].unitTypeId];
@@ -52,7 +57,11 @@ export function armyUnitManagementService(msg) {
             } else {
               armyHTML = ``;
             }
-            armyText += `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units} ` + armyHTML + `<br>`;
+
+            unitsPerEra.push({
+              era: eraId,
+              text: `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units} ` + armyHTML,
+            });
           }
           // console.debug(army[j],army[j].unitTypeId,army[j].unattached,army[j].attached,units);
           allUnits += units;
@@ -75,6 +84,10 @@ export function armyUnitManagementService(msg) {
       armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class=${diff > 0 ? '"green">+' : '"red">'}${
         diff != 0 ? diff : ""
       }</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
+      const armyText = unitsPerEra
+        .sort((a, b) => helper.fLevelfromAge(b.era) - helper.fLevelfromAge(a.era))
+        .map((item) => item.text)
+        .join("<br>");
       armyDIV.innerHTML = armyHTML + armyText + `</p></div></div>`;
       document.getElementById("armyTextLabel").addEventListener("click", collapse.fCollapseArmy);
       const armyDiv = document.getElementById("armyText");
