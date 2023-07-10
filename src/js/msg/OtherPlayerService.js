@@ -171,6 +171,7 @@ export function otherPlayerService(msg) {
     var canBeMotivated = 0;
     var canBePolished = 0;
     map_entities.forEach((mapID, id) => {
+      var isChain=false;
       // if(mapID.type != 'street' && mapID.type != 'off_grid')
       if (mapID.type == "off_grid") console.debug(id, helper.fGBname(mapID.cityentity_id), mapID);
 
@@ -314,6 +315,10 @@ export function otherPlayerService(msg) {
           const bonus = entity.abilities;
           // console.debug(entity.name,bonus,entity,mapID);
           bonus.forEach((ability) => {
+            if (ability.__class__ == "ChainLinkAbility") {
+              console.log("BENBEN: " + ability.chainId)
+              isChain = true;
+            }
             if (ability.__class__ == "AddResourcesToGuildTreasuryAbility") {
               // console.debug(entity.name,mapID);
               // console.debug(entity.name,ability,ability.additionalResources[entityAge]);
@@ -408,7 +413,7 @@ export function otherPlayerService(msg) {
               if (bonusAr.bonusGiven.boost[entityAge]) boost = bonusAr.bonusGiven.boost[entityAge];
               else if (bonusAr.bonusGiven.boost["AllAge"]) boost = bonusAr.bonusGiven.boost["AllAge"];
               else boost = null;
-              if (boost) {
+              if (boost && false) { // this is causing double calculation of the chain building, once a the main building and second time here on the chain piece
                 // bonusAr.linkPositions.forEach((element) => {
                   totalboost += fBoost(boost);
                 // });
