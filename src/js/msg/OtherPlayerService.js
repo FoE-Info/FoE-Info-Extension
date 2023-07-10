@@ -409,17 +409,17 @@ export function otherPlayerService(msg) {
               else if (bonusAr.bonusGiven.boost["AllAge"]) boost = bonusAr.bonusGiven.boost["AllAge"];
               else boost = null;
               if (boost) {
-                bonusAr.linkPositions.forEach((element) => {
+                // bonusAr.linkPositions.forEach((element) => {
                   totalboost += fBoost(boost);
-                });
+                // });
               }
               // }
             }
 
-            if (bonusAr.boostHints) {
-              boost = bonusAr;
-              totalboost += fBoost(boost);
-            }
+//             if (bonusAr.boostHints) {
+//               boost = bonusAr;
+//               totalboost += fBoost(boost);
+//             }
 
             if (bonusAr.additionalResources) {
               // if(bonusAr.additionalResources[entityAge])
