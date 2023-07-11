@@ -587,6 +587,24 @@ browser.permissions
 
 // console.debug(showOptions);
 
+/* don't send the origin, so that they don't see the request coming from Chrome extension */
+function originWithId(header) {
+  return (
+    header.name.toLowerCase() === "origin" &&
+    (header.value.indexOf("moz-extension://") === 0 || header.value.indexOf("chrome-extension://") === 0)
+  );
+}
+
+chrome.webRequest.onBeforeSendHeaders.addListener(
+  (details) => {
+    return {
+      requestHeaders: details.requestHeaders.filter((x) => !originWithId(x)),
+    };
+  },
+  { urls: ["https://*.innogamescdn.com/*"] },
+  ["requestHeaders"]
+);
+
 browser.devtools.network.onRequestFinished.addListener(handleRequestFinished);
 
 // When a network request has finished this function will be called.
@@ -627,7 +645,7 @@ function handleRequestFinished(request) {
       // console.debug('version:', GameVersion);
     }
 
-    request.getContent().then(([body, mimeType]) => {
+    request.getContent().then(async ([body, mimeType]) => {
       // console.log("Content: ", body);
       // console.log("MIME type: ", mimeType);
       const parsed = JSON.parse(body);
@@ -636,7 +654,42 @@ function handleRequestFinished(request) {
         for (var i = 0; i < parsed.length; i++) {
           const msg = parsed[i];
 
-          if (msg.requestClass == "CampaignService" && msg.requestMethod == "getDeposits") {
+          // check if this is static data service info that holds all URLs to all metadata files
+          if (msg.requestClass === "StaticDataService" && msg.requestMethod == "getMetadata") {
+            // find an URL that has city entities
+            const cityEntitiesURL = msg.responseData.find((item) => item.identifier === "city_entities").url;
+            // fetch it via ajax
+            let response = await fetch(cityEntitiesURL);
+            // parse response to JSON
+            const cityEntitiesJSON = await response.json();
+
+            // run the code that prefills city entities ( copied from somewhere bellow )
+            cityEntitiesJSON.forEach(function (msg) {
+              if (msg.__class__ && msg.__class__.substring(0, 10) == "CityEntity") {
+                if (!CityEntityDefs[msg.id]) {
+                  CityEntityDefs[msg.id] = {
+                    name: msg.name,
+                    abilities: [],
+                    entity_levels: [],
+                    available_products: [],
+                  };
+                }
+                // console.debug(msg.name,msg);
+                CityEntityDefs[msg.id] = msg;
+              } else if (msg.__class__ && msg.__class__ == "GenericCityEntity") {
+                if (!CityEntityDefs[msg.id]) {
+                  CityEntityDefs[msg.id] = {
+                    name: msg.name,
+                    abilities: [],
+                    entity_levels: [],
+                    available_products: [],
+                  };
+                }
+                // console.debug(msg.name,msg);
+                CityEntityDefs[msg.id] = msg;
+              }
+            });
+          } else if (msg.requestClass == "CampaignService" && msg.requestMethod == "getDeposits") {
             /*CampaignService*/
           } else if (msg.requestClass == "ConversationService") {
             if (msg.requestMethod == "getCategory") {
