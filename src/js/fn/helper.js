@@ -12,7 +12,7 @@
  * ________________________________________________________________
  */
 import { Popover } from "bootstrap";
-import { donationDIV, GameOrigin, Goods, hiddenRewards, incidents, url } from "../index.js";
+import { CityEntityDefs, donationDIV, GameOrigin, Goods, hiddenRewards, incidents, url } from "../index.js";
 import { BattlegroundPerformance, BGtime, GuildMembers } from "../msg/GuildBattlegroundService.js";
 import { ResourceNames } from "../msg/ResourceService.js";
 import { showOptions } from "../vars/showOptions.js";
@@ -24,7 +24,6 @@ import * as post_webstore from "./post.js";
 import * as storage from "./storage.js";
 import * as element from "./AddElement";
 import browser from "webextension-polyfill";
-import CityEntityDefs from "../data/cityEntities.js";
 
 var heightGBG = toolOptions.battlegroundsSize;
 export var MyGuildPermissions = 0;
@@ -392,6 +391,8 @@ export function fLevelfromAge(age) {
     return 19;
   } else if (age == "SpaceAgeJupiterMoon") {
     return 20;
+  } else if (age == "SpaceAgeTitan") {
+    return 21;
   }
   // else if (age =="AllAge")
   // {
@@ -446,6 +447,8 @@ export function fAgefromLevel(level) {
     return "SpaceAgeVenus";
   } else if (level == 20) {
     return "SpaceAgeJupiterMoon";
+  } else if (level == 21) {
+    return "SpaceAgeTitan";
   }
   // else if (age =="AllAge")
   // {
@@ -497,6 +500,8 @@ export function fGVGagesname(age) {
     name = "SAV";
   } else if (age == "SpaceAgeJupiterMoon") {
     name = "SAJM";
+  } else if (age === "SpaceAgeTitan") {
+    name = "SAT";
   } else if (age == "AllAge") {
     name = "AA";
   }
