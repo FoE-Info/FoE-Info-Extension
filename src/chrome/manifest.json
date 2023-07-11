@@ -25,14 +25,15 @@
     "64": "icons/Icon64.png",
     "128": "icons/Icon128.png"
   },
-  "permissions": ["contextMenus", "storage", "unlimitedStorage", "clipboardWrite"],
+  "permissions": ["contextMenus", "storage", "unlimitedStorage", "clipboardWrite", "webRequest"],
   "host_permissions": [
     "https://*.forgeofempires.com/game/*",
     "wss://*.forgeofempires.com/socket",
     "https://*.google.com/*",
     "https://*.googleusercontent.com/",
     "https://discordapp.com/api/webhooks/*",
-    "https://discord.com/api/webhooks/*"
+    "https://discord.com/api/webhooks/*",
+    "https://*.innogamescdn.com/*"
   ],
   "web_accessible_resources": [
     {
