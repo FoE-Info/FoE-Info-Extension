@@ -25,11 +25,12 @@
     "64": "icons/Icon64.png",
     "128": "icons/Icon128.png"
   },
-  "permissions": ["storage", "unlimitedStorage", "clipboardWrite"],
+  "permissions": ["storage", "unlimitedStorage", "clipboardWrite", "webRequest"],
   "host_permissions": [
     "https://*.forgeofempires.com/game/*",
     "https://*.google.com/*",
-    "https://*.googleusercontent.com/"
+    "https://*.googleusercontent.com/",
+    "https://*.innogamescdn.com/*"
   ],
   "web_accessible_resources": [
     {
