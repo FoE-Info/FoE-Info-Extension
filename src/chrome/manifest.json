@@ -33,7 +33,6 @@
     "https://*.googleusercontent.com/",
     "https://discordapp.com/api/webhooks/*",
     "https://discord.com/api/webhooks/*",
-    "https://discord.com/api/webhooks/*",
     "https://*.innogamescdn.com/*"
   ],
   "web_accessible_resources": [
