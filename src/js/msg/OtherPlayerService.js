@@ -410,12 +410,13 @@ export function otherPlayerService(msg) {
             if (bonusAr.bonusGiven) {
               // for(var j = 0; j < entity.bonusGiven.length; j++){
               // console.debug(bonusAr.bonusGiven);
+              let multiplier = bonusAr.linkPositions.length - 1;
               if (bonusAr.bonusGiven.boost[entityAge]) boost = bonusAr.bonusGiven.boost[entityAge];
               else if (bonusAr.bonusGiven.boost["AllAge"]) boost = bonusAr.bonusGiven.boost["AllAge"];
               else boost = null;
-              if (boost && false) { // this is causing double calculation of the chain building, once a the main building and second time here on the chain piece
+              if (boost && multiplier>0) { // this is causing double calculation of the chain building, once a the main building and second time here on the chain piece
                 // bonusAr.linkPositions.forEach((element) => {
-                  totalboost += fBoost(boost);
+                  totalboost += (fBoost(boost) * multiplier);
                 // });
               }
               // }
