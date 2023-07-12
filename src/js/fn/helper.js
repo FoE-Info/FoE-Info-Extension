@@ -404,7 +404,7 @@ export function fLevelfromAge(age) {
 // number of numAges
 // added SAV - 19 ages
 // added SAJM - 20 ages
-export const numAges = 20;
+export const numAges = 21;
 
 export function fAgefromLevel(level) {
   if (level == 1) {
