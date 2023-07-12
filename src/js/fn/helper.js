@@ -532,6 +532,7 @@ export function fGoodsTally(age, good) {
   else if (age == "SpaceAgeAsteroidBelt") Goods.saab += good;
   else if (age == "SpaceAgeVenus") Goods.sav += good;
   else if (age == "SpaceAgeJupiterMoon") Goods.sajm += good;
+  else if (age == "SpaceAgeTitan") Goods.sat += good;
   else if (age == "NoAge") Goods.noage += good;
   else console.debug(age, good);
 }
