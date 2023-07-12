@@ -227,7 +227,9 @@ export function fGBname(city_entity) {
   else if (GB_name == "X_SpaceAgeAsteroidBelt_Landmark1") GB_name = "Space Carrier";
   else if (GB_name == "X_SpaceAgeVenus_Landmark1") GB_name = "Flying Island";
   else if (GB_name == "X_SpaceAgeJupiterMoon_Landmark1") GB_name = "A.I. Core";
-
+  else if (GB_name == "X_SpaceAgeTitan_Landmark1") GB_name = "Saturn VI Gate CENTAURUS";
+  else if (GB_name == "X_SpaceAgeTitan_Landmark2") GB_name = "Saturn VI Gate PEGASUS";
+  else if (GB_name == "X_SpaceAgeTitan_Landmark3") GB_name = "Saturn VI Gate HYDRA";
   // console.debug(city_entity,CityEntityDefs);
   return GB_name;
 }
