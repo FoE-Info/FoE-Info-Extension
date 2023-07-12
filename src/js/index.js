@@ -124,6 +124,7 @@ export var WaterfallProvinceDefs = [];
 export var BuildingDefs = [];
 export var hiddenRewards = [];
 export var Goods = {
+  sat: 0,
   sajm: 0,
   sav: 0,
   saab: 0,
