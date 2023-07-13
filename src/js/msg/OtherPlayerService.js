@@ -106,6 +106,9 @@ export function otherPlayerService(msg) {
   var visitAILevel = null;
   var visitAtomLevel = null;
   var visitToRLevel = null;
+  var visitCentaurusLevel = null;
+  var visitPegasusLevel = null;
+  var visitHydraLevel = null;
   var visitstatsHTML = ``;
   var clanPower = 0;
   var clanBuildings = 0;
@@ -244,6 +247,9 @@ export function otherPlayerService(msg) {
       else if (mapID.cityentity_id == "X_VirtualFuture_Landmark2") visitHCLevel = mapID.level;
       else if (mapID.cityentity_id == "X_SpaceAgeAsteroidBelt_Landmark1") visitSCLevel = mapID.level;
       else if (mapID.cityentity_id == "X_SpaceAgeJupiterMoon_Landmark1") visitAILevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeTitan_Landmark1") visitCentaurusLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeTitan_Landmark2") visitPegasusLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeTitan_Landmark3") visitHydraLevel = mapID.level;
       else {
         // const entity = CityEntityDefs[mapID.cityentity_id];
         // if(entity.type != 'tower' && entity.type != 'street' && entity.type != 'hub_main' && entity.type != 'hub_part' && entity.type != 'off_grid'){
@@ -1080,6 +1086,7 @@ function fGoodsTally(age, good) {
   else if (age == "SpaceAgeAsteroidBelt") Goods.saab += good;
   else if (age == "SpaceAgeVenus") Goods.sav += good;
   else if (age == "SpaceAgeJupiterMoon") Goods.sajm += good;
+  else if (age == "SpaceAgeTitan") Goods.sat += good;
   else if (age == "NoAge") Goods.noage += good;
   else console.debug(age, good);
 }

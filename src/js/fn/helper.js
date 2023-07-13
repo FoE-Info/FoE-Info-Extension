@@ -155,6 +155,12 @@ export function fGBsname(city_entity) {
     return "Flying";
   } else if (city_entity == "A.I Core") {
     return "AI";
+  } else if (city_entity == "Saturn VI Gate CENTAURUS") {
+    return "Centaurus";
+  } else if (city_entity == "Saturn VI Gate PEGASUS") {
+    return "Pegasus";
+  } else if (city_entity == "Saturn VI Gate HYDRA") {
+    return "Hydra";
   }
 
   console.debug(city_entity);
