@@ -183,7 +183,7 @@ export function otherPlayerService(msg) {
     var canBeMotivated = 0;
     var canBePolished = 0;
     map_entities.forEach((mapID, id) => {
-      var isChain=false;
+      var isChain = false;
       // if(mapID.type != 'street' && mapID.type != 'off_grid')
       if (mapID.type == "off_grid") console.debug(id, helper.fGBname(mapID.cityentity_id), mapID);
 
@@ -331,7 +331,7 @@ export function otherPlayerService(msg) {
           // console.debug(entity.name,bonus,entity,mapID);
           bonus.forEach((ability) => {
             if (ability.__class__ == "ChainLinkAbility") {
-              console.log("BENBEN: " + ability.chainId)
+              console.log("BENBEN: " + ability.chainId);
               isChain = true;
             }
             if (ability.__class__ == "AddResourcesToGuildTreasuryAbility") {
@@ -429,9 +429,10 @@ export function otherPlayerService(msg) {
               if (bonusAr.bonusGiven.boost[entityAge]) boost = bonusAr.bonusGiven.boost[entityAge];
               else if (bonusAr.bonusGiven.boost["AllAge"]) boost = bonusAr.bonusGiven.boost["AllAge"];
               else boost = null;
-              if (boost && multiplier>0) { // this is causing double calculation of the chain building, once a the main building and second time here on the chain piece
+              if (boost && multiplier > 0) {
+                // this is causing double calculation of the chain building, once a the main building and second time here on the chain piece
                 // bonusAr.linkPositions.forEach((element) => {
-                  totalboost += (fBoost(boost) * multiplier);
+                totalboost += fBoost(boost) * multiplier;
                 // });
               }
               // }
@@ -469,18 +470,18 @@ export function otherPlayerService(msg) {
         if (entity.hasOwnProperty("components")) {
           console.debug(entity.name, entity, mapID);
           const comp = entity.components[entityAge];
+          if (comp && comp.hasOwnProperty("boosts")) {
+            comp.boosts.boosts.forEach((boost) => {
+              totalboost += fBoost(boost);
+            });
+          } else {
+            const comp = entity.components["AllAge"];
             if (comp && comp.hasOwnProperty("boosts")) {
-                comp.boosts.boosts.forEach((boost) => {
-                    totalboost += fBoost(boost);
-                });
-            } else {
-                const comp = entity.components["AllAge"];
-                if (comp && comp.hasOwnProperty("boosts")) {
-                    comp.boosts.boosts.forEach((boost) => {
-                        totalboost += fBoost(boost);
-                    });
-                }
+              comp.boosts.boosts.forEach((boost) => {
+                totalboost += fBoost(boost);
+              });
             }
+          }
         }
 
         if (totalboost) {
