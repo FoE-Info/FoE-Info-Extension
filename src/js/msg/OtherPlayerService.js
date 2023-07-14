@@ -106,6 +106,9 @@ export function otherPlayerService(msg) {
   var visitAILevel = null;
   var visitAtomLevel = null;
   var visitToRLevel = null;
+  var visitCentaurusLevel = null;
+  var visitPegasusLevel = null;
+  var visitHydraLevel = null;
   var visitstatsHTML = ``;
   var clanPower = 0;
   var clanBuildings = 0;
@@ -180,6 +183,7 @@ export function otherPlayerService(msg) {
     var canBeMotivated = 0;
     var canBePolished = 0;
     map_entities.forEach((mapID, id) => {
+      var isChain = false;
       // if(mapID.type != 'street' && mapID.type != 'off_grid')
       if (mapID.type == "off_grid") console.debug(id, helper.fGBname(mapID.cityentity_id), mapID);
 
@@ -240,6 +244,9 @@ export function otherPlayerService(msg) {
       else if (mapID.cityentity_id == "X_VirtualFuture_Landmark2") visitHCLevel = mapID.level;
       else if (mapID.cityentity_id == "X_SpaceAgeAsteroidBelt_Landmark1") visitSCLevel = mapID.level;
       else if (mapID.cityentity_id == "X_SpaceAgeJupiterMoon_Landmark1") visitAILevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeTitan_Landmark1") visitCentaurusLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeTitan_Landmark2") visitPegasusLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeTitan_Landmark3") visitHydraLevel = mapID.level;
       else {
         // const entity = CityEntityDefs[mapID.cityentity_id];
         // if(entity.type != 'tower' && entity.type != 'street' && entity.type != 'hub_main' && entity.type != 'hub_part' && entity.type != 'off_grid'){
@@ -320,6 +327,10 @@ export function otherPlayerService(msg) {
           const bonus = entity.abilities;
           // console.debug(entity.name,bonus,entity,mapID);
           bonus.forEach((ability) => {
+            if (ability.__class__ == "ChainLinkAbility") {
+              console.log("BENBEN: " + ability.chainId);
+              isChain = true;
+            }
             if (ability.__class__ == "AddResourcesToGuildTreasuryAbility") {
               // console.debug(entity.name,mapID);
               // console.debug(entity.name,ability,ability.additionalResources[entityAge]);
@@ -411,12 +422,14 @@ export function otherPlayerService(msg) {
             if (bonusAr.bonusGiven) {
               // for(var j = 0; j < entity.bonusGiven.length; j++){
               // console.debug(bonusAr.bonusGiven);
+              let multiplier = bonusAr.linkPositions.length - 1;
               if (bonusAr.bonusGiven.boost[entityAge]) boost = bonusAr.bonusGiven.boost[entityAge];
               else if (bonusAr.bonusGiven.boost["AllAge"]) boost = bonusAr.bonusGiven.boost["AllAge"];
               else boost = null;
-              if (boost) {
+              if (boost && multiplier > 0) {
+                // this is causing double calculation of the chain building, once a the main building and second time here on the chain piece
                 // bonusAr.linkPositions.forEach((element) => {
-                totalboost += fBoost(boost);
+                totalboost += fBoost(boost) * multiplier;
                 // });
               }
               // }
@@ -458,6 +471,13 @@ export function otherPlayerService(msg) {
             comp.boosts.boosts.forEach((boost) => {
               totalboost += fBoost(boost);
             });
+          } else {
+            const comp = entity.components["AllAge"];
+            if (comp && comp.hasOwnProperty("boosts")) {
+              comp.boosts.boosts.forEach((boost) => {
+                totalboost += fBoost(boost);
+              });
+            }
           }
         }
 
@@ -1001,11 +1021,11 @@ function fBoost(boost) {
   } else if (boost.type == "att_boost_defender") {
     visitCityAttack += boost.value;
     entityVisitCityAttack = boost.value;
-    // console.debug('CityAttack:', CityAttack, boost[j].value);
+    // console.debug('visitCityAttack:', visitCityAttack, boost.value);
   } else if (boost.type == "def_boost_attacker") {
     visitDefense += boost.value;
     entityVisitDefense = boost.value;
-    // console.debug('Defense:', Defense, boost[j].value);
+    // console.debug('visitDefense:', visitDefense, boost.value);
   } else if (boost.type == "def_boost_defender") {
     visitCityDefense += boost.value;
     entityVisitCityDefense = boost.value;
@@ -1016,13 +1036,13 @@ function fBoost(boost) {
     entityVisitAttack = boost.value;
     visitDefense += boost.value;
     entityVisitDefense = boost.value;
-    // console.debug('CityAttack:', CityAttack, boost[j].value);
+    // console.debug('bothAttack:', visitAttack, boost.value);
   } else if (boost.type == "att_def_boost_defender") {
     visitCityAttack += boost.value;
     entityVisitCityAttack = boost.value;
     visitCityDefense += boost.value;
     entityVisitCityDefense = boost.value;
-    // console.debug('CityAttack:', CityAttack, boost[j].value);
+    // console.debug('bothAttack:', visitCityAttack, boost.value);
   } else if (boost.type == "happiness_amount") {
     return 0;
   } else if (
@@ -1064,6 +1084,7 @@ function fGoodsTally(age, good) {
   else if (age == "SpaceAgeAsteroidBelt") Goods.saab += good;
   else if (age == "SpaceAgeVenus") Goods.sav += good;
   else if (age == "SpaceAgeJupiterMoon") Goods.sajm += good;
+  else if (age == "SpaceAgeTitan") Goods.sat += good;
   else if (age == "NoAge") Goods.noage += good;
   else console.debug(age, good);
 }
