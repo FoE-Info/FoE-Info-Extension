@@ -124,6 +124,7 @@ export var WaterfallProvinceDefs = [];
 export var BuildingDefs = [];
 export var hiddenRewards = [];
 export var Goods = {
+  sat: 0,
   sajm: 0,
   sav: 0,
   saab: 0,
@@ -2378,27 +2379,27 @@ function setHeight() {
   setRewardSize(heightRewards);
 }
 
-// browser.runtime.onUpdateAvailable.addListener(handleUpdateAvailable);
-// function handleUpdateAvailable(details) {
-//   console.debug("updating to version " + details.version);
-//   alert("updating to version " + details.version);
-//   browser.runtime.reload();
-// }
+browser.runtime.onUpdateAvailable.addListener(handleUpdateAvailable);
+function handleUpdateAvailable(details) {
+  console.debug("updating to version " + details.version);
+  alert("updating to version " + details.version);
+  browser.runtime.reload();
+}
 
-// let requestingCheck = browser.runtime.requestUpdateCheck();
-// requestingCheck.then(onRequested, onError);
-//
-// function onRequested(status, details) {
-//   if (status == "update_available") {
-//     console.debug("update pending...");
-//     console.log(details.version);
-//   } else if (status == "no_update") {
-//     console.debug("no update found");
-//   } else if (status == "throttled") {
-//     console.debug("Oops, I'm asking too frequently - I need to back off.");
-//   }
-// }
+let requestingCheck = browser.runtime.requestUpdateCheck();
+requestingCheck.then(onRequested, onError);
 
-// function onError(error) {
-//   console.log(`Error: ${error}`);
-// }
+function onRequested(status, details) {
+  if (status == "update_available") {
+    console.debug("update pending...");
+    console.log(details.version);
+  } else if (status == "no_update") {
+    console.debug("no update found");
+  } else if (status == "throttled") {
+    console.debug("Oops, I'm asking too frequently - I need to back off.");
+  }
+}
+
+function onError(error) {
+  console.log(`Error: ${error}`);
+}

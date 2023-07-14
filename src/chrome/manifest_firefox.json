@@ -15,7 +15,7 @@
   "devtools_page": "devtools.html",
   "options_ui": {
     "page": "options.html",
-    "open_in_tab": true
+    "open_in_tab": false
   },
   "icons": {
     "16": "icons/Icon16.png",
@@ -25,11 +25,14 @@
     "64": "icons/Icon64.png",
     "128": "icons/Icon128.png"
   },
-  "permissions": ["storage", "unlimitedStorage", "clipboardWrite"],
+  "permissions": ["storage", "unlimitedStorage", "clipboardWrite", "webRequest"],
   "host_permissions": [
     "https://*.forgeofempires.com/game/*",
     "https://*.google.com/*",
-    "https://*.googleusercontent.com/"
+    "https://*.googleusercontent.com/",
+    "https://discordapp.com/api/webhooks/*",
+    "https://discord.com/api/webhooks/*",
+    "https://*.innogamescdn.com/*"
   ],
   "web_accessible_resources": [
     {
