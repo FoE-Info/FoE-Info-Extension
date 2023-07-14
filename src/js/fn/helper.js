@@ -155,6 +155,12 @@ export function fGBsname(city_entity) {
     return "Flying";
   } else if (city_entity == "A.I Core") {
     return "AI";
+  } else if (city_entity == "Saturn VI Gate CENTAURUS") {
+    return "Centaurus";
+  } else if (city_entity == "Saturn VI Gate PEGASUS") {
+    return "Pegasus";
+  } else if (city_entity == "Saturn VI Gate HYDRA") {
+    return "Hydra";
   }
 
   console.debug(city_entity);
@@ -227,7 +233,9 @@ export function fGBname(city_entity) {
   else if (GB_name == "X_SpaceAgeAsteroidBelt_Landmark1") GB_name = "Space Carrier";
   else if (GB_name == "X_SpaceAgeVenus_Landmark1") GB_name = "Flying Island";
   else if (GB_name == "X_SpaceAgeJupiterMoon_Landmark1") GB_name = "A.I. Core";
-
+  else if (GB_name == "X_SpaceAgeTitan_Landmark1") GB_name = "Saturn VI Gate CENTAURUS";
+  else if (GB_name == "X_SpaceAgeTitan_Landmark2") GB_name = "Saturn VI Gate PEGASUS";
+  else if (GB_name == "X_SpaceAgeTitan_Landmark3") GB_name = "Saturn VI Gate HYDRA";
   // console.debug(city_entity,CityEntityDefs);
   return GB_name;
 }
@@ -404,7 +412,7 @@ export function fLevelfromAge(age) {
 // number of numAges
 // added SAV - 19 ages
 // added SAJM - 20 ages
-export const numAges = 20;
+export const numAges = 21;
 
 export function fAgefromLevel(level) {
   if (level == 1) {
@@ -530,6 +538,7 @@ export function fGoodsTally(age, good) {
   else if (age == "SpaceAgeAsteroidBelt") Goods.saab += good;
   else if (age == "SpaceAgeVenus") Goods.sav += good;
   else if (age == "SpaceAgeJupiterMoon") Goods.sajm += good;
+  else if (age == "SpaceAgeTitan") Goods.sat += good;
   else if (age == "NoAge") Goods.noage += good;
   else console.debug(age, good);
 }
