@@ -219,12 +219,9 @@ export function otherPlayerService(msg) {
         // HoF ?
         clanBuildings++;
         clanHOFcount++;
-      } else if (
-        mapID.cityentity_id == "X_ProgressiveEra_Landmark1" &&
-        mapID.state.current_product &&
-        mapID.state.current_product.amount
-      ) {
-        visitPenal = mapID.state.current_product.amount;
+      } else if (mapID.state.current_product && mapID.state.current_product.name === "penal_unit") {
+        //console.log(CityEntityDefs[mapID.cityentity_id].name, mapID.state.current_product.amount);
+        visitPenal += mapID.state.current_product.amount;
         visitTrazLevel = mapID.level;
       } else if (mapID.cityentity_id == "X_AllAge_Expedition") visitToRLevel = mapID.level;
       else if (mapID.cityentity_id == "X_AllAge_EasterBonus4") visitObsLevel = mapID.level;
@@ -369,7 +366,7 @@ export function otherPlayerService(msg) {
               }
             }
             if (ability.__class__ == "RandomUnitOfAgeWhenMotivatedAbility") {
-              // console.debug(entity.name,ability,ability.amount)
+              //console.log(entity.name, ability, ability.amount);
               visitPenal += ability.amount;
             }
           });
