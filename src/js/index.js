@@ -1121,8 +1121,8 @@ function handleRequestFinished(request) {
 										<div id="rewardsText" class="overflow resize collapse ${
                       collapse.collapseRewards ? "" : "show"
                     }"><p class="overflow" id="rewardsText">${msg.responseData.building_owner.name} ${helper.fGBsname(
-                  GBname
-                )} ${msg.responseData.level} - ${msg.responseData.strategy_point_amount}FP</p></div></div>`;
+                      GBname
+                    )} ${msg.responseData.level} - ${msg.responseData.strategy_point_amount}FP</p></div></div>`;
 
                 // cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show" role="alert">${element.close()}<strong><span data-i18n="gb">GB</span> REWARDS:</strong>
                 // <p class="overflow" id="rewardsText">${msg.responseData.building_owner.name} ${helper.fGBsname(GBname)} ${msg.responseData.level} - ${msg.responseData.strategy_point_amount}FP</p></div>` + cityrewards.innerHTML;
