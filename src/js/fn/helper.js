@@ -676,15 +676,18 @@ export function fshowBattleground() {
 
   battlegroundHTML += `<p class="showGBGchanges"><input type="checkbox" id="showGBGchanges"><label for="showGBGchanges">show changes only</label></p>
 	${BGtime ? "<p>Last Saved: " + BGtime + "</p>" : ""}
-	<div><table id="gbg-table" class="gbg-table"><tr><th>Member</th><th>Negs</th><th>Fights</th></tr>`;
+	<div><table id="gbg-table" class="gbg-table"><tr><th>Member</th><th>Negs</th><th>Fights</th><th>Attrition</th></tr>`;
   BattlegroundPerformance.forEach((entry) => {
     // console.debug(entry);
     var wonNegotiations = 0;
     var wonBattles = 0;
     var battleDiff = 0;
     var negotiationsDiff = 0;
+    var attrition = 0;
+    var attritionDiff = 0;
     if (entry.wonNegotiations) wonNegotiations = entry.wonNegotiations;
     if (entry.wonBattles) wonBattles = entry.wonBattles;
+    if (entry.attrition) attrition = entry.attrition;
 
     // console.debug(playerInfo);
     // console.debug(entry.player.name,BattlegroundPerformance);
@@ -697,13 +700,16 @@ export function fshowBattleground() {
     // console.debug(player);
     battleDiff = wonBattles - player.wonBattles;
     negotiationsDiff = wonNegotiations - player.wonNegotiations;
+    attritionDiff = attrition - player.attrition;
     // }
     // console.debug(entry.name,battleDiff,negotiationsDiff);
-    if (!showOptions.showBattlegroundChanges || battleDiff || negotiationsDiff) {
+    if (!showOptions.showBattlegroundChanges || battleDiff || negotiationsDiff || attritionDiff) {
       battlegroundHTML += `<tr><td>${entry.name}</td><td>${wonNegotiations}`;
       if (negotiationsDiff) battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
       battlegroundHTML += `</td><td>${wonBattles}`;
       if (battleDiff) battlegroundHTML += ` <span class="red">+${battleDiff}</span>`;
+      battlegroundHTML += `</td><td>${attrition}`;
+      if (attritionDiff) battlegroundHTML += ` <span class="red">+${attritionDiff}</span>`;
       battlegroundHTML += `</td></tr>`;
     }
   });
