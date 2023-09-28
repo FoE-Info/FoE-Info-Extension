@@ -392,6 +392,12 @@ function attritionReduction(building){
       return 40;
     case "barracks_reinforced":
       return 60;
+    case "guild_fieldcamp_small":
+      return 26;
+    case "guild_fieldcamp":
+      return 52;
+    case "guild_fieldcamp_fortified":
+      return 80;
     default:
       return 0
   }
@@ -491,9 +497,9 @@ function checkProvinces() {
         var campsText = "";
         if (showOptions.GBGshowSC && (campsReady || campsNotReady)) {
           campsText = " (";
-          if (campsReady && !campsNotReady) campsText += campsReady + `%)`;
-          else if (campsNotReady && !campsReady) campsText += campsNotReady + "% UC)";
-          else if (campsReady && campsNotReady) campsText += campsReady + "% + " + campsNotReady + "% UC)";
+          if (campsReady && !campsNotReady) campsText += (100-campsReady) + `%)`;
+          else if (campsNotReady && !campsReady) campsText += (100-campsNotReady) + "% UC)";
+          else if (campsReady && campsNotReady) campsText += (100-campsReady) + "% + " + (100-campsNotReady) + "% UC)";
           else campsText += "! SC)";
         }
         if (targetText) text += " " + targetText;
