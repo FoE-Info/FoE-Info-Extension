@@ -814,7 +814,9 @@ function handleRequestFinished(request) {
               EpocTime = msg.responseData.time;
               // console.debug(EpocTime,msg.responseData);
               helper.fShowIncidents();
-            }
+            }         
+          } else if (msg.requestClass == "TimerService" && msg.requestMethod == "getTimers"){
+            clearForBattleground();
           } else if (msg.requestClass == "ResourceService") {
             if (msg.requestMethod == "getResourceDefinitions") {
               /*Resource Service */
@@ -1276,13 +1278,13 @@ function handleRequestFinished(request) {
               getBattleground(msg);
             } else if (msg.requestMethod == "getState") {
               if (msg.responseData.stateId == "participating") {
-                clearForBattleground();
+                //clearForBattleground();
               }
             } else console.debug("GuildBattlegroundService", msg);
           } else if (msg.requestClass == "GuildBattlegroundStateService") {
             // GuildBattleground
             if (msg.requestMethod == "getState" && msg.responseData.stateId == "participating") {
-              clearForBattleground();
+              //clearForBattleground();
             } else if (msg.requestMethod == "getState" && showOptions.showBattleground) {
               getState(msg);
             } else console.debug("GuildBattlegroundStateService", msg);

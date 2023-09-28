@@ -54,8 +54,10 @@ export function getPlayerLeaderboard(msg) {
     // console.debug(entry);
     var wonNegotiations = 0;
     var wonBattles = 0;
+    var attrition = 0;
     if (entry.negotiationsWon) wonNegotiations = entry.negotiationsWon;
     if (entry.battlesWon) wonBattles = entry.battlesWon;
+    if (entry.attrition) attrition = entry.attrition;
     GBGdata.push({
       name: entry.player.name,
       total: wonNegotiations * 2 + wonBattles,
@@ -64,6 +66,7 @@ export function getPlayerLeaderboard(msg) {
       name: entry.player.name,
       wonNegotiations: wonNegotiations,
       wonBattles: wonBattles,
+      attrition: attrition,
     });
   });
   // console.debug('BattlegroundPerformance',BattlegroundPerformance,GBGdata);
@@ -140,14 +143,16 @@ export function getState(msg) {
     battlegroundHTML += element.copy("battlegroundCopyID", "info", "right", collapse.collapseBattleground);
     battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive collapse ${
       collapse.collapseBattleground ? "" : "show"
-    }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table"><tr><th>Rank</th><th>Member</th><th>Negs</th><th>Fights</th></tr>`;
+    }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table"><tr><th>Rank</th><th>Member</th><th>Negs</th><th>Fights</th><th>attrition</th></tr>`;
     msg.responseData.playerLeaderboardEntries.forEach((entry) => {
       var wonNegotiations = 0;
       var wonBattles = 0;
+      var attrition = 0;
       if (entry.negotiationsWon) wonNegotiations = entry.negotiationsWon;
       if (entry.battlesWon) wonBattles = entry.battlesWon;
-      BattlegroundPerformance.push([entry.rank, entry.player.name, wonNegotiations, wonBattles]);
-      battlegroundHTML += `<tr><td>${entry.rank}</td><td>${entry.player.name}</td><td>${wonNegotiations}</td><td>${wonBattles}</td></tr>`;
+      if (entry.attrition) attrition = entry.attrition;
+      BattlegroundPerformance.push([entry.rank, entry.player.name, wonNegotiations, wonBattles, attrition]);
+      battlegroundHTML += `<tr><td>${entry.rank}</td><td>${entry.player.name}</td><td>${wonNegotiations}</td><td>${wonBattles}</td><td>${attrition}</td></tr>`;
       // console.debug(entry.rank,entry.name,wonNegotiations,wonBattles);
       totalFights += wonBattles;
       totalNegs += wonNegotiations;
@@ -371,6 +376,27 @@ function timeGBG(time) {
   return timeText;
 }
 
+function attritionReduction(building){
+  switch (building) { 
+    case "watchtower":
+      return 8;
+    case "guild_command_post_improvised":
+      return 20;
+    case "guild_command_post_forward":
+      return 40;
+    case "guild_command_post_fortified":
+      return 60;
+    case "barracks_improvised":
+      return 20;
+    case "barracks":
+      return 40;
+    case "barracks_reinforced":
+      return 60;
+    default:
+      return 0
+  }
+}
+
 function checkProvinces() {
   var textProvinceUnlocked = "";
   var textProvinceLocked = "";
@@ -434,7 +460,15 @@ function checkProvinces() {
             // console.debug(connection,provinceData);
             if (provinceData.placedBuildings && currentParticipantId == provinceData.ownerId) {
               provinceData.placedBuildings.forEach((building) => {
-                if (building.id == "siege_camp") {
+                let att = attritionReduction(building.id);
+                if (building.readyAt < EpocTime) {
+                  campsReady += att
+                }
+                else{
+                  campsNotReady += att
+                } 
+
+                /*if (building.id == "siege_camp" || building.id == "guild_command_post_fortified") {
                   if (building.readyAt < EpocTime) {
                     console.debug("siege camp");
                     campsReady++;
@@ -444,20 +478,22 @@ function checkProvinces() {
                     console.debug(building.readyAt, time);
                     console.debug("siege camp ready " + timeGBG(time));
                   }
-                }
+                }*/
               });
             }
           });
         }
-
+        if (campsReady > 80)
+          campsReady = 80
+        if (campsNotReady > 0)
+          campsNotReady = (Math.min(80-campsReady,campsNotReady))
         var text = name[0] + name[1];
         var campsText = "";
         if (showOptions.GBGshowSC && (campsReady || campsNotReady)) {
           campsText = " (";
-          if (campsReady && !campsNotReady)
-            campsText += campsReady + ` <span id="siegecamp_tooltip" title="Siege Camp">SC</span>)`;
-          else if (campsNotReady && !campsReady) campsText += campsNotReady + " UC)";
-          else if (campsReady && campsNotReady) campsText += campsReady + " SC + " + campsNotReady + " UC)";
+          if (campsReady && !campsNotReady) campsText += campsReady + `%)`;
+          else if (campsNotReady && !campsReady) campsText += campsNotReady + "% UC)";
+          else if (campsReady && campsNotReady) campsText += campsReady + "% + " + campsNotReady + "% UC)";
           else campsText += "! SC)";
         }
         if (targetText) text += " " + targetText;
