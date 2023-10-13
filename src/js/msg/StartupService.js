@@ -623,7 +623,7 @@ export function startupService(msg) {
   Goods.vf = 0;
   Goods.of = 0;
   Goods.af = 0;
-  Goods.tf = 0;
+  Goods.fe = 0;
   Goods.te = 0;
   Goods.ce = 0;
   Goods.pme = 0;
@@ -985,7 +985,7 @@ function showTooltips() {
     "vf",
     "of",
     "af",
-    "tf",
+    "fe",
     "te",
     "ce",
     "pme",
@@ -1139,7 +1139,7 @@ function fGoodsText(age, goods) {
     return `<p>` + goods["ContemporaryEra"] + `</p>`;
   } else if (age == "te") {
     return `<p>` + goods["TomorrowEra"] + `</p>`;
-  } else if (age == "tf") {
+  } else if (age == "fe") {
     return `<p>` + goods["FutureEra"] + `</p>`;
   } else if (age == "af") {
     return `<p>` + goods["ArcticFuture"] + `</p>`;
