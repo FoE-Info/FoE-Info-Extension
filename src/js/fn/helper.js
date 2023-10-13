@@ -530,7 +530,7 @@ export function fGoodsTally(age, good) {
   else if (age == "PostModernEra") Goods.pme += good;
   else if (age == "ContemporaryEra") Goods.ce += good;
   else if (age == "TomorrowEra") Goods.te += good;
-  else if (age == "FutureEra") Goods.tf += good;
+  else if (age == "FutureEra") Goods.fe += good;
   else if (age == "ArcticFuture") Goods.af += good;
   else if (age == "OceanicFuture") Goods.of += good;
   else if (age == "VirtualFuture") Goods.vf += good;

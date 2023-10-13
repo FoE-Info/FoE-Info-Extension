@@ -57,6 +57,7 @@ var entityVisitCityDefense = 0;
 var tooltipHTML = [];
 var goodsList = [];
 var Goods = {
+  sat: 0,
   sajm: 0,
   sav: 0,
   saab: 0,
@@ -64,7 +65,7 @@ var Goods = {
   vf: 0,
   of: 0,
   af: 0,
-  tf: 0,
+  fe: 0,
   te: 0,
   ce: 0,
   pme: 0,
@@ -129,6 +130,7 @@ export function otherPlayerService(msg) {
   visitData = [];
   visitAD = [];
   Goods = {
+    sat: 0,
     sajm: 0,
     sav: 0,
     saab: 0,
@@ -136,7 +138,7 @@ export function otherPlayerService(msg) {
     vf: 0,
     of: 0,
     af: 0,
-    tf: 0,
+    fe: 0,
     te: 0,
     ce: 0,
     pme: 0,
@@ -1076,7 +1078,7 @@ function fGoodsTally(age, good) {
   else if (age == "PostModernEra") Goods.pme += good;
   else if (age == "ContemporaryEra") Goods.ce += good;
   else if (age == "TomorrowEra") Goods.te += good;
-  else if (age == "FutureEra") Goods.tf += good;
+  else if (age == "FutureEra") Goods.fe += good;
   else if (age == "ArcticFuture") Goods.af += good;
   else if (age == "OceanicFuture") Goods.of += good;
   else if (age == "VirtualFuture") Goods.vf += good;
