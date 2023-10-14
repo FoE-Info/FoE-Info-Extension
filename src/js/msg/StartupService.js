@@ -740,8 +740,8 @@ export function startupService(msg) {
   citystatsHTML += `<span data-i18n="attackers">Attackers</span>: ${City.Attack}% Att, ${City.Defense}% Def<br>`;
   citystatsHTML += `<span data-i18n="defenders">Defenders</span>: ${City.CityAttack}% Att, ${City.CityDefense}% Def<br>`;
   citystatsHTML += `<span data-i18n="gbg-attackers">GBG Attackers</span>: ${City.GBGAttackingAttack + City.Attack}% Att, ${City.GBGAttackingDefense + City.Defense}% Def<br>`;
-  citystatsHTML += `<span data-i18n="gbg-defenders">GBG Defenders</span>: ${City.GBGDefendingAttack + City.CityAttack}% Att, ${City.GBGDefendingDefense + City.CityDefense}% Def<br>`;
-  citystatsHTML += `<span data-i18n="ge-attackers">GE Attackers</span>: ${City.GEAttackingAttack + City.Attack}% Att, ${City.GEAttackingDefense + City.Attack}% Def<br>`;
+  // citystatsHTML += `<span data-i18n="gbg-defenders">GBG Defenders</span>: ${City.GBGDefendingAttack + City.CityAttack}% Att, ${City.GBGDefendingDefense + City.CityDefense}% Def<br>`;
+  // citystatsHTML += `<span data-i18n="ge-attackers">GE Attackers</span>: ${City.GEAttackingAttack + City.Attack}% Att, ${City.GEAttackingDefense + City.Defense}% Def<br>`;
   citystatsHTML += `<span data-i18n="ge-defenders">GE Defenders</span>: ${City.GEDefendingAttack + City.CityAttack}% Att, ${City.GEDefendingDefense  + City.CityDefense}% Def<br>`;
   citystatsHTML += `<span data-i18n="available">Available FP</span>: <span id="availableFPID">${
     availablePacksFP + availableFP
@@ -821,7 +821,7 @@ export function emissaryService(msg) {
 }
 
 export function boostService(msg) {
-  City.CoinBoost = 0;
+  /*City.CoinBoost = 0;
   City.SupplyBoost = 0;
   City.Attack = 0;
   City.Defense = 0;
@@ -850,12 +850,12 @@ export function boostService(msg) {
         // console.debug(boost[j].entries[k].boostValue, boost[j].entries[k].amount)
       }
     }
+  }*/
     // if(showBoosts)
     // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}Boosts:<br>Coins ${CoinBoost}%<br>Supply ${SupplyBoost}%<br>Attacking ${Attack}%/${Defense}%<br>Defending ${CityAttack}%/${CityDefense}%</div>`;
     //console.debug('CoinBoost:', CoinBoost);
     //console.debug('Attack:', Attack);
     //console.debug('CityDefense:', CityDefense);
-  }
 }
 
 export function boostServiceAllBoosts(msg) {
