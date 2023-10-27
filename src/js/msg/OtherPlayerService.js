@@ -826,6 +826,7 @@ export function otherPlayerService(msg) {
 }
 
 export function otherPlayerServiceUpdateActions(msg) {
+  console.debug("=== SOCIAL LISTS ===");
   console.debug(msg);
 
   // if(!users.checkGuild() && msg.responseData.socialbar_list.length){
