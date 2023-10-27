@@ -655,6 +655,8 @@ function handleRequestFinished(request) {
         for (var i = 0; i < parsed.length; i++) {
           const msg = parsed[i];
 
+            //console.debug("msg", msg);
+
           // check if this is static data service info that holds all URLs to all metadata files
           if (msg.requestClass === "StaticDataService" && msg.requestMethod == "getMetadata") {
             // find an URL that has city entities
@@ -816,7 +818,7 @@ function handleRequestFinished(request) {
               helper.fShowIncidents();
             }         
           } else if (msg.requestClass == "TimerService" && msg.requestMethod == "getTimers"){
-            clearForBattleground();
+            //clearForBattleground();
           } else if (msg.requestClass == "ResourceService") {
             if (msg.requestMethod == "getResourceDefinitions") {
               /*Resource Service */
@@ -1284,7 +1286,7 @@ function handleRequestFinished(request) {
           } else if (msg.requestClass == "GuildBattlegroundStateService") {
             // GuildBattleground
             if (msg.requestMethod == "getState" && msg.responseData.stateId == "participating") {
-              //clearForBattleground();
+              clearForBattleground();
             } else if (msg.requestMethod == "getState" && showOptions.showBattleground) {
               getState(msg);
             } else console.debug("GuildBattlegroundStateService", msg);
