@@ -1277,6 +1277,7 @@ function handleRequestFinished(request) {
               getPlayerLeaderboard(msg);
             } else if (msg.requestMethod == "getBattleground") {
               /*Guild Battleground*/
+              clearForBattleground();
               getBattleground(msg);
             } else if (msg.requestMethod == "getState") {
               if (msg.responseData.stateId == "participating") {
@@ -1286,7 +1287,7 @@ function handleRequestFinished(request) {
           } else if (msg.requestClass == "GuildBattlegroundStateService") {
             // GuildBattleground
             if (msg.requestMethod == "getState" && msg.responseData.stateId == "participating") {
-              clearForBattleground();
+              //clearForBattleground();
             } else if (msg.requestMethod == "getState" && showOptions.showBattleground) {
               getState(msg);
             } else console.debug("GuildBattlegroundStateService", msg);
