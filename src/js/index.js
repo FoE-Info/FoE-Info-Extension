@@ -2233,7 +2233,7 @@ export function showReward(reward) {
   ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
 	${element.close()}
-	<div id="rewardsText" class="overflow resize collapse ${collapse.collapseRewards ? "" : "show"}">${text}</div></div>`;
+	<div id="rewardsText" stype="height: 400px" class="overflow resize collapse ${collapse.collapseRewards ? "" : "show"}">${text}</div></div>`;
   rewardObserve();
   document.getElementById("rewardsTextLabel").addEventListener("click", collapse.fCollapseRewards);
 }
