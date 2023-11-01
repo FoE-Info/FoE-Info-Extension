@@ -68,6 +68,7 @@ import {
 import { boostService, boostServiceAllBoosts, City, emissaryService, startupService } from "./msg/StartupService.js";
 import setOptions, { showOptions } from "./vars/showOptions.js";
 import "../css/main.scss";
+import { mapToStyles } from "@popperjs/core/lib/modifiers/computeStyles.js";
 console.debug(toolOptions);
 
 let contentTypes = {};
@@ -655,7 +656,7 @@ function handleRequestFinished(request) {
         for (var i = 0; i < parsed.length; i++) {
           const msg = parsed[i];
 
-            //console.debug("msg", msg);
+            console.debug("msg", msg);
 
           // check if this is static data service info that holds all URLs to all metadata files
           if (msg.requestClass === "StaticDataService" && msg.requestMethod == "getMetadata") {
@@ -815,8 +816,10 @@ function handleRequestFinished(request) {
             if (msg.responseData) {
               EpocTime = msg.responseData.time;
               // console.debug(EpocTime,msg.responseData);
-              helper.fShowIncidents();
             }         
+          } else if (msg.requestClass == "AnnouncementsService" && msg.requestMethod == "fetchAllAnnouncements") {
+            clearForMainCity();
+            helper.fShowIncidents();
           } else if (msg.requestClass == "TimerService" && msg.requestMethod == "getTimers"){
             //clearForBattleground();
           } else if (msg.requestClass == "ResourceService") {
@@ -1958,6 +1961,31 @@ function clearForBattleground() {
   cultural.innerHTML = ``;
   cultural.className = "";
   friendsDiv.innerHTML = "";
+  gvg.innerHTML = ``;
+  gvg.className = "";
+  // armyDIV.innerHTML = ``;
+  treasury.innerHTML = "";
+  treasuryLog.innerHTML = "";
+  if (gvgSummary) gvgSummary.innerHTML = "";
+  if (gvgAges) gvgAges.innerHTML = "";
+}
+
+function clearForMainCity() {
+  // output.innerHTML = ``;
+  // cityrewards.innerHTML = ``;
+  incidents.innerHTML = ``;
+  donation2DIV.innerHTML = ``;
+  donationDIV2.innerHTML = ``;
+  greatbuilding.innerHTML = ``;
+  targets.innerHTML = ``;
+  guild.innerHTML = ``;
+  debug.innerHTML = ``;
+  info.innerHTML = ``;
+  donationDIV.innerHTML = ``;
+  visitstats.innerHTML = ``;
+  visitstats.className = "";
+  cultural.innerHTML = ``;
+  cultural.className = "";
   gvg.innerHTML = ``;
   gvg.className = "";
   // armyDIV.innerHTML = ``;
