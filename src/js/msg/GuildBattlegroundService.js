@@ -376,8 +376,8 @@ function timeGBG(time) {
   return timeText;
 }
 
-function attritionReduction(building){
-  switch (building) { 
+function attritionReduction(building) {
+  switch (building) {
     case "watchtower":
       return 8;
     case "guild_command_post_improvised":
@@ -399,7 +399,7 @@ function attritionReduction(building){
     case "guild_fieldcamp_fortified":
       return 80;
     default:
-      return 0
+      return 0;
   }
 }
 
@@ -468,11 +468,10 @@ function checkProvinces() {
               provinceData.placedBuildings.forEach((building) => {
                 let att = attritionReduction(building.id);
                 if (building.readyAt < EpocTime) {
-                  campsReady += att
+                  campsReady += att;
+                } else {
+                  campsNotReady += att;
                 }
-                else{
-                  campsNotReady += att
-                } 
 
                 /*if (building.id == "siege_camp" || building.id == "guild_command_post_fortified") {
                   if (building.readyAt < EpocTime) {
@@ -489,17 +488,16 @@ function checkProvinces() {
             }
           });
         }
-        if (campsReady > 80)
-          campsReady = 80
-        if (campsNotReady > 0)
-          campsNotReady = (Math.min(80-campsReady,campsNotReady))
+        if (campsReady > 80) campsReady = 80;
+        if (campsNotReady > 0) campsNotReady = Math.min(80 - campsReady, campsNotReady);
         var text = name[0] + name[1];
         var campsText = "";
         if (showOptions.GBGshowSC && (campsReady || campsNotReady)) {
           campsText = " (";
-          if (campsReady && !campsNotReady) campsText += (100-campsReady) + `%)`;
-          else if (campsNotReady && !campsReady) campsText += (100-campsNotReady) + "% UC)";
-          else if (campsReady && campsNotReady) campsText += (100-campsReady) + "% + " + (100-campsNotReady) + "% UC)";
+          if (campsReady && !campsNotReady) campsText += 100 - campsReady + `%)`;
+          else if (campsNotReady && !campsReady) campsText += 100 - campsNotReady + "% UC)";
+          else if (campsReady && campsNotReady)
+            campsText += 100 - campsReady + "% + " + (100 - campsNotReady) + "% UC)";
           else campsText += "! SC)";
         }
         if (targetText) text += " " + targetText;
