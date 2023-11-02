@@ -656,7 +656,7 @@ function handleRequestFinished(request) {
         for (var i = 0; i < parsed.length; i++) {
           const msg = parsed[i];
 
-            console.debug("msg", msg);
+          console.debug("msg", msg);
 
           // check if this is static data service info that holds all URLs to all metadata files
           if (msg.requestClass === "StaticDataService" && msg.requestMethod == "getMetadata") {
@@ -816,11 +816,11 @@ function handleRequestFinished(request) {
             if (msg.responseData) {
               EpocTime = msg.responseData.time;
               // console.debug(EpocTime,msg.responseData);
-            }         
+            }
           } else if (msg.requestClass == "AnnouncementsService" && msg.requestMethod == "fetchAllAnnouncements") {
             clearForMainCity();
             helper.fShowIncidents();
-          } else if (msg.requestClass == "TimerService" && msg.requestMethod == "getTimers"){
+          } else if (msg.requestClass == "TimerService" && msg.requestMethod == "getTimers") {
             //clearForBattleground();
           } else if (msg.requestClass == "ResourceService") {
             if (msg.requestMethod == "getResourceDefinitions") {
@@ -2233,7 +2233,9 @@ export function showReward(reward) {
   ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
 	${element.close()}
-	<div id="rewardsText" stype="height: 400px" class="overflow resize collapse ${collapse.collapseRewards ? "" : "show"}">${text}</div></div>`;
+	<div id="rewardsText" stype="height: 400px" class="overflow resize collapse ${
+    collapse.collapseRewards ? "" : "show"
+  }">${text}</div></div>`;
   rewardObserve();
   document.getElementById("rewardsTextLabel").addEventListener("click", collapse.fCollapseRewards);
 }
