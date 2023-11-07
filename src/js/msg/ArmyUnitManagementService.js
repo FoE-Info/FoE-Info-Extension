@@ -12,7 +12,8 @@
  * ________________________________________________________________
  */
 
-import { MilitaryDefs, armyDIV } from "../index.js";
+import { armyDIV } from "../index.js";
+import { MilitaryDefs } from "../handleRequestFinished.js";
 import { toolOptions, setArmySize } from "../fn/globals.js";
 import { showOptions } from "../vars/showOptions.js";
 import * as helper from "../fn/helper.js";

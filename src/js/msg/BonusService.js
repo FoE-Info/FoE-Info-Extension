@@ -13,7 +13,8 @@
  */
 
 import { City, Galaxy, showGalaxy } from "./StartupService.js";
-import { checkDebug, Bonus } from "../index.js";
+import { checkDebug } from "../index.js";
+import { Bonus } from "../handleRequestFinished.js";
 import { showOptions } from "../vars/showOptions.js";
 import * as collapse from "../fn/collapse.js";
 import * as element from "../fn/AddElement";

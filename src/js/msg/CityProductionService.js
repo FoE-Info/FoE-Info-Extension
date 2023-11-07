@@ -11,7 +11,8 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { showReward, rewardsArmy, rewardsCity, MilitaryDefs } from "../index.js";
+import { showReward } from "../index.js";
+import { rewardsArmy, rewardsCity, MilitaryDefs } from "../handleRequestFinished.js";
 import { updateGalaxy } from "./StartupService.js";
 import { showOptions } from "../vars/showOptions.js";
 import * as helper from "../fn/helper.js";

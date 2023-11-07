@@ -23,7 +23,6 @@ import collapseOptions, * as collapse from "./fn/collapse.js";
 import browser from "webextension-polyfill";
 import { setRewardSize, setToolOptions, toolOptions } from "./fn/globals.js";
 import * as helper from "./fn/helper.js";
-import * as storage from "./fn/storage.js";
 import * as element from "./fn/AddElement";
 import { gvgAges, gvgSummary } from "./msg/ClanBattleService.js";
 import { setCurrentPercent } from "./msg/GreatBuildingsService.js";
@@ -31,109 +30,12 @@ import { ResourceDefs, setResourceDefs } from "./msg/ResourceService.js";
 import setOptions, { showOptions } from "./vars/showOptions.js";
 import "../css/main.scss";
 import { mapToStyles } from "@popperjs/core/lib/modifiers/computeStyles.js";
-import { handleRequestFinished } from "./handleRequestFinished.js";
+import { handleRequestFinished, SetCityEntityDefs, CityEntityDefs } from "./handleRequestFinished.js";
+
 console.debug(toolOptions);
+export var debugEnabled = false;
 
 let contentTypes = {};
-export var debugEnabled = false;
-export var availablePacksFP = 0;
-export var PlayerName = "";
-export var PlayerID = 0;
-export var worlds = [];
-
-export var MyInfo = {
-  name: "",
-  era: "",
-  id: 0,
-  guild: "",
-  guildID: 0,
-  guildPosition: 0,
-  createdAt: 0,
-};
-
-export var ignoredPlayers = {
-  ignoredByPlayerIds: {},
-  ignoredPlayerIds: {},
-};
-
-export var GBselected = {
-  player: 0,
-  player_name: "",
-  id: 0,
-  level: 0,
-  name: "",
-  era: "",
-  connected: false,
-  max_level: 0,
-  current: 0,
-  total: 0,
-};
-// var GBinfo = [];
-// var GBrequest = [];
-export var GuildDonations = [];
-export var GuildTreasury = [];
-// var GuildTreasuryAnalysis = [];
-export var targetsTopic = "targets";
-export var targetText = "";
-var GuildsGoods = [];
-// var GBdefs = [];
-export var CityEntityDefs = {};
-export var CityProtections = [];
-export var MilitaryDefs = [];
-export var CastleDefs = [];
-export var SelectionKitDefs = [];
-export var BoostMetadataDefs = [];
-export var VolcanoProvinceDefs = [];
-export var WaterfallProvinceDefs = [];
-export var BuildingDefs = [];
-export var hiddenRewards = [];
-export var Goods = {
-  sat: 0,
-  sajm: 0,
-  sav: 0,
-  saab: 0,
-  sam: 0,
-  vf: 0,
-  of: 0,
-  af: 0,
-  fe: 0,
-  te: 0,
-  ce: 0,
-  pme: 0,
-  me: 0,
-  pe: 0,
-  ina: 0,
-  cma: 0,
-  lma: 0,
-  hma: 0,
-  ema: 0,
-  ia: 0,
-  ba: 0,
-  noage: 0,
-};
-export var EpocTime = 0;
-export var GameVersion = 0;
-export var GameOrigin = "";
-
-export var donationPercent = 190;
-export var donationSuffix = "";
-
-export var Bonus = {
-  aid: 0,
-  spoils: 0,
-  diplomatic: 0,
-  strike: 0,
-};
-
-export var url = [];
-
-export var rewardsGE = [];
-var rewardsGBG = [];
-var rewardsGeneric = [];
-export var rewardsArmy = [];
-export var rewardsCity = [];
-export var rewardsOtherPlayer = [];
-
 export var tool = browser.runtime.getManifest();
 console.debug(tool.name);
 console.debug(tool.version);
@@ -511,6 +413,7 @@ browser.permissions
             ua: {
               load: "Слава Україні!",
             },
+            us: "i18n/en.json",
             en: "i18n/en.json",
             es: "i18n/es.json",
             fr: "i18n/fr.json",
@@ -571,7 +474,6 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 );
 
 browser.devtools.network.onRequestFinished.addListener(handleRequestFinished);
-
 browser.storage.onChanged.addListener(storageChange);
 
 function storageChange(changes, namespace) {
@@ -612,46 +514,6 @@ function storageChange(changes, namespace) {
   }
   // console.debug('onChanged',changes);
   // console.debug('showOptions',showOptions);
-}
-
-export function setMyInfo(name, id, clan, clan_id, createdAt, era) {
-  MyInfo.name = name;
-  MyInfo.id = id;
-  MyInfo.guild = clan;
-  MyInfo.guildID = clan_id;
-  MyInfo.createdAt = createdAt;
-  MyInfo.era = era;
-}
-
-export function setMyName(name) {
-  MyInfo.name = name;
-}
-
-export function setMyID(id) {
-  MyInfo.id = id;
-}
-
-export function setMyGuild(name) {
-  MyInfo.guild = name;
-}
-
-export function setMyGuildID(id) {
-  MyInfo.guildID = id;
-}
-
-export function setMyGuildPermissions(permissions) {
-  MyGuildPermissions = permissions;
-}
-
-export function setMyGuildPosition(id) {
-  MyInfo.guildPosition = id;
-  storage.set(GameOrigin + "MyInfo", MyInfo);
-}
-
-export function setPlayerName(name, id) {
-  PlayerName = name;
-  PlayerID = id;
-  GBselected.player_name = name;
 }
 
 export function fCleardForGVG() {
@@ -756,105 +618,6 @@ export function clearForBattleground() {
   if (gvgAges) gvgAges.innerHTML = "";
 }
 
-export function clearForMainCity() {
-  // output.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  targets.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = "";
-  cultural.innerHTML = ``;
-  cultural.className = "";
-  gvg.innerHTML = ``;
-  gvg.className = "";
-  // armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
-}
-
-export function clearStartup() {
-  cityinvested.innerHTML = ``;
-  output.innerHTML = ``;
-  overview.innerHTML = ``;
-  alerts.innerHTML = ``;
-  cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  citystats.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = "";
-  cultural.innerHTML = ``;
-  cultural.className = "";
-  friendsDiv.innerHTML = "";
-  gvg.innerHTML = ``;
-  gvg.className = "";
-  armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
-  GuildDonations = [];
-  GuildTreasury = [];
-  //  ResourceDefs = [];
-  //  PowerSoH = [];
-  // PowerHoF = [];
-  GuildsGoods = [];
-  Bonus = {
-    aid: 0,
-    spoils: 0,
-    diplomatic: 0,
-    strike: 0,
-  };
-  rewardsGE = [];
-  rewardsGBG = [];
-  rewardsGeneric = [];
-  rewardsArmy = [];
-  rewardsCity = [];
-  rewardsOtherPlayer = [];
-}
-
-export function clearCultural() {
-  cityinvested.innerHTML = ``;
-  // output.innerHTML = ``;
-  overview.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = "";
-  friendsDiv.innerHTML = "";
-  gvg.innerHTML = ``;
-  gvg.className = "";
-  armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
-}
-
 export function receiveStorage(result) {
   console.debug("result", result);
   // // console.debug('showIncidents', showIncidents);
@@ -880,7 +643,7 @@ export function receiveStorage(result) {
       setResourceDefs(value);
     } else if (key == "CityEntityDefs") {
       // if(key == CityEntityDefs)
-      CityEntityDefs = value;
+      SetCityEntityDefs(value);
       console.debug(key, value);
     } else if (key == "tool") {
       if (value.language != "auto") {

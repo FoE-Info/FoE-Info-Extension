@@ -12,7 +12,9 @@
  * ________________________________________________________________
  */
 import { Popover } from "bootstrap";
-import { CityEntityDefs, donationDIV, GameOrigin, Goods, hiddenRewards, incidents, url } from "../index.js";
+import { donationDIV, incidents } from "../index.js";
+import { CityEntityDefs, Goods, hiddenRewards, url } from "../handleRequestFinished.js";
+import { GameOrigin } from "../handleRequestFinished.js";
 import { BattlegroundPerformance, BGtime, GuildMembers } from "../msg/GuildBattlegroundService.js";
 import { ResourceNames } from "../msg/ResourceService.js";
 import { showOptions } from "../vars/showOptions.js";

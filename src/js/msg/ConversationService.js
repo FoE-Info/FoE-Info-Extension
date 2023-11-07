@@ -14,7 +14,8 @@
 
 import { Tooltip, Alert, Popover } from "bootstrap";
 import dayjs from "dayjs";
-import { targets, targetsTopic } from "../index.js";
+import { targets } from "../index.js";
+import { targetsTopic } from "../handleRequestFinished.js";
 import * as collapse from "../fn/collapse.js";
 import * as helper from "../fn/helper.js";
 import * as post_webstore from "../fn/post.js";
@@ -55,10 +56,10 @@ export function conversationService(msg) {
         `<p id="targetLabel" href="#targetText" aria-expanded="true" data-bs-toggle="collapse">
       ${element.icon("targeticon", "targetText", collapse.collapseTarget)}
                 <strong>GBG Targets</strong> ${message.lastMessage.date}</p><p id="targetText" class="collapse ${
-                  collapse.collapseTarget ? "" : "show"
-                }">${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, "<br>")}<br><span class="text-muted">by ${
-                  message.lastMessage.sender.name
-                }. alert @ ${dayjs().format("HH:mm:ss")}</span></p></div>`;
+          collapse.collapseTarget ? "" : "show"
+        }">${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, "<br>")}<br><span class="text-muted">by ${
+          message.lastMessage.sender.name
+        }. alert @ ${dayjs().format("HH:mm:ss")}</span></p></div>`;
       setTimeout(function () {
         targetsGBG.innerHTML = "";
       }, 600000);

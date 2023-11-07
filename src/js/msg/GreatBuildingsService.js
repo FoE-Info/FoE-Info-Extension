@@ -18,21 +18,18 @@ import * as copy from "../fn/copy.js";
 import * as storage from "../fn/storage.js";
 import * as element from "../fn/AddElement";
 import { City } from "./StartupService.js";
+import { donationDIV, donation2DIV, donationDIV2, greatbuilding } from "../index.js";
+import { setPlayerName } from "../handleRequestFinished.js";
 import {
-  setPlayerName,
   MyInfo,
   PlayerID,
   PlayerName,
-  donationDIV,
-  donation2DIV,
-  donationDIV2,
   GBselected,
-  greatbuilding,
   donationPercent,
   donationSuffix,
-  GameOrigin,
   url,
-} from "../index.js";
+} from "../handleRequestFinished.js";
+import { GameOrigin } from "../handleRequestFinished.js";
 // import '../../css/main.css';
 import BigNumber from "bignumber.js";
 import { friends, guildMembers, hoodlist } from "./OtherPlayerService";
@@ -614,8 +611,8 @@ function gbTabSafe(
     element.copy("donationCopyID", "info", "right", collapse.collapseDonation) +
     `</div><div class="card-body alert-success p-2">
       <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${GBselected.level}/${
-        GBselected.max_level
-      }] (${GBselected.current}/${GBselected.total} FPs)</span></h6>
+      GBselected.max_level
+    }] (${GBselected.current}/${GBselected.total} FPs)</span></h6>
       <table class="table mb-1">
       <thead>
       <tr>
@@ -686,8 +683,8 @@ function gbTabNotSafe(
     element.copy("donationCopyID", "info", "right", collapse.collapseDonation) +
     `</div><div class="card-body alert-danger p-2">
            <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${GBselected.level}/${
-             GBselected.max_level
-           }] (${GBselected.current}/${GBselected.total})</span></h6>
+      GBselected.max_level
+    }] (${GBselected.current}/${GBselected.total})</span></h6>
            <table class="table mb-1">
        <thead>
        <tr>

@@ -20,17 +20,9 @@ import * as copy from "../fn/copy.js";
 import * as element from "../fn/AddElement";
 import * as storage from "../fn/storage.js";
 import * as post_webstore from "../fn/post.js";
-import {
-  BuildingDefs,
-  VolcanoProvinceDefs,
-  WaterfallProvinceDefs,
-  targets,
-  donationDIV,
-  GameOrigin,
-  EpocTime,
-  url,
-  targetText,
-} from "../index.js";
+import { targets, donationDIV } from "../index.js";
+import { BuildingDefs, VolcanoProvinceDefs, WaterfallProvinceDefs, url, targetText } from "../handleRequestFinished.js";
+import { GameOrigin, EpocTime } from "../handleRequestFinished.js";
 import { toolOptions, setBuildingCostSize } from "../fn/globals.js";
 
 export var BattlegroundPerformance = [];

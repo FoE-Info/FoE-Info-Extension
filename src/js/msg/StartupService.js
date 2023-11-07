@@ -20,19 +20,12 @@ import "@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.language.js";
 import BigNumber from "bignumber.js";
 import { Tooltip, Alert, Popover } from "bootstrap";
-import {
-  CityEntityDefs,
-  setMyInfo,
-  MyInfo,
-  GameOrigin,
-  EpocTime,
-  debugEnabled,
-  checkDebug,
-  removeDebug,
-  ignoredPlayers,
-  debug,
-} from "../index.js";
-import { availablePacksFP, Goods, language } from "../index.js";
+import { checkDebug, removeDebug, debug, debugEnabled } from "../index.js";
+import { setMyInfo } from "../handleRequestFinished.js";
+import { CityEntityDefs, MyInfo, ignoredPlayers } from "../handleRequestFinished.js";
+import { GameOrigin, EpocTime } from "../handleRequestFinished.js";
+import { language } from "../index.js";
+import { availablePacksFP, Goods } from "../handleRequestFinished.js";
 import { ResourceDefs, availableFP } from "./ResourceService.js";
 import * as helper from "../fn/helper.js";
 import * as collapse from "../fn/collapse.js";
