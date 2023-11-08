@@ -19,7 +19,7 @@ import "@wikimedia/jquery.i18n/src/jquery.i18n.parser.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js";
 import "@wikimedia/jquery.i18n/src/jquery.i18n.language.js";
 import BigNumber from "bignumber.js";
-import { Tooltip, Alert, Popover } from "bootstrap";
+import { Tooltip, Popover } from "bootstrap";
 import { checkDebug, removeDebug, debug, debugEnabled } from "../index.js";
 import { setMyInfo } from "../handleRequestFinished.js";
 import { CityEntityDefs, MyInfo, ignoredPlayers } from "../handleRequestFinished.js";
@@ -130,7 +130,7 @@ export function startupService(msg) {
   var diamonds = 0;
   var clanPower = 0;
   var clanGoods = 0;
-  var totalGoods = 0;
+  //var totalGoods = 0;
   var goodsList = [];
   var goodsHTML = "";
   var citystatsHTML = ``;
@@ -194,6 +194,7 @@ export function startupService(msg) {
         console.debug("Galaxy.amount", mapID);
       }
 
+      // eslint-disable-next-line no-prototype-builtins
       if (mapID.state.hasOwnProperty("next_state_transition_at")) {
         buildingsReady.push({
           name: helper.fEntityNameTrim(mapID.cityentity_id),
@@ -241,9 +242,9 @@ export function startupService(msg) {
         }
         if (mapID.state.current_product.goods) {
           if (DEV && checkDebug()) console.debug(mapID.state.current_product.goods);
-          if ((mapID.state.current_product.goods.name = "clan_goods")) {
+          if (mapID.state.current_product.goods.name == "clan_goods") {
             // console.debug(mapID);
-            var goods = 0;
+            goods = 0;
             for (var good = 0; good < mapID.state.current_product.goods.length; good++) {
               // console.debug(mapID.state.current_product.goods[good]);
               goods += mapID.state.current_product.goods[good].value;
@@ -308,12 +309,13 @@ export function startupService(msg) {
               City.Coins += mapID.state.current_product.product.resources.money;
             if (mapID.state.current_product.name == "random_goods") {
               // console.debug('random_goods: ', mapID.state.current_product.product.resources);
+              // eslint-disable-next-line no-unused-vars
               Object.keys(mapID.state.current_product.product.resources).forEach((entry) => {
                 // console.debug('random_goods: ', entry,mapID.state.current_product.product.resources[entry]);
                 // randomGoods += mapID.state.current_product.product.resources[entry];
               });
             }
-            var goods = 0;
+            goods = 0;
 
             Object.keys(mapID.state.current_product.product.resources).forEach((entry) => {
               if (
@@ -347,7 +349,7 @@ export function startupService(msg) {
                 goods: goods,
               });
               if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), goods, mapID);
-              totalGoods += goods;
+              //totalGoods += goods;
             } else {
               if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID);
             }
@@ -370,7 +372,7 @@ export function startupService(msg) {
         if (mapID.state.productionOption.guildProduct) {
           //     console.debug(fEntityName(mapID.cityentity_id), mapID.state.productionOption.name,mapID);
           if (mapID.state.productionOption.guildProduct.resources) {
-            var goods = 0;
+            goods = 0;
             Object.keys(mapID.state.productionOption.guildProduct.resources).forEach((entry) => {
               if (entry != "clan_power") {
                 // console.debug(mapID.state.productionOption.guildProduct.resources[entry],entry);
@@ -395,10 +397,10 @@ export function startupService(msg) {
         }
         if (mapID.state.productionOption.goods) {
           if (DEV && checkDebug()) console.debug(mapID.state.productionOption.goods);
-          if ((mapID.state.productionOption.goods.name = "clan_goods")) {
+          if (mapID.state.productionOption.goods.name == "clan_goods") {
             // console.debug(mapID);
-            var goods = 0;
-            for (var good = 0; good < mapID.state.productionOption.goods.length; good++) {
+            goods = 0;
+            for (good = 0; good < mapID.state.productionOption.goods.length; good++) {
               // console.debug(mapID.state.productionOption.goods[good]);
               goods += mapID.state.productionOption.goods[good].value;
             }
@@ -435,6 +437,7 @@ export function startupService(msg) {
               if (resources.money) City.Coins += resources.money;
               if (mapID.state.productionOption.name == "random_goods") {
                 // console.debug('random_goods: ', product.playerResources.resources);
+                // eslint-disable-next-line no-unused-vars
                 Object.keys(resources).forEach((entry) => {
                   // console.debug('random_goods: ', entry,product.playerResources.resources[entry]);
                   // randomGoods += product.playerResources.resources[entry];
@@ -474,7 +477,7 @@ export function startupService(msg) {
               });
               if (DEV && checkDebug())
                 console.debug(helper.fEntityNameTrim(mapID.cityentity_id), goods, mapID.cityentity_id);
-              totalGoods += goods;
+              //totalGoods += goods;
             } else {
               if (DEV && checkDebug()) console.debug(helper.fEntityNameTrim(mapID.cityentity_id), mapID);
             }
@@ -527,6 +530,7 @@ export function startupService(msg) {
         const comp = mapID.components[user.era];
         // eslint-disable-next-line no-prototype-builtins
         if (comp && comp.hasOwnProperty("boosts")) {
+          /* empty */
         }
         // eslint-disable-next-line no-prototype-builtins
         if (comp && comp.hasOwnProperty("production")) {
@@ -585,6 +589,7 @@ export function startupService(msg) {
         <strong><span data-i18n="collection">Building Collection Times</span>:</strong></p>`;
     buildingsHTML += element.close();
     buildingsHTML += `<div id="buildingsText" class="resize collapse ${collapse.collapseBuildings ? "" : "show"}">`;
+    // eslint-disable-next-line no-unused-vars
     buildingsReady.forEach((entry, id) => {
       var timer = new Date(entry.ready * 1000);
       if (entry.ready > EpocTime) buildingsHTML += `${entry.name}: ${timer.toLocaleString()}<br>`;
@@ -601,6 +606,7 @@ export function startupService(msg) {
       return a.goods - b.goods;
     });
     tooltipHTML.totalGoods = ``;
+    // eslint-disable-next-line no-unused-vars
     goodsBuildings.forEach((entry, id) => {
       tooltipHTML.totalGoods += `${entry.goods} ${entry.name}<br>`;
       // console.debug(entry);
@@ -612,6 +618,7 @@ export function startupService(msg) {
       return a.fp - b.fp;
     });
     tooltipHTML.fp = ``;
+    // eslint-disable-next-line no-unused-vars
     fpBuildings.forEach((entry, id) => {
       tooltipHTML.fp += `${entry.fp}FP ${entry.name}<br>`;
       // console.debug(entry);
@@ -623,6 +630,7 @@ export function startupService(msg) {
       return a.goods - b.goods;
     });
     tooltipHTML.clanGoods = ``;
+    // eslint-disable-next-line no-unused-vars
     clanGoodsBuildings.forEach((entry, id) => {
       tooltipHTML.clanGoods += `${entry.goods} ${entry.name}<br>`;
       if (DEV && checkDebug()) console.debug("clanGoodsBuildings", entry.goods, entry.name);
@@ -828,6 +836,7 @@ export function emissaryService(msg) {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 export function boostService(msg) {
   /*City.CoinBoost = 0;
   City.SupplyBoost = 0;
@@ -871,7 +880,7 @@ export function boostServiceAllBoosts(msg) {
   City.CoinBoost = 0;
   City.Attack = 0;
   City.Defense = 0;
-  var AllHappiness = 0;
+  //var AllHappiness = 0;
   City.Defense = 0;
   City.CityDefense = 0;
   City.CityAttack = 0;
@@ -926,8 +935,9 @@ export function boostServiceAllBoosts(msg) {
         } else if (boost[j].targetedFeature == "guild_expedition") {
           City.GEDefendingDefense += boost[j].value;
         }
-      } else if (boost[j].type == "happiness_amount") AllHappiness += boost[j].value;
-      else if (boost[j].type == "att_def_boost_attacker") {
+      } else if (boost[j].type == "happiness_amount") {
+        /*AllHappiness += boost[j].value;*/
+      } else if (boost[j].type == "att_def_boost_attacker") {
         if (boost[j].targetedFeature == "all") {
           City.Attack += boost[j].value;
           City.Defense += boost[j].value;
@@ -986,6 +996,7 @@ export function fArcname() {
   } else return "Arc";
 }
 
+// eslint-disable-next-line no-unused-vars
 function fLoadi18n() {
   try {
     // eslint-disable-next-line no-undef
@@ -1015,6 +1026,7 @@ function fLoadi18n() {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 var LANGUAGE_BY_LOCALE = {
   ar: "Arabic",
   zh_Hans: "Chinese (Simplified Han)",
@@ -1101,6 +1113,7 @@ function showTooltips() {
         delay: { show: 100, hide: 500 },
         container: "#" + Ages[age],
       };
+      // eslint-disable-next-line no-unused-vars
       const tooltip = new Tooltip(tip, options);
     }
   }
@@ -1136,6 +1149,7 @@ function showTooltips() {
     delay: { show: 200, hide: 500 },
   };
   const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+  // eslint-disable-next-line no-unused-vars
   const popoverList = [...popoverTriggerList].map((popoverTriggerEl) => new Popover(popoverTriggerEl, options));
 
   // $(".pop").popover({
