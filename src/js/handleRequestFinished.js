@@ -580,6 +580,7 @@ async function processParsedMessage(request, msg) {
       if (showOptions.showGBInfo && levelText) {
         info.innerHTML = outputHTML + levelText;
         document.getElementById("infoTextLabel").addEventListener("click", collapse.fCollapseGBInfo);
+        // eslint-disable-next-line no-undef
         $("body").i18n();
       }
 
@@ -870,6 +871,7 @@ async function processParsedMessage(request, msg) {
         cityinvested.innerHTML = cityinvestedHTML + `</div></div>`;
         document.getElementById("investedTextLabel").addEventListener("click", collapse.fCollapseInvested);
         document.getElementById("investedCopyID").addEventListener("click", copy.fInvestedCopy);
+        // eslint-disable-next-line no-undef
         $("#investedDiv").i18n();
       }
 
@@ -1067,6 +1069,7 @@ async function processParsedMessage(request, msg) {
           }
         });
         // console.debug(GuildDonations);
+        // eslint-disable-next-line no-undef
         $("body").i18n();
       }
 
@@ -1092,6 +1095,7 @@ async function processParsedMessage(request, msg) {
         }
         document.getElementById("friendsTextLabel").addEventListener("click", collapse.fCollapseFriends);
         // }
+        // eslint-disable-next-line no-undef
         $("body").i18n();
       }
     } else if (msg.requestMethod == "getTreasuryLogs") {
@@ -1250,6 +1254,7 @@ async function processParsedMessage(request, msg) {
           document.getElementById("treasuryTextLabel").addEventListener("click", collapse.fCollapseTreasury);
         }
         // console.debug(GuildDonations);
+        // eslint-disable-next-line no-undef
         $("body").i18n();
       } else {
         console.debug(msg.responseData.length);
@@ -1328,6 +1333,7 @@ async function processParsedMessage(request, msg) {
           }
         });
         resizeObserver.observe(treasuryDiv);
+        // eslint-disable-next-line no-undef
         $("body").i18n();
       } else {
         console.debug(msg.responseData.length);

@@ -77,6 +77,7 @@ export var Galaxy = {
   amount: 0,
 };
 
+const DEV = false;
 var buildingsReady = [];
 var fpBuildings = [];
 var goodsBuildings = [];
@@ -105,10 +106,12 @@ export function startupService(msg) {
 
   console.debug("user :", MyInfo);
   if (language != "auto") {
+    // eslint-disable-next-line no-undef
     $.i18n({
       locale: language,
     });
   }
+  // eslint-disable-next-line no-undef
   console.debug(language, $.i18n().locale, $.i18n.debug);
 
   // console.log('checkBeta:', users.checkBeta());
@@ -777,6 +780,7 @@ export function startupService(msg) {
     showTooltips();
 
     // fLoadi18n();
+    // eslint-disable-next-line no-undef
     $("body").i18n();
     // $('#bonus').i18n();
     // var set_locale_to = function(locale) {
@@ -977,6 +981,7 @@ export function fArcname() {
 
 function fLoadi18n() {
   try {
+    // eslint-disable-next-line no-undef
     $.i18n()
       .load({
         en: "i18n/en.json",

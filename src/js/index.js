@@ -325,6 +325,7 @@ document.querySelector("#go-to-options").addEventListener("click", function () {
 export var language = window.navigator.userLanguage || window.navigator.language;
 console.debug(language);
 if (process.env.NODE_ENV === "development") {
+  // eslint-disable-next-line no-undef
   $.i18n.debug = true;
   // language =
   // console.debug(window);
@@ -376,11 +377,14 @@ browser.permissions
         // console.debug('result', result);
         receiveStorage(result);
         if (language != "auto") {
+          // eslint-disable-next-line no-undef
           $.i18n({
             locale: language,
           });
         }
+        // eslint-disable-next-line no-undef
         console.debug(language, $.i18n().locale, $.i18n.debug);
+        // eslint-disable-next-line no-undef
         $.i18n()
           .load({
             //     'fr' : {
@@ -422,7 +426,9 @@ browser.permissions
           })
           .done(function () {
             // load lang strings on page already loaded
+            // eslint-disable-next-line no-undef
             $("body").i18n();
+            // eslint-disable-next-line no-undef
             console.debug("jQuery " + (jQuery ? $().jquery : "NOT") + " loaded");
             console.debug("i18n.load OK");
           });
@@ -883,6 +889,7 @@ export function showRewards(rewards) {
 }
 
 export function rewardObserve() {
+  // eslint-disable-next-line no-undef
   $("#rewards").i18n();
   const rewardDiv = document.getElementById("rewardsText");
   rewardDiv.addEventListener("mouseup", setHeight);
@@ -892,7 +899,9 @@ export function rewardObserve() {
     }
   });
   resizeObserver.observe(rewardDiv);
+  // eslint-disable-next-line no-undef
   if ($("#rewardsText").height() > toolOptions.rewardSize) {
+    // eslint-disable-next-line no-undef
     $("#rewardsText").height(toolOptions.rewardSize);
   }
 }

@@ -438,6 +438,7 @@ export function showGreatBuldingDonation() {
       }
       document.getElementById("GBselected").addEventListener("click", clickDonation);
 
+      // eslint-disable-next-line no-undef
       $("body").i18n();
     }
   }
@@ -519,6 +520,7 @@ export function getConstructionRanking(msg, data) {
     document.getElementById("donorCopyID2").addEventListener("click", copy.DonorCopy2);
     document.getElementById("donorTextLabel2").addEventListener("click", collapse.fCollapseGBDonors);
     // }
+    // eslint-disable-next-line no-undef
     $("body").i18n();
   }
 }
