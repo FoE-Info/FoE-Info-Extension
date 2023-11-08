@@ -24,13 +24,18 @@ import browser from "webextension-polyfill";
 import { setRewardSize, setToolOptions, toolOptions } from "./fn/globals.js";
 import * as helper from "./fn/helper.js";
 import * as element from "./fn/AddElement";
-import { gvgAges, gvgSummary } from "./msg/ClanBattleService.js";
 import { setCurrentPercent } from "./msg/GreatBuildingsService.js";
 import { ResourceDefs, setResourceDefs } from "./msg/ResourceService.js";
 import setOptions, { showOptions } from "./vars/showOptions.js";
 import "../css/main.scss";
 import { mapToStyles } from "@popperjs/core/lib/modifiers/computeStyles.js";
-import { handleRequestFinished, SetCityEntityDefs, CityEntityDefs } from "./handleRequestFinished.js";
+import {
+  handleRequestFinished,
+  SetCityEntityDefs,
+  CityEntityDefs,
+  rewardsOtherPlayer,
+} from "./handleRequestFinished.js";
+import { storageChange } from "./handleRequestFinished.js";
 
 console.debug(toolOptions);
 export var debugEnabled = false;
@@ -181,15 +186,27 @@ output.id = "output";
 export var donationDIV = document.createElement("div");
 content.appendChild(donationDIV);
 donationDIV.id = "donation";
+export function SetDonationDIV(value) {
+  donationDIV = value;
+}
 export var donation2DIV = document.createElement("div");
 content.appendChild(donation2DIV);
 donation2DIV.id = "donation2";
+export function SetDonation2DIV(value) {
+  donation2DIV = value;
+}
 export var donationDIV2 = document.createElement("div");
 content.appendChild(donationDIV2);
 donationDIV2.id = "donationDIV2";
+export function SetDonationDIV2(value) {
+  donationDIV2 = value;
+}
 export var greatbuilding = document.createElement("div");
 content.appendChild(greatbuilding);
 greatbuilding.id = "greatbuilding";
+export function SetGreatbuilding(value) {
+  greatbuilding = value;
+}
 
 export var overview = document.createElement("div");
 content.appendChild(overview);
@@ -197,6 +214,9 @@ overview.id = "overview";
 export var cultural = document.createElement("div");
 content.appendChild(cultural);
 cultural.id = "cultural";
+export function SetCultural(value) {
+  cultural = value;
+}
 export var info = document.createElement("div");
 content.appendChild(info);
 info.id = "info";
@@ -243,7 +263,7 @@ export var modal = document.createElement("div");
 content.appendChild(modal);
 modal.id = "modal";
 
-var newelement = document.createElement("div");
+newelement = document.createElement("div");
 newelement.className = "modal-dialog modal-sm";
 newelement.id = "testModal";
 // newelement.innerHTML = '<div class="modal-dialog modal-sm">...</div>';
@@ -296,6 +316,7 @@ export const getType = (type) => {
   return type.replace(/.*(javascript|image|html|font|json|css|text).*/g, "$1");
 };
 
+// eslint-disable-next-line no-unused-vars
 const formatBytes = (size) => {
   return `${parseInt(size / 1000)} KB`;
 };
@@ -324,6 +345,10 @@ document.querySelector("#go-to-options").addEventListener("click", function () {
 
 export var language = window.navigator.userLanguage || window.navigator.language;
 console.debug(language);
+export function SetLanguage(value) {
+  language = value;
+}
+// eslint-disable-next-line no-undef
 if (process.env.NODE_ENV === "development") {
   // eslint-disable-next-line no-undef
   $.i18n.debug = true;
@@ -349,6 +374,7 @@ window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ 
     console.log("change to light mode!");
   }
 });
+// eslint-disable-next-line no-unused-vars
 function onEvent(message, params) {
   console.debug(message, params);
 }
@@ -469,6 +495,7 @@ function originWithId(header) {
   );
 }
 
+// eslint-disable-next-line no-undef
 chrome.webRequest.onBeforeSendHeaders.addListener(
   (details) => {
     return {
@@ -481,46 +508,6 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
 browser.devtools.network.onRequestFinished.addListener(handleRequestFinished);
 browser.storage.onChanged.addListener(storageChange);
-
-function storageChange(changes, namespace) {
-  for (var key in changes) {
-    var storageChange = changes[key];
-    //   console.debug('Storage key "%s" in namespace "%s" changed. ' +
-    // 			  'Old value was "%s", new value is "%s".',
-    // 			  key,
-    // 			  namespace,
-    // 			  storageChange.oldValue,
-    // 			  storageChange.newValue);
-    if (key == "showOptions") setOptions("showOptions", storageChange.newValue);
-    // showOptions = storageChange.newValue;
-    // console.debug(changes);
-    else if (key == "tool") {
-      language = storageChange.newValue.language;
-      console.debug(language);
-    } else if (key == "targets") {
-      // console.debug(storageChange.newValue,targetsTopic);
-      targetsTopic = storageChange.newValue;
-    } else if (key == "targetText") {
-      // console.debug(storageChange.newValue,targetText);
-      targetText = storageChange.newValue;
-    } else if (key == "toolOptions") {
-      setToolOptions(storageChange.newValue);
-      // console.debug(toolOptions);
-    } else if (key == "donationPercent") {
-      donationPercent = storageChange.newValue;
-      setCurrentPercent(storageChange.newValue);
-      // console.debug(storageChange.newValue);
-    } else if (key == "donationSuffix") {
-      donationSuffix = storageChange.newValue;
-      // console.debug(storageChange.newValue);
-    } else if (key == "url") {
-      url = storageChange.newValue;
-      // console.debug(url);
-    }
-  }
-  // console.debug('onChanged',changes);
-  // console.debug('showOptions',showOptions);
-}
 
 export function fCleardForGVG() {
   cityinvested.innerHTML = ``;
@@ -544,84 +531,6 @@ export function fCleardForGVG() {
   friendsDiv.innerHTML = "";
   treasury.innerHTML = "";
   treasuryLog.innerHTML = "";
-}
-
-export function clearVisitPlayer() {
-  cityinvested.innerHTML = ``;
-  output.innerHTML = ``;
-  overview.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  cultural.innerHTML = ``;
-  cultural.className = "";
-  friendsDiv.innerHTML = "";
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-}
-
-export function clearExpedition() {
-  cityinvested.innerHTML = ``;
-  // output.innerHTML = ``;
-  overview.innerHTML = ``;
-  alerts.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = "";
-  cultural.innerHTML = ``;
-  cultural.className = "";
-  friendsDiv.innerHTML = "";
-  gvg.innerHTML = ``;
-  gvg.className = "";
-  // armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
-}
-
-export function clearForBattleground() {
-  cityinvested.innerHTML = ``;
-  // output.innerHTML = ``;
-  overview.innerHTML = ``;
-  alerts.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = "";
-  cultural.innerHTML = ``;
-  cultural.className = "";
-  friendsDiv.innerHTML = "";
-  gvg.innerHTML = ``;
-  gvg.className = "";
-  // armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
 }
 
 export function receiveStorage(result) {

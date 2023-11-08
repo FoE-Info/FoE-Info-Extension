@@ -12,7 +12,6 @@
  * ________________________________________________________________
  */
 
-import { Tooltip, Alert, Popover } from "bootstrap";
 import dayjs from "dayjs";
 import { targets } from "../index.js";
 import { targetsTopic } from "../handleRequestFinished.js";
@@ -78,7 +77,9 @@ export function conversationService(msg) {
 
 export function getConversation(msg) {
   // console.debug(msg);
+  // eslint-disable-next-line no-prototype-builtins
   if (msg.hasOwnProperty("responseData") && msg.hasOwnProperty("adminIds")) {
+    /* empty */
   }
 
   // if title includes donation %, setCurrentPercent for dontation helper

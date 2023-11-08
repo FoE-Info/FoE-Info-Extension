@@ -18,7 +18,7 @@ import * as copy from "../fn/copy.js";
 import * as storage from "../fn/storage.js";
 import * as element from "../fn/AddElement";
 import { City } from "./StartupService.js";
-import { donationDIV, donation2DIV, donationDIV2, greatbuilding } from "../index.js";
+import { donationDIV, donation2DIV, greatbuilding, SetGreatbuilding } from "../index.js";
 import { setPlayerName } from "../handleRequestFinished.js";
 import {
   MyInfo,
@@ -52,6 +52,7 @@ const darkMode = false; // dont use darkMode until we sort out a dark theme to u
 
 if (storage.get("useNewDonationPanel") != null) useNewDonationPanel = storage.get("useNewDonationPanel");
 
+// eslint-disable-next-line no-prototype-builtins, no-unused-vars
 if (url && url.hasOwnProperty("sheetGameURL")) googleSheetGame = url.sheetGameURL;
 
 export function getConstruction(msg) {
@@ -69,7 +70,7 @@ export function contributeForgePoints(msg) {
 export function showGreatBuldingDonation() {
   var outputHTML = "";
   var donorsHTML = "";
-  overview.innerHTML = "";
+  // overview.innerHTML = ""; overview is not defined
   //greatbuilding.innerHTML = ``;
   outputHTML = `<div class="alert alert-success alert-dismissible" role="alert">
     <p id="donorTextLabel" data-bs-toggle="collapse" href="#donorcollapse">`;
@@ -89,6 +90,7 @@ export function showGreatBuldingDonation() {
 
     for (var j = 0; j < rankings.length; j++) {
       const place = rankings[j];
+      // eslint-disable-next-line no-prototype-builtins
       if (place.hasOwnProperty("rank")) {
         Rank = place.rank;
         if (donorsHTML != "" && place.player.name != "No contributor yet") {
@@ -213,7 +215,7 @@ export function showGreatBuldingDonation() {
       } else olddonationHTML += `</p>`;
       if (PlayerName == MyInfo.name && Donation - donateSuggest[0] > 0)
         olddonationHTML += `<p class=""><span data-i18n="add">Add</span> ${
-          currentPercent ? (Donation - donateCustom) * 2 : (Donation - donate190) * 2
+          currentPercent ? (Donation - donateCustom) * 2 : (Donation - donate190) * 2 // donate190 is not defined and I don't know what it should be
         }FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : "1.9"}</p>`;
       copyText += getDonations(1, safe, donateSuggest);
     }
@@ -467,14 +469,14 @@ export function getConstructionRanking(msg, data) {
   var rowsHTML = "";
   // if(donorContainer.textContent)
   // donorHTML = donorContainer.textContent;
-  overview.innerHTML = "";
+  //overview.innerHTML = ""; overview is not defined
   //greatbuilding.innerHTML = ``;
   outputHTML = `<div class="alert alert-success alert-dismissible show" role="alert">`;
   outputHTML += element.close();
   outputHTML += element.copy("donorCopyID2", "success", "right", collapse.collapseGBDonors);
   if (msg.responseData.length) {
     // var total = 0;
-    for (var j = 0; j < msg.responseData.length; j++) {
+    for (j = 0; j < msg.responseData.length; j++) {
       const place = msg.responseData[j];
       // total += place.forge_points;
       if (place.rank > 0) {
@@ -532,18 +534,19 @@ function fPercentBanded(Percent) {
   return "";
 }
 
+// eslint-disable-next-line no-unused-vars
 function round(number) {
   return Math.round(Math.round(number * 10) / 10);
 }
 
 function fCheckOutput() {
   if (greatbuilding == null) {
-    greatbuilding = document.createElement("div");
+    SetGreatbuilding(document.createElement("div"));
     document.getElementById("content").appendChild(greatbuilding);
     greatbuilding.id = "greatbuilding";
   }
   if (donationDIV == null) {
-    donationDIV = document.createElement("div");
+    SetDonationDIV(document.createElement("div"));
     document.getElementById("content").appendChild(donationDIV);
     donationDIV.id = "donation";
   }

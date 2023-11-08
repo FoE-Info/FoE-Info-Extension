@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import * as collapse from "./fn/collapse.js";
 import browser from "webextension-polyfill";
 import * as copy from "./fn/copy.js";
-import { setTreasurySize, toolOptions } from "./fn/globals.js";
+import { setToolOptions, setTreasurySize, toolOptions } from "./fn/globals.js";
 import * as helper from "./fn/helper.js";
 import * as storage from "./fn/storage.js";
 import * as element from "./fn/AddElement";
@@ -18,7 +18,12 @@ import {
   grantIndependence,
 } from "./msg/ClanBattleService.js";
 import { conversationService, getConversation } from "./msg/ConversationService.js";
-import { contributeForgePoints, getConstruction, getConstructionRanking } from "./msg/GreatBuildingsService.js";
+import {
+  contributeForgePoints,
+  getConstruction,
+  getConstructionRanking,
+  setCurrentPercent,
+} from "./msg/GreatBuildingsService.js";
 import {
   clearBattleground,
   getBattleground,
@@ -65,6 +70,7 @@ import {
   overview,
   receiveStorage,
   rewardObserve,
+  SetCultural,
   showReward,
   showRewards,
   tool,
@@ -73,6 +79,7 @@ import {
   visitstats,
 } from "./index.js";
 import { targets } from "./index.js";
+import { language } from "./index.js";
 
 export var EpocTime = 0;
 export var GameVersion = 0;
@@ -202,10 +209,12 @@ export function handleRequestFinished(request) {
     // }
     if (contentType && contentType.value && GameVersion != contentType.value.substr(8, 5)) {
       GameVersion = contentType.value.substr(8, 5);
+      // eslint-disable-next-line no-undef
       citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${GameVersion}<br>${EXT_NAME}: ${tool.version}</div>`;
       // console.debug('version:', GameVersion);
     }
 
+    // eslint-disable-next-line no-unused-vars
     request.getContent().then(async ([body, mimeType]) => {
       // console.log("Content: ", body);
       // console.log("MIME type: ", mimeType);
@@ -321,7 +330,7 @@ async function processParsedMessage(request, msg) {
     msg.__class__
   );
   var contentType = "";
-  var contentHeader = "";
+  //var contentHeader = "";
   // check if this is static data service info that holds all URLs to all metadata files
   if (msg.requestClass === "StaticDataService" && msg.requestMethod == "getMetadata") {
     // find an URL that has city entities
@@ -418,7 +427,7 @@ async function processParsedMessage(request, msg) {
         // console.debug(reward);
       });
 
-      var reward = [];
+      reward = [];
       reward.source = "otherPlayer";
       reward.name = "";
       reward.amount = 0;
@@ -503,15 +512,16 @@ async function processParsedMessage(request, msg) {
       // console.debug(msg);
       if (msg.responseData.length) {
         // console.debug('msg:', msg.responseData);
-        for (var j = 0; j < msg.responseData.length; j++) {
+        for (j = 0; j < msg.responseData.length; j++) {
           if (msg.responseData[j].player_id == MyInfo.id) {
+            /* empty */
           }
         }
       }
     } else if (msg.requestMethod == "updateEntity") {
       /*GB Info */
       // console.debug('msg:', msg);
-      var outputHTML = "";
+      outputHTML = "";
       //output.innerHTML = "";
       //overview.innerHTML = "";
       // if (debugEnabled == true)
@@ -521,7 +531,7 @@ async function processParsedMessage(request, msg) {
         // console.debug(collapseOptions);
         console.debug(GBselected);
         var levelText = "";
-        for (var j = 0; j < msg.responseData.length; j++) {
+        for (j = 0; j < msg.responseData.length; j++) {
           const selected = msg.responseData[j];
           if (selected.type == "greatbuilding") {
             if (selected.player_id == MyInfo.id) {
@@ -627,7 +637,8 @@ async function processParsedMessage(request, msg) {
   } else if (msg.requestClass == "RankingService" && msg.requestMethod == "searchRanking") {
     // console.debug('msg:', msg);
     if (msg.responseData.rankings.length && msg.responseData.category != "clan_battle_clan_global") {
-      for (var j = 0; j < msg.responseData.rankings.length; j++) {
+      for (j = 0; j < msg.responseData.rankings.length; j++) {
+        // eslint-disable-next-line no-prototype-builtins
         if (msg.responseData.rankings[j].player.hasOwnProperty("is_self")) {
           if (
             MyInfo.name != msg.responseData.rankings[j].player.name ||
@@ -696,7 +707,7 @@ async function processParsedMessage(request, msg) {
 
     if (showOptions.showSettlement) {
       if (document.getElementById("cultural") == null) {
-        cultural = document.createElement("div");
+        SetCultural(document.createElement("div"));
         document.getElementById("content").appendChild(cultural);
         cultural.id = "cultural";
       }
@@ -742,7 +753,7 @@ async function processParsedMessage(request, msg) {
     if (msg.requestMethod == "collectReward") {
       /**/
       if (msg.responseData.length) {
-        var reward = msg.responseData[0][0];
+        reward = msg.responseData[0][0];
         reward.source = msg.responseData[1];
         console.debug(msg.responseData[1], reward);
         if (showOptions.showGBGrewards) {
@@ -751,6 +762,7 @@ async function processParsedMessage(request, msg) {
       }
     } else if (msg.requestMethod == "collectRewardSet") {
       /**/
+      // eslint-disable-next-line no-prototype-builtins
       if (msg.responseData.hasOwnProperty("reward") && msg.responseData.reward.rewards.length) {
         var rewards = msg.responseData.reward.rewards;
         rewards.source = msg.responseData.context;
@@ -825,7 +837,7 @@ async function processParsedMessage(request, msg) {
 
       /*Invested */
     } else if (msg.requestMethod == "getContributions") {
-      var reward = 0;
+      reward = 0;
       var invested = 0;
       var cityinvestedHTML = ``;
       cityinvested.innerHTML = ``;
@@ -833,7 +845,7 @@ async function processParsedMessage(request, msg) {
       // 	cityinvestedHTML += `<div>${contentType} : ${msg.requestClass} : ${msg.requestMethod}</div>`;
       if (showOptions.showInvested && msg.responseData.length) {
         var numGB = 0;
-        for (var j = 0; j < msg.responseData.length; j++) {
+        for (j = 0; j < msg.responseData.length; j++) {
           invested += msg.responseData[j].forge_points;
           if (msg.responseData[j].rank < 6) {
             if (msg.responseData[j].reward.strategy_point_amount && msg.responseData[j].forge_points > 9) {
@@ -878,11 +890,11 @@ async function processParsedMessage(request, msg) {
       /* GvG Info*/
     } else if (msg.requestMethod == "getOtherPlayerOverview") {
       /*GB Last Donor Date */
-      var overviewtxt = ``;
+      //var overviewtxt = ``;
       // console.debug('msg:', msg);
       // console.debug(showGBLastDonor);
       if (msg.responseData.length) {
-        for (var j = 0; j < msg.responseData.length; j++) {
+        for (j = 0; j < msg.responseData.length; j++) {
           var player = msg.responseData[j].player;
           setPlayerName(player.name, player.player_id);
         }
@@ -918,7 +930,7 @@ async function processParsedMessage(request, msg) {
       //console.debug('cityentity_id:', msg.responseData.cityentity_id);
       // var units = {};
       // var numUnits = 0;
-      var reward = msg.responseData;
+      reward = msg.responseData;
       reward.source = "guildExpedition";
       var name = helper.fRewardShortName(reward.name);
       var qty = reward.amount;
@@ -1288,7 +1300,7 @@ async function processParsedMessage(request, msg) {
 
       if (showOptions.showTreasury) {
         // var treasuryHTML = guild.innerHTML;
-        var treasuryHTML = "";
+        treasuryHTML = "";
 
         // if (!treasuryHTML){
         treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
@@ -1450,10 +1462,6 @@ export function setMyGuildID(id) {
   MyInfo.guildID = id;
 }
 
-export function setMyGuildPermissions(permissions) {
-  MyGuildPermissions = permissions;
-}
-
 export function setMyGuildPosition(id) {
   MyInfo.guildPosition = id;
   storage.set(GameOrigin + "MyInfo", MyInfo);
@@ -1480,6 +1488,124 @@ function clearForMainCity() {
   visitstats.className = "";
   cultural.innerHTML = ``;
   cultural.className = "";
+  gvg.innerHTML = ``;
+  gvg.className = "";
+  // armyDIV.innerHTML = ``;
+  treasury.innerHTML = "";
+  treasuryLog.innerHTML = "";
+  if (gvgSummary) gvgSummary.innerHTML = "";
+  if (gvgAges) gvgAges.innerHTML = "";
+}
+// eslint-disable-next-line no-unused-vars
+export function storageChange(changes, namespace) {
+  for (var key in changes) {
+    var storageChange = changes[key];
+    //   console.debug('Storage key "%s" in namespace "%s" changed. ' +
+    // 			  'Old value was "%s", new value is "%s".',
+    // 			  key,
+    // 			  namespace,
+    // 			  storageChange.oldValue,
+    // 			  storageChange.newValue);
+    // eslint-disable-next-line no-undef
+    if (key == "showOptions") setOptions("showOptions", storageChange.newValue); // setOptions is not defined
+    // showOptions = storageChange.newValue;
+    // console.debug(changes);
+    else if (key == "tool") {
+      helper.SetLanguage(storageChange.newValue.language);
+      console.debug(language);
+    } else if (key == "targets") {
+      // console.debug(storageChange.newValue,targetsTopic);
+      targetsTopic = storageChange.newValue;
+    } else if (key == "targetText") {
+      // console.debug(storageChange.newValue,targetText);
+      targetText = storageChange.newValue;
+    } else if (key == "toolOptions") {
+      setToolOptions(storageChange.newValue);
+      // console.debug(toolOptions);
+    } else if (key == "donationPercent") {
+      donationPercent = storageChange.newValue;
+      setCurrentPercent(storageChange.newValue);
+      // console.debug(storageChange.newValue);
+    } else if (key == "donationSuffix") {
+      donationSuffix = storageChange.newValue;
+      // console.debug(storageChange.newValue);
+    } else if (key == "url") {
+      url = storageChange.newValue;
+      // console.debug(url);
+    }
+  }
+  // console.debug('onChanged',changes);
+  // console.debug('showOptions',showOptions);
+}
+export function clearVisitPlayer() {
+  cityinvested.innerHTML = ``;
+  output.innerHTML = ``;
+  overview.innerHTML = ``;
+  // cityrewards.innerHTML = ``;
+  donationDIV.innerHTML = ``;
+  donation2DIV.innerHTML = ``;
+  donationDIV2.innerHTML = ``;
+  greatbuilding.innerHTML = ``;
+  guild.innerHTML = ``;
+  debug.innerHTML = ``;
+  info.innerHTML = ``;
+  donationDIV.innerHTML = ``;
+  cultural.innerHTML = ``;
+  cultural.className = "";
+  friendsDiv.innerHTML = "";
+  treasury.innerHTML = "";
+  treasuryLog.innerHTML = "";
+}
+
+export function clearExpedition() {
+  cityinvested.innerHTML = ``;
+  // output.innerHTML = ``;
+  overview.innerHTML = ``;
+  alerts.innerHTML = ``;
+  // cityrewards.innerHTML = ``;
+  donationDIV.innerHTML = ``;
+  incidents.innerHTML = ``;
+  donation2DIV.innerHTML = ``;
+  donationDIV2.innerHTML = ``;
+  greatbuilding.innerHTML = ``;
+  guild.innerHTML = ``;
+  debug.innerHTML = ``;
+  info.innerHTML = ``;
+  donationDIV.innerHTML = ``;
+  visitstats.innerHTML = ``;
+  visitstats.className = "";
+  cultural.innerHTML = ``;
+  cultural.className = "";
+  friendsDiv.innerHTML = "";
+  gvg.innerHTML = ``;
+  gvg.className = "";
+  // armyDIV.innerHTML = ``;
+  treasury.innerHTML = "";
+  treasuryLog.innerHTML = "";
+  if (gvgSummary) gvgSummary.innerHTML = "";
+  if (gvgAges) gvgAges.innerHTML = "";
+}
+
+export function clearForBattleground() {
+  cityinvested.innerHTML = ``;
+  // output.innerHTML = ``;
+  overview.innerHTML = ``;
+  alerts.innerHTML = ``;
+  // cityrewards.innerHTML = ``;
+  donationDIV.innerHTML = ``;
+  incidents.innerHTML = ``;
+  donation2DIV.innerHTML = ``;
+  donationDIV2.innerHTML = ``;
+  greatbuilding.innerHTML = ``;
+  guild.innerHTML = ``;
+  debug.innerHTML = ``;
+  info.innerHTML = ``;
+  donationDIV.innerHTML = ``;
+  visitstats.innerHTML = ``;
+  visitstats.className = "";
+  cultural.innerHTML = ``;
+  cultural.className = "";
+  friendsDiv.innerHTML = "";
   gvg.innerHTML = ``;
   gvg.className = "";
   // armyDIV.innerHTML = ``;

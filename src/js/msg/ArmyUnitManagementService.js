@@ -71,7 +71,7 @@ export function armyUnitManagementService(msg) {
     }
 
     if (showOptions.showArmy && units) {
-      var diff = rogues - ArmyUnits["rogue"];
+      diff = rogues - ArmyUnits["rogue"];
       armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">`;
       armyHTML += element.close();
       armyHTML += `<p id="armyTextLabel" href="#armyText" data-bs-toggle="collapse">`;
@@ -98,6 +98,7 @@ export function armyUnitManagementService(msg) {
         }
       });
       resizeObserver.observe(armyDiv);
+      // eslint-disable-next-line no-undef
       $("body").i18n();
     }
   }
