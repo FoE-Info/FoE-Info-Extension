@@ -422,9 +422,12 @@ export function startupService(msg) {
           if (DEV && checkDebug()) console.debug(mapID.state.productionOption);
           mapID.state.productionOption.products.forEach((product) => {
             console.debug(product);
+            // eslint-disable-next-line no-prototype-builtins
             if (product.hasOwnProperty("playerResources") && product.playerResources.hasOwnProperty("resources")) {
               const resources = product.playerResources.resources;
+              // eslint-disable-next-line no-prototype-builtins
               if (resources.hasOwnProperty("premium")) diamonds += resources.premium;
+              // eslint-disable-next-line no-prototype-builtins
               if (resources.hasOwnProperty("strategy_points")) {
                 if (DEV && checkDebug()) console.debug(mapID.state.productionOption);
                 forgePoints += resources.strategy_points;
@@ -518,12 +521,16 @@ export function startupService(msg) {
         }
       }
 
+      // eslint-disable-next-line no-prototype-builtins
       if (mapID.hasOwnProperty("components")) {
         console.debug(mapID.name, mapID);
         const comp = mapID.components[user.era];
+        // eslint-disable-next-line no-prototype-builtins
         if (comp && comp.hasOwnProperty("boosts")) {
         }
+        // eslint-disable-next-line no-prototype-builtins
         if (comp && comp.hasOwnProperty("production")) {
+          // eslint-disable-next-line no-prototype-builtins
           if (comp.production.hasOwnProperty("options")) {
             const products = comp.production.options[0];
             products.array.forEach((product) => {

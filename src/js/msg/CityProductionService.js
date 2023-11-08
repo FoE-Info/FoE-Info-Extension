@@ -37,8 +37,11 @@ export function pickupProduction(msg) {
       updateGalaxy(reward);
       // console.debug(reward.state.current_product.hasOwnProperty('product') , reward.state.current_product.product.hasOwnProperty('resources'));
       if (
+        // eslint-disable-next-line no-prototype-builtins
         reward.state.hasOwnProperty("current_product") &&
+        // eslint-disable-next-line no-prototype-builtins
         reward.state.current_product.hasOwnProperty("product") &&
+        // eslint-disable-next-line no-prototype-builtins
         reward.state.current_product.product.hasOwnProperty("resources")
       ) {
         // updateGalaxy(reward.cityentity_id);
@@ -51,11 +54,13 @@ export function pickupProduction(msg) {
           else rewardsCity[name] = reward.state.current_product.product.resources[resource];
         });
       }
+      // eslint-disable-next-line no-prototype-builtins
       if (reward.state.hasOwnProperty("productionOption") && reward.state.productionOption.hasOwnProperty("products")) {
         // updateGalaxy(reward.cityentity_id);
         // var resources = reward.state.current_product.product.resources;
         // console.debug(resources);
         reward.state.productionOption.products.array.forEach((element) => {
+          // eslint-disable-next-line no-prototype-builtins
           if (element.hasOwnProperty("playerResources") && element.playerResources.hasOwnProperty("resources"))
             Object.keys(element.playerResources.resources).forEach((resource) => {
               const name = helper.fResourceShortName(resource);
