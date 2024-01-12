@@ -322,6 +322,42 @@ export function otherPlayerService(msg) {
           }
         }
 
+        // Traverse component options for extra treasury donation buildings.
+        try{
+          if (entityAge && entity['components'] && entity['components'][entityAge] && entity['components'][entityAge]['production'] && entity['components'][entityAge]['production']['options'])
+          {
+            let opt = entity['components'][entityAge]['production']['options'];
+            let goods = 0;
+
+            for (let o in opt)
+            {
+              if (!opt.hasOwnProperty(o) || opt[o]['products'] === undefined) { continue; }
+
+              let products = opt[o]['products'];
+
+              for (let p in products)
+              {
+                if (!products.hasOwnProperty(p) || products[p]['guildResources'] === undefined || products[p]['guildResources']['resources'] === undefined) { continue; }
+
+                let onlywhenmotivated = products[p].onlyWhenMotivated && products[p].onlyWhenMotivated === true ? true : false;
+
+                if (products[p]['guildResources']['resources']['all_goods_of_age'])
+                {
+                  goods += products[p]['guildResources']['resources']['all_goods_of_age'];
+
+                }
+                  clanGoods += goods;
+                  clanGoodsHTML += helper.fGBname(mapID.cityentity_id) + ": " + goods + "<br>";
+                  fGoodsTally(helper.fAgefromLevel(mapID.level), goods);
+              }
+            }
+          }
+        }
+        catch(e)
+        {
+          console.error("Error locating guild treasury donations",e);
+        }
+
         if (entity.abilities) {
           forgePoints = 0;
           boost = {};
