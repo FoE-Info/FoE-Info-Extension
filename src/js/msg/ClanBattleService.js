@@ -217,13 +217,13 @@ export function getProvinceDetailed(msg) {
       GVGstatus.push({
         id: j,
         name: clan,
-        sectors: GuildSectors[j],
-        power: GuildPower[j],
+        sectors: GuildSectors[j]??0,
+        power: GuildPower[j]??0,
       });
     });
 
     GVGstatus.sort(function (a, b) {
-      return b.power - a.power;
+      return (b.power ??0) - (a.power ??0);
     });
 
     GVGstatus.forEach((clan, j) => {
@@ -267,7 +267,7 @@ export function getProvinceDetailed(msg) {
     });
     gvgPowerAllSorted = copy(gvgPowerAll);
     gvgPowerAllSorted.sort(function (a, b) {
-      return b.total - a.total;
+      return (b.total ??0) - (a.total ??0);
     });
 
     // console.debug(gvgPowerAllSorted);
