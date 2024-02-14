@@ -1,6 +1,6 @@
 {
   "name": "foe-info",
-  "version": "0.0.822",
+  "version": "0.0.823",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@wikimedia/jquery.i18n": "1.0.9",
