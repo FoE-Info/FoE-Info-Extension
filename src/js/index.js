@@ -553,6 +553,7 @@ browser.permissions
             fr: "i18n/fr.json",
             el: "i18n/el.json",
             gr: "i18n/gr.json",
+	    it: "i18n/it.json",  
           })
           .done(function () {
             // load lang strings on page already loaded
