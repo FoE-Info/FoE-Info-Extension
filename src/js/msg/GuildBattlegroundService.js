@@ -493,12 +493,12 @@ function checkProvinces() {
         var text = name[0] + name[1];
         var campsText = "";
         if (showOptions.GBGshowSC && (campsReady || campsNotReady)) {
-          campsText = " (";
-          if (campsReady && !campsNotReady) campsText += 100 - campsReady + `%)`;
-          else if (campsNotReady && !campsReady) campsText += 100 - campsNotReady + "% UC)";
+          campsText = " ";
+          if (campsReady && !campsNotReady) campsText += "(" + 100 - campsReady + "%)";
+          else if (campsNotReady && !campsReady) campsText += "[" +100 - campsNotReady + "% UC]";
           else if (campsReady && campsNotReady)
-            campsText += 100 - campsReady + "% + " + (100 - campsNotReady) + "% UC)";
-          else campsText += "! SC)";
+            campsText += "(" + (100 - campsReady) + "%) [" + (100 - campsNotReady - campsReady) + "% UC]";
+          else campsText += "(! SC)";
         }
         if (targetText) text += " " + targetText;
         // check if province is locked

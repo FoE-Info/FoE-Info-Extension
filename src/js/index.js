@@ -632,7 +632,8 @@ function handleRequestFinished(request) {
     contentType = getType(contentHeader.value);
   }
 
-  if (contentType == "json") {
+    // if (contentType == "json") {
+    if (request.request.url.match(/https:\/\/.*\.forgeofempires\.com\/game\/json\?h=/g) || request.request.url.match(/https:\/\/foe.*\.innogamescdn\.com\/start\/metadata\?id=(.*)/g)) {
     // console.debug(request.request.headers);
     contentType = request.request.headers.find((header) => header.name === "client-identification");
     // if(contentType) console.debug('client-identification:', contentType.value.substr(8,5));
