@@ -937,6 +937,8 @@ export function boostServiceAllBoosts(msg) {
           City.GBGDefendingDefense += boost[j].value;
         } else if (boost[j].targetedFeature == "guild_expedition") {
           City.GEDefendingDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == "guild_raids") {
+          City.QIDefendingDefense += boost[j].value;
         }
       } else if (boost[j].type == "happiness_amount") AllHappiness += boost[j].value;
       else if (boost[j].type == "att_def_boost_attacker") {
