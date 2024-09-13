@@ -63,6 +63,10 @@ export var City = {
   GBGAttackingDefense: 0,
   GBGDefendingAttack: 0,
   GBGDefendingDefense: 0,
+  QIAttackingAttack: 0,
+  QIAttackingDefense: 0,
+  QIDefendingAttack: 0,
+  QIDefendingDefense: 0,
 
   SoH: 0,
   tGE: 0,
@@ -747,6 +751,8 @@ export function startupService(msg) {
   citystatsHTML += `<span data-i18n="ge-defenders">GE Defenders</span>: ${
     City.GEDefendingAttack + City.CityAttack
   }% Att, ${City.GEDefendingDefense + City.CityDefense}% Def<br>`;
+  citystatsHTML += `<span data-i18n="qi-attackers">QI Attackers</span>: ${City.QIAttackingAttack}% Att, ${City.QIAttackingDefense}% Def<br>`;
+  citystatsHTML += `<span data-i18n="qi-defenders">QI Defenders</span>: ${City.QIDefendingAttack}% Att, ${City.QIDefendingAttack}% Def<br>`;
   citystatsHTML += `<span data-i18n="available">Available FP</span>: <span id="availableFPID">${
     availablePacksFP + availableFP
   }</span></p>`;
@@ -881,6 +887,10 @@ export function boostServiceAllBoosts(msg) {
   City.GBGAttackingDefense = 0;
   City.GBGDefendingAttack = 0;
   City.GBGDefendingDefense = 0;
+  City.QIAttackingAttack = 0;
+  City.QIAttackingDefense =0;
+  City.QIDefendingAttack = 0;
+  City.QIDefendingDefense = 0;
 
   if (msg.responseData.length) {
     var boost = msg.responseData;
@@ -894,6 +904,8 @@ export function boostServiceAllBoosts(msg) {
           City.GBGAttackingAttack += boost[j].value;
         } else if (boost[j].targetedFeature == "guild_expedition") {
           City.GEAttackingAttack += boost[j].value;
+        } else if (boost[j].targetedFeature == "guild_raids") {
+          City.QIAttackingAttack += boost[j].value;
         }
         // console.debug('Attack:', Attack, boost[j].value);
       } else if (boost[j].type == "att_boost_defender") {
@@ -903,6 +915,8 @@ export function boostServiceAllBoosts(msg) {
           City.GBGDefendingAttack += boost[j].value;
         } else if (boost[j].targetedFeature == "guild_expedition") {
           City.GEDefendingAttack += boost[j].value;
+        } else if (boost[j].targetedFeature == "guild_raids") {
+          City.QIDefendingAttack += boost[j].value;
         }
         // console.debug('CityAttack:', CityAttack, boost[j].value);
       } else if (boost[j].type == "def_boost_attacker") {
@@ -912,6 +926,8 @@ export function boostServiceAllBoosts(msg) {
           City.GBGAttackingDefense += boost[j].value;
         } else if (boost[j].targetedFeature == "guild_expedition") {
           City.GEAttackingDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == "guild_raids") {
+          City.QIAttackingDefense += boost[j].value;
         }
         // console.debug('Defense:', Defense, boost[j].value);
       } else if (boost[j].type == "def_boost_defender") {
@@ -933,6 +949,9 @@ export function boostServiceAllBoosts(msg) {
         } else if (boost[j].targetedFeature == "guild_expedition") {
           City.GEAttackingAttack += boost[j].value;
           City.GEAttackingDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == "guild_raids") {
+          City.QIAttackingAttack += boost[j].value;
+          City.QIAttackingDefense += boost[j].value;
         }
         // console.debug('Attack/Defense:', boost[j].value);
       } else if (boost[j].type == "att_def_boost_defender") {
@@ -945,6 +964,9 @@ export function boostServiceAllBoosts(msg) {
         } else if (boost[j].targetedFeature == "guild_expedition") {
           City.GEDefendingAttack += boost[j].value;
           City.GEDefendingDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == "guild_raids") {
+          City.QIDefendingAttack += boost[j].value;
+          City.QIDefendingDefense += boost[j].value;
         }
         // console.debug('City Attack/Defense:', boost[j].value);
       } else if (
