@@ -494,8 +494,8 @@ function checkProvinces() {
         var campsText = "";
         if (showOptions.GBGshowSC && (campsReady || campsNotReady)) {
           campsText = " ";
-          if (campsReady && !campsNotReady) campsText += "(" + 100 - campsReady + "%)";
-          else if (campsNotReady && !campsReady) campsText += "[" +100 - campsNotReady + "% UC]";
+          if (campsReady && !campsNotReady) campsText += "(" + (100 - campsReady) + "%)";
+          else if (campsNotReady && !campsReady) campsText += "[" + (100 - campsNotReady) + "% UC]";
           else if (campsReady && campsNotReady)
             campsText += "(" + (100 - campsReady) + "%) [" + (100 - campsNotReady - campsReady) + "% UC]";
           else campsText += "(! SC)";
