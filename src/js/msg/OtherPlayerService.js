@@ -821,7 +821,8 @@ export function otherPlayerService(msg) {
   visitstatsHTML += `<span data-i18n="daily">Daily</span> FP: ${visitForgePoints ? visitForgePoints : 0} <br>`;
   if (visitArcBonus) visitstatsHTML += `${fArcname()} <span data-i18n="bonus">Bonus</span>: ${visitArcBonus}%<br>`;
   if (visitPenal) visitstatsHTML += `<span data-i18n="army">Army Units</span>: ${visitPenal}<br>`;
-  visitstatsHTML += `<span data-i18n="Castle System, Tavern, and Potion boosts not considered"></span><br>`;
+  disclaimerHTML = "Castle System, Tavern, and Potion boosts not considered"
+  //visitstatsHTML += `<span data-i18n="Castle System, Tavern, and Potion boosts not considered"></span><br>`;
   visitstatsHTML += `<span data-i18n="attackers">Attackers</span>: ${visitAttack}% Att, ${visitDefense}% Def<br>`;
   visitstatsHTML += `<span data-i18n="defenders">Defenders</span>: ${visitCityAttack}% Att, ${visitCityDefense}% Def<br>`;
   visitstatsHTML += `<span data-i18n="gbg-attackers">GBG Attackers</span>: ${redAttackBattlegrounds}% Att, ${redDefenseBattlegrounds}% Def<br>`;
