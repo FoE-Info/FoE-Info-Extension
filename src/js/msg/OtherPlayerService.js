@@ -49,6 +49,18 @@ var visitAttack = 0;
 var visitDefense = 0;
 var visitCityAttack = 0;
 var visitCityDefense = 0;
+var redAttackBattlegrounds = 0;
+var redDefenseBattlegrounds = 0;
+var blueAttackBattlegrounds = 0;
+var blueDefenseBattlegrounds = 0;
+var redAttackExpedition = 0;
+var redDefenseExpedition = 0;
+var blueAttackExpedition = 0;
+var blueDefenseExpedition = 0;
+var redAttackRaids = 0;
+var redDefenseRaids = 0;
+var blueAttackRaids = 0;
+var blueDefenseRaids = 0;
 
 var entityVisitAttack = 0;
 var entityVisitDefense = 0;
@@ -127,6 +139,18 @@ export function otherPlayerService(msg) {
   visitDefense = 0;
   visitCityAttack = 0;
   visitCityDefense = 0;
+  redAttackBattlegrounds = 0;
+  redDefenseBattlegrounds = 0;
+  blueAttackBattlegrounds = 0;
+  blueDefenseBattlegrounds = 0;
+  redAttackExpedition = 0;
+  redDefenseExpedition = 0;
+  blueAttackExpedition = 0;
+  blueDefenseExpedition = 0;
+  redAttackRaids = 0;
+  redDefenseRaids = 0;
+  blueAttackRaids = 0;
+  blueDefenseRaids = 0;
   visitData = [];
   visitAD = [];
   Goods = {
@@ -595,14 +619,22 @@ export function otherPlayerService(msg) {
         }
       }
 
+      // IF FoE-Info is counting great building stats incorrectly, this is probably why, because this doesn't distinguish different types of boosts for GBs
       if (mapID.bonus) {
         if (mapID.bonus.type == "contribution_boost") visitArcBonus = mapID.bonus.value;
         // if(mapID.bonus.type == "money_boost")
         // 	CoinBoost += mapID.bonus.value;
         if (mapID.bonus.type == "military_boost") {
           // += mapID.bonus.value;
+          
           visitAttack += mapID.bonus.value;
+          redAttackBattlegrounds += mapID.bonus.value;
+          redAttackExpedition += mapID.bonus.value;
+
           visitDefense += mapID.bonus.value;
+          redDefenseBattlegrounds += mapID.bonus.value;
+          redDefenseExpedition += mapID.bonus.value;
+
           entityVisitAttack = mapID.bonus.value;
           entityVisitDefense = mapID.bonus.value;
           // console.debug(mapID);
@@ -611,7 +643,13 @@ export function otherPlayerService(msg) {
         if (mapID.bonus.type == "fierce_resistance") {
           // += mapID.bonus.value;
           visitCityAttack += mapID.bonus.value;
+          blueAttackBattlegrounds += mapID.bonus.value;
+          blueAttackExpedition += mapID.bonus.value;
+
           visitCityDefense += mapID.bonus.value;
+          blueDefenseBattlegrounds += mapID.bonus.value;
+          blueDefenseExpedition += mapID.bonus.value;
+          
           entityVisitCityAttack = mapID.bonus.value;
           entityVisitCityDefense = mapID.bonus.value;
           // console.debug(mapID);
@@ -620,9 +658,21 @@ export function otherPlayerService(msg) {
         if (mapID.bonus.type == "advanced_tactics") {
           // += mapID.bonus.value;
           visitAttack += mapID.bonus.value;
+          redAttackBattlegrounds += mapID.bonus.value;
+          redAttackExpedition += mapID.bonus.value;
+
           visitDefense += mapID.bonus.value;
+          redDefenseBattlegrounds += mapID.bonus.value;
+          redDefenseExpedition += mapID.bonus.value;
+
           visitCityAttack += mapID.bonus.value;
+          blueAttackBattlegrounds += mapID.bonus.value;
+          blueAttackExpedition += mapID.bonus.value;
+
           visitCityDefense += mapID.bonus.value;
+          blueDefenseBattlegrounds += mapID.bonus.value;
+          blueDefenseExpedition += mapID.bonus.value;
+
           entityVisitAttack = mapID.bonus.value;
           entityVisitDefense = mapID.bonus.value;
           entityVisitCityAttack = mapID.bonus.value;
@@ -771,8 +821,15 @@ export function otherPlayerService(msg) {
   visitstatsHTML += `<span data-i18n="daily">Daily</span> FP: ${visitForgePoints ? visitForgePoints : 0} <br>`;
   if (visitArcBonus) visitstatsHTML += `${fArcname()} <span data-i18n="bonus">Bonus</span>: ${visitArcBonus}%<br>`;
   if (visitPenal) visitstatsHTML += `<span data-i18n="army">Army Units</span>: ${visitPenal}<br>`;
+  visitstatsHTML += `<span data-i18n="Castle System, Tavern, and Potion boosts not considered"></span><br>`;
   visitstatsHTML += `<span data-i18n="attackers">Attackers</span>: ${visitAttack}% Att, ${visitDefense}% Def<br>`;
   visitstatsHTML += `<span data-i18n="defenders">Defenders</span>: ${visitCityAttack}% Att, ${visitCityDefense}% Def<br>`;
+  visitstatsHTML += `<span data-i18n="gbg-attackers">GBG Attackers</span>: ${redAttackBattlegrounds}% Att, ${redDefenseBattlegrounds}% Def<br>`;
+  visitstatsHTML += `<span data-i18n="gbg-defenders">GBG Defenders</span>: ${blueAttackBattlegrounds}% Att, ${blueDefenseBattlegrounds}% Def<br>`;
+  visitstatsHTML += `<span data-i18n="ge-attackers">GE Attackers</span>: ${redAttackExpedition}% Att, ${redDefenseExpedition}% Def<br>`;
+  visitstatsHTML += `<span data-i18n="ge-defenders">GE Defenders</span>: ${blueAttackExpedition}% Att, ${blueDefenseExpedition}% Def<br>`;
+  visitstatsHTML += `<span data-i18n="qi-attackers">QI Attackers</span>: ${redAttackRaids}% Att, ${redDefenseRaids}% Def<br>`;
+  visitstatsHTML += `<span data-i18n="qi-defenders">QI Defenders</span>: ${blueAttackRaids}% Att, ${blueDefenseRaids}% Def<br>`;
   if (clanGoods)
     visitstatsHTML += `<span id="guildgoods" title="${clanGoodsHTML}" data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}<br>`;
   if (clanBuildings)
@@ -831,6 +888,18 @@ export function otherPlayerService(msg) {
       Def: visitDefense,
       CityAtt: visitCityAttack,
       CityDef: visitCityDefense,
+      BGRedAtt: redAttackBattlegrounds,
+      BGRedDef: redDefenseBattlegrounds,
+      BGBlueAtt: blueAttackBattlegrounds,
+      BGBlueDef: blueDefenseBattlegrounds,
+      GERedAtt: redAttackExpedition,
+      GERedDef: redDefenseExpedition,
+      GEBlueAtt: blueAttackExpedition,
+      GEBlueDef: blueDefenseExpedition,
+      QIRedAtt: redAttackRaids,
+      QIRedDef: redDefenseRaids,
+      QIBlueAtt: blueAttackRaids,
+      QIBlueDef: blueDefenseRaids,
       FP: visitForgePoints,
       HoF: clanHOFcount,
       SoH: clanSOHcount,
@@ -1052,35 +1121,184 @@ function fBoost(boost) {
   entityVisitDefense = 0;
   entityVisitCityAttack = 0;
   entityVisitCityDefense = 0;
-  if (boost.type == "att_boost_attacker") {
-    visitAttack += boost.value;
-    entityVisitAttack = boost.value;
+
+  // 4 options:
+  // all: applies to untyped, gbg, and ge
+  // battlegrounds: applies to gbg only
+  // expedition: applies to ge only
+  // raids: applies to qi only
+
+  // untyped: all
+  // gbg: all + batteground
+  // ge: all + guild_expedition
+  // qi: guild_raids
+
+  // entityVisitXXXXXXXX variables are debug
+
+  // red attack untyped: visitAttack
+  // red defense untyped: visitDefense
+  // blue attack untyped: visitCityAttack
+  // blue defense untyped: visitCityDefense
+  // rest of the names are self-explanatory
+
+  if (boost.type == "att_boost_attacker") { // red attack
+    if (boost.targetedFeature == "all") { // if boost is all, add to untyped, battlegrounds, and expedition
+      
+      visitAttack += boost.value;
+      redAttackBattlegrounds += boost.value;
+      redAttackExpedition += boost.value;
+      
+      entityVisitAttack = boost.value;
+
+    } else if (boost.targetedFeature == "guild_expedition") { // only add to expedition
+
+      redAttackExpedition += boost.value;
+
+    } else if (boost.targetedFeature == "battleground") { // only add to battleground
+
+      redAttackBattlegrounds += boost.value;
+
+    } else if (boost.targetedFeature == "guild_raids") { // only add to quantum incursions
+
+      redAttackRaids += boost.value;
+
+    }
     // console.debug('visitAttack:', visitAttack, boost.value);
     // debug.innerHTML += ` ${boost.value}</p>`;
-  } else if (boost.type == "att_boost_defender") {
-    visitCityAttack += boost.value;
-    entityVisitCityAttack = boost.value;
+  } else if (boost.type == "att_boost_defender") { // blue attack
+
+    if (boost.targetedFeature == "all") { // if boost is all, add to untyped, battlegrounds, and expedition
+      
+      visitCityAttack += boost.value;
+      blueAttackBattlegrounds += boost.value;
+      blueAttackExpedition += boost.value;
+      
+      entityVisitCityAttack = boost.value;
+
+    } else if (boost.targetedFeature == "guild_expedition") { // only add to expedition
+
+      blueAttackExpedition += boost.value;
+
+    } else if (boost.targetedFeature == "battleground") { // only add to battleground
+
+      blueAttackBattlegrounds += boost.value;
+
+    } else if (boost.targetedFeature == "guild_raids") { // only add to quantum incursions
+
+      blueAttackRaids += boost.value;
+
+    }
     // console.debug('visitCityAttack:', visitCityAttack, boost.value);
-  } else if (boost.type == "def_boost_attacker") {
-    visitDefense += boost.value;
-    entityVisitDefense = boost.value;
+  } else if (boost.type == "def_boost_attacker") { // red defense
+    if (boost.targetedFeature == "all") { // if boost is all, add to untyped, battlegrounds, and expedition
+      
+      visitDefense += boost.value;
+      redDefenseBattlegrounds += boost.value;
+      redDefenseExpedition += boost.value;
+      
+      entityVisitDefense = boost.value;
+
+    } else if (boost.targetedFeature == "guild_expedition") { // only add to expedition
+
+      redDefenseExpedition += boost.value;
+
+    } else if (boost.targetedFeature == "battleground") { // only add to battleground
+
+      redDefenseBattlegrounds += boost.value;
+
+    } else if (boost.targetedFeature == "guild_raids") { // only add to quantum incursions
+
+      redDefenseRaids += boost.value;
+
+    }
     // console.debug('visitDefense:', visitDefense, boost.value);
-  } else if (boost.type == "def_boost_defender") {
-    visitCityDefense += boost.value;
-    entityVisitCityDefense = boost.value;
+  } else if (boost.type == "def_boost_defender") { // blue defense
+    if (boost.targetedFeature == "all") { // if boost is all, add to untyped, battlegrounds, and expedition
+      
+      visitCityDefense += boost.value;
+      blueDefenseBattlegrounds += boost.value;
+      blueDefenseExpedition += boost.value;
+      
+      entityVisitCityDefense = boost.value;
+
+    } else if (boost.targetedFeature == "guild_expedition") { // only add to expedition
+
+      blueDefenseExpedition += boost.value;
+
+    } else if (boost.targetedFeature == "battleground") { // only add to battleground
+
+      blueDefenseBattlegrounds += boost.value;
+
+    } else if (boost.targetedFeature == "guild_raids") { // only add to quantum incursions
+
+      blueDefenseRaids += boost.value;
+
+    }
     // console.debug('visitCityDefense:', visitCityDefense, boost.value);
     // debug.innerHTML += ` ${boost.value}</p>`;
-  } else if (boost.type == "att_def_boost_attacker") {
-    visitAttack += boost.value;
-    entityVisitAttack = boost.value;
-    visitDefense += boost.value;
-    entityVisitDefense = boost.value;
+  } else if (boost.type == "att_def_boost_attacker") { // red attack & defense
+    if (boost.targetedFeature == "all") { // if boost is all, add to untyped, battlegrounds, and expedition
+      
+      visitAttack += boost.value;
+      visitDefense += boost.value;
+
+      redAttackBattlegrounds += boost.value;
+      redDefenseBattlegrounds += boost.value;
+
+      redAttackExpedition += boost.value;
+      redDefenseExpedition += boost.value;
+
+      entityVisitAttack = boost.value;
+      entityVisitDefense = boost.value;
+
+    } else if (boost.targetedFeature == "guild_expedition") { // only add to expedition
+
+      redAttackExpedition += boost.value;
+      redDefenseExpedition += boost.value;
+
+    } else if (boost.targetedFeature == "battleground") { // only add to battleground
+
+      redAttackBattlegrounds += boost.value;
+      redDefenseBattlegrounds += boost.value;
+
+    } else if (boost.targetedFeature == "guild_raids") { // only add to quantum incursions
+
+      redAttackRaids += boost.value;
+      redDefenseRaids += boost.value;
+
+    }
     // console.debug('bothAttack:', visitAttack, boost.value);
-  } else if (boost.type == "att_def_boost_defender") {
-    visitCityAttack += boost.value;
-    entityVisitCityAttack = boost.value;
-    visitCityDefense += boost.value;
-    entityVisitCityDefense = boost.value;
+  } else if (boost.type == "att_def_boost_defender") { // blue attack & defense
+    if (boost.targetedFeature == "all") { // if boost is all, add to untyped, battlegrounds, and expedition
+      
+      visitCityAttack += boost.value;
+      visitCityDefense += boost.value;
+
+      blueAttackBattlegrounds += boost.value;
+      blueDefenseBattlegrounds += boost.value;
+
+      blueAttackExpedition += boost.value;
+      blueDefenseExpedition += boost.value;
+
+      entityVisitCityAttack = boost.value;
+      entityVisitCityDefense = boost.value;
+
+    } else if (boost.targetedFeature == "guild_expedition") { // only add to expedition
+
+      blueAttackExpedition += boost.value;
+      blueDefenseExpedition += boost.value;
+
+    } else if (boost.targetedFeature == "battleground") { // only add to battleground
+
+      blueAttackBattlegrounds += boost.value;
+      blueDefenseBattlegrounds += boost.value;
+
+    } else if (boost.targetedFeature == "guild_raids") { // only add to quantum incursions
+
+      blueAttackRaids += boost.value;
+      blueDefenseRaids += boost.value;
+
+    }
     // console.debug('bothAttack:', visitCityAttack, boost.value);
   } else if (boost.type == "happiness_amount") {
     return 0;
