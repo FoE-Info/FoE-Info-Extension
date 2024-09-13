@@ -752,7 +752,7 @@ export function startupService(msg) {
     City.GEDefendingAttack + City.CityAttack
   }% Att, ${City.GEDefendingDefense + City.CityDefense}% Def<br>`;
   citystatsHTML += `<span data-i18n="qi-attackers">QI Attackers</span>: ${City.QIAttackingAttack}% Att, ${City.QIAttackingDefense}% Def<br>`;
-  citystatsHTML += `<span data-i18n="qi-defenders">QI Defenders</span>: ${City.QIDefendingAttack}% Att, ${City.QIDefendingAttack}% Def<br>`;
+  citystatsHTML += `<span data-i18n="qi-defenders">QI Defenders</span>: ${City.QIDefendingAttack}% Att, ${City.QIDefendingDefense}% Def<br>`;
   citystatsHTML += `<span data-i18n="available">Available FP</span>: <span id="availableFPID">${
     availablePacksFP + availableFP
   }</span></p>`;
