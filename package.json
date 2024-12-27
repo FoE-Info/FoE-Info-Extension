@@ -23,18 +23,12 @@
     "check": "prettier --check .",
     "format": "prettier --write .",
     "dev": "set NODE_ENV=development && webpack --mode development --config webpack-dev.config.js --watch",
-    "start": "webpack-dev-server --open --config webpack-dev.config.js",
-    "analyze": "webpack --config foe-info-analyzer.config.js",
-    "server": "node server.js",
-    "build": "webpack --config webpack.config.js",
     "build-foe-info": "webpack --config foe-info-webstore.config.js",
-    "build-foe-info-firefox": "webpack --config foe-info-firefox.config.js"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.2",
-    "express": "^4.21.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.3",
     "license-webpack-plugin": "^4.0.2",
