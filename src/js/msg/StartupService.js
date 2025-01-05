@@ -746,8 +746,8 @@ export function startupService(msg) {
   citystatsHTML += `<span data-i18n="gbg-attackers">GBG Attackers</span>: ${
     City.GBGAttackingAttack + City.Attack
   }% Att, ${City.GBGAttackingDefense + City.Defense}% Def<br>`;
-  // citystatsHTML += `<span data-i18n="gbg-defenders">GBG Defenders</span>: ${City.GBGDefendingAttack + City.CityAttack}% Att, ${City.GBGDefendingDefense + City.CityDefense}% Def<br>`;
-  // citystatsHTML += `<span data-i18n="ge-attackers">GE Attackers</span>: ${City.GEAttackingAttack + City.Attack}% Att, ${City.GEAttackingDefense + City.Defense}% Def<br>`;
+  citystatsHTML += `<span data-i18n="gbg-defenders">GBG Defenders</span>: ${City.GBGDefendingAttack + City.CityAttack}% Att, ${City.GBGDefendingDefense + City.CityDefense}% Def<br>`;
+  citystatsHTML += `<span data-i18n="ge-attackers">GE Attackers</span>: ${City.GEAttackingAttack + City.Attack}% Att, ${City.GEAttackingDefense + City.Defense}% Def<br>`;
   citystatsHTML += `<span data-i18n="ge-defenders">GE Defenders</span>: ${
     City.GEDefendingAttack + City.CityAttack
   }% Att, ${City.GEDefendingDefense + City.CityDefense}% Def<br>`;
@@ -888,7 +888,7 @@ export function boostServiceAllBoosts(msg) {
   City.GBGDefendingAttack = 0;
   City.GBGDefendingDefense = 0;
   City.QIAttackingAttack = 0;
-  City.QIAttackingDefense =0;
+  City.QIAttackingDefense = 0;
   City.QIDefendingAttack = 0;
   City.QIDefendingDefense = 0;
 
