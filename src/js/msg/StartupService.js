@@ -630,6 +630,7 @@ export function startupService(msg) {
     });
   }
 
+  Goods.sash = 0;
   Goods.sat = 0;
   Goods.sajm = 0;
   Goods.sav = 0;
@@ -1072,6 +1073,7 @@ var LANGUAGE_BY_LOCALE = {
 
 function showTooltips() {
   const Ages = [
+    "sash",
     "sat",
     "sajm",
     "sav",
@@ -1252,6 +1254,8 @@ function fGoodsText(age, goods) {
     return `<p>` + goods["SpaceAgeJupiterMoon"] + `</p>`;
   } else if (age == "sat") {
     return `<p>` + goods["SpaceAgeTitan"] + `</p>`;
+  } else if (age == "sash") {
+    return `<p>` + goods["SpaceAgeSpaceHub"] + `</p>`;
   } else console.debug(age);
 }
 

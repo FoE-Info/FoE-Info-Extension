@@ -161,6 +161,10 @@ export function fGBsname(city_entity) {
     return "Pegasus";
   } else if (city_entity == "Saturn VI Gate HYDRA") {
     return "Hydra";
+  } else if (city_entity == "Stellar Warship") {
+    return "SW";
+  } else if (city_entity == "Cosmic Catalyst") {
+    return "CC";
   }
 
   console.debug(city_entity);
@@ -236,6 +240,8 @@ export function fGBname(city_entity) {
   else if (GB_name == "X_SpaceAgeTitan_Landmark1") GB_name = "Saturn VI Gate CENTAURUS";
   else if (GB_name == "X_SpaceAgeTitan_Landmark2") GB_name = "Saturn VI Gate PEGASUS";
   else if (GB_name == "X_SpaceAgeTitan_Landmark3") GB_name = "Saturn VI Gate HYDRA";
+  else if (GB_name == "X_SpaceAgeSpaceHub_Landmark1") GB_name = "Stellar Warship";
+  else if (GB_name == "X_SpaceAgeSpaceHub_Landmark2") GB_name = "Cosmic Catalyst";
   // console.debug(city_entity,CityEntityDefs);
   return GB_name;
 }
@@ -401,6 +407,8 @@ export function fLevelfromAge(age) {
     return 20;
   } else if (age == "SpaceAgeTitan") {
     return 21;
+  } else if (age == "SpaceAgeSpaceHub") {
+    return 22;
   }
   // else if (age =="AllAge")
   // {
@@ -412,7 +420,9 @@ export function fLevelfromAge(age) {
 // number of numAges
 // added SAV - 19 ages
 // added SAJM - 20 ages
-export const numAges = 21;
+// added SAT - 21 ages
+// added SASH - 22 ages
+export const numAges = 22;
 
 export function fAgefromLevel(level) {
   if (level == 1) {
@@ -457,6 +467,8 @@ export function fAgefromLevel(level) {
     return "SpaceAgeJupiterMoon";
   } else if (level == 21) {
     return "SpaceAgeTitan";
+  } else if (level == 22) {
+    return "SpaceAgeSpaceHub";
   }
   // else if (age =="AllAge")
   // {
@@ -510,6 +522,8 @@ export function fGVGagesname(age) {
     name = "SAJM";
   } else if (age === "SpaceAgeTitan") {
     name = "SAT";
+  } else if (age === "SpaceAgeSpaceHub") {
+    name = "SASH";
   } else if (age == "AllAge") {
     name = "AA";
   }
@@ -539,6 +553,7 @@ export function fGoodsTally(age, good) {
   else if (age == "SpaceAgeVenus") Goods.sav += good;
   else if (age == "SpaceAgeJupiterMoon") Goods.sajm += good;
   else if (age == "SpaceAgeTitan") Goods.sat += good;
+  else if (age == "SpaceAgeSpaceHub") Goods.sash += good;
   else if (age == "NoAge") Goods.noage += good;
   else console.debug(age, good);
 }
