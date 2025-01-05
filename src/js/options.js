@@ -11,8 +11,8 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import browser from "webextension-polyfill";
-import "../css/options.scss";
+import browser from 'webextension-polyfill';
+import '../css/options.scss';
 // import "bootstrap/scss/bootstrap";
 
 const showOptions = {
@@ -56,56 +56,62 @@ function save_options() {
   var tool = [];
   var toolOptions = [];
   var url = [];
-  showOptions.showBonus = document.getElementById("bonus").checked;
-  showOptions.showIncidents = document.getElementById("Incidents").checked;
-  showOptions.showGVG = document.getElementById("GvG").checked;
-  showOptions.showStats = document.getElementById("Stats").checked;
-  showOptions.showGBInfo = document.getElementById("GBInfo").checked;
-  showOptions.showGBRewards = document.getElementById("GBRewards").checked;
-  showOptions.showGBDonors = document.getElementById("GBDonors").checked;
-  showOptions.showInvested = document.getElementById("Invested").checked;
-  showOptions.showDonation = document.getElementById("Donation").checked;
-  showOptions.showFriends = document.getElementById("Friends").checked;
-  showOptions.showGuild = document.getElementById("Guild").checked;
-  showOptions.showHood = document.getElementById("Hood").checked;
-  showOptions.showBattleground = document.getElementById("Battleground").checked;
-  showOptions.showExpedition = document.getElementById("Expedition").checked;
-  showOptions.showTreasury = document.getElementById("Treasury").checked;
-  showOptions.showVisit = document.getElementById("visit").checked;
-  showOptions.showSettlement = document.getElementById("settlement").checked;
-  showOptions.showArmy = document.getElementById("army").checked;
-  showOptions.showGoods = document.getElementById("goods").checked;
-  showOptions.showLeaderboard = document.getElementById("leaderboard").checked;
-  showOptions.showGBGrewards = document.getElementById("GBGrewards").checked;
-  showOptions.GBGprovinceTime = document.getElementById("GBGprovinceTime").checked;
-  showOptions.GBGshowSC = document.getElementById("GBGshowSC").checked;
-  showOptions.showGErewards = document.getElementById("GErewards").checked;
-  showOptions.showRewards = document.getElementById("rewards").checked;
-  showOptions.showLogs = document.getElementById("logs").checked;
-  showOptions.showContributions = document.getElementById("contributions").checked;
-  showOptions.showGuildPosition = document.getElementById("donationGuildPosition").checked;
-  showOptions.hideUnsafe = document.getElementById("hideUnsafe").checked;
-  showOptions.buildingCosts = document.getElementById("buildingCosts").checked;
-  showOptions.collectionTimes = document.getElementById("collectionTimes").checked;
+  showOptions.showBonus = document.getElementById('bonus').checked;
+  showOptions.showIncidents = document.getElementById('Incidents').checked;
+  showOptions.showGVG = document.getElementById('GvG').checked;
+  showOptions.showStats = document.getElementById('Stats').checked;
+  showOptions.showGBInfo = document.getElementById('GBInfo').checked;
+  showOptions.showGBRewards = document.getElementById('GBRewards').checked;
+  showOptions.showGBDonors = document.getElementById('GBDonors').checked;
+  showOptions.showInvested = document.getElementById('Invested').checked;
+  showOptions.showDonation = document.getElementById('Donation').checked;
+  showOptions.showFriends = document.getElementById('Friends').checked;
+  showOptions.showGuild = document.getElementById('Guild').checked;
+  showOptions.showHood = document.getElementById('Hood').checked;
+  showOptions.showBattleground =
+    document.getElementById('Battleground').checked;
+  showOptions.showExpedition = document.getElementById('Expedition').checked;
+  showOptions.showTreasury = document.getElementById('Treasury').checked;
+  showOptions.showVisit = document.getElementById('visit').checked;
+  showOptions.showSettlement = document.getElementById('settlement').checked;
+  showOptions.showArmy = document.getElementById('army').checked;
+  showOptions.showGoods = document.getElementById('goods').checked;
+  showOptions.showLeaderboard = document.getElementById('leaderboard').checked;
+  showOptions.showGBGrewards = document.getElementById('GBGrewards').checked;
+  showOptions.GBGprovinceTime =
+    document.getElementById('GBGprovinceTime').checked;
+  showOptions.GBGshowSC = document.getElementById('GBGshowSC').checked;
+  showOptions.showGErewards = document.getElementById('GErewards').checked;
+  showOptions.showRewards = document.getElementById('rewards').checked;
+  showOptions.showLogs = document.getElementById('logs').checked;
+  showOptions.showContributions =
+    document.getElementById('contributions').checked;
+  showOptions.showGuildPosition = document.getElementById(
+    'donationGuildPosition',
+  ).checked;
+  showOptions.hideUnsafe = document.getElementById('hideUnsafe').checked;
+  showOptions.buildingCosts = document.getElementById('buildingCosts').checked;
+  showOptions.collectionTimes =
+    document.getElementById('collectionTimes').checked;
   //  showOptions.show = document.getElementById('').checked;
   //  showOptions.show = document.getElementById('').checked;
   //  showOptions.show = document.getElementById('').checked;
 
-  tool.language = document.getElementById("language").value;
-  var targets = document.getElementById("targets").value;
-  var targetText = document.getElementById("targetText").value;
-  var donationPercent = document.getElementById("donationPercent").value;
+  tool.language = document.getElementById('language').value;
+  var targets = document.getElementById('targets').value;
+  var targetText = document.getElementById('targetText').value;
+  var donationPercent = document.getElementById('donationPercent').value;
   if (donationPercent > 200) donationPercent = 200;
-  var donationSuffix = document.getElementById("donationSuffix").value;
-  toolOptions.minSize = document.getElementById("minSize").value;
+  var donationSuffix = document.getElementById('donationSuffix').value;
+  toolOptions.minSize = document.getElementById('minSize').value;
   //  console.debug(localOptions);
   // var defaultArcBonus = document.getElementById('defaultArcBonus').value;
 
   // Discord Webhooks
-  url.discordTargetURL = document.getElementById("discordTargetURL").value;
+  url.discordTargetURL = document.getElementById('discordTargetURL').value;
 
   // Google Sheets
-  url.sheetGuildURL = document.getElementById("sheetGuildURL").value;
+  url.sheetGuildURL = document.getElementById('sheetGuildURL').value;
   // url.sheetCityURL = document.getElementById('sheetCityURL').value;
   // url.sheetGameURL = document.getElementById('sheetGameURL').value;
 
@@ -143,7 +149,16 @@ function restore_options() {
   // if(DEV) document.getElementById('urlDiv').style.display = "none";
 
   browser.storage.local
-    .get(["showOptions", "tool", "url", "targets", "targetText", "toolOptions", "donationPercent", "donationSuffix"])
+    .get([
+      'showOptions',
+      'tool',
+      'url',
+      'targets',
+      'targetText',
+      'toolOptions',
+      'donationPercent',
+      'donationSuffix',
+    ])
     .then((items) => {
       if (items.showOptions) {
         const showOptions = items.showOptions;
@@ -153,33 +168,37 @@ function restore_options() {
         fnShowOptions(showOptions);
       }
       if (items.tool) {
-        document.getElementById("language").value = items.tool.language;
+        document.getElementById('language').value = items.tool.language;
         console.debug(items.tool);
       }
       if (items.targets != null) {
-        document.getElementById("targets").value = items.targets;
+        document.getElementById('targets').value = items.targets;
         console.debug(items.targets);
       }
       if (items.targetText != null) {
-        document.getElementById("targetText").value = items.targetText;
+        document.getElementById('targetText').value = items.targetText;
         console.debug(items.targetText);
       }
       if (items.toolOptions) {
-        document.getElementById("minSize").value = items.toolOptions.minSize;
+        document.getElementById('minSize').value = items.toolOptions.minSize;
         console.debug(items.toolOptions);
       }
       if (items.donationPercent) {
-        document.getElementById("donationPercent").value = items.donationPercent;
+        document.getElementById('donationPercent').value =
+          items.donationPercent;
         console.debug(items.donationPercent);
       }
       if (items.donationSuffix) {
-        document.getElementById("donationSuffix").value = items.donationSuffix;
+        document.getElementById('donationSuffix').value = items.donationSuffix;
         console.debug(items.donationSuffix);
       }
       if (items.url) {
         const url = items.url;
-        if (url.discordTargetURL) document.getElementById("discordTargetURL").value = url.discordTargetURL;
-        if (url.sheetGuildURL) document.getElementById("sheetGuildURL").value = url.sheetGuildURL;
+        if (url.discordTargetURL)
+          document.getElementById('discordTargetURL').value =
+            url.discordTargetURL;
+        if (url.sheetGuildURL)
+          document.getElementById('sheetGuildURL').value = url.sheetGuildURL;
         // if(url.sheetCityURL)
         //    document.getElementById('sheetCityURL').value = url.sheetCityURL;
         // if(url.sheetGameURL)
@@ -189,37 +208,42 @@ function restore_options() {
 }
 
 function fnShowOptions(showOptions) {
-  document.getElementById("bonus").checked = showOptions.showBonus;
-  document.getElementById("Incidents").checked = showOptions.showIncidents;
-  document.getElementById("GvG").checked = showOptions.showGVG;
-  document.getElementById("Stats").checked = showOptions.showStats;
-  document.getElementById("GBInfo").checked = showOptions.showGBInfo;
-  document.getElementById("GBRewards").checked = showOptions.showGBRewards;
-  document.getElementById("GBDonors").checked = showOptions.showGBDonors;
-  document.getElementById("Invested").checked = showOptions.showInvested;
-  document.getElementById("Donation").checked = showOptions.showDonation;
-  document.getElementById("Friends").checked = showOptions.showFriends;
-  document.getElementById("Guild").checked = showOptions.showGuild;
-  document.getElementById("Hood").checked = showOptions.showHood;
-  document.getElementById("Battleground").checked = showOptions.showBattleground;
-  document.getElementById("Expedition").checked = showOptions.showExpedition;
-  document.getElementById("Treasury").checked = showOptions.showTreasury;
-  document.getElementById("visit").checked = showOptions.showVisit;
-  document.getElementById("settlement").checked = showOptions.showSettlement;
-  document.getElementById("army").checked = showOptions.showArmy;
-  document.getElementById("goods").checked = showOptions.showGoods;
-  document.getElementById("leaderboard").checked = showOptions.showLeaderboard;
-  document.getElementById("GBGrewards").checked = showOptions.showGBGrewards;
-  document.getElementById("GBGprovinceTime").checked = showOptions.GBGprovinceTime;
-  document.getElementById("GBGshowSC").checked = showOptions.GBGshowSC;
-  document.getElementById("GErewards").checked = showOptions.showGErewards;
-  document.getElementById("rewards").checked = showOptions.showRewards;
-  document.getElementById("logs").checked = showOptions.showLogs;
-  document.getElementById("contributions").checked = showOptions.showContributions;
-  document.getElementById("donationGuildPosition").checked = showOptions.showGuildPosition;
-  document.getElementById("hideUnsafe").checked = showOptions.hideUnsafe;
-  document.getElementById("buildingCosts").checked = showOptions.buildingCosts;
-  document.getElementById("collectionTimes").checked = showOptions.collectionTimes;
+  document.getElementById('bonus').checked = showOptions.showBonus;
+  document.getElementById('Incidents').checked = showOptions.showIncidents;
+  document.getElementById('GvG').checked = showOptions.showGVG;
+  document.getElementById('Stats').checked = showOptions.showStats;
+  document.getElementById('GBInfo').checked = showOptions.showGBInfo;
+  document.getElementById('GBRewards').checked = showOptions.showGBRewards;
+  document.getElementById('GBDonors').checked = showOptions.showGBDonors;
+  document.getElementById('Invested').checked = showOptions.showInvested;
+  document.getElementById('Donation').checked = showOptions.showDonation;
+  document.getElementById('Friends').checked = showOptions.showFriends;
+  document.getElementById('Guild').checked = showOptions.showGuild;
+  document.getElementById('Hood').checked = showOptions.showHood;
+  document.getElementById('Battleground').checked =
+    showOptions.showBattleground;
+  document.getElementById('Expedition').checked = showOptions.showExpedition;
+  document.getElementById('Treasury').checked = showOptions.showTreasury;
+  document.getElementById('visit').checked = showOptions.showVisit;
+  document.getElementById('settlement').checked = showOptions.showSettlement;
+  document.getElementById('army').checked = showOptions.showArmy;
+  document.getElementById('goods').checked = showOptions.showGoods;
+  document.getElementById('leaderboard').checked = showOptions.showLeaderboard;
+  document.getElementById('GBGrewards').checked = showOptions.showGBGrewards;
+  document.getElementById('GBGprovinceTime').checked =
+    showOptions.GBGprovinceTime;
+  document.getElementById('GBGshowSC').checked = showOptions.GBGshowSC;
+  document.getElementById('GErewards').checked = showOptions.showGErewards;
+  document.getElementById('rewards').checked = showOptions.showRewards;
+  document.getElementById('logs').checked = showOptions.showLogs;
+  document.getElementById('contributions').checked =
+    showOptions.showContributions;
+  document.getElementById('donationGuildPosition').checked =
+    showOptions.showGuildPosition;
+  document.getElementById('hideUnsafe').checked = showOptions.hideUnsafe;
+  document.getElementById('buildingCosts').checked = showOptions.buildingCosts;
+  document.getElementById('collectionTimes').checked =
+    showOptions.collectionTimes;
 }
 
 // function setStorage(value){
@@ -262,7 +286,7 @@ function setStorage(value) {
   // console.debug(value);
   browser.permissions
     .request({
-      permissions: ["storage"],
+      permissions: ['storage'],
     })
     .then((granted) => {
       if (granted) {
@@ -316,5 +340,5 @@ function setStorage(value) {
   // });
 }
 
-document.addEventListener("DOMContentLoaded", restore_options);
-document.getElementById("save").addEventListener("click", save_options);
+document.addEventListener('DOMContentLoaded', restore_options);
+document.getElementById('save').addEventListener('click', save_options);

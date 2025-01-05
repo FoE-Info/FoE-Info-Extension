@@ -11,13 +11,13 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { showOptions } from "../vars/showOptions.js";
-import * as helper from "../fn/helper.js";
-import * as collapse from "../fn/collapse.js";
-import * as copy from "../fn/copy.js";
-import * as storage from "../fn/storage.js";
-import * as element from "../fn/AddElement";
-import { City } from "./StartupService.js";
+import { showOptions } from '../vars/showOptions.js';
+import * as helper from '../fn/helper.js';
+import * as collapse from '../fn/collapse.js';
+import * as copy from '../fn/copy.js';
+import * as storage from '../fn/storage.js';
+import * as element from '../fn/AddElement';
+import { City } from './StartupService.js';
 import {
   setPlayerName,
   MyInfo,
@@ -32,15 +32,15 @@ import {
   donationSuffix,
   GameOrigin,
   url,
-} from "../index.js";
+} from '../index.js';
 // import '../../css/main.css';
-import BigNumber from "bignumber.js";
-import { friends, guildMembers, hoodlist } from "./OtherPlayerService";
+import BigNumber from 'bignumber.js';
+import { friends, guildMembers, hoodlist } from './OtherPlayerService';
 var Top = [0, 0, 0, 0, 0, 0];
 var GBrewards = [0, 0, 0, 0, 0];
 var Reward = [0, 0, 0, 0, 0];
 var currentPercent = donationPercent ? donationPercent : 190;
-var googleSheetGame = "";
+var googleSheetGame = '';
 var useNewDonationPanel = false;
 var rankings;
 var donateSuggest = [];
@@ -53,49 +53,60 @@ var Profit = 0;
 var Percent = new BigNumber(0);
 const darkMode = false; // dont use darkMode until we sort out a dark theme to use
 
-if (storage.get("useNewDonationPanel") != null) useNewDonationPanel = storage.get("useNewDonationPanel");
+if (storage.get('useNewDonationPanel') != null)
+  useNewDonationPanel = storage.get('useNewDonationPanel');
 
-if (url && url.hasOwnProperty("sheetGameURL")) googleSheetGame = url.sheetGameURL;
+if (url && url.hasOwnProperty('sheetGameURL'))
+  googleSheetGame = url.sheetGameURL;
 
 export function getConstruction(msg) {
   rankings = msg.responseData.rankings;
-  console.debug("rankings", rankings);
+  console.debug('rankings', rankings);
   showGreatBuldingDonation();
 }
 
 export function contributeForgePoints(msg) {
   rankings = msg;
-  console.debug("rankings", rankings);
+  console.debug('rankings', rankings);
   showGreatBuldingDonation();
 }
 
 export function showGreatBuldingDonation() {
-  var outputHTML = "";
-  var donorsHTML = "";
-  overview.innerHTML = "";
+  var outputHTML = '';
+  var donorsHTML = '';
+  overview.innerHTML = '';
   //greatbuilding.innerHTML = ``;
   outputHTML = `<div class="alert alert-success alert-dismissible" role="alert">
     <p id="donorTextLabel" data-bs-toggle="collapse" href="#donorcollapse">`;
-  outputHTML += element.icon("donoricon", "donorcollapse", collapse.collapseGBDonors);
+  outputHTML += element.icon(
+    'donoricon',
+    'donorcollapse',
+    collapse.collapseGBDonors,
+  );
   outputHTML += `<strong><span data-i18n="gb">GB</span> Donors:</strong></p>`;
-  outputHTML += element.copy("donorCopyID", "success", "right", collapse.collapseGBDonors);
+  outputHTML += element.copy(
+    'donorCopyID',
+    'success',
+    'right',
+    collapse.collapseGBDonors,
+  );
   outputHTML += element.close();
   outputHTML += `<div id="donorcollapse" class="collapse ${
-    collapse.collapseGBDonors ? "" : "show"
+    collapse.collapseGBDonors ? '' : 'show'
   }"><p id="donorText">`;
 
   // if (debug == true)
   // 	greatbuilding.innerHTML += `<div>${contentType} : ${msg.requestClass} : ${msg.requestMethod}</div>`;
-  console.debug("rankings", rankings);
+  console.debug('rankings', rankings);
   if (rankings.length) {
     var Rank = 0;
 
     for (var j = 0; j < rankings.length; j++) {
       const place = rankings[j];
-      if (place.hasOwnProperty("rank")) {
+      if (place.hasOwnProperty('rank')) {
         Rank = place.rank;
-        if (donorsHTML != "" && place.player.name != "No contributor yet") {
-          donorsHTML += "<br>";
+        if (donorsHTML != '' && place.player.name != 'No contributor yet') {
+          donorsHTML += '<br>';
           // console.debug(j,place,donorsHTML);
         }
       } else Rank = 0;
@@ -104,7 +115,9 @@ export function showGreatBuldingDonation() {
           if (place.forge_points) Top[Rank - 1] = place.forge_points;
           else Top[Rank - 1] = 0;
           if (place.reward.strategy_point_amount)
-            GBrewards[Rank - 1] = new BigNumber(place.reward.strategy_point_amount).dp(0);
+            GBrewards[Rank - 1] = new BigNumber(
+              place.reward.strategy_point_amount,
+            ).dp(0);
           else GBrewards[Rank - 1] = 0;
           Reward[Rank - 1] = BigNumber(GBrewards[Rank - 1])
             .times(1.9)
@@ -117,9 +130,11 @@ export function showGreatBuldingDonation() {
         if (Rank > 0) {
           // else{
           // console.debug('place.forge_points:', place.player.name,place.forge_points,place.reward.strategy_point_amount);
-          if (place.player.name != "No contributor yet") {
+          if (place.player.name != 'No contributor yet') {
             if (place.reward && place.reward.strategy_point_amount) {
-              donorsHTML += `${place.player.name} ${place.forge_points}FP ${BigNumber(place.forge_points)
+              donorsHTML += `${place.player.name} ${place.forge_points}FP ${BigNumber(
+                place.forge_points,
+              )
                 .times(100)
                 .div(place.reward.strategy_point_amount)
                 .toFormat(0)}%`;
@@ -137,30 +152,46 @@ export function showGreatBuldingDonation() {
     }
     // console.debug('Reward',Reward);
 
-    console.debug("outputHTML", outputHTML, donorsHTML);
+    console.debug('outputHTML', outputHTML, donorsHTML);
     if (showOptions.showGBDonors) {
       fCheckOutput();
 
       greatbuilding.innerHTML = outputHTML + donorsHTML;
-      document.getElementById("donorCopyID").addEventListener("click", copy.DonorCopy);
-      document.getElementById("donorTextLabel").addEventListener("click", collapse.fCollapseGBDonors);
+      document
+        .getElementById('donorCopyID')
+        .addEventListener('click', copy.DonorCopy);
+      document
+        .getElementById('donorTextLabel')
+        .addEventListener('click', collapse.fCollapseGBDonors);
     }
 
-    var playerShortName = PlayerName.length > 5 ? PlayerName.substr(0, PlayerName.indexOf(" ")) : PlayerName;
-    var newdonationHTML = "";
+    var playerShortName =
+      PlayerName.length > 5 ?
+        PlayerName.substr(0, PlayerName.indexOf(' '))
+      : PlayerName;
+    var newdonationHTML = '';
     var copyText = `<div id='copyText'>${
-      showOptions.showGuildPosition && PlayerName == MyInfo.name && MyInfo.guildPosition
-        ? "#" + MyInfo.guildPosition + " "
-        : ""
+      (
+        showOptions.showGuildPosition &&
+        PlayerName == MyInfo.name &&
+        MyInfo.guildPosition
+      ) ?
+        '#' + MyInfo.guildPosition + ' '
+      : ''
     }${playerShortName ? playerShortName : PlayerName} ${helper.fGBsname(GBselected.name)} `;
     var olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
             ${element.close()}
             <p id="freeTextLabel" href="#donationText3" aria-controls="donationText3" data-bs-toggle="collapse">
-      ${element.icon("donationicon", "donationText3", collapse.collapseDonation)}
+      ${element.icon('donationicon', 'donationText3', collapse.collapseDonation)}
             <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>`;
-    olddonationHTML += element.copy("donationCopyID", "secondary", "right", collapse.collapseDonation);
+    olddonationHTML += element.copy(
+      'donationCopyID',
+      'secondary',
+      'right',
+      collapse.collapseDonation,
+    );
     olddonationHTML += `<div id="donationText3" class="collapse ${
-      collapse.collapseDonation ? "" : "show"
+      collapse.collapseDonation ? '' : 'show'
     }"><p>${getPlayerLink()}<br>`;
     olddonationHTML += `<span id="GBselected">${GBselected.name} ${GBselected.level + 1}</span></p>`;
     if (GBselected.connected == null) {
@@ -171,13 +202,13 @@ export function showGreatBuldingDonation() {
     }
     olddonationHTML += checkInactive();
 
-    donationDIV.innerHTML = "";
-    donationDIV.style.display = "block";
+    donationDIV.innerHTML = '';
+    donationDIV.style.display = 'block';
 
     // Check Top1
     getPlaceValues(1);
     getSafe(1);
-    console.debug("RewardFP/Donation/Profit ", RewardFP, Donation, Profit);
+    console.debug('RewardFP/Donation/Profit ', RewardFP, Donation, Profit);
     if (Donation.isLessThan(BigNumber(remaining))) {
       if (Profit >= 0) {
         olddonationHTML += `<p class="invest-good">1st Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
@@ -191,7 +222,7 @@ export function showGreatBuldingDonation() {
           GBrewards,
           GBselected.connected,
           GBselected.level == GBselected.max_level,
-          safe
+          safe,
         );
       } else {
         olddonationHTML += `<p class="invest-bad">1st Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="loss">Loss</span>: ${
@@ -207,17 +238,24 @@ export function showGreatBuldingDonation() {
           GBrewards,
           GBselected.connected,
           GBselected.level == GBselected.max_level,
-          safe
+          safe,
         );
       }
       if (GBrewards[0]) {
-        olddonationHTML += getFriendlyDonation(donateCustom, RewardFP, currentPercent, Donation);
+        olddonationHTML += getFriendlyDonation(
+          donateCustom,
+          RewardFP,
+          currentPercent,
+          Donation,
+        );
         olddonationHTML += `BE: ${RewardFP}FP</p>`;
       } else olddonationHTML += `</p>`;
       if (PlayerName == MyInfo.name && Donation - donateSuggest[0] > 0)
         olddonationHTML += `<p class=""><span data-i18n="add">Add</span> ${
-          currentPercent ? (Donation - donateCustom) * 2 : (Donation - donate190) * 2
-        }FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : "1.9"}</p>`;
+          currentPercent ?
+            (Donation - donateCustom) * 2
+          : (Donation - donate190) * 2
+        }FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : '1.9'}</p>`;
       copyText += getDonations(1, safe, donateSuggest);
     }
     // not Top1, Check Top2
@@ -237,7 +275,7 @@ export function showGreatBuldingDonation() {
             GBrewards,
             GBselected.connected,
             GBselected.level == GBselected.max_level,
-            safe
+            safe,
           );
         } else {
           olddonationHTML += `<p class="invest-bad">2nd Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="loss">Loss</span>: ${
@@ -253,16 +291,21 @@ export function showGreatBuldingDonation() {
             GBrewards,
             GBselected.connected,
             GBselected.level == GBselected.max_level,
-            safe
+            safe,
           );
         }
         if (GBrewards[1]) {
-          olddonationHTML += getFriendlyDonation(donateCustom, RewardFP, currentPercent, Donation);
+          olddonationHTML += getFriendlyDonation(
+            donateCustom,
+            RewardFP,
+            currentPercent,
+            Donation,
+          );
           olddonationHTML += `BE: ${RewardFP}FP<br></p>`;
           if (PlayerName == MyInfo.name && Donation - donateSuggest[1] > 0)
             olddonationHTML += `<p class="">Add ${
               (Donation - donateCustom) * 2
-            }FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : "1.9"}</p>`;
+            }FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : '1.9'}</p>`;
           copyText += getDonations(2, safe, donateSuggest);
         } else olddonationHTML += `</p>`;
       }
@@ -270,7 +313,14 @@ export function showGreatBuldingDonation() {
       else {
         getPlaceValues(3);
         getSafe(3);
-        console.debug("RewardFP/Donation/Profit ", RewardFP, Donation, Profit, donateCustom, currentPercent);
+        console.debug(
+          'RewardFP/Donation/Profit ',
+          RewardFP,
+          Donation,
+          Profit,
+          donateCustom,
+          currentPercent,
+        );
         if (Donation.isLessThan(BigNumber(remaining))) {
           if (Profit >= 0) {
             olddonationHTML += `<p class="invest-good">3rd Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
@@ -284,7 +334,7 @@ export function showGreatBuldingDonation() {
               GBrewards,
               GBselected.connected,
               GBselected.level == GBselected.max_level,
-              safe
+              safe,
             );
           } else {
             olddonationHTML += `<p class="invest-bad">3rd Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="loss">Loss</span>: ${
@@ -300,16 +350,21 @@ export function showGreatBuldingDonation() {
               GBrewards,
               GBselected.connected,
               GBselected.level == GBselected.max_level,
-              safe
+              safe,
             );
           }
           if (GBrewards[2]) {
-            olddonationHTML += getFriendlyDonation(donateCustom, RewardFP, currentPercent, Donation);
+            olddonationHTML += getFriendlyDonation(
+              donateCustom,
+              RewardFP,
+              currentPercent,
+              Donation,
+            );
             olddonationHTML += `BE: ${RewardFP}FP<br></p>`;
             if (PlayerName == MyInfo.name && Donation - donateSuggest[2] > 0)
               olddonationHTML += `<p class="">Add ${
                 (Donation - donateCustom) * 2
-              }FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : "1.9"}</p>`;
+              }FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : '1.9'}</p>`;
             copyText += getDonations(3, safe, donateSuggest);
           } else olddonationHTML += `</p>`;
         }
@@ -330,7 +385,7 @@ export function showGreatBuldingDonation() {
                 GBrewards,
                 GBselected.connected,
                 GBselected.level == GBselected.max_level,
-                safe
+                safe,
               );
             } else {
               olddonationHTML += `<p class="invest-bad">4th Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="loss">Loss</span>: ${
@@ -346,17 +401,22 @@ export function showGreatBuldingDonation() {
                 GBrewards,
                 GBselected.connected,
                 GBselected.level == GBselected.max_level,
-                safe
+                safe,
               );
             }
             if (GBrewards[3]) {
-              olddonationHTML += getFriendlyDonation(donateCustom, RewardFP, currentPercent, Donation);
+              olddonationHTML += getFriendlyDonation(
+                donateCustom,
+                RewardFP,
+                currentPercent,
+                Donation,
+              );
               olddonationHTML += `BE: ${RewardFP}FP<br></p>`;
               if (PlayerName == MyInfo.name && Donation - donateSuggest[3] > 0)
                 olddonationHTML += `<p class="">Add ${
                   (Donation - donateCustom) * 2
                 }FP <span data-i18n="safe">to make safe for</span> ${
-                  currentPercent ? currentPercent / 100 : "1.9"
+                  currentPercent ? currentPercent / 100 : '1.9'
                 }</p>`;
               copyText += getDonations(4, safe, donateSuggest);
             } else olddonationHTML += `</p>`;
@@ -378,7 +438,7 @@ export function showGreatBuldingDonation() {
                   GBrewards,
                   GBselected.connected,
                   GBselected.level == GBselected.max_level,
-                  safe
+                  safe,
                 );
               } else {
                 olddonationHTML += `<p class="invest-bad">5th Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="loss">Loss</span>: ${
@@ -394,24 +454,32 @@ export function showGreatBuldingDonation() {
                   GBrewards,
                   GBselected.connected,
                   GBselected.level == GBselected.max_level,
-                  safe
+                  safe,
                 );
               }
               if (GBrewards[4]) {
-                olddonationHTML += getFriendlyDonation(donateCustom, RewardFP, currentPercent, Donation);
+                olddonationHTML += getFriendlyDonation(
+                  donateCustom,
+                  RewardFP,
+                  currentPercent,
+                  Donation,
+                );
                 olddonationHTML += `BE: ${RewardFP}FP<br></p>`;
-                if (PlayerName == MyInfo.name && Donation - donateSuggest[4] > 0)
+                if (
+                  PlayerName == MyInfo.name &&
+                  Donation - donateSuggest[4] > 0
+                )
                   olddonationHTML += `<p class="">Add ${
                     (Donation - donateCustom) * 2
                   }FP <span data-i18n="safe">to make safe for</span> ${
-                    currentPercent ? currentPercent / 100 : "1.9"
+                    currentPercent ? currentPercent / 100 : '1.9'
                   }</p>`;
                 copyText += getDonations(5, safe, donateSuggest);
               } else olddonationHTML += `</p>`;
             } else {
-              copyText = "";
+              copyText = '';
               newdonationHTML += gbTabEmpty(
-                "-",
+                '-',
                 currentPercent,
                 Donation,
                 RewardFP,
@@ -419,7 +487,7 @@ export function showGreatBuldingDonation() {
                 donateSuggest,
                 GBrewards,
                 GBselected.connected,
-                GBselected.level == GBselected.max_level
+                GBselected.level == GBselected.max_level,
               );
             }
           }
@@ -432,16 +500,26 @@ export function showGreatBuldingDonation() {
       if (useNewDonationPanel) {
         donation2DIV.innerHTML = newdonationHTML + `</div>`;
       } else {
-        donation2DIV.innerHTML = olddonationHTML + copyText + (donationSuffix ? donationSuffix : "" + `</div>`);
-        document.getElementById("donationCopyID").addEventListener("click", copy.DonationCopy);
-        if (!copyText) document.getElementById("donationCopyID").style.display = "none";
+        donation2DIV.innerHTML =
+          olddonationHTML +
+          copyText +
+          (donationSuffix ? donationSuffix : '' + `</div>`);
+        document
+          .getElementById('donationCopyID')
+          .addEventListener('click', copy.DonationCopy);
+        if (!copyText)
+          document.getElementById('donationCopyID').style.display = 'none';
 
-        if (document.getElementById("freeTextLabel"))
-          document.getElementById("freeTextLabel").addEventListener("click", collapse.fCollapseDonation);
+        if (document.getElementById('freeTextLabel'))
+          document
+            .getElementById('freeTextLabel')
+            .addEventListener('click', collapse.fCollapseDonation);
       }
-      document.getElementById("GBselected").addEventListener("click", clickDonation);
+      document
+        .getElementById('GBselected')
+        .addEventListener('click', clickDonation);
 
-      $("body").i18n();
+      $('body').i18n();
     }
   }
 }
@@ -465,26 +543,33 @@ export function getConstructionRanking(msg, data) {
   // donorContainer = document.getElementById("donor_rewards");
   // }
 
-  var outputHTML = "";
-  var rowsHTML = "";
+  var outputHTML = '';
+  var rowsHTML = '';
   // if(donorContainer.textContent)
   // donorHTML = donorContainer.textContent;
-  overview.innerHTML = "";
+  overview.innerHTML = '';
   //greatbuilding.innerHTML = ``;
   outputHTML = `<div class="alert alert-success alert-dismissible show" role="alert">`;
   outputHTML += element.close();
-  outputHTML += element.copy("donorCopyID2", "success", "right", collapse.collapseGBDonors);
+  outputHTML += element.copy(
+    'donorCopyID2',
+    'success',
+    'right',
+    collapse.collapseGBDonors,
+  );
   if (msg.responseData.length) {
     // var total = 0;
     for (var j = 0; j < msg.responseData.length; j++) {
       const place = msg.responseData[j];
       // total += place.forge_points;
       if (place.rank > 0) {
-        if (place.player.name != "No contributor yet") {
+        if (place.player.name != 'No contributor yet') {
           // else{
           if (place.reward && place.reward.strategy_point_amount) {
             // console.debug('place.forge_points:', place.player.name,place.forge_points,place.reward.strategy_point_amount);
-            rowsHTML += `${place.player.name} ${place.forge_points}FP ${BigNumber(place.forge_points)
+            rowsHTML += `${place.player.name} ${place.forge_points}FP ${BigNumber(
+              place.forge_points,
+            )
               .times(100)
               .div(place.reward.strategy_point_amount)
               .toFormat(0)}%<br>`;
@@ -509,9 +594,9 @@ export function getConstructionRanking(msg, data) {
 
   // else{
   outputHTML += `<p id="donorTextLabel2" data-bs-toggle="collapse" href="#donorTextCollapse"><strong><span data-i18n="gb">GB</span> Donors:</strong></p>`;
-  outputHTML += `<div id="donorTextCollapse" class="collapse ${collapse.collapseGBDonors ? "" : "show"}">`;
+  outputHTML += `<div id="donorTextCollapse" class="collapse ${collapse.collapseGBDonors ? '' : 'show'}">`;
   outputHTML += `<p><span>${PlayerName} ${GBselected.name} ${GBselected.level}</span><br>`;
-  outputHTML += rowsHTML += "</p></div></div>";
+  outputHTML += rowsHTML += '</p></div></div>';
   // }
 
   // console.debug('outputHTML',outputHTML)
@@ -519,18 +604,22 @@ export function getConstructionRanking(msg, data) {
     fCheckOutput();
     // else{
     greatbuilding.innerHTML = outputHTML;
-    document.getElementById("donorCopyID2").addEventListener("click", copy.DonorCopy2);
-    document.getElementById("donorTextLabel2").addEventListener("click", collapse.fCollapseGBDonors);
+    document
+      .getElementById('donorCopyID2')
+      .addEventListener('click', copy.DonorCopy2);
+    document
+      .getElementById('donorTextLabel2')
+      .addEventListener('click', collapse.fCollapseGBDonors);
     // }
-    $("body").i18n();
+    $('body').i18n();
   }
 }
 
 function fPercentBanded(Percent) {
-  if (Percent >= 20) return "green";
-  else if (Percent >= 10) return "invest-good";
-  else if (Percent > 5) return "invest-fair";
-  return "";
+  if (Percent >= 20) return 'green';
+  else if (Percent >= 10) return 'invest-good';
+  else if (Percent > 5) return 'invest-fair';
+  return '';
 }
 
 function round(number) {
@@ -539,19 +628,23 @@ function round(number) {
 
 function fCheckOutput() {
   if (greatbuilding == null) {
-    greatbuilding = document.createElement("div");
-    document.getElementById("content").appendChild(greatbuilding);
-    greatbuilding.id = "greatbuilding";
+    greatbuilding = document.createElement('div');
+    document.getElementById('content').appendChild(greatbuilding);
+    greatbuilding.id = 'greatbuilding';
   }
   if (donationDIV == null) {
-    donationDIV = document.createElement("div");
-    document.getElementById("content").appendChild(donationDIV);
-    donationDIV.id = "donation";
+    donationDIV = document.createElement('div');
+    document.getElementById('content').appendChild(donationDIV);
+    donationDIV.id = 'donation';
   }
 }
 
 function fDonationSuggest(reward) {
-  console.debug(reward, currentPercent, BigNumber(reward).times(currentPercent).div(100).dp(0));
+  console.debug(
+    reward,
+    currentPercent,
+    BigNumber(reward).times(currentPercent).div(100).dp(0),
+  );
   return new BigNumber(reward).times(currentPercent).div(100).dp(0);
 }
 
@@ -571,47 +664,61 @@ function gbTabSafe(
   bgrewards,
   connected,
   maxlevel,
-  safe
+  safe,
 ) {
-  var placeString = place == 1 ? "1st" : place == 2 ? "2nd" : place == 3 ? "3rd" : place + "th";
-  var playerShortName = PlayerName.length > 5 ? PlayerName.substr(0, PlayerName.indexOf(" ")) : PlayerName;
+  var placeString =
+    place == 1 ? '1st'
+    : place == 2 ? '2nd'
+    : place == 3 ? '3rd'
+    : place + 'th';
+  var playerShortName =
+    PlayerName.length > 5 ?
+      PlayerName.substr(0, PlayerName.indexOf(' '))
+    : PlayerName;
   var remainingInvestors = 0;
   var i;
   for (i = place - 1; i <= 4; i++) {
     remainingInvestors += fDonationSuggest(bgrewards[i]);
   }
-  var remainingOwner = GBselected.total - GBselected.current - remainingInvestors;
+  var remainingOwner =
+    GBselected.total - GBselected.current - remainingInvestors;
 
-  var footer = "";
+  var footer = '';
   if (PlayerName == MyInfo.name) {
     footer = `<div class="card-footer text-muted">`;
     if (donation - donateSuggest[place - 1] > 0) {
       footer += `Add <strong>${
         (donation - donateCustom) * 2
-      } FP </strong> <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : "1.9"}`;
+      } FP </strong> <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : '1.9'}`;
     }
     var txt = getDonations_new(place, safe, donateSuggest);
     if (txt) {
       footer += `<div id='copyText'>${
-        showOptions.showGuildPosition && PlayerName == MyInfo.name && MyInfo.guildPosition
-          ? "#" + MyInfo.guildPosition + " "
-          : ""
+        (
+          showOptions.showGuildPosition &&
+          PlayerName == MyInfo.name &&
+          MyInfo.guildPosition
+        ) ?
+          '#' + MyInfo.guildPosition + ' '
+        : ''
       }${playerShortName ? playerShortName : PlayerName} ${helper.fGBsname(GBselected.name)} `;
-      footer += txt + "</div>";
+      footer += txt + '</div>';
     }
     // footer += `</div><p>Remaining <strong>${GBselected.total - GBselected.current}</strong> FPs [${remainingOwner} (owner) / ${remainingInvestors} (investors)]</p>`;
     footer += `<p>Remaining <strong>${GBselected.total - GBselected.current}</strong> FPs</p>`;
   }
   let htmlText =
-    `<div class="card ${darkMode == "dark" ? "text-light bg-dark" : "text-dark bg-light"} alert show collapsed p-0" >
+    `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0" >
     <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">donation</span> [` +
     getPlayerLink() +
     `]` +
-    (connected == null ? '<br><span class="red">*** DISCONNECTED ***</span>' : "") +
+    (connected == null ?
+      '<br><span class="red">*** DISCONNECTED ***</span>'
+    : '') +
     checkInactive() +
-    (maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : "") +
+    (maxlevel == true ? '<br><span class="red">*** LOCKED ***</span>' : '') +
     element.close() +
-    element.copy("donationCopyID", "info", "right", collapse.collapseDonation) +
+    element.copy('donationCopyID', 'info', 'right', collapse.collapseDonation) +
     `</div><div class="card-body alert-success p-2">
       <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${GBselected.level}/${
         GBselected.max_level
@@ -649,41 +756,53 @@ function gbTabNotSafe(
   bgrewards,
   connected,
   maxlevel,
-  safe
+  safe,
 ) {
-  var placeString = place == 1 ? "1st" : place == 2 ? "2nd" : place == 3 ? "3rd" : place + "th";
-  var playerShortName = PlayerName.length > 5 ? PlayerName.substr(0, PlayerName.indexOf(" ")) : PlayerName;
+  var placeString =
+    place == 1 ? '1st'
+    : place == 2 ? '2nd'
+    : place == 3 ? '3rd'
+    : place + 'th';
+  var playerShortName =
+    PlayerName.length > 5 ?
+      PlayerName.substr(0, PlayerName.indexOf(' '))
+    : PlayerName;
   var remainingInvestors = 0;
   var i;
   for (i = place - 1; i <= 4; i++) {
     remainingInvestors += fDonationSuggest(bgrewards[i]);
   }
-  var remainingOwner = GBselected.total - GBselected.current - remainingInvestors;
-  var footer = "";
+  var remainingOwner =
+    GBselected.total - GBselected.current - remainingInvestors;
+  var footer = '';
   if (PlayerName == MyInfo.name) {
     footer = `<div class="card-footer text-muted">`;
     if (donation - donateSuggest[place - 1] > 0) {
       footer += `Add <strong>${
         (donation - donateCustom) * 2
-      } FP </strong> <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : "1.9"}`;
+      } FP </strong> <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : '1.9'}`;
     }
     var txt = getDonations_new(place, safe, donateSuggest);
     if (txt) {
       footer += `<div id='copyText'>${
-        showOptions.showGuildPosition && PlayerName == MyInfo.name && MyInfo.guildPosition
-          ? "#" + MyInfo.guildPosition + " "
-          : ""
+        (
+          showOptions.showGuildPosition &&
+          PlayerName == MyInfo.name &&
+          MyInfo.guildPosition
+        ) ?
+          '#' + MyInfo.guildPosition + ' '
+        : ''
       }${playerShortName ? playerShortName : PlayerName} ${helper.fGBsname(GBselected.name)} `;
-      footer += txt + "</div>";
+      footer += txt + '</div>';
     }
     // footer += `<p>Remaining <strong>${GBselected.total - GBselected.current}</strong> FPs [${remainingOwner} (owner) / ${remainingInvestors} (investors)]</p>`;
     footer += `<p>Remaining <strong>${GBselected.total - GBselected.current}</strong> FPs</p>`;
   }
   let htmlText =
-    `<div class="card ${darkMode == "dark" ? "text-light bg-dark" : "text-dark bg-light"} alert show collapsed p-0 "  >
+    `<div class="card ${darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0 "  >
            <div class="card-header fw-bold"><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span> [${getPlayerLink()}]
            ${element.close()}` +
-    element.copy("donationCopyID", "info", "right", collapse.collapseDonation) +
+    element.copy('donationCopyID', 'info', 'right', collapse.collapseDonation) +
     `</div><div class="card-body alert-danger p-2">
            <h6 class="card-title mb-0"> <span id="GBselected">${GBselected.name} [${GBselected.level}/${
              GBselected.max_level
@@ -747,10 +866,10 @@ function gbTabEmpty(
   donateSuggest,
   bgrewards,
   connected,
-  maxlevel
+  maxlevel,
 ) {
   let htmlText = `<div class="card ${
-    darkMode == "dark" ? "text-light bg-dark" : "text-dark bg-light"
+    darkMode == 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'
   } alert show collapsed p-0 " >
            <div class="card-header fw-bold"> GB Donation [${getPlayerLink()}]${element.close()}</div>
            <div class="card-body alert-danger p-2">
@@ -779,21 +898,25 @@ function gbTabEmpty(
 
 function checkInactive() {
   var html = inactiveHTML(hoodlist);
-  if (html == "") html += inactiveHTML(friends);
-  if (html == "") html += inactiveHTML(guildMembers);
+  if (html == '') html += inactiveHTML(friends);
+  if (html == '') html += inactiveHTML(guildMembers);
   return html;
 }
 
 function inactiveHTML(members) {
   members.forEach((entry) => {
-    if (entry.is_self != true && PlayerID == entry.player_id && entry.is_active != true)
+    if (
+      entry.is_self != true &&
+      PlayerID == entry.player_id &&
+      entry.is_active != true
+    )
       return `<br><span class='red'>*** <span data-i18n="inactive">INACTIVE</span> ***</span>`;
   });
-  return "";
+  return '';
 }
 
 function getDonations_new(place, safe, donateSuggest) {
-  var footer = "";
+  var footer = '';
   console.debug(place, safe, donateSuggest);
   if (place <= 5 && safe[4]) {
     footer += `P5(${donateSuggest[4]}) `;
@@ -815,17 +938,27 @@ function getDonations_new(place, safe, donateSuggest) {
 
 function getPlayerLink() {
   return (
-    '<a href="https://foe.scoredb.io/' + GameOrigin + "/Player/" + PlayerID + '" target="_blank">' + PlayerName + "</a>"
+    '<a href="https://foe.scoredb.io/' +
+    GameOrigin +
+    '/Player/' +
+    PlayerID +
+    '" target="_blank">' +
+    PlayerName +
+    '</a>'
   );
 }
 
 function getDonations(place, safe, donateSuggest) {
-  var footer = "";
+  var footer = '';
   console.debug(place, safe, donateSuggest);
   for (var i = 5; i > 0; i--) {
-    if (place <= i && donateSuggest[i - 1] > 0 && (safe[i - 1] || !showOptions.hideUnsafe)) {
-      footer += `<span class="${safe[i - 1] ? "invest-good" : "invest-bad"}">P${
-        i + "(" + donateSuggest[i - 1]
+    if (
+      place <= i &&
+      donateSuggest[i - 1] > 0 &&
+      (safe[i - 1] || !showOptions.hideUnsafe)
+    ) {
+      footer += `<span class="${safe[i - 1] ? 'invest-good' : 'invest-bad'}">P${
+        i + '(' + donateSuggest[i - 1]
       })</span> `;
     }
   }
@@ -833,11 +966,11 @@ function getDonations(place, safe, donateSuggest) {
 }
 
 function clickDonation(event) {
-  console.debug("event", event);
+  console.debug('event', event);
   if (event.shiftKey) {
     useNewDonationPanel = !useNewDonationPanel;
-    storage.set("useNewDonationPanel", useNewDonationPanel);
-    console.debug("useNewDonationPanel", useNewDonationPanel);
+    storage.set('useNewDonationPanel', useNewDonationPanel);
+    console.debug('useNewDonationPanel', useNewDonationPanel);
     showGreatBuldingDonation();
   }
 }
@@ -851,9 +984,9 @@ function getFriendlyDonation(donation, reward, percent, lock) {
     lock,
     donation.isGreaterThan(reward) || lock.isGreaterThan(donation),
     donation.isGreaterThan(reward),
-    lock.isGreaterThan(donation)
+    lock.isGreaterThan(donation),
   );
-  return `<span class="${donation.isGreaterThan(reward) || lock.isGreaterThan(donation) ? "red" : "green"}">${
+  return `<span class="${donation.isGreaterThan(reward) || lock.isGreaterThan(donation) ? 'red' : 'green'}">${
     percent / 100
   }: ${donation}FP</span><br>`;
 }
@@ -864,7 +997,10 @@ function getSafe(place) {
   var index = place - 1;
   var rem = remaining;
   for (var i = index; i < 5; i++) {
-    donateSuggest[i] = new BigNumber(GBrewards[i]).times(currentPercent).div(100).dp(0);
+    donateSuggest[i] = new BigNumber(GBrewards[i])
+      .times(currentPercent)
+      .div(100)
+      .dp(0);
     rem -= donateSuggest[i];
     safe[i] = rem <= donateSuggest[i] - Top[place] ? true : false;
   }
@@ -872,11 +1008,18 @@ function getSafe(place) {
 
 function getPlaceValues(place) {
   var index = place - 1;
-  Donation = new BigNumber(GBselected.total - GBselected.current + Top[index]).div(2).dp(0, 2);
-  RewardFP = new BigNumber(GBrewards[index]).multipliedBy(1 + City.ArcBonus / 100).dp(0);
+  Donation = new BigNumber(GBselected.total - GBselected.current + Top[index])
+    .div(2)
+    .dp(0, 2);
+  RewardFP = new BigNumber(GBrewards[index])
+    .multipliedBy(1 + City.ArcBonus / 100)
+    .dp(0);
   Profit = RewardFP.minus(Donation).toString();
   Percent = new BigNumber(Profit).multipliedBy(100).idiv(Donation);
   const band = fPercentBanded(Percent);
-  donateCustom = new BigNumber(GBrewards[index]).multipliedBy(currentPercent).div(100).dp(0);
+  donateCustom = new BigNumber(GBrewards[index])
+    .multipliedBy(currentPercent)
+    .div(100)
+    .dp(0);
   remaining = GBselected.total - GBselected.current;
 }

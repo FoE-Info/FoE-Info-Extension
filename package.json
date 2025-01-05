@@ -23,7 +23,7 @@
     "check": "prettier --check .",
     "format": "prettier --write .",
     "dev": "set NODE_ENV=development && webpack --mode development --config webpack-dev.config.js --watch",
-    "build-foe-info": "webpack --config foe-info-webstore.config.js",
+    "build-foe-info": "webpack --config foe-info-webstore.config.js"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
