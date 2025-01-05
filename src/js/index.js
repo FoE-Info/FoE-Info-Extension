@@ -125,6 +125,7 @@ export var WaterfallProvinceDefs = [];
 export var BuildingDefs = [];
 export var hiddenRewards = [];
 export var Goods = {
+  sash: 0,
   sat: 0,
   sajm: 0,
   sav: 0,
@@ -2073,6 +2074,7 @@ function clearCultural() {
 
 function receiveStorage(result) {
   console.debug("result", result);
+
   // // console.debug('showIncidents', showIncidents);
   // else
   // 	storage.set('showOptions',showOptions);
