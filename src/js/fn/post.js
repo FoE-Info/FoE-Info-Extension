@@ -17,27 +17,27 @@
 // import $ from "jquery";
 // import 'bootstrap';
 // import Discord  from 'discord.js';
-import { alerts, EpocTime, MyInfo, GameOrigin, url } from "../index.js";
-import * as element from "./AddElement";
-import * as helper from "./helper.js";
-import { Tooltip, Alert, Popover } from "bootstrap";
-import { GBGdata } from "../msg/GuildBattlegroundService.js";
+import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index.js';
+import * as element from './AddElement';
+import * as helper from './helper.js';
+import { Tooltip, Alert, Popover } from 'bootstrap';
+import { GBGdata } from '../msg/GuildBattlegroundService.js';
 
 // Example POST method implementation:
-async function postData(url = "", data = {}) {
+async function postData(url = '', data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "include", // include, *same-origin, omit
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'include', // include, *same-origin, omit
     headers: {
-      "content-type": "application/json",
+      'content-type': 'application/json',
       // "Access-Control-Allow-Origin": "*",
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    redirect: "follow", // manual, *follow, error
-    referrerPolicy: "strict-origin-when-cross-origin", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'strict-origin-when-cross-origin', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: JSON.stringify(data), // body data type must match "Content-Type" header
   }).then((response) => {
     console.debug(response); // JSON data parsed by `data.json()` call
@@ -53,7 +53,7 @@ async function postData(url = "", data = {}) {
 export function postToDiscord(text) {
   // test-test channel
   var webHookUrl =
-    "https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij";
+    'https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij';
 
   const hook = getKey(webHookUrl);
 
@@ -74,7 +74,7 @@ export function postToDiscord(text) {
   var oReq = new XMLHttpRequest();
   var params = {
     username: MyInfo.name,
-    avatar_url: "",
+    avatar_url: '',
     content: text,
     // "embeds": [
     // 	{
@@ -95,11 +95,11 @@ export function postToDiscord(text) {
   // console.debug(params);
   //register method called after data has been sent method is executed
   // oReq.addEventListener("load", reqListener);
-  oReq.open("POST", webHookUrl, true);
+  oReq.open('POST', webHookUrl, true);
   // oReq.withCredentials = true;
   // oReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   // oReq.setRequestHeader("Access-Control-Allow-Origin", "*");
-  oReq.setRequestHeader("Content-type", "application/json");
+  oReq.setRequestHeader('Content-type', 'application/json');
   // oReq.send(JSON.stringify(myJSONStr));
   oReq.onreadystatechange = function () {
     // if (oReq.readyState == XMLHttpRequest.DONE) {
@@ -166,50 +166,50 @@ export function postToDiscord(text) {
       {
         title: "What's all this?",
         description:
-          "Discohook is a free tool that allows you to build Discord messages and embeds for use in your server.\n\nDiscohook sends messages using *webhooks*, an API feature that allows third-party services to *blindly* send messages into text channels. While webhooks can send messages, they cannot respond to user interactions such as messages.",
+          'Discohook is a free tool that allows you to build Discord messages and embeds for use in your server.\n\nDiscohook sends messages using *webhooks*, an API feature that allows third-party services to *blindly* send messages into text channels. While webhooks can send messages, they cannot respond to user interactions such as messages.',
         color: 7506394,
       },
       {
-        title: "Text formatting how-tos",
+        title: 'Text formatting how-tos',
         description:
-          "There are a few basic styles you can take advantage of:\n*Italics*, by surrounding text in asterisks (\\*);\n**Bold**, by surrounding text in double asterisks (\\*\\*);\n__Underline__, by using double underscores (\\_\\_);\n~~Strikethrough~~, by using double tildes (\\~\\~);\n`Code`, by using backticks (\\`).",
+          'There are a few basic styles you can take advantage of:\n*Italics*, by surrounding text in asterisks (\\*);\n**Bold**, by surrounding text in double asterisks (\\*\\*);\n__Underline__, by using double underscores (\\_\\_);\n~~Strikethrough~~, by using double tildes (\\~\\~);\n`Code`, by using backticks (\\`).',
         color: 4437377,
         fields: [
           {
-            name: "Advanced formatting",
+            name: 'Advanced formatting',
             value:
-              "Beyond these basic styles, you can also start a blockquote with a right-pointing angle bracket (>):\n> Hello.\nOr mark sensitive content behind a spoiler using two vertical bars (\\||):\n||This is hidden until clicked||",
+              'Beyond these basic styles, you can also start a blockquote with a right-pointing angle bracket (>):\n> Hello.\nOr mark sensitive content behind a spoiler using two vertical bars (\\||):\n||This is hidden until clicked||',
           },
           {
-            name: "Using server emoji",
+            name: 'Using server emoji',
             value:
-              "While default emoji work like you would expect them to, server emotes are a bit more complicated.\n\nTo send a server emoji with a webhook, you must use a specific formatting code to do so. To find it, send that emoji in your server, but put a backslash (\\\\) in front of it.\n\nFor example: sending `\\:my_emoji:` would send `<:my_emoji:12345>` into chat. If you copy the output into Discohook, the emoji will show up properly.",
+              'While default emoji work like you would expect them to, server emotes are a bit more complicated.\n\nTo send a server emoji with a webhook, you must use a specific formatting code to do so. To find it, send that emoji in your server, but put a backslash (\\\\) in front of it.\n\nFor example: sending `\\:my_emoji:` would send `<:my_emoji:12345>` into chat. If you copy the output into Discohook, the emoji will show up properly.',
           },
           {
-            name: "Pinging users and roles, linking to channels",
+            name: 'Pinging users and roles, linking to channels',
             value:
               "First of all, you must have enabled developer mode in Discord's settings. To do so, open Discord settings and navigate to Appearance. There will be a Developer Mode toggle under the Advanced section, which you must enable.\n\nHaving developer mode enabled, you can now right-click your target to copy their ID. Keep in mind that for users, you must right click their *avatar*, not the message.\n\nTo mention them, you have to use Discord's mention syntax:\n`<@!user_id>`, `<@&role_id>`, or `<#channel_id>`. If done correctly, they will appear as <@!143419667677970434> in the preview.",
           },
         ],
       },
       {
-        title: "Additional magic",
+        title: 'Additional magic',
         color: 16426522,
         fields: [
           {
-            name: "Image galleries",
+            name: 'Image galleries',
             value:
               'With some special magic, you can have up to 4 images in a single embed. This feature is exclusive to webhooks, so don\'t expect to make it work on a traditional bot.\n\nAll you need is to give your embed a URL and click on the "Edit images" button inside any embed to get started.',
           },
           {
-            name: "Backups",
+            name: 'Backups',
             value:
               "Not only can Discohook send messages, but Discohook can also save them for later use. For when your message wasn't quite right.\nFor convenience, backups also contain the webhook URL.\n\nBackups will not be sent to the Discohook, and will always be stored offline. If you clear your browsing data, your backups will be lost *forever*!\n\nIf you want to keep your backups somewhere else, you can export backups to get a saved copy. Do keep in mind that they also include the stored webhook URL, so don't share it with anyone you don't trust.",
           },
         ],
       },
       {
-        title: "Legal things",
+        title: 'Legal things',
         description:
           'To make Discohook as helpful as it can be, we use some assets derived from Discord\'s application. Discohook has no affiliation with Discord in any way, shape, or form.\n\nThe source code to this app is [available on GitHub](https://github.com/discohook/discohook) licensed under the GNU Affero General Public License v3.0.\nIf you need to contact me, you can join the [support server](https://discohook.org/discord), or send an email to "hello" at discohook.org.',
         color: 15746887,
@@ -224,7 +224,7 @@ export function postToDiscord(text) {
 }
 
 export function postTargetsToDiscord() {
-  if (!document.getElementById("targetText")) return;
+  if (!document.getElementById('targetText')) return;
 
   var webHookUrl = url.discordTargetURL;
 
@@ -237,18 +237,18 @@ export function postTargetsToDiscord() {
   var oReq = new XMLHttpRequest();
   var params = {
     username: MyInfo.name,
-    avatar_url: "",
+    avatar_url: '',
     // 'content': document.getElementById("targetText").innerHTML.replace(/<br\s*\/?>/ig, "\n").replace(/(<([^>]+)>)/gi, "").replace(/[\w\W]+?\n+?/,"").replace(/\n.*$/, '')
     content:
       document
-        .getElementById("targetText")
-        .innerHTML.replace(/<br\s*\/?>/gi, "\n")
-        .replace(/(<([^>]+)>)/gi, "")
-        .replace(/\n.*$/, "") + "\n----------",
+        .getElementById('targetText')
+        .innerHTML.replace(/<br\s*\/?>/gi, '\n')
+        .replace(/(<([^>]+)>)/gi, '')
+        .replace(/\n.*$/, '') + '\n----------',
   };
-  oReq.open("POST", webHookUrl, true);
+  oReq.open('POST', webHookUrl, true);
   // oReq.withCredentials = true;
-  oReq.setRequestHeader("Content-type", "application/json");
+  oReq.setRequestHeader('Content-type', 'application/json');
   oReq.onreadystatechange = function () {
     console.debug(oReq.readyState, oReq.responseText);
   };
@@ -257,27 +257,27 @@ export function postTargetsToDiscord() {
     oReq,
     params,
     document
-      .getElementById("targetText")
-      .innerHTML.replace(/<br\s*\/?>/gi, "\n")
-      .replace(/(<([^>]+)>)/gi, "")
+      .getElementById('targetText')
+      .innerHTML.replace(/<br\s*\/?>/gi, '\n')
+      .replace(/(<([^>]+)>)/gi, ''),
   );
 }
 
 export function postGBGtoSS() {
   // console.debug(data[0]);
   var googleSheetAPI = url.sheetGuildURL;
-  var copytext = document.getElementById("battlegroundText");
+  var copytext = document.getElementById('battlegroundText');
 
   var reqData = {
-    sheet: "GBG",
+    sheet: 'GBG',
     epoc: EpocTime,
     GBGdata: GBGdata,
   };
 
   var oReq = new XMLHttpRequest();
-  oReq.open("POST", googleSheetAPI, true);
-  oReq.setRequestHeader("Content-type", "application/json");
-  oReq.setRequestHeader("Access-Control-Allow-Origin", "*");
+  oReq.open('POST', googleSheetAPI, true);
+  oReq.setRequestHeader('Content-type', 'application/json');
+  oReq.setRequestHeader('Access-Control-Allow-Origin', '*');
   oReq.onreadystatechange = function () {
     if (oReq.readyState == XMLHttpRequest.DONE) {
       // alert(oReq.responseText);
@@ -290,13 +290,13 @@ export function postGBGtoSS() {
 }
 
 export function postAlerttoDsicord() {
-  var copytext = document.getElementById("alertText").textContent;
+  var copytext = document.getElementById('alertText').textContent;
   postToDiscord(copytext);
 }
 
 export function logToDiscord(text) {
   var webHookUrl =
-    "https://discordapp.com/api/webhooks/690589445145231410/XQehmPTFdg82ijxxXMXMeYDuIkCuKokSDOVLztN737J60NCJ6nN3qzBlMjIxMJG0N-jq";
+    'https://discordapp.com/api/webhooks/690589445145231410/XQehmPTFdg82ijxxXMXMeYDuIkCuKokSDOVLztN737J60NCJ6nN3qzBlMjIxMJG0N-jq';
   // log channel
 
   var selection = window.getSelection();
@@ -305,15 +305,15 @@ export function logToDiscord(text) {
   var oReq = new XMLHttpRequest();
   var params = {
     username: MyInfo.name,
-    avatar_url: "",
+    avatar_url: '',
     content: text,
   };
   // console.debug(params);
   //register method called after data has been sent method is executed
   // oReq.addEventListener("load", reqListener);
-  oReq.open("POST", webHookUrl, true);
+  oReq.open('POST', webHookUrl, true);
   // oReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  oReq.setRequestHeader("Content-type", "application/json");
+  oReq.setRequestHeader('Content-type', 'application/json');
   // oReq.send(JSON.stringify(myJSONStr));
   oReq.send(JSON.stringify(params));
 }
@@ -327,15 +327,15 @@ export function postPlayerToSS(visitData) {
 		<p id="alertText"><strong>Posting Guild Stats to SS ... </strong><br>${visitData[0].Name}</p></div>`;
 
   var reqData = {
-    sheet: "Guild",
+    sheet: 'Guild',
     playerData: visitData,
     user: MyInfo.name,
   };
 
   var oReq = new XMLHttpRequest();
-  oReq.open("POST", googleSheetAPI, true);
-  oReq.setRequestHeader("Content-type", "application/json");
-  oReq.setRequestHeader("Access-Control-Allow-Origin", "*");
+  oReq.open('POST', googleSheetAPI, true);
+  oReq.setRequestHeader('Content-type', 'application/json');
+  oReq.setRequestHeader('Access-Control-Allow-Origin', '*');
   oReq.onreadystatechange = function () {
     if (oReq.readyState == XMLHttpRequest.DONE) {
       // alert(oReq.responseText);
@@ -352,7 +352,7 @@ export function postPlayerToSS(visitData) {
         const alert = Alert.getOrCreateInstance(`#alertText`);
         alert.close();
         alert.dispose();
-        alerts.innerHTML = "";
+        alerts.innerHTML = '';
       }, 60000);
     }
   };

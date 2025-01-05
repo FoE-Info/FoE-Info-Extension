@@ -11,24 +11,29 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import * as collapse from "../fn/collapse.js";
-import * as copy from "../fn/copy.js";
-import * as element from "../fn/AddElement";
-import { donationDIV2 } from "../index.js";
-import { toolOptions, setExpeditionSize } from "../fn/globals.js";
+import * as collapse from '../fn/collapse.js';
+import * as copy from '../fn/copy.js';
+import * as element from '../fn/AddElement';
+import { donationDIV2 } from '../index.js';
+import { toolOptions, setExpeditionSize } from '../fn/globals.js';
 
 export function guildExpeditionService(msg) {
   var ExpeditionPerformance = [];
   var expeditionHTML = `<div id="expeditionTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
 		${element.close()}
 		<p id="expeditionTextLabel" href="#expeditionText" data-bs-toggle="collapse">
-      ${element.icon("expeditionicon", "expeditionText", collapse.collapseExpedition)}
+      ${element.icon('expeditionicon', 'expeditionText', collapse.collapseExpedition)}
 		<strong>Guild Expedition:</strong></p>`;
-  expeditionHTML += element.copy("expeditionCopyID", "info", "right", collapse.collapseExpedition);
+  expeditionHTML += element.copy(
+    'expeditionCopyID',
+    'info',
+    'right',
+    collapse.collapseExpedition,
+  );
   expeditionHTML += `<div id="expeditionText" style="height: ${
     toolOptions.expeditionSize
   }px" class="alert-info overflow collapse ${
-    collapse.collapseExpedition ? "" : "show"
+    collapse.collapseExpedition ? '' : 'show'
   }"><table><tr><th>Member</th><th>Points</th><th>Encounters</th></tr>`;
   msg.responseData.forEach((entry) => {
     var solvedEncounters = 0;
@@ -41,15 +46,22 @@ export function guildExpeditionService(msg) {
   });
   // console.debug(ExpeditionPerformance);
   donationDIV2.innerHTML = expeditionHTML + `</table></div></div>`;
-  document.getElementById("expeditionCopyID").addEventListener("click", copy.ExpeditionCopy);
-  document.getElementById("expeditionicon").addEventListener("click", collapse.fCollapseExpedition);
-  document.getElementById("expeditionTextLabel").addEventListener("click", collapse.fCollapseExpedition);
-  const expeditionDiv = document.getElementById("expeditionText");
+  document
+    .getElementById('expeditionCopyID')
+    .addEventListener('click', copy.ExpeditionCopy);
+  document
+    .getElementById('expeditionicon')
+    .addEventListener('click', collapse.fCollapseExpedition);
+  document
+    .getElementById('expeditionTextLabel')
+    .addEventListener('click', collapse.fCollapseExpedition);
+  const expeditionDiv = document.getElementById('expeditionText');
   const resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height) setExpeditionSize(entry.contentRect.height);
+      if (entry.contentRect && entry.contentRect.height)
+        setExpeditionSize(entry.contentRect.height);
     }
   });
   resizeObserver.observe(expeditionDiv);
-  $("body").i18n();
+  $('body').i18n();
 }

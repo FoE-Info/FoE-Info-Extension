@@ -11,11 +11,11 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { checkDebug } from "..";
-import * as element from "./AddElement";
+import { checkDebug } from '..';
+import * as element from './AddElement';
 
-import * as storage from "./storage.js";
-import { Tooltip, Alert, Popover } from "bootstrap";
+import * as storage from './storage.js';
+import { Tooltip, Alert, Popover } from 'bootstrap';
 
 export var collapseFriends = true;
 export var collapseGuild = true;
@@ -66,105 +66,105 @@ export var collapseClipboard = true;
 export default function set(key, value) {
   // console.debug(key, value);
   switch (key) {
-    case "collapseFriends":
+    case 'collapseFriends':
       collapseFriends = value;
       console.debug(collapseFriends);
       break;
-    case "collapseGuild":
+    case 'collapseGuild':
       collapseGuild = value;
       break;
-    case "collapseStats":
+    case 'collapseStats':
       collapseStats = value;
       break;
-    case "collapseGVGinfo":
+    case 'collapseGVGinfo':
       collapseGVGinfo = value;
       break;
-    case "collapseGVG":
+    case 'collapseGVG':
       collapseGVG = value;
       break;
-    case "collapseGVGOverview":
+    case 'collapseGVGOverview':
       collapseGVGOverview = value;
       break;
-    case "collapseGVGGuildPower":
+    case 'collapseGVGGuildPower':
       collapseGVGGuildPower = value;
       break;
-    case "collapseGVGCurrAge":
+    case 'collapseGVGCurrAge':
       collapseGVGCurrAge = value;
       break;
-    case "collapseGVGAllGuildsPower":
+    case 'collapseGVGAllGuildsPower':
       collapseGVGAllGuildsPower = value;
       break;
-    case "collapseGoods":
+    case 'collapseGoods':
       collapseGoods = value;
       break;
-    case "collapseIncidents":
+    case 'collapseIncidents':
       collapseIncidents = value;
       break;
-    case "collapseHood":
+    case 'collapseHood':
       collapseHood = value;
       break;
-    case "collapseArmy":
+    case 'collapseArmy':
       collapseArmy = value;
       break;
 
-    case "collapseGBInfo":
+    case 'collapseGBInfo':
       collapseGBInfo = value;
       break;
-    case "collapseGBRewards":
+    case 'collapseGBRewards':
       collapseGBRewards = value;
       break;
-    case "collapseGBDonors":
+    case 'collapseGBDonors':
       collapseGBDonors = value;
       break;
-    case "collapseGBinvest":
+    case 'collapseGBinvest':
       collapseGBinvest = value;
       break;
-    case "collapseInvested":
+    case 'collapseInvested':
       collapseInvested = value;
       break;
-    case "collapseDonation":
+    case 'collapseDonation':
       collapseDonation = value;
       break;
-    case "collapseBattleground":
+    case 'collapseBattleground':
       collapseBattleground = value;
       break;
-    case "collapseBuildingCost":
+    case 'collapseBuildingCost':
       collapseBuildingCost = value;
       break;
-    case "collapseExpedition":
+    case 'collapseExpedition':
       collapseExpedition = value;
       break;
-    case "collapseTreasury":
+    case 'collapseTreasury':
       collapseTreasury = value;
       break;
-    case "collapseTreasuryLog":
+    case 'collapseTreasuryLog':
       collapseTreasuryLog = value;
       break;
-    case "collapseGalaxy":
+    case 'collapseGalaxy':
       collapseGalaxy = value;
       break;
-    case "collapseTarget":
+    case 'collapseTarget':
       collapseTarget = value;
       break;
-    case "collapseTargetGen":
+    case 'collapseTargetGen':
       collapseTargetGen = value;
       break;
-    case "collapseBuildings":
+    case 'collapseBuildings':
       collapseBuildings = value;
       break;
-    case "collapseLists":
+    case 'collapseLists':
       collapseLists = value;
       break;
-    case "collapseRewards":
+    case 'collapseRewards':
       collapseRewards = value;
       break;
-    case "collapseBonus":
+    case 'collapseBonus':
       collapseBonus = value;
       break;
-    case "collapseCultural":
+    case 'collapseCultural':
       collapseCultural = value;
       break;
-    case "collapseClipboard":
+    case 'collapseClipboard':
       collapseClipboard = value;
       break;
 
@@ -176,123 +176,140 @@ export default function set(key, value) {
 
 export function fCollapseGBInfo() {
   collapseGBInfo = !collapseGBInfo;
-  storage.set("collapseGBInfo", collapseGBInfo);
-  element.updateIcon("guildicon", "guildText", collapseGBInfo);
+  storage.set('collapseGBInfo', collapseGBInfo);
+  element.updateIcon('guildicon', 'guildText', collapseGBInfo);
 }
 
 export function fCollapseFriends() {
   collapseFriends = !collapseFriends;
-  document.getElementById("friendsCopyID").style.display = collapseFriends ? "none" : "block";
+  document.getElementById('friendsCopyID').style.display =
+    collapseFriends ? 'none' : 'block';
   // console.debug('collapseFriends',collapseFriends);
-  element.updateIcon("friendsicon", "friendsText", collapseFriends);
+  element.updateIcon('friendsicon', 'friendsText', collapseFriends);
 }
 
 export function fCollapseLists() {
   collapseLists = !collapseLists;
-  element.updateIcon("listsicon", "listsText", collapseLists);
+  element.updateIcon('listsicon', 'listsText', collapseLists);
 }
 
 export function fCollapseHood() {
   collapseHood = !collapseHood;
-  document.getElementById("hoodCopyID").style.display = collapseHood ? "none" : "block";
+  document.getElementById('hoodCopyID').style.display =
+    collapseHood ? 'none' : 'block';
   // console.debug('collapseHood',collapseHood);
-  element.updateIcon("hoodicon", "hoodText", collapseHood);
+  element.updateIcon('hoodicon', 'hoodText', collapseHood);
 }
 
 export function fCollapseGalaxy() {
   collapseGalaxy = !collapseGalaxy;
   // storage.set('collapseGalaxy', collapseGalaxy);
-  element.updateIcon("galaxyicon", "galaxyText", collapseGalaxy);
+  element.updateIcon('galaxyicon', 'galaxyText', collapseGalaxy);
 }
 
 export function fCollapseGuild() {
   collapseGuild = !collapseGuild;
-  document.getElementById("guildCopyID").style.display = collapseGuild ? "none" : "block";
+  document.getElementById('guildCopyID').style.display =
+    collapseGuild ? 'none' : 'block';
   // console.debug('collapseGuild',collapseGuild);
-  element.updateIcon("guildicon", "guildText", collapseGuild);
+  element.updateIcon('guildicon', 'guildText', collapseGuild);
 }
 
 export function fCollapseIncidents() {
   fHideAllTooltips();
   collapseIncidents = !collapseIncidents;
-  element.updateIcon("incidentsicon", "incidentsText", collapseIncidents);
+  element.updateIcon('incidentsicon', 'incidentsText', collapseIncidents);
   // console.debug('collapseIncidents',collapseIncidents);
 }
 
 export function fCollapseGVG() {
   collapseGVG = !collapseGVG;
-  element.updateIcon("gvgicon", "gvgText", collapseGVG);
+  element.updateIcon('gvgicon', 'gvgText', collapseGVG);
   // console.debug('fCollapseGVG',collapseOptions);
 }
 
 export function fCollapseGVGinfo() {
   collapseGVGinfo = !collapseGVGinfo;
-  element.updateIcon("gvgInfoIcon", "gvgInfoText", collapseGVGinfo);
+  element.updateIcon('gvgInfoIcon', 'gvgInfoText', collapseGVGinfo);
   // console.debug('fCollapseGVGinfo',collapseGVGinfo,collapseOptions);
 }
 
 export function fcollapseGVGOverview() {
   collapseGVGOverview = !collapseGVGOverview;
-  element.updateIcon("gvgOverviewIcon", "gvgOverviewText", collapseGVGOverview);
+  element.updateIcon('gvgOverviewIcon', 'gvgOverviewText', collapseGVGOverview);
   // console.debug('fcollapseGVGOverview',collapseGVGinfo,collapseOptions);
 }
 export function fcollapseGVGGuildPower() {
   collapseGVGGuildPower = !collapseGVGGuildPower;
-  element.updateIcon("gvgGuildPowerIcon", "gvgGuildPowerText", collapseGVGGuildPower);
+  element.updateIcon(
+    'gvgGuildPowerIcon',
+    'gvgGuildPowerText',
+    collapseGVGGuildPower,
+  );
   // console.debug('fcollapseGVGGuildPower',collapseGVGinfo,collapseOptions);
 }
 export function fcollapseGVGCurrAge() {
   collapseGVGCurrAge = !collapseGVGCurrAge;
-  element.updateIcon("gvgCurrAgeIcon", "gvgCurrAgeText", collapseGVGCurrAge);
+  element.updateIcon('gvgCurrAgeIcon', 'gvgCurrAgeText', collapseGVGCurrAge);
   // console.debug('fcollapseGVGCurrAge',collapseGVGinfo,collapseOptions);
 }
 export function fcollapseGVGAllGuildsPower() {
   collapseGVGAllGuildsPower = !collapseGVGAllGuildsPower;
-  element.updateIcon("gvgAllGuildsPowerIcon", "gvgAllGuildsPowerText", collapseGVGAllGuildsPower);
+  element.updateIcon(
+    'gvgAllGuildsPowerIcon',
+    'gvgAllGuildsPowerText',
+    collapseGVGAllGuildsPower,
+  );
   // console.debug('fcollapseGVGAllGuildsPower',collapseGVGinfo,collapseOptions);
 }
 
 export function fCollapseArmy() {
   collapseArmy = !collapseArmy;
-  document.getElementById("armyUnits").innerHTML = collapseArmy
-    ? document.getElementById("armyUnits2").innerHTML + " " + document.getElementById("armyUnits3").innerHTML
-    : "";
-  element.updateIcon("armyicon", "armyText", collapseArmy);
+  document.getElementById('armyUnits').innerHTML =
+    collapseArmy ?
+      document.getElementById('armyUnits2').innerHTML +
+      ' ' +
+      document.getElementById('armyUnits3').innerHTML
+    : '';
+  element.updateIcon('armyicon', 'armyText', collapseArmy);
 }
 
 export function fCollapseGoods() {
   collapseGoods = !collapseGoods;
-  document.getElementById("goodsCopyID").style.display = collapseGoods ? "none" : "block";
-  element.updateIcon("goodsicon", "goodsText", collapseGoods);
+  document.getElementById('goodsCopyID').style.display =
+    collapseGoods ? 'none' : 'block';
+  element.updateIcon('goodsicon', 'goodsText', collapseGoods);
 }
 
 export function fCollapseStats() {
   fHideAllTooltips();
   collapseStats = !collapseStats;
   // console.debug('collapseStats',collapseStats);
-  document.getElementById("citystatsCopyID").style.display = collapseStats ? "none" : "block";
-  element.updateIcon("citystatsicon", "citystatsText", collapseStats);
+  document.getElementById('citystatsCopyID').style.display =
+    collapseStats ? 'none' : 'block';
+  element.updateIcon('citystatsicon', 'citystatsText', collapseStats);
 }
 
 export function fCollapseRewards() {
   collapseRewards = !collapseRewards;
   // console.debug('collapseRewards',collapseRewards);
-  element.updateIcon("rewardsicon", "rewardsText", collapseRewards);
+  element.updateIcon('rewardsicon', 'rewardsText', collapseRewards);
 }
 
 export function fCollapseGBDonors() {
   collapseGBDonors = !collapseGBDonors;
-  document.getElementById("donorCopyID").style.display = collapseGBDonors ? "none" : "block";
-  element.updateIcon("donoricon", "donorcollapse", collapseGBDonors);
+  document.getElementById('donorCopyID').style.display =
+    collapseGBDonors ? 'none' : 'block';
+  element.updateIcon('donoricon', 'donorcollapse', collapseGBDonors);
 }
 
 export function fCollapseInvested() {
   collapseInvested = !collapseInvested;
-  document.getElementById("onHandFP").innerHTML = collapseInvested
-    ? document.getElementById("onHandFP2").innerHTML
-    : "";
-  document.getElementById("investedCopyID").style.display = collapseInvested ? "none" : "block";
-  element.updateIcon("investedicon", "investedText", collapseInvested);
+  document.getElementById('onHandFP').innerHTML =
+    collapseInvested ? document.getElementById('onHandFP2').innerHTML : '';
+  document.getElementById('investedCopyID').style.display =
+    collapseInvested ? 'none' : 'block';
+  element.updateIcon('investedicon', 'investedText', collapseInvested);
 }
 
 // export function fcollapseGBinvest() {
@@ -305,81 +322,104 @@ export function fCollapseInvested() {
 export function fCollapseDonation() {
   collapseDonation = !collapseDonation;
   // console.debug('fCollapseDonation',collapseOptions);
-  document.getElementById("donationCopyID").style.display = collapseDonation ? "none" : "block";
-  element.updateIcon("donationicon", "donationText3", collapseDonation);
+  document.getElementById('donationCopyID').style.display =
+    collapseDonation ? 'none' : 'block';
+  element.updateIcon('donationicon', 'donationText3', collapseDonation);
 }
 
 export function fCollapseBattleground() {
   collapseBattleground = !collapseBattleground;
   // console.debug('fCollapseBattleground',collapseOptions);
-  if (document.getElementById("battlegroundPostID"))
-    document.getElementById("battlegroundPostID").style.display = collapseBattleground ? "none" : "block";
-  if (document.getElementById("battlegroundCopyID"))
-    document.getElementById("battlegroundCopyID").style.display = collapseBattleground ? "none" : "block";
-  element.updateIcon("battlegroundicon", "battlegroundCollapse", collapseBattleground);
+  if (document.getElementById('battlegroundPostID'))
+    document.getElementById('battlegroundPostID').style.display =
+      collapseBattleground ? 'none' : 'block';
+  if (document.getElementById('battlegroundCopyID'))
+    document.getElementById('battlegroundCopyID').style.display =
+      collapseBattleground ? 'none' : 'block';
+  element.updateIcon(
+    'battlegroundicon',
+    'battlegroundCollapse',
+    collapseBattleground,
+  );
 }
 
 export function fCollapseBuildingCost() {
   collapseBuildingCost = !collapseBuildingCost;
   // console.debug('collapseBuildingCost',collapseBuildingCost);
-  element.updateIcon("buildingCosticon", "buildingCostText", collapseBuildingCost);
+  element.updateIcon(
+    'buildingCosticon',
+    'buildingCostText',
+    collapseBuildingCost,
+  );
 }
 
 export function fCollapseBuildings() {
   collapseBuildings = !collapseBuildings;
   // console.debug('collapseBuildings',collapseBuildings);
-  element.updateIcon("buildingsicon", "buildingsText", collapseBuildings);
+  element.updateIcon('buildingsicon', 'buildingsText', collapseBuildings);
 }
 
 export function fCollapseExpedition() {
   collapseExpedition = !collapseExpedition;
-  document.getElementById("expeditionCopyID").style.display = collapseExpedition ? "none" : "block";
-  element.updateIcon("expeditionicon", "expeditionText", collapseExpedition);
+  document.getElementById('expeditionCopyID').style.display =
+    collapseExpedition ? 'none' : 'block';
+  element.updateIcon('expeditionicon', 'expeditionText', collapseExpedition);
 }
 
 export function fCollapseTreasury() {
   collapseTreasury = !collapseTreasury;
-  document.getElementById("treasuryCopyID").style.display = collapseTreasury ? "none" : "block";
-  element.updateIcon("treasuryicon", "treasuryText", collapseTreasury);
+  document.getElementById('treasuryCopyID').style.display =
+    collapseTreasury ? 'none' : 'block';
+  element.updateIcon('treasuryicon', 'treasuryText', collapseTreasury);
 }
 
 export function fCollapseTreasuryLog() {
   collapseTreasuryLog = !collapseTreasuryLog;
-  element.updateIcon("treasuryLogicon", "treasuryLogText", collapseTreasuryLog);
+  element.updateIcon('treasuryLogicon', 'treasuryLogText', collapseTreasuryLog);
 }
 
 export function fCollapseTarget() {
   collapseTarget = !collapseTarget;
-  document.getElementById("targetPostID").style.display = collapseTarget ? "none" : "block";
-  element.updateIcon("targeticon", "targetText", collapseTarget);
+  document.getElementById('targetPostID').style.display =
+    collapseTarget ? 'none' : 'block';
+  element.updateIcon('targeticon', 'targetText', collapseTarget);
 }
 
 export function fCollapseTargetGen() {
   collapseTargetGen = !collapseTargetGen;
-  element.updateIcon("targetGenicon", "targetGenCollapse", collapseTargetGen);
+  element.updateIcon('targetGenicon', 'targetGenCollapse', collapseTargetGen);
 }
 
 export function fCollapseBonus() {
   collapseBonus = !collapseBonus;
-  element.updateIcon("bonusicon", "bonusText", collapseBonus);
+  element.updateIcon('bonusicon', 'bonusText', collapseBonus);
 }
 
 export function fCollapseCultural() {
   collapseCultural = !collapseCultural;
-  element.updateIcon("culturalicon", "culturalText", collapseCultural);
+  element.updateIcon('culturalicon', 'culturalText', collapseCultural);
 }
 
 export function fCollapseClipboard() {
   collapseClipboard = !collapseClipboard;
-  storage.set("collapseClipboard", collapseClipboard);
-  document.getElementById("clipboardCopyID").style.display = collapseClipboard ? "none" : "block";
-  element.updateIcon("clipboardicon", "clipboardText", collapseClipboard);
+  storage.set('collapseClipboard', collapseClipboard);
+  document.getElementById('clipboardCopyID').style.display =
+    collapseClipboard ? 'none' : 'block';
+  element.updateIcon('clipboardicon', 'clipboardText', collapseClipboard);
 }
 
 function fHideAllTooltips() {
-  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-  const popoverList = [...popoverTriggerList].map((popoverEl) => Popover.getOrCreateInstance(popoverEl).hide());
-  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-  const tooltipList = [...tooltipTriggerList].map((tooltipEl) => Tooltip.getOrCreateInstance(tooltipEl).hide());
-  if (checkDebug()) console.debug("fHideAllTooltips");
+  const popoverTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="popover"]',
+  );
+  const popoverList = [...popoverTriggerList].map((popoverEl) =>
+    Popover.getOrCreateInstance(popoverEl).hide(),
+  );
+  const tooltipTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="tooltip"]',
+  );
+  const tooltipList = [...tooltipTriggerList].map((tooltipEl) =>
+    Tooltip.getOrCreateInstance(tooltipEl).hide(),
+  );
+  if (checkDebug()) console.debug('fHideAllTooltips');
 }

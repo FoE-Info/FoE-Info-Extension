@@ -12,7 +12,7 @@
  * ________________________________________________________________
  */
 
-import browser from "webextension-polyfill";
+import browser from 'webextension-polyfill';
 
 function setStorage(name, value) {
   console.log(name, value);
@@ -23,7 +23,7 @@ function setStorage(name, value) {
     })
     .then(() => {
       if (browser.runtime.lastError) {
-        console.log("error: ", browser.runtime.lastError);
+        console.log('error: ', browser.runtime.lastError);
       } else {
         // some code goes here.
         // console.log(name,' is set to ' + value,value);
@@ -36,7 +36,7 @@ function getStorage(name) {
   browser.storage.local.get(name).then((result) => {
     // console.log(name,' is ' + value);
     if (browser.runtime.lastError) {
-      console.log("Error retrieving index: " + browser.runtime.lastError);
+      console.log('Error retrieving index: ' + browser.runtime.lastError);
       return;
     }
     return result[name];

@@ -11,8 +11,8 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import $ from "jquery";
-import { debug } from "../index.js";
+import $ from 'jquery';
+import { debug } from '../index.js';
 
 export function fClipboardCopy() {
   // var selection = window.getSelection();
@@ -22,7 +22,7 @@ export function fClipboardCopy() {
   // range.selectNode(copytext);
   // selection.addRange(range);
   // document.execCommand("copy");
-  copyToClipboard("div#clipboardText");
+  copyToClipboard('div#clipboardText');
 }
 
 export function DonorCopy() {
@@ -33,7 +33,7 @@ export function DonorCopy() {
   // range.selectNode(copytext);
   // selection.addRange(range);
   // document.execCommand("copy");
-  copyToClipboard("#donorText");
+  copyToClipboard('#donorText');
 }
 
 export function DonorCopy2() {
@@ -52,40 +52,40 @@ export function DonorCopy2() {
   // // range.selectNodeContents(copytext);
   // selection.addRange(range);
   // document.execCommand("copy");
-  copyToClipboard("div#donorTextCollapse");
+  copyToClipboard('div#donorTextCollapse');
 }
 
 export function fInvestedCopy() {
-  copyToClipboard("div#investedText");
+  copyToClipboard('div#investedText');
 }
 
 export function DonationCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById("copyText");
+  var copytext = document.getElementById('copyText');
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand("copy");
+  document.execCommand('copy');
   // copyToClipboard('div#copyText');
 }
 
 export function fCityStatsCopy() {
-  var cityStatsHTML = "";
+  var cityStatsHTML = '';
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
 
-  var copytext = document.getElementById("citystatsLabel");
-  cityStatsHTML = copytext.innerHTML + "<br>";
-  copytext = document.getElementById("citystatsText");
+  var copytext = document.getElementById('citystatsLabel');
+  cityStatsHTML = copytext.innerHTML + '<br>';
+  copytext = document.getElementById('citystatsText');
   cityStatsHTML += copytext.innerHTML;
   // console.debug(cityStatsHTML);
   debug.innerHTML = cityStatsHTML;
   range.selectNode(debug);
   selection.addRange(range);
-  document.execCommand("copy");
-  debug.innerHTML = "";
+  document.execCommand('copy');
+  debug.innerHTML = '';
   // copyToClipboard('div#citystatsText');
 }
 
@@ -93,10 +93,10 @@ export function fFriendsCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById("friendsText2");
+  var copytext = document.getElementById('friendsText2');
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand("copy");
+  document.execCommand('copy');
   // copyToClipboard('div#friendsText');
 }
 
@@ -104,10 +104,10 @@ export function fGuildCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById("guildText2");
+  var copytext = document.getElementById('guildText2');
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand("copy");
+  document.execCommand('copy');
   // copyToClipboard('div#guildText');
 }
 
@@ -115,10 +115,10 @@ export function fHoodCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById("hoodText2");
+  var copytext = document.getElementById('hoodText2');
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand("copy");
+  document.execCommand('copy');
   // copyToClipboard('div#hoodText');
 }
 
@@ -134,7 +134,7 @@ export function BattlegroundCopy() {
   // selection.addRange(range);
   // document.execCommand("copy");
   // copyTextToClipboard('#gbg-table');
-  let node = document.querySelector("#gbg-table");
+  let node = document.querySelector('#gbg-table');
   copyNode(node);
 }
 
@@ -142,10 +142,10 @@ export function ExpeditionCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById("expeditionText");
+  var copytext = document.getElementById('expeditionText');
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand("copy");
+  document.execCommand('copy');
   // copyToClipboard('div#expeditionText');
 }
 
@@ -153,47 +153,47 @@ export function TreasuryCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById("treasurytable");
+  var copytext = document.getElementById('treasurytable');
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand("copy");
+  document.execCommand('copy');
   //copyToClipboard('#treasurytable > tbody');
   // let node = document.querySelector('#treasurytable');
   // copyNode(node);
 }
 
 function copyToClipboard(element) {
-  var $temp = $("<textarea>");
-  $("body").append($temp);
+  var $temp = $('<textarea>');
+  $('body').append($temp);
   var html = $(element).html();
   // if (!element.equals("clipboardText"))
   addToClipboard(element, html);
-  html = html.replace(/<br>/g, "\n"); // or \r\n
-  html = html.replace(/<\/tr>/g, "\n"); // or \r\n
-  html = html.replace(/<p>/g, ""); // or \r\n
-  html = html.replace(/<tr>/g, ""); // or \r\n
-  html = html.replace(/<td>/g, ""); // or \r\n
-  html = html.replace(/<\/td>/g, ""); // or \r\n
-  html = html.replace(/<\/p>/g, "\n"); // or \r\n
-  html = html.replace(/<\/?span[^>]*>/g, ""); // or \r\n
+  html = html.replace(/<br>/g, '\n'); // or \r\n
+  html = html.replace(/<\/tr>/g, '\n'); // or \r\n
+  html = html.replace(/<p>/g, ''); // or \r\n
+  html = html.replace(/<tr>/g, ''); // or \r\n
+  html = html.replace(/<td>/g, ''); // or \r\n
+  html = html.replace(/<\/td>/g, ''); // or \r\n
+  html = html.replace(/<\/p>/g, '\n'); // or \r\n
+  html = html.replace(/<\/?span[^>]*>/g, ''); // or \r\n
   // html = html.replace(/<\/span>/g, ""); // or \r\n
   console.debug(html);
   $temp.val(html).select();
-  document.execCommand("copy");
+  document.execCommand('copy');
   $temp.remove();
 }
 
 function addToClipboard(element, html) {
-  var clipboard = document.getElementById("clipboard");
+  var clipboard = document.getElementById('clipboard');
 
   if (clipboard == null) {
     // console.debug('2');
-    clipboard = document.createElement("div");
-    var content = document.getElementById("content");
+    clipboard = document.createElement('div');
+    var content = document.getElementById('content');
     content.appendChild(clipboard);
   }
 
-  clipboard.innerHTML += "<br>" + html;
+  clipboard.innerHTML += '<br>' + html;
 }
 
 function copyNode(node) {
@@ -202,5 +202,5 @@ function copyNode(node) {
   let select = window.getSelection();
   select.removeAllRanges();
   select.addRange(range);
-  document.execCommand("copy");
+  document.execCommand('copy');
 }

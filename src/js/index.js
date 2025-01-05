@@ -11,25 +11,30 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import "@wikimedia/jquery.i18n/libs/CLDRPluralRuleParser/src/CLDRPluralRuleParser.js";
-import "@wikimedia/jquery.i18n/src/jquery.i18n";
-import "@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js";
-import "@wikimedia/jquery.i18n/src/jquery.i18n.fallbacks.js";
-import "@wikimedia/jquery.i18n/src/jquery.i18n.language.js";
-import "@wikimedia/jquery.i18n/src/jquery.i18n.messagestore.js";
-import "@wikimedia/jquery.i18n/src/jquery.i18n.parser.js";
-import BigNumber from "bignumber.js";
-import "bootstrap";
-import collapseOptions, * as collapse from "./fn/collapse.js";
-import browser from "webextension-polyfill";
-import * as copy from "./fn/copy.js";
-import { setRewardSize, setToolOptions, setTreasurySize, toolOptions } from "./fn/globals.js";
-import * as helper from "./fn/helper.js";
-import * as storage from "./fn/storage.js";
-import * as element from "./fn/AddElement";
-import { armyUnitManagementService } from "./msg/ArmyUnitManagementService.js";
-import { getBonuses, getLimitedBonuses } from "./msg/BonusService.js";
-import { pickupProduction } from "./msg/CityProductionService.js";
+import '@wikimedia/jquery.i18n/libs/CLDRPluralRuleParser/src/CLDRPluralRuleParser.js';
+import '@wikimedia/jquery.i18n/src/jquery.i18n';
+import '@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js';
+import '@wikimedia/jquery.i18n/src/jquery.i18n.fallbacks.js';
+import '@wikimedia/jquery.i18n/src/jquery.i18n.language.js';
+import '@wikimedia/jquery.i18n/src/jquery.i18n.messagestore.js';
+import '@wikimedia/jquery.i18n/src/jquery.i18n.parser.js';
+import BigNumber from 'bignumber.js';
+import 'bootstrap';
+import collapseOptions, * as collapse from './fn/collapse.js';
+import browser from 'webextension-polyfill';
+import * as copy from './fn/copy.js';
+import {
+  setRewardSize,
+  setToolOptions,
+  setTreasurySize,
+  toolOptions,
+} from './fn/globals.js';
+import * as helper from './fn/helper.js';
+import * as storage from './fn/storage.js';
+import * as element from './fn/AddElement';
+import { armyUnitManagementService } from './msg/ArmyUnitManagementService.js';
+import { getBonuses, getLimitedBonuses } from './msg/BonusService.js';
+import { pickupProduction } from './msg/CityProductionService.js';
 import {
   deploySiegeArmy,
   getContinent,
@@ -37,14 +42,17 @@ import {
   gvgAges,
   gvgSummary,
   grantIndependence,
-} from "./msg/ClanBattleService.js";
-import { conversationService, getConversation } from "./msg/ConversationService.js";
+} from './msg/ClanBattleService.js';
+import {
+  conversationService,
+  getConversation,
+} from './msg/ConversationService.js';
 import {
   contributeForgePoints,
   getConstruction,
   getConstructionRanking,
   setCurrentPercent,
-} from "./msg/GreatBuildingsService.js";
+} from './msg/GreatBuildingsService.js';
 import {
   clearBattleground,
   getBattleground,
@@ -54,9 +62,12 @@ import {
   getState,
   removeSignal,
   setSignal,
-} from "./msg/GuildBattlegroundService.js";
-import { guildExpeditionService } from "./msg/GuildExpeditionService.js";
-import { otherPlayerService, otherPlayerServiceUpdateActions } from "./msg/OtherPlayerService.js";
+} from './msg/GuildBattlegroundService.js';
+import { guildExpeditionService } from './msg/GuildExpeditionService.js';
+import {
+  otherPlayerService,
+  otherPlayerServiceUpdateActions,
+} from './msg/OtherPlayerService.js';
 import {
   availableFP,
   getPlayerResources,
@@ -64,25 +75,31 @@ import {
   ResourceDefs,
   Resources,
   setResourceDefs,
-} from "./msg/ResourceService.js";
-import { boostService, boostServiceAllBoosts, City, emissaryService, startupService } from "./msg/StartupService.js";
-import setOptions, { showOptions } from "./vars/showOptions.js";
-import "../css/main.scss";
-import { mapToStyles } from "@popperjs/core/lib/modifiers/computeStyles.js";
+} from './msg/ResourceService.js';
+import {
+  boostService,
+  boostServiceAllBoosts,
+  City,
+  emissaryService,
+  startupService,
+} from './msg/StartupService.js';
+import setOptions, { showOptions } from './vars/showOptions.js';
+import '../css/main.scss';
+import { mapToStyles } from '@popperjs/core/lib/modifiers/computeStyles.js';
 console.debug(toolOptions);
 
 let contentTypes = {};
 export var debugEnabled = false;
 export var availablePacksFP = 0;
-export var PlayerName = "";
+export var PlayerName = '';
 export var PlayerID = 0;
 export var worlds = [];
 
 export var MyInfo = {
-  name: "",
-  era: "",
+  name: '',
+  era: '',
   id: 0,
-  guild: "",
+  guild: '',
   guildID: 0,
   guildPosition: 0,
   createdAt: 0,
@@ -95,11 +112,11 @@ export var ignoredPlayers = {
 
 export var GBselected = {
   player: 0,
-  player_name: "",
+  player_name: '',
   id: 0,
   level: 0,
-  name: "",
-  era: "",
+  name: '',
+  era: '',
   connected: false,
   max_level: 0,
   current: 0,
@@ -110,8 +127,8 @@ export var GBselected = {
 var GuildDonations = [];
 var GuildTreasury = [];
 // var GuildTreasuryAnalysis = [];
-export var targetsTopic = "targets";
-export var targetText = "";
+export var targetsTopic = 'targets';
+export var targetText = '';
 var GuildsGoods = [];
 // var GBdefs = [];
 export var CityEntityDefs = {};
@@ -151,10 +168,10 @@ export var Goods = {
 };
 export var EpocTime = 0;
 var GameVersion = 0;
-export var GameOrigin = "";
+export var GameOrigin = '';
 
 export var donationPercent = 190;
-export var donationSuffix = "";
+export var donationSuffix = '';
 
 export var Bonus = {
   aid: 0,
@@ -200,15 +217,16 @@ export var darkMode = browser.devtools.panels.themeName;
 // 		console.debug('dark mode',window.matchMedia('(prefers-color-scheme: dark)').matches);
 // 		// darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 // }
-console.info("themeName", browser.devtools.panels.themeName);
-var title = document.createElement("div");
+console.info('themeName', browser.devtools.panels.themeName);
+var title = document.createElement('div');
 document.body.appendChild(title);
-title.id = "title";
-title.className = "d-flex flex-row justify-content-between";
+title.id = 'title';
+title.className = 'd-flex flex-row justify-content-between';
 
 // TODO fix dark theme
-if (darkMode == "dark") {
-  title.className = "d-flex flex-row justify-content-between text-light bg-dark";
+if (darkMode == 'dark') {
+  title.className =
+    'd-flex flex-row justify-content-between text-light bg-dark';
   // --color-background = 'bg-dark';
 }
 
@@ -227,167 +245,167 @@ if (darkMode == "dark") {
 
 var newelement = document.body;
 // TODO fix dark theme
-if (darkMode == "dark") {
+if (darkMode == 'dark') {
   // 	newelement.classList.toggle("nord-styles");
   // 	newelement.classList.toggle("dark-mode");
-  newelement.classList.toggle("bg-dark");
+  newelement.classList.toggle('bg-dark');
 }
 // else
-newelement.classList.toggle("bootstrap-styles");
-newelement = document.createElement("div");
-newelement.className = "p-2";
+newelement.classList.toggle('bootstrap-styles');
+newelement = document.createElement('div');
+newelement.className = 'p-2';
 title.appendChild(newelement);
-var child = document.createElement("img");
-child.src = "/icons/Icon48.png";
-child.width = "24";
-child.height = "24";
-child.id = "logo";
+var child = document.createElement('img');
+child.src = '/icons/Icon48.png';
+child.width = '24';
+child.height = '24';
+child.id = 'logo';
 // if (DEV)
-child.addEventListener("click", toggleDebug);
+child.addEventListener('click', toggleDebug);
 newelement.appendChild(child);
-newelement = document.createElement("div");
-newelement.className = "p-8 title";
+newelement = document.createElement('div');
+newelement.className = 'p-8 title';
 title.appendChild(newelement);
-child = document.createElement("h6");
+child = document.createElement('h6');
 // TODO fix dark theme
-if (darkMode == "dark") child.className = "title text-light bg-dark";
-else child.className = "title";
+if (darkMode == 'dark') child.className = 'title text-light bg-dark';
+else child.className = 'title';
 // child.innerHTML = pkg.name;
 child.textContent = EXT_NAME;
 newelement.appendChild(child);
-newelement = document.createElement("div");
+newelement = document.createElement('div');
 newelement.innerHTML = `<span class="material-icons-outlined md-18 options-icon">settings</span>`;
-newelement.classList.toggle("p-2");
+newelement.classList.toggle('p-2');
 // newelement.className = "p-2";
 // child = document.createElement("img");
-var svgNS = "http://www.w3.org/2000/svg";
+var svgNS = 'http://www.w3.org/2000/svg';
 // child = document.createElementNS(svgNS,"svg");
 // child = document.createElement("div");
-newelement.id = "go-to-options";
+newelement.id = 'go-to-options';
 
 title.appendChild(newelement);
 
 // city info
-export var content = document.createElement("div");
+export var content = document.createElement('div');
 document.body.appendChild(content);
-content.id = "content";
-if (darkMode == "dark") content.className = "text-light bg-dark";
-export var citystats = document.createElement("div");
+content.id = 'content';
+if (darkMode == 'dark') content.className = 'text-light bg-dark';
+export var citystats = document.createElement('div');
 content.appendChild(citystats);
-citystats.className = "alert alert-warning";
-citystats.id = "citystats";
+citystats.className = 'alert alert-warning';
+citystats.id = 'citystats';
 citystats.innerHTML = `<p><strong><span data-i18n="load">Load the game ...</span></strong></p>`;
 
-export var alerts = document.createElement("div");
-alerts.id = "alerts";
+export var alerts = document.createElement('div');
+alerts.id = 'alerts';
 content.appendChild(alerts);
 
-export var targets = document.createElement("div");
-targets.id = "targets";
+export var targets = document.createElement('div');
+targets.id = 'targets';
 content.appendChild(targets);
 
-export var bonusDIV = document.createElement("div");
-bonusDIV.id = "bonus";
+export var bonusDIV = document.createElement('div');
+bonusDIV.id = 'bonus';
 content.appendChild(bonusDIV);
 
-export var incidents = document.createElement("div");
-incidents.className = "incidents";
-incidents.id = "incidents";
+export var incidents = document.createElement('div');
+incidents.className = 'incidents';
+incidents.id = 'incidents';
 content.appendChild(incidents);
-export var cityinvested = document.createElement("div");
+export var cityinvested = document.createElement('div');
 content.appendChild(cityinvested);
-cityinvested.id = "invested";
+cityinvested.id = 'invested';
 
-export var galaxyDIV = document.createElement("div");
-galaxyDIV.id = "galaxy";
+export var galaxyDIV = document.createElement('div');
+galaxyDIV.id = 'galaxy';
 // galaxyDIV.className="hidden";
-galaxyDIV.style.display = "none";
+galaxyDIV.style.display = 'none';
 content.appendChild(galaxyDIV);
 
-export var visitstats = document.createElement("div");
+export var visitstats = document.createElement('div');
 content.appendChild(visitstats);
-visitstats.id = "visit";
-export var cityrewards = document.createElement("div");
+visitstats.id = 'visit';
+export var cityrewards = document.createElement('div');
 content.appendChild(cityrewards);
-cityrewards.id = "rewards";
+cityrewards.id = 'rewards';
 
-export var output = document.createElement("div");
+export var output = document.createElement('div');
 content.appendChild(output);
-output.id = "output";
-export var donationDIV = document.createElement("div");
+output.id = 'output';
+export var donationDIV = document.createElement('div');
 content.appendChild(donationDIV);
-donationDIV.id = "donation";
-export var donation2DIV = document.createElement("div");
+donationDIV.id = 'donation';
+export var donation2DIV = document.createElement('div');
 content.appendChild(donation2DIV);
-donation2DIV.id = "donation2";
-export var donationDIV2 = document.createElement("div");
+donation2DIV.id = 'donation2';
+export var donationDIV2 = document.createElement('div');
 content.appendChild(donationDIV2);
-donationDIV2.id = "donationDIV2";
-export var greatbuilding = document.createElement("div");
+donationDIV2.id = 'donationDIV2';
+export var greatbuilding = document.createElement('div');
 content.appendChild(greatbuilding);
-greatbuilding.id = "greatbuilding";
+greatbuilding.id = 'greatbuilding';
 
-export var overview = document.createElement("div");
+export var overview = document.createElement('div');
 content.appendChild(overview);
-overview.id = "overview";
-export var cultural = document.createElement("div");
+overview.id = 'overview';
+export var cultural = document.createElement('div');
 content.appendChild(cultural);
-cultural.id = "cultural";
-export var info = document.createElement("div");
+cultural.id = 'cultural';
+export var info = document.createElement('div');
 content.appendChild(info);
-info.id = "info";
+info.id = 'info';
 
-export var armyDIV = document.createElement("div");
+export var armyDIV = document.createElement('div');
 content.appendChild(armyDIV);
-armyDIV.id = "army";
+armyDIV.id = 'army';
 
-export var goodsDIV = document.createElement("div");
+export var goodsDIV = document.createElement('div');
 content.appendChild(goodsDIV);
-goodsDIV.id = "goods";
+goodsDIV.id = 'goods';
 
-export var gvg = document.createElement("div");
+export var gvg = document.createElement('div');
 content.appendChild(gvg);
-gvg.id = "gvg";
+gvg.id = 'gvg';
 
-var buildingsDIV = document.createElement("div");
-buildingsDIV.id = "buildings";
+var buildingsDIV = document.createElement('div');
+buildingsDIV.id = 'buildings';
 content.appendChild(buildingsDIV);
 
-export var guild = document.createElement("div");
+export var guild = document.createElement('div');
 content.appendChild(guild);
-guild.id = "guild";
-export var friendsDiv = document.createElement("div");
+guild.id = 'guild';
+export var friendsDiv = document.createElement('div');
 content.appendChild(friendsDiv);
-friendsDiv.id = "friends";
-export var treasury = document.createElement("div");
+friendsDiv.id = 'friends';
+export var treasury = document.createElement('div');
 content.appendChild(treasury);
-treasury.id = "treasury";
-export var treasuryLog = document.createElement("div");
+treasury.id = 'treasury';
+export var treasuryLog = document.createElement('div');
 content.appendChild(treasuryLog);
-treasury.id = "treasuryLog";
-export var clipboard = document.createElement("div");
+treasury.id = 'treasuryLog';
+export var clipboard = document.createElement('div');
 content.appendChild(clipboard);
-clipboard.id = "clipboard";
-clipboard.style.display = "none";
-export var alerts_bottom = document.createElement("div");
-alerts_bottom.id = "alerts_bottom";
+clipboard.id = 'clipboard';
+clipboard.style.display = 'none';
+export var alerts_bottom = document.createElement('div');
+alerts_bottom.id = 'alerts_bottom';
 content.appendChild(alerts_bottom);
-export var debug = document.createElement("div");
+export var debug = document.createElement('div');
 content.appendChild(debug);
-debug.id = "debug";
-export var modal = document.createElement("div");
+debug.id = 'debug';
+export var modal = document.createElement('div');
 content.appendChild(modal);
-modal.id = "modal";
+modal.id = 'modal';
 
-var newelement = document.createElement("div");
-newelement.className = "modal-dialog modal-sm";
-newelement.id = "testModal";
+var newelement = document.createElement('div');
+newelement.className = 'modal-dialog modal-sm';
+newelement.id = 'testModal';
 // newelement.innerHTML = '<div class="modal-dialog modal-sm">...</div>';
 modal.appendChild(newelement);
 
-console.debug("clipboard", clipboard.innerHTML);
+console.debug('clipboard', clipboard.innerHTML);
 if (showOptions.clipboard) {
-  console.debug("clipboard", clipboard.innerHTML);
+  console.debug('clipboard', clipboard.innerHTML);
   // var clipboard = document.getElementById("clipboard");
 
   // if( clipboard == null){
@@ -398,11 +416,16 @@ if (showOptions.clipboard) {
   //  }
 
   var clipboardHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="clipboardTextLabel" href="#buildingsText" data-bs-toggle="collapse">
-	${element.icon("clipboardicon", "clipboardText", collapse.collapseClipboard)}
+	${element.icon('clipboardicon', 'clipboardText', collapse.collapseClipboard)}
 	<strong><span data-i18n="clipboard">Clipboard</span>:</strong></p>`;
   clipboardHTML += element.close();
-  clipboardHTML += element.copy("clipboardCopyID", "warning", "right", collapse.collapseClipboard);
-  clipboardHTML += `<div id="clipboardText" class="resize collapse ${collapse.collapseClipboard ? "" : "show"}"><p>`;
+  clipboardHTML += element.copy(
+    'clipboardCopyID',
+    'warning',
+    'right',
+    collapse.collapseClipboard,
+  );
+  clipboardHTML += `<div id="clipboardText" class="resize collapse ${collapse.collapseClipboard ? '' : 'show'}"><p>`;
 
   // clipboard.innerHTML = clipboardHTML +`</p></div></div>`;
   // document.getElementById("clipboardTextLabel").addEventListener("click", collapse.fCollapseClipboard);
@@ -429,19 +452,19 @@ if (showOptions.clipboard) {
 // content.appendChild(newDiv);
 
 const getType = (type) => {
-  return type.replace(/.*(javascript|image|html|font|json|css|text).*/g, "$1");
+  return type.replace(/.*(javascript|image|html|font|json|css|text).*/g, '$1');
 };
 
 const formatBytes = (size) => {
   return `${parseInt(size / 1000)} KB`;
 };
 
-document.querySelector("#go-to-options").addEventListener("click", function () {
+document.querySelector('#go-to-options').addEventListener('click', function () {
   // console.debug('options');
 
   browser.permissions
     .request({
-      permissions: ["storage"],
+      permissions: ['storage'],
     })
     .then((granted) => {
       // The callback argument will be true if the user granted the permissions.
@@ -450,7 +473,7 @@ document.querySelector("#go-to-options").addEventListener("click", function () {
         if (browser.runtime.openOptionsPage) {
           browser.runtime.openOptionsPage();
         } else {
-          window.open(browser.runtime.getURL("options.html"));
+          window.open(browser.runtime.getURL('options.html'));
         }
       } else {
         //   doSomethingElse();
@@ -458,32 +481,35 @@ document.querySelector("#go-to-options").addEventListener("click", function () {
     });
 });
 
-export var language = window.navigator.userLanguage || window.navigator.language;
+export var language =
+  window.navigator.userLanguage || window.navigator.language;
 console.debug(language);
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === 'development') {
   $.i18n.debug = true;
   // language =
   // console.debug(window);
 }
 
 window.addEventListener(
-  "message",
+  'message',
   function (event) {
-    console.debug("received response:  ", event.data);
+    console.debug('received response:  ', event.data);
   },
-  false
+  false,
 );
 
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
-  document.body.classList.toggle("bg-dark");
-  document.body.classList.toggle("text-light");
-  if (matches) {
-    console.log("change to dark mode!");
-    darkMode == "dark";
-  } else {
-    console.log("change to light mode!");
-  }
-});
+window
+  .matchMedia('(prefers-color-scheme: dark)')
+  .addEventListener('change', ({ matches }) => {
+    document.body.classList.toggle('bg-dark');
+    document.body.classList.toggle('text-light');
+    if (matches) {
+      console.log('change to dark mode!');
+      darkMode == 'dark';
+    } else {
+      console.log('change to light mode!');
+    }
+  });
 function onEvent(message, params) {
   console.debug(message, params);
 }
@@ -491,7 +517,7 @@ function onEvent(message, params) {
 // browser.storage.local.clear();
 browser.permissions
   .contains({
-    permissions: ["storage"],
+    permissions: ['storage'],
   })
   .then((result) => {
     // if(checkBeta())
@@ -504,14 +530,14 @@ browser.permissions
       // browser.storage.local.clear();
 
       browser.storage.local.getBytesInUse(null).then((size) => {
-        console.debug("getBytesInUse", size);
+        console.debug('getBytesInUse', size);
       });
 
       // browser.storage.local.get(['showOptions','collapseOptions','CityEntityDefs','tool','targets','toolOptions','donationPercent','url'],
       browser.storage.local.get(null).then((result) => {
         // console.debug('result', result);
         receiveStorage(result);
-        if (language != "auto") {
+        if (language != 'auto') {
           $.i18n({
             locale: language,
           });
@@ -523,68 +549,72 @@ browser.permissions
             //         'load' : 'Chargez le jeu pour voir les statistiques de votre ville'
             // },
             de: {
-              load: "Laden Sie das Spiel, um Ihre Stadtstatistiken anzuzeigen",
+              load: 'Laden Sie das Spiel, um Ihre Stadtstatistiken anzuzeigen',
             },
             sv: {
-              load: "Ladda spelet för att se din stadsstatistik",
+              load: 'Ladda spelet för att se din stadsstatistik',
             },
             fi: {
-              load: "Lataa peli nähdäksesi kaupunkitilastot",
+              load: 'Lataa peli nähdäksesi kaupunkitilastot',
             },
             it: {
-              load: "Carica il gioco per vedere le statistiche della tua città",
+              load: 'Carica il gioco per vedere le statistiche della tua città',
             },
             pt: {
-              load: "Carregue o jogo para ver as estatísticas da sua cidade",
+              load: 'Carregue o jogo para ver as estatísticas da sua cidade',
             },
             nl: {
-              load: "Laad het spel om je stadsstatistieken te zien",
+              load: 'Laad het spel om je stadsstatistieken te zien',
             },
             sr: {
-              load: "Учитајте игру да бисте видели статистику града",
+              load: 'Учитајте игру да бисте видели статистику града',
             },
             ru: {
-              load: "Слава Украине!",
+              load: 'Слава Украине!',
             },
             ua: {
-              load: "Слава Україні!",
+              load: 'Слава Україні!',
             },
-            en: "i18n/en.json",
-            es: "i18n/es.json",
-            fr: "i18n/fr.json",
-            el: "i18n/el.json",
-            gr: "i18n/gr.json",
-	    it: "i18n/it.json",  
+            en: 'i18n/en.json',
+            es: 'i18n/es.json',
+            fr: 'i18n/fr.json',
+            el: 'i18n/el.json',
+            gr: 'i18n/gr.json',
+            it: 'i18n/it.json',
           })
           .done(function () {
             // load lang strings on page already loaded
-            $("body").i18n();
-            console.debug("jQuery " + (jQuery ? $().jquery : "NOT") + " loaded");
-            console.debug("i18n.load OK");
+            $('body').i18n();
+            console.debug(
+              'jQuery ' + (jQuery ? $().jquery : 'NOT') + ' loaded',
+            );
+            console.debug('i18n.load OK');
           });
       });
     } else {
       // The extension doesn't have the permissions.
       citystats.innerHTML = `<div class="alert alert-danger"><p><strong>Please Enable FoE-Info</strong></p>
 							  <button type="button" class="btn btn-danger" id="enableFoE">Enable</button></div>`;
-      citystats.className = "alert alert-danger";
-      document.getElementById("enableFoE").addEventListener("click", function () {
-        // console.debug('options');
+      citystats.className = 'alert alert-danger';
+      document
+        .getElementById('enableFoE')
+        .addEventListener('click', function () {
+          // console.debug('options');
 
-        browser.permissions
-          .request({
-            permissions: ["storage", "clipboardWrite"],
-          })
-          .then((granted) => {
-            // The callback argument will be true if the user granted the permissions.
-            if (granted) {
-              //   doSomething();
-              citystats.innerHTML = `<div class="alert alert-danger"><p><strong>Now Load The Game !</strong></div>`;
-            } else {
-              //   doSomethingElse();
-            }
-          });
-      });
+          browser.permissions
+            .request({
+              permissions: ['storage', 'clipboardWrite'],
+            })
+            .then((granted) => {
+              // The callback argument will be true if the user granted the permissions.
+              if (granted) {
+                //   doSomething();
+                citystats.innerHTML = `<div class="alert alert-danger"><p><strong>Now Load The Game !</strong></div>`;
+              } else {
+                //   doSomethingElse();
+              }
+            });
+        });
       return;
     }
   });
@@ -594,8 +624,9 @@ browser.permissions
 /* don't send the origin, so that they don't see the request coming from Chrome extension */
 function originWithId(header) {
   return (
-    header.name.toLowerCase() === "origin" &&
-    (header.value.indexOf("moz-extension://") === 0 || header.value.indexOf("chrome-extension://") === 0)
+    header.name.toLowerCase() === 'origin' &&
+    (header.value.indexOf('moz-extension://') === 0 ||
+      header.value.indexOf('chrome-extension://') === 0)
   );
 }
 
@@ -605,8 +636,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
       requestHeaders: details.requestHeaders.filter((x) => !originWithId(x)),
     };
   },
-  { urls: ["https://*.innogamescdn.com/*"] },
-  ["requestHeaders"]
+  { urls: ['https://*.innogamescdn.com/*'] },
+  ['requestHeaders'],
 );
 
 browser.devtools.network.onRequestFinished.addListener(handleRequestFinished);
@@ -617,26 +648,40 @@ function handleRequestFinished(request) {
   // console.log("Server IP: ", request.serverIPAddress);
 
   const response = request.response;
-  if (request._resourceType == "websocket") {
-    console.debug("request", request._resourceType, request, response);
+  if (request._resourceType == 'websocket') {
+    console.debug('request', request._resourceType, request, response);
   }
   // console.debug('request',request);
   // console.debug('response',response);
-  var contentType = "";
-  var contentHeader = "";
+  var contentType = '';
+  var contentHeader = '';
 
-  if (response.httpVersion == "http/2.0")
-    contentHeader = response.headers.find((header) => header.name === "content-type");
-  else contentHeader = response.headers.find((header) => header.name === "Content-Type");
+  if (response.httpVersion == 'http/2.0')
+    contentHeader = response.headers.find(
+      (header) => header.name === 'content-type',
+    );
+  else
+    contentHeader = response.headers.find(
+      (header) => header.name === 'Content-Type',
+    );
 
   if (contentHeader) {
     contentType = getType(contentHeader.value);
   }
 
-    // if (contentType == "json") {
-    if (request.request.url.match(/https:\/\/.*\.forgeofempires\.com\/game\/json\?h=/g) || request.request.url.match(/https:\/\/foe.*\.innogamescdn\.com\/start\/metadata\?id=(.*)/g)) {
+  // if (contentType == "json") {
+  if (
+    request.request.url.match(
+      /https:\/\/.*\.forgeofempires\.com\/game\/json\?h=/g,
+    ) ||
+    request.request.url.match(
+      /https:\/\/foe.*\.innogamescdn\.com\/start\/metadata\?id=(.*)/g,
+    )
+  ) {
     // console.debug(request.request.headers);
-    contentType = request.request.headers.find((header) => header.name === "client-identification");
+    contentType = request.request.headers.find(
+      (header) => header.name === 'client-identification',
+    );
     // if(contentType) console.debug('client-identification:', contentType.value.substr(8,5));
     // else{
     // 	contentType = request.request.headers.find(header => header.name === 'Client-Identification')
@@ -644,7 +689,11 @@ function handleRequestFinished(request) {
 
     // }
 
-    if (contentType && contentType.value && GameVersion != contentType.value.substr(8, 5)) {
+    if (
+      contentType &&
+      contentType.value &&
+      GameVersion != contentType.value.substr(8, 5)
+    ) {
       GameVersion = contentType.value.substr(8, 5);
       citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${GameVersion}<br>${EXT_NAME}: ${tool.version}</div>`;
       // console.debug('version:', GameVersion);
@@ -659,12 +708,17 @@ function handleRequestFinished(request) {
         for (var i = 0; i < parsed.length; i++) {
           const msg = parsed[i];
 
-          console.debug("msg", msg);
+          console.debug('msg', msg);
 
           // check if this is static data service info that holds all URLs to all metadata files
-          if (msg.requestClass === "StaticDataService" && msg.requestMethod == "getMetadata") {
+          if (
+            msg.requestClass === 'StaticDataService' &&
+            msg.requestMethod == 'getMetadata'
+          ) {
             // find an URL that has city entities
-            const cityEntitiesURL = msg.responseData.find((item) => item.identifier === "city_entities").url;
+            const cityEntitiesURL = msg.responseData.find(
+              (item) => item.identifier === 'city_entities',
+            ).url;
             // fetch it via ajax
             let response = await fetch(cityEntitiesURL);
             // parse response to JSON
@@ -672,7 +726,10 @@ function handleRequestFinished(request) {
 
             // run the code that prefills city entities ( copied from somewhere bellow )
             cityEntitiesJSON.forEach(function (msg) {
-              if (msg.__class__ && msg.__class__.substring(0, 10) == "CityEntity") {
+              if (
+                msg.__class__ &&
+                msg.__class__.substring(0, 10) == 'CityEntity'
+              ) {
                 if (!CityEntityDefs[msg.id]) {
                   CityEntityDefs[msg.id] = {
                     name: msg.name,
@@ -683,7 +740,10 @@ function handleRequestFinished(request) {
                 }
                 // console.debug(msg.name,msg);
                 CityEntityDefs[msg.id] = msg;
-              } else if (msg.__class__ && msg.__class__ == "GenericCityEntity") {
+              } else if (
+                msg.__class__ &&
+                msg.__class__ == 'GenericCityEntity'
+              ) {
                 if (!CityEntityDefs[msg.id]) {
                   CityEntityDefs[msg.id] = {
                     name: msg.name,
@@ -696,33 +756,36 @@ function handleRequestFinished(request) {
                 CityEntityDefs[msg.id] = msg;
               }
             });
-          } else if (msg.requestClass == "CampaignService" && msg.requestMethod == "getDeposits") {
+          } else if (
+            msg.requestClass == 'CampaignService' &&
+            msg.requestMethod == 'getDeposits'
+          ) {
             /*CampaignService*/
-          } else if (msg.requestClass == "ConversationService") {
-            if (msg.requestMethod == "getCategory") {
+          } else if (msg.requestClass == 'ConversationService') {
+            if (msg.requestMethod == 'getCategory') {
               /*ConversationService */
               conversationService(msg);
-            } else if (msg.requestMethod == "getOverviewForCategory") {
+            } else if (msg.requestMethod == 'getOverviewForCategory') {
               /*ConversationService */
               conversationService(msg);
-            } else if (msg.requestMethod == "getConversation") {
+            } else if (msg.requestMethod == 'getConversation') {
               /*ConversationService */
               getConversation(msg);
             }
-          } else if (msg.requestClass == "OtherPlayerService") {
-            if (msg.requestMethod == "getOtherPlayerCityMapEntity") {
+          } else if (msg.requestClass == 'OtherPlayerService') {
+            if (msg.requestMethod == 'getOtherPlayerCityMapEntity') {
               /*PlayerID*/
-              if (PlayerID != msg.responseData.player_id) PlayerName = "";
+              if (PlayerID != msg.responseData.player_id) PlayerName = '';
               PlayerID = msg.responseData.player_id;
-            } else if (msg.requestMethod == "getSocialList") {
+            } else if (msg.requestMethod == 'getSocialList') {
               /*PlayerID*/
               otherPlayerServiceUpdateActions(msg.responseData);
-            } else if (msg.requestMethod == "visitPlayer") {
+            } else if (msg.requestMethod == 'visitPlayer') {
               if (showOptions.showVisit) {
                 clearVisitPlayer();
                 otherPlayerService(msg);
               }
-            } else if (msg.requestMethod == "rewardPlunder") {
+            } else if (msg.requestMethod == 'rewardPlunder') {
               //console.debug('cityentity_id:', msg.responseData.cityentity_id);
               const rewards = msg.responseData[0].product.resources;
               Object.keys(rewards).forEach((reward) => {
@@ -736,14 +799,14 @@ function handleRequestFinished(request) {
               });
 
               var reward = [];
-              reward.source = "otherPlayer";
-              reward.name = "";
+              reward.source = 'otherPlayer';
+              reward.name = '';
               reward.amount = 0;
 
               if (showOptions.showGErewards) {
                 showReward(reward);
               }
-            } else if (msg.requestMethod == "rewardResources") {
+            } else if (msg.requestMethod == 'rewardResources') {
               /*rewardPlunder */
               const rewards = msg.responseData.resources;
 
@@ -758,8 +821,8 @@ function handleRequestFinished(request) {
               });
 
               var reward = [];
-              reward.source = "otherPlayer";
-              reward.name = "";
+              reward.source = 'otherPlayer';
+              reward.name = '';
               reward.amount = 0;
 
               if (showOptions.showGErewards) {
@@ -767,76 +830,100 @@ function handleRequestFinished(request) {
               }
 
               /*openChest */
-            } else if (msg.requestMethod == "getCityProtections") {
+            } else if (msg.requestMethod == 'getCityProtections') {
               /*City Protections*/
               // console.debug('msg:', msg);
               if (msg.responseData) CityProtections = msg.responseData;
             }
-          } else if (msg.requestClass == "InventoryService") {
-            if (msg.requestMethod == "getGreatBuildings") {
+          } else if (msg.requestClass == 'InventoryService') {
+            if (msg.requestMethod == 'getGreatBuildings') {
               /*InventoryService*/
               // console.debug(msg.responseData);
-            } else if (msg.requestMethod == "getItems") {
+            } else if (msg.requestMethod == 'getItems') {
               /*InventoryService*/
               // 	console.debug("InventoryService",msg.responseData);
               // console.debug(Object.keys(CityEntityDefs));
-              storage.set("CityEntityDefs", CityEntityDefs);
+              storage.set('CityEntityDefs', CityEntityDefs);
               var forgePoints = 0;
               if (msg.responseData.length) {
                 for (var j = 0; j < msg.responseData.length; j++) {
-                  if (msg.responseData[j].name == "10 Forge Points") forgePoints += msg.responseData[j].inStock * 10;
-                  else if (msg.responseData[j].name == "5 Forge Points") forgePoints += msg.responseData[j].inStock * 5;
-                  else if (msg.responseData[j].name == "2 Forge Points") forgePoints += msg.responseData[j].inStock * 2;
+                  if (msg.responseData[j].name == '10 Forge Points')
+                    forgePoints += msg.responseData[j].inStock * 10;
+                  else if (msg.responseData[j].name == '5 Forge Points')
+                    forgePoints += msg.responseData[j].inStock * 5;
+                  else if (msg.responseData[j].name == '2 Forge Points')
+                    forgePoints += msg.responseData[j].inStock * 2;
                 }
                 availablePacksFP = forgePoints;
-                if (document.getElementById("availableFPID"))
-                  document.getElementById("availableFPID").textContent = availablePacksFP + availableFP;
+                if (document.getElementById('availableFPID'))
+                  document.getElementById('availableFPID').textContent =
+                    availablePacksFP + availableFP;
               }
             }
-          } else if (msg.requestClass == "ArmyUnitManagementService" && msg.requestMethod == "getArmyInfo") {
+          } else if (
+            msg.requestClass == 'ArmyUnitManagementService' &&
+            msg.requestMethod == 'getArmyInfo'
+          ) {
             /*ArmyUnitManagementService*/
             // console.debug(msg,msg.responseData.counts,MilitaryDefs);
             armyUnitManagementService(msg);
-          } else if (msg.requestClass == "FriendsTavernService" && msg.requestMethod == "getSittingPlayersCount") {
+          } else if (
+            msg.requestClass == 'FriendsTavernService' &&
+            msg.requestMethod == 'getSittingPlayersCount'
+          ) {
             /*FriendsTavernService*/
             // if(msg.responseData)
             // MyInfo.id = msg.responseData[0];
             // console.debug('FriendsTavernService',MyInfo.id);
-          } else if (msg.requestClass == "IgnorePlayerService" && msg.requestMethod == "getIgnoreList") {
+          } else if (
+            msg.requestClass == 'IgnorePlayerService' &&
+            msg.requestMethod == 'getIgnoreList'
+          ) {
             /*IgnorePlayerService*/
             clearStartup();
             clearBattleground();
             if (msg.responseData) {
-              console.debug("Ignored By:", msg.responseData.ignoredByPlayerIds);
-              console.debug("Ignoring:", msg.responseData.ignoredPlayerIds);
-              ignoredPlayers.ignoredByPlayerIds = msg.responseData.ignoredByPlayerIds;
-              ignoredPlayers.ignoredPlayerIds = msg.responseData.ignoredPlayerIds;
-              console.debug("Ignores:", ignoredPlayers);
+              console.debug('Ignored By:', msg.responseData.ignoredByPlayerIds);
+              console.debug('Ignoring:', msg.responseData.ignoredPlayerIds);
+              ignoredPlayers.ignoredByPlayerIds =
+                msg.responseData.ignoredByPlayerIds;
+              ignoredPlayers.ignoredPlayerIds =
+                msg.responseData.ignoredPlayerIds;
+              console.debug('Ignores:', ignoredPlayers);
             }
             // console.debug('Ignored :',msg.responseData);
-          } else if (msg.requestClass == "TimeService" && msg.requestMethod == "updateTime") {
+          } else if (
+            msg.requestClass == 'TimeService' &&
+            msg.requestMethod == 'updateTime'
+          ) {
             /*Time Service */
             if (msg.responseData) {
               EpocTime = msg.responseData.time;
               // console.debug(EpocTime,msg.responseData);
             }
-          } else if (msg.requestClass == "AnnouncementsService" && msg.requestMethod == "fetchAllAnnouncements") {
+          } else if (
+            msg.requestClass == 'AnnouncementsService' &&
+            msg.requestMethod == 'fetchAllAnnouncements'
+          ) {
             clearForMainCity();
             helper.fShowIncidents();
-          } else if (msg.requestClass == "TimerService" && msg.requestMethod == "getTimers") {
+          } else if (
+            msg.requestClass == 'TimerService' &&
+            msg.requestMethod == 'getTimers'
+          ) {
             //clearForBattleground();
-          } else if (msg.requestClass == "ResourceService") {
-            if (msg.requestMethod == "getResourceDefinitions") {
+          } else if (msg.requestClass == 'ResourceService') {
+            if (msg.requestMethod == 'getResourceDefinitions') {
               /*Resource Service */
               getResourceDefinitions(msg);
-            } else if (msg.requestMethod == "getPlayerResources") {
+            } else if (msg.requestMethod == 'getPlayerResources') {
               /*Resource Service */
               getPlayerResources(msg);
             }
-          } else if (msg.requestClass == "CityMapService") {
-            if (msg.requestMethod == "getEntities") {
+          } else if (msg.requestClass == 'CityMapService') {
+            if (msg.requestMethod == 'getEntities') {
               /*getEntities*/
-              var outputHTML = "";
+              var outputHTML = '';
               //output.innerHTML = "";
               //overview.innerHTML = "";
               // console.debug(msg);
@@ -847,22 +934,22 @@ function handleRequestFinished(request) {
                   }
                 }
               }
-            } else if (msg.requestMethod == "updateEntity") {
+            } else if (msg.requestMethod == 'updateEntity') {
               /*GB Info */
               // console.debug('msg:', msg);
-              var outputHTML = "";
+              var outputHTML = '';
               //output.innerHTML = "";
               //overview.innerHTML = "";
               // if (debugEnabled == true)
               // 	console.debug(contentType,msg.requestClass,msg.requestMethod);
               if (msg.responseData.length) {
-                console.debug("msg:", msg.responseData);
+                console.debug('msg:', msg.responseData);
                 // console.debug(collapseOptions);
                 console.debug(GBselected);
-                var levelText = "";
+                var levelText = '';
                 for (var j = 0; j < msg.responseData.length; j++) {
                   const selected = msg.responseData[j];
-                  if (selected.type == "greatbuilding") {
+                  if (selected.type == 'greatbuilding') {
                     if (selected.player_id == MyInfo.id) {
                       // PlayerName = MyInfo.name;
                       // PlayerID = MyInfo.id;
@@ -873,7 +960,7 @@ function handleRequestFinished(request) {
                     GBselected.id = selected.id;
                     GBselected.name = helper.fGBname(selected.cityentity_id);
                     // console.debug(GBselected.name,CityEntityDefs[selected.cityentity_id],selected);
-                    var era = selected.cityentity_id.split("_", 2);
+                    var era = selected.cityentity_id.split('_', 2);
                     GBselected.era = helper.fGVGagesname(era[1]);
                     // console.debug(GBselected.era);
                     GBselected.level = selected.level;
@@ -885,7 +972,8 @@ function handleRequestFinished(request) {
                     // levelText += `<div>Level ${GBselected.level + 1} (Max ${GBselected.max_level})</div>`;
                     GBselected.total = selected.state.forge_points_for_level_up;
                     // donor2HTML += GBselected.total + '\n';
-                    if (selected.state.invested_forge_points) GBselected.current = selected.state.invested_forge_points;
+                    if (selected.state.invested_forge_points)
+                      GBselected.current = selected.state.invested_forge_points;
                     else GBselected.current = 0;
                     levelText += `<table>`;
                     levelText += `<tr><td colspan="2">Level ${GBselected.level} (Max ${
@@ -913,26 +1001,33 @@ function handleRequestFinished(request) {
                   GBselected.name
                 } [${GBselected.level}/${GBselected.max_level}]</p>`;
                 outputHTML += `<div id="infoText" class="alert-dark collapse ${
-                  collapse.collapseGBInfo ? "" : "show"
+                  collapse.collapseGBInfo ? '' : 'show'
                 }">`;
               }
               console.debug(GBselected);
               // console.debug('showGBInfo',showGBInfo,outputHTML);
               if (showOptions.showGBInfo && levelText) {
                 info.innerHTML = outputHTML + levelText;
-                document.getElementById("infoTextLabel").addEventListener("click", collapse.fCollapseGBInfo);
-                $("body").i18n();
+                document
+                  .getElementById('infoTextLabel')
+                  .addEventListener('click', collapse.fCollapseGBInfo);
+                $('body').i18n();
               }
 
               /*City Stats */
             }
-          } else if (msg.requestClass == "StartupService" && msg.requestMethod == "getData") {
-            contentType = request.request.headers.find((header) => header.name === ":authority");
-            if (contentType) GameOrigin = contentType.value.split(".")[0];
-            console.debug("GameOrigin:", GameOrigin);
+          } else if (
+            msg.requestClass == 'StartupService' &&
+            msg.requestMethod == 'getData'
+          ) {
+            contentType = request.request.headers.find(
+              (header) => header.name === ':authority',
+            );
+            if (contentType) GameOrigin = contentType.value.split('.')[0];
+            console.debug('GameOrigin:', GameOrigin);
 
             browser.storage.local.getBytesInUse(null).then((size) => {
-              console.debug("getBytesInUse", size);
+              console.debug('getBytesInUse', size);
             });
 
             // browser.storage.local.get(['showOptions','collapseOptions','CityEntityDefs','ResourceDefs','tool','targets','toolOptions','donationPercent','url',GameOrigin + 'MyInfo'],
@@ -940,7 +1035,9 @@ function handleRequestFinished(request) {
               // post.log('result', result);
               // console.debug('result', result);
               // console.debug('showIncidents', showIncidents);
-              if (result[GameOrigin + "MyInfo"]) MyInfo.guildPosition = result[GameOrigin + "MyInfo"].guildPosition;
+              if (result[GameOrigin + 'MyInfo'])
+                MyInfo.guildPosition =
+                  result[GameOrigin + 'MyInfo'].guildPosition;
               else MyInfo.guildPosition = 0;
               // console.debug('result', result[GameOrigin + 'MyInfo'],MyInfo.guildPosition,GameOrigin + 'MyInfo');
               receiveStorage(result);
@@ -957,17 +1054,25 @@ function handleRequestFinished(request) {
             guild.innerHTML = ``;
             citystats.innerHTML = ``;
             visitstats.innerHTML = ``;
-            visitstats.className = "";
+            visitstats.className = '';
             cultural.innerHTML = ``;
-            cultural.className = "";
+            cultural.className = '';
             startupService(msg);
 
             /*Player Info */
-          } else if (msg.requestClass == "RankingService" && msg.requestMethod == "searchRanking") {
+          } else if (
+            msg.requestClass == 'RankingService' &&
+            msg.requestMethod == 'searchRanking'
+          ) {
             // console.debug('msg:', msg);
-            if (msg.responseData.rankings.length && msg.responseData.category != "clan_battle_clan_global") {
+            if (
+              msg.responseData.rankings.length &&
+              msg.responseData.category != 'clan_battle_clan_global'
+            ) {
               for (var j = 0; j < msg.responseData.rankings.length; j++) {
-                if (msg.responseData.rankings[j].player.hasOwnProperty("is_self")) {
+                if (
+                  msg.responseData.rankings[j].player.hasOwnProperty('is_self')
+                ) {
                   if (
                     MyInfo.name != msg.responseData.rankings[j].player.name ||
                     MyInfo.id != msg.responseData.rankings[j].player.player_id
@@ -975,7 +1080,7 @@ function handleRequestFinished(request) {
                     MyInfo.name = msg.responseData.rankings[j].player.name;
                     MyInfo.id = msg.responseData.rankings[j].player.player_id;
                     MyInfo.guild = msg.responseData.rankings[j].clan.name;
-                    console.debug("user :", MyInfo);
+                    console.debug('user :', MyInfo);
                     if (showOptions.showStats)
                       citystats.innerHTML = `<div class="alert alert-warning"><strong>${MyInfo.name}</strong></div>`;
                   }
@@ -984,21 +1089,31 @@ function handleRequestFinished(request) {
             }
 
             /*OtherPlayer Info/Stats */
-          } else if (msg.requestClass == "HiddenRewardService" && msg.requestMethod == "getOverview") {
+          } else if (
+            msg.requestClass == 'HiddenRewardService' &&
+            msg.requestMethod == 'getOverview'
+          ) {
             /*Incidents */
-            if (msg.responseData.hiddenRewards.length) hiddenRewards = msg.responseData.hiddenRewards;
+            if (msg.responseData.hiddenRewards.length)
+              hiddenRewards = msg.responseData.hiddenRewards;
             else {
               // console.debug('msg:', msg);
               hiddenRewards = [];
             }
             // console.debug('hiddenRewards:', hiddenRewards);
             helper.fShowIncidents();
-          } else if (msg.requestClass == "EmissaryService" && msg.requestMethod == "getAssigned") {
+          } else if (
+            msg.requestClass == 'EmissaryService' &&
+            msg.requestMethod == 'getAssigned'
+          ) {
             /*Emissary*/
             emissaryService(msg);
 
             /*Cultural*/
-          } else if (msg.requestClass == "AdvancementService" && msg.requestMethod == "getAll") {
+          } else if (
+            msg.requestClass == 'AdvancementService' &&
+            msg.requestMethod == 'getAll'
+          ) {
             // console.debug('msg:', msg);
             clearCultural();
             let culturalGoods = [];
@@ -1010,7 +1125,8 @@ function handleRequestFinished(request) {
                 Object.keys(rss).forEach((entry) => {
                   // Goods[entry] = entry;
                   // console.debug(entry,rss[`${entry}`]);
-                  if (culturalGoods[`${entry}`]) culturalGoods[`${entry}`] += rss[`${entry}`];
+                  if (culturalGoods[`${entry}`])
+                    culturalGoods[`${entry}`] += rss[`${entry}`];
                   else culturalGoods[`${entry}`] = rss[`${entry}`];
                 });
               }
@@ -1019,7 +1135,7 @@ function handleRequestFinished(request) {
             var culturalHTML = `<div  role="alert">
 								${element.close()}
 								<p id="culturalTextLabel" href="#culturalText" data-bs-toggle="collapse">
-								${element.icon("culturalicon", "culturalText", collapse.collapseCultural)}
+								${element.icon('culturalicon', 'culturalText', collapse.collapseCultural)}
 								<strong><span data-i18n="cultural">Cultural Settlement</span></strong></p>`;
 
             culturalHTML +=
@@ -1031,56 +1147,62 @@ function handleRequestFinished(request) {
               if (Resources[`${entry}`]) needed -= Resources[`${entry}`];
               // setResources(entry);
               // console.debug(`${entry}`,needed);
-              if (entry != "diplomacy" && needed > 0)
-                culturalHTML += `${needed}` + ` ${helper.fResourceShortName(entry)}<br>`;
+              if (entry != 'diplomacy' && needed > 0)
+                culturalHTML +=
+                  `${needed}` + ` ${helper.fResourceShortName(entry)}<br>`;
             });
 
             if (showOptions.showSettlement) {
-              if (document.getElementById("cultural") == null) {
-                cultural = document.createElement("div");
-                document.getElementById("content").appendChild(cultural);
-                cultural.id = "cultural";
+              if (document.getElementById('cultural') == null) {
+                cultural = document.createElement('div');
+                document.getElementById('content').appendChild(cultural);
+                cultural.id = 'cultural';
               }
               cultural.innerHTML = culturalHTML + `</div></div>`;
-              cultural.className = "alert alert-info alert-dismissible show collapsed";
-              document.getElementById("culturalicon").addEventListener("click", collapse.fCollapseCultural);
-              document.getElementById("culturalTextLabel").addEventListener("click", collapse.fCollapseCultural);
+              cultural.className =
+                'alert alert-info alert-dismissible show collapsed';
+              document
+                .getElementById('culturalicon')
+                .addEventListener('click', collapse.fCollapseCultural);
+              document
+                .getElementById('culturalTextLabel')
+                .addEventListener('click', collapse.fCollapseCultural);
             }
 
             /*Limited Bonuses */
-          } else if (msg.requestClass == "BonusService") {
-            if (msg.requestMethod == "getLimitedBonuses") {
+          } else if (msg.requestClass == 'BonusService') {
+            if (msg.requestMethod == 'getLimitedBonuses') {
               // console.debug('msg:', msg);
               getLimitedBonuses(msg);
 
               /*daily FP */
-            } else if (msg.requestMethod == "getBonuses") {
+            } else if (msg.requestMethod == 'getBonuses') {
               // console.debug('msg:', msg);
               getBonuses(msg);
-              if (document.getElementById("targetsGBG")) {
-                document.getElementById("targetsGBG").innerHTML = "";
+              if (document.getElementById('targetsGBG')) {
+                document.getElementById('targetsGBG').innerHTML = '';
               }
 
               /*boosts - overview */
             }
-          } else if (msg.requestClass == "BoostService") {
-            if (msg.requestMethod == "getOverview") {
+          } else if (msg.requestClass == 'BoostService') {
+            if (msg.requestMethod == 'getOverview') {
               // console.debug('msg:', msg);
               boostService(msg);
 
               /*all boosts */
-            } else if (msg.requestMethod == "getAllBoosts") {
+            } else if (msg.requestMethod == 'getAllBoosts') {
               boostServiceAllBoosts(msg);
 
               /*rewardPlunder */
-            } else if (msg.requestMethod == "getTimerBoost") {
+            } else if (msg.requestMethod == 'getTimerBoost') {
               // TODO
               // add getTimerBoost att/def to A/D info
             }
-          } else if (msg.requestClass == "RewardService") {
+          } else if (msg.requestClass == 'RewardService') {
             /*collectReward */
             //console.debug('cityentity_id:', msg.responseData.cityentity_id);
-            if (msg.requestMethod == "collectReward") {
+            if (msg.requestMethod == 'collectReward') {
               /**/
               if (msg.responseData.length) {
                 var reward = msg.responseData[0][0];
@@ -1090,9 +1212,12 @@ function handleRequestFinished(request) {
                   showReward(reward);
                 }
               }
-            } else if (msg.requestMethod == "collectRewardSet") {
+            } else if (msg.requestMethod == 'collectRewardSet') {
               /**/
-              if (msg.responseData.hasOwnProperty("reward") && msg.responseData.reward.rewards.length) {
+              if (
+                msg.responseData.hasOwnProperty('reward') &&
+                msg.responseData.reward.rewards.length
+              ) {
                 var rewards = msg.responseData.reward.rewards;
                 rewards.source = msg.responseData.context;
                 console.debug(rewards);
@@ -1100,24 +1225,31 @@ function handleRequestFinished(request) {
                   showRewards(rewards);
                 }
               }
-            } else if (msg.requestMethod == "") {
+            } else if (msg.requestMethod == '') {
               /**/
-            } else console.debug("RewardService", msg);
-          } else if (msg.requestClass == "CityProductionService" && msg.requestMethod == "pickupProduction") {
+            } else console.debug('RewardService', msg);
+          } else if (
+            msg.requestClass == 'CityProductionService' &&
+            msg.requestMethod == 'pickupProduction'
+          ) {
             /*pickupProduction */
             //console.debug('cityentity_id:', msg.responseData.cityentity_id);
             pickupProduction(msg);
-          } else if (msg.requestClass == "BlueprintService" && msg.requestMethod == "newReward") {
+          } else if (
+            msg.requestClass == 'BlueprintService' &&
+            msg.requestMethod == 'newReward'
+          ) {
             /*GB Rewards */
             //console.debug('cityentity_id:', msg.responseData.cityentity_id);
             //console.debug('cityentity_id:', msg.responseData.building_owner);
             const GBname = helper.fGBname(msg.responseData.cityentity_id);
             availablePacksFP += msg.responseData.strategy_point_amount;
-            if (document.getElementById("availableFPID"))
-              document.getElementById("availableFPID").textContent = availablePacksFP + availableFP;
+            if (document.getElementById('availableFPID'))
+              document.getElementById('availableFPID').textContent =
+                availablePacksFP + availableFP;
 
             if (showOptions.showGBRewards) {
-              var oldText = document.getElementById("rewardsText");
+              var oldText = document.getElementById('rewardsText');
               if (oldText) {
                 oldText.innerHTML =
                   `${msg.responseData.building_owner.name} ${helper.fGBsname(GBname)} ${msg.responseData.level} - ${
@@ -1125,18 +1257,20 @@ function handleRequestFinished(request) {
                   }FP<br>` + oldText.innerHTML;
               } else {
                 cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-bs-toggle="collapse">
-	  ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
+	  ${element.icon('rewardsicon', 'rewardsText', collapse.collapseRewards)}
 	  <span data-i18n="reward"><strong>REWARDS:</strong></span></p>
 										${element.close()}
 										<div id="rewardsText" class="overflow resize collapse ${
-                      collapse.collapseRewards ? "" : "show"
+                      collapse.collapseRewards ? '' : 'show'
                     }"><p class="overflow" id="rewardsText">${msg.responseData.building_owner.name} ${helper.fGBsname(
-                      GBname
+                      GBname,
                     )} ${msg.responseData.level} - ${msg.responseData.strategy_point_amount}FP</p></div></div>`;
 
                 // cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show" role="alert">${element.close()}<strong><span data-i18n="gb">GB</span> REWARDS:</strong>
                 // <p class="overflow" id="rewardsText">${msg.responseData.building_owner.name} ${helper.fGBsname(GBname)} ${msg.responseData.level} - ${msg.responseData.strategy_point_amount}FP</p></div>` + cityrewards.innerHTML;
-                document.getElementById("rewardsTextLabel").addEventListener("click", collapse.fCollapseRewards);
+                document
+                  .getElementById('rewardsTextLabel')
+                  .addEventListener('click', collapse.fCollapseRewards);
               }
               // document.getElementById("infoTextLabel").addEventListener("click", collapse.fCollapseGBRewards);
               rewardObserve();
@@ -1150,22 +1284,25 @@ function handleRequestFinished(request) {
             // 		showReward(reward);
             // 	}
             // }
-          } else if (msg.requestClass == "GreatBuildingsService") {
+          } else if (msg.requestClass == 'GreatBuildingsService') {
             /*GB Donors */
-            if (msg.requestMethod == "getConstructionRanking") {
+            if (msg.requestMethod == 'getConstructionRanking') {
               // console.debug('msg:', msg);
-              getConstructionRanking(msg, JSON.parse(request.request.postData.text));
-            } else if (msg.requestMethod == "getConstruction") {
+              getConstructionRanking(
+                msg,
+                JSON.parse(request.request.postData.text),
+              );
+            } else if (msg.requestMethod == 'getConstruction') {
               // console.debug('msg:', msg);
               getConstruction(msg);
 
               /* GB Add FP*/
-            } else if (msg.requestMethod == "contributeForgePoints") {
-              console.debug("msg:", msg);
+            } else if (msg.requestMethod == 'contributeForgePoints') {
+              console.debug('msg:', msg);
               contributeForgePoints(msg.responseData);
 
               /*Invested */
-            } else if (msg.requestMethod == "getContributions") {
+            } else if (msg.requestMethod == 'getContributions') {
               var reward = 0;
               var invested = 0;
               var cityinvestedHTML = ``;
@@ -1177,31 +1314,62 @@ function handleRequestFinished(request) {
                 for (var j = 0; j < msg.responseData.length; j++) {
                   invested += msg.responseData[j].forge_points;
                   if (msg.responseData[j].rank < 6) {
-                    if (msg.responseData[j].reward.strategy_point_amount && msg.responseData[j].forge_points > 9) {
-                      reward += msg.responseData[j].reward.strategy_point_amount;
+                    if (
+                      msg.responseData[j].reward.strategy_point_amount &&
+                      msg.responseData[j].forge_points > 9
+                    ) {
+                      reward +=
+                        msg.responseData[j].reward.strategy_point_amount;
                       numGB++;
                     }
-                    console.debug("invested: ", numGB, msg.responseData[j].forge_points, invested, reward);
+                    console.debug(
+                      'invested: ',
+                      numGB,
+                      msg.responseData[j].forge_points,
+                      invested,
+                      reward,
+                    );
                   }
                 }
-                const rewardBonus = BigNumber(City.ArcBonus).div(100).plus(1).times(reward).dp(0);
+                const rewardBonus = BigNumber(City.ArcBonus)
+                  .div(100)
+                  .plus(1)
+                  .times(reward)
+                  .dp(0);
                 console.debug(
                   BigNumber(City.ArcBonus),
                   BigNumber(City.ArcBonus).div(100),
                   BigNumber(City.ArcBonus).div(100).plus(1),
-                  BigNumber(City.ArcBonus).div(100).plus(1).times(reward)
+                  BigNumber(City.ArcBonus).div(100).plus(1).times(reward),
                 );
-                console.debug(availablePacksFP, availableFP, reward, invested, rewardBonus);
+                console.debug(
+                  availablePacksFP,
+                  availableFP,
+                  reward,
+                  invested,
+                  rewardBonus,
+                );
                 cityinvestedHTML = `<div id="investedDiv" class="alert alert-success alert-dismissible collapsed" role="alert">`;
                 cityinvestedHTML += element.close();
                 cityinvestedHTML += `<p id="investedTextLabel" href="#investedText" aria-expanded="true" aria-controls="investedText" data-bs-toggle="collapse">`;
-                cityinvestedHTML += element.icon("investedicon", "investedText", collapse.collapseInvested);
+                cityinvestedHTML += element.icon(
+                  'investedicon',
+                  'investedText',
+                  collapse.collapseInvested,
+                );
                 cityinvestedHTML += `<strong>FP Status: </strong><span id="onHandFP">${
-                  collapse.collapseInvested ? availablePacksFP + availableFP : ""
+                  collapse.collapseInvested ?
+                    availablePacksFP + availableFP
+                  : ''
                 }</span></p>`;
-                cityinvestedHTML += element.copy("investedCopyID", "success", "right", collapse.collapseInvested);
+                cityinvestedHTML += element.copy(
+                  'investedCopyID',
+                  'success',
+                  'right',
+                  collapse.collapseInvested,
+                );
                 cityinvestedHTML += `<div id="investedText" class="collapse ${
-                  collapse.collapseInvested ? "" : "show"
+                  collapse.collapseInvested ? '' : 'show'
                 }">`;
                 cityinvestedHTML += `On Hand FP: <span id="onHandFP2">${availablePacksFP + availableFP}</span><br>`;
                 cityinvestedHTML += `FP Invested: ${invested} (${numGB} GB)<br>`;
@@ -1212,13 +1380,17 @@ function handleRequestFinished(request) {
                 cityinvestedHTML += `<br>Total FP: ${availablePacksFP + availableFP + Number(rewardBonus)}</p>`;
 
                 cityinvested.innerHTML = cityinvestedHTML + `</div></div>`;
-                document.getElementById("investedTextLabel").addEventListener("click", collapse.fCollapseInvested);
-                document.getElementById("investedCopyID").addEventListener("click", copy.fInvestedCopy);
-                $("#investedDiv").i18n();
+                document
+                  .getElementById('investedTextLabel')
+                  .addEventListener('click', collapse.fCollapseInvested);
+                document
+                  .getElementById('investedCopyID')
+                  .addEventListener('click', copy.fInvestedCopy);
+                $('#investedDiv').i18n();
               }
 
               /* GvG Info*/
-            } else if (msg.requestMethod == "getOtherPlayerOverview") {
+            } else if (msg.requestMethod == 'getOtherPlayerOverview') {
               /*GB Last Donor Date */
               var overviewtxt = ``;
               // console.debug('msg:', msg);
@@ -1229,39 +1401,40 @@ function handleRequestFinished(request) {
                   setPlayerName(player.name, player.player_id);
                 }
               }
-            } else if (msg.requestMethod == "getAvailablePackageForgePoints") {
+            } else if (msg.requestMethod == 'getAvailablePackageForgePoints') {
               /*ForgePoints*/
               availablePacksFP = msg.responseData[0];
-              if (document.getElementById("availableFPID"))
-                document.getElementById("availableFPID").textContent = availablePacksFP + availableFP;
+              if (document.getElementById('availableFPID'))
+                document.getElementById('availableFPID').textContent =
+                  availablePacksFP + availableFP;
             }
-          } else if (msg.requestClass == "ClanBattleService") {
-            if (msg.requestMethod == "getContinent") {
+          } else if (msg.requestClass == 'ClanBattleService') {
+            if (msg.requestMethod == 'getContinent') {
               fCleardForGVG();
               getContinent(msg);
-            } else if (msg.requestMethod == "getProvinceDetailed") {
+            } else if (msg.requestMethod == 'getProvinceDetailed') {
               /* GvG Ages*/
               getProvinceDetailed(msg);
-            } else if (msg.requestMethod == "deploySiegeArmy") {
+            } else if (msg.requestMethod == 'deploySiegeArmy') {
               /* GvG Siege*/
               deploySiegeArmy(msg);
-            } else if (msg.requestMethod == "grantIndependence") {
+            } else if (msg.requestMethod == 'grantIndependence') {
               /* GvG grant freedom to sector*/
               grantIndependence(msg);
             }
-          } else if (msg.requestClass == "GuildExpeditionService") {
-            if (msg.requestMethod == "getOverview") {
+          } else if (msg.requestClass == 'GuildExpeditionService') {
+            if (msg.requestMethod == 'getOverview') {
               /*Guild Expedition*/
               clearExpedition();
-            } else if (msg.requestMethod == "getContributionList") {
+            } else if (msg.requestMethod == 'getContributionList') {
               /*Guild Expedition*/
               if (showOptions.showExpedition) guildExpeditionService(msg);
-            } else if (msg.requestMethod == "openChest") {
+            } else if (msg.requestMethod == 'openChest') {
               //console.debug('cityentity_id:', msg.responseData.cityentity_id);
               // var units = {};
               // var numUnits = 0;
               var reward = msg.responseData;
-              reward.source = "guildExpedition";
+              reward.source = 'guildExpedition';
               var name = helper.fRewardShortName(reward.name);
               var qty = reward.amount;
 
@@ -1271,64 +1444,83 @@ function handleRequestFinished(request) {
               if (showOptions.showGErewards) {
                 showReward(reward);
               }
-              console.debug("rewardsGE:", rewardsGE, reward);
+              console.debug('rewardsGE:', rewardsGE, reward);
             }
-          } else if (msg.requestClass == "GuildBattlegroundService") {
+          } else if (msg.requestClass == 'GuildBattlegroundService') {
             // GuildBattleground
-            if (msg.requestMethod == "getLeaderboard") {
+            if (msg.requestMethod == 'getLeaderboard') {
               /*getLeaderboard */
               if (showOptions.showLeaderboard) getLeaderboard(msg);
-            } else if (msg.requestMethod == "getPlayerLeaderboard") {
+            } else if (msg.requestMethod == 'getPlayerLeaderboard') {
               /*Guild Battleground*/
               getPlayerLeaderboard(msg);
-            } else if (msg.requestMethod == "getBattleground") {
+            } else if (msg.requestMethod == 'getBattleground') {
               /*Guild Battleground*/
               clearForBattleground();
               getBattleground(msg);
-            } else if (msg.requestMethod == "getState") {
-              if (msg.responseData.stateId == "participating") {
+            } else if (msg.requestMethod == 'getState') {
+              if (msg.responseData.stateId == 'participating') {
                 //clearForBattleground();
               }
-            } else console.debug("GuildBattlegroundService", msg);
-          } else if (msg.requestClass == "GuildBattlegroundStateService") {
+            } else console.debug('GuildBattlegroundService', msg);
+          } else if (msg.requestClass == 'GuildBattlegroundStateService') {
             // GuildBattleground
-            if (msg.requestMethod == "getState" && msg.responseData.stateId == "participating") {
+            if (
+              msg.requestMethod == 'getState' &&
+              msg.responseData.stateId == 'participating'
+            ) {
               //clearForBattleground();
-            } else if (msg.requestMethod == "getState" && showOptions.showBattleground) {
+            } else if (
+              msg.requestMethod == 'getState' &&
+              showOptions.showBattleground
+            ) {
               getState(msg);
-            } else console.debug("GuildBattlegroundStateService", msg);
-          } else if (msg.requestClass == "GuildBattlegroundBuildingService") {
+            } else console.debug('GuildBattlegroundStateService', msg);
+          } else if (msg.requestClass == 'GuildBattlegroundBuildingService') {
             // GuildBattleground
-            if (msg.requestMethod == "getBuildings") {
+            if (msg.requestMethod == 'getBuildings') {
               /*Guild Battleground*/
               getBuildings(msg);
-            } else console.debug("GuildBattlegroundBuildingService", msg);
-          } else if (msg.requestClass == "GuildBattlegroundSignalsService") {
+            } else console.debug('GuildBattlegroundBuildingService', msg);
+          } else if (msg.requestClass == 'GuildBattlegroundSignalsService') {
             // GuildBattleground
-            const payload = JSON.parse(request.request.postData.text)[0].requestData;
+            const payload = JSON.parse(request.request.postData.text)[0]
+              .requestData;
             // console.debug("GuildBattlegroundSignalsService", msg,payload);
-            if (msg.requestMethod == "setSignal") {
+            if (msg.requestMethod == 'setSignal') {
               /*Guild Battleground*/
               //console.debug("set msg.requestMethod", msg.requestMethod);
               setSignal(msg, payload);
-            } else if (msg.requestMethod == "removeSignal") {
+            } else if (msg.requestMethod == 'removeSignal') {
               /*Guild Battleground*/
               //console.debug("remove msg.requestMethod", msg.requestMethod);
               removeSignal(msg, payload);
-            } else console.debug("GuildBattlegroundSignalsService", msg);
+            } else console.debug('GuildBattlegroundSignalsService', msg);
             // console.debug("GuildBattlegroundSignalsService", msg,JSON.parse(request.request.postData.text));
-          } else if (msg.__class__ && msg.__class__.substring(0, 17) == "GuildBattleground") {
-            if (msg.__class__ && msg.__class__ == "GuildBattlegroundMapMetadata") {
-              if (msg.id == "volcano_archipelago") {
+          } else if (
+            msg.__class__ &&
+            msg.__class__.substring(0, 17) == 'GuildBattleground'
+          ) {
+            if (
+              msg.__class__ &&
+              msg.__class__ == 'GuildBattlegroundMapMetadata'
+            ) {
+              if (msg.id == 'volcano_archipelago') {
                 VolcanoProvinceDefs = msg.provinces;
                 VolcanoProvinceDefs[0].id = 0;
-              } else if (msg.id == "waterfall_archipelago") {
+              } else if (msg.id == 'waterfall_archipelago') {
                 WaterfallProvinceDefs = msg.provinces;
                 WaterfallProvinceDefs[0].id = 0;
               } else console.debug(msg);
-            } else if (msg.__class__ && msg.__class__ == "GuildBattlegroundLeagueMetadata") {
+            } else if (
+              msg.__class__ &&
+              msg.__class__ == 'GuildBattlegroundLeagueMetadata'
+            ) {
               // console.debug('GuildBattlegroundLeagueMetadata',msg);
-            } else if (msg.__class__ && msg.__class__ == "GuildBattlegroundBuildingMetadata") {
+            } else if (
+              msg.__class__ &&
+              msg.__class__ == 'GuildBattlegroundBuildingMetadata'
+            ) {
               // console.debug('GuildBattlegroundLeagueMetadata',msg);
               if (!BuildingDefs[msg.id]) {
                 // CityEntityDefs[msg.id] = [];
@@ -1344,14 +1536,23 @@ function handleRequestFinished(request) {
                   description: msg.description,
                 };
               }
-            } else console.debug("GuildBattleground", msg);
-          } else if (msg.requestClass == "ClanService") {
-            if (msg.requestMethod == "getOwnClanData" || msg.requestMethod == "getClanData") {
+            } else console.debug('GuildBattleground', msg);
+          } else if (msg.requestClass == 'ClanService') {
+            if (
+              msg.requestMethod == 'getOwnClanData' ||
+              msg.requestMethod == 'getClanData'
+            ) {
               /*Guild Members*/
               // console.debug(showOptions, msg.responseData.members);
-              if (showOptions.showTreasury && msg.requestMethod == "getOwnClanData") {
+              if (
+                showOptions.showTreasury &&
+                msg.requestMethod == 'getOwnClanData'
+              ) {
                 const members = msg.responseData.members;
-                GuildDonations.push([msg.responseData.name, msg.responseData.membersNum]);
+                GuildDonations.push([
+                  msg.responseData.name,
+                  msg.responseData.membersNum,
+                ]);
                 // console.debug(members);
                 members.forEach((entry) => {
                   GuildDonations.push([
@@ -1411,7 +1612,7 @@ function handleRequestFinished(request) {
                   }
                 });
                 // console.debug(GuildDonations);
-                $("body").i18n();
+                $('body').i18n();
               }
 
               if (showOptions.showGuild && msg.responseData.members) {
@@ -1419,11 +1620,11 @@ function handleRequestFinished(request) {
                 // console.debug('guildlist',guildlist);
                 // if(title){
                 var friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="friendsTextLabel" href="#friendsText" data-bs-toggle="collapse">
-		${element.icon("friendsicon", "friendsText", collapse.collapseFriends)}<strong>Guild Members</strong></p>
+		${element.icon('friendsicon', 'friendsText', collapse.collapseFriends)}<strong>Guild Members</strong></p>
 		${element.close()}<div id="friendsCopy">
-		${element.copy("friendsCopyID", "success", "right", collapse.collapseFriends)}</div>`;
+		${element.copy('friendsCopyID', 'success', 'right', collapse.collapseFriends)}</div>`;
                 friendsHTML += `<div id="friendsText" class="overflow-y collapse ${
-                  collapse.collapseFriends ? "" : "show"
+                  collapse.collapseFriends ? '' : 'show'
                 }">
 	  <table id="friendsText2"><tr><th>Name</th><th>Title</th><th>ID</th><th>Era</th><th>Battles</th><th>Score</th></tr>`;
                 guildlist.forEach((entry) => {
@@ -1436,13 +1637,17 @@ function handleRequestFinished(request) {
                 // var friends = document.getElementById("friends");
                 friendsDiv.innerHTML = friendsHTML + `</table></div></div>`;
                 if (collapse.collapseFriends == false) {
-                  document.getElementById("friendsCopyID").addEventListener("click", copy.fFriendsCopy);
+                  document
+                    .getElementById('friendsCopyID')
+                    .addEventListener('click', copy.fFriendsCopy);
                 }
-                document.getElementById("friendsTextLabel").addEventListener("click", collapse.fCollapseFriends);
+                document
+                  .getElementById('friendsTextLabel')
+                  .addEventListener('click', collapse.fCollapseFriends);
                 // }
-                $("body").i18n();
+                $('body').i18n();
               }
-            } else if (msg.requestMethod == "getTreasuryLogs") {
+            } else if (msg.requestMethod == 'getTreasuryLogs') {
               /*Treasury Logs*/
               // var users.checkNull = null;
               if (showOptions.showContributions || showOptions.showLogs) {
@@ -1455,26 +1660,40 @@ function handleRequestFinished(request) {
                     treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
 							${element.close()}
 							<p href="#treasuryLogText" aria-expanded="true" aria-controls="treasuryLogText" data-bs-toggle="collapse">
-              ${element.icon("treasuryLogicon", "treasuryLogText", collapse.collapseTreasuryLog)}
+              ${element.icon('treasuryLogicon', 'treasuryLogText', collapse.collapseTreasuryLog)}
                     <strong>Treasury Logs:</strong></p>`;
                     treasuryHTML += `<table id="treasuryLogText" class="overflow collapse show">`;
                   } else {
-                    treasuryHTML = treasuryHTML.substring(0, treasuryHTML.length - 8);
+                    treasuryHTML = treasuryHTML.substring(
+                      0,
+                      treasuryHTML.length - 8,
+                    );
                   }
                 }
                 // console.debug(msg.responseData);
                 const logs = msg.responseData.logs;
                 // console.debug(logs);
                 logs.forEach((entry) => {
-                  if (entry.resource == "medals") {
+                  if (entry.resource == 'medals') {
                     GuildDonations.forEach((member) => {
                       // rank,name,spent,returned,donated
                       if (member[1] == entry.player.name) {
-                        if (entry.action.toLowerCase() == "guild continent: slot unlocked") member[2] += entry.amount;
-                        else if (entry.action.toLowerCase() == "siege army deployment") member[2] += entry.amount;
-                        else if (entry.action.toLowerCase() == "guild continent: grant freedom")
+                        if (
+                          entry.action.toLowerCase() ==
+                          'guild continent: slot unlocked'
+                        )
+                          member[2] += entry.amount;
+                        else if (
+                          entry.action.toLowerCase() == 'siege army deployment'
+                        )
+                          member[2] += entry.amount;
+                        else if (
+                          entry.action.toLowerCase() ==
+                          'guild continent: grant freedom'
+                        )
                           member[3] += entry.amount;
-                        else if (entry.action.toLowerCase() == "donation") member[4] += entry.amount;
+                        else if (entry.action.toLowerCase() == 'donation')
+                          member[4] += entry.amount;
                       }
                       // console.debug(entry.action,entry.amount);
                     });
@@ -1483,20 +1702,37 @@ function handleRequestFinished(request) {
                       // spent,returned,donated
                       if (member[1] == entry.player.name) {
                         if (
-                          entry.action.toLowerCase() == "siege army deployment" ||
-                          entry.action.toLowerCase() == "guild continent: slot unlocked"
+                          entry.action.toLowerCase() ==
+                            'siege army deployment' ||
+                          entry.action.toLowerCase() ==
+                            'guild continent: slot unlocked'
                         )
                           member[5] += entry.amount;
-                        else if (entry.action.toLowerCase() == "guild continent: grant freedom")
+                        else if (
+                          entry.action.toLowerCase() ==
+                          'guild continent: grant freedom'
+                        )
                           member[6] += entry.amount;
-                        else if (entry.action.toLowerCase() == "battlegrounds: place building")
+                        else if (
+                          entry.action.toLowerCase() ==
+                          'battlegrounds: place building'
+                        )
                           member[7] += entry.amount;
-                        else if (entry.action.toLowerCase() == "guild expedition: difficulty unlocked")
+                        else if (
+                          entry.action.toLowerCase() ==
+                          'guild expedition: difficulty unlocked'
+                        )
                           member[8] += entry.amount;
                         // else if(entry.action == 'Great building production')
                         // 	member[9] += entry.amount;
-                        else if (entry.action.toLowerCase() == "building production") member[9] += entry.amount;
-                        else if (entry.action.toLowerCase() == "guild treasury donation") {
+                        else if (
+                          entry.action.toLowerCase() == 'building production'
+                        )
+                          member[9] += entry.amount;
+                        else if (
+                          entry.action.toLowerCase() ==
+                          'guild treasury donation'
+                        ) {
                           // if(entry.amount > 80)
                           member[11] += entry.amount; // manual donation
 
@@ -1507,14 +1743,18 @@ function handleRequestFinished(request) {
                         }
 
                         // if(entry.action == 'Great building production' || entry.action == 'Guild treasury donation'){
-                        if (entry.action.toLowerCase() == "guild treasury donation") {
+                        if (
+                          entry.action.toLowerCase() ==
+                          'guild treasury donation'
+                        ) {
                           // console.debug(ResourceDefs.find(entry.id));
                           ResourceDefs.forEach((rssDef) => {
                             // console.debug(entry, rssDef.era);
                             if (rssDef.id == entry.resource) {
                               // rssName = rssDef.name;
                               // rssEra = rssDef.era;
-                              member[31 - helper.fLevelfromAge(rssDef.era)] += entry.amount;
+                              member[31 - helper.fLevelfromAge(rssDef.era)] +=
+                                entry.amount;
                               // console.debug(entry.action,entry.resource, entry.amount,rssDef.era,helper.fLevelfromAge(rssDef.era),(30 - helper.fLevelfromAge(rssDef.era)),member[(30 - helper.fLevelfromAge(rssDef.era))]);
                             }
                           });
@@ -1527,21 +1767,31 @@ function handleRequestFinished(request) {
                       if (entry.resource == rss[0]) {
                         // ID, era name, rss name, treasury qty, donation, GE spend, GVG spend, GBG spend, net change
                         if (
-                          entry.action.toLowerCase() == "siege army deployment" ||
-                          entry.action.toLowerCase() == "guild continent: slot unlocked" ||
-                          entry.action.toLowerCase() == "guild continent: grant freedom"
+                          entry.action.toLowerCase() ==
+                            'siege army deployment' ||
+                          entry.action.toLowerCase() ==
+                            'guild continent: slot unlocked' ||
+                          entry.action.toLowerCase() ==
+                            'guild continent: grant freedom'
                         ) {
                           rss[6] += entry.amount;
                           // rss[8] += entry.amount;
-                        } else if (entry.action.toLowerCase() == "battlegrounds: place building") {
+                        } else if (
+                          entry.action.toLowerCase() ==
+                          'battlegrounds: place building'
+                        ) {
                           rss[7] += entry.amount;
                           // rss[8] += entry.amount;
-                        } else if (entry.action.toLowerCase() == "guild expedition: difficulty unlocked") {
+                        } else if (
+                          entry.action.toLowerCase() ==
+                          'guild expedition: difficulty unlocked'
+                        ) {
                           rss[5] += entry.amount;
                           // rss[8] += entry.amount;
                         } else if (
-                          entry.action.toLowerCase() == "building production" ||
-                          entry.action.toLowerCase() == "guild treasury donation"
+                          entry.action.toLowerCase() == 'building production' ||
+                          entry.action.toLowerCase() ==
+                            'guild treasury donation'
                         ) {
                           rss[4] += entry.amount; // manual donation
 
@@ -1556,19 +1806,29 @@ function handleRequestFinished(request) {
                   // if(entry.resource == "medals")
                   if (showOptions.showLogs)
                     treasuryHTML += `<tr><td>${entry.player.name}</td><td>${helper.fResourceShortName(
-                      entry.resource
+                      entry.resource,
                     )}</td><td>${entry.action}</td><td>${entry.amount}</td><td>${entry.createdAt}</td></tr>`;
                 });
-                if (showOptions.showLogs) treasuryLog.innerHTML = treasuryHTML + `</table>`;
+                if (showOptions.showLogs)
+                  treasuryLog.innerHTML = treasuryHTML + `</table>`;
 
                 if (showOptions.showContributions) {
                   treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" data-bs-toggle="collapse" role="alert">`;
                   treasuryHTML += element.close();
-                  treasuryHTML += element.copy("treasuryCopyID", "success", "right", collapse.collapseTreasury);
+                  treasuryHTML += element.copy(
+                    'treasuryCopyID',
+                    'success',
+                    'right',
+                    collapse.collapseTreasury,
+                  );
                   treasuryHTML += `<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">`;
-                  treasuryHTML += element.icon("treasuryicon", "treasuryText", collapse.collapseTreasury);
+                  treasuryHTML += element.icon(
+                    'treasuryicon',
+                    'treasuryText',
+                    collapse.collapseTreasury,
+                  );
                   treasuryHTML += `<strong>Treasury Contributions:</strong></p>`;
-                  treasuryHTML += `<div id="treasuryText" class="collapse ${collapse.collapseTreasury ? "" : "show"}">
+                  treasuryHTML += `<div id="treasuryText" class="collapse ${collapse.collapseTreasury ? '' : 'show'}">
 			<table id="treasurytable" class="overflow table collapse show"><tr><th>Name</th><th>Medals Spent</th><th>Medals Returned</th><th>Medals Donated</th><th>Medals Total</th><th>Goods Spent GVG</th><th>Goods Returned GVG</th><th>Goods Spent GBG</th><th>Goods Spent GE</th><th>Goods Donated Building</th><th>Goods Donated ???</th><th>Goods Donated</th><th>SAV</th><th>SAAB</th><th>SAM</th><th>VF</th><th>OF</th><th>AF</th><th>FE</th><th>TE</th><th>CE</th><th>PME</th><th>ME</th><th>PE</th><th>InA</th><th>CA</th><th>LMA</th><th>HMA</th><th>EMA</th><th>IA</th></tr>`;
                   GuildDonations.forEach((member) => {
                     // rank,name,medals: spent,returned,donated, goods: spent,returned,donated
@@ -1599,15 +1859,19 @@ function handleRequestFinished(request) {
                   }
 
                   treasury.innerHTML = treasuryHTML + `</table></div>`;
-                  document.getElementById("treasuryCopyID").addEventListener("click", copy.TreasuryCopy);
-                  document.getElementById("treasuryTextLabel").addEventListener("click", collapse.fCollapseTreasury);
+                  document
+                    .getElementById('treasuryCopyID')
+                    .addEventListener('click', copy.TreasuryCopy);
+                  document
+                    .getElementById('treasuryTextLabel')
+                    .addEventListener('click', collapse.fCollapseTreasury);
                 }
                 // console.debug(GuildDonations);
-                $("body").i18n();
+                $('body').i18n();
               } else {
                 console.debug(msg.responseData.length);
               }
-            } else if (msg.requestMethod == "getTreasury") {
+            } else if (msg.requestMethod == 'getTreasury') {
               /*Guild Treasury*/
               cityinvested.innerHTML = ``;
               output.innerHTML = ``;
@@ -1624,29 +1888,38 @@ function handleRequestFinished(request) {
               info.innerHTML = ``;
               donationDIV.innerHTML = ``;
               visitstats.innerHTML = ``;
-              visitstats.className = "";
+              visitstats.className = '';
               cultural.innerHTML = ``;
-              cultural.className = "";
-              friendsDiv.innerHTML = "";
+              cultural.className = '';
+              friendsDiv.innerHTML = '';
               gvg.innerHTML = ``;
-              gvg.className = "";
+              gvg.className = '';
               // armyDIV.innerHTML = ``;
-              if (gvgSummary) gvgSummary.innerHTML = "";
-              if (gvgAges) gvgAges.innerHTML = "";
+              if (gvgSummary) gvgSummary.innerHTML = '';
+              if (gvgAges) gvgAges.innerHTML = '';
 
               if (showOptions.showTreasury) {
                 // var treasuryHTML = guild.innerHTML;
-                var treasuryHTML = "";
+                var treasuryHTML = '';
 
                 // if (!treasuryHTML){
                 treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
 	${element.close()}<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">`;
-                treasuryHTML += element.icon("treasuryicon", "treasuryText", collapse.collapseTreasury);
+                treasuryHTML += element.icon(
+                  'treasuryicon',
+                  'treasuryText',
+                  collapse.collapseTreasury,
+                );
                 treasuryHTML += `<strong>Guild Treasury:</strong></p>`;
-                treasuryHTML += element.copy("treasuryCopyID", "success", "right", collapse.collapseTreasury);
+                treasuryHTML += element.copy(
+                  'treasuryCopyID',
+                  'success',
+                  'right',
+                  collapse.collapseTreasury,
+                );
                 treasuryHTML += `<div id="treasuryText" style="height: ${
                   toolOptions.treasurySize
-                }px" class="overflow collapse ${collapse.collapseTreasury ? "" : "show"}"><table id="treasurytable">`;
+                }px" class="overflow collapse ${collapse.collapseTreasury ? '' : 'show'}"><table id="treasurytable">`;
 
                 // }
                 // else{
@@ -1658,7 +1931,10 @@ function handleRequestFinished(request) {
 
                 for (var i = 0; i < helper.numAges; i++) {
                   ResourceDefs.forEach((rssDef) => {
-                    if (rssDef.era == helper.fAgefromLevel(helper.numAges - i) && resources[rssDef.id]) {
+                    if (
+                      rssDef.era == helper.fAgefromLevel(helper.numAges - i) &&
+                      resources[rssDef.id]
+                    ) {
                       treasuryHTML += `<tr><td>${helper.fGVGagesname(rssDef.era)}:${rssDef.name}</td><td>${
                         resources[rssDef.id]
                       }</td></tr>`;
@@ -1667,58 +1943,70 @@ function handleRequestFinished(request) {
                     }
                   });
                 }
-                treasuryHTML += `<tr><td>Medals</td><td>${resources["medals"]}</td></tr>`;
+                treasuryHTML += `<tr><td>Medals</td><td>${resources['medals']}</td></tr>`;
 
                 treasury.innerHTML = treasuryHTML + `</table></div>`;
                 // donationDIV.innerHTML = treasuryHTML + `</table></div>`;
-                document.getElementById("treasuryCopyID").addEventListener("click", copy.TreasuryCopy);
-                console.debug("GuildTreasury", GuildTreasury);
-                document.getElementById("treasuryTextLabel").addEventListener("click", collapse.fCollapseTreasury);
-                const treasuryDiv = document.getElementById("treasuryText");
+                document
+                  .getElementById('treasuryCopyID')
+                  .addEventListener('click', copy.TreasuryCopy);
+                console.debug('GuildTreasury', GuildTreasury);
+                document
+                  .getElementById('treasuryTextLabel')
+                  .addEventListener('click', collapse.fCollapseTreasury);
+                const treasuryDiv = document.getElementById('treasuryText');
                 const resizeObserver = new ResizeObserver((entries) => {
                   for (const entry of entries) {
-                    if (entry.contentRect && entry.contentRect.height) setTreasurySize(entry.contentRect.height);
+                    if (entry.contentRect && entry.contentRect.height)
+                      setTreasurySize(entry.contentRect.height);
                   }
                 });
                 resizeObserver.observe(treasuryDiv);
-                $("body").i18n();
+                $('body').i18n();
               } else {
                 console.debug(msg.responseData.length);
               }
             }
-          } else if (msg.requestClass == "AutoAidService") {
+          } else if (msg.requestClass == 'AutoAidService') {
             // Auto Aid
-            console.debug("AutoAidService", msg);
-            if (msg.requestMethod == "collect") {
+            console.debug('AutoAidService', msg);
+            if (msg.requestMethod == 'collect') {
               /**/
-              console.debug("AutoAidService", msg.responseData.id, msg.responseData.totalPeers);
-            } else if (msg.requestMethod == "") {
+              console.debug(
+                'AutoAidService',
+                msg.responseData.id,
+                msg.responseData.totalPeers,
+              );
+            } else if (msg.requestMethod == '') {
               /**/
-            } else console.debug("AutoAidService", msg);
+            } else console.debug('AutoAidService', msg);
           } else {
             //output.innerHTML += `<div>*** ${msg.requestClass}</div>`;
             if (msg.requestClass == null) {
-              if (msg.id == "W_MultiAge_WIN22A11b") {
+              if (msg.id == 'W_MultiAge_WIN22A11b') {
                 console.info(msg.name, msg);
               }
               if (
                 msg.__class__ &&
-                (msg.__class__ == "CityEntityCulturalGoodsBuilding" ||
-                  msg.__class__ == "CityEntityImpediment" ||
-                  msg.__class__ == "CityEntityDiplomacy" ||
-                  msg.__class__ == "CityEntityStaticProvider" ||
-                  msg.__class__ == "CityEntityStreet" ||
-                  msg.__class__ == "CityEntityHub" ||
-                  msg.__class__ == "CityEntityOutpostShip" ||
-                  msg.__class__ == "QuestTabMetadata" ||
-                  msg.__class__ == "ChainMetadata" ||
-                  msg.__class__ == "BuildingSetMetadata" ||
-                  msg.__class__ == "InfoScreen" ||
-                  msg.type == "off_grid")
+                (msg.__class__ == 'CityEntityCulturalGoodsBuilding' ||
+                  msg.__class__ == 'CityEntityImpediment' ||
+                  msg.__class__ == 'CityEntityDiplomacy' ||
+                  msg.__class__ == 'CityEntityStaticProvider' ||
+                  msg.__class__ == 'CityEntityStreet' ||
+                  msg.__class__ == 'CityEntityHub' ||
+                  msg.__class__ == 'CityEntityOutpostShip' ||
+                  msg.__class__ == 'QuestTabMetadata' ||
+                  msg.__class__ == 'ChainMetadata' ||
+                  msg.__class__ == 'BuildingSetMetadata' ||
+                  msg.__class__ == 'InfoScreen' ||
+                  msg.type == 'off_grid')
               ) {
                 // ignore these
                 //   console.debug(msg.name, msg);
-              } else if (msg.__class__ && msg.__class__.substring(0, 10) == "CityEntity") {
+              } else if (
+                msg.__class__ &&
+                msg.__class__.substring(0, 10) == 'CityEntity'
+              ) {
                 if (!CityEntityDefs[msg.id]) {
                   CityEntityDefs[msg.id] = {
                     name: msg.name,
@@ -1729,7 +2017,10 @@ function handleRequestFinished(request) {
                 }
                 // console.debug(msg.name,msg);
                 CityEntityDefs[msg.id] = msg;
-              } else if (msg.__class__ && msg.__class__ == "GenericCityEntity") {
+              } else if (
+                msg.__class__ &&
+                msg.__class__ == 'GenericCityEntity'
+              ) {
                 if (!CityEntityDefs[msg.id]) {
                   CityEntityDefs[msg.id] = {
                     name: msg.name,
@@ -1740,28 +2031,37 @@ function handleRequestFinished(request) {
                 }
                 // console.debug(msg.name,msg);
                 CityEntityDefs[msg.id] = msg;
-              } else if (msg.__class__ && msg.__class__ == "UnitType") {
+              } else if (msg.__class__ && msg.__class__ == 'UnitType') {
                 // MilitaryDefs.push([msg.unitTypeId,msg.name,msg.minEra]);
                 MilitaryDefs[msg.unitTypeId] = {
                   name: msg.name,
                   era: msg.minEra,
                 };
-              } else if (msg.__class__ && msg.__class__ == "CastleSystemLevelMetadata") {
+              } else if (
+                msg.__class__ &&
+                msg.__class__ == 'CastleSystemLevelMetadata'
+              ) {
                 CastleDefs.push(msg);
                 //   console.debug(`CastleSystemLevelMetadata`, msg, CastleDefs);
-              } else if (msg.__class__ && msg.__class__ == "SelectionKitMetadata") {
+              } else if (
+                msg.__class__ &&
+                msg.__class__ == 'SelectionKitMetadata'
+              ) {
                 SelectionKitDefs.push(msg);
                 // console.debug(`SelectionKitMetadata`, msg,SelectionKitDefs);
-              } else if (msg.__class__ && msg.__class__ == "BoostMetadata") {
+              } else if (msg.__class__ && msg.__class__ == 'BoostMetadata') {
                 BoostMetadataDefs.push(msg);
                 // console.debug(`BoostMetadata`, msg,BoostMetadataDefs);
-              } else if (msg.__class__ && msg.__class__.substring(0, 18) == "CityEntityCultural") {
+              } else if (
+                msg.__class__ &&
+                msg.__class__.substring(0, 18) == 'CityEntityCultural'
+              ) {
                 // console.debug(`CityEntityCultural`, msg.name,msg);
-              } else if (msg.__class__ && msg.__class__ == "BuildingUpgrade") {
+              } else if (msg.__class__ && msg.__class__ == 'BuildingUpgrade') {
                 // console.debug(`BuildingUpgrade`, msg.name,msg);
-              } else if (msg.__class__ && msg.__class__ == "CityMapEntity") {
+              } else if (msg.__class__ && msg.__class__ == 'CityMapEntity') {
                 //
-                if (msg.id == "W_MultiAge_WIN22A11b") {
+                if (msg.id == 'W_MultiAge_WIN22A11b') {
                   console.info(msg.name, msg);
                 }
               } else if (!msg.__class__) {
@@ -1782,7 +2082,7 @@ function handleRequestFinished(request) {
         // console.debug('parsed:', parsed);
         if (parsed && parsed.player_name && parsed.worlds) {
           worlds = parsed.worlds;
-          console.debug("worlds", worlds);
+          console.debug('worlds', worlds);
         }
       }
     });
@@ -1800,29 +2100,29 @@ function storageChange(changes, namespace) {
     // 			  namespace,
     // 			  storageChange.oldValue,
     // 			  storageChange.newValue);
-    if (key == "showOptions") setOptions("showOptions", storageChange.newValue);
+    if (key == 'showOptions') setOptions('showOptions', storageChange.newValue);
     // showOptions = storageChange.newValue;
     // console.debug(changes);
-    else if (key == "tool") {
+    else if (key == 'tool') {
       language = storageChange.newValue.language;
       console.debug(language);
-    } else if (key == "targets") {
+    } else if (key == 'targets') {
       // console.debug(storageChange.newValue,targetsTopic);
       targetsTopic = storageChange.newValue;
-    } else if (key == "targetText") {
+    } else if (key == 'targetText') {
       // console.debug(storageChange.newValue,targetText);
       targetText = storageChange.newValue;
-    } else if (key == "toolOptions") {
+    } else if (key == 'toolOptions') {
       setToolOptions(storageChange.newValue);
       // console.debug(toolOptions);
-    } else if (key == "donationPercent") {
+    } else if (key == 'donationPercent') {
       donationPercent = storageChange.newValue;
       setCurrentPercent(storageChange.newValue);
       // console.debug(storageChange.newValue);
-    } else if (key == "donationSuffix") {
+    } else if (key == 'donationSuffix') {
       donationSuffix = storageChange.newValue;
       // console.debug(storageChange.newValue);
-    } else if (key == "url") {
+    } else if (key == 'url') {
       url = storageChange.newValue;
       // console.debug(url);
     }
@@ -1862,7 +2162,7 @@ export function setMyGuildPermissions(permissions) {
 
 export function setMyGuildPosition(id) {
   MyInfo.guildPosition = id;
-  storage.set(GameOrigin + "MyInfo", MyInfo);
+  storage.set(GameOrigin + 'MyInfo', MyInfo);
 }
 
 export function setPlayerName(name, id) {
@@ -1887,12 +2187,12 @@ function fCleardForGVG() {
   info.innerHTML = ``;
   donationDIV.innerHTML = ``;
   visitstats.innerHTML = ``;
-  visitstats.className = "";
+  visitstats.className = '';
   cultural.innerHTML = ``;
-  cultural.className = "";
-  friendsDiv.innerHTML = "";
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
+  cultural.className = '';
+  friendsDiv.innerHTML = '';
+  treasury.innerHTML = '';
+  treasuryLog.innerHTML = '';
 }
 
 function clearVisitPlayer() {
@@ -1909,10 +2209,10 @@ function clearVisitPlayer() {
   info.innerHTML = ``;
   donationDIV.innerHTML = ``;
   cultural.innerHTML = ``;
-  cultural.className = "";
-  friendsDiv.innerHTML = "";
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
+  cultural.className = '';
+  friendsDiv.innerHTML = '';
+  treasury.innerHTML = '';
+  treasuryLog.innerHTML = '';
 }
 
 function clearExpedition() {
@@ -1931,17 +2231,17 @@ function clearExpedition() {
   info.innerHTML = ``;
   donationDIV.innerHTML = ``;
   visitstats.innerHTML = ``;
-  visitstats.className = "";
+  visitstats.className = '';
   cultural.innerHTML = ``;
-  cultural.className = "";
-  friendsDiv.innerHTML = "";
+  cultural.className = '';
+  friendsDiv.innerHTML = '';
   gvg.innerHTML = ``;
-  gvg.className = "";
+  gvg.className = '';
   // armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
+  treasury.innerHTML = '';
+  treasuryLog.innerHTML = '';
+  if (gvgSummary) gvgSummary.innerHTML = '';
+  if (gvgAges) gvgAges.innerHTML = '';
 }
 
 function clearForBattleground() {
@@ -1960,17 +2260,17 @@ function clearForBattleground() {
   info.innerHTML = ``;
   donationDIV.innerHTML = ``;
   visitstats.innerHTML = ``;
-  visitstats.className = "";
+  visitstats.className = '';
   cultural.innerHTML = ``;
-  cultural.className = "";
-  friendsDiv.innerHTML = "";
+  cultural.className = '';
+  friendsDiv.innerHTML = '';
   gvg.innerHTML = ``;
-  gvg.className = "";
+  gvg.className = '';
   // armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
+  treasury.innerHTML = '';
+  treasuryLog.innerHTML = '';
+  if (gvgSummary) gvgSummary.innerHTML = '';
+  if (gvgAges) gvgAges.innerHTML = '';
 }
 
 function clearForMainCity() {
@@ -1986,16 +2286,16 @@ function clearForMainCity() {
   info.innerHTML = ``;
   donationDIV.innerHTML = ``;
   visitstats.innerHTML = ``;
-  visitstats.className = "";
+  visitstats.className = '';
   cultural.innerHTML = ``;
-  cultural.className = "";
+  cultural.className = '';
   gvg.innerHTML = ``;
-  gvg.className = "";
+  gvg.className = '';
   // armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
+  treasury.innerHTML = '';
+  treasuryLog.innerHTML = '';
+  if (gvgSummary) gvgSummary.innerHTML = '';
+  if (gvgAges) gvgAges.innerHTML = '';
 }
 
 function clearStartup() {
@@ -2015,17 +2315,17 @@ function clearStartup() {
   citystats.innerHTML = ``;
   donationDIV.innerHTML = ``;
   visitstats.innerHTML = ``;
-  visitstats.className = "";
+  visitstats.className = '';
   cultural.innerHTML = ``;
-  cultural.className = "";
-  friendsDiv.innerHTML = "";
+  cultural.className = '';
+  friendsDiv.innerHTML = '';
   gvg.innerHTML = ``;
-  gvg.className = "";
+  gvg.className = '';
   armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
+  treasury.innerHTML = '';
+  treasuryLog.innerHTML = '';
+  if (gvgSummary) gvgSummary.innerHTML = '';
+  if (gvgAges) gvgAges.innerHTML = '';
   GuildDonations = [];
   GuildTreasury = [];
   //  ResourceDefs = [];
@@ -2061,19 +2361,19 @@ function clearCultural() {
   info.innerHTML = ``;
   donationDIV.innerHTML = ``;
   visitstats.innerHTML = ``;
-  visitstats.className = "";
-  friendsDiv.innerHTML = "";
+  visitstats.className = '';
+  friendsDiv.innerHTML = '';
   gvg.innerHTML = ``;
-  gvg.className = "";
+  gvg.className = '';
   armyDIV.innerHTML = ``;
-  treasury.innerHTML = "";
-  treasuryLog.innerHTML = "";
-  if (gvgSummary) gvgSummary.innerHTML = "";
-  if (gvgAges) gvgAges.innerHTML = "";
+  treasury.innerHTML = '';
+  treasuryLog.innerHTML = '';
+  if (gvgSummary) gvgSummary.innerHTML = '';
+  if (gvgAges) gvgAges.innerHTML = '';
 }
 
 function receiveStorage(result) {
-  console.debug("result", result);
+  console.debug('result', result);
 
   // // console.debug('showIncidents', showIncidents);
   // else
@@ -2089,39 +2389,39 @@ function receiveStorage(result) {
     // console.debug(element);
     const [key, value] = element;
     // console.debug(key,value,key.substring(0,8));
-    if (key.substring(0, 8) == "collapse") {
+    if (key.substring(0, 8) == 'collapse') {
       // console.debug(key,value);
       collapseOptions(key, value);
-    } else if (key == "showOptions") setOptions("showOptions", value);
+    } else if (key == 'showOptions') setOptions('showOptions', value);
     else if (key == ResourceDefs) {
       // if(key == ResourceDefs)
       setResourceDefs(value);
-    } else if (key == "CityEntityDefs") {
+    } else if (key == 'CityEntityDefs') {
       // if(key == CityEntityDefs)
       CityEntityDefs = value;
       console.debug(key, value);
-    } else if (key == "tool") {
-      if (value.language != "auto") {
+    } else if (key == 'tool') {
+      if (value.language != 'auto') {
         language = value.language;
         console.debug(language);
       }
-    } else if (key == "targets") {
+    } else if (key == 'targets') {
       targetsTopic = value;
       // console.debug(targetsTopic);
-    } else if (key == "targetText") {
+    } else if (key == 'targetText') {
       targetText = value;
       // console.debug(targetText);
-    } else if (key == "toolOptions") {
+    } else if (key == 'toolOptions') {
       setToolOptions(value);
       // console.debug(toolOptions);
-    } else if (key == "donationPercent") {
+    } else if (key == 'donationPercent') {
       donationPercent = value;
       setCurrentPercent(value);
       // console.debug(value);
-    } else if (key == "donationSuffix") {
+    } else if (key == 'donationSuffix') {
       donationSuffix = value;
       // console.debug(value);
-    } else if (key == "url") {
+    } else if (key == 'url') {
       url = value;
       // console.debug(value);
     } else console.debug(key, value);
@@ -2131,7 +2431,10 @@ function receiveStorage(result) {
 export function initTreasury(resources) {
   for (var i = 0; i < helper.numAges; i++) {
     ResourceDefs.forEach((rssDef) => {
-      if (rssDef.era == helper.fAgefromLevel(helper.numAges - i) && resources[rssDef.id]) {
+      if (
+        rssDef.era == helper.fAgefromLevel(helper.numAges - i) &&
+        resources[rssDef.id]
+      ) {
         GuildTreasury.push([
           rssDef.id,
           helper.fGVGagesname(rssDef.era),
@@ -2151,248 +2454,281 @@ export function initTreasury(resources) {
 }
 
 export function showReward(reward) {
-  var rewardId = "collectRewardText";
-  var rewardTitle = "";
+  var rewardId = 'collectRewardText';
+  var rewardTitle = '';
   // var rewards = [];
   var name = helper.fRewardShortName(reward.name);
   var qty = reward.amount;
   // if((reward.type = 'good' && !reward.subType == 'rogue') || reward.id.includes('goods#each#CurrentEra'))
   if (reward.totalAmount) qty = reward.totalAmount;
-  if (reward.source == "guildExpedition") {
-    rewardTitle = "GE ";
-    rewardId = "collectGERewardText";
+  if (reward.source == 'guildExpedition') {
+    rewardTitle = 'GE ';
+    rewardId = 'collectGERewardText';
     if (!rewardsGE[name]) rewardsGE[name] = 0;
     rewardsGE[name] += qty;
-    console.debug("rewardsGE:", rewardsGE, reward);
+    console.debug('rewardsGE:', rewardsGE, reward);
     // rewards = rewardsGE;
-  } else if (reward.source == "battlegrounds_conquest") {
-    rewardTitle = "GBG ";
-    rewardId = "collectGBGRewardText";
+  } else if (reward.source == 'battlegrounds_conquest') {
+    rewardTitle = 'GBG ';
+    rewardId = 'collectGBGRewardText';
     if (!rewardsGBG[name]) rewardsGBG[name] = 0;
     rewardsGBG[name] += qty;
-    console.debug("rewardsGBG:", rewardsGBG, reward);
+    console.debug('rewardsGBG:', rewardsGBG, reward);
     // rewards = rewardsGBG;
-  } else if (reward.source == "otherPlayer" || reward.source == "pickupProduction") {
+  } else if (
+    reward.source == 'otherPlayer' ||
+    reward.source == 'pickupProduction'
+  ) {
     // reward already stored. so just show it
   } else {
-    rewardTitle = "Other ";
-    rewardId = "collectRewardText";
-    if (reward.type == "resource") name = helper.fResourceShortName(reward.subType);
+    rewardTitle = 'Other ';
+    rewardId = 'collectRewardText';
+    if (reward.type == 'resource')
+      name = helper.fResourceShortName(reward.subType);
     if (!rewardsGeneric[name]) rewardsGeneric[name] = 0;
     rewardsGeneric[name] += qty;
-    console.debug("rewardsGeneric:", rewardsGeneric, reward);
+    console.debug('rewardsGeneric:', rewardsGeneric, reward);
     // rewards = rewardsGeneric;
   }
-  var text = "";
+  var text = '';
   if (Object.keys(rewardsGE).length) {
-    text += "<p><em>GE</em><br>";
+    text += '<p><em>GE</em><br>';
     Object.keys(rewardsGE).forEach((item) => {
       // console.debug(item);
       text += `${rewardsGE[item]} ${item}<br>`;
     });
-    text += "</p>";
+    text += '</p>';
   }
   if (Object.keys(rewardsGBG).length) {
-    text += "<p><em>GBG</em><br>";
+    text += '<p><em>GBG</em><br>';
     Object.keys(rewardsGBG).forEach((item) => {
       // console.debug(item);
       text += `${rewardsGBG[item]} ${item}<br>`;
     });
-    text += "</p>";
+    text += '</p>';
   }
   if (Object.keys(rewardsGeneric).length) {
-    text += "<p><em>Event/City</em><br>";
+    text += '<p><em>Event/City</em><br>';
     Object.keys(rewardsGeneric).forEach((item) => {
       // console.debug(item);
       text += `${rewardsGeneric[item]} ${item}<br>`;
     });
-    text += "</p>";
+    text += '</p>';
   }
   if (Object.keys(rewardsOtherPlayer).length) {
-    text += "<p><em>Aid/Plunder</em><br>";
+    text += '<p><em>Aid/Plunder</em><br>';
     Object.keys(rewardsOtherPlayer).forEach((item) => {
       // console.debug(item);
       text += `${rewardsOtherPlayer[item]} ${item}<br>`;
     });
-    text += "</p>";
+    text += '</p>';
   }
   if (Object.keys(rewardsCity).length) {
-    text += "<p><em>City</em><br>";
+    text += '<p><em>City</em><br>';
     Object.keys(rewardsCity).forEach((item) => {
       // console.debug(item);
       text += `${rewardsCity[item]} ${item}<br>`;
     });
-    text += "</p>";
+    text += '</p>';
   }
   if (Object.keys(rewardsArmy).length) {
-    text += "<p><em>Army</em><br>";
+    text += '<p><em>Army</em><br>';
     Object.keys(rewardsArmy).forEach((item) => {
       // console.debug(item);
       text += `${rewardsArmy[item]} ${item}<br>`;
     });
-    text += "</p>";
+    text += '</p>';
   }
 
   cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-bs-toggle="collapse">
-  ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
+  ${element.icon('rewardsicon', 'rewardsText', collapse.collapseRewards)}
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
 	${element.close()}
 	<div id="rewardsText" stype="height: 400px" class="overflow resize collapse ${
-    collapse.collapseRewards ? "" : "show"
+    collapse.collapseRewards ? '' : 'show'
   }">${text}</div></div>`;
   rewardObserve();
-  document.getElementById("rewardsTextLabel").addEventListener("click", collapse.fCollapseRewards);
+  document
+    .getElementById('rewardsTextLabel')
+    .addEventListener('click', collapse.fCollapseRewards);
 }
 
 export function showRewards(rewards) {
-  var rewardTitle = "";
-  var text = "";
+  var rewardTitle = '';
+  var text = '';
   // var rewards = [];
 
   rewards.forEach((reward) => {
     var name = helper.fRewardShortName(reward.name);
     var qty = reward.amount;
-    if (reward.source == "autoAid") {
-      rewardTitle = "City ";
-      if (reward.type == "resource") {
-        console.debug("autoAid:resource", reward.subType, qty, reward);
+    if (reward.source == 'autoAid') {
+      rewardTitle = 'City ';
+      if (reward.type == 'resource') {
+        console.debug('autoAid:resource', reward.subType, qty, reward);
         if (rewardsCity[reward.subType]) rewardsCity[reward.subType] += qty;
         else rewardsCity[reward.subType] = qty;
-      } else if (reward.type == "blueprint") {
-        console.debug("autoAid:resource", helper.fGBsname(reward.subType) + " " + name, qty, reward);
-        if (rewardsCity[helper.fGBsname(reward.subType) + " " + name])
-          rewardsCity[helper.fGBsname(reward.subType) + " " + name] += qty;
-        else rewardsCity[helper.fGBsname(reward.subType) + " " + name] = qty;
+      } else if (reward.type == 'blueprint') {
+        console.debug(
+          'autoAid:resource',
+          helper.fGBsname(reward.subType) + ' ' + name,
+          qty,
+          reward,
+        );
+        if (rewardsCity[helper.fGBsname(reward.subType) + ' ' + name])
+          rewardsCity[helper.fGBsname(reward.subType) + ' ' + name] += qty;
+        else rewardsCity[helper.fGBsname(reward.subType) + ' ' + name] = qty;
       } else {
         if (rewardsCity[reward.subType]) rewardsCity[reward.subType] += qty;
         else rewardsCity[reward.subType] = qty;
       }
 
-      console.debug("autoAid:", rewardsCity, reward);
+      console.debug('autoAid:', rewardsCity, reward);
       // rewards = rewardsGE;
     } else {
-      rewardTitle = "Other ";
-      if (reward.type == "resource") name = helper.fResourceShortName(reward.subType);
+      rewardTitle = 'Other ';
+      if (reward.type == 'resource')
+        name = helper.fResourceShortName(reward.subType);
       if (!rewardsGeneric[name]) rewardsGeneric[name] = 0;
       rewardsGeneric[name] += qty;
-      console.debug("rewardsGeneric:", rewardsGeneric, reward);
+      console.debug('rewardsGeneric:', rewardsGeneric, reward);
       // rewards = rewardsGeneric;
     }
     if (Object.keys(rewardsGE).length) {
-      text += "<p><em>GE</em><br>";
+      text += '<p><em>GE</em><br>';
       Object.keys(rewardsGE).forEach((item) => {
         console.debug(item);
         text += `${rewardsGE[item]} ${item}<br>`;
       });
-      text += "</p>";
+      text += '</p>';
     }
     if (Object.keys(rewardsGBG).length) {
-      text += "<p><em>GBG</em><br>";
+      text += '<p><em>GBG</em><br>';
       Object.keys(rewardsGBG).forEach((item) => {
         console.debug(item);
         text += `${rewardsGBG[item]} ${item}<br>`;
       });
-      text += "</p>";
+      text += '</p>';
     }
     if (Object.keys(rewardsGeneric).length) {
-      text += "<p><em>Event/City</em><br>";
+      text += '<p><em>Event/City</em><br>';
       Object.keys(rewardsGeneric).forEach((item) => {
         console.debug(item);
         text += `${rewardsGeneric[item]} ${item}<br>`;
       });
-      text += "</p>";
+      text += '</p>';
     }
     if (Object.keys(rewardsOtherPlayer).length) {
-      text += "<p><em>Aid/Plunder</em><br>";
+      text += '<p><em>Aid/Plunder</em><br>';
       Object.keys(rewardsOtherPlayer).forEach((item) => {
         console.debug(item);
         text += `${rewardsOtherPlayer[item]} ${item}<br>`;
       });
-      text += "</p>";
+      text += '</p>';
     }
     if (Object.keys(rewardsCity).length) {
-      text += "<p><em>City</em><br>";
+      text += '<p><em>City</em><br>';
       Object.keys(rewardsCity).forEach((item) => {
         console.debug(item);
         text += `${rewardsCity[item]} ${item}<br>`;
       });
-      text += "</p>";
+      text += '</p>';
     }
     if (Object.keys(rewardsArmy).length) {
-      text += "<p><em>Army</em><br>";
+      text += '<p><em>Army</em><br>';
       Object.keys(rewardsArmy).forEach((item) => {
         console.debug(item);
         text += `${rewardsArmy[item]} ${item}<br>`;
       });
-      text += "</p>";
+      text += '</p>';
     }
   });
 
   cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
-  ${element.icon("rewardsicon", "rewardsText", collapse.collapseRewards)}
+  ${element.icon('rewardsicon', 'rewardsText', collapse.collapseRewards)}
 	<span data-i18n="reward"><strong>REWARDS:</strong></span></p>
 	${element.close()}
-	<div id="rewardsText" class="overflow resize collapse ${collapse.collapseRewards ? "" : "show"}">${text}</div></div>`;
+	<div id="rewardsText" class="overflow resize collapse ${collapse.collapseRewards ? '' : 'show'}">${text}</div></div>`;
   rewardObserve();
-  document.getElementById("rewardsTextLabel").addEventListener("click", collapse.fCollapseRewards);
+  document
+    .getElementById('rewardsTextLabel')
+    .addEventListener('click', collapse.fCollapseRewards);
 }
 
 function rewardObserve() {
-  $("#rewards").i18n();
-  const rewardDiv = document.getElementById("rewardsText");
-  rewardDiv.addEventListener("mouseup", setHeight);
+  $('#rewards').i18n();
+  const rewardDiv = document.getElementById('rewardsText');
+  rewardDiv.addEventListener('mouseup', setHeight);
   const resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height) heightRewards = entry.contentRect.height;
+      if (entry.contentRect && entry.contentRect.height)
+        heightRewards = entry.contentRect.height;
     }
   });
   resizeObserver.observe(rewardDiv);
-  if ($("#rewardsText").height() > toolOptions.rewardSize) {
-    $("#rewardsText").height(toolOptions.rewardSize);
+  if ($('#rewardsText').height() > toolOptions.rewardSize) {
+    $('#rewardsText').height(toolOptions.rewardSize);
   }
 }
 
 // The onClicked callback function.
 function onClickHandler(info, tab) {
-  console.debug("onClickHandler: " + JSON.stringify(info));
+  console.debug('onClickHandler: ' + JSON.stringify(info));
 
-  if (info.menuItemId == "radio1" || info.menuItemId == "radio2") {
+  if (info.menuItemId == 'radio1' || info.menuItemId == 'radio2') {
     console.debug(
-      "radio item " + info.menuItemId + " was clicked (previous checked state was " + info.wasChecked + ")"
+      'radio item ' +
+        info.menuItemId +
+        ' was clicked (previous checked state was ' +
+        info.wasChecked +
+        ')',
     );
-  } else if (info.menuItemId == "checkbox1" || info.menuItemId == "checkbox2") {
+  } else if (info.menuItemId == 'checkbox1' || info.menuItemId == 'checkbox2') {
     console.debug(JSON.stringify(info));
     console.debug(
-      "checkbox item " +
+      'checkbox item ' +
         info.menuItemId +
-        " was clicked, state is now: " +
+        ' was clicked, state is now: ' +
         info.checked +
-        " (previous state was " +
+        ' (previous state was ' +
         info.wasChecked +
-        ")"
+        ')',
     );
   } else {
-    console.debug("item " + info.menuItemId + " was clicked");
-    console.debug("info: " + JSON.stringify(info));
-    console.debug("tab: " + JSON.stringify(tab));
+    console.debug('item ' + info.menuItemId + ' was clicked');
+    console.debug('info: ' + JSON.stringify(info));
+    console.debug('tab: ' + JSON.stringify(tab));
   }
 }
 
 browser.runtime.onInstalled.addListener(handleInstalled);
 // Check whether new version is installed
 function handleInstalled(details) {
-  if (details.reason == "install") {
-    console.debug(tool.name + " installed!");
-  } else if (details.reason == "update") {
-    console.debug(tool.name + " updated from " + details.previousVersion + " to " + tool.version + "!");
-    alert(tool.name + " updated from " + details.previousVersion + " to " + tool.version + "!");
+  if (details.reason == 'install') {
+    console.debug(tool.name + ' installed!');
+  } else if (details.reason == 'update') {
+    console.debug(
+      tool.name +
+        ' updated from ' +
+        details.previousVersion +
+        ' to ' +
+        tool.version +
+        '!',
+    );
+    alert(
+      tool.name +
+        ' updated from ' +
+        details.previousVersion +
+        ' to ' +
+        tool.version +
+        '!',
+    );
     // console.debug(oReq.responseText);
   }
 }
 
 function toggleDebug() {
   debugEnabled = !debugEnabled;
-  var logo = document.getElementById("logo");
+  var logo = document.getElementById('logo');
   if (debugEnabled == true) {
     // logo.src = bug;
     logo.outerHTML = `<span class="material-icons-outlined" id="logo">bug_report</span>`;
@@ -2400,12 +2736,12 @@ function toggleDebug() {
     logo.outerHTML = `<img src="/icons/Icon48.png" width="24" height="24" id="logo">`;
     // logo.src = "/icons/Icon48.png";
   }
-  document.getElementById("logo").addEventListener("click", toggleDebug);
-  console.debug("toggleDebug", debugEnabled);
+  document.getElementById('logo').addEventListener('click', toggleDebug);
+  console.debug('toggleDebug', debugEnabled);
 }
 
 export function removeDebug() {
-  document.getElementById("logo").removeEventListener("click", toggleDebug);
+  document.getElementById('logo').removeEventListener('click', toggleDebug);
 }
 
 export function checkDebug() {
@@ -2414,14 +2750,14 @@ export function checkDebug() {
 
 var heightRewards = toolOptions.rewardSize;
 function setHeight() {
-  console.debug("mouseup", heightRewards);
+  console.debug('mouseup', heightRewards);
   setRewardSize(heightRewards);
 }
 
 browser.runtime.onUpdateAvailable.addListener(handleUpdateAvailable);
 function handleUpdateAvailable(details) {
-  console.debug("updating to version " + details.version);
-  alert("updating to version " + details.version);
+  console.debug('updating to version ' + details.version);
+  alert('updating to version ' + details.version);
   browser.runtime.reload();
 }
 
@@ -2429,12 +2765,12 @@ let requestingCheck = browser.runtime.requestUpdateCheck();
 requestingCheck.then(onRequested, onError);
 
 function onRequested(status, details) {
-  if (status == "update_available") {
-    console.debug("update pending...");
+  if (status == 'update_available') {
+    console.debug('update pending...');
     console.log(details.version);
-  } else if (status == "no_update") {
-    console.debug("no update found");
-  } else if (status == "throttled") {
+  } else if (status == 'no_update') {
+    console.debug('no update found');
+  } else if (status == 'throttled') {
     console.debug("Oops, I'm asking too frequently - I need to back off.");
   }
 }
