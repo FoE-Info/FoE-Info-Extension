@@ -69,6 +69,7 @@ var entityVisitCityDefense = 0;
 var tooltipHTML = [];
 var goodsList = [];
 var Goods = {
+  sash: 0,
   sat: 0,
   sajm: 0,
   sav: 0,
@@ -154,6 +155,7 @@ export function otherPlayerService(msg) {
   visitData = [];
   visitAD = [];
   Goods = {
+    sash: 0,
     sat: 0,
     sajm: 0,
     sav: 0,
@@ -273,6 +275,8 @@ export function otherPlayerService(msg) {
       else if (mapID.cityentity_id == "X_SpaceAgeTitan_Landmark1") visitCentaurusLevel = mapID.level;
       else if (mapID.cityentity_id == "X_SpaceAgeTitan_Landmark2") visitPegasusLevel = mapID.level;
       else if (mapID.cityentity_id == "X_SpaceAgeTitan_Landmark3") visitHydraLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeSpaceHub_Landmark1") visitStellarWarshipLevel = mapID.level;
+      else if (mapID.cityentity_id == "X_SpaceAgeSpaceHub_Landmark2") visitCosmicCatalystLevel = mapID.level;
       else {
         // const entity = CityEntityDefs[mapID.cityentity_id];
         // if(entity.type != 'tower' && entity.type != 'street' && entity.type != 'hub_main' && entity.type != 'hub_part' && entity.type != 'off_grid'){
@@ -1343,6 +1347,7 @@ function fGoodsTally(age, good) {
   else if (age == "SpaceAgeVenus") Goods.sav += good;
   else if (age == "SpaceAgeJupiterMoon") Goods.sajm += good;
   else if (age == "SpaceAgeTitan") Goods.sat += good;
+  else if (age == "SpaceAgeSpaceHub") Goods.sash += good;
   else if (age == "NoAge") Goods.noage += good;
   else console.debug(age, good);
 }
