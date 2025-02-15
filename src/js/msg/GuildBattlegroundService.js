@@ -417,30 +417,23 @@ function timeGBG(time) {
 }
 
 function attritionReduction(building) {
-  switch (building) {
-    case 'watchtower':
-      return 8;
-    case 'guild_command_post_improvised':
-      return 20;
-    case 'guild_command_post_forward':
-      return 40;
-    case 'guild_command_post_fortified':
-      return 60;
-    case 'barracks_improvised':
-      return 20;
-    case 'barracks':
-      return 40;
-    case 'barracks_reinforced':
-      return 60;
-    case 'guild_fieldcamp_small':
-      return 26;
-    case 'guild_fieldcamp':
-      return 52;
-    case 'guild_fieldcamp_fortified':
-      return 80;
-    default:
-      return 0;
-  }
+  if (building == 'watchtower') return 8;
+  else if (building == 'guild_command_post_improvised') return 20;
+  else if (building == 'guild_command_post_forward') return 40;
+  else if (building == 'guild_command_post_fortified') return 60;
+  else if (building == 'barracks_improvised') return 20;
+  else if (building == 'barracks') return 40;
+  else if (building == 'barracks_reinforced') return 60;
+  else if (building == 'guild_fieldcamp_small') return 26;
+  else if (building == 'guild_fieldcamp') return 52;
+  else if (building == 'guild_fieldcamp_fortified') return 80;
+  else if (building.includes('basic_field_outpost_')) return 20;
+  else if (building.includes('regular_field_outpost_')) return 40;
+  else if (building.includes('advanced_field_outpost_')) return 60;
+  else if (building.includes('basic_guild_fortress_')) return 26;
+  else if (building.includes('regular_guild_fortress_')) return 52;
+  else if (building.includes('advanced_guild_fortress_')) return 80;
+  else {return 0;}
 }
 
 function checkProvinces() {
