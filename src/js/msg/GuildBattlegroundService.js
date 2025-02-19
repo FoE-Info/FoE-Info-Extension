@@ -433,7 +433,9 @@ function attritionReduction(building) {
   else if (building.includes('basic_guild_fortress_')) return 26;
   else if (building.includes('regular_guild_fortress_')) return 52;
   else if (building.includes('advanced_guild_fortress_')) return 80;
-  else {return 0;}
+  else {
+    return 0;
+  }
 }
 
 function checkProvinces() {
