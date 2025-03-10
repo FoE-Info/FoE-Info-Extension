@@ -1222,7 +1222,9 @@ function handleRequestFinished(request) {
                 rewards.source = msg.responseData.context;
                 console.debug(rewards);
                 if (showOptions.showRewards) {
-                  showRewards(rewards);
+                  rewards.forEach((reward) => {
+                    showReward(reward);
+                  })
                 }
               }
             } else if (msg.requestMethod == '') {
