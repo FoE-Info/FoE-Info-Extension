@@ -1224,7 +1224,7 @@ function handleRequestFinished(request) {
                 if (showOptions.showRewards) {
                   rewards.forEach((reward) => {
                     showReward(reward);
-                  })
+                  });
                 }
               }
             } else if (msg.requestMethod == '') {
