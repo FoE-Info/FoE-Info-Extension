@@ -1,2 +1,3 @@
+const salt = 'notquitesafewaytostoreinfo';
 
-export salt = 'notquitesafewaytostoreinfo';
+export { salt };
