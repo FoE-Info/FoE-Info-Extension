@@ -5,12 +5,6 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "build",
-      "problemMatcher": ["$eslint-compact"],
-      "group": "build"
-    },
-    {
-      "type": "npm",
       "script": "build-foe-info",
       "problemMatcher": ["$eslint-compact"],
       "group": "build"
