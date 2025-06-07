@@ -1145,7 +1145,7 @@ function handleRequestFinished(request) {
             Object.keys(culturalGoods).forEach((entry) => {
               var needed = culturalGoods[`${entry}`];
               if (Resources[`${entry}`]) needed -= Resources[`${entry}`];
-              // setResources(entry);
+              // setResources(entry, needed);
               // console.debug(`${entry}`,needed);
               if (entry != 'diplomacy' && needed > 0)
                 culturalHTML +=
