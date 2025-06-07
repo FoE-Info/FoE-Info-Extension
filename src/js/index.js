@@ -141,6 +141,10 @@ export var VolcanoProvinceDefs = [];
 export var WaterfallProvinceDefs = [];
 export var BuildingDefs = [];
 export var hiddenRewards = [];
+// flag to indicate that all metadata files have been processed
+var metadataLoaded = false;
+// store StartupService message until metadata is ready
+var pendingStartupMsg = null;
 export var Goods = {
   sash: 0,
   sat: 0,
@@ -725,6 +729,11 @@ function handleRequestFinished(request) {
               }
             }
             storage.set('CityEntityDefs', CityEntityDefs);
+            metadataLoaded = true;
+            if (pendingStartupMsg) {
+              startupService(pendingStartupMsg);
+              pendingStartupMsg = null;
+            }
           } else if (
             msg.requestClass == 'CampaignService' &&
             msg.requestMethod == 'getDeposits'
@@ -1026,7 +1035,11 @@ function handleRequestFinished(request) {
             visitstats.className = '';
             cultural.innerHTML = ``;
             cultural.className = '';
-            startupService(msg);
+            if (metadataLoaded) {
+              startupService(msg);
+            } else {
+              pendingStartupMsg = msg;
+            }
 
             /*Player Info */
           } else if (
