@@ -88,6 +88,15 @@ export function getLimitedBonuses(msg) {
       } else if (entry.type == 'double_collection') {
         Galaxy.amount = entry.amount > 0 ? entry.amount : 0;
         showGalaxy();
+      } else if (
+        entry.type == 'daily_strategypoint' ||
+        entry.__class__ == 'DailyStrategyPointBonus'
+      ) {
+        const fp = entry.value ?? entry.amount ?? 0;
+        City.ForgePoints += fp;
+        const fpSpan = document.getElementById('fp');
+        if (fpSpan)
+          fpSpan.innerHTML = `<span data-i18n="daily">Daily</span>: ${City.ForgePoints}FP`;
       }
     });
     // console.debug(bonusHTML);
