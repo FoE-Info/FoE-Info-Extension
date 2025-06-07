@@ -142,6 +142,10 @@ export var WaterfallProvinceDefs = [];
 export var BuildingDefs = [];
 export var metadataLoaded = false;
 export var hiddenRewards = [];
+// flag to indicate that all metadata files have been processed
+var metadataLoaded = false;
+// store StartupService message until metadata is ready
+var pendingStartupMsg = null;
 export var Goods = {
   sash: 0,
   sat: 0,
@@ -765,6 +769,20 @@ function handleRequestFinished(request) {
               metadataLoaded = true;
             } catch (err) {
               console.error('Metadata fetch failed', err);
+            for (const item of msg.responseData) {
+              try {
+                const resp = await fetch(item.url);
+                const data = await resp.json();
+                data.forEach(processMetadataEntry);
+              } catch (e) {
+                console.error('metadata fetch failed', item, e);
+              }
+            }
+            storage.set('CityEntityDefs', CityEntityDefs);
+            metadataLoaded = true;
+            if (pendingStartupMsg) {
+              startupService(pendingStartupMsg);
+              pendingStartupMsg = null;
             }
           } else if (
             msg.requestClass == 'CampaignService' &&
@@ -1067,7 +1085,11 @@ function handleRequestFinished(request) {
             visitstats.className = '';
             cultural.innerHTML = ``;
             cultural.className = '';
-            startupService(msg);
+            if (metadataLoaded) {
+              startupService(msg);
+            } else {
+              pendingStartupMsg = msg;
+            }
 
             /*Player Info */
           } else if (
@@ -1155,7 +1177,7 @@ function handleRequestFinished(request) {
             Object.keys(culturalGoods).forEach((entry) => {
               var needed = culturalGoods[`${entry}`];
               if (Resources[`${entry}`]) needed -= Resources[`${entry}`];
-              // setResources(entry);
+              // setResources(entry, needed);
               // console.debug(`${entry}`,needed);
               if (entry != 'diplomacy' && needed > 0)
                 culturalHTML +=
@@ -1993,95 +2015,10 @@ function handleRequestFinished(request) {
               /**/
             } else console.debug('AutoAidService', msg);
           } else {
-            //output.innerHTML += `<div>*** ${msg.requestClass}</div>`;
+            // output.innerHTML += `<div>*** ${msg.requestClass}</div>`;
             if (msg.requestClass == null) {
-              if (msg.id == 'W_MultiAge_WIN22A11b') {
-                console.info(msg.name, msg);
-              }
-              if (
-                msg.__class__ &&
-                (msg.__class__ == 'CityEntityCulturalGoodsBuilding' ||
-                  msg.__class__ == 'CityEntityImpediment' ||
-                  msg.__class__ == 'CityEntityDiplomacy' ||
-                  msg.__class__ == 'CityEntityStaticProvider' ||
-                  msg.__class__ == 'CityEntityStreet' ||
-                  msg.__class__ == 'CityEntityHub' ||
-                  msg.__class__ == 'CityEntityOutpostShip' ||
-                  msg.__class__ == 'QuestTabMetadata' ||
-                  msg.__class__ == 'ChainMetadata' ||
-                  msg.__class__ == 'BuildingSetMetadata' ||
-                  msg.__class__ == 'InfoScreen' ||
-                  msg.type == 'off_grid')
-              ) {
-                // ignore these
-                //   console.debug(msg.name, msg);
-              } else if (
-                msg.__class__ &&
-                msg.__class__.substring(0, 10) == 'CityEntity'
-              ) {
-                if (!CityEntityDefs[msg.id]) {
-                  CityEntityDefs[msg.id] = {
-                    name: msg.name,
-                    abilities: [],
-                    entity_levels: [],
-                    available_products: [],
-                  };
-                }
-                // console.debug(msg.name,msg);
-                CityEntityDefs[msg.id] = msg;
-              } else if (
-                msg.__class__ &&
-                msg.__class__ == 'GenericCityEntity'
-              ) {
-                if (!CityEntityDefs[msg.id]) {
-                  CityEntityDefs[msg.id] = {
-                    name: msg.name,
-                    abilities: [],
-                    entity_levels: [],
-                    available_products: [],
-                  };
-                }
-                // console.debug(msg.name,msg);
-                CityEntityDefs[msg.id] = msg;
-              } else if (msg.__class__ && msg.__class__ == 'UnitType') {
-                // MilitaryDefs.push([msg.unitTypeId,msg.name,msg.minEra]);
-                MilitaryDefs[msg.unitTypeId] = {
-                  name: msg.name,
-                  era: msg.minEra,
-                };
-              } else if (
-                msg.__class__ &&
-                msg.__class__ == 'CastleSystemLevelMetadata'
-              ) {
-                CastleDefs.push(msg);
-                //   console.debug(`CastleSystemLevelMetadata`, msg, CastleDefs);
-              } else if (
-                msg.__class__ &&
-                msg.__class__ == 'SelectionKitMetadata'
-              ) {
-                SelectionKitDefs.push(msg);
-                // console.debug(`SelectionKitMetadata`, msg,SelectionKitDefs);
-              } else if (msg.__class__ && msg.__class__ == 'BoostMetadata') {
-                BoostMetadataDefs.push(msg);
-                // console.debug(`BoostMetadata`, msg,BoostMetadataDefs);
-              } else if (
-                msg.__class__ &&
-                msg.__class__.substring(0, 18) == 'CityEntityCultural'
-              ) {
-                // console.debug(`CityEntityCultural`, msg.name,msg);
-              } else if (msg.__class__ && msg.__class__ == 'BuildingUpgrade') {
-                // console.debug(`BuildingUpgrade`, msg.name,msg);
-              } else if (msg.__class__ && msg.__class__ == 'CityMapEntity') {
-                //
-                if (msg.id == 'W_MultiAge_WIN22A11b') {
-                  console.info(msg.name, msg);
-                }
-              } else if (!msg.__class__) {
-                // console.debug(`NO __class__`, msg.name,msg);
-              } else console.debug(msg.name, msg);
+              processMetadataEntry(msg);
             }
-
-            // if(msg.__class__ && msg.__class__.substring(0,10) == 'CityEntity' && msg.type != 'military' && msg.type != 'off_grid'
           }
         }
         // console.debug(parsed);
@@ -2679,6 +2616,72 @@ function rewardObserve() {
   resizeObserver.observe(rewardDiv);
   if ($('#rewardsText').height() > toolOptions.rewardSize) {
     $('#rewardsText').height(toolOptions.rewardSize);
+  }
+}
+
+function processMetadataEntry(msg) {
+  if (
+    msg.__class__ &&
+    (msg.__class__ == 'CityEntityCulturalGoodsBuilding' ||
+      msg.__class__ == 'CityEntityImpediment' ||
+      msg.__class__ == 'CityEntityDiplomacy' ||
+      msg.__class__ == 'CityEntityStaticProvider' ||
+      msg.__class__ == 'CityEntityStreet' ||
+      msg.__class__ == 'CityEntityHub' ||
+      msg.__class__ == 'CityEntityOutpostShip' ||
+      msg.__class__ == 'QuestTabMetadata' ||
+      msg.__class__ == 'ChainMetadata' ||
+      msg.__class__ == 'BuildingSetMetadata' ||
+      msg.__class__ == 'InfoScreen' ||
+      msg.type == 'off_grid')
+  ) {
+    return;
+  } else if (msg.__class__ && msg.__class__.substring(0, 10) == 'CityEntity') {
+    if (!CityEntityDefs[msg.id]) {
+      CityEntityDefs[msg.id] = {
+        name: msg.name,
+        abilities: [],
+        entity_levels: [],
+        available_products: [],
+      };
+    }
+    CityEntityDefs[msg.id] = msg;
+  } else if (msg.__class__ && msg.__class__ == 'GenericCityEntity') {
+    if (!CityEntityDefs[msg.id]) {
+      CityEntityDefs[msg.id] = {
+        name: msg.name,
+        abilities: [],
+        entity_levels: [],
+        available_products: [],
+      };
+    }
+    CityEntityDefs[msg.id] = msg;
+  } else if (msg.__class__ && msg.__class__ == 'UnitType') {
+    MilitaryDefs[msg.unitTypeId] = {
+      name: msg.name,
+      era: msg.minEra,
+    };
+  } else if (msg.__class__ && msg.__class__ == 'CastleSystemLevelMetadata') {
+    CastleDefs.push(msg);
+  } else if (msg.__class__ && msg.__class__ == 'SelectionKitMetadata') {
+    SelectionKitDefs.push(msg);
+  } else if (msg.__class__ && msg.__class__ == 'BoostMetadata') {
+    BoostMetadataDefs.push(msg);
+  } else if (
+    msg.__class__ &&
+    msg.__class__.substring(0, 18) == 'CityEntityCultural'
+  ) {
+    // ignore
+  } else if (msg.__class__ && msg.__class__ == 'BuildingUpgrade') {
+    // ignore
+  } else if (msg.__class__ && msg.__class__ == 'CityMapEntity') {
+    if (msg.id == 'W_MultiAge_WIN22A11b') {
+      console.info(msg.name, msg);
+    }
+  } else if (!msg.__class__) {
+    return;
+  } else {
+    console.debug(msg.name, msg);
   }
 }
 
