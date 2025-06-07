@@ -140,6 +140,7 @@ export var BoostMetadataDefs = [];
 export var VolcanoProvinceDefs = [];
 export var WaterfallProvinceDefs = [];
 export var BuildingDefs = [];
+export var metadataLoaded = false;
 export var hiddenRewards = [];
 export var Goods = {
   sash: 0,
@@ -715,47 +716,56 @@ function handleRequestFinished(request) {
             msg.requestClass === 'StaticDataService' &&
             msg.requestMethod == 'getMetadata'
           ) {
-            // find an URL that has city entities
-            const cityEntitiesURL = msg.responseData.find(
-              (item) => item.identifier === 'city_entities',
-            ).url;
-            // fetch it via ajax
-            let response = await fetch(cityEntitiesURL);
-            // parse response to JSON
-            const cityEntitiesJSON = await response.json();
+            try {
+              const requests = msg.responseData.map((item) =>
+                fetch(item.url)
+                  .then((r) => r.json())
+                  .catch((err) => {
+                    console.error('Failed loading metadata', item.url, err);
+                    return null;
+                  }),
+              );
+              const results = await Promise.all(requests);
 
-            // run the code that prefills city entities ( copied from somewhere bellow )
-            cityEntitiesJSON.forEach(function (msg) {
-              if (
-                msg.__class__ &&
-                msg.__class__.substring(0, 10) == 'CityEntity'
-              ) {
-                if (!CityEntityDefs[msg.id]) {
-                  CityEntityDefs[msg.id] = {
-                    name: msg.name,
-                    abilities: [],
-                    entity_levels: [],
-                    available_products: [],
-                  };
+              results.forEach((data, idx) => {
+                if (!data) return;
+                const identifier = msg.responseData[idx].identifier;
+                if (identifier === 'city_entities') {
+                  data.forEach(function (msg) {
+                    if (
+                      msg.__class__ &&
+                      msg.__class__.substring(0, 10) == 'CityEntity'
+                    ) {
+                      if (!CityEntityDefs[msg.id]) {
+                        CityEntityDefs[msg.id] = {
+                          name: msg.name,
+                          abilities: [],
+                          entity_levels: [],
+                          available_products: [],
+                        };
+                      }
+                      CityEntityDefs[msg.id] = msg;
+                    } else if (
+                      msg.__class__ &&
+                      msg.__class__ == 'GenericCityEntity'
+                    ) {
+                      if (!CityEntityDefs[msg.id]) {
+                        CityEntityDefs[msg.id] = {
+                          name: msg.name,
+                          abilities: [],
+                          entity_levels: [],
+                          available_products: [],
+                        };
+                      }
+                      CityEntityDefs[msg.id] = msg;
+                    }
+                  });
                 }
-                // console.debug(msg.name,msg);
-                CityEntityDefs[msg.id] = msg;
-              } else if (
-                msg.__class__ &&
-                msg.__class__ == 'GenericCityEntity'
-              ) {
-                if (!CityEntityDefs[msg.id]) {
-                  CityEntityDefs[msg.id] = {
-                    name: msg.name,
-                    abilities: [],
-                    entity_levels: [],
-                    available_products: [],
-                  };
-                }
-                // console.debug(msg.name,msg);
-                CityEntityDefs[msg.id] = msg;
-              }
-            });
+              });
+              metadataLoaded = true;
+            } catch (err) {
+              console.error('Metadata fetch failed', err);
+            }
           } else if (
             msg.requestClass == 'CampaignService' &&
             msg.requestMethod == 'getDeposits'
