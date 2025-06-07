@@ -188,7 +188,9 @@ export function startupService(msg) {
             entity.abilities &&
             entity.abilities.find(
               (id) => id.__class__ == 'RandomUnitOfAgeWhenMotivatedAbility',
-            )
+            ) &&
+            mapID.state &&
+            mapID.state.is_motivated
           ) {
             City.TrazUnits += entity.abilities.find(
               (id) => id.__class__ == 'RandomUnitOfAgeWhenMotivatedAbility',
