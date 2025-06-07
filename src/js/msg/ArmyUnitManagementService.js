@@ -71,7 +71,7 @@ export function armyUnitManagementService(msg) {
       }
     }
 
-    if (showOptions.showArmy && units) {
+    if (showOptions.showArmy && (rogues || allUnits)) {
       var diff = rogues - ArmyUnits['rogue'];
       armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">`;
       armyHTML += element.close();
