@@ -678,9 +678,22 @@ export function startupService(msg) {
         }
         if (comp && comp.hasOwnProperty('production')) {
           if (comp.production.hasOwnProperty('options')) {
-            const products = comp.production.options[0];
-            products.array.forEach((product) => {
-              console.debug(product);
+            comp.production.options.forEach((opt) => {
+              const probability = opt.probability ?? opt.weight ?? 1;
+              const items = opt.array || [];
+              items.forEach((product) => {
+                console.debug(product);
+                let amount = 0;
+                if (
+                  product.product &&
+                  product.product.asset_name == 'penal_unit'
+                ) {
+                  amount = product.product.amount ?? 0;
+                } else if (typeof fGenericRewardUnits === 'function') {
+                  amount = fGenericRewardUnits(product);
+                }
+                City.TrazUnits += amount * probability;
+              });
             });
           }
         }
