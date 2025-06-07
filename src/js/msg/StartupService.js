@@ -677,10 +677,18 @@ export function startupService(msg) {
         if (comp && comp.hasOwnProperty('boosts')) {
         }
         if (comp && comp.hasOwnProperty('production')) {
-          if (comp.production.hasOwnProperty('options')) {
-            const products = comp.production.options[0];
-            products.array.forEach((product) => {
-              console.debug(product);
+          if (Array.isArray(comp.production.options)) {
+            comp.production.options.forEach((opt) => {
+              const products = opt.array || opt.products || [];
+              products.forEach((product) => {
+                if (product.type === 'unit') {
+                  City.TrazUnits += product.amount || 0;
+                } else if (product.type === 'genericReward') {
+                  City.TrazUnits += fGenericRewardUnits(
+                    product.genericReward || product,
+                  );
+                }
+              });
             });
           }
         }
@@ -1064,12 +1072,15 @@ export function boostServiceAllBoosts(msg) {
   City.QIAttackingDefense = 0;
   City.QIDefendingAttack = 0;
   City.QIDefendingDefense = 0;
+  var fpProductionBoost = 0;
 
   if (msg.responseData.length) {
     var boost = msg.responseData;
     // console.debug('all boosts:', boost);
     for (var j = 0; j < boost.length; j++) {
       if (boost[j].type == 'coin_production') City.CoinBoost += boost[j].value;
+      else if (boost[j].type == 'forge_points_production')
+        fpProductionBoost += boost[j].value;
       else if (boost[j].type == 'att_boost_attacker') {
         if (boost[j].targetedFeature == 'all') {
           City.Attack += boost[j].value;
@@ -1145,6 +1156,31 @@ export function boostServiceAllBoosts(msg) {
           City.QIDefendingDefense += boost[j].value;
         }
         // console.debug('City Attack/Defense:', boost[j].value);
+      } else if (boost[j].type == 'att_def_boost_attacker_defender') {
+        if (boost[j].targetedFeature == 'all') {
+          City.Attack += boost[j].value;
+          City.Defense += boost[j].value;
+          City.CityAttack += boost[j].value;
+          City.CityDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == 'battleground') {
+          City.GBGAttackingAttack += boost[j].value;
+          City.GBGAttackingDefense += boost[j].value;
+          City.GBGDefendingAttack += boost[j].value;
+          City.GBGDefendingDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == 'guild_expedition') {
+          City.GEAttackingAttack += boost[j].value;
+          City.GEAttackingDefense += boost[j].value;
+          City.GEDefendingAttack += boost[j].value;
+          City.GEDefendingDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == 'guild_raids') {
+          City.QIAttackingAttack += boost[j].value;
+          City.QIAttackingDefense += boost[j].value;
+          City.QIDefendingAttack += boost[j].value;
+          City.QIDefendingDefense += boost[j].value;
+        }
+        // console.debug('Attack/Defense for Att/Def:', boost[j].value);
+      } else if (boost[j].type == 'forge_points_production') {
+        City.ForgePoints += boost[j].value;
       } else if (
         boost[j].type != 'city_shield' &&
         boost[j].type != 'life_support' &&
@@ -1155,6 +1191,11 @@ export function boostServiceAllBoosts(msg) {
         boost[j].type != 'construction_time'
       )
         console.debug('other boost:', boost[j].type, boost[j]);
+    }
+    if (fpProductionBoost && City.ForgePoints) {
+      City.ForgePoints += Math.round(
+        (City.ForgePoints * fpProductionBoost) / 100,
+      );
     }
     // if(showBoosts)
     // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}Boosts:<p>Coins ${CoinBoost}%</p><p>Attack ${Attack}%</p><p>Defense ${Defense}%</p></div>`;
@@ -1481,6 +1522,30 @@ export function showGalaxy() {
     .addEventListener('click', collapse.fCollapseGalaxy);
   if (Galaxy.amount > 0 || debugEnabled == true) galaxy.style.display = 'block';
   else galaxy.style.display = 'none';
+}
+
+function fGenericRewardUnits(reward) {
+  if (!reward) return 0;
+  const rewards =
+    reward.rewards ||
+    reward.contents ||
+    reward.array ||
+    (reward.genericReward ? reward.genericReward.rewards : []);
+  let units = 0;
+  if (Array.isArray(rewards)) {
+    rewards.forEach((entry) => {
+      const probability =
+        (entry.probability ?? entry.weight ?? 100) /
+        (entry.probability && entry.probability > 1 ? 100 : 100);
+      const r = entry.reward || entry.genericReward || entry;
+      if (r.type === 'unit') {
+        units += (r.amount || 0) * probability;
+      } else if (r.type === 'genericReward') {
+        units += probability * fGenericRewardUnits(r);
+      }
+    });
+  }
+  return units;
 }
 
 function fEntityName(entity) {
