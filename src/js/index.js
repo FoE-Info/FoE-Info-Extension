@@ -140,10 +140,9 @@ export var BoostMetadataDefs = [];
 export var VolcanoProvinceDefs = [];
 export var WaterfallProvinceDefs = [];
 export var BuildingDefs = [];
+// flag to indicate that all metadata files have been processed
 export var metadataLoaded = false;
 export var hiddenRewards = [];
-// flag to indicate that all metadata files have been processed
-var metadataLoaded = false;
 // store StartupService message until metadata is ready
 var pendingStartupMsg = null;
 export var Goods = {
@@ -769,20 +768,21 @@ function handleRequestFinished(request) {
               metadataLoaded = true;
             } catch (err) {
               console.error('Metadata fetch failed', err);
-            for (const item of msg.responseData) {
-              try {
-                const resp = await fetch(item.url);
-                const data = await resp.json();
-                data.forEach(processMetadataEntry);
-              } catch (e) {
-                console.error('metadata fetch failed', item, e);
+              for (const item of msg.responseData) {
+                try {
+                  const resp = await fetch(item.url);
+                  const data = await resp.json();
+                  data.forEach(processMetadataEntry);
+                } catch (e) {
+                  console.error('metadata fetch failed', item, e);
+                }
               }
-            }
-            storage.set('CityEntityDefs', CityEntityDefs);
-            metadataLoaded = true;
-            if (pendingStartupMsg) {
-              startupService(pendingStartupMsg);
-              pendingStartupMsg = null;
+              storage.set('CityEntityDefs', CityEntityDefs);
+              metadataLoaded = true;
+              if (pendingStartupMsg) {
+                startupService(pendingStartupMsg);
+                pendingStartupMsg = null;
+              }
             }
           } else if (
             msg.requestClass == 'CampaignService' &&
