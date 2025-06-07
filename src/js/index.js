@@ -140,6 +140,7 @@ export var BoostMetadataDefs = [];
 export var VolcanoProvinceDefs = [];
 export var WaterfallProvinceDefs = [];
 export var BuildingDefs = [];
+export var metadataLoaded = false;
 export var hiddenRewards = [];
 // flag to indicate that all metadata files have been processed
 var metadataLoaded = false;
@@ -719,6 +720,55 @@ function handleRequestFinished(request) {
             msg.requestClass === 'StaticDataService' &&
             msg.requestMethod == 'getMetadata'
           ) {
+            try {
+              const requests = msg.responseData.map((item) =>
+                fetch(item.url)
+                  .then((r) => r.json())
+                  .catch((err) => {
+                    console.error('Failed loading metadata', item.url, err);
+                    return null;
+                  }),
+              );
+              const results = await Promise.all(requests);
+
+              results.forEach((data, idx) => {
+                if (!data) return;
+                const identifier = msg.responseData[idx].identifier;
+                if (identifier === 'city_entities') {
+                  data.forEach(function (msg) {
+                    if (
+                      msg.__class__ &&
+                      msg.__class__.substring(0, 10) == 'CityEntity'
+                    ) {
+                      if (!CityEntityDefs[msg.id]) {
+                        CityEntityDefs[msg.id] = {
+                          name: msg.name,
+                          abilities: [],
+                          entity_levels: [],
+                          available_products: [],
+                        };
+                      }
+                      CityEntityDefs[msg.id] = msg;
+                    } else if (
+                      msg.__class__ &&
+                      msg.__class__ == 'GenericCityEntity'
+                    ) {
+                      if (!CityEntityDefs[msg.id]) {
+                        CityEntityDefs[msg.id] = {
+                          name: msg.name,
+                          abilities: [],
+                          entity_levels: [],
+                          available_products: [],
+                        };
+                      }
+                      CityEntityDefs[msg.id] = msg;
+                    }
+                  });
+                }
+              });
+              metadataLoaded = true;
+            } catch (err) {
+              console.error('Metadata fetch failed', err);
             for (const item of msg.responseData) {
               try {
                 const resp = await fetch(item.url);
