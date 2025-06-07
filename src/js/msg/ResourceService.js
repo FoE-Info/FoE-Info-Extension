@@ -87,8 +87,9 @@ export function getPlayerResources(msg) {
   }
 }
 
-export function setResources(resource) {
+export function setResources(resource, needed = 0) {
   if (Resources[`${resource}`]) needed -= Resources[`${resource}`];
+  return needed;
 }
 
 function goodsCopy() {
