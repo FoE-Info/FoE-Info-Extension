@@ -75,6 +75,7 @@ import {
   ResourceDefs,
   Resources,
   setResourceDefs,
+  setResources,
 } from './msg/ResourceService.js';
 import {
   boostService,
@@ -1144,9 +1145,7 @@ function handleRequestFinished(request) {
             // visitstatsHTML = `<div class="alert alert-warning"><p><strong>${MyInfo.name}</strong> ${MyInfo.id}<br>`;
             Object.keys(culturalGoods).forEach((entry) => {
               var needed = culturalGoods[`${entry}`];
-              if (Resources[`${entry}`]) needed -= Resources[`${entry}`];
-              // setResources(entry);
-              // console.debug(`${entry}`,needed);
+              needed = setResources(entry, needed);
               if (entry != 'diplomacy' && needed > 0)
                 culturalHTML +=
                   `${needed}` + ` ${helper.fResourceShortName(entry)}<br>`;
