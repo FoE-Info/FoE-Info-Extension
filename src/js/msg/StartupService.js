@@ -677,10 +677,18 @@ export function startupService(msg) {
         if (comp && comp.hasOwnProperty('boosts')) {
         }
         if (comp && comp.hasOwnProperty('production')) {
-          if (comp.production.hasOwnProperty('options')) {
-            const products = comp.production.options[0];
-            products.array.forEach((product) => {
-              console.debug(product);
+          if (Array.isArray(comp.production.options)) {
+            comp.production.options.forEach((opt) => {
+              const products = opt.array || opt.products || [];
+              products.forEach((product) => {
+                if (product.type === 'unit') {
+                  City.TrazUnits += product.amount || 0;
+                } else if (product.type === 'genericReward') {
+                  City.TrazUnits += fGenericRewardUnits(
+                    product.genericReward || product,
+                  );
+                }
+              });
             });
           }
         }
@@ -1506,6 +1514,30 @@ export function showGalaxy() {
     .addEventListener('click', collapse.fCollapseGalaxy);
   if (Galaxy.amount > 0 || debugEnabled == true) galaxy.style.display = 'block';
   else galaxy.style.display = 'none';
+}
+
+function fGenericRewardUnits(reward) {
+  if (!reward) return 0;
+  const rewards =
+    reward.rewards ||
+    reward.contents ||
+    reward.array ||
+    (reward.genericReward ? reward.genericReward.rewards : []);
+  let units = 0;
+  if (Array.isArray(rewards)) {
+    rewards.forEach((entry) => {
+      const probability =
+        (entry.probability ?? entry.weight ?? 100) /
+        (entry.probability && entry.probability > 1 ? 100 : 100);
+      const r = entry.reward || entry.genericReward || entry;
+      if (r.type === 'unit') {
+        units += (r.amount || 0) * probability;
+      } else if (r.type === 'genericReward') {
+        units += probability * fGenericRewardUnits(r);
+      }
+    });
+  }
+  return units;
 }
 
 function fEntityName(entity) {
