@@ -838,6 +838,50 @@ export function setMyGuildPermissions(permissions) {
   MyGuildPermissions = permissions;
 }
 
+export function fGenericRewardUnits(ability) {
+  let units = 0;
+  if (!ability) return 0;
+
+  const chests = ability.chests || ability.rewardChests || ability.rewards;
+  if (!chests || !Array.isArray(chests)) return 0;
+
+  let totalWeight = 0;
+  chests.forEach((chest) => {
+    const weight =
+      chest.weight ??
+      chest.chance ??
+      chest.probability ??
+      chest.dropChance ??
+      0;
+    totalWeight += weight;
+  });
+  if (!totalWeight) totalWeight = 1;
+
+  chests.forEach((chest) => {
+    const weight =
+      chest.weight ??
+      chest.chance ??
+      chest.probability ??
+      chest.dropChance ??
+      0;
+    const rewards =
+      chest.rewards || (chest.reward && chest.reward.rewards) || [];
+    if (!Array.isArray(rewards)) return;
+    rewards.forEach((reward) => {
+      if (
+        reward.type === 'unit' ||
+        reward.subType === 'unit' ||
+        reward.asset_name === 'penal_unit'
+      ) {
+        const amount = reward.amount ?? reward.count ?? reward.value ?? 0;
+        units += (amount * weight) / totalWeight;
+      }
+    });
+  });
+
+  return units;
+}
+
 // export function getKey(text){
 // 	var key = crypto.createCipher('aes-128-cbc', salt);
 // 	var str = key.update(text, 'utf8', 'hex')

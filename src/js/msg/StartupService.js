@@ -199,6 +199,18 @@ export function startupService(msg) {
             entity &&
             entity.abilities &&
             entity.abilities.find(
+              (id) => id.__class__ == 'RandomChestRewardAbility',
+            )
+          ) {
+            const ability = entity.abilities.find(
+              (id) => id.__class__ == 'RandomChestRewardAbility',
+            );
+            City.TrazUnits += helper.fGenericRewardUnits(ability);
+          }
+          if (
+            entity &&
+            entity.abilities &&
+            entity.abilities.find(
               (id) => id.__class__ == 'AddResourcesToGuildTreasuryAbility',
             )
           ) {
