@@ -27,8 +27,27 @@ export function getBonuses(msg) {
   City.ChatBonus = 0;
   City.TrazUnits = 0;
 
-  // TODO
-  // add daily_strategypoint to city info (Daily FP)
+  var dailyFP = 0;
+  if (msg.responseData && msg.responseData.length) {
+    msg.responseData.forEach((entry) => {
+      if (
+        entry.type === 'daily_strategypoint' ||
+        entry.__class__ === 'DailyStrategyPointBonus'
+      ) {
+        dailyFP +=
+          entry.value ? entry.value
+          : entry.amount ? entry.amount
+          : 0;
+      }
+    });
+  }
+
+  if (dailyFP) {
+    City.ForgePoints += dailyFP;
+    if (document.getElementById('fp'))
+      document.getElementById('fp').innerHTML =
+        `<span data-i18n="daily">Daily</span>: ${City.ForgePoints}FP`;
+  }
 
   if (DEV && checkDebug()) {
     var beta = document.getElementById('beta');
@@ -40,11 +59,8 @@ export function getBonuses(msg) {
       beta.id = 'beta';
     }
 
-    if (msg.responseData.length > 1 && msg.responseData[2].value) {
-      City.ForgePoints += msg.responseData[2].value;
-      beta.innerHTML = `${element.close()}<p><strong>Town Hall</strong> ${msg.responseData[2].value}FP Total: ${
-        City.ForgePoints
-      }FP</p>`;
+    if (dailyFP) {
+      beta.innerHTML = `${element.close()}<p><strong>Town Hall</strong> ${dailyFP}FP Total: ${City.ForgePoints}FP</p>`;
       beta.className = 'alert alert-dismissible alert-success';
       // console.debug('getBonuses',msg.responseData[2].value,ForgePoints);
     }
