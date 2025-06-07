@@ -705,6 +705,8 @@ function handleRequestFinished(request) {
       const parsed = JSON.parse(body);
       // console.debug('parsed:', parsed);
       if (parsed && parsed.length) {
+        let metadataPromises = [];
+        let startupMsg = null;
         for (var i = 0; i < parsed.length; i++) {
           const msg = parsed[i];
 
@@ -715,47 +717,55 @@ function handleRequestFinished(request) {
             msg.requestClass === 'StaticDataService' &&
             msg.requestMethod == 'getMetadata'
           ) {
-            // find an URL that has city entities
-            const cityEntitiesURL = msg.responseData.find(
-              (item) => item.identifier === 'city_entities',
-            ).url;
-            // fetch it via ajax
-            let response = await fetch(cityEntitiesURL);
-            // parse response to JSON
-            const cityEntitiesJSON = await response.json();
+            // collect fetch promises for all provided URLs
+            metadataPromises.push(
+              ...msg.responseData.map((item) =>
+                fetch(item.url)
+                  .then((r) => r.json())
+                  .catch((e) => {
+                    console.error('Failed loading', item.identifier, e);
+                    return null;
+                  }),
+              ),
+            );
+          } else if (
+            msg.requestClass == 'StartupService' &&
+            msg.requestMethod == 'getData'
+          ) {
+            // handle StartupService but defer actual start until metadata loaded
+            contentType = request.request.headers.find(
+              (header) => header.name === ':authority',
+            );
+            if (contentType) GameOrigin = contentType.value.split('.')[0];
+            console.debug('GameOrigin:', GameOrigin);
 
-            // run the code that prefills city entities ( copied from somewhere bellow )
-            cityEntitiesJSON.forEach(function (msg) {
-              if (
-                msg.__class__ &&
-                msg.__class__.substring(0, 10) == 'CityEntity'
-              ) {
-                if (!CityEntityDefs[msg.id]) {
-                  CityEntityDefs[msg.id] = {
-                    name: msg.name,
-                    abilities: [],
-                    entity_levels: [],
-                    available_products: [],
-                  };
-                }
-                // console.debug(msg.name,msg);
-                CityEntityDefs[msg.id] = msg;
-              } else if (
-                msg.__class__ &&
-                msg.__class__ == 'GenericCityEntity'
-              ) {
-                if (!CityEntityDefs[msg.id]) {
-                  CityEntityDefs[msg.id] = {
-                    name: msg.name,
-                    abilities: [],
-                    entity_levels: [],
-                    available_products: [],
-                  };
-                }
-                // console.debug(msg.name,msg);
-                CityEntityDefs[msg.id] = msg;
-              }
+            browser.storage.local.getBytesInUse(null).then((size) => {
+              console.debug('getBytesInUse', size);
             });
+
+            browser.storage.local.get(null).then((result) => {
+              if (result[GameOrigin + 'MyInfo'])
+                MyInfo.guildPosition =
+                  result[GameOrigin + 'MyInfo'].guildPosition;
+              else MyInfo.guildPosition = 0;
+              receiveStorage(result);
+            });
+
+            output.innerHTML = ``;
+            overview.innerHTML = ``;
+            cityinvested.innerHTML = ``;
+            cityrewards.innerHTML = ``;
+            incidents.innerHTML = ``;
+            donationDIV.innerHTML = ``;
+            greatbuilding.innerHTML = ``;
+            gvg.innerHTML = ``;
+            guild.innerHTML = ``;
+            citystats.innerHTML = ``;
+            visitstats.innerHTML = ``;
+            visitstats.className = '';
+            cultural.innerHTML = ``;
+            cultural.className = '';
+            startupMsg = msg;
           } else if (
             msg.requestClass == 'CampaignService' &&
             msg.requestMethod == 'getDeposits'
@@ -1057,7 +1067,7 @@ function handleRequestFinished(request) {
             visitstats.className = '';
             cultural.innerHTML = ``;
             cultural.className = '';
-            startupService(msg);
+            startupMsg = msg;
 
             /*Player Info */
           } else if (
@@ -2072,6 +2082,49 @@ function handleRequestFinished(request) {
             }
 
             // if(msg.__class__ && msg.__class__.substring(0,10) == 'CityEntity' && msg.type != 'military' && msg.type != 'off_grid'
+          }
+          if (metadataPromises.length) {
+            try {
+              const metadataResults = await Promise.all(metadataPromises);
+              metadataResults
+                .filter((d) => d)
+                .forEach((cityEntitiesJSON) => {
+                  cityEntitiesJSON.forEach(function (msg) {
+                    if (
+                      msg.__class__ &&
+                      msg.__class__.substring(0, 10) == 'CityEntity'
+                    ) {
+                      if (!CityEntityDefs[msg.id]) {
+                        CityEntityDefs[msg.id] = {
+                          name: msg.name,
+                          abilities: [],
+                          entity_levels: [],
+                          available_products: [],
+                        };
+                      }
+                      CityEntityDefs[msg.id] = msg;
+                    } else if (
+                      msg.__class__ &&
+                      msg.__class__ == 'GenericCityEntity'
+                    ) {
+                      if (!CityEntityDefs[msg.id]) {
+                        CityEntityDefs[msg.id] = {
+                          name: msg.name,
+                          abilities: [],
+                          entity_levels: [],
+                          available_products: [],
+                        };
+                      }
+                      CityEntityDefs[msg.id] = msg;
+                    }
+                  });
+                });
+            } catch (e) {
+              console.error('Error loading metadata', e);
+            }
+          }
+          if (startupMsg) {
+            startupService(startupMsg);
           }
         }
         // console.debug(parsed);
