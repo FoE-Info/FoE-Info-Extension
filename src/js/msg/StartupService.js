@@ -1072,12 +1072,15 @@ export function boostServiceAllBoosts(msg) {
   City.QIAttackingDefense = 0;
   City.QIDefendingAttack = 0;
   City.QIDefendingDefense = 0;
+  var fpProductionBoost = 0;
 
   if (msg.responseData.length) {
     var boost = msg.responseData;
     // console.debug('all boosts:', boost);
     for (var j = 0; j < boost.length; j++) {
       if (boost[j].type == 'coin_production') City.CoinBoost += boost[j].value;
+      else if (boost[j].type == 'forge_points_production')
+        fpProductionBoost += boost[j].value;
       else if (boost[j].type == 'att_boost_attacker') {
         if (boost[j].targetedFeature == 'all') {
           City.Attack += boost[j].value;
@@ -1188,6 +1191,11 @@ export function boostServiceAllBoosts(msg) {
         boost[j].type != 'construction_time'
       )
         console.debug('other boost:', boost[j].type, boost[j]);
+    }
+    if (fpProductionBoost && City.ForgePoints) {
+      City.ForgePoints += Math.round(
+        (City.ForgePoints * fpProductionBoost) / 100,
+      );
     }
     // if(showBoosts)
     // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}Boosts:<p>Coins ${CoinBoost}%</p><p>Attack ${Attack}%</p><p>Defense ${Defense}%</p></div>`;
