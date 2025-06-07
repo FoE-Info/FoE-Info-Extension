@@ -1,2 +1,2 @@
 
-export salt = 'notquitesafewaytostoreinfo';
+export const salt = 'notquitesafewaytostoreinfo';
