@@ -1145,6 +1145,31 @@ export function boostServiceAllBoosts(msg) {
           City.QIDefendingDefense += boost[j].value;
         }
         // console.debug('City Attack/Defense:', boost[j].value);
+      } else if (boost[j].type == 'att_def_boost_attacker_defender') {
+        if (boost[j].targetedFeature == 'all') {
+          City.Attack += boost[j].value;
+          City.Defense += boost[j].value;
+          City.CityAttack += boost[j].value;
+          City.CityDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == 'battleground') {
+          City.GBGAttackingAttack += boost[j].value;
+          City.GBGAttackingDefense += boost[j].value;
+          City.GBGDefendingAttack += boost[j].value;
+          City.GBGDefendingDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == 'guild_expedition') {
+          City.GEAttackingAttack += boost[j].value;
+          City.GEAttackingDefense += boost[j].value;
+          City.GEDefendingAttack += boost[j].value;
+          City.GEDefendingDefense += boost[j].value;
+        } else if (boost[j].targetedFeature == 'guild_raids') {
+          City.QIAttackingAttack += boost[j].value;
+          City.QIAttackingDefense += boost[j].value;
+          City.QIDefendingAttack += boost[j].value;
+          City.QIDefendingDefense += boost[j].value;
+        }
+        // console.debug('Attack/Defense for Att/Def:', boost[j].value);
+      } else if (boost[j].type == 'forge_points_production') {
+        City.ForgePoints += boost[j].value;
       } else if (
         boost[j].type != 'city_shield' &&
         boost[j].type != 'life_support' &&
