@@ -802,9 +802,20 @@ function handleRequestFinished(request) {
             }
           } else if (msg.requestClass == 'OtherPlayerService') {
             if (msg.requestMethod == 'getOtherPlayerCityMapEntity') {
+              const selected = msg.responseData;
               /*PlayerID*/
-              if (PlayerID != msg.responseData.player_id) PlayerName = '';
-              PlayerID = msg.responseData.player_id;
+              if (PlayerID != selected.player_id) PlayerName = '';
+              PlayerID = selected.player_id;
+              GBselected.id = selected.id;
+              GBselected.name = helper.fGBname(selected.cityentity_id);
+              GBselected.level = selected.level;
+              GBselected.max_level = selected.max_level;
+              GBselected.connected = selected.connected;
+              GBselected.total = selected.state.forge_points_for_level_up;
+              if (selected.state.invested_forge_points)
+                GBselected.current = selected.state.invested_forge_points;
+              else GBselected.current = 0;
+              console.debug(GBselected);
             } else if (msg.requestMethod == 'getSocialList') {
               /*PlayerID*/
               otherPlayerServiceUpdateActions(msg.responseData);
