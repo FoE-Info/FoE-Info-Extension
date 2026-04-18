@@ -13,15 +13,24 @@
  */
 import browser from 'webextension-polyfill';
 
-console.debug();
-const createDevtoolsPanel = (uiMode) => {
+type UiMode = 'classic' | 'traditional';
+
+type ToolConfig = {
+  uiMode?: UiMode | string;
+};
+
+type StorageToolResult = {
+  tool?: ToolConfig;
+};
+
+const createDevtoolsPanel = (uiMode?: string) => {
   const mode = uiMode === 'traditional' ? 'traditional' : 'classic';
   const title =
     mode === 'traditional' ? `${EXT_NAME} (Traditional)` : `${EXT_NAME}`;
-  browser.devtools.panels.create(title, null, `panel.html?uiMode=${mode}`);
+  browser.devtools.panels.create(title, '', `panel.html?uiMode=${mode}`);
 };
 
-browser.storage.local.get('tool').then((result) => {
+browser.storage.local.get('tool').then((result: StorageToolResult) => {
   const uiMode = result?.tool?.uiMode || 'classic';
   createDevtoolsPanel(uiMode);
 });
