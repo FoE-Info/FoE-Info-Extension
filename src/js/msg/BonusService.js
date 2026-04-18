@@ -15,7 +15,7 @@
 import { City, Galaxy, showGalaxy } from './StartupService.js';
 import { checkDebug, Bonus } from '../index.js';
 import { showOptions } from '../vars/showOptions.js';
-import * as collapse from '../fn/collapse.js';
+import * as collapse from '../fn/collapse';
 import * as element from '../fn/AddElement';
 
 export function getBonuses(msg) {

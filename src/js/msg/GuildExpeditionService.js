@@ -11,7 +11,7 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import * as collapse from '../fn/collapse.js';
+import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy.js';
 import * as element from '../fn/AddElement';
 import { donationDIV2 } from '../index.js';

@@ -28,8 +28,8 @@ import {
 } from '../msg/GuildBattlegroundService.js';
 import { ResourceNames } from '../msg/ResourceService.js';
 import { showOptions } from '../vars/showOptions.js';
-import * as collapse from './collapse.js';
-import { fCollapseIncidents } from './collapse.js';
+import * as collapse from './collapse';
+import { fCollapseIncidents } from './collapse';
 import * as copy from './copy.js';
 import { setBattlegroundSize, toolOptions } from './globals.js';
 import * as post_webstore from './post.js';

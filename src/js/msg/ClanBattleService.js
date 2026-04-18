@@ -15,7 +15,7 @@
 import { gvg, MyInfo } from '../index.js';
 import { toolOptions, setGVGSize } from '../fn/globals.js';
 import { showOptions } from '../vars/showOptions.js';
-import * as collapse from '../fn/collapse.js';
+import * as collapse from '../fn/collapse';
 import * as element from '../fn/AddElement';
 import { fGVGagesname } from '../fn/helper.js';
 import BigNumber from 'bignumber.js';

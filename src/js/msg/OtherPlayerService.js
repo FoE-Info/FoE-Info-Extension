@@ -23,7 +23,7 @@ import BigNumber from 'bignumber.js';
 
 import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
-import * as collapse from '../fn/collapse.js';
+import * as collapse from '../fn/collapse';
 import * as post_webstore from '../fn/post.js';
 import * as copy from '../fn/copy.js';
 import * as element from '../fn/AddElement';
