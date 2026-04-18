@@ -1,11 +1,7 @@
-type GuildExpeditionMsg = {
-  requestClass?: string;
-  requestMethod?: string;
-  responseData?: {
-    name?: string;
-    amount?: number;
-    source?: string;
-  };
+import { HandlerMessage, RewardCallback, RewardData } from './types';
+
+type GuildExpeditionMsg = HandlerMessage & {
+  responseData?: RewardData;
 };
 
 type GuildExpeditionDeps = {
@@ -19,7 +15,7 @@ type GuildExpeditionDeps = {
     fRewardShortName: (name: string | undefined) => string;
   };
   rewardsGE: Record<string, number>;
-  showReward: (reward: { name?: string; amount?: number; source?: string }) => void;
+  showReward: RewardCallback;
 };
 
 export function handleGuildExpeditionServiceRequest(

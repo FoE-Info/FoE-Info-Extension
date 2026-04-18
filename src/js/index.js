@@ -91,7 +91,7 @@ import { handleStartupServiceRequest } from './msg/StartupRequestHandler.js';
 import {
   handleBlueprintServiceRequest,
   handleRewardServiceRequest,
-} from './msg/RewardAndBlueprintRequestHandler.js';
+} from './msg/RewardAndBlueprintRequestHandler';
 import setOptions, { showOptions } from './vars/showOptions.js';
 import '../css/main.scss';
 console.debug(toolOptions);
