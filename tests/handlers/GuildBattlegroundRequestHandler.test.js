@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { handleGuildBattlegroundRequest } from '../../src/js/msg/GuildBattlegroundRequestHandler.ts';
+import { handleGuildBattlegroundRequest } from '../../src/extension/services/GuildBattlegroundRequestHandler.ts';
 
 describe('handleGuildBattlegroundRequest', () => {
   const makeDeps = () => ({

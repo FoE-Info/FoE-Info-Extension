@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { handleCityMapServiceRequest } from '../../src/js/msg/CityMapRequestHandler.ts';
+import { handleCityMapServiceRequest } from '../../src/extension/services/CityMapRequestHandler.ts';
 
 describe('handleCityMapServiceRequest', () => {
   const makeDeps = () => ({

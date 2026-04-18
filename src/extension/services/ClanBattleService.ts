@@ -13,11 +13,11 @@
  */
 
 import { gvg, MyInfo } from '../index';
-import { toolOptions, setGVGSize } from '../fn/globals';
-import { showOptions } from '../vars/showOptions';
-import * as collapse from '../fn/collapse';
-import * as element from '../fn/AddElement';
-import { fGVGagesname } from '../fn/helper';
+import { toolOptions, setGVGSize } from '../core/globals';
+import { showOptions } from '../state/showOptions';
+import * as collapse from '../core/collapse';
+import * as element from '../core/AddElement';
+import { fGVGagesname } from '../core/helper';
 import BigNumber from 'bignumber.js';
 
 export var gvgContainer: HTMLDivElement | null = null;

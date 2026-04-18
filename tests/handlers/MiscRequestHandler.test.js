@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { handleMiscRequest } from '../../src/js/msg/MiscRequestHandler.ts';
+import { handleMiscRequest } from '../../src/extension/services/MiscRequestHandler.ts';
 
 describe('handleMiscRequest', () => {
   const makeDeps = () => ({

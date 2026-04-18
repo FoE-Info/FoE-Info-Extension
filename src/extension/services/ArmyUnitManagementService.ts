@@ -17,11 +17,11 @@ const _MilitaryDefs = MilitaryDefs as unknown as Record<
   string,
   Record<string, string>
 >;
-import { toolOptions, setArmySize } from '../fn/globals';
-import { showOptions } from '../vars/showOptions';
-import * as helper from '../fn/helper';
-import * as collapse from '../fn/collapse';
-import * as element from '../fn/AddElement';
+import { toolOptions, setArmySize } from '../core/globals';
+import { showOptions } from '../state/showOptions';
+import * as helper from '../core/helper';
+import * as collapse from '../core/collapse';
+import * as element from '../core/AddElement';
 
 var ArmyUnits: Record<string, number> = {};
 

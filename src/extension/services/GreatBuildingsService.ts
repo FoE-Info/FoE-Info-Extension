@@ -11,12 +11,12 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { showOptions } from '../vars/showOptions';
-import * as helper from '../fn/helper';
-import * as collapse from '../fn/collapse';
-import * as copy from '../fn/copy';
-import * as storage from '../fn/storage';
-import * as element from '../fn/AddElement';
+import { showOptions } from '../state/showOptions';
+import * as helper from '../core/helper';
+import * as collapse from '../core/collapse';
+import * as copy from '../core/copy';
+import * as storage from '../core/storage';
+import * as element from '../core/AddElement';
 import { City } from './StartupService';
 import {
   setPlayerName,

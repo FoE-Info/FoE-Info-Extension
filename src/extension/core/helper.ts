@@ -31,14 +31,14 @@ import {
   BattlegroundPerformance,
   BGtime,
   GuildMembers,
-} from '../msg/GuildBattlegroundService';
+} from '../services/GuildBattlegroundService';
 const _BattlegroundPerformance = BattlegroundPerformance as unknown as Array<
   Record<string, unknown>
 >;
 const _GuildMembers = GuildMembers as unknown as Array<Record<string, unknown>>;
-import { ResourceNames } from '../msg/ResourceService';
+import { ResourceNames } from '../services/ResourceService';
 const _ResourceNames = ResourceNames as unknown as Record<string, string>;
-import { showOptions } from '../vars/showOptions';
+import { showOptions } from '../state/showOptions';
 import * as collapse from './collapse';
 import { fCollapseIncidents } from './collapse';
 import * as copy from './copy';

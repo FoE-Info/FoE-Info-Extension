@@ -13,13 +13,13 @@
  */
 import { Tooltip, Alert, Popover } from 'bootstrap';
 import browser from 'webextension-polyfill';
-import { showOptions } from '../vars/showOptions';
-import * as helper from '../fn/helper';
-import * as collapse from '../fn/collapse';
-import * as copy from '../fn/copy';
-import * as element from '../fn/AddElement';
-import * as storage from '../fn/storage';
-import * as post_webstore from '../fn/post';
+import { showOptions } from '../state/showOptions';
+import * as helper from '../core/helper';
+import * as collapse from '../core/collapse';
+import * as copy from '../core/copy';
+import * as element from '../core/AddElement';
+import * as storage from '../core/storage';
+import * as post_webstore from '../core/post';
 import {
   BuildingDefs,
   VolcanoProvinceDefs,
@@ -31,7 +31,7 @@ import {
   url,
   targetText,
 } from '../index';
-import { toolOptions, setBuildingCostSize } from '../fn/globals';
+import { toolOptions, setBuildingCostSize } from '../core/globals';
 
 export var BattlegroundPerformance = [];
 export var GuildMembers = [];

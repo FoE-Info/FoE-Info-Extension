@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import * as storage from '../../src/js/fn/storage';
-import { handleInventoryServiceRequest } from '../../src/js/msg/InventoryRequestHandler.ts';
+import * as storage from '../../src/extension/core/storage';
+import { handleInventoryServiceRequest } from '../../src/extension/services/InventoryRequestHandler.ts';
 
-vi.mock('../../src/js/fn/storage', () => ({
+vi.mock('../../src/extension/core/storage', () => ({
   set: vi.fn(),
 }));
 

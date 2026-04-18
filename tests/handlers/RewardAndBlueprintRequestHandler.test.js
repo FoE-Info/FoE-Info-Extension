@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   handleBlueprintServiceRequest,
   handleRewardServiceRequest,
-} from '../../src/js/msg/RewardAndBlueprintRequestHandler.ts';
+} from '../../src/extension/services/RewardAndBlueprintRequestHandler.ts';
 
 describe('handleRewardServiceRequest', () => {
   it('handles collectReward and calls showReward when enabled', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { handleClanBattleServiceRequest } from '../../src/js/msg/ClanBattleRequestHandler.ts';
+import { handleClanBattleServiceRequest } from '../../src/extension/services/ClanBattleRequestHandler.ts';
 
 describe('handleClanBattleServiceRequest', () => {
   const makeDeps = () => ({

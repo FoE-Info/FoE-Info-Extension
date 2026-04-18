@@ -19,21 +19,21 @@ import '@wikimedia/jquery.i18n/src/jquery.i18n.language.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.messagestore.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.parser.js';
 import 'bootstrap';
-import collapseOptions, * as collapse from './fn/collapse';
+import collapseOptions, * as collapse from './core/collapse';
 import browser from 'webextension-polyfill';
-import * as copy from './fn/copy';
+import * as copy from './core/copy';
 import {
   setRewardSize,
   setToolOptions,
   setTreasurySize,
   toolOptions,
-} from './fn/globals';
-import * as helper from './fn/helper';
-import * as storage from './fn/storage';
-import * as element from './fn/AddElement';
-import { armyUnitManagementService } from './msg/ArmyUnitManagementService';
-import { getBonuses, getLimitedBonuses } from './msg/BonusService';
-import { pickupProduction } from './msg/CityProductionService';
+} from './core/globals';
+import * as helper from './core/helper';
+import * as storage from './core/storage';
+import * as element from './core/AddElement';
+import { armyUnitManagementService } from './services/ArmyUnitManagementService';
+import { getBonuses, getLimitedBonuses } from './services/BonusService';
+import { pickupProduction } from './services/CityProductionService';
 import {
   deploySiegeArmy,
   getContinent,
@@ -41,14 +41,14 @@ import {
   gvgAges,
   gvgSummary,
   grantIndependence,
-} from './msg/ClanBattleService';
-import { handleClanBattleServiceRequest } from './msg/ClanBattleRequestHandler';
+} from './services/ClanBattleService';
+import { handleClanBattleServiceRequest } from './services/ClanBattleRequestHandler';
 import {
   conversationService,
   getConversation,
-} from './msg/ConversationService';
-import { setCurrentPercent } from './msg/GreatBuildingsService';
-import { handleGreatBuildingsServiceRequest } from './msg/GreatBuildingsRequestHandler';
+} from './services/ConversationService';
+import { setCurrentPercent } from './services/GreatBuildingsService';
+import { handleGreatBuildingsServiceRequest } from './services/GreatBuildingsRequestHandler';
 import {
   clearBattleground,
   getBattleground,
@@ -56,20 +56,20 @@ import {
   getLeaderboard,
   getPlayerLeaderboard,
   getState,
-} from './msg/GuildBattlegroundService';
-import { handleGuildBattlegroundSignalsRequest } from './msg/GuildBattlegroundSignalsRequestHandler';
-import { handleGuildBattlegroundRequest } from './msg/GuildBattlegroundRequestHandler';
-import { guildExpeditionService } from './msg/GuildExpeditionService';
-import { handleGuildExpeditionServiceRequest } from './msg/GuildExpeditionRequestHandler';
-import { handleClanServiceRequest } from './msg/ClanServiceRequestHandler';
-import { handleCityMapServiceRequest } from './msg/CityMapRequestHandler';
-import { handleInventoryServiceRequest } from './msg/InventoryRequestHandler';
-import { handleMiscRequest } from './msg/MiscRequestHandler';
-import { handleOtherPlayerServiceRequest } from './msg/OtherPlayerRequestHandler';
+} from './services/GuildBattlegroundService';
+import { handleGuildBattlegroundSignalsRequest } from './services/GuildBattlegroundSignalsRequestHandler';
+import { handleGuildBattlegroundRequest } from './services/GuildBattlegroundRequestHandler';
+import { guildExpeditionService } from './services/GuildExpeditionService';
+import { handleGuildExpeditionServiceRequest } from './services/GuildExpeditionRequestHandler';
+import { handleClanServiceRequest } from './services/ClanServiceRequestHandler';
+import { handleCityMapServiceRequest } from './services/CityMapRequestHandler';
+import { handleInventoryServiceRequest } from './services/InventoryRequestHandler';
+import { handleMiscRequest } from './services/MiscRequestHandler';
+import { handleOtherPlayerServiceRequest } from './services/OtherPlayerRequestHandler';
 import {
   otherPlayerService,
   otherPlayerServiceUpdateActions,
-} from './msg/OtherPlayerService';
+} from './services/OtherPlayerService';
 import {
   availableFP,
   getPlayerResources,
@@ -77,20 +77,20 @@ import {
   ResourceDefs,
   Resources,
   setResourceDefs,
-} from './msg/ResourceService';
+} from './services/ResourceService';
 import {
   boostService,
   boostServiceAllBoosts,
   City,
   emissaryService,
   startupService,
-} from './msg/StartupService';
-import { handleStartupServiceRequest } from './msg/StartupRequestHandler';
+} from './services/StartupService';
+import { handleStartupServiceRequest } from './services/StartupRequestHandler';
 import {
   handleBlueprintServiceRequest,
   handleRewardServiceRequest,
-} from './msg/RewardAndBlueprintRequestHandler';
-import setOptions, { showOptions } from './vars/showOptions';
+} from './services/RewardAndBlueprintRequestHandler';
+import setOptions, { showOptions } from './state/showOptions';
 import '../css/main.scss';
 console.debug(toolOptions);
 

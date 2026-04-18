@@ -55,9 +55,9 @@ npm run format
 
 ## Project Structure
 
-1. `src/js/index.ts`:
+1. `src/extension/index.ts`:
    Main extension entry and dispatcher wiring.
-2. `src/js/msg/`:
+2. `src/extension/services/`:
    Service handlers and request-handler modules.
 3. `src/css/`:
    Shared styles and page-level stylesheets.

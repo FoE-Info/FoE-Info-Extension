@@ -21,12 +21,12 @@ import '@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.language.js';
 import BigNumber from 'bignumber.js';
 
-import { showOptions } from '../vars/showOptions';
-import * as helper from '../fn/helper';
-import * as collapse from '../fn/collapse';
-import * as post_webstore from '../fn/post';
-import * as copy from '../fn/copy';
-import * as element from '../fn/AddElement';
+import { showOptions } from '../state/showOptions';
+import * as helper from '../core/helper';
+import * as collapse from '../core/collapse';
+import * as post_webstore from '../core/post';
+import * as copy from '../core/copy';
+import * as element from '../core/AddElement';
 import {
   CityEntityDefs,
   setPlayerName,
@@ -38,7 +38,7 @@ import {
   GameOrigin,
   PlayerID,
 } from '../index';
-import { toolOptions, setFriendsSize } from '../fn/globals';
+import { toolOptions, setFriendsSize } from '../core/globals';
 import { fArcname } from './StartupService';
 
 var friendsHTML = '';

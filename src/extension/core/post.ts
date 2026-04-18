@@ -23,7 +23,7 @@ import * as element from './AddElement';
 import * as helper from './helper';
 import { Tooltip, Alert, Popover } from 'bootstrap';
 declare function getKey(url: string): string;
-import { GBGdata } from '../msg/GuildBattlegroundService';
+import { GBGdata } from '../services/GuildBattlegroundService';
 
 // Example POST method implementation:
 async function postData(url = '', data = {}) {

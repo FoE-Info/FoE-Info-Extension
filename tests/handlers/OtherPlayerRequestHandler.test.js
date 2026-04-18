@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { handleOtherPlayerServiceRequest } from '../../src/js/msg/OtherPlayerRequestHandler.ts';
+import { handleOtherPlayerServiceRequest } from '../../src/extension/services/OtherPlayerRequestHandler.ts';
 
 describe('handleOtherPlayerServiceRequest', () => {
   const makeDeps = () => ({

@@ -1,4 +1,4 @@
-import * as storage from '../fn/storage';
+import * as storage from '../core/storage';
 import { HandlerMessage } from './types';
 
 type InventoryItem = {

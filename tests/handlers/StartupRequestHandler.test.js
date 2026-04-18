@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { handleStartupServiceRequest } from '../../src/js/msg/StartupRequestHandler.ts';
+import { handleStartupServiceRequest } from '../../src/extension/services/StartupRequestHandler.ts';
 
 vi.mock('webextension-polyfill', () => ({
   default: {

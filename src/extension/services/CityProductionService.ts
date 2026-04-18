@@ -19,8 +19,8 @@ const _MilitaryDefs = MilitaryDefs as unknown as Record<
 const _rewardsArmy = rewardsArmy as unknown as Record<string, number>;
 const _rewardsCity = rewardsCity as unknown as Record<string, unknown>;
 import { updateGalaxy } from './StartupService';
-import { showOptions } from '../vars/showOptions';
-import * as helper from '../fn/helper';
+import { showOptions } from '../state/showOptions';
+import * as helper from '../core/helper';
 
 export function pickupProduction(msg: Record<string, unknown>) {
   const responseData = msg.responseData as Record<string, unknown>;

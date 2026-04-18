@@ -49,10 +49,10 @@ module.exports = {
     ],
   },
   entry: {
-    app: './src/js/index',
-    options: './src/js/options',
-    devtools: './src/js/devtools',
-    popup: './src/js/popup',
+    app: './src/extension/index',
+    options: './src/extension/options',
+    devtools: './src/extension/devtools',
+    popup: './src/extension/popup',
   },
   module: {
     rules: [

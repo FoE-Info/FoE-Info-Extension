@@ -21,11 +21,11 @@ process.env.NODE_ENV = 'development';
 module.exports = {
   mode: 'development',
   entry: {
-    // bootstrap: './src/js/bootstrap.js',
-    app: './src/js/index',
-    options: './src/js/options',
-    devtools: './src/js/devtools',
-    popup: './src/js/popup',
+    // bootstrap: './src/extension/bootstrap.js',
+    app: './src/extension/index',
+    options: './src/extension/options',
+    devtools: './src/extension/devtools',
+    popup: './src/extension/popup',
   },
   devtool: 'inline-source-map',
   devServer: {

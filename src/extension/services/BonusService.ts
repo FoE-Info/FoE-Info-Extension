@@ -14,9 +14,9 @@
 
 import { City, Galaxy, showGalaxy } from './StartupService';
 import { checkDebug, Bonus } from '../index';
-import { showOptions } from '../vars/showOptions';
-import * as collapse from '../fn/collapse';
-import * as element from '../fn/AddElement';
+import { showOptions } from '../state/showOptions';
+import * as collapse from '../core/collapse';
+import * as element from '../core/AddElement';
 
 export function getBonuses(msg: Record<string, unknown>) {
   console.debug('Info Erased');

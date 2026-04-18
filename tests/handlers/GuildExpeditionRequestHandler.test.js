@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { handleGuildExpeditionServiceRequest } from '../../src/js/msg/GuildExpeditionRequestHandler.ts';
+import { handleGuildExpeditionServiceRequest } from '../../src/extension/services/GuildExpeditionRequestHandler.ts';
 
 describe('handleGuildExpeditionServiceRequest', () => {
   const makeDeps = () => ({

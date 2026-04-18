@@ -34,11 +34,11 @@ import {
 } from '../index';
 import { availablePacksFP, Goods, language } from '../index';
 import { ResourceDefs, availableFP } from './ResourceService';
-import * as helper from '../fn/helper';
-import * as collapse from '../fn/collapse';
-import * as copy from '../fn/copy';
-import * as element from '../fn/AddElement';
-import { showOptions } from '../vars/showOptions';
+import * as helper from '../core/helper';
+import * as collapse from '../core/collapse';
+import * as copy from '../core/copy';
+import * as element from '../core/AddElement';
+import { showOptions } from '../state/showOptions';
 import { clearArmyUnits } from './ArmyUnitManagementService';
 
 export var City = {

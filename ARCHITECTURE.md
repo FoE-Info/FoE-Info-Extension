@@ -12,24 +12,24 @@ This document summarizes the current request-flow architecture after handler ext
 
 ## Core Entry Points
 
-1. src/js/index.ts:
+1. src/extension/index.ts:
 
 - Initializes runtime state.
 - Wires message routing.
 - Connects UI state, options, and services.
 
-2. src/js/options.ts:
+2. src/extension/options.ts:
 
 - Options page state persistence.
 - Local storage synchronization for toggles and tool settings.
 
-3. src/js/popup.ts:
+3. src/extension/popup.ts:
 
 - Popup interaction logic and options navigation.
 
 ## Request Handler Layer
 
-Request handlers in src/js/msg are split by service domain to keep routing deterministic and testable.
+Request handlers in src/extension/msg are split by service domain to keep routing deterministic and testable.
 
 Primary handler files:
 

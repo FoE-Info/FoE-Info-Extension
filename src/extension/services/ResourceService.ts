@@ -1,10 +1,10 @@
 import { availablePacksFP, goodsDIV } from '../index';
-import { toolOptions, setGoodsSize } from '../fn/globals';
-import * as collapse from '../fn/collapse';
-import { fGVGagesname } from '../fn/helper';
-import * as storage from '../fn/storage';
-import * as element from '../fn/AddElement';
-import { showOptions } from '../vars/showOptions';
+import { toolOptions, setGoodsSize } from '../core/globals';
+import * as collapse from '../core/collapse';
+import { fGVGagesname } from '../core/helper';
+import * as storage from '../core/storage';
+import * as element from '../core/AddElement';
+import { showOptions } from '../state/showOptions';
 
 export var ResourceDefs: Array<Record<string, unknown>> = [];
 export var ResourceNames: Record<string, string> = {};
