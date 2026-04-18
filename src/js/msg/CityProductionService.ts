@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -18,81 +18,76 @@ import {
   rewardsCity,
   MilitaryDefs,
 } from '../index';
+const _MilitaryDefs = MilitaryDefs as unknown as Record<string, Record<string, string>>;
+const _rewardsArmy = rewardsArmy as unknown as Record<string, number>;
+const _rewardsCity = rewardsCity as unknown as Record<string, unknown>;
 import { updateGalaxy } from './StartupService';
 import { showOptions } from '../vars/showOptions';
 import * as helper from '../fn/helper';
 
-export function pickupProduction(msg) {
-  if (msg.responseData.militaryProducts.length) {
-    var units = msg.responseData.militaryProducts;
-    // var numUnits = msg.responseData.militaryProducts.length;
-    // var unitsList = {};
+export function pickupProduction(msg: Record<string, unknown>) {
+  const responseData = msg.responseData as Record<string, unknown>;
+  if ((responseData.militaryProducts as unknown[]).length) {
+    var units = responseData.militaryProducts as Array<Record<string, unknown>>;
     units.forEach((unit) => {
       var name = '';
-      if (MilitaryDefs[unit.unitTypeId])
-        name = MilitaryDefs[unit.unitTypeId].name;
-      else name = unit.unitTypeId;
+      if (_MilitaryDefs[unit.unitTypeId as string])
+        name = _MilitaryDefs[unit.unitTypeId as string].name;
+      else name = unit.unitTypeId as string;
       console.debug(unit.unitTypeId, name);
-      if (rewardsArmy[name]) rewardsArmy[name]++;
-      else rewardsArmy[name] = 1;
+      if (_rewardsArmy[name]) _rewardsArmy[name]++;
+      else _rewardsArmy[name] = 1;
     });
   }
-  if (msg.responseData.updatedEntities.length) {
-    var rewards = msg.responseData.updatedEntities;
+  if ((responseData.updatedEntities as unknown[]).length) {
+    var rewards = responseData.updatedEntities as Array<Record<string, unknown>>;
     rewards.forEach((reward) => {
       updateGalaxy(reward);
-      // console.debug(reward.state.current_product.hasOwnProperty('product') , reward.state.current_product.product.hasOwnProperty('resources'));
+      const state = reward.state as Record<string, unknown>;
       if (
-        reward.state.hasOwnProperty('current_product') &&
-        reward.state.current_product.hasOwnProperty('product') &&
-        reward.state.current_product.product.hasOwnProperty('resources')
+        Object.prototype.hasOwnProperty.call(state, 'current_product') &&
+        Object.prototype.hasOwnProperty.call(state.current_product as object, 'product') &&
+        Object.prototype.hasOwnProperty.call((state.current_product as Record<string, unknown>).product as object, 'resources')
       ) {
-        // updateGalaxy(reward.cityentity_id);
-        // var resources = reward.state.current_product.product.resources;
-        // console.debug(resources);
-        Object.keys(reward.state.current_product.product.resources).forEach(
+        const resources = ((state.current_product as Record<string, unknown>).product as Record<string, unknown>).resources as Record<string, unknown>;
+        Object.keys(resources).forEach(
           (resource) => {
             const name = helper.fResourceShortName(resource);
-            // console.debug(name,resource)
-            if (rewardsCity[name])
-              rewardsCity[name] +=
-                reward.state.current_product.product.resources[resource];
+            if (_rewardsCity[name])
+              (_rewardsCity as Record<string, number>)[name] += resources[resource] as number;
             else
-              rewardsCity[name] =
-                reward.state.current_product.product.resources[resource];
+              (_rewardsCity as Record<string, number>)[name] = resources[resource] as number;
           },
         );
       }
       if (
-        reward.state.hasOwnProperty('productionOption') &&
-        reward.state.productionOption.hasOwnProperty('products')
+        Object.prototype.hasOwnProperty.call(state, 'productionOption') &&
+        Object.prototype.hasOwnProperty.call((state.productionOption as object), 'products')
       ) {
-        // updateGalaxy(reward.cityentity_id);
-        // var resources = reward.state.current_product.product.resources;
-        // console.debug(resources);
-        reward.state.productionOption.products.array.forEach((element) => {
+        const products = ((state.productionOption as Record<string, unknown>).products as Record<string, unknown>).array as Array<Record<string, unknown>>;
+        products.forEach((element) => {
           if (
-            element.hasOwnProperty('playerResources') &&
-            element.playerResources.hasOwnProperty('resources')
-          )
-            Object.keys(element.playerResources.resources).forEach(
+            Object.prototype.hasOwnProperty.call(element, 'playerResources') &&
+            Object.prototype.hasOwnProperty.call((element.playerResources as object), 'resources')
+          ) {
+            const pRes = (element.playerResources as Record<string, unknown>).resources as Record<string, unknown>;
+            const cpRes = ((state.current_product as Record<string, unknown>).product as Record<string, unknown>).resources as Record<string, unknown>;
+            Object.keys(pRes).forEach(
               (resource) => {
                 const name = helper.fResourceShortName(resource);
-                // console.debug(name,resource)
-                if (rewardsCity[name])
-                  rewardsCity[name] +=
-                    reward.state.current_product.product.resources[resource];
+                if (_rewardsCity[name])
+                  (_rewardsCity as Record<string, number>)[name] += cpRes[resource] as number;
                 else
-                  rewardsCity[name] =
-                    reward.state.current_product.product.resources[resource];
+                  (_rewardsCity as Record<string, number>)[name] = cpRes[resource] as number;
               },
             );
+          }
         });
       }
     });
   }
-  console.debug(rewardsCity);
-  var reward = [];
+  console.debug(_rewardsCity);
+  var reward: Record<string, unknown> = {};
   reward.source = 'pickupProduction';
   reward.name = '';
   reward.amount = 0;
