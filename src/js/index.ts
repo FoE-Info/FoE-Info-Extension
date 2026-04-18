@@ -33,7 +33,7 @@ import * as helper from './fn/helper';
 import * as storage from './fn/storage';
 import * as element from './fn/AddElement';
 import { armyUnitManagementService } from './msg/ArmyUnitManagementService';
-import { getBonuses, getLimitedBonuses } from './msg/BonusService.js';
+import { getBonuses, getLimitedBonuses } from './msg/BonusService';
 import { pickupProduction } from './msg/CityProductionService.js';
 import {
   deploySiegeArmy,
