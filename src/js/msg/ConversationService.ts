@@ -20,7 +20,7 @@ import * as collapse from '../fn/collapse';
 import * as helper from '../fn/helper';
 import * as post_webstore from '../fn/post';
 import * as element from '../fn/AddElement';
-import { setCurrentPercent } from './GreatBuildingsService.js';
+import { setCurrentPercent } from './GreatBuildingsService';
 
 // targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
 

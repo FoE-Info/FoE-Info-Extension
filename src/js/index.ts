@@ -50,7 +50,7 @@ import {
 } from './msg/ConversationService';
 import {
   setCurrentPercent,
-} from './msg/GreatBuildingsService.js';
+} from './msg/GreatBuildingsService';
 import { handleGreatBuildingsServiceRequest } from './msg/GreatBuildingsRequestHandler';
 import {
   clearBattleground,

@@ -3,7 +3,7 @@ import {
   contributeForgePoints,
   getConstruction,
   getConstructionRanking,
-} from './GreatBuildingsService.js';
+} from './GreatBuildingsService';
 import BigNumber from 'bignumber.js';
 
 export function handleGreatBuildingsServiceRequest(
