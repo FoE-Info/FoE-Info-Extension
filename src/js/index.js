@@ -87,6 +87,7 @@ import {
   emissaryService,
   startupService,
 } from './msg/StartupService.js';
+import { handleStartupServiceRequest } from './msg/StartupRequestHandler.js';
 import {
   handleBlueprintServiceRequest,
   handleRewardServiceRequest,
@@ -512,6 +513,22 @@ const getPlayerName = () => {
 
 const setCityProtections = (protections) => {
   CityProtections = protections;
+};
+
+const setGameOrigin = (origin) => {
+  GameOrigin = origin;
+};
+
+const getGameOrigin = () => {
+  return GameOrigin;
+};
+
+const isMetadataLoaded = () => {
+  return metadataLoaded;
+};
+
+const setPendingStartupMessage = (msg) => {
+  pendingStartupMsg = msg;
 };
 
 const getTotalAvailableFP = () => {
@@ -958,53 +975,29 @@ function handleRequestFinished(request) {
           ) {
             // handled in module
           } else if (
-            msg.requestClass == 'StartupService' &&
-            msg.requestMethod == 'getData'
+            handleStartupServiceRequest(msg, request, {
+              setGameOrigin,
+              getGameOrigin,
+              MyInfo,
+              receiveStorage,
+              output,
+              overview,
+              cityinvested,
+              cityrewards,
+              incidents,
+              donationDIV,
+              greatbuilding,
+              gvg,
+              guild,
+              citystats,
+              visitstats,
+              cultural,
+              metadataLoaded: isMetadataLoaded,
+              startupService,
+              setPendingStartupMsg: setPendingStartupMessage,
+            })
           ) {
-            contentType = request.request.headers.find(
-              (header) => header.name === ':authority',
-            );
-            if (contentType) GameOrigin = contentType.value.split('.')[0];
-            console.debug('GameOrigin:', GameOrigin);
-
-            browser.storage.local.getBytesInUse(null).then((size) => {
-              console.debug('getBytesInUse', size);
-            });
-
-            // browser.storage.local.get(['showOptions','collapseOptions','CityEntityDefs','ResourceDefs','tool','targets','toolOptions','donationPercent','url',GameOrigin + 'MyInfo'],
-            browser.storage.local.get(null).then((result) => {
-              // post.log('result', result);
-              // console.debug('result', result);
-              // console.debug('showIncidents', showIncidents);
-              if (result[GameOrigin + 'MyInfo'])
-                MyInfo.guildPosition =
-                  result[GameOrigin + 'MyInfo'].guildPosition;
-              else MyInfo.guildPosition = 0;
-              // console.debug('result', result[GameOrigin + 'MyInfo'],MyInfo.guildPosition,GameOrigin + 'MyInfo');
-              receiveStorage(result);
-            });
-
-            output.innerHTML = ``;
-            overview.innerHTML = ``;
-            cityinvested.innerHTML = ``;
-            cityrewards.innerHTML = ``;
-            incidents.innerHTML = ``;
-            donationDIV.innerHTML = ``;
-            greatbuilding.innerHTML = ``;
-            gvg.innerHTML = ``;
-            guild.innerHTML = ``;
-            citystats.innerHTML = ``;
-            visitstats.innerHTML = ``;
-            visitstats.className = '';
-            cultural.innerHTML = ``;
-            cultural.className = '';
-            if (metadataLoaded) {
-              startupService(msg);
-            } else {
-              pendingStartupMsg = msg;
-            }
-
-            /*Player Info */
+            // handled in module
           } else if (
             msg.requestClass == 'RankingService' &&
             msg.requestMethod == 'searchRanking'
