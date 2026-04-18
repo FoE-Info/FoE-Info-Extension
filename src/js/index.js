@@ -61,6 +61,7 @@ import {
   getState,
 } from './msg/GuildBattlegroundService.js';
 import { handleGuildBattlegroundSignalsRequest } from './msg/GuildBattlegroundSignalsRequestHandler.js';
+import { handleGuildBattlegroundRequest } from './msg/GuildBattlegroundRequestHandler.js';
 import { guildExpeditionService } from './msg/GuildExpeditionService.js';
 import { handleGuildExpeditionServiceRequest } from './msg/GuildExpeditionRequestHandler.js';
 import {
@@ -1433,42 +1434,18 @@ function handleRequestFinished(request) {
             ) {
               console.debug('GuildExpeditionService', msg);
             }
-          } else if (msg.requestClass == 'GuildBattlegroundService') {
-            // GuildBattleground
-            if (msg.requestMethod == 'getLeaderboard') {
-              /*getLeaderboard */
-              if (showOptions.showLeaderboard) getLeaderboard(msg);
-            } else if (msg.requestMethod == 'getPlayerLeaderboard') {
-              /*Guild Battleground*/
-              getPlayerLeaderboard(msg);
-            } else if (msg.requestMethod == 'getBattleground') {
-              /*Guild Battleground*/
-              clearForBattleground();
-              getBattleground(msg);
-            } else if (msg.requestMethod == 'getState') {
-              if (msg.responseData.stateId == 'participating') {
-                //clearForBattleground();
-              }
-            } else console.debug('GuildBattlegroundService', msg);
-          } else if (msg.requestClass == 'GuildBattlegroundStateService') {
-            // GuildBattleground
-            if (
-              msg.requestMethod == 'getState' &&
-              msg.responseData.stateId == 'participating'
-            ) {
-              //clearForBattleground();
-            } else if (
-              msg.requestMethod == 'getState' &&
-              showOptions.showBattleground
-            ) {
-              getState(msg);
-            } else console.debug('GuildBattlegroundStateService', msg);
-          } else if (msg.requestClass == 'GuildBattlegroundBuildingService') {
-            // GuildBattleground
-            if (msg.requestMethod == 'getBuildings') {
-              /*Guild Battleground*/
-              getBuildings(msg);
-            } else console.debug('GuildBattlegroundBuildingService', msg);
+          } else if (
+            handleGuildBattlegroundRequest(msg, {
+              showOptions,
+              clearForBattleground,
+              getLeaderboard,
+              getPlayerLeaderboard,
+              getBattleground,
+              getState,
+              getBuildings,
+            })
+          ) {
+            // handled in module
           } else if (msg.requestClass == 'GuildBattlegroundSignalsService') {
             // GuildBattleground
             if (!handleGuildBattlegroundSignalsRequest(msg, request, safeJsonParse)) {
