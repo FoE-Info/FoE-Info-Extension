@@ -34,7 +34,7 @@ import {
 } from '../index.js';
 import { availablePacksFP, Goods, language } from '../index.js';
 import { ResourceDefs, availableFP } from './ResourceService.js';
-import * as helper from '../fn/helper.js';
+import * as helper from '../fn/helper';
 import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy';
 import * as element from '../fn/AddElement';

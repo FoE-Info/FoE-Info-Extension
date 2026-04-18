@@ -19,7 +19,7 @@ import {
 } from '../index.js';
 import { updateGalaxy } from './StartupService.js';
 import { showOptions } from '../vars/showOptions.js';
-import * as helper from '../fn/helper.js';
+import * as helper from '../fn/helper';
 
 export function pickupProduction(msg) {
   if (msg.responseData.militaryProducts.length) {

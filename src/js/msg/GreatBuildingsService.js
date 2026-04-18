@@ -12,7 +12,7 @@
  * ________________________________________________________________
  */
 import { showOptions } from '../vars/showOptions.js';
-import * as helper from '../fn/helper.js';
+import * as helper from '../fn/helper';
 import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy';
 import * as storage from '../fn/storage.js';

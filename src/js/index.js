@@ -28,7 +28,7 @@ import {
   setTreasurySize,
   toolOptions,
 } from './fn/globals';
-import * as helper from './fn/helper.js';
+import * as helper from './fn/helper';
 import * as storage from './fn/storage.js';
 import * as element from './fn/AddElement';
 import { armyUnitManagementService } from './msg/ArmyUnitManagementService.js';

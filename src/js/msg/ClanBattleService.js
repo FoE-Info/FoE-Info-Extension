@@ -17,7 +17,7 @@ import { toolOptions, setGVGSize } from '../fn/globals';
 import { showOptions } from '../vars/showOptions.js';
 import * as collapse from '../fn/collapse';
 import * as element from '../fn/AddElement';
-import { fGVGagesname } from '../fn/helper.js';
+import { fGVGagesname } from '../fn/helper';
 import BigNumber from 'bignumber.js';
 
 export var gvgContainer = null;

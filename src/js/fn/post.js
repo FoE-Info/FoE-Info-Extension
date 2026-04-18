@@ -19,7 +19,7 @@
 // import Discord  from 'discord.js';
 import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index.js';
 import * as element from './AddElement';
-import * as helper from './helper.js';
+import * as helper from './helper';
 import { Tooltip, Alert, Popover } from 'bootstrap';
 import { GBGdata } from '../msg/GuildBattlegroundService.js';
 
