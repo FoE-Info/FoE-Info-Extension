@@ -225,10 +225,32 @@ console.debug(tool.version);
 // 		} ).done( function() { console.debug('i18n.load OK') } );
 export var darkMode = browser.devtools.panels.themeName;
 const panelParams = new URLSearchParams(window.location.search);
-export var uiMode =
-  panelParams.get('uiMode') === 'traditional' ? 'traditional' : 'classic';
-document.body.setAttribute('data-ui-mode', uiMode);
-document.body.classList.add(`ui-mode-${uiMode}`);
+export var uiMode: 'classic' | 'traditional' = 'classic';
+
+const applyUiMode = (mode: unknown) => {
+  const normalizedMode = mode === 'traditional' ? 'traditional' : 'classic';
+  uiMode = normalizedMode;
+  document.body.setAttribute('data-ui-mode', uiMode);
+  document.body.classList.remove('ui-mode-classic', 'ui-mode-traditional');
+  document.body.classList.add(`ui-mode-${uiMode}`);
+};
+
+const applyTheme = (themeName: unknown) => {
+  const normalizedTheme = themeName === 'dark' ? 'dark' : 'light';
+  darkMode = normalizedTheme;
+  document.body.setAttribute('data-theme', normalizedTheme);
+  document.body.classList.toggle('theme-dark', normalizedTheme === 'dark');
+  document.body.classList.toggle('theme-light', normalizedTheme === 'light');
+};
+
+applyUiMode(panelParams.get('uiMode'));
+applyTheme(browser.devtools.panels.themeName);
+
+browser.storage.local.get('tool').then((result: any) => {
+  if (result?.tool?.uiMode) {
+    applyUiMode(result.tool.uiMode);
+  }
+});
 // if (window.matchMedia &&
 //     window.matchMedia('(prefers-color-scheme: dark)').matches) {
 // //   img.style.filter="invert(100%)";
@@ -240,10 +262,7 @@ var title = document.createElement('div');
 document.body.appendChild(title);
 title.id = 'title';
 title.className = 'd-flex flex-row justify-content-between';
-const isDarkTheme = darkMode === 'dark';
-if (isDarkTheme) {
-  title.classList.add('text-light', 'bg-dark');
-}
+title.classList.add('panel-title');
 
 // <div class="p-2"><img src="${./src/icons/Icon24.png}" /></div>
 {
@@ -259,9 +278,6 @@ if (isDarkTheme) {
 // </div>`;
 
 var newelement: HTMLElement = document.body;
-if (isDarkTheme) {
-  newelement.classList.add('bg-dark');
-}
 newelement.classList.add('bootstrap-styles');
 newelement = document.createElement('div');
 newelement.className = 'p-2';
@@ -278,8 +294,7 @@ newelement = document.createElement('div');
 newelement.className = 'p-8 title';
 title.appendChild(newelement);
 const titleHeading = document.createElement('h6');
-if (isDarkTheme) titleHeading.className = 'title text-light bg-dark';
-else titleHeading.className = 'title';
+titleHeading.className = 'title';
 // child.innerHTML = pkg.name;
 titleHeading.textContent = EXT_NAME;
 newelement.appendChild(titleHeading);
@@ -299,7 +314,7 @@ title.appendChild(newelement);
 export var content = document.createElement('div');
 document.body.appendChild(content);
 content.id = 'content';
-if (darkMode == 'dark') content.className = 'text-light bg-dark';
+content.className = 'panel-content';
 export var citystats = document.createElement('div');
 content.appendChild(citystats);
 citystats.className = 'alert alert-warning';
@@ -603,15 +618,7 @@ window.addEventListener(
 window
   .matchMedia('(prefers-color-scheme: dark)')
   .addEventListener('change', ({ matches }) => {
-    document.body.classList.toggle('bg-dark');
-    document.body.classList.toggle('text-light');
-    if (matches) {
-      console.log('change to dark mode!');
-      darkMode = 'dark';
-    } else {
-      console.log('change to light mode!');
-      darkMode = 'light';
-    }
+    applyTheme(matches ? 'dark' : 'light');
   });
 function onEvent(message: unknown, params: unknown) {
   console.debug(message, params);
@@ -1196,8 +1203,12 @@ function storageChange(
     // showOptions = storageChange.newValue;
     // console.debug(changes);
     else if (key == 'tool') {
-      language = storageChange.newValue.language;
+      const toolSettings = storageChange.newValue as any;
+      if (toolSettings?.language) {
+        language = toolSettings.language;
+      }
       console.debug(language);
+      applyUiMode(toolSettings?.uiMode);
     } else if (key == 'targets') {
       // console.debug(storageChange.newValue,targetsTopic);
       targetsTopic = storageChange.newValue;

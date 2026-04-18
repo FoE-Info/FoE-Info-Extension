@@ -1,16 +1,27 @@
 :root {
-  --foe-color-background: #222;
-  --foe-color-text-primary: #fff;
+  --foe-color-background: #f5f2e9;
+  --foe-color-text-primary: #1d1a14;
   --foe-color-surface-dark: #292a2d;
+  --foe-color-surface: #fffdf7;
+  --foe-color-border: #d8ccb6;
+  --foe-color-title-bg: linear-gradient(180deg, #f6e7c7 0%, #e2c690 100%);
   --foe-color-warning-icon: #808000;
-  --foe-color-favorite: #3d1472;
-  --foe-color-favorite-hover: #808080;
+  --foe-color-favorite: #8b3f13;
+  --foe-color-favorite-hover: #6f6b63;
   --foe-color-scrollbar-track: #f1f1f1;
   --foe-color-scrollbar-thumb: #888;
   --foe-color-scrollbar-thumb-hover: #555;
   --foe-color-invest-good: #007e33;
   --foe-color-invest-fair: #ff8800;
   --foe-color-invest-bad: #cc0000;
+}
+
+body[data-theme='dark'] {
+  --foe-color-background: #15171d;
+  --foe-color-text-primary: #f2f5fb;
+  --foe-color-surface: #212631;
+  --foe-color-border: #394255;
+  --foe-color-title-bg: linear-gradient(180deg, #27314a 0%, #20283d 100%);
 }
 
 body {
@@ -26,6 +37,10 @@ body {
   /* color: black; */
   color: var(--color-text-primary, var(--foe-color-text-primary));
   background: var(--color-background, var(--foe-color-background));
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
 }
 
 .dark-mode {
@@ -34,6 +49,55 @@ body {
   /* background-color: black; */
   /* color: white; */
   background-color: var(--foe-color-surface-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+  body:not([data-theme]) {
+    --foe-color-background: #15171d;
+    --foe-color-text-primary: #f2f5fb;
+    --foe-color-surface: #212631;
+    --foe-color-border: #394255;
+    --foe-color-title-bg: linear-gradient(180deg, #27314a 0%, #20283d 100%);
+  }
+}
+
+.panel-title {
+  background: var(--foe-color-title-bg);
+  border: 1px solid var(--foe-color-border);
+  border-radius: 10px;
+  margin: 0.45rem 0.5rem 0.35rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+
+.panel-content {
+  padding: 0 0.5rem 0.4rem;
+}
+
+.panel-content .alert {
+  background-color: var(--foe-color-surface);
+  border: 1px solid var(--foe-color-border);
+  color: var(--foe-color-text-primary);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+body.ui-mode-traditional {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.85em;
+}
+
+body.ui-mode-traditional .panel-title {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.ui-mode-traditional .panel-content .alert {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body.ui-mode-traditional .title {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 h6 {
