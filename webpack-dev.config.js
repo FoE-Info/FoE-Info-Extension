@@ -24,7 +24,7 @@ module.exports = {
     // bootstrap: './src/js/bootstrap.js',
     app: './src/js/index.js',
     options: './src/js/options.js',
-    devtools: './src/js/devtools.js',
+    devtools: './src/js/devtools',
     popup: './src/js/popup.js',
   },
   devtool: 'inline-source-map',
