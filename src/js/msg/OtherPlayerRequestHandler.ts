@@ -6,7 +6,30 @@ import {
 } from './types';
 
 type OtherPlayerMessage = HandlerMessage & {
-  responseData?: any;
+  responseData?: unknown;
+};
+
+type OtherPlayerCityMapEntity = {
+  player_id: number;
+  id: number;
+  cityentity_id: string | number;
+  level: number;
+  max_level: number;
+  connected: boolean;
+  state: {
+    forge_points_for_level_up: number;
+    invested_forge_points?: number;
+  };
+};
+
+type OtherPlayerRewardPlunder = {
+  product: {
+    resources: Record<string, number>;
+  };
+};
+
+type OtherPlayerRewardResources = {
+  resources: Record<string, number>;
 };
 
 type OtherPlayerDeps = {
@@ -61,7 +84,7 @@ export function handleOtherPlayerServiceRequest(
   } = deps;
 
   if (msg.requestMethod === 'getOtherPlayerCityMapEntity') {
-    const selected = msg.responseData;
+    const selected = msg.responseData as OtherPlayerCityMapEntity;
     if (getPlayerID() !== selected.player_id) {
       setPlayerState('', selected.player_id);
     } else {
@@ -88,7 +111,8 @@ export function handleOtherPlayerServiceRequest(
       otherPlayerService(msg);
     }
   } else if (msg.requestMethod === 'rewardPlunder') {
-    const rewards = msg.responseData[0].product.resources;
+    const rewards = (msg.responseData as OtherPlayerRewardPlunder[])[0].product
+      .resources;
     Object.keys(rewards).forEach((reward) => {
       const name = helper.fResourceShortName(reward);
       const qty = rewards[reward];
@@ -108,7 +132,7 @@ export function handleOtherPlayerServiceRequest(
       showReward(reward);
     }
   } else if (msg.requestMethod === 'rewardResources') {
-    const rewards = msg.responseData.resources;
+    const rewards = (msg.responseData as OtherPlayerRewardResources).resources;
 
     Object.keys(rewards).forEach((reward) => {
       const name = helper.fResourceShortName(reward);

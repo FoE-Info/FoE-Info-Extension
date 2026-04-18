@@ -4,12 +4,71 @@ import {
   getConstructionRanking,
 } from './GreatBuildingsService';
 import BigNumber from 'bignumber.js';
+import { HandlerMessage } from './types';
+
+type GreatBuildingsContribution = {
+  forge_points: number;
+  rank: number;
+  reward?: {
+    strategy_point_amount?: number;
+  };
+  player?: {
+    name?: string;
+    player_id?: number;
+  };
+};
+
+type GreatBuildingsRequest = {
+  request?: {
+    postData?: {
+      text?: string;
+    };
+  };
+};
+
+type GreatBuildingsMessage = HandlerMessage & {
+  responseData?: unknown;
+};
+
+type GreatBuildingsDeps = {
+  showOptions: {
+    showInvested?: boolean;
+  };
+  cityinvested: {
+    innerHTML: string;
+  };
+  City: {
+    ArcBonus: number;
+  };
+  availablePacksFP: () => number;
+  availableFP: number;
+  element: {
+    close: () => string;
+    icon: (iconId: string, targetId: string, collapsed?: boolean) => string;
+    copy: (
+      elementId: string,
+      color: string,
+      placement: string,
+      collapsed?: boolean,
+    ) => string;
+  };
+  collapse: {
+    collapseInvested?: boolean;
+    fCollapseInvested: EventListener;
+  };
+  copy: {
+    fInvestedCopy: EventListener;
+  };
+  setPlayerName: (name: string | undefined, playerId: number | undefined) => void;
+  setAvailablePacksFP: (value: unknown) => void;
+  setAvailableFPText: () => void;
+};
 
 export function handleGreatBuildingsServiceRequest(
-  msg: Record<string, any>,
-  request: Record<string, any>,
-  safeJsonParse: ((raw: string, context: string) => unknown) | undefined,
-  deps: Record<string, any>,
+  msg: GreatBuildingsMessage,
+  request: GreatBuildingsRequest,
+  safeJsonParse: ((raw: string | undefined, context: string) => unknown) | undefined,
+  deps: GreatBuildingsDeps,
 ) {
   if (!msg || msg.requestClass !== 'GreatBuildingsService') {
     return false;
@@ -53,22 +112,24 @@ export function handleGreatBuildingsServiceRequest(
     var invested = 0;
     var cityinvestedHTML = ``;
     cityinvested.innerHTML = ``;
-    if (showOptions.showInvested && msg.responseData.length) {
+    const responseData = msg.responseData as GreatBuildingsContribution[];
+    if (showOptions.showInvested && responseData.length) {
       var numGB = 0;
-      for (var j = 0; j < msg.responseData.length; j++) {
-        invested += msg.responseData[j].forge_points;
-        if (msg.responseData[j].rank < 6) {
+      for (var j = 0; j < responseData.length; j++) {
+        invested += responseData[j].forge_points;
+        if (responseData[j].rank < 6) {
+          const strategyPointAmount = responseData[j].reward?.strategy_point_amount;
           if (
-            msg.responseData[j].reward.strategy_point_amount &&
-            msg.responseData[j].forge_points > 9
+            strategyPointAmount &&
+            responseData[j].forge_points > 9
           ) {
-            reward += msg.responseData[j].reward.strategy_point_amount;
+            reward += strategyPointAmount;
             numGB++;
           }
           console.debug(
             'invested: ',
             numGB,
-            msg.responseData[j].forge_points,
+            responseData[j].forge_points,
             invested,
             reward,
           );
@@ -138,17 +199,18 @@ export function handleGreatBuildingsServiceRequest(
   }
 
   if (msg.requestMethod === 'getOtherPlayerOverview') {
-    if (msg.responseData.length) {
-      for (var j = 0; j < msg.responseData.length; j++) {
-        var player = msg.responseData[j].player;
-        deps.setPlayerName(player.name, player.player_id);
+    const responseData = msg.responseData as GreatBuildingsContribution[];
+    if (responseData.length) {
+      for (var j = 0; j < responseData.length; j++) {
+        var player = responseData[j].player;
+        deps.setPlayerName(player?.name, player?.player_id);
       }
     }
     return true;
   }
 
   if (msg.requestMethod === 'getAvailablePackageForgePoints') {
-    deps.setAvailablePacksFP(msg.responseData[0]);
+    deps.setAvailablePacksFP((msg.responseData as unknown[])[0]);
     deps.setAvailableFPText();
     return true;
   }

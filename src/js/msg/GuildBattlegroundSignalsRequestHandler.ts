@@ -1,9 +1,20 @@
 import { removeSignal, setSignal } from './GuildBattlegroundService';
+import { HandlerMessage } from './types';
+
+type GuildBattlegroundSignalsRequest = {
+  request?: {
+    postData?: {
+      text?: string;
+    };
+  };
+};
+
+type GuildBattlegroundSignalsMessage = HandlerMessage;
 
 export function handleGuildBattlegroundSignalsRequest(
-  msg: Record<string, any>,
-  request: Record<string, any>,
-  safeJsonParse: ((raw: string, context: string) => unknown) | undefined,
+  msg: GuildBattlegroundSignalsMessage,
+  request: GuildBattlegroundSignalsRequest,
+  safeJsonParse: ((raw: string | undefined, context: string) => unknown) | undefined,
 ) {
   if (!msg || msg.requestClass !== 'GuildBattlegroundSignalsService') {
     return false;

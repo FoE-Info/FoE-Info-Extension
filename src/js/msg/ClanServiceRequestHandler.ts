@@ -1,6 +1,124 @@
+type ClanServiceMember = {
+  rank: number;
+  name: string;
+  title?: string;
+  player_id?: number;
+  era?: string;
+  won_battles?: number;
+  score?: number;
+  is_self?: boolean;
+};
+
+type ClanServiceLogEntry = {
+  resource: string;
+  player: {
+    name: string;
+  };
+  action: string;
+  amount: number;
+  createdAt: string;
+};
+
+type ClanServiceResourceDef = {
+  id: string;
+  era: string;
+  name: string;
+};
+
+type ClanServiceResponseData = {
+  members?: ClanServiceMember[];
+  name?: string;
+  membersNum?: number;
+  logs?: ClanServiceLogEntry[];
+  resources?: Record<string, number>;
+  length?: number;
+};
+
+type GuildDonationRow = Array<string | number>;
+type GuildTreasuryRow = Array<string | number>;
+
+function addNumericValue(
+  row: Array<string | number>,
+  index: number,
+  amount: number,
+) {
+  row[index] = Number(row[index] ?? 0) + amount;
+}
+
+type ClanServiceMessage = {
+  requestClass?: string;
+  requestMethod?: string;
+  responseData: ClanServiceResponseData;
+};
+
+type ClanServiceDeps = {
+  showOptions: {
+    showTreasury?: boolean;
+    showGuild?: boolean;
+    showContributions?: boolean;
+    showLogs?: boolean;
+  };
+  element: {
+    icon: (iconId: string, targetId: string, collapsed?: boolean) => string;
+    close: () => string;
+    copy: (
+      elementId: string,
+      color: string,
+      placement: string,
+      collapsed?: boolean,
+    ) => string;
+  };
+  collapse: {
+    collapseFriends?: boolean;
+    fCollapseFriends: EventListener;
+    collapseTreasuryLog?: boolean;
+    collapseTreasury?: boolean;
+    fCollapseTreasury: EventListener;
+  };
+  helper: {
+    fGVGagesname: (era?: string) => string;
+    fResourceShortName: (resource: string) => string;
+    fLevelfromAge: (era: string) => number;
+    numAges: number;
+    fAgefromLevel: (level: number) => string;
+  };
+  copy: {
+    fFriendsCopy: EventListener;
+    TreasuryCopy: EventListener;
+  };
+  friendsDiv: { innerHTML: string };
+  MyInfo: { guild?: string };
+  setMyGuildPosition: (rank: number) => void;
+  GuildDonations: GuildDonationRow[];
+  GuildTreasury: GuildTreasuryRow[];
+  ResourceDefs: ClanServiceResourceDef[];
+  treasuryLog: { innerHTML: string };
+  treasury: { innerHTML: string };
+  cityinvested: { innerHTML: string };
+  output: { innerHTML: string };
+  overview: { innerHTML: string };
+  alerts: { innerHTML: string };
+  donationDIV: { innerHTML: string };
+  incidents: { innerHTML: string };
+  donation2DIV: { innerHTML: string };
+  donationDIV2: { innerHTML: string };
+  greatbuilding: { innerHTML: string };
+  guild: { innerHTML: string };
+  debug: { innerHTML: string };
+  info: { innerHTML: string };
+  visitstats: { innerHTML: string; className: string };
+  cultural: { innerHTML: string; className: string };
+  gvg: { innerHTML: string; className: string };
+  gvgSummary?: { innerHTML: string };
+  gvgAges?: { innerHTML: string };
+  toolOptions: { treasurySize: number };
+  initTreasury: (resources: Record<string, number>) => void;
+  setTreasurySize: (height: number) => void;
+};
+
 export function handleClanServiceRequest(
-  msg: Record<string, any>,
-  deps: Record<string, any>,
+  msg: ClanServiceMessage,
+  deps: ClanServiceDeps,
 ) {
   if (!msg || msg.requestClass !== 'ClanService') {
     return false;
@@ -47,9 +165,9 @@ export function handleClanServiceRequest(
     msg.requestMethod == 'getClanData'
   ) {
     if (showOptions.showTreasury && msg.requestMethod == 'getOwnClanData') {
-      const members = msg.responseData.members;
-      GuildDonations.push([msg.responseData.name, msg.responseData.membersNum]);
-      members.forEach((entry: Record<string, any>) => {
+      const members = msg.responseData.members ?? [];
+      GuildDonations.push([msg.responseData.name ?? '', msg.responseData.membersNum ?? 0]);
+      members.forEach((entry: ClanServiceMember) => {
         GuildDonations.push([
           entry.rank,
           entry.name,
@@ -100,7 +218,7 @@ export function handleClanServiceRequest(
         collapse.collapseFriends ? '' : 'show'
       }">
 	  <table id="friendsText2"><tr><th>Name</th><th>Title</th><th>ID</th><th>Era</th><th>Battles</th><th>Score</th></tr>`;
-      guildlist.forEach((entry: Record<string, any>) => {
+      guildlist.forEach((entry: ClanServiceMember) => {
         friendsHTML += `<tr><td>${entry.name}</td><td>${entry.title}</td><td>${
           entry.player_id
         }</td><td>${helper.fGVGagesname(entry.era)}</td><td>${entry.won_battles}</td><td>${
@@ -139,88 +257,92 @@ export function handleClanServiceRequest(
         }
       }
 
-      const logs = msg.responseData.logs;
-      logs.forEach((entry: Record<string, any>) => {
+      const logs = msg.responseData.logs ?? [];
+      logs.forEach((entry: ClanServiceLogEntry) => {
         if (entry.resource == 'medals') {
-          GuildDonations.forEach((member: any[]) => {
+          GuildDonations.forEach((member: GuildDonationRow) => {
             if (member[1] == entry.player.name) {
               if (entry.action.toLowerCase() == 'guild continent: slot unlocked')
-                member[2] += entry.amount;
+                addNumericValue(member, 2, entry.amount);
               else if (entry.action.toLowerCase() == 'siege army deployment')
-                member[2] += entry.amount;
+                addNumericValue(member, 2, entry.amount);
               else if (
                 entry.action.toLowerCase() == 'guild continent: grant freedom'
               )
-                member[3] += entry.amount;
+                addNumericValue(member, 3, entry.amount);
               else if (entry.action.toLowerCase() == 'donation')
-                member[4] += entry.amount;
+                addNumericValue(member, 4, entry.amount);
             }
           });
         } else {
-          GuildDonations.forEach((member: any[]) => {
+          GuildDonations.forEach((member: GuildDonationRow) => {
             if (member[1] == entry.player.name) {
               if (
                 entry.action.toLowerCase() == 'siege army deployment' ||
                 entry.action.toLowerCase() == 'guild continent: slot unlocked'
               )
-                member[5] += entry.amount;
+                addNumericValue(member, 5, entry.amount);
               else if (
                 entry.action.toLowerCase() == 'guild continent: grant freedom'
               )
-                member[6] += entry.amount;
+                addNumericValue(member, 6, entry.amount);
               else if (
                 entry.action.toLowerCase() == 'battlegrounds: place building'
               )
-                member[7] += entry.amount;
+                addNumericValue(member, 7, entry.amount);
               else if (
                 entry.action.toLowerCase() ==
                 'guild expedition: difficulty unlocked'
               )
-                member[8] += entry.amount;
+                addNumericValue(member, 8, entry.amount);
               else if (entry.action.toLowerCase() == 'building production')
-                member[9] += entry.amount;
+                addNumericValue(member, 9, entry.amount);
               else if (
                 entry.action.toLowerCase() == 'guild treasury donation'
               ) {
-                member[11] += entry.amount;
+                addNumericValue(member, 11, entry.amount);
               } else {
                 console.debug(entry.action, entry.amount);
               }
 
               if (entry.action.toLowerCase() == 'guild treasury donation') {
-                ResourceDefs.forEach((rssDef: Record<string, any>) => {
+                ResourceDefs.forEach((rssDef: ClanServiceResourceDef) => {
                   if (rssDef.id == entry.resource) {
-                    member[31 - helper.fLevelfromAge(rssDef.era)] += entry.amount;
+                    addNumericValue(
+                      member,
+                      31 - helper.fLevelfromAge(rssDef.era),
+                      entry.amount,
+                    );
                   }
                 });
               }
             }
           });
 
-          GuildTreasury.forEach((rss: any[]) => {
+          GuildTreasury.forEach((rss: GuildTreasuryRow) => {
             if (entry.resource == rss[0]) {
               if (
                 entry.action.toLowerCase() == 'siege army deployment' ||
                 entry.action.toLowerCase() == 'guild continent: slot unlocked' ||
                 entry.action.toLowerCase() == 'guild continent: grant freedom'
               ) {
-                rss[6] += entry.amount;
+                addNumericValue(rss, 6, entry.amount);
               } else if (
                 entry.action.toLowerCase() == 'battlegrounds: place building'
               ) {
-                rss[7] += entry.amount;
+                addNumericValue(rss, 7, entry.amount);
               } else if (
                 entry.action.toLowerCase() ==
                 'guild expedition: difficulty unlocked'
               ) {
-                rss[5] += entry.amount;
+                addNumericValue(rss, 5, entry.amount);
               } else if (
                 entry.action.toLowerCase() == 'building production' ||
                 entry.action.toLowerCase() == 'guild treasury donation'
               ) {
-                rss[4] += entry.amount;
+                addNumericValue(rss, 4, entry.amount);
               }
-              rss[8] += entry.amount;
+              addNumericValue(rss, 8, entry.amount);
               return;
             }
           });
@@ -256,11 +378,11 @@ export function handleClanServiceRequest(
           collapse.collapseTreasury ? '' : 'show'
         }">
 			<table id="treasurytable" class="overflow table collapse show"><tr><th>Name</th><th>Medals Spent</th><th>Medals Returned</th><th>Medals Donated</th><th>Medals Total</th><th>Goods Spent GVG</th><th>Goods Returned GVG</th><th>Goods Spent GBG</th><th>Goods Spent GE</th><th>Goods Donated Building</th><th>Goods Donated ???</th><th>Goods Donated</th><th>SAV</th><th>SAAB</th><th>SAM</th><th>VF</th><th>OF</th><th>AF</th><th>FE</th><th>TE</th><th>CE</th><th>PME</th><th>ME</th><th>PE</th><th>InA</th><th>CA</th><th>LMA</th><th>HMA</th><th>EMA</th><th>IA</th></tr>`;
-        GuildDonations.forEach((member: any[]) => {
+        GuildDonations.forEach((member: GuildDonationRow) => {
           if (member[0] != MyInfo.guild)
             treasuryHTML += `<tr><td>${member[1]}</td><td>${member[2]}</td><td>${
               member[3]
-            }</td><td>${member[4]}</td><td>${member[2] + member[3] + member[4]}</td><td>${
+            }</td><td>${member[4]}</td><td>${Number(member[2]) + Number(member[3]) + Number(member[4])}</td><td>${
               member[5]
             }</td><td>${member[6]}</td><td>${member[7]}</td><td>${member[8]}</td><td>${
               member[9]
@@ -280,7 +402,7 @@ export function handleClanServiceRequest(
         if (GuildTreasury) {
           treasuryHTML += `<tr></tr>`;
           treasuryHTML += `<tr><th>Era:Resource</th><th>Treasury</th><th>Donations</th><th>GE Cost</th><th>GVG Cost</th><th>GBG Cost</th><th>Net Change</th></tr>`;
-          GuildTreasury.forEach((rss: any[]) => {
+          GuildTreasury.forEach((rss: GuildTreasuryRow) => {
             treasuryHTML += `<tr><td>${rss[1]}:${rss[2]}</td><td>${rss[3]}</td><td>${rss[4]}</td><td>${rss[5]}</td><td>${rss[6]}</td><td>${rss[7]}</td><td>${rss[8]}</td></tr>`;
           });
         }
@@ -348,11 +470,11 @@ export function handleClanServiceRequest(
         collapse.collapseTreasury ? '' : 'show'
       }"><table id="treasurytable">`;
 
-      const resources = msg.responseData.resources;
-      initTreasury(msg.responseData.resources);
+      const resources = msg.responseData.resources ?? {};
+      initTreasury(resources);
 
       for (var i = 0; i < helper.numAges; i++) {
-        ResourceDefs.forEach((rssDef: Record<string, any>) => {
+        ResourceDefs.forEach((rssDef: ClanServiceResourceDef) => {
           if (
             rssDef.era == helper.fAgefromLevel(helper.numAges - i) &&
             resources[rssDef.id]

@@ -1,10 +1,92 @@
 import { HandlerMessage } from './types';
 
 type MiscMessage = HandlerMessage & {
-  responseData?: any;
+  responseData?: unknown;
 };
 
-type MiscDeps = Record<string, any>;
+type MiscIgnoreData = {
+  ignoredByPlayerIds?: unknown;
+  ignoredPlayerIds?: unknown;
+};
+
+type MiscRankingResponse = {
+  rankings: Array<{
+    player: {
+      is_self?: boolean;
+      name: string;
+      player_id: number;
+    };
+    clan: {
+      name: string;
+    };
+  }>;
+  category?: string;
+};
+
+type MiscHiddenRewardsResponse = {
+  hiddenRewards: unknown[];
+};
+
+type MiscAdvancementResource = {
+  requirements: {
+    resources: Record<string, number>;
+  };
+  isUnlocked?: boolean;
+};
+
+type MiscAutoAidResponse = {
+  id?: unknown;
+  totalPeers?: unknown;
+};
+
+type MiscDeps = {
+  conversationService: (msg: MiscMessage) => void;
+  getConversation: (msg: MiscMessage) => void;
+  armyUnitManagementService: (msg: MiscMessage) => void;
+  clearStartup: () => void;
+  clearBattleground: () => void;
+  ignoredPlayers: MiscIgnoreData;
+  setEpocTime: (time: number) => void;
+  clearForMainCity: () => void;
+  helper: {
+    fShowIncidents: () => void;
+    fResourceShortName: (resource: string) => string;
+  };
+  getResourceDefinitions: (msg: MiscMessage) => void;
+  getPlayerResources: (msg: MiscMessage) => void;
+  MyInfo: {
+    name?: string;
+    id?: number;
+    guild?: string;
+  };
+  showOptions: {
+    showStats?: boolean;
+    showSettlement?: boolean;
+  };
+  citystats: {
+    innerHTML: string;
+  };
+  setHiddenRewards: (rewards: unknown[]) => void;
+  emissaryService: (msg: MiscMessage) => void;
+  getCultural: () => HTMLElement;
+  setCultural: (node: HTMLElement) => void;
+  Resources: Record<string, number>;
+  collapse: {
+    collapseCultural?: boolean;
+    fCollapseCultural: EventListener;
+  };
+  element: {
+    close: () => string;
+    icon: (iconId: string, targetId: string, collapsed?: boolean) => string;
+  };
+  showCultural: {
+    clearCultural: () => void;
+  };
+  getBonuses: (msg: MiscMessage) => void;
+  getLimitedBonuses: (msg: MiscMessage) => void;
+  boostService: (msg: MiscMessage) => void;
+  boostServiceAllBoosts: (msg: MiscMessage) => void;
+};
 
 export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
   const {
@@ -70,19 +152,21 @@ export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
   ) {
     clearStartup();
     clearBattleground();
-    if (msg.responseData) {
-      console.debug('Ignored By:', msg.responseData.ignoredByPlayerIds);
-      console.debug('Ignoring:', msg.responseData.ignoredPlayerIds);
-      ignoredPlayers.ignoredByPlayerIds = msg.responseData.ignoredByPlayerIds;
-      ignoredPlayers.ignoredPlayerIds = msg.responseData.ignoredPlayerIds;
+    const ignoreData = msg.responseData as MiscIgnoreData | undefined;
+    if (ignoreData) {
+      console.debug('Ignored By:', ignoreData.ignoredByPlayerIds);
+      console.debug('Ignoring:', ignoreData.ignoredPlayerIds);
+      ignoredPlayers.ignoredByPlayerIds = ignoreData.ignoredByPlayerIds;
+      ignoredPlayers.ignoredPlayerIds = ignoreData.ignoredPlayerIds;
       console.debug('Ignores:', ignoredPlayers);
     }
     return true;
   }
 
   if (msg.requestClass === 'TimeService' && msg.requestMethod === 'updateTime') {
-    if (msg.responseData) {
-      setEpocTime(msg.responseData.time);
+    const timeData = msg.responseData as { time: number } | undefined;
+    if (timeData) {
+      setEpocTime(timeData.time);
     }
     return true;
   }
@@ -115,19 +199,20 @@ export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
     msg.requestClass === 'RankingService' &&
     msg.requestMethod === 'searchRanking'
   ) {
+    const rankingData = msg.responseData as MiscRankingResponse;
     if (
-      msg.responseData.rankings.length &&
-      msg.responseData.category !== 'clan_battle_clan_global'
+      rankingData.rankings.length &&
+      rankingData.category !== 'clan_battle_clan_global'
     ) {
-      for (let j = 0; j < msg.responseData.rankings.length; j++) {
-        if (msg.responseData.rankings[j].player.hasOwnProperty('is_self')) {
+      for (let j = 0; j < rankingData.rankings.length; j++) {
+        if (rankingData.rankings[j].player.hasOwnProperty('is_self')) {
           if (
-            MyInfo.name !== msg.responseData.rankings[j].player.name ||
-            MyInfo.id !== msg.responseData.rankings[j].player.player_id
+            MyInfo.name !== rankingData.rankings[j].player.name ||
+            MyInfo.id !== rankingData.rankings[j].player.player_id
           ) {
-            MyInfo.name = msg.responseData.rankings[j].player.name;
-            MyInfo.id = msg.responseData.rankings[j].player.player_id;
-            MyInfo.guild = msg.responseData.rankings[j].clan.name;
+            MyInfo.name = rankingData.rankings[j].player.name;
+            MyInfo.id = rankingData.rankings[j].player.player_id;
+            MyInfo.guild = rankingData.rankings[j].clan.name;
             console.debug('user :', MyInfo);
             if (showOptions.showStats) {
               citystats.innerHTML = `<div class="alert alert-warning"><strong>${MyInfo.name}</strong></div>`;
@@ -143,8 +228,9 @@ export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
     msg.requestClass === 'HiddenRewardService' &&
     msg.requestMethod === 'getOverview'
   ) {
-    if (msg.responseData.hiddenRewards.length) {
-      setHiddenRewards(msg.responseData.hiddenRewards);
+    const hiddenRewards = msg.responseData as MiscHiddenRewardsResponse;
+    if (hiddenRewards.hiddenRewards.length) {
+      setHiddenRewards(hiddenRewards.hiddenRewards);
     } else {
       setHiddenRewards([]);
     }
@@ -166,7 +252,7 @@ export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
   ) {
     showCultural.clearCultural();
     const culturalGoods: Record<string, number> = {};
-    msg.responseData.forEach((resource: any) => {
+    (msg.responseData as MiscAdvancementResource[]).forEach((resource) => {
       const rss = resource.requirements.resources;
 
       if (resource.isUnlocked !== true) {
@@ -250,10 +336,11 @@ export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
   if (msg.requestClass === 'AutoAidService') {
     console.debug('AutoAidService', msg);
     if (msg.requestMethod === 'collect') {
+      const autoAidData = msg.responseData as MiscAutoAidResponse;
       console.debug(
         'AutoAidService',
-        msg.responseData.id,
-        msg.responseData.totalPeers,
+        autoAidData.id,
+        autoAidData.totalPeers,
       );
     } else if (msg.requestMethod === '') {
       // no-op
