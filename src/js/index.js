@@ -67,6 +67,7 @@ import { handleGuildExpeditionServiceRequest } from './msg/GuildExpeditionReques
 import { handleClanServiceRequest } from './msg/ClanServiceRequestHandler.js';
 import { handleCityMapServiceRequest } from './msg/CityMapRequestHandler.js';
 import { handleInventoryServiceRequest } from './msg/InventoryRequestHandler.js';
+import { handleMiscRequest } from './msg/MiscRequestHandler.js';
 import { handleOtherPlayerServiceRequest } from './msg/OtherPlayerRequestHandler.js';
 import {
   otherPlayerService,
@@ -531,6 +532,22 @@ const setPendingStartupMessage = (msg) => {
   pendingStartupMsg = msg;
 };
 
+const setEpocTime = (time) => {
+  EpocTime = time;
+};
+
+const setHiddenRewards = (rewards) => {
+  hiddenRewards = rewards;
+};
+
+const getCulturalDiv = () => {
+  return cultural;
+};
+
+const setCulturalDiv = (newCultural) => {
+  cultural = newCultural;
+};
+
 const getTotalAvailableFP = () => {
   return availablePacksFP + availableFP;
 };
@@ -901,65 +918,36 @@ function handleRequestFinished(request) {
           ) {
             // handled in module
           } else if (
-            msg.requestClass == 'ArmyUnitManagementService' &&
-            msg.requestMethod == 'getArmyInfo'
+            handleMiscRequest(msg, {
+              conversationService,
+              getConversation,
+              armyUnitManagementService,
+              clearStartup,
+              clearBattleground,
+              ignoredPlayers,
+              setEpocTime,
+              clearForMainCity,
+              helper,
+              getResourceDefinitions,
+              getPlayerResources,
+              MyInfo,
+              showOptions,
+              citystats,
+              setHiddenRewards,
+              emissaryService,
+              getCultural: getCulturalDiv,
+              setCultural: setCulturalDiv,
+              Resources,
+              collapse,
+              element,
+              showCultural: { clearCultural },
+              getBonuses,
+              getLimitedBonuses,
+              boostService,
+              boostServiceAllBoosts,
+            })
           ) {
-            /*ArmyUnitManagementService*/
-            // console.debug(msg,msg.responseData.counts,MilitaryDefs);
-            armyUnitManagementService(msg);
-          } else if (
-            msg.requestClass == 'FriendsTavernService' &&
-            msg.requestMethod == 'getSittingPlayersCount'
-          ) {
-            /*FriendsTavernService*/
-            // if(msg.responseData)
-            // MyInfo.id = msg.responseData[0];
-            // console.debug('FriendsTavernService',MyInfo.id);
-          } else if (
-            msg.requestClass == 'IgnorePlayerService' &&
-            msg.requestMethod == 'getIgnoreList'
-          ) {
-            /*IgnorePlayerService*/
-            clearStartup();
-            clearBattleground();
-            if (msg.responseData) {
-              console.debug('Ignored By:', msg.responseData.ignoredByPlayerIds);
-              console.debug('Ignoring:', msg.responseData.ignoredPlayerIds);
-              ignoredPlayers.ignoredByPlayerIds =
-                msg.responseData.ignoredByPlayerIds;
-              ignoredPlayers.ignoredPlayerIds =
-                msg.responseData.ignoredPlayerIds;
-              console.debug('Ignores:', ignoredPlayers);
-            }
-            // console.debug('Ignored :',msg.responseData);
-          } else if (
-            msg.requestClass == 'TimeService' &&
-            msg.requestMethod == 'updateTime'
-          ) {
-            /*Time Service */
-            if (msg.responseData) {
-              EpocTime = msg.responseData.time;
-              // console.debug(EpocTime,msg.responseData);
-            }
-          } else if (
-            msg.requestClass == 'AnnouncementsService' &&
-            msg.requestMethod == 'fetchAllAnnouncements'
-          ) {
-            clearForMainCity();
-            helper.fShowIncidents();
-          } else if (
-            msg.requestClass == 'TimerService' &&
-            msg.requestMethod == 'getTimers'
-          ) {
-            //clearForBattleground();
-          } else if (msg.requestClass == 'ResourceService') {
-            if (msg.requestMethod == 'getResourceDefinitions') {
-              /*Resource Service */
-              getResourceDefinitions(msg);
-            } else if (msg.requestMethod == 'getPlayerResources') {
-              /*Resource Service */
-              getPlayerResources(msg);
-            }
+            // handled in module
           } else if (
             handleCityMapServiceRequest(msg, {
               MyInfo,
@@ -998,145 +986,6 @@ function handleRequestFinished(request) {
             })
           ) {
             // handled in module
-          } else if (
-            msg.requestClass == 'RankingService' &&
-            msg.requestMethod == 'searchRanking'
-          ) {
-            // console.debug('msg:', msg);
-            if (
-              msg.responseData.rankings.length &&
-              msg.responseData.category != 'clan_battle_clan_global'
-            ) {
-              for (var j = 0; j < msg.responseData.rankings.length; j++) {
-                if (
-                  msg.responseData.rankings[j].player.hasOwnProperty('is_self')
-                ) {
-                  if (
-                    MyInfo.name != msg.responseData.rankings[j].player.name ||
-                    MyInfo.id != msg.responseData.rankings[j].player.player_id
-                  ) {
-                    MyInfo.name = msg.responseData.rankings[j].player.name;
-                    MyInfo.id = msg.responseData.rankings[j].player.player_id;
-                    MyInfo.guild = msg.responseData.rankings[j].clan.name;
-                    console.debug('user :', MyInfo);
-                    if (showOptions.showStats)
-                      citystats.innerHTML = `<div class="alert alert-warning"><strong>${MyInfo.name}</strong></div>`;
-                  }
-                }
-              }
-            }
-
-            /*OtherPlayer Info/Stats */
-          } else if (
-            msg.requestClass == 'HiddenRewardService' &&
-            msg.requestMethod == 'getOverview'
-          ) {
-            /*Incidents */
-            if (msg.responseData.hiddenRewards.length)
-              hiddenRewards = msg.responseData.hiddenRewards;
-            else {
-              // console.debug('msg:', msg);
-              hiddenRewards = [];
-            }
-            // console.debug('hiddenRewards:', hiddenRewards);
-            helper.fShowIncidents();
-          } else if (
-            msg.requestClass == 'EmissaryService' &&
-            msg.requestMethod == 'getAssigned'
-          ) {
-            /*Emissary*/
-            emissaryService(msg);
-
-            /*Cultural*/
-          } else if (
-            msg.requestClass == 'AdvancementService' &&
-            msg.requestMethod == 'getAll'
-          ) {
-            // console.debug('msg:', msg);
-            clearCultural();
-            let culturalGoods = [];
-            msg.responseData.forEach((resource) => {
-              // console.debug(resource.name,resource,good,goodsList[good]);
-              const rss = resource.requirements.resources;
-
-              if (resource.isUnlocked != true) {
-                Object.keys(rss).forEach((entry) => {
-                  // Goods[entry] = entry;
-                  // console.debug(entry,rss[`${entry}`]);
-                  if (culturalGoods[`${entry}`])
-                    culturalGoods[`${entry}`] += rss[`${entry}`];
-                  else culturalGoods[`${entry}`] = rss[`${entry}`];
-                });
-              }
-            });
-
-            var culturalHTML = `<div  role="alert">
-								${element.close()}
-								<p id="culturalTextLabel" href="#culturalText" data-bs-toggle="collapse">
-								${element.icon('culturalicon', 'culturalText', collapse.collapseCultural)}
-								<strong><span data-i18n="cultural">Cultural Settlement</span></strong></p>`;
-
-            culturalHTML +=
-              '<div id="culturalText" class="collapse show"><span data-i18n="needed">Goods Needed</span>:<br>';
-            // else
-            // visitstatsHTML = `<div class="alert alert-warning"><p><strong>${MyInfo.name}</strong> ${MyInfo.id}<br>`;
-            Object.keys(culturalGoods).forEach((entry) => {
-              var needed = culturalGoods[`${entry}`];
-              if (Resources[`${entry}`]) needed -= Resources[`${entry}`];
-              // setResources(entry, needed);
-              // console.debug(`${entry}`,needed);
-              if (entry != 'diplomacy' && needed > 0)
-                culturalHTML +=
-                  `${needed}` + ` ${helper.fResourceShortName(entry)}<br>`;
-            });
-
-            if (showOptions.showSettlement) {
-              if (document.getElementById('cultural') == null) {
-                cultural = document.createElement('div');
-                document.getElementById('content').appendChild(cultural);
-                cultural.id = 'cultural';
-              }
-              cultural.innerHTML = culturalHTML + `</div></div>`;
-              cultural.className =
-                'alert alert-info alert-dismissible show collapsed';
-              document
-                .getElementById('culturalicon')
-                .addEventListener('click', collapse.fCollapseCultural);
-              document
-                .getElementById('culturalTextLabel')
-                .addEventListener('click', collapse.fCollapseCultural);
-            }
-
-            /*Limited Bonuses */
-          } else if (msg.requestClass == 'BonusService') {
-            if (msg.requestMethod == 'getLimitedBonuses') {
-              // console.debug('msg:', msg);
-              getLimitedBonuses(msg);
-
-              /*daily FP */
-            } else if (msg.requestMethod == 'getBonuses') {
-              // console.debug('msg:', msg);
-              getBonuses(msg);
-              if (document.getElementById('targetsGBG')) {
-                document.getElementById('targetsGBG').innerHTML = '';
-              }
-
-              /*boosts - overview */
-            }
-          } else if (msg.requestClass == 'BoostService') {
-            if (msg.requestMethod == 'getOverview') {
-              // console.debug('msg:', msg);
-              boostService(msg);
-
-              /*all boosts */
-            } else if (msg.requestMethod == 'getAllBoosts') {
-              boostServiceAllBoosts(msg);
-
-              /*rewardPlunder */
-            } else if (msg.requestMethod == 'getTimerBoost') {
-              // TODO
-              // add getTimerBoost att/def to A/D info
-            }
           } else if (msg.requestClass == 'RewardService') {
             handleRewardServiceRequest(msg, showOptions, showReward);
           } else if (
@@ -1391,19 +1240,6 @@ function handleRequestFinished(request) {
             })
           ) {
             // handled in module
-          } else if (msg.requestClass == 'AutoAidService') {
-            // Auto Aid
-            console.debug('AutoAidService', msg);
-            if (msg.requestMethod == 'collect') {
-              /**/
-              console.debug(
-                'AutoAidService',
-                msg.responseData.id,
-                msg.responseData.totalPeers,
-              );
-            } else if (msg.requestMethod == '') {
-              /**/
-            } else console.debug('AutoAidService', msg);
           } else {
             // output.innerHTML += `<div>*** ${msg.requestClass}</div>`;
             if (msg.requestClass == null) {
