@@ -31,8 +31,8 @@ import {
   removeDebug,
   ignoredPlayers,
   debug,
-} from '../index.js';
-import { availablePacksFP, Goods, language } from '../index.js';
+} from '../index';
+import { availablePacksFP, Goods, language } from '../index';
 import { ResourceDefs, availableFP } from './ResourceService.js';
 import * as helper from '../fn/helper';
 import * as collapse from '../fn/collapse';

@@ -16,7 +16,7 @@ import {
   rewardsArmy,
   rewardsCity,
   MilitaryDefs,
-} from '../index.js';
+} from '../index';
 import { updateGalaxy } from './StartupService.js';
 import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper';

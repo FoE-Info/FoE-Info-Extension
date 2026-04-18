@@ -12,7 +12,7 @@
  * ________________________________________________________________
  */
 
-import { gvg, MyInfo } from '../index.js';
+import { gvg, MyInfo } from '../index';
 import { toolOptions, setGVGSize } from '../fn/globals';
 import { showOptions } from '../vars/showOptions.js';
 import * as collapse from '../fn/collapse';

@@ -14,7 +14,7 @@
 
 import { Tooltip, Alert, Popover } from 'bootstrap';
 import dayjs from 'dayjs';
-import { targets, targetsTopic } from '../index.js';
+import { targets, targetsTopic } from '../index';
 import * as collapse from '../fn/collapse';
 import * as helper from '../fn/helper';
 import * as post_webstore from '../fn/post';

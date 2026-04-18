@@ -32,7 +32,7 @@ import {
   donationSuffix,
   GameOrigin,
   url,
-} from '../index.js';
+} from '../index';
 // import '../../css/main.css';
 import BigNumber from 'bignumber.js';
 import { friends, guildMembers, hoodlist } from './OtherPlayerService';

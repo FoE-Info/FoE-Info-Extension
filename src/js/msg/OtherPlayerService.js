@@ -37,7 +37,7 @@ import {
   MyInfo,
   GameOrigin,
   PlayerID,
-} from '../index.js';
+} from '../index';
 import { toolOptions, setFriendsSize } from '../fn/globals';
 import { fArcname } from './StartupService.js';
 

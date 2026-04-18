@@ -18,7 +18,7 @@
 // import $ from "jquery";
 // import 'bootstrap';
 // import Discord  from 'discord.js';
-import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index.js';
+import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index';
 import * as element from './AddElement';
 import * as helper from './helper';
 import { Tooltip, Alert, Popover } from 'bootstrap';

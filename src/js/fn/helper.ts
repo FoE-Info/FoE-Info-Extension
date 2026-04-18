@@ -21,7 +21,7 @@ import {
   hiddenRewards,
   incidents,
   url,
-} from '../index.js';
+} from '../index';
 import {
   BattlegroundPerformance,
   BGtime,

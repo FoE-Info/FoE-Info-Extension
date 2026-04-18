@@ -30,7 +30,7 @@ import {
   EpocTime,
   url,
   targetText,
-} from '../index.js';
+} from '../index';
 import { toolOptions, setBuildingCostSize } from '../fn/globals';
 
 export var BattlegroundPerformance = [];

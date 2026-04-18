@@ -49,7 +49,7 @@ module.exports = {
     ],
   },
   entry: {
-    app: './src/js/index.js',
+    app: './src/js/index',
     options: './src/js/options.js',
     devtools: './src/js/devtools',
     popup: './src/js/popup.js',

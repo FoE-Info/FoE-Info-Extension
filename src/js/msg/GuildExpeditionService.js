@@ -14,7 +14,7 @@
 import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy';
 import * as element from '../fn/AddElement';
-import { donationDIV2 } from '../index.js';
+import { donationDIV2 } from '../index';
 import { toolOptions, setExpeditionSize } from '../fn/globals';
 
 export function guildExpeditionService(msg) {
