@@ -43,6 +43,7 @@ import {
   gvgSummary,
   grantIndependence,
 } from './msg/ClanBattleService.js';
+import { handleClanBattleServiceRequest } from './msg/ClanBattleRequestHandler.js';
 import {
   conversationService,
   getConversation,
@@ -61,6 +62,7 @@ import {
 } from './msg/GuildBattlegroundService.js';
 import { handleGuildBattlegroundSignalsRequest } from './msg/GuildBattlegroundSignalsRequestHandler.js';
 import { guildExpeditionService } from './msg/GuildExpeditionService.js';
+import { handleGuildExpeditionServiceRequest } from './msg/GuildExpeditionRequestHandler.js';
 import {
   otherPlayerService,
   otherPlayerServiceUpdateActions,
@@ -1407,42 +1409,29 @@ function handleRequestFinished(request) {
                   availablePacksFP + availableFP;
             }
           } else if (msg.requestClass == 'ClanBattleService') {
-            if (msg.requestMethod == 'getContinent') {
-              fCleardForGVG();
-              getContinent(msg);
-            } else if (msg.requestMethod == 'getProvinceDetailed') {
-              /* GvG Ages*/
-              getProvinceDetailed(msg);
-            } else if (msg.requestMethod == 'deploySiegeArmy') {
-              /* GvG Siege*/
-              deploySiegeArmy(msg);
-            } else if (msg.requestMethod == 'grantIndependence') {
-              /* GvG grant freedom to sector*/
-              grantIndependence(msg);
+            if (
+              !handleClanBattleServiceRequest(msg, {
+                clearForGVG: fCleardForGVG,
+                getContinent,
+                getProvinceDetailed,
+                deploySiegeArmy,
+                grantIndependence,
+              })
+            ) {
+              console.debug('ClanBattleService', msg);
             }
           } else if (msg.requestClass == 'GuildExpeditionService') {
-            if (msg.requestMethod == 'getOverview') {
-              /*Guild Expedition*/
-              clearExpedition();
-            } else if (msg.requestMethod == 'getContributionList') {
-              /*Guild Expedition*/
-              if (showOptions.showExpedition) guildExpeditionService(msg);
-            } else if (msg.requestMethod == 'openChest') {
-              //console.debug('cityentity_id:', msg.responseData.cityentity_id);
-              // var units = {};
-              // var numUnits = 0;
-              var reward = msg.responseData;
-              reward.source = 'guildExpedition';
-              var name = helper.fRewardShortName(reward.name);
-              var qty = reward.amount;
-
-              if (!rewardsGE[name]) rewardsGE[name] = 0;
-              rewardsGE[name] += qty;
-              console.debug(reward);
-              if (showOptions.showGErewards) {
-                showReward(reward);
-              }
-              console.debug('rewardsGE:', rewardsGE, reward);
+            if (
+              !handleGuildExpeditionServiceRequest(msg, {
+                clearExpedition,
+                showOptions,
+                guildExpeditionService,
+                helper,
+                rewardsGE,
+                showReward,
+              })
+            ) {
+              console.debug('GuildExpeditionService', msg);
             }
           } else if (msg.requestClass == 'GuildBattlegroundService') {
             // GuildBattleground
