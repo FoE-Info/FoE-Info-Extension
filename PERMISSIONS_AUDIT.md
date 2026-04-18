@@ -10,7 +10,7 @@ This document tracks current permissions and proposes staged, reversible changes
   - src/chrome/manifest_firefox.json
 - Current build target: Chrome first.
 
-## Current Baseline (No Changes Applied)
+## Current Baseline (After Stage 1)
 
 ### permissions
 
@@ -24,13 +24,12 @@ This document tracks current permissions and proposes staged, reversible changes
 - https://_.forgeofempires.com/game/_
 - https://_.google.com/_
 - https://\*.googleusercontent.com/
-- https://discordapp.com/api/webhooks/*
 - https://discord.com/api/webhooks/*
 - https://_.innogamescdn.com/_
 
 ## Proposed Staged Changes
 
-No permission changes are applied yet. Use this sequence when implementing in future milestones.
+Stage 1 is complete. Use the remaining sequence for future milestones.
 
 ### Stage 1: Remove legacy Discord domain if telemetry confirms no usage (Completed)
 
@@ -48,13 +47,14 @@ No permission changes are applied yet. Use this sequence when implementing in fu
 ### Stage 2: Narrow Google host patterns (if feature usage allows)
 
 - Candidates to narrow/remove:
-  - host*permissions: https://*.google.com/\_
+  - host_permissions: https://_.google.com/_
   - host_permissions: https://\*.googleusercontent.com/
 - Reason:
   - Broad host permissions increase warning surface.
 - Validation before change:
   - Confirm exact Google APIs/endpoints used by sheets integration.
   - Replace with minimal concrete host patterns only after endpoint mapping.
+  - Confirm user-configured sheet URLs are still supported by the narrowed scope.
 - Rollback:
   - Re-add original wildcard hosts in all source manifests.
 

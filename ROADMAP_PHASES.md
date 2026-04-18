@@ -28,7 +28,7 @@ Done:
 - `@ts-nocheck` removed from migrated files.
 - Type-hardening pass performed on handlers.
 
-## Phase 3: Styling Update (Next)
+## Phase 3: Styling Update (Completed)
 
 Goals:
 
@@ -76,7 +76,11 @@ Deliverables:
 - Post-merge verification checklist.
 - Follow-up fix commits grouped by feature area.
 
-## Phase 5: Documentation Update (Planned)
+Status:
+
+- Completed. The branch was already up to date with origin/development at merge time.
+
+## Phase 5: Documentation Update (Completed)
 
 Goals:
 
@@ -95,7 +99,11 @@ Deliverables:
 - Handler map and data-flow summary.
 - Changelog-style migration summary.
 
-## Phase 6: Security/Permissions and Release Readiness (Planned)
+Status:
+
+- Completed. README and architecture documentation were updated.
+
+## Phase 6: Security/Permissions and Release Readiness (In Progress)
 
 Goals:
 
@@ -113,7 +121,12 @@ Deliverables:
 - Smoke test evidence for each permission reduction.
 - Final release checklist.
 
-## Phase 7: QA and Release (Planned)
+Status:
+
+- Stage 1 completed (legacy discordapp permission removed).
+- Stages 2-3 remain pending decisions/validation.
+
+## Phase 7: QA and Release (Completed)
 
 Goals:
 
@@ -124,8 +137,12 @@ Deliverables:
 - Type-check, test, and manual smoke-test pass.
 - Tagged release candidate branch and notes.
 
+Status:
+
+- Completed validation sweep (typecheck/tests/build path).
+
 ## Current Position
 
-- Completed: Phases 1-2.
-- Next active focus: Phase 3 (Styling Update).
-- Pending: Phases 4-7.
+- Completed: Phases 1-5 and 7.
+- In progress: Phase 6 (permissions hardening Stage 2/3 pending).
+- Next active focus: Stage 2 permission narrowing decision.
