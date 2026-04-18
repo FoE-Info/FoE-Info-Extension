@@ -64,6 +64,7 @@ import { handleGuildBattlegroundSignalsRequest } from './msg/GuildBattlegroundSi
 import { handleGuildBattlegroundRequest } from './msg/GuildBattlegroundRequestHandler.js';
 import { guildExpeditionService } from './msg/GuildExpeditionService.js';
 import { handleGuildExpeditionServiceRequest } from './msg/GuildExpeditionRequestHandler.js';
+import { handleClanServiceRequest } from './msg/ClanServiceRequestHandler.js';
 import {
   otherPlayerService,
   otherPlayerServiceUpdateActions,
@@ -1492,436 +1493,44 @@ function handleRequestFinished(request) {
                 };
               }
             } else console.debug('GuildBattleground', msg);
-          } else if (msg.requestClass == 'ClanService') {
-            if (
-              msg.requestMethod == 'getOwnClanData' ||
-              msg.requestMethod == 'getClanData'
-            ) {
-              /*Guild Members*/
-              // console.debug(showOptions, msg.responseData.members);
-              if (
-                showOptions.showTreasury &&
-                msg.requestMethod == 'getOwnClanData'
-              ) {
-                const members = msg.responseData.members;
-                GuildDonations.push([
-                  msg.responseData.name,
-                  msg.responseData.membersNum,
-                ]);
-                // console.debug(members);
-                members.forEach((entry) => {
-                  GuildDonations.push([
-                    entry.rank,
-                    entry.name,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                  ]);
-                  //rank,name,medals spent,medals returned,medals donated,GB goods, soh goods, other donation goods, total goods,
-                  //0 rank,
-                  // 1 name,
-                  // 2 medals spent,
-                  // 3 medals returned,
-                  // 4 medals donated,
-                  // 5 gvg goods out,
-                  // 6 gvg goods in,
-                  // 7 gbh goods out,
-                  // 8 ge goods out,
-                  // 9 GB goods,
-                  // 10 soh goods,
-                  // 11 other donation goods,
-                  // 12 total goods,
-                  // 13 SAV - all goods
-                  // 14 SAAB - all goods
-                  //  - all goods
-                  // console.debug(entry.rank,entry.name);
-                  // citystats.innerHTML += `${entry.name} ${entry.player_id}<br>`
-                  if (entry.is_self == true) {
-                    setMyGuildPosition(entry.rank);
-                    // console.debug('MyInfo.guildPosition',entry.rank);
-                  }
-                });
-                // console.debug(GuildDonations);
-                $('body').i18n();
-              }
-
-              if (showOptions.showGuild && msg.responseData.members) {
-                var guildlist = msg.responseData.members;
-                // console.debug('guildlist',guildlist);
-                // if(title){
-                var friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="friendsTextLabel" href="#friendsText" data-bs-toggle="collapse">
-		${element.icon('friendsicon', 'friendsText', collapse.collapseFriends)}<strong>Guild Members</strong></p>
-		${element.close()}<div id="friendsCopy">
-		${element.copy('friendsCopyID', 'success', 'right', collapse.collapseFriends)}</div>`;
-                friendsHTML += `<div id="friendsText" class="overflow-y collapse ${
-                  collapse.collapseFriends ? '' : 'show'
-                }">
-	  <table id="friendsText2"><tr><th>Name</th><th>Title</th><th>ID</th><th>Era</th><th>Battles</th><th>Score</th></tr>`;
-                guildlist.forEach((entry) => {
-                  friendsHTML += `<tr><td>${entry.name}</td><td>${entry.title}</td><td>${
-                    entry.player_id
-                  }</td><td>${helper.fGVGagesname(entry.era)}</td><td>${entry.won_battles}</td><td>${
-                    entry.score
-                  }</td></tr>`;
-                });
-                // var friends = document.getElementById("friends");
-                friendsDiv.innerHTML = friendsHTML + `</table></div></div>`;
-                if (collapse.collapseFriends == false) {
-                  document
-                    .getElementById('friendsCopyID')
-                    .addEventListener('click', copy.fFriendsCopy);
-                }
-                document
-                  .getElementById('friendsTextLabel')
-                  .addEventListener('click', collapse.fCollapseFriends);
-                // }
-                $('body').i18n();
-              }
-            } else if (msg.requestMethod == 'getTreasuryLogs') {
-              /*Treasury Logs*/
-              // var users.checkNull = null;
-              if (showOptions.showContributions || showOptions.showLogs) {
-                // if(users.checkNull) {
-                if (showOptions.showLogs) {
-                  var treasuryHTML = treasuryLog.innerHTML;
-                  // console.debug('msg:', msg);
-                  // console.debug('treasury',msg);
-                  if (!treasuryHTML) {
-                    treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-							${element.close()}
-							<p href="#treasuryLogText" aria-expanded="true" aria-controls="treasuryLogText" data-bs-toggle="collapse">
-              ${element.icon('treasuryLogicon', 'treasuryLogText', collapse.collapseTreasuryLog)}
-                    <strong>Treasury Logs:</strong></p>`;
-                    treasuryHTML += `<table id="treasuryLogText" class="overflow collapse show">`;
-                  } else {
-                    treasuryHTML = treasuryHTML.substring(
-                      0,
-                      treasuryHTML.length - 8,
-                    );
-                  }
-                }
-                // console.debug(msg.responseData);
-                const logs = msg.responseData.logs;
-                // console.debug(logs);
-                logs.forEach((entry) => {
-                  if (entry.resource == 'medals') {
-                    GuildDonations.forEach((member) => {
-                      // rank,name,spent,returned,donated
-                      if (member[1] == entry.player.name) {
-                        if (
-                          entry.action.toLowerCase() ==
-                          'guild continent: slot unlocked'
-                        )
-                          member[2] += entry.amount;
-                        else if (
-                          entry.action.toLowerCase() == 'siege army deployment'
-                        )
-                          member[2] += entry.amount;
-                        else if (
-                          entry.action.toLowerCase() ==
-                          'guild continent: grant freedom'
-                        )
-                          member[3] += entry.amount;
-                        else if (entry.action.toLowerCase() == 'donation')
-                          member[4] += entry.amount;
-                      }
-                      // console.debug(entry.action,entry.amount);
-                    });
-                  } else {
-                    GuildDonations.forEach((member) => {
-                      // spent,returned,donated
-                      if (member[1] == entry.player.name) {
-                        if (
-                          entry.action.toLowerCase() ==
-                            'siege army deployment' ||
-                          entry.action.toLowerCase() ==
-                            'guild continent: slot unlocked'
-                        )
-                          member[5] += entry.amount;
-                        else if (
-                          entry.action.toLowerCase() ==
-                          'guild continent: grant freedom'
-                        )
-                          member[6] += entry.amount;
-                        else if (
-                          entry.action.toLowerCase() ==
-                          'battlegrounds: place building'
-                        )
-                          member[7] += entry.amount;
-                        else if (
-                          entry.action.toLowerCase() ==
-                          'guild expedition: difficulty unlocked'
-                        )
-                          member[8] += entry.amount;
-                        // else if(entry.action == 'Great building production')
-                        // 	member[9] += entry.amount;
-                        else if (
-                          entry.action.toLowerCase() == 'building production'
-                        )
-                          member[9] += entry.amount;
-                        else if (
-                          entry.action.toLowerCase() ==
-                          'guild treasury donation'
-                        ) {
-                          // if(entry.amount > 80)
-                          member[11] += entry.amount; // manual donation
-
-                          // else
-                          // member[10] += entry.amount; // assume SoH
-                        } else {
-                          console.debug(entry.action, entry.amount);
-                        }
-
-                        // if(entry.action == 'Great building production' || entry.action == 'Guild treasury donation'){
-                        if (
-                          entry.action.toLowerCase() ==
-                          'guild treasury donation'
-                        ) {
-                          // console.debug(ResourceDefs.find(entry.id));
-                          ResourceDefs.forEach((rssDef) => {
-                            // console.debug(entry, rssDef.era);
-                            if (rssDef.id == entry.resource) {
-                              // rssName = rssDef.name;
-                              // rssEra = rssDef.era;
-                              member[31 - helper.fLevelfromAge(rssDef.era)] +=
-                                entry.amount;
-                              // console.debug(entry.action,entry.resource, entry.amount,rssDef.era,helper.fLevelfromAge(rssDef.era),(30 - helper.fLevelfromAge(rssDef.era)),member[(30 - helper.fLevelfromAge(rssDef.era))]);
-                            }
-                          });
-                        }
-                      }
-                      // console.debug(entry.action,entry.amount);
-                    });
-
-                    GuildTreasury.forEach((rss) => {
-                      if (entry.resource == rss[0]) {
-                        // ID, era name, rss name, treasury qty, donation, GE spend, GVG spend, GBG spend, net change
-                        if (
-                          entry.action.toLowerCase() ==
-                            'siege army deployment' ||
-                          entry.action.toLowerCase() ==
-                            'guild continent: slot unlocked' ||
-                          entry.action.toLowerCase() ==
-                            'guild continent: grant freedom'
-                        ) {
-                          rss[6] += entry.amount;
-                          // rss[8] += entry.amount;
-                        } else if (
-                          entry.action.toLowerCase() ==
-                          'battlegrounds: place building'
-                        ) {
-                          rss[7] += entry.amount;
-                          // rss[8] += entry.amount;
-                        } else if (
-                          entry.action.toLowerCase() ==
-                          'guild expedition: difficulty unlocked'
-                        ) {
-                          rss[5] += entry.amount;
-                          // rss[8] += entry.amount;
-                        } else if (
-                          entry.action.toLowerCase() == 'building production' ||
-                          entry.action.toLowerCase() ==
-                            'guild treasury donation'
-                        ) {
-                          rss[4] += entry.amount; // manual donation
-
-                          // rss[8] += entry.amount;
-                        }
-                        rss[8] += entry.amount;
-                        return;
-                      }
-                    });
-                  }
-                  // console.debug(helper.fResourceShortName(entry.resource),entry);
-                  // if(entry.resource == "medals")
-                  if (showOptions.showLogs)
-                    treasuryHTML += `<tr><td>${entry.player.name}</td><td>${helper.fResourceShortName(
-                      entry.resource,
-                    )}</td><td>${entry.action}</td><td>${entry.amount}</td><td>${entry.createdAt}</td></tr>`;
-                });
-                if (showOptions.showLogs)
-                  treasuryLog.innerHTML = treasuryHTML + `</table>`;
-
-                if (showOptions.showContributions) {
-                  treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" data-bs-toggle="collapse" role="alert">`;
-                  treasuryHTML += element.close();
-                  treasuryHTML += element.copy(
-                    'treasuryCopyID',
-                    'success',
-                    'right',
-                    collapse.collapseTreasury,
-                  );
-                  treasuryHTML += `<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">`;
-                  treasuryHTML += element.icon(
-                    'treasuryicon',
-                    'treasuryText',
-                    collapse.collapseTreasury,
-                  );
-                  treasuryHTML += `<strong>Treasury Contributions:</strong></p>`;
-                  treasuryHTML += `<div id="treasuryText" class="collapse ${collapse.collapseTreasury ? '' : 'show'}">
-			<table id="treasurytable" class="overflow table collapse show"><tr><th>Name</th><th>Medals Spent</th><th>Medals Returned</th><th>Medals Donated</th><th>Medals Total</th><th>Goods Spent GVG</th><th>Goods Returned GVG</th><th>Goods Spent GBG</th><th>Goods Spent GE</th><th>Goods Donated Building</th><th>Goods Donated ???</th><th>Goods Donated</th><th>SAV</th><th>SAAB</th><th>SAM</th><th>VF</th><th>OF</th><th>AF</th><th>FE</th><th>TE</th><th>CE</th><th>PME</th><th>ME</th><th>PE</th><th>InA</th><th>CA</th><th>LMA</th><th>HMA</th><th>EMA</th><th>IA</th></tr>`;
-                  GuildDonations.forEach((member) => {
-                    // rank,name,medals: spent,returned,donated, goods: spent,returned,donated
-                    if (member[0] != MyInfo.guild)
-                      treasuryHTML += `<tr><td>${member[1]}</td><td>${member[2]}</td><td>${member[3]}</td><td>${
-                        member[4]
-                      }</td><td>${member[2] + member[3] + member[4]}</td><td>${member[5]}</td><td>${
-                        member[6]
-                      }</td><td>${member[7]}</td><td>${member[8]}</td><td>${member[9]}</td><td>${member[10]}</td><td>${
-                        member[11]
-                      }</td><td>${member[12]}</td><td>${member[13]}</td><td>${member[14]}</td><td>${
-                        member[15]
-                      }</td><td>${member[16]}</td><td>${member[17]}</td><td>${member[18]}</td><td>${
-                        member[19]
-                      }</td><td>${member[20]}</td><td>${member[21]}</td><td>${member[22]}</td><td>${
-                        member[23]
-                      }</td><td>${member[24]}</td><td>${member[25]}</td><td>${member[26]}</td><td>${
-                        member[27]
-                      }</td><td>${member[28]}</td><td>${member[29]}</td></tr>`;
-                  });
-
-                  if (GuildTreasury) {
-                    treasuryHTML += `<tr></tr>`;
-                    treasuryHTML += `<tr><th>Era:Resource</th><th>Treasury</th><th>Donations</th><th>GE Cost</th><th>GVG Cost</th><th>GBG Cost</th><th>Net Change</th></tr>`;
-                    GuildTreasury.forEach((rss) => {
-                      treasuryHTML += `<tr><td>${rss[1]}:${rss[2]}</td><td>${rss[3]}</td><td>${rss[4]}</td><td>${rss[5]}</td><td>${rss[6]}</td><td>${rss[7]}</td><td>${rss[8]}</td></tr>`;
-                    });
-                  }
-
-                  treasury.innerHTML = treasuryHTML + `</table></div>`;
-                  document
-                    .getElementById('treasuryCopyID')
-                    .addEventListener('click', copy.TreasuryCopy);
-                  document
-                    .getElementById('treasuryTextLabel')
-                    .addEventListener('click', collapse.fCollapseTreasury);
-                }
-                // console.debug(GuildDonations);
-                $('body').i18n();
-              } else {
-                console.debug(msg.responseData.length);
-              }
-            } else if (msg.requestMethod == 'getTreasury') {
-              /*Guild Treasury*/
-              cityinvested.innerHTML = ``;
-              output.innerHTML = ``;
-              overview.innerHTML = ``;
-              alerts.innerHTML = ``;
-              // cityrewards.innerHTML = ``;
-              donationDIV.innerHTML = ``;
-              incidents.innerHTML = ``;
-              donation2DIV.innerHTML = ``;
-              donationDIV2.innerHTML = ``;
-              greatbuilding.innerHTML = ``;
-              guild.innerHTML = ``;
-              debug.innerHTML = ``;
-              info.innerHTML = ``;
-              donationDIV.innerHTML = ``;
-              visitstats.innerHTML = ``;
-              visitstats.className = '';
-              cultural.innerHTML = ``;
-              cultural.className = '';
-              friendsDiv.innerHTML = '';
-              gvg.innerHTML = ``;
-              gvg.className = '';
-              // armyDIV.innerHTML = ``;
-              if (gvgSummary) gvgSummary.innerHTML = '';
-              if (gvgAges) gvgAges.innerHTML = '';
-
-              if (showOptions.showTreasury) {
-                // var treasuryHTML = guild.innerHTML;
-                var treasuryHTML = '';
-
-                // if (!treasuryHTML){
-                treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-	${element.close()}<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">`;
-                treasuryHTML += element.icon(
-                  'treasuryicon',
-                  'treasuryText',
-                  collapse.collapseTreasury,
-                );
-                treasuryHTML += `<strong>Guild Treasury:</strong></p>`;
-                treasuryHTML += element.copy(
-                  'treasuryCopyID',
-                  'success',
-                  'right',
-                  collapse.collapseTreasury,
-                );
-                treasuryHTML += `<div id="treasuryText" style="height: ${
-                  toolOptions.treasurySize
-                }px" class="overflow collapse ${collapse.collapseTreasury ? '' : 'show'}"><table id="treasurytable">`;
-
-                // }
-                // else{
-                // treasuryHTML = treasuryHTML.substring(0, treasuryHTML.length - 8);
-                // }
-                const resources = msg.responseData.resources;
-                // GuildTreasury = msg.responseData.resources;
-                initTreasury(msg.responseData.resources);
-
-                for (var i = 0; i < helper.numAges; i++) {
-                  ResourceDefs.forEach((rssDef) => {
-                    if (
-                      rssDef.era == helper.fAgefromLevel(helper.numAges - i) &&
-                      resources[rssDef.id]
-                    ) {
-                      treasuryHTML += `<tr><td>${helper.fGVGagesname(rssDef.era)}:${rssDef.name}</td><td>${
-                        resources[rssDef.id]
-                      }</td></tr>`;
-                      // rssName = rssDef.name;
-                      // rssEra = rssDef.era;
-                    }
-                  });
-                }
-                treasuryHTML += `<tr><td>Medals</td><td>${resources['medals']}</td></tr>`;
-
-                treasury.innerHTML = treasuryHTML + `</table></div>`;
-                // donationDIV.innerHTML = treasuryHTML + `</table></div>`;
-                document
-                  .getElementById('treasuryCopyID')
-                  .addEventListener('click', copy.TreasuryCopy);
-                console.debug('GuildTreasury', GuildTreasury);
-                document
-                  .getElementById('treasuryTextLabel')
-                  .addEventListener('click', collapse.fCollapseTreasury);
-                const treasuryDiv = document.getElementById('treasuryText');
-                const resizeObserver = new ResizeObserver((entries) => {
-                  for (const entry of entries) {
-                    if (entry.contentRect && entry.contentRect.height)
-                      setTreasurySize(entry.contentRect.height);
-                  }
-                });
-                resizeObserver.observe(treasuryDiv);
-                $('body').i18n();
-              } else {
-                console.debug(msg.responseData.length);
-              }
-            }
+          } else if (
+            handleClanServiceRequest(msg, {
+              showOptions,
+              element,
+              collapse,
+              helper,
+              copy,
+              friendsDiv,
+              MyInfo,
+              setMyGuildPosition,
+              GuildDonations,
+              GuildTreasury,
+              ResourceDefs,
+              treasuryLog,
+              treasury,
+              cityinvested,
+              output,
+              overview,
+              alerts,
+              donationDIV,
+              incidents,
+              donation2DIV,
+              donationDIV2,
+              greatbuilding,
+              guild,
+              debug,
+              info,
+              visitstats,
+              cultural,
+              gvg,
+              gvgSummary,
+              gvgAges,
+              toolOptions,
+              initTreasury,
+              setTreasurySize,
+            })
+          ) {
+            // handled in module
           } else if (msg.requestClass == 'AutoAidService') {
             // Auto Aid
             console.debug('AutoAidService', msg);
