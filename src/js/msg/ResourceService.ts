@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import { availablePacksFP, goodsDIV } from '../index';
 import { toolOptions, setGoodsSize } from '../fn/globals';
 import * as collapse from '../fn/collapse';
@@ -7,46 +7,46 @@ import * as storage from '../fn/storage';
 import * as element from '../fn/AddElement';
 import { showOptions } from '../vars/showOptions';
 
-export var ResourceDefs = [];
-export var ResourceNames = [];
-export var Resources = [];
+export var ResourceDefs: Array<Record<string, unknown>> = [];
+export var ResourceNames: Record<string, string> = {};
+export var Resources: Record<string, unknown> = {};
 export var availableFP = 0;
 
-export function getResourceDefinitions(msg) {
+export function getResourceDefinitions(msg: Record<string, unknown>) {
   if (msg.responseData) {
-    saveResourceDefs(msg.responseData);
+    saveResourceDefs(msg.responseData as Array<Record<string, unknown>>);
   } else {
     console.debug('Resource Definitions msg:', msg);
   }
 }
 
-export function saveResourceDefs(msg) {
+export function saveResourceDefs(msg: Array<Record<string, unknown>>) {
   loadResourceDefs(msg);
   storage.set('ResourceDefs', ResourceDefs);
 }
 
-export function setResourceDefs(msg) {
+export function setResourceDefs(msg: Array<Record<string, unknown>>) {
   loadResourceDefs(msg);
 }
 
-function loadResourceDefs(msg) {
+function loadResourceDefs(msg: Array<Record<string, unknown>>) {
   ResourceDefs = msg;
   ResourceDefs.forEach((rssDef) => {
-    ResourceNames[rssDef.id] = rssDef.name;
+    ResourceNames[rssDef.id as string] = rssDef.name as string;
   });
 }
 
-export function getPlayerResources(msg) {
+export function getPlayerResources(msg: Record<string, unknown>) {
   if (msg.responseData && ResourceDefs) {
-    Resources = msg.responseData.resources;
-    availableFP = Resources.strategy_points;
+    Resources = (msg.responseData as Record<string, unknown>).resources as Record<string, unknown>;
+    availableFP = Resources.strategy_points as number;
     if (document.getElementById('availableFPID'))
-      document.getElementById('availableFPID').textContent =
-        availablePacksFP + availableFP;
+      document.getElementById('availableFPID')!.textContent =
+        String(availablePacksFP + availableFP);
     var goodsText = '';
     ResourceDefs.forEach((good) => {
-      if (good.abilities.rankingPoints && Resources[good.id])
-        goodsText += `<tr><td>${good.name}</td><td>${Resources[good.id]}</td><td>${fGVGagesname(good.era)}</td></tr>`;
+      if ((good.abilities as Record<string, unknown>)?.rankingPoints && Resources[good.id as string])
+        goodsText += `<tr><td>${good.name}</td><td>${Resources[good.id as string]}</td><td>${fGVGagesname(good.era as string)}</td></tr>`;
     });
 
     if (showOptions.showGoods) {
@@ -70,9 +70,9 @@ export function getPlayerResources(msg) {
       }"><table><tr><th>Good</th><th>Qty</th><th>Era</th></tr>`;
       goodsDIV.innerHTML = goodsHTML + goodsText + `</table></div></div>`;
       document
-        .getElementById('goodsTextLabel')
+        .getElementById('goodsTextLabel')!
         .addEventListener('click', collapse.fCollapseGoods);
-      const goodsDiv = document.getElementById('goodsText');
+      const goodsDiv = document.getElementById('goodsText')!;
       const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
           if (entry.contentRect && entry.contentRect.height)
@@ -80,25 +80,25 @@ export function getPlayerResources(msg) {
         }
       });
       resizeObserver.observe(goodsDiv);
-      $('body').i18n();
+      ($('body') as JQuery & { i18n(): void }).i18n();
       document
-        .getElementById('goodsCopyID')
+        .getElementById('goodsCopyID')!
         .addEventListener('click', goodsCopy);
     }
   }
 }
 
-export function setResources(resource, needed = 0) {
-  if (Resources[`${resource}`]) needed -= Resources[`${resource}`];
+export function setResources(resource: string, needed = 0) {
+  if (Resources[`${resource}`]) needed -= Resources[`${resource}`] as number;
   return needed;
 }
 
 function goodsCopy() {
   var selection = window.getSelection();
-  selection.removeAllRanges();
+  selection!.removeAllRanges();
   var range = document.createRange();
   var copytext = document.getElementById('goodsText');
-  range.selectNode(copytext);
-  selection.addRange(range);
+  range.selectNode(copytext!);
+  selection!.addRange(range);
   document.execCommand('copy');
 }
