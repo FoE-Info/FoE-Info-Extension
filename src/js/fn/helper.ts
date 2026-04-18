@@ -26,9 +26,6 @@ const _CityEntityDefs = CityEntityDefs as unknown as Record<
   string,
   { name: string }
 >;
-const _hiddenRewards = hiddenRewards as unknown as Array<
-  Record<string, unknown>
->;
 const _Goods = Goods as unknown as Record<string, unknown>;
 import {
   BattlegroundPerformance,
@@ -620,15 +617,18 @@ export function fGoodsTally(age: string, good: number) {
 }
 
 export function fShowIncidents() {
+  const incidentRewards = Array.isArray(hiddenRewards)
+    ? (hiddenRewards as unknown as Array<Record<string, unknown>>)
+    : [];
   var rewards = 0;
   var type = '';
   var textCurrent = '';
   var textComing = '';
   var tooltipHTML = '';
-  if (showOptions && showOptions.showIncidents && _hiddenRewards.length) {
+  if (showOptions && showOptions.showIncidents && incidentRewards.length) {
     fHideTooltips();
-    for (var j = 0; j < _hiddenRewards.length; j++) {
-      const incident = _hiddenRewards[j];
+    for (var j = 0; j < incidentRewards.length; j++) {
+      const incident = incidentRewards[j];
       if (
         (incident.position as Record<string, string>)?.context ==
         'guildExpedition'

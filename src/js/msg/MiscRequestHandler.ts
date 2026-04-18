@@ -235,8 +235,11 @@ export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
     msg.requestMethod === 'getOverview'
   ) {
     const hiddenRewards = msg.responseData as MiscHiddenRewardsResponse;
-    if (hiddenRewards.hiddenRewards.length) {
-      setHiddenRewards(hiddenRewards.hiddenRewards);
+    const rewards = Array.isArray(hiddenRewards?.hiddenRewards)
+      ? hiddenRewards.hiddenRewards
+      : [];
+    if (rewards.length) {
+      setHiddenRewards(rewards);
     } else {
       setHiddenRewards([]);
     }
