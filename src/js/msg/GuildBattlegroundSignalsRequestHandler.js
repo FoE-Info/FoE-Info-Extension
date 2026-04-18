@@ -1,4 +1,4 @@
-import { removeSignal, setSignal } from './GuildBattlegroundService.js';
+import { removeSignal, setSignal } from './GuildBattlegroundService';
 
 export function handleGuildBattlegroundSignalsRequest(
   msg,

@@ -26,7 +26,7 @@ import {
   BattlegroundPerformance,
   BGtime,
   GuildMembers,
-} from '../msg/GuildBattlegroundService.js';
+} from '../msg/GuildBattlegroundService';
 import { ResourceNames } from '../msg/ResourceService.js';
 import { showOptions } from '../vars/showOptions.js';
 import * as collapse from './collapse';

@@ -22,7 +22,7 @@ import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index';
 import * as element from './AddElement';
 import * as helper from './helper';
 import { Tooltip, Alert, Popover } from 'bootstrap';
-import { GBGdata } from '../msg/GuildBattlegroundService.js';
+import { GBGdata } from '../msg/GuildBattlegroundService';
 
 // Example POST method implementation:
 async function postData(url = '', data = {}) {

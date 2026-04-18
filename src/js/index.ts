@@ -59,7 +59,7 @@ import {
   getLeaderboard,
   getPlayerLeaderboard,
   getState,
-} from './msg/GuildBattlegroundService.js';
+} from './msg/GuildBattlegroundService';
 import { handleGuildBattlegroundSignalsRequest } from './msg/GuildBattlegroundSignalsRequestHandler.js';
 import { handleGuildBattlegroundRequest } from './msg/GuildBattlegroundRequestHandler';
 import { guildExpeditionService } from './msg/GuildExpeditionService.js';
