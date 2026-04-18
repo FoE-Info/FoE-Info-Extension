@@ -4,6 +4,15 @@ export type HandlerMessage = {
   responseData?: unknown;
 };
 
+export type MessageHandler<TMessage extends HandlerMessage = HandlerMessage> = (
+  msg: TMessage,
+) => void;
+
+export type BattlegroundOptions = {
+  showLeaderboard?: boolean;
+  showBattleground?: boolean;
+};
+
 export type RewardData = {
   name?: string;
   amount?: number;

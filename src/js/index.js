@@ -60,7 +60,7 @@ import {
   getState,
 } from './msg/GuildBattlegroundService.js';
 import { handleGuildBattlegroundSignalsRequest } from './msg/GuildBattlegroundSignalsRequestHandler.js';
-import { handleGuildBattlegroundRequest } from './msg/GuildBattlegroundRequestHandler.js';
+import { handleGuildBattlegroundRequest } from './msg/GuildBattlegroundRequestHandler';
 import { guildExpeditionService } from './msg/GuildExpeditionService.js';
 import { handleGuildExpeditionServiceRequest } from './msg/GuildExpeditionRequestHandler';
 import { handleClanServiceRequest } from './msg/ClanServiceRequestHandler.js';
