@@ -166,7 +166,10 @@ export function handleClanServiceRequest(
   ) {
     if (showOptions.showTreasury && msg.requestMethod == 'getOwnClanData') {
       const members = msg.responseData.members ?? [];
-      GuildDonations.push([msg.responseData.name ?? '', msg.responseData.membersNum ?? 0]);
+      GuildDonations.push([
+        msg.responseData.name ?? '',
+        msg.responseData.membersNum ?? 0,
+      ]);
       members.forEach((entry: ClanServiceMember) => {
         GuildDonations.push([
           entry.rank,
@@ -262,7 +265,9 @@ export function handleClanServiceRequest(
         if (entry.resource == 'medals') {
           GuildDonations.forEach((member: GuildDonationRow) => {
             if (member[1] == entry.player.name) {
-              if (entry.action.toLowerCase() == 'guild continent: slot unlocked')
+              if (
+                entry.action.toLowerCase() == 'guild continent: slot unlocked'
+              )
                 addNumericValue(member, 2, entry.amount);
               else if (entry.action.toLowerCase() == 'siege army deployment')
                 addNumericValue(member, 2, entry.amount);
@@ -323,7 +328,8 @@ export function handleClanServiceRequest(
             if (entry.resource == rss[0]) {
               if (
                 entry.action.toLowerCase() == 'siege army deployment' ||
-                entry.action.toLowerCase() == 'guild continent: slot unlocked' ||
+                entry.action.toLowerCase() ==
+                  'guild continent: slot unlocked' ||
                 entry.action.toLowerCase() == 'guild continent: grant freedom'
               ) {
                 addNumericValue(rss, 6, entry.amount);
@@ -356,7 +362,8 @@ export function handleClanServiceRequest(
           }</td></tr>`;
       });
 
-      if (showOptions.showLogs) treasuryLog.innerHTML = treasuryHTML + `</table>`;
+      if (showOptions.showLogs)
+        treasuryLog.innerHTML = treasuryHTML + `</table>`;
 
       if (showOptions.showContributions) {
         treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" data-bs-toggle="collapse" role="alert">`;

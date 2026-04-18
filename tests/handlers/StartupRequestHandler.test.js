@@ -59,7 +59,11 @@ describe('handleStartupServiceRequest', () => {
 
     const handled = handleStartupServiceRequest(
       msg,
-      { request: { headers: [{ name: ':authority', value: 'en0.forgeofempires.com' }] } },
+      {
+        request: {
+          headers: [{ name: ':authority', value: 'en0.forgeofempires.com' }],
+        },
+      },
       deps,
     );
 

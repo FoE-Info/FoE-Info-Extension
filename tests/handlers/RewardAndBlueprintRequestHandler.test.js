@@ -10,7 +10,10 @@ describe('handleRewardServiceRequest', () => {
     const msg = {
       requestClass: 'RewardService',
       requestMethod: 'collectReward',
-      responseData: [[{ name: 'forge_points', amount: 10 }], 'battlegrounds_conquest'],
+      responseData: [
+        [{ name: 'forge_points', amount: 10 }],
+        'battlegrounds_conquest',
+      ],
     };
 
     const handled = handleRewardServiceRequest(

@@ -1,4 +1,3 @@
-
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -146,14 +145,17 @@ export function getContinent(msg: Record<string, unknown>) {
         const eraCount = count;
         const siege =
           Math.round(
-            (3 * Math.pow(eraCount, 1.5) + 0.045 * Math.pow(eraCount, 3.1)) / 5 + 1,
+            (3 * Math.pow(eraCount, 1.5) + 0.045 * Math.pow(eraCount, 3.1)) /
+              5 +
+              1,
           ) *
           5 *
           5;
         const eraName = fGVGagesname(era.era as string);
         if (era.era == 'AllAge')
           clanHTML += `<br>AA: ${eraCount} sect, ${siege} medals`;
-        else clanHTML += `<br>${eraName}: ${eraCount} sect, ${siege} total goods`;
+        else
+          clanHTML += `<br>${eraName}: ${eraCount} sect, ${siege} total goods`;
       }
     });
     clanHTML += `</p>`;
@@ -176,7 +178,8 @@ export function getProvinceDetailed(msg: Record<string, unknown>) {
   // console.debug(msg.responseData);
 
   if (showOptions.showGVG) {
-    var gvgGuildPowerTextDiv: HTMLElement | null = document.getElementById('gvgGuildPowerText');
+    var gvgGuildPowerTextDiv: HTMLElement | null =
+      document.getElementById('gvgGuildPowerText');
 
     // var clanHTML = gvgAges.innerHTML;
     var clanHTML = ``;
@@ -186,7 +189,8 @@ export function getProvinceDetailed(msg: Record<string, unknown>) {
     var GVGstatus: Array<Record<string, unknown>> = [];
     var gvgPowerAllSorted: Array<Record<string, unknown>> = [];
     // console.debug(Guilds,GuildSectors,GuildPower,GVGstatus);
-    const map = (msg.responseData as Record<string, unknown>).province_detailed as Record<string, unknown>;
+    const map = (msg.responseData as Record<string, unknown>)
+      .province_detailed as Record<string, unknown>;
     // console.debug(map);
     var power = 0;
     var total = 0;
@@ -228,10 +232,12 @@ export function getProvinceDetailed(msg: Record<string, unknown>) {
         else if (sector.power === 3) power = power3;
         else power = power0;
 
-        if (GuildSectors[sector.owner_id as string]) GuildSectors[sector.owner_id as string]++;
+        if (GuildSectors[sector.owner_id as string])
+          GuildSectors[sector.owner_id as string]++;
         else GuildSectors[sector.owner_id as string] = 1;
 
-        if (GuildPower[sector.owner_id as string]) GuildPower[sector.owner_id as string] += power;
+        if (GuildPower[sector.owner_id as string])
+          GuildPower[sector.owner_id as string] += power;
         else GuildPower[sector.owner_id as string] = power;
 
         // console.debug(sector, GuildPower,power);
@@ -267,10 +273,15 @@ export function getProvinceDetailed(msg: Record<string, unknown>) {
         gvgPower.find((element) => element.era == map.era)!.power = clan.power;
       if (!gvgPowerAll[clan.id as string])
         gvgPowerAll[clan.id as string] = { name: clan.name, powerList: {} };
-      (gvgPowerAll[clan.id as string].powerList as Record<string, unknown>)[map.era as string] = clan.power;
+      (gvgPowerAll[clan.id as string].powerList as Record<string, unknown>)[
+        map.era as string
+      ] = clan.power;
     });
     gvgPower.sort(function (a, b) {
-      return new Date(b.time as string).getTime() - new Date(a.time as string).getTime();
+      return (
+        new Date(b.time as string).getTime() -
+        new Date(a.time as string).getTime()
+      );
     });
 
     // if(!gvgPower[map.era]){
@@ -292,8 +303,12 @@ export function getProvinceDetailed(msg: Record<string, unknown>) {
 
     Object.keys(gvgPowerAll).forEach((clan) => {
       let clanTotal = 0;
-      Object.keys((gvgPowerAll[clan].powerList as Record<string, unknown>)).forEach((era) => {
-        clanTotal += +((gvgPowerAll[clan].powerList as Record<string, unknown>)[era] as number);
+      Object.keys(
+        gvgPowerAll[clan].powerList as Record<string, unknown>,
+      ).forEach((era) => {
+        clanTotal += +((gvgPowerAll[clan].powerList as Record<string, unknown>)[
+          era
+        ] as number);
       });
       gvgPowerAll[clan].total = clanTotal;
     });
@@ -324,7 +339,8 @@ export function getProvinceDetailed(msg: Record<string, unknown>) {
     // clanHTML += `<br>`;
     clanHTML += `</p>`;
 
-    var gvgCurrAgeTextDiv: HTMLElement | null = document.getElementById('gvgCurrAgeText');
+    var gvgCurrAgeTextDiv: HTMLElement | null =
+      document.getElementById('gvgCurrAgeText');
     gvgCurrAgeTextDiv!.innerHTML = clanHTML;
 
     var gvgAllGuildsPowerTextDiv: HTMLElement | null = document.getElementById(
@@ -372,7 +388,9 @@ export function getProvinceDetailed(msg: Record<string, unknown>) {
   }
 }
 
-function copy(aObject: Record<string, unknown> | unknown[]): Record<string, unknown> | unknown[] {
+function copy(
+  aObject: Record<string, unknown> | unknown[],
+): Record<string, unknown> | unknown[] {
   // Prevent undefined objects
   // if (!aObject) return aObject;
 
@@ -391,7 +409,13 @@ function copy(aObject: Record<string, unknown> | unknown[]): Record<string, unkn
   return bObject;
 }
 
-function buildGvgInnerDiv(parentDiv: HTMLElement, collapseFunc: () => void, collapseVar: boolean, name: string, text: string) {
+function buildGvgInnerDiv(
+  parentDiv: HTMLElement,
+  collapseFunc: () => void,
+  collapseVar: boolean,
+  name: string,
+  text: string,
+) {
   var wrapperDiv;
   var headlineDiv;
   var textDiv;

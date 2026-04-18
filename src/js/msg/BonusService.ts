@@ -1,4 +1,3 @@
-
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -31,7 +30,11 @@ export function getBonuses(msg: Record<string, unknown>) {
   // TODO
   // add daily_strategypoint to city info (Daily FP)
 
-  if (typeof (window as unknown as Record<string, unknown>).DEV !== 'undefined' && (window as unknown as Record<string, unknown>).DEV && checkDebug()) {
+  if (
+    typeof (window as unknown as Record<string, unknown>).DEV !== 'undefined' &&
+    (window as unknown as Record<string, unknown>).DEV &&
+    checkDebug()
+  ) {
     var beta = document.getElementById('beta');
 
     if (beta == null) {
@@ -64,19 +67,25 @@ export function getLimitedBonuses(msg: Record<string, unknown>) {
       if (entry.type == 'spoils_of_war') {
         Bonus.spoils = entry.amount as number;
         if (document.getElementById('spoilsID'))
-          document.getElementById('spoilsID')!.textContent = String(entry.amount);
+          document.getElementById('spoilsID')!.textContent = String(
+            entry.amount,
+          );
         if (entry.amount)
           bonusHTML += `Spoils <span id="spoilsID">${Bonus.spoils}</span> `;
       } else if (entry.type == 'diplomatic_gifts') {
         Bonus.diplomatic = entry.amount as number;
         if (document.getElementById('diplomaticID'))
-          document.getElementById('diplomaticID')!.textContent = String(entry.amount);
+          document.getElementById('diplomaticID')!.textContent = String(
+            entry.amount,
+          );
         if (entry.amount)
           bonusHTML += `Dip <span id="diplomaticID">${Bonus.diplomatic}</span> `;
       } else if (entry.type == 'first_strike') {
         Bonus.strike = entry.amount as number;
         if (document.getElementById('firststrikeID'))
-          document.getElementById('firststrikeID')!.textContent = String(entry.amount);
+          document.getElementById('firststrikeID')!.textContent = String(
+            entry.amount,
+          );
         if (entry.amount)
           bonusHTML += `Strike <span id="firststrikeID">${Bonus.strike}</span> `;
       } else if (entry.type == 'aid_goods') {
@@ -86,7 +95,8 @@ export function getLimitedBonuses(msg: Record<string, unknown>) {
         if (entry.amount)
           bonusHTML += `Aid <span id="aidID">${Bonus.aid}</span> `;
       } else if (entry.type == 'double_collection') {
-        Galaxy.amount = (entry.amount as number) > 0 ? (entry.amount as number) : 0;
+        Galaxy.amount =
+          (entry.amount as number) > 0 ? (entry.amount as number) : 0;
         showGalaxy();
       } else if (
         entry.type == 'daily_strategypoint' ||

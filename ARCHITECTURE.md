@@ -13,15 +13,18 @@ This document summarizes the current request-flow architecture after handler ext
 ## Core Entry Points
 
 1. src/js/index.ts:
+
 - Initializes runtime state.
 - Wires message routing.
 - Connects UI state, options, and services.
 
 2. src/js/options.ts:
+
 - Options page state persistence.
 - Local storage synchronization for toggles and tool settings.
 
 3. src/js/popup.ts:
+
 - Popup interaction logic and options navigation.
 
 ## Request Handler Layer
@@ -29,6 +32,7 @@ This document summarizes the current request-flow architecture after handler ext
 Request handlers in src/js/msg are split by service domain to keep routing deterministic and testable.
 
 Primary handler files:
+
 1. CityMapRequestHandler.ts
 2. ClanBattleRequestHandler.ts
 3. ClanServiceRequestHandler.ts
@@ -47,6 +51,7 @@ Primary handler files:
 Service modules own domain-specific aggregation and rendering behavior.
 
 Examples:
+
 1. ArmyUnitManagementService.ts
 2. BonusService.ts
 3. CityProductionService.ts
@@ -62,20 +67,20 @@ Examples:
 ## Styling Layer
 
 1. src/css/main.scss:
-Global style entry.
+   Global style entry.
 2. src/css/custom.scss:
-Shared extension-specific styling and semantic tokens.
+   Shared extension-specific styling and semantic tokens.
 3. src/css/options.scss:
-Options page styling.
+   Options page styling.
 4. src/css/popup.scss:
-Popup page styling.
+   Popup page styling.
 
 ## Testing and Validation
 
 1. tests/handlers:
-Vitest regression coverage for handler behavior.
+   Vitest regression coverage for handler behavior.
 2. npm run typecheck:
-Strict compile-time validation for migrated TypeScript.
+   Strict compile-time validation for migrated TypeScript.
 
 ## Design Principles
 

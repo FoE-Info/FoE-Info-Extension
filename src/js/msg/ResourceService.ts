@@ -1,4 +1,3 @@
-
 import { availablePacksFP, goodsDIV } from '../index';
 import { toolOptions, setGoodsSize } from '../fn/globals';
 import * as collapse from '../fn/collapse';
@@ -38,14 +37,19 @@ function loadResourceDefs(msg: Array<Record<string, unknown>>) {
 
 export function getPlayerResources(msg: Record<string, unknown>) {
   if (msg.responseData && ResourceDefs) {
-    Resources = (msg.responseData as Record<string, unknown>).resources as Record<string, unknown>;
+    Resources = (msg.responseData as Record<string, unknown>)
+      .resources as Record<string, unknown>;
     availableFP = Resources.strategy_points as number;
     if (document.getElementById('availableFPID'))
-      document.getElementById('availableFPID')!.textContent =
-        String(availablePacksFP + availableFP);
+      document.getElementById('availableFPID')!.textContent = String(
+        availablePacksFP + availableFP,
+      );
     var goodsText = '';
     ResourceDefs.forEach((good) => {
-      if ((good.abilities as Record<string, unknown>)?.rankingPoints && Resources[good.id as string])
+      if (
+        (good.abilities as Record<string, unknown>)?.rankingPoints &&
+        Resources[good.id as string]
+      )
         goodsText += `<tr><td>${good.name}</td><td>${Resources[good.id as string]}</td><td>${fGVGagesname(good.era as string)}</td></tr>`;
     });
 

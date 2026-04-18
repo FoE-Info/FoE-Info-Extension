@@ -34,6 +34,7 @@ npm run build-foe-info
 2. Open Forge of Empires and verify FoE-Info panel appears in DevTools.
 3. Verify options page opens from popup settings icon.
 4. Verify key feature surfaces:
+
 - City/GB info rendering
 - Guild Battleground views
 - Reward logging UI

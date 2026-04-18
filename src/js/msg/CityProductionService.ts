@@ -1,4 +1,3 @@
-
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -12,13 +11,11 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import {
-  showReward,
-  rewardsArmy,
-  rewardsCity,
-  MilitaryDefs,
-} from '../index';
-const _MilitaryDefs = MilitaryDefs as unknown as Record<string, Record<string, string>>;
+import { showReward, rewardsArmy, rewardsCity, MilitaryDefs } from '../index';
+const _MilitaryDefs = MilitaryDefs as unknown as Record<
+  string,
+  Record<string, string>
+>;
 const _rewardsArmy = rewardsArmy as unknown as Record<string, number>;
 const _rewardsCity = rewardsCity as unknown as Record<string, unknown>;
 import { updateGalaxy } from './StartupService';
@@ -40,47 +37,77 @@ export function pickupProduction(msg: Record<string, unknown>) {
     });
   }
   if ((responseData.updatedEntities as unknown[]).length) {
-    var rewards = responseData.updatedEntities as Array<Record<string, unknown>>;
+    var rewards = responseData.updatedEntities as Array<
+      Record<string, unknown>
+    >;
     rewards.forEach((reward) => {
       updateGalaxy(reward);
       const state = reward.state as Record<string, unknown>;
       if (
         Object.prototype.hasOwnProperty.call(state, 'current_product') &&
-        Object.prototype.hasOwnProperty.call(state.current_product as object, 'product') &&
-        Object.prototype.hasOwnProperty.call((state.current_product as Record<string, unknown>).product as object, 'resources')
+        Object.prototype.hasOwnProperty.call(
+          state.current_product as object,
+          'product',
+        ) &&
+        Object.prototype.hasOwnProperty.call(
+          (state.current_product as Record<string, unknown>).product as object,
+          'resources',
+        )
       ) {
-        const resources = ((state.current_product as Record<string, unknown>).product as Record<string, unknown>).resources as Record<string, unknown>;
-        Object.keys(resources).forEach(
-          (resource) => {
-            const name = helper.fResourceShortName(resource);
-            if (_rewardsCity[name])
-              (_rewardsCity as Record<string, number>)[name] += resources[resource] as number;
-            else
-              (_rewardsCity as Record<string, number>)[name] = resources[resource] as number;
-          },
-        );
+        const resources = (
+          (state.current_product as Record<string, unknown>).product as Record<
+            string,
+            unknown
+          >
+        ).resources as Record<string, unknown>;
+        Object.keys(resources).forEach((resource) => {
+          const name = helper.fResourceShortName(resource);
+          if (_rewardsCity[name])
+            (_rewardsCity as Record<string, number>)[name] += resources[
+              resource
+            ] as number;
+          else
+            (_rewardsCity as Record<string, number>)[name] = resources[
+              resource
+            ] as number;
+        });
       }
       if (
         Object.prototype.hasOwnProperty.call(state, 'productionOption') &&
-        Object.prototype.hasOwnProperty.call((state.productionOption as object), 'products')
+        Object.prototype.hasOwnProperty.call(
+          state.productionOption as object,
+          'products',
+        )
       ) {
-        const products = ((state.productionOption as Record<string, unknown>).products as Record<string, unknown>).array as Array<Record<string, unknown>>;
+        const products = (
+          (state.productionOption as Record<string, unknown>)
+            .products as Record<string, unknown>
+        ).array as Array<Record<string, unknown>>;
         products.forEach((element) => {
           if (
             Object.prototype.hasOwnProperty.call(element, 'playerResources') &&
-            Object.prototype.hasOwnProperty.call((element.playerResources as object), 'resources')
+            Object.prototype.hasOwnProperty.call(
+              element.playerResources as object,
+              'resources',
+            )
           ) {
-            const pRes = (element.playerResources as Record<string, unknown>).resources as Record<string, unknown>;
-            const cpRes = ((state.current_product as Record<string, unknown>).product as Record<string, unknown>).resources as Record<string, unknown>;
-            Object.keys(pRes).forEach(
-              (resource) => {
-                const name = helper.fResourceShortName(resource);
-                if (_rewardsCity[name])
-                  (_rewardsCity as Record<string, number>)[name] += cpRes[resource] as number;
-                else
-                  (_rewardsCity as Record<string, number>)[name] = cpRes[resource] as number;
-              },
-            );
+            const pRes = (element.playerResources as Record<string, unknown>)
+              .resources as Record<string, unknown>;
+            const cpRes = (
+              (state.current_product as Record<string, unknown>)
+                .product as Record<string, unknown>
+            ).resources as Record<string, unknown>;
+            Object.keys(pRes).forEach((resource) => {
+              const name = helper.fResourceShortName(resource);
+              if (_rewardsCity[name])
+                (_rewardsCity as Record<string, number>)[name] += cpRes[
+                  resource
+                ] as number;
+              else
+                (_rewardsCity as Record<string, number>)[name] = cpRes[
+                  resource
+                ] as number;
+            });
           }
         });
       }

@@ -13,7 +13,11 @@ describe('handleInventoryServiceRequest', () => {
 
   it('returns true for getGreatBuildings', () => {
     const handled = handleInventoryServiceRequest(
-      { requestClass: 'InventoryService', requestMethod: 'getGreatBuildings', responseData: [] },
+      {
+        requestClass: 'InventoryService',
+        requestMethod: 'getGreatBuildings',
+        responseData: [],
+      },
       { CityEntityDefs: {}, availableFP: 0, setAvailablePacksFP: vi.fn() },
     );
 

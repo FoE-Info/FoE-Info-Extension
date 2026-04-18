@@ -14,7 +14,9 @@ type GuildBattlegroundSignalsMessage = HandlerMessage;
 export function handleGuildBattlegroundSignalsRequest(
   msg: GuildBattlegroundSignalsMessage,
   request: GuildBattlegroundSignalsRequest,
-  safeJsonParse: ((raw: string | undefined, context: string) => unknown) | undefined,
+  safeJsonParse:
+    | ((raw: string | undefined, context: string) => unknown)
+    | undefined,
 ) {
   if (!msg || msg.requestClass !== 'GuildBattlegroundSignalsService') {
     return false;

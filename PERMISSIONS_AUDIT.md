@@ -21,12 +21,12 @@ This document tracks current permissions and proposes staged, reversible changes
 
 ### host_permissions
 
-- https://*.forgeofempires.com/game/*
-- https://*.google.com/*
-- https://*.googleusercontent.com/
+- https://_.forgeofempires.com/game/_
+- https://_.google.com/_
+- https://\*.googleusercontent.com/
 - https://discordapp.com/api/webhooks/*
 - https://discord.com/api/webhooks/*
-- https://*.innogamescdn.com/*
+- https://_.innogamescdn.com/_
 
 ## Proposed Staged Changes
 
@@ -48,8 +48,8 @@ No permission changes are applied yet. Use this sequence when implementing in fu
 ### Stage 2: Narrow Google host patterns (if feature usage allows)
 
 - Candidates to narrow/remove:
-  - host_permissions: https://*.google.com/*
-  - host_permissions: https://*.googleusercontent.com/
+  - host*permissions: https://*.google.com/\_
+  - host_permissions: https://\*.googleusercontent.com/
 - Reason:
   - Broad host permissions increase warning surface.
 - Validation before change:

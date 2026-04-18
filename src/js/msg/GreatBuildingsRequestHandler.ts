@@ -59,7 +59,10 @@ type GreatBuildingsDeps = {
   copy: {
     fInvestedCopy: EventListener;
   };
-  setPlayerName: (name: string | undefined, playerId: number | undefined) => void;
+  setPlayerName: (
+    name: string | undefined,
+    playerId: number | undefined,
+  ) => void;
   setAvailablePacksFP: (value: unknown) => void;
   setAvailableFPText: () => void;
 };
@@ -67,7 +70,9 @@ type GreatBuildingsDeps = {
 export function handleGreatBuildingsServiceRequest(
   msg: GreatBuildingsMessage,
   request: GreatBuildingsRequest,
-  safeJsonParse: ((raw: string | undefined, context: string) => unknown) | undefined,
+  safeJsonParse:
+    | ((raw: string | undefined, context: string) => unknown)
+    | undefined,
   deps: GreatBuildingsDeps,
 ) {
   if (!msg || msg.requestClass !== 'GreatBuildingsService') {
@@ -118,11 +123,9 @@ export function handleGreatBuildingsServiceRequest(
       for (var j = 0; j < responseData.length; j++) {
         invested += responseData[j].forge_points;
         if (responseData[j].rank < 6) {
-          const strategyPointAmount = responseData[j].reward?.strategy_point_amount;
-          if (
-            strategyPointAmount &&
-            responseData[j].forge_points > 9
-          ) {
+          const strategyPointAmount =
+            responseData[j].reward?.strategy_point_amount;
+          if (strategyPointAmount && responseData[j].forge_points > 9) {
             reward += strategyPointAmount;
             numGB++;
           }
@@ -210,8 +213,7 @@ export function handleGreatBuildingsServiceRequest(
   }
 
   if (msg.requestMethod === 'getAvailablePackageForgePoints') {
-    const packagePoints =
-      (msg.responseData as number[] | undefined)?.[0] ?? 0;
+    const packagePoints = (msg.responseData as number[] | undefined)?.[0] ?? 0;
     deps.setAvailablePacksFP(packagePoints);
     deps.setAvailableFPText();
     return true;

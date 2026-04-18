@@ -1,4 +1,3 @@
-
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -39,8 +38,10 @@ export function guildExpeditionService(msg: Record<string, unknown>) {
   (msg.responseData as Array<Record<string, unknown>>).forEach((entry) => {
     var solvedEncounters = 0;
     var expeditionPoints = 0;
-    if (entry.solvedEncounters) solvedEncounters = entry.solvedEncounters as number;
-    if (entry.expeditionPoints) expeditionPoints = entry.expeditionPoints as number;
+    if (entry.solvedEncounters)
+      solvedEncounters = entry.solvedEncounters as number;
+    if (entry.expeditionPoints)
+      expeditionPoints = entry.expeditionPoints as number;
     const playerName = (entry.player as Record<string, unknown>).name as string;
     ExpeditionPerformance.push([playerName, solvedEncounters]);
     expeditionHTML += `<tr><td>${playerName}</td><td>${expeditionPoints} </td><td>${solvedEncounters} </td></tr>`;

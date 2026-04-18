@@ -12,7 +12,10 @@ describe('handleClanBattleServiceRequest', () => {
 
   it('handles getContinent and clears GVG first', () => {
     const deps = makeDeps();
-    const msg = { requestClass: 'ClanBattleService', requestMethod: 'getContinent' };
+    const msg = {
+      requestClass: 'ClanBattleService',
+      requestMethod: 'getContinent',
+    };
 
     const handled = handleClanBattleServiceRequest(msg, deps);
 
@@ -23,7 +26,10 @@ describe('handleClanBattleServiceRequest', () => {
 
   it('handles deploySiegeArmy routing', () => {
     const deps = makeDeps();
-    const msg = { requestClass: 'ClanBattleService', requestMethod: 'deploySiegeArmy' };
+    const msg = {
+      requestClass: 'ClanBattleService',
+      requestMethod: 'deploySiegeArmy',
+    };
 
     const handled = handleClanBattleServiceRequest(msg, deps);
 
@@ -33,7 +39,10 @@ describe('handleClanBattleServiceRequest', () => {
 
   it('returns false for unknown method', () => {
     const deps = makeDeps();
-    const msg = { requestClass: 'ClanBattleService', requestMethod: 'unknownMethod' };
+    const msg = {
+      requestClass: 'ClanBattleService',
+      requestMethod: 'unknownMethod',
+    };
 
     const handled = handleClanBattleServiceRequest(msg, deps);
 

@@ -163,7 +163,10 @@ export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
     return true;
   }
 
-  if (msg.requestClass === 'TimeService' && msg.requestMethod === 'updateTime') {
+  if (
+    msg.requestClass === 'TimeService' &&
+    msg.requestMethod === 'updateTime'
+  ) {
     const timeData = msg.responseData as { time: number } | undefined;
     if (timeData) {
       setEpocTime(timeData.time);
@@ -180,7 +183,10 @@ export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
     return true;
   }
 
-  if (msg.requestClass === 'TimerService' && msg.requestMethod === 'getTimers') {
+  if (
+    msg.requestClass === 'TimerService' &&
+    msg.requestMethod === 'getTimers'
+  ) {
     return true;
   }
 
@@ -337,11 +343,7 @@ export function handleMiscRequest(msg: MiscMessage, deps: MiscDeps): boolean {
     console.debug('AutoAidService', msg);
     if (msg.requestMethod === 'collect') {
       const autoAidData = msg.responseData as MiscAutoAidResponse;
-      console.debug(
-        'AutoAidService',
-        autoAidData.id,
-        autoAidData.totalPeers,
-      );
+      console.debug('AutoAidService', autoAidData.id, autoAidData.totalPeers);
     } else if (msg.requestMethod === '') {
       // no-op
     } else {

@@ -22,15 +22,22 @@ import {
   url,
 } from '../index';
 const _url = url as unknown as Record<string, string>;
-const _CityEntityDefs = CityEntityDefs as unknown as Record<string, { name: string }>;
-const _hiddenRewards = hiddenRewards as unknown as Array<Record<string, unknown>>;
+const _CityEntityDefs = CityEntityDefs as unknown as Record<
+  string,
+  { name: string }
+>;
+const _hiddenRewards = hiddenRewards as unknown as Array<
+  Record<string, unknown>
+>;
 const _Goods = Goods as unknown as Record<string, unknown>;
 import {
   BattlegroundPerformance,
   BGtime,
   GuildMembers,
 } from '../msg/GuildBattlegroundService';
-const _BattlegroundPerformance = BattlegroundPerformance as unknown as Array<Record<string, unknown>>;
+const _BattlegroundPerformance = BattlegroundPerformance as unknown as Array<
+  Record<string, unknown>
+>;
 const _GuildMembers = GuildMembers as unknown as Array<Record<string, unknown>>;
 import { ResourceNames } from '../msg/ResourceService';
 const _ResourceNames = ResourceNames as unknown as Record<string, string>;
@@ -283,7 +290,10 @@ export function fGBname(city_entity: string) {
 }
 
 export function fIncidentName(incidentName: string) {
-  var incident: { type: string; text: string } = { type: '?', text: incidentName };
+  var incident: { type: string; text: string } = {
+    type: '?',
+    text: incidentName,
+  };
 
   if (incidentName == 'incident_fallen_tree_1x1') {
     incident.type = 'r';
@@ -570,26 +580,41 @@ export function fGoodsTally(age: string, good: number) {
   // console.debug(age,good);
   if (age == 'BronzeAge') (_Goods as Record<string, number>).ba += good;
   else if (age == 'IronAge') (_Goods as Record<string, number>).ia += good;
-  else if (age == 'EarlyMiddleAge') (_Goods as Record<string, number>).ema += good;
-  else if (age == 'HighMiddleAge') (_Goods as Record<string, number>).hma += good;
-  else if (age == 'LateMiddleAge') (_Goods as Record<string, number>).lma += good;
+  else if (age == 'EarlyMiddleAge')
+    (_Goods as Record<string, number>).ema += good;
+  else if (age == 'HighMiddleAge')
+    (_Goods as Record<string, number>).hma += good;
+  else if (age == 'LateMiddleAge')
+    (_Goods as Record<string, number>).lma += good;
   else if (age == 'ColonialAge') (_Goods as Record<string, number>).cma += good;
-  else if (age == 'IndustrialAge') (_Goods as Record<string, number>).ina += good;
-  else if (age == 'ProgressiveEra') (_Goods as Record<string, number>).pe += good;
+  else if (age == 'IndustrialAge')
+    (_Goods as Record<string, number>).ina += good;
+  else if (age == 'ProgressiveEra')
+    (_Goods as Record<string, number>).pe += good;
   else if (age == 'ModernEra') (_Goods as Record<string, number>).me += good;
-  else if (age == 'PostModernEra') (_Goods as Record<string, number>).pme += good;
-  else if (age == 'ContemporaryEra') (_Goods as Record<string, number>).ce += good;
+  else if (age == 'PostModernEra')
+    (_Goods as Record<string, number>).pme += good;
+  else if (age == 'ContemporaryEra')
+    (_Goods as Record<string, number>).ce += good;
   else if (age == 'TomorrowEra') (_Goods as Record<string, number>).te += good;
   else if (age == 'FutureEra') (_Goods as Record<string, number>).fe += good;
   else if (age == 'ArcticFuture') (_Goods as Record<string, number>).af += good;
-  else if (age == 'OceanicFuture') (_Goods as Record<string, number>).of += good;
-  else if (age == 'VirtualFuture') (_Goods as Record<string, number>).vf += good;
-  else if (age == 'SpaceAgeMars') (_Goods as Record<string, number>).sam += good;
-  else if (age == 'SpaceAgeAsteroidBelt') (_Goods as Record<string, number>).saab += good;
-  else if (age == 'SpaceAgeVenus') (_Goods as Record<string, number>).sav += good;
-  else if (age == 'SpaceAgeJupiterMoon') (_Goods as Record<string, number>).sajm += good;
-  else if (age == 'SpaceAgeTitan') (_Goods as Record<string, number>).sat += good;
-  else if (age == 'SpaceAgeSpaceHub') (_Goods as Record<string, number>).sash += good;
+  else if (age == 'OceanicFuture')
+    (_Goods as Record<string, number>).of += good;
+  else if (age == 'VirtualFuture')
+    (_Goods as Record<string, number>).vf += good;
+  else if (age == 'SpaceAgeMars')
+    (_Goods as Record<string, number>).sam += good;
+  else if (age == 'SpaceAgeAsteroidBelt')
+    (_Goods as Record<string, number>).saab += good;
+  else if (age == 'SpaceAgeVenus')
+    (_Goods as Record<string, number>).sav += good;
+  else if (age == 'SpaceAgeJupiterMoon')
+    (_Goods as Record<string, number>).sajm += good;
+  else if (age == 'SpaceAgeTitan')
+    (_Goods as Record<string, number>).sat += good;
+  else if (age == 'SpaceAgeSpaceHub')
+    (_Goods as Record<string, number>).sash += good;
   else if (age == 'NoAge') (_Goods as Record<string, number>).noage += good;
   else console.debug(age, good);
 }
@@ -604,7 +629,11 @@ export function fShowIncidents() {
     fHideTooltips();
     for (var j = 0; j < _hiddenRewards.length; j++) {
       const incident = _hiddenRewards[j];
-      if ((incident.position as Record<string, string>)?.context == 'guildExpedition') continue;
+      if (
+        (incident.position as Record<string, string>)?.context ==
+        'guildExpedition'
+      )
+        continue;
       const incidentName = fIncidentName(incident.type as string);
       if (incidentName.type == '?') console.debug(incident);
       // console.debug(incidentName.text,incidentName,incident);
@@ -685,7 +714,12 @@ export function fShowIncidents() {
           delay: { show: 100, hide: 300 },
         };
         // const tooltip = new Tooltip(incidents_tooltip, options);
-        const popover = new Popover(incidents_tooltip, options as unknown as Parameters<typeof Popover.getOrCreateInstance>[1]);
+        const popover = new Popover(
+          incidents_tooltip,
+          options as unknown as Parameters<
+            typeof Popover.getOrCreateInstance
+          >[1],
+        );
       }
 
       // $('#incidents_tooltip').tooltip({
@@ -753,7 +787,8 @@ export function fshowBattleground() {
     var negotiationsDiff = 0;
     var attrition = 0;
     var attritionDiff = 0;
-    if (entry.wonNegotiations) wonNegotiations = entry.wonNegotiations as number;
+    if (entry.wonNegotiations)
+      wonNegotiations = entry.wonNegotiations as number;
     if (entry.wonBattles) wonBattles = entry.wonBattles as number;
     if (entry.attrition) attrition = entry.attrition as number;
 
@@ -766,9 +801,10 @@ export function fshowBattleground() {
     // if(GuildMembers[entry.player.name]){
     var player = _GuildMembers.find((id) => id.name == entry.name);
     // console.debug(player);
-    battleDiff = wonBattles - (player?.wonBattles as number ?? 0);
-    negotiationsDiff = wonNegotiations - (player?.wonNegotiations as number ?? 0);
-    attritionDiff = attrition - (player?.attrition as number ?? 0);
+    battleDiff = wonBattles - ((player?.wonBattles as number) ?? 0);
+    negotiationsDiff =
+      wonNegotiations - ((player?.wonNegotiations as number) ?? 0);
+    attritionDiff = attrition - ((player?.attrition as number) ?? 0);
     // }
     // console.debug(entry.name,battleDiff,negotiationsDiff);
     if (
@@ -811,7 +847,8 @@ export function fshowBattleground() {
     .getElementById('battlegroundCopyID')!
     .addEventListener('click', copy.BattlegroundCopy);
 
-  document.getElementById('battlegroundTextLabel')!
+  document
+    .getElementById('battlegroundTextLabel')!
     .addEventListener('click', collapse.fCollapseBattleground);
   document
     .getElementById('showGBGchanges')!
@@ -828,7 +865,10 @@ export function fshowBattleground() {
   });
   resizeObserver.observe(battlegroundDiv);
   console.debug($('#battlegroundCollapse').height());
-  if (($('#battlegroundCollapse').height() as number) > toolOptions.battlegroundsSize) {
+  if (
+    ($('#battlegroundCollapse').height() as number) >
+    toolOptions.battlegroundsSize
+  ) {
     $('#battlegroundCollapse').height(toolOptions.battlegroundsSize);
   }
   ($('body') as JQuery & { i18n(): void }).i18n();
@@ -836,7 +876,11 @@ export function fshowBattleground() {
 
 export function checkGBG() {
   if (MyGuildPermissions & 64 && _url.discordTargetURL) return true;
-  else if (typeof (window as unknown as Record<string, unknown>).DEV !== 'undefined' && (window as unknown as Record<string, unknown>).DEV) return true;
+  else if (
+    typeof (window as unknown as Record<string, unknown>).DEV !== 'undefined' &&
+    (window as unknown as Record<string, unknown>).DEV
+  )
+    return true;
   else return false;
 }
 

@@ -171,7 +171,8 @@ function restore_options() {
       }
       if (items.tool) {
         document.getElementById('language').value = items.tool.language;
-        document.getElementById('uiMode').value = items.tool.uiMode || 'classic';
+        document.getElementById('uiMode').value =
+          items.tool.uiMode || 'classic';
         console.debug(items.tool);
       } else {
         document.getElementById('uiMode').value = 'classic';

@@ -16,7 +16,12 @@ function fAddCollapseIcon(id: string, _href: string, collapse: boolean) {
   </span>`;
 }
 
-function fCopyButton(id: string, colour: string, pos: string, collapse: boolean) {
+function fCopyButton(
+  id: string,
+  colour: string,
+  pos: string,
+  collapse: boolean,
+) {
   console.debug(collapse);
   return `<span id="${id}" class="badge rounded-pill bg-${colour} float-end ${pos}-button" style="display: ${
     collapse ? 'none' : 'block'
@@ -30,7 +35,12 @@ function fCopyIcon(id: string, colour: string, pos: string, collapse: boolean) {
   }">content_copy</span>`;
 }
 
-function fPostButton(id: string, colour: string, pos: string, collapse: boolean) {
+function fPostButton(
+  id: string,
+  colour: string,
+  pos: string,
+  collapse: boolean,
+) {
   return `<span id="${id}" class="badge rounded-pill bg-${colour} float-end ${pos}-button" style="display: ${
     collapse ? 'none' : 'block'
   }" data-i18n="post">Post</span>`;

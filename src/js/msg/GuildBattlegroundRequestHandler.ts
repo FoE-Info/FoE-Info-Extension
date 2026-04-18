@@ -1,8 +1,4 @@
-import {
-  BattlegroundOptions,
-  HandlerMessage,
-  MessageHandler,
-} from './types';
+import { BattlegroundOptions, HandlerMessage, MessageHandler } from './types';
 
 type BattlegroundMessage = HandlerMessage & {
   responseData?: {
@@ -60,9 +56,15 @@ export function handleGuildBattlegroundRequest(
   }
 
   if (msg.requestClass === 'GuildBattlegroundStateService') {
-    if (msg.requestMethod === 'getState' && msg.responseData?.stateId === 'participating') {
+    if (
+      msg.requestMethod === 'getState' &&
+      msg.responseData?.stateId === 'participating'
+    ) {
       // no-op
-    } else if (msg.requestMethod === 'getState' && showOptions.showBattleground) {
+    } else if (
+      msg.requestMethod === 'getState' &&
+      showOptions.showBattleground
+    ) {
       getState(msg);
     } else {
       console.debug('GuildBattlegroundStateService', msg);

@@ -137,9 +137,7 @@ export function handleCityMapServiceRequest(
           levelText += '</table></div></div>';
         }
       }
-      outputHTML = `<div class="alert alert-dark alert-dismissible show collapsed" href="#infoText" aria-expanded="true" aria-controls="infoText" data-bs-toggle="collapse" role="alert">${element.close()}<p id="infoTextLabel"><strong><span data-i18n="gb">GB</span> <span data-i18n="info">Info</span>:</strong> ${
-        PlayerName()
-      } | ${GBselected.name} [${GBselected.level}/${
+      outputHTML = `<div class="alert alert-dark alert-dismissible show collapsed" href="#infoText" aria-expanded="true" aria-controls="infoText" data-bs-toggle="collapse" role="alert">${element.close()}<p id="infoTextLabel"><strong><span data-i18n="gb">GB</span> <span data-i18n="info">Info</span>:</strong> ${PlayerName()} | ${GBselected.name} [${GBselected.level}/${
         GBselected.max_level
       }]</p>`;
       outputHTML += `<div id="infoText" class="alert-dark collapse ${

@@ -13,7 +13,10 @@ describe('handleGuildExpeditionServiceRequest', () => {
 
   it('handles getOverview by clearing expedition view', () => {
     const deps = makeDeps();
-    const msg = { requestClass: 'GuildExpeditionService', requestMethod: 'getOverview' };
+    const msg = {
+      requestClass: 'GuildExpeditionService',
+      requestMethod: 'getOverview',
+    };
 
     const handled = handleGuildExpeditionServiceRequest(msg, deps);
 
@@ -39,7 +42,10 @@ describe('handleGuildExpeditionServiceRequest', () => {
 
   it('returns false for unknown method', () => {
     const deps = makeDeps();
-    const msg = { requestClass: 'GuildExpeditionService', requestMethod: 'unknownMethod' };
+    const msg = {
+      requestClass: 'GuildExpeditionService',
+      requestMethod: 'unknownMethod',
+    };
 
     const handled = handleGuildExpeditionServiceRequest(msg, deps);
 

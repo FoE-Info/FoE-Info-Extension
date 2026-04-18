@@ -25,9 +25,17 @@ import { setCurrentPercent } from './GreatBuildingsService';
 
 export function conversationService(msg: Record<string, unknown>) {
   // console.debug(msg);
-  const teasers = msg.requestMethod == 'getOverviewForCategory'
-    ? ((msg.responseData as Record<string, unknown>).category as Record<string, unknown>).teasers as Array<Record<string, unknown>>
-    : (msg.responseData as Record<string, unknown>).teasers as Array<Record<string, unknown>>;
+  const teasers =
+    msg.requestMethod == 'getOverviewForCategory' ?
+      ((
+        (msg.responseData as Record<string, unknown>).category as Record<
+          string,
+          unknown
+        >
+      ).teasers as Array<Record<string, unknown>>)
+    : ((msg.responseData as Record<string, unknown>).teasers as Array<
+        Record<string, unknown>
+      >);
   // console.debug(targetsTopic);
   // if(!targetsTopic) targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
   teasers.forEach(function (message) {
@@ -35,7 +43,9 @@ export function conversationService(msg: Record<string, unknown>) {
     // if(message.title == targetsTopic){
     if (
       targetsTopic &&
-      (message.title as string).toLowerCase().includes(targetsTopic.toLowerCase())
+      (message.title as string)
+        .toLowerCase()
+        .includes(targetsTopic.toLowerCase())
     ) {
       var targetsGBG: HTMLElement | null;
       var targetsHTML: string;

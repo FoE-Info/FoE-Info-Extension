@@ -47,9 +47,7 @@ import {
   conversationService,
   getConversation,
 } from './msg/ConversationService';
-import {
-  setCurrentPercent,
-} from './msg/GreatBuildingsService';
+import { setCurrentPercent } from './msg/GreatBuildingsService';
 import { handleGreatBuildingsServiceRequest } from './msg/GreatBuildingsRequestHandler';
 import {
   clearBattleground,
@@ -1003,24 +1001,19 @@ function handleRequestFinished(request) {
             });
           } else if (msg.requestClass == 'GreatBuildingsService') {
             if (
-              handleGreatBuildingsServiceRequest(
-                msg,
-                request,
-                safeJsonParse,
-                {
-                  showOptions,
-                  cityinvested,
-                  City,
-                  availablePacksFP: getAvailablePacksFP,
-                  availableFP,
-                  element,
-                  collapse,
-                  copy,
-                  setPlayerName,
-                  setAvailablePacksFP,
-                  setAvailableFPText,
-                },
-              )
+              handleGreatBuildingsServiceRequest(msg, request, safeJsonParse, {
+                showOptions,
+                cityinvested,
+                City,
+                availablePacksFP: getAvailablePacksFP,
+                availableFP,
+                element,
+                collapse,
+                copy,
+                setPlayerName,
+                setAvailablePacksFP,
+                setAvailableFPText,
+              })
             ) {
               // handled in module
             }
@@ -1063,7 +1056,13 @@ function handleRequestFinished(request) {
             // handled in module
           } else if (msg.requestClass == 'GuildBattlegroundSignalsService') {
             // GuildBattleground
-            if (!handleGuildBattlegroundSignalsRequest(msg, request, safeJsonParse)) {
+            if (
+              !handleGuildBattlegroundSignalsRequest(
+                msg,
+                request,
+                safeJsonParse,
+              )
+            ) {
               console.debug('GuildBattlegroundSignalsService', msg);
             }
             // console.debug("GuildBattlegroundSignalsService", msg,JSON.parse(request.request.postData.text));

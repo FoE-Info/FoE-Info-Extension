@@ -56,15 +56,15 @@ npm run format
 ## Project Structure
 
 1. `src/js/index.ts`:
-Main extension entry and dispatcher wiring.
+   Main extension entry and dispatcher wiring.
 2. `src/js/msg/`:
-Service handlers and request-handler modules.
+   Service handlers and request-handler modules.
 3. `src/css/`:
-Shared styles and page-level stylesheets.
+   Shared styles and page-level stylesheets.
 4. `src/chrome/`:
-Manifest and extension HTML templates.
+   Manifest and extension HTML templates.
 5. `tests/handlers/`:
-Vitest regression suite for request handlers.
+   Vitest regression suite for request handlers.
 
 ## Additional Documentation
 

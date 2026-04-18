@@ -1,4 +1,3 @@
-
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -14,7 +13,10 @@
  */
 
 import { MilitaryDefs, armyDIV } from '../index';
-const _MilitaryDefs = MilitaryDefs as unknown as Record<string, Record<string, string>>;
+const _MilitaryDefs = MilitaryDefs as unknown as Record<
+  string,
+  Record<string, string>
+>;
 import { toolOptions, setArmySize } from '../fn/globals';
 import { showOptions } from '../vars/showOptions';
 import * as helper from '../fn/helper';
