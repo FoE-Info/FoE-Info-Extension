@@ -47,8 +47,8 @@ Stage 1 is complete. Use the remaining sequence for future milestones.
 ### Stage 2: Narrow Google host patterns (if feature usage allows)
 
 - Candidates to narrow/remove:
-  - host_permissions: https://_.google.com/_
-  - host_permissions: https://\*.googleusercontent.com/
+  - `host_permissions`: `https://*.google.com/*`
+  - `host_permissions`: `https://*.googleusercontent.com/`
 - Reason:
   - Broad host permissions increase warning surface.
 - Validation before change:
