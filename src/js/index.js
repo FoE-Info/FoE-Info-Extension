@@ -42,7 +42,7 @@ import {
   gvgSummary,
   grantIndependence,
 } from './msg/ClanBattleService.js';
-import { handleClanBattleServiceRequest } from './msg/ClanBattleRequestHandler.js';
+import { handleClanBattleServiceRequest } from './msg/ClanBattleRequestHandler';
 import {
   conversationService,
   getConversation,

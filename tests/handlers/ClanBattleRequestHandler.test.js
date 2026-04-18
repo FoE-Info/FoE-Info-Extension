@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { handleClanBattleServiceRequest } from '../../src/js/msg/ClanBattleRequestHandler.js';
+import { handleClanBattleServiceRequest } from '../../src/js/msg/ClanBattleRequestHandler.ts';
 
 describe('handleClanBattleServiceRequest', () => {
   const makeDeps = () => ({
@@ -38,6 +38,17 @@ describe('handleClanBattleServiceRequest', () => {
     const handled = handleClanBattleServiceRequest(msg, deps);
 
     expect(handled).toBe(false);
+    expect(deps.getContinent).not.toHaveBeenCalled();
+  });
+
+  it('returns false for known method with wrong request class', () => {
+    const deps = makeDeps();
+    const msg = { requestClass: 'OtherService', requestMethod: 'getContinent' };
+
+    const handled = handleClanBattleServiceRequest(msg, deps);
+
+    expect(handled).toBe(false);
+    expect(deps.clearForGVG).not.toHaveBeenCalled();
     expect(deps.getContinent).not.toHaveBeenCalled();
   });
 });
