@@ -80,7 +80,7 @@ import {
   ResourceDefs,
   Resources,
   setResourceDefs,
-} from './msg/ResourceService.js';
+} from './msg/ResourceService';
 import {
   boostService,
   boostServiceAllBoosts,

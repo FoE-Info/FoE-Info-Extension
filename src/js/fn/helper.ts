@@ -27,7 +27,7 @@ import {
   BGtime,
   GuildMembers,
 } from '../msg/GuildBattlegroundService';
-import { ResourceNames } from '../msg/ResourceService.js';
+import { ResourceNames } from '../msg/ResourceService';
 import { showOptions } from '../vars/showOptions.js';
 import * as collapse from './collapse';
 import { fCollapseIncidents } from './collapse';

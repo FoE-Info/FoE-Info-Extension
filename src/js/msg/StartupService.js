@@ -33,7 +33,7 @@ import {
   debug,
 } from '../index';
 import { availablePacksFP, Goods, language } from '../index';
-import { ResourceDefs, availableFP } from './ResourceService.js';
+import { ResourceDefs, availableFP } from './ResourceService';
 import * as helper from '../fn/helper';
 import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy';
