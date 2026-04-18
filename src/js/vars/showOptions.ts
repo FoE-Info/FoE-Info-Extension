@@ -1,4 +1,3 @@
-// @ts-nocheck
 export var showFriends = true;
 export var showGuild = true;
 export var showHood = true;
@@ -33,7 +32,7 @@ export var buildingCosts = false;
 export var collectionTimes = false;
 export var clipboard = true;
 
-export default function set(name, state) {
+export default function set(name: string, state: Record<string, unknown>) {
   console.debug(name, state);
   // console.debug(this,this[name]);
   // if(name == 'showOptions'){
@@ -41,7 +40,7 @@ export default function set(name, state) {
   Object.entries(state).forEach((entry) => {
     const [key, value] = entry;
     // console.debug(key, value);
-    items[key] = value;
+    (items as Record<string, unknown>)[key] = value;
   });
 
   console.debug(items);
