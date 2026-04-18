@@ -94,10 +94,8 @@ import {
 } from './msg/RewardAndBlueprintRequestHandler.js';
 import setOptions, { showOptions } from './vars/showOptions.js';
 import '../css/main.scss';
-import { mapToStyles } from '@popperjs/core/lib/modifiers/computeStyles.js';
 console.debug(toolOptions);
 
-let contentTypes = {};
 export var debugEnabled = false;
 export var availablePacksFP = 0;
 export var PlayerName = '';
@@ -471,10 +469,6 @@ if (showOptions.clipboard) {
 
 const getType = (type) => {
   return type.replace(/.*(javascript|image|html|font|json|css|text).*/g, '$1');
-};
-
-const formatBytes = (size) => {
-  return `${parseInt(size / 1000)} KB`;
 };
 
 const safeJsonParse = (text, context) => {
