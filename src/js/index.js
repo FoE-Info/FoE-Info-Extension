@@ -64,7 +64,7 @@ import { handleGuildBattlegroundRequest } from './msg/GuildBattlegroundRequestHa
 import { guildExpeditionService } from './msg/GuildExpeditionService.js';
 import { handleGuildExpeditionServiceRequest } from './msg/GuildExpeditionRequestHandler';
 import { handleClanServiceRequest } from './msg/ClanServiceRequestHandler.js';
-import { handleCityMapServiceRequest } from './msg/CityMapRequestHandler.js';
+import { handleCityMapServiceRequest } from './msg/CityMapRequestHandler';
 import { handleInventoryServiceRequest } from './msg/InventoryRequestHandler';
 import { handleMiscRequest } from './msg/MiscRequestHandler';
 import { handleOtherPlayerServiceRequest } from './msg/OtherPlayerRequestHandler';
