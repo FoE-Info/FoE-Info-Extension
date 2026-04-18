@@ -23,7 +23,7 @@ module.exports = {
   entry: {
     // bootstrap: './src/js/bootstrap.js',
     app: './src/js/index',
-    options: './src/js/options.js',
+    options: './src/js/options',
     devtools: './src/js/devtools',
     popup: './src/js/popup.js',
   },
