@@ -67,7 +67,7 @@ import { handleClanServiceRequest } from './msg/ClanServiceRequestHandler.js';
 import { handleCityMapServiceRequest } from './msg/CityMapRequestHandler.js';
 import { handleInventoryServiceRequest } from './msg/InventoryRequestHandler';
 import { handleMiscRequest } from './msg/MiscRequestHandler.js';
-import { handleOtherPlayerServiceRequest } from './msg/OtherPlayerRequestHandler.js';
+import { handleOtherPlayerServiceRequest } from './msg/OtherPlayerRequestHandler';
 import {
   otherPlayerService,
   otherPlayerServiceUpdateActions,
