@@ -1,4 +1,3 @@
-// @ts-nocheck
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -29,11 +28,11 @@ export var toolOptions = {
   minSize: 50,
 };
 
-export function setToolOptions(value) {
+export function setToolOptions(value: typeof toolOptions) {
   toolOptions = value;
 }
 
-export function setFriendsSize(height) {
+export function setFriendsSize(height: number) {
   if (height > toolOptions.minSize) {
     // console.debug('setFriendsSize',height,toolOptions);
     toolOptions.friendsSize = height > 500 ? 500 : height;
@@ -41,7 +40,7 @@ export function setFriendsSize(height) {
   }
 }
 
-export function setArmySize(height) {
+export function setArmySize(height: number) {
   // 'armySize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.armySize = height > 500 ? 500 : height;
@@ -49,7 +48,7 @@ export function setArmySize(height) {
   }
 }
 
-export function setGoodsSize(height) {
+export function setGoodsSize(height: number) {
   // 'armySize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.goodsSize = height > 500 ? 500 : height;
@@ -57,7 +56,7 @@ export function setGoodsSize(height) {
   }
 }
 
-export function setTreasurySize(height) {
+export function setTreasurySize(height: number) {
   // 'treasurySize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.treasurySize = height > 500 ? 500 : height;
@@ -65,7 +64,7 @@ export function setTreasurySize(height) {
   }
 }
 
-export function setGVGSize(height) {
+export function setGVGSize(height: number) {
   // 'gvgSize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.gvgSize = height > 500 ? 500 : height;
@@ -73,7 +72,7 @@ export function setGVGSize(height) {
   }
 }
 
-export function setLogsSize(height) {
+export function setLogsSize(height: number) {
   // 'logsSize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.logsSize = height > 500 ? 500 : height;
@@ -81,7 +80,7 @@ export function setLogsSize(height) {
   }
 }
 
-export function setBattlegroundSize(height) {
+export function setBattlegroundSize(height: number) {
   // 'battlegroundsSize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.battlegroundsSize = height > 500 ? 500 : height;
@@ -89,7 +88,7 @@ export function setBattlegroundSize(height) {
   }
 }
 
-export function setExpeditionSize(height) {
+export function setExpeditionSize(height: number) {
   // 'expeditionSize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.expeditionSize = height > 500 ? 500 : height;
@@ -97,7 +96,7 @@ export function setExpeditionSize(height) {
   }
 }
 
-export function setVisitSize(height) {
+export function setVisitSize(height: number) {
   // 'visitSize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.visitSize = height > 500 ? 500 : height;
@@ -105,7 +104,7 @@ export function setVisitSize(height) {
   }
 }
 
-export function setRewardSize(height) {
+export function setRewardSize(height: number) {
   // 'rewardSize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.rewardSize = height > 500 ? 500 : height;
@@ -113,7 +112,7 @@ export function setRewardSize(height) {
   }
 }
 
-export function setBuildingCostSize(height) {
+export function setBuildingCostSize(height: number) {
   // 'rewardSize': 200,
   if (height > toolOptions.minSize) {
     toolOptions.buildingCostSize = height > 500 ? 500 : height;
