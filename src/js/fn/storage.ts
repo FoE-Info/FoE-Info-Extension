@@ -1,4 +1,3 @@
-// @ts-nocheck
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -15,7 +14,7 @@
 
 import browser from 'webextension-polyfill';
 
-function setStorage(name, value) {
+function setStorage(name: string, value: unknown) {
   console.log(name, value);
 
   browser.storage.local
@@ -32,7 +31,7 @@ function setStorage(name, value) {
     });
 }
 
-function getStorage(name) {
+function getStorage(name: string) {
   // console.log(name);
   browser.storage.local.get(name).then((result) => {
     // console.log(name,' is ' + value);
@@ -44,7 +43,7 @@ function getStorage(name) {
   });
 }
 
-function removeStorage(name) {
+function removeStorage(name: string) {
   // console.log(name);
   browser.storage.local.remove(name).then(() => {
     // console.log(name,' is deleted');
