@@ -31,7 +31,7 @@ import { showOptions } from '../vars/showOptions.js';
 import * as collapse from './collapse';
 import { fCollapseIncidents } from './collapse';
 import * as copy from './copy';
-import { setBattlegroundSize, toolOptions } from './globals.js';
+import { setBattlegroundSize, toolOptions } from './globals';
 import * as post_webstore from './post.js';
 import * as storage from './storage.js';
 import * as element from './AddElement';

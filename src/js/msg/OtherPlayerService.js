@@ -38,7 +38,7 @@ import {
   GameOrigin,
   PlayerID,
 } from '../index.js';
-import { toolOptions, setFriendsSize } from '../fn/globals.js';
+import { toolOptions, setFriendsSize } from '../fn/globals';
 import { fArcname } from './StartupService.js';
 
 var friendsHTML = '';

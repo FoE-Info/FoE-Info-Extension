@@ -13,7 +13,7 @@
  */
 
 import { gvg, MyInfo } from '../index.js';
-import { toolOptions, setGVGSize } from '../fn/globals.js';
+import { toolOptions, setGVGSize } from '../fn/globals';
 import { showOptions } from '../vars/showOptions.js';
 import * as collapse from '../fn/collapse';
 import * as element from '../fn/AddElement';

@@ -27,7 +27,7 @@ import {
   setToolOptions,
   setTreasurySize,
   toolOptions,
-} from './fn/globals.js';
+} from './fn/globals';
 import * as helper from './fn/helper.js';
 import * as storage from './fn/storage.js';
 import * as element from './fn/AddElement';

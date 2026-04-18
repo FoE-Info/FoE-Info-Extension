@@ -31,7 +31,7 @@ import {
   url,
   targetText,
 } from '../index.js';
-import { toolOptions, setBuildingCostSize } from '../fn/globals.js';
+import { toolOptions, setBuildingCostSize } from '../fn/globals';
 
 export var BattlegroundPerformance = [];
 export var GuildMembers = [];

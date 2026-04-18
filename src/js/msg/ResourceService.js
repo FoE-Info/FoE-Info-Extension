@@ -1,5 +1,5 @@
 import { availablePacksFP, goodsDIV } from '../index.js';
-import { toolOptions, setGoodsSize } from '../fn/globals.js';
+import { toolOptions, setGoodsSize } from '../fn/globals';
 import * as collapse from '../fn/collapse';
 import { fGVGagesname } from '../fn/helper.js';
 import * as storage from '../fn/storage.js';
