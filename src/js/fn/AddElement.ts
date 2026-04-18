@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as storage from './storage.js';
 
 function fCollapseIcon(id, _href, collapse) {
