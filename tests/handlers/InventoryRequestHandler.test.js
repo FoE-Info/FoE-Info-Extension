@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as storage from '../../src/js/fn/storage.js';
-import { handleInventoryServiceRequest } from '../../src/js/msg/InventoryRequestHandler.js';
+import { handleInventoryServiceRequest } from '../../src/js/msg/InventoryRequestHandler.ts';
 
 vi.mock('../../src/js/fn/storage.js', () => ({
   set: vi.fn(),
@@ -44,7 +44,7 @@ describe('handleInventoryServiceRequest', () => {
     expect(handled).toBe(true);
     expect(storage.set).toHaveBeenCalledWith('CityEntityDefs', { a: 1 });
     expect(setAvailablePacksFP).toHaveBeenCalledWith(31);
-    expect(fpNode.textContent).toBe(38);
+    expect(fpNode.textContent).toBe('38');
   });
 
   it('returns false for unrelated service', () => {
