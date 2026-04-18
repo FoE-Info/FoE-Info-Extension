@@ -39,7 +39,7 @@ import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy';
 import * as element from '../fn/AddElement';
 import { showOptions } from '../vars/showOptions.js';
-import { clearArmyUnits } from './ArmyUnitManagementService.js';
+import { clearArmyUnits } from './ArmyUnitManagementService';
 
 export var City = {
   ArcBonus: 90,

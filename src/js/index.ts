@@ -32,7 +32,7 @@ import {
 import * as helper from './fn/helper';
 import * as storage from './fn/storage';
 import * as element from './fn/AddElement';
-import { armyUnitManagementService } from './msg/ArmyUnitManagementService.js';
+import { armyUnitManagementService } from './msg/ArmyUnitManagementService';
 import { getBonuses, getLimitedBonuses } from './msg/BonusService.js';
 import { pickupProduction } from './msg/CityProductionService.js';
 import {
