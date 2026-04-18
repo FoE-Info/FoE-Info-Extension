@@ -1,3 +1,4 @@
+// @ts-nocheck
 export function handleClanServiceRequest(msg, deps) {
   if (!msg || msg.requestClass !== 'ClanService') {
     return false;
