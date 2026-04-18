@@ -68,14 +68,9 @@ p,
 }
 
 .bi-tools {
-  /* padding-left: 0.25em; */
-  /* padding-right: 0.5em; */
-  /* margin-left: -1em; */
-  /* margin-top: -2px; */
-  /* fill: currentColor; */
-  color: red;
-  stroke: green;
-  fill: blue;
+  color: var(--foe-color-text-primary);
+  fill: currentColor;
+  stroke: none;
 }
 
 .header-icon {
