@@ -24,7 +24,7 @@ import BigNumber from 'bignumber.js';
 import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper';
 import * as collapse from '../fn/collapse';
-import * as post_webstore from '../fn/post.js';
+import * as post_webstore from '../fn/post';
 import * as copy from '../fn/copy';
 import * as element from '../fn/AddElement';
 import {

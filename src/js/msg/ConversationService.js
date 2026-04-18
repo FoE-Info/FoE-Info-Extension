@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 import { targets, targetsTopic } from '../index.js';
 import * as collapse from '../fn/collapse';
 import * as helper from '../fn/helper';
-import * as post_webstore from '../fn/post.js';
+import * as post_webstore from '../fn/post';
 import * as element from '../fn/AddElement';
 import { setCurrentPercent } from './GreatBuildingsService.js';
 

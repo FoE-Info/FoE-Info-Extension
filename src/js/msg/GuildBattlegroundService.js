@@ -19,7 +19,7 @@ import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy';
 import * as element from '../fn/AddElement';
 import * as storage from '../fn/storage.js';
-import * as post_webstore from '../fn/post.js';
+import * as post_webstore from '../fn/post';
 import {
   BuildingDefs,
   VolcanoProvinceDefs,
