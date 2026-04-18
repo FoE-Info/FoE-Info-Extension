@@ -127,29 +127,32 @@ export var GBselected = {
   current: 0,
   total: 0,
 };
+
+type GenericRecord = Record<string, unknown>;
+type HeaderLike = { name: string; value?: string };
 // var GBinfo = [];
 // var GBrequest = [];
-var GuildDonations = [];
-var GuildTreasury = [];
+var GuildDonations: GenericRecord[] = [];
+var GuildTreasury: GenericRecord[] = [];
 // var GuildTreasuryAnalysis = [];
 export var targetsTopic = 'targets';
 export var targetText = '';
-var GuildsGoods = [];
+var GuildsGoods: GenericRecord[] = [];
 // var GBdefs = [];
-export var CityEntityDefs = {};
-export var CityProtections = [];
-export var MilitaryDefs = [];
-export var CastleDefs = [];
-export var SelectionKitDefs = [];
-export var BoostMetadataDefs = [];
-export var VolcanoProvinceDefs = [];
-export var WaterfallProvinceDefs = [];
-export var BuildingDefs = [];
+export var CityEntityDefs: any = {};
+export var CityProtections: GenericRecord[] = [];
+export var MilitaryDefs: GenericRecord[] = [];
+export var CastleDefs: GenericRecord[] = [];
+export var SelectionKitDefs: GenericRecord[] = [];
+export var BoostMetadataDefs: GenericRecord[] = [];
+export var VolcanoProvinceDefs: GenericRecord[] = [];
+export var WaterfallProvinceDefs: GenericRecord[] = [];
+export var BuildingDefs: GenericRecord[] = [];
 // flag to indicate that all metadata files have been processed
 export var metadataLoaded = false;
-export var hiddenRewards = [];
+export var hiddenRewards: GenericRecord[] = [];
 // store StartupService message until metadata is ready
-var pendingStartupMsg = null;
+var pendingStartupMsg: GenericRecord | null = null;
 export var Goods = {
   sash: 0,
   sat: 0,
@@ -176,11 +179,12 @@ export var Goods = {
   noage: 0,
 };
 export var EpocTime = 0;
-var GameVersion = 0;
+var GameVersion = '';
 export var GameOrigin = '';
 
 export var donationPercent = 190;
 export var donationSuffix = '';
+export var MyGuildPermissions = 0;
 
 export var Bonus = {
   aid: 0,
@@ -189,14 +193,14 @@ export var Bonus = {
   strike: 0,
 };
 
-export var url = [];
+export var url: any[] = [];
 
-var rewardsGE = [];
-var rewardsGBG = [];
-var rewardsGeneric = [];
-export var rewardsArmy = [];
-export var rewardsCity = [];
-var rewardsOtherPlayer = [];
+var rewardsGE: any[] = [];
+var rewardsGBG: any[] = [];
+var rewardsGeneric: any[] = [];
+export var rewardsArmy: GenericRecord[] = [];
+export var rewardsCity: GenericRecord[] = [];
+var rewardsOtherPlayer: any[] = [];
 
 var tool = browser.runtime.getManifest();
 console.debug(tool.name);
@@ -254,7 +258,7 @@ if (isDarkTheme) {
 // </div>
 // </div>`;
 
-var newelement = document.body;
+var newelement: HTMLElement = document.body;
 if (isDarkTheme) {
   newelement.classList.add('bg-dark');
 }
@@ -262,23 +266,23 @@ newelement.classList.add('bootstrap-styles');
 newelement = document.createElement('div');
 newelement.className = 'p-2';
 title.appendChild(newelement);
-var child = document.createElement('img');
-child.src = '/icons/Icon48.png';
-child.width = '24';
-child.height = '24';
-child.id = 'logo';
+const logoImg = document.createElement('img');
+logoImg.src = '/icons/Icon48.png';
+logoImg.width = 24;
+logoImg.height = 24;
+logoImg.id = 'logo';
 // if (DEV)
-child.addEventListener('click', toggleDebug);
-newelement.appendChild(child);
+logoImg.addEventListener('click', toggleDebug);
+newelement.appendChild(logoImg);
 newelement = document.createElement('div');
 newelement.className = 'p-8 title';
 title.appendChild(newelement);
-child = document.createElement('h6');
-if (isDarkTheme) child.className = 'title text-light bg-dark';
-else child.className = 'title';
+const titleHeading = document.createElement('h6');
+if (isDarkTheme) titleHeading.className = 'title text-light bg-dark';
+else titleHeading.className = 'title';
 // child.innerHTML = pkg.name;
-child.textContent = EXT_NAME;
-newelement.appendChild(child);
+titleHeading.textContent = EXT_NAME;
+newelement.appendChild(titleHeading);
 newelement = document.createElement('div');
 newelement.innerHTML = `<span class="material-icons-outlined md-18 options-icon">settings</span>`;
 newelement.classList.toggle('p-2');
@@ -403,11 +407,11 @@ export var modal = document.createElement('div');
 content.appendChild(modal);
 modal.id = 'modal';
 
-var newelement = document.createElement('div');
-newelement.className = 'modal-dialog modal-sm';
-newelement.id = 'testModal';
+var modalElement = document.createElement('div');
+modalElement.className = 'modal-dialog modal-sm';
+modalElement.id = 'testModal';
 // newelement.innerHTML = '<div class="modal-dialog modal-sm">...</div>';
-modal.appendChild(newelement);
+modal.appendChild(modalElement);
 
 console.debug('clipboard', clipboard.innerHTML);
 if (showOptions.clipboard) {
@@ -457,11 +461,11 @@ if (showOptions.clipboard) {
 // cityincidents.innerHTML = "This is a new div.";
 // content.appendChild(newDiv);
 
-const getType = (type) => {
+const getType = (type: string) => {
   return type.replace(/.*(javascript|image|html|font|json|css|text).*/g, '$1');
 };
 
-const safeJsonParse = (text, context) => {
+const safeJsonParse = (text: unknown, context: string): unknown => {
   if (!text || typeof text !== 'string') {
     return null;
   }
@@ -474,12 +478,16 @@ const safeJsonParse = (text, context) => {
   }
 };
 
-const addAvailablePacksFP = (amount) => {
-  availablePacksFP += amount;
+const addAvailablePacksFP = (amount: unknown) => {
+  if (typeof amount === 'number') {
+    availablePacksFP += amount;
+  }
 };
 
-const setAvailablePacksFP = (amount) => {
-  availablePacksFP = amount;
+const setAvailablePacksFP = (amount: unknown) => {
+  if (typeof amount === 'number') {
+    availablePacksFP = amount;
+  }
 };
 
 const getAvailablePacksFP = () => {
@@ -487,29 +495,35 @@ const getAvailablePacksFP = () => {
 };
 
 const setAvailableFPText = () => {
-  if (document.getElementById('availableFPID'))
-    document.getElementById('availableFPID').textContent =
-      availablePacksFP + availableFP;
+  const availableFpElement = document.getElementById('availableFPID');
+  if (availableFpElement)
+    availableFpElement.textContent = String(availablePacksFP + availableFP);
 };
 
 const getPlayerID = () => {
   return PlayerID;
 };
 
-const setPlayerState = (name, id) => {
-  PlayerName = name;
-  PlayerID = id;
+const setPlayerState = (name: string | undefined, id: number | undefined) => {
+  if (typeof name === 'string') {
+    PlayerName = name;
+  }
+  if (typeof id === 'number') {
+    PlayerID = id;
+  }
 };
 
 const getPlayerName = () => {
   return PlayerName;
 };
 
-const setCityProtections = (protections) => {
-  CityProtections = protections;
+const setCityProtections = (protections: unknown) => {
+  CityProtections = Array.isArray(protections)
+    ? (protections as GenericRecord[])
+    : [];
 };
 
-const setGameOrigin = (origin) => {
+const setGameOrigin = (origin: string) => {
   GameOrigin = origin;
 };
 
@@ -521,23 +535,25 @@ const isMetadataLoaded = () => {
   return metadataLoaded;
 };
 
-const setPendingStartupMessage = (msg) => {
+const setPendingStartupMessage = (msg: GenericRecord | null) => {
   pendingStartupMsg = msg;
 };
 
-const setEpocTime = (time) => {
+const setEpocTime = (time: number) => {
   EpocTime = time;
 };
 
-const setHiddenRewards = (rewards) => {
-  hiddenRewards = rewards;
+const setHiddenRewards = (rewards: unknown[]) => {
+  hiddenRewards = Array.isArray(rewards)
+    ? (rewards as GenericRecord[])
+    : [];
 };
 
 const getCulturalDiv = () => {
   return cultural;
 };
 
-const setCulturalDiv = (newCultural) => {
+const setCulturalDiv = (newCultural: HTMLElement) => {
   cultural = newCultural;
 };
 
@@ -545,12 +561,12 @@ const getTotalAvailableFP = () => {
   return availablePacksFP + availableFP;
 };
 
-document.querySelector('#go-to-options').addEventListener('click', function () {
+document.querySelector('#go-to-options')?.addEventListener('click', function () {
   // console.debug('options');
 
   browser.permissions
     .request({
-      permissions: ['storage'],
+      permissions: ['storage'] as unknown as any,
     })
     .then((granted) => {
       // The callback argument will be true if the user granted the permissions.
@@ -568,7 +584,7 @@ document.querySelector('#go-to-options').addEventListener('click', function () {
 });
 
 export var language =
-  window.navigator.userLanguage || window.navigator.language;
+  window.navigator.language;
 console.debug(language);
 if (process.env.NODE_ENV === 'development') {
   $.i18n.debug = true;
@@ -597,7 +613,7 @@ window
       darkMode = 'light';
     }
   });
-function onEvent(message, params) {
+function onEvent(message: unknown, params: unknown) {
   console.debug(message, params);
 }
 
@@ -644,9 +660,6 @@ browser.permissions
             fi: {
               load: 'Lataa peli nähdäksesi kaupunkitilastot',
             },
-            it: {
-              load: 'Carica il gioco per vedere le statistiche della tua città',
-            },
             pt: {
               load: 'Carregue o jogo para ver as estatísticas da sua cidade',
             },
@@ -673,7 +686,9 @@ browser.permissions
             // load lang strings on page already loaded
             $('body').i18n();
             console.debug(
-              'jQuery ' + (jQuery ? $().jquery : 'NOT') + ' loaded',
+              'jQuery ' +
+                (typeof jQuery !== 'undefined' ? $().jquery : 'NOT') +
+                ' loaded',
             );
             console.debug('i18n.load OK');
           });
@@ -684,13 +699,13 @@ browser.permissions
 							  <button type="button" class="btn btn-danger" id="enableFoE">Enable</button></div>`;
       citystats.className = 'alert alert-danger';
       document
-        .getElementById('enableFoE')
+        .getElementById('enableFoE')!
         .addEventListener('click', function () {
           // console.debug('options');
 
           browser.permissions
             .request({
-              permissions: ['storage', 'clipboardWrite'],
+              permissions: ['storage', 'clipboardWrite'] as unknown as any,
             })
             .then((granted) => {
               // The callback argument will be true if the user granted the permissions.
@@ -709,18 +724,19 @@ browser.permissions
 // console.debug(showOptions);
 
 /* don't send the origin, so that they don't see the request coming from Chrome extension */
-function originWithId(header) {
+function originWithId(header: HeaderLike) {
+  const value = header.value ?? '';
   return (
     header.name.toLowerCase() === 'origin' &&
-    (header.value.indexOf('moz-extension://') === 0 ||
-      header.value.indexOf('chrome-extension://') === 0)
+    (value.indexOf('moz-extension://') === 0 ||
+      value.indexOf('chrome-extension://') === 0)
   );
 }
 
 chrome.webRequest.onBeforeSendHeaders.addListener(
-  (details) => {
+  (details: any) => {
     return {
-      requestHeaders: details.requestHeaders.filter((x) => !originWithId(x)),
+      requestHeaders: details.requestHeaders.filter((x: HeaderLike) => !originWithId(x)),
     };
   },
   { urls: ['https://*.innogamescdn.com/*'] },
@@ -731,7 +747,7 @@ browser.devtools.network.onRequestFinished.addListener(handleRequestFinished);
 
 // When a network request has finished this function will be called.
 // browser.devtools.network.onRequestFinished.addListener().then(request => {
-function handleRequestFinished(request) {
+function handleRequestFinished(request: any) {
   // console.log("Server IP: ", request.serverIPAddress);
 
   const response = request.response;
@@ -741,15 +757,15 @@ function handleRequestFinished(request) {
   // console.debug('request',request);
   // console.debug('response',response);
   var contentType = '';
-  var contentHeader = '';
+  let contentHeader: HeaderLike | undefined;
 
   if (response.httpVersion == 'http/2.0')
     contentHeader = response.headers.find(
-      (header) => header.name === 'content-type',
+      (header: HeaderLike) => header.name === 'content-type',
     );
   else
     contentHeader = response.headers.find(
-      (header) => header.name === 'Content-Type',
+      (header: HeaderLike) => header.name === 'Content-Type',
     );
 
   if (contentHeader) {
@@ -766,8 +782,8 @@ function handleRequestFinished(request) {
     )
   ) {
     // console.debug(request.request.headers);
-    contentType = request.request.headers.find(
-      (header) => header.name === 'client-identification',
+    const clientIdentificationHeader = request.request.headers.find(
+      (header: HeaderLike) => header.name === 'client-identification',
     );
     // if(contentType) console.debug('client-identification:', contentType.value.substr(8,5));
     // else{
@@ -777,24 +793,26 @@ function handleRequestFinished(request) {
     // }
 
     if (
-      contentType &&
-      contentType.value &&
-      GameVersion != contentType.value.substr(8, 5)
+      clientIdentificationHeader &&
+      clientIdentificationHeader.value &&
+      GameVersion != clientIdentificationHeader.value.substr(8, 5)
     ) {
-      GameVersion = contentType.value.substr(8, 5);
+      GameVersion = clientIdentificationHeader.value.substr(8, 5);
       citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${GameVersion}<br>${EXT_NAME}: ${tool.version}</div>`;
       // console.debug('version:', GameVersion);
     }
 
-    request.getContent().then(async ([body, mimeType]) => {
+    request.getContent().then(async ([body, mimeType]: [string, string]) => {
       // console.log("Content: ", body);
       // console.log("MIME type: ", mimeType);
-      const parsed = safeJsonParse(body, 'network response body');
+      const parsed = safeJsonParse(body, 'network response body') as
+        | GenericRecord[]
+        | null;
       if (!parsed) {
         return;
       }
       // console.debug('parsed:', parsed);
-      if (parsed && parsed.length) {
+      if (parsed.length) {
         for (var i = 0; i < parsed.length; i++) {
           const msg = parsed[i];
 
@@ -806,7 +824,7 @@ function handleRequestFinished(request) {
             msg.requestMethod == 'getMetadata'
           ) {
             try {
-              const requests = msg.responseData.map((item) =>
+              const requests = msg.responseData.map((item: any) =>
                 fetch(item.url)
                   .then((r) => r.json())
                   .catch((err) => {
@@ -816,11 +834,11 @@ function handleRequestFinished(request) {
               );
               const results = await Promise.all(requests);
 
-              results.forEach((data, idx) => {
+              results.forEach((data: any, idx: number) => {
                 if (!data) return;
                 const identifier = msg.responseData[idx].identifier;
                 if (identifier === 'city_entities') {
-                  data.forEach(function (msg) {
+                  data.forEach(function (msg: any) {
                     if (
                       msg.__class__ &&
                       msg.__class__.substring(0, 10) == 'CityEntity'
@@ -1162,7 +1180,10 @@ function handleRequestFinished(request) {
 
 browser.storage.onChanged.addListener(storageChange);
 
-function storageChange(changes, namespace) {
+function storageChange(
+  changes: Record<string, browser.Storage.StorageChange>,
+  _namespace: string,
+) {
   for (var key in changes) {
     var storageChange = changes[key];
     //   console.debug('Storage key "%s" in namespace "%s" changed. ' +
@@ -1202,7 +1223,14 @@ function storageChange(changes, namespace) {
   // console.debug('showOptions',showOptions);
 }
 
-export function setMyInfo(name, id, clan, clan_id, createdAt, era) {
+export function setMyInfo(
+  name: string,
+  id: number,
+  clan: string,
+  clan_id: number,
+  createdAt: number,
+  era: string,
+) {
   MyInfo.name = name;
   MyInfo.id = id;
   MyInfo.guild = clan;
@@ -1211,35 +1239,39 @@ export function setMyInfo(name, id, clan, clan_id, createdAt, era) {
   MyInfo.era = era;
 }
 
-export function setMyName(name) {
+export function setMyName(name: string) {
   MyInfo.name = name;
 }
 
-export function setMyID(id) {
+export function setMyID(id: number) {
   MyInfo.id = id;
 }
 
-export function setMyGuild(name) {
+export function setMyGuild(name: string) {
   MyInfo.guild = name;
 }
 
-export function setMyGuildID(id) {
+export function setMyGuildID(id: number) {
   MyInfo.guildID = id;
 }
 
-export function setMyGuildPermissions(permissions) {
+export function setMyGuildPermissions(permissions: number) {
   MyGuildPermissions = permissions;
 }
 
-export function setMyGuildPosition(id) {
+export function setMyGuildPosition(id: number) {
   MyInfo.guildPosition = id;
   storage.set(GameOrigin + 'MyInfo', MyInfo);
 }
 
-export function setPlayerName(name, id) {
-  PlayerName = name;
-  PlayerID = id;
-  GBselected.player_name = name;
+export function setPlayerName(name: string | undefined, id: number | undefined) {
+  if (typeof name === 'string') {
+    PlayerName = name;
+    GBselected.player_name = name;
+  }
+  if (typeof id === 'number') {
+    PlayerID = id;
+  }
 }
 
 function fCleardForGVG() {
