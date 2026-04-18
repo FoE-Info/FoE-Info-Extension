@@ -1,19 +1,46 @@
 @import 'bootstrap/scss/bootstrap';
-// @import "custom.scss";
+@import 'custom.scss';
+
+body {
+  background: var(--foe-color-background);
+  color: var(--foe-color-text-primary);
+}
+
+.container {
+  max-width: 780px;
+  padding: 12px;
+}
 
 label {
   display: block;
+  margin-bottom: 0.65rem;
 }
 
 div.card {
-  margin: 15px auto 20px auto;
+  margin: 12px auto 16px auto;
+  border-color: $gray-700;
 }
 
 button#save {
   margin: 5px auto;
-  display: inherit;
+  display: inline-block;
 }
 
 input#donationPercent {
   width: auto;
+}
+
+.button-info {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.card-header {
+  font-weight: 600;
+}
+
+.card-body .form-control,
+.card-body select.form-control {
+  margin-top: 0.35rem;
+  margin-bottom: 0.25rem;
 }

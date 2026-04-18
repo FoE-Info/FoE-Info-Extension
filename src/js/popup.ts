@@ -12,6 +12,7 @@
  * ________________________________________________________________
  */
 import browser from 'webextension-polyfill';
+import '../css/popup.scss';
 document.querySelector('#go-to-options').addEventListener('click', function () {
   // console.debug('options');
   if (browser.runtime.openOptionsPage) {

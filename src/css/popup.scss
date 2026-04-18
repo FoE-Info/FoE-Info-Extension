@@ -1,0 +1,42 @@
+@import 'custom.scss';
+
+.popup-body {
+  width: 220px;
+  padding: 8px 10px 12px;
+}
+
+.popup-logo-wrap {
+  text-align: center;
+}
+
+.popup-logo {
+  width: 200px;
+}
+
+.popup-title {
+  margin: 0.35rem 0 0.45rem;
+  text-align: center;
+  font-size: 1.15rem;
+}
+
+.popup-steps {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.popup-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.35rem;
+}
+
+.popup-tools .bi-tools {
+  color: var(--foe-color-text-primary);
+  fill: currentColor;
+  stroke: none;
+  cursor: pointer;
+}
+
+.popup-tools .bi-tools:hover {
+  color: var(--foe-color-invest-good);
+}
