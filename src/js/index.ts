@@ -62,7 +62,7 @@ import {
 } from './msg/GuildBattlegroundService';
 import { handleGuildBattlegroundSignalsRequest } from './msg/GuildBattlegroundSignalsRequestHandler';
 import { handleGuildBattlegroundRequest } from './msg/GuildBattlegroundRequestHandler';
-import { guildExpeditionService } from './msg/GuildExpeditionService.js';
+import { guildExpeditionService } from './msg/GuildExpeditionService';
 import { handleGuildExpeditionServiceRequest } from './msg/GuildExpeditionRequestHandler';
 import { handleClanServiceRequest } from './msg/ClanServiceRequestHandler';
 import { handleCityMapServiceRequest } from './msg/CityMapRequestHandler';
