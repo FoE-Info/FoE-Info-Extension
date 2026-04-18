@@ -1,4 +1,3 @@
-// @ts-nocheck
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -19,9 +18,11 @@
 // import 'bootstrap';
 // import Discord  from 'discord.js';
 import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index';
+const _url = url as unknown as Record<string, string>;
 import * as element from './AddElement';
 import * as helper from './helper';
 import { Tooltip, Alert, Popover } from 'bootstrap';
+declare function getKey(url: string): string;
 import { GBGdata } from '../msg/GuildBattlegroundService';
 
 // Example POST method implementation:
@@ -48,10 +49,10 @@ async function postData(url = '', data = {}) {
   });
 
   console.debug(response);
-  return response.json(); // parses JSON response into native JavaScript objects
+  // response.json() removed; fetch chain returns void
 }
 
-export function postToDiscord(text) {
+export function postToDiscord(text: string) {
   // test-test channel
   var webHookUrl =
     'https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij';
@@ -70,7 +71,7 @@ export function postToDiscord(text) {
   // const hook = new Discord.WebhookClient('687279023335800877', 'rtsthZ8GIxsD9LYhlluZHyqOQGQtZmOkaiNLKcAHRshWLPoUZqO1_XTuOObFeJqL4zyQ');
   // const client  = new Discord.Client();
   var selection = window.getSelection();
-  selection.removeAllRanges();
+  selection!.removeAllRanges();
 
   var oReq = new XMLHttpRequest();
   var params = {
@@ -227,13 +228,13 @@ export function postToDiscord(text) {
 export function postTargetsToDiscord() {
   if (!document.getElementById('targetText')) return;
 
-  var webHookUrl = url.discordTargetURL;
+  var webHookUrl = _url.discordTargetURL;
 
   // if (DEV && webHookUrl == "")
   // 	webHookUrl = "";
 
   var selection = window.getSelection();
-  selection.removeAllRanges();
+  selection!.removeAllRanges();
 
   var oReq = new XMLHttpRequest();
   var params = {
@@ -242,7 +243,7 @@ export function postTargetsToDiscord() {
     // 'content': document.getElementById("targetText").innerHTML.replace(/<br\s*\/?>/ig, "\n").replace(/(<([^>]+)>)/gi, "").replace(/[\w\W]+?\n+?/,"").replace(/\n.*$/, '')
     content:
       document
-        .getElementById('targetText')
+        .getElementById('targetText')!
         .innerHTML.replace(/<br\s*\/?>/gi, '\n')
         .replace(/(<([^>]+)>)/gi, '')
         .replace(/\n.*$/, '') + '\n----------',
@@ -258,7 +259,7 @@ export function postTargetsToDiscord() {
     oReq,
     params,
     document
-      .getElementById('targetText')
+      .getElementById('targetText')!
       .innerHTML.replace(/<br\s*\/?>/gi, '\n')
       .replace(/(<([^>]+)>)/gi, ''),
   );
@@ -266,7 +267,7 @@ export function postTargetsToDiscord() {
 
 export function postGBGtoSS() {
   // console.debug(data[0]);
-  var googleSheetAPI = url.sheetGuildURL;
+  var googleSheetAPI = _url.sheetGuildURL;
   var copytext = document.getElementById('battlegroundText');
 
   var reqData = {
@@ -291,17 +292,17 @@ export function postGBGtoSS() {
 }
 
 export function postAlerttoDsicord() {
-  var copytext = document.getElementById('alertText').textContent;
+  var copytext = document.getElementById('alertText')!.textContent;
   postToDiscord(copytext);
 }
 
-export function logToDiscord(text) {
+export function logToDiscord(text: string) {
   var webHookUrl =
     'https://discordapp.com/api/webhooks/690589445145231410/XQehmPTFdg82ijxxXMXMeYDuIkCuKokSDOVLztN737J60NCJ6nN3qzBlMjIxMJG0N-jq';
   // log channel
 
   var selection = window.getSelection();
-  selection.removeAllRanges();
+  selection!.removeAllRanges();
 
   var oReq = new XMLHttpRequest();
   var params = {
@@ -319,9 +320,9 @@ export function logToDiscord(text) {
   oReq.send(JSON.stringify(params));
 }
 
-export function postPlayerToSS(visitData) {
+export function postPlayerToSS(visitData: Array<Record<string, unknown>>) {
   // console.debug(visitData);
-  var googleSheetAPI = url.sheetGuildURL;
+  var googleSheetAPI = _url.sheetGuildURL;
 
   alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
 		${element.close()}
