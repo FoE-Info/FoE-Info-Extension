@@ -58,6 +58,10 @@ type CityMapDeps = {
   };
 };
 
+type GlobalJQuery = {
+  $: (selector: string) => JQuery & { i18n(): void };
+};
+
 export function handleCityMapServiceRequest(
   msg: CityMapMessage,
   deps: CityMapDeps,
@@ -149,7 +153,7 @@ export function handleCityMapServiceRequest(
       document
         .getElementById('infoTextLabel')
         ?.addEventListener('click', collapse.fCollapseGBInfo);
-      (globalThis as any).$('body').i18n();
+      (globalThis as unknown as GlobalJQuery).$('body').i18n();
     }
 
     return true;
