@@ -24,7 +24,8 @@
     "format": "prettier --write .",
     "dev": "set NODE_ENV=development && webpack --mode development --config webpack-dev.config.js --watch",
     "build-foe-info": "webpack --config foe-info-webstore.config.js",
-    "test:handlers": "vitest run tests/handlers"
+    "test:handlers": "vitest run tests/handlers",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
@@ -37,6 +38,7 @@
     "postcss-loader": "^8.1.1",
     "prettier": "3.5.1",
     "style-loader": "^4.0.0",
+    "typescript": "^5.9.3",
     "vitest": "^4.1.4",
     "webpack": "^5.98.0",
     "webpack-bundle-analyzer": "^4.10.2",
