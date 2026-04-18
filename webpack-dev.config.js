@@ -25,7 +25,7 @@ module.exports = {
     app: './src/js/index',
     options: './src/js/options',
     devtools: './src/js/devtools',
-    popup: './src/js/popup.js',
+    popup: './src/js/popup',
   },
   devtool: 'inline-source-map',
   devServer: {
