@@ -87,7 +87,7 @@ import {
   emissaryService,
   startupService,
 } from './msg/StartupService.js';
-import { handleStartupServiceRequest } from './msg/StartupRequestHandler.js';
+import { handleStartupServiceRequest } from './msg/StartupRequestHandler';
 import {
   handleBlueprintServiceRequest,
   handleRewardServiceRequest,
