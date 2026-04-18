@@ -1,0 +1,77 @@
+# Permissions Audit (Reversible Plan)
+
+This document tracks current permissions and proposes staged, reversible changes.
+
+## Scope
+
+- Current source manifests:
+  - src/chrome/manifest.json
+  - src/chrome/manifest_release.json
+  - src/chrome/manifest_firefox.json
+- Current build target: Chrome first.
+
+## Current Baseline (No Changes Applied)
+
+### permissions
+
+- storage
+- unlimitedStorage
+- clipboardWrite
+- webRequest
+
+### host_permissions
+
+- https://*.forgeofempires.com/game/*
+- https://*.google.com/*
+- https://*.googleusercontent.com/
+- https://discordapp.com/api/webhooks/*
+- https://discord.com/api/webhooks/*
+- https://*.innogamescdn.com/*
+
+## Proposed Staged Changes
+
+No permission changes are applied yet. Use this sequence when implementing in future milestones.
+
+### Stage 1: Remove legacy Discord domain if telemetry confirms no usage
+
+- Candidate removal:
+  - host_permissions: https://discordapp.com/api/webhooks/*
+- Reason:
+  - Legacy domain; modern webhook endpoint is discord.com.
+- Validation before removal:
+  - Confirm no runtime requests to discordapp.com in current logic.
+  - Run Chrome smoke test for webhook export path.
+- Rollback:
+  - Re-add exact host pattern in all source manifests.
+
+### Stage 2: Narrow Google host patterns (if feature usage allows)
+
+- Candidates to narrow/remove:
+  - host_permissions: https://*.google.com/*
+  - host_permissions: https://*.googleusercontent.com/
+- Reason:
+  - Broad host permissions increase warning surface.
+- Validation before change:
+  - Confirm exact Google APIs/endpoints used by sheets integration.
+  - Replace with minimal concrete host patterns only after endpoint mapping.
+- Rollback:
+  - Re-add original wildcard hosts in all source manifests.
+
+### Stage 3: Re-evaluate webRequest permission
+
+- Candidate removal:
+  - permissions: webRequest
+- Reason:
+  - If not used in extension contexts that require explicit webRequest API access.
+- Validation before change:
+  - Verify DevTools network listener path and confirm whether manifest webRequest is still required.
+  - Full smoke test of request capture and message parsing.
+- Rollback:
+  - Re-add webRequest to permissions in all source manifests.
+
+## Change Control Rules
+
+- Apply permission updates in one dedicated commit per stage.
+- Keep manifest.json, manifest_release.json, and manifest_firefox.json in sync unless a browser-specific exception is intentional and documented.
+- Include explicit rollback notes in each PR description.
+- If any smoke test fails, revert only the permission commit for that stage.
