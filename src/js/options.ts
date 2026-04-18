@@ -1,4 +1,3 @@
-// @ts-nocheck
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
