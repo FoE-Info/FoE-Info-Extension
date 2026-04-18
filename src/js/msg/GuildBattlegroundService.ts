@@ -14,7 +14,7 @@
  */
 import { Tooltip, Alert, Popover } from 'bootstrap';
 import browser from 'webextension-polyfill';
-import { showOptions } from '../vars/showOptions.js';
+import { showOptions } from '../vars/showOptions';
 import * as helper from '../fn/helper';
 import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy';

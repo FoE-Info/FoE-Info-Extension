@@ -28,7 +28,7 @@ import {
   GuildMembers,
 } from '../msg/GuildBattlegroundService';
 import { ResourceNames } from '../msg/ResourceService';
-import { showOptions } from '../vars/showOptions.js';
+import { showOptions } from '../vars/showOptions';
 import * as collapse from './collapse';
 import { fCollapseIncidents } from './collapse';
 import * as copy from './copy';

@@ -15,7 +15,7 @@
 
 import { MilitaryDefs, armyDIV } from '../index';
 import { toolOptions, setArmySize } from '../fn/globals';
-import { showOptions } from '../vars/showOptions.js';
+import { showOptions } from '../vars/showOptions';
 import * as helper from '../fn/helper';
 import * as collapse from '../fn/collapse';
 import * as element from '../fn/AddElement';

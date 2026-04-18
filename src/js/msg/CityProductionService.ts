@@ -19,7 +19,7 @@ import {
   MilitaryDefs,
 } from '../index';
 import { updateGalaxy } from './StartupService';
-import { showOptions } from '../vars/showOptions.js';
+import { showOptions } from '../vars/showOptions';
 import * as helper from '../fn/helper';
 
 export function pickupProduction(msg) {

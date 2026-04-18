@@ -15,7 +15,7 @@
 
 import { City, Galaxy, showGalaxy } from './StartupService';
 import { checkDebug, Bonus } from '../index';
-import { showOptions } from '../vars/showOptions.js';
+import { showOptions } from '../vars/showOptions';
 import * as collapse from '../fn/collapse';
 import * as element from '../fn/AddElement';
 

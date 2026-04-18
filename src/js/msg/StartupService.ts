@@ -39,7 +39,7 @@ import * as helper from '../fn/helper';
 import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy';
 import * as element from '../fn/AddElement';
-import { showOptions } from '../vars/showOptions.js';
+import { showOptions } from '../vars/showOptions';
 import { clearArmyUnits } from './ArmyUnitManagementService';
 
 export var City = {

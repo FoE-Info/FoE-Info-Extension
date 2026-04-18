@@ -1,3 +1,4 @@
+// @ts-nocheck
 export var showFriends = true;
 export var showGuild = true;
 export var showHood = true;
