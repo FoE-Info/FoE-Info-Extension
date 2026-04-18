@@ -109,6 +109,32 @@ p,
   color: var(--foe-color-favorite-hover);
 }
 
+.copy {
+  color: var(--foe-color-invest-good);
+}
+
+.copy:hover {
+  background-color: var(--foe-color-invest-good);
+  color: var(--foe-color-text-primary);
+}
+
+.notice {
+  color: var(--foe-color-invest-bad);
+  font-weight: bold;
+  display: table-cell;
+  padding: 0 5px;
+}
+
+.table {
+  padding-bottom: 1px;
+}
+
+.table > tbody > tr > td {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  border-top: 0;
+}
+
 svg {
   /* fill: currentColor; */
 }
