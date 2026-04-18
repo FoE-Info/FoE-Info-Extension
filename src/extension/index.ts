@@ -206,6 +206,68 @@ var tool = browser.runtime.getManifest();
 console.debug(tool.name);
 console.debug(tool.version);
 
+type HudPayload = {
+  playerName?: string;
+  world?: string;
+  era?: string;
+  coins?: number | null;
+  supplies?: number | null;
+  fp?: number | null;
+  fpTotal?: number | null;
+  diamonds?: number | null;
+  medals?: number | null;
+  population?: number | null;
+};
+
+let hudUpdateTimer: ReturnType<typeof setTimeout> | null = null;
+
+const buildHudPayload = (): HudPayload => {
+  const rss = (Resources ?? {}) as Record<string, unknown>;
+  const asNumber = (value: unknown): number | null =>
+    typeof value === 'number' && Number.isFinite(value) ? value : null;
+
+  return {
+    playerName: MyInfo?.name || undefined,
+    world: GameOrigin || undefined,
+    era: MyInfo?.era || undefined,
+    coins: asNumber(rss.money),
+    supplies: asNumber(rss.supplies),
+    fp: asNumber(availableFP),
+    fpTotal: asNumber(availableFP + availablePacksFP),
+    diamonds: asNumber(rss.premium),
+    medals: asNumber(rss.medals),
+    population: asNumber(rss.population),
+  };
+};
+
+const publishHudData = () => {
+  try {
+    const tabId = (browser.devtools as any)?.inspectedWindow?.tabId;
+    if (typeof tabId !== 'number') {
+      return;
+    }
+    browser.tabs
+      .sendMessage(tabId, {
+        type: 'foe-info-hud:update',
+        payload: buildHudPayload(),
+      })
+      .catch(() => {
+        // Content script may not be injected yet; this is expected on non-game pages.
+      });
+  } catch (error) {
+    console.debug('HUD publish skipped', error);
+  }
+};
+
+const scheduleHudUpdate = () => {
+  if (hudUpdateTimer) {
+    clearTimeout(hudUpdateTimer);
+  }
+  hudUpdateTimer = setTimeout(() => {
+    publishHudData();
+  }, 140);
+};
+
 // console.debug(typeof $);
 
 // browser.windows.getAll({ populate: true }).then((windows) => {
@@ -540,6 +602,7 @@ const setCityProtections = (protections: unknown) => {
 
 const setGameOrigin = (origin: string) => {
   GameOrigin = origin;
+  scheduleHudUpdate();
 };
 
 const getGameOrigin = () => {
@@ -1181,6 +1244,7 @@ function handleRequestFinished(request: any) {
           console.debug('worlds', worlds);
         }
       }
+      scheduleHudUpdate();
     });
   }
 }
@@ -1248,22 +1312,27 @@ export function setMyInfo(
   MyInfo.guildID = clan_id;
   MyInfo.createdAt = createdAt;
   MyInfo.era = era;
+  scheduleHudUpdate();
 }
 
 export function setMyName(name: string) {
   MyInfo.name = name;
+  scheduleHudUpdate();
 }
 
 export function setMyID(id: number) {
   MyInfo.id = id;
+  scheduleHudUpdate();
 }
 
 export function setMyGuild(name: string) {
   MyInfo.guild = name;
+  scheduleHudUpdate();
 }
 
 export function setMyGuildID(id: number) {
   MyInfo.guildID = id;
+  scheduleHudUpdate();
 }
 
 export function setMyGuildPermissions(permissions: number) {
@@ -1283,6 +1352,7 @@ export function setPlayerName(name: string | undefined, id: number | undefined) 
   if (typeof id === 'number') {
     PlayerID = id;
   }
+  scheduleHudUpdate();
 }
 
 function fCleardForGVG() {
@@ -1540,6 +1610,7 @@ function receiveStorage(result) {
       // console.debug(value);
     } else console.debug(key, value);
   });
+  scheduleHudUpdate();
 }
 
 export function initTreasury(resources) {

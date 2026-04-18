@@ -29,7 +29,15 @@
     "storage",
     "unlimitedStorage",
     "clipboardWrite",
-    "webRequest"
+    "webRequest",
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.forgeofempires.com/game/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
   ],
   "host_permissions": [
     "https://*.forgeofempires.com/game/*",

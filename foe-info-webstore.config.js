@@ -53,6 +53,7 @@ module.exports = {
     options: './src/extension/options',
     devtools: './src/extension/devtools',
     popup: './src/extension/popup',
+    content: './src/extension/content',
   },
   module: {
     rules: [
