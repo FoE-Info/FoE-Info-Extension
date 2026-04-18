@@ -1,4 +1,3 @@
-// @ts-nocheck
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -64,7 +63,7 @@ export var collapseClipboard = true;
 // 	console.debug(this.name);
 // }
 
-export default function set(key, value) {
+export default function set(key: string, value: boolean) {
   // console.debug(key, value);
   switch (key) {
     case 'collapseFriends':
@@ -183,7 +182,7 @@ export function fCollapseGBInfo() {
 
 export function fCollapseFriends() {
   collapseFriends = !collapseFriends;
-  document.getElementById('friendsCopyID').style.display =
+  document.getElementById('friendsCopyID')!.style.display =
     collapseFriends ? 'none' : 'block';
   // console.debug('collapseFriends',collapseFriends);
   element.updateIcon('friendsicon', 'friendsText', collapseFriends);
@@ -196,7 +195,7 @@ export function fCollapseLists() {
 
 export function fCollapseHood() {
   collapseHood = !collapseHood;
-  document.getElementById('hoodCopyID').style.display =
+  document.getElementById('hoodCopyID')!.style.display =
     collapseHood ? 'none' : 'block';
   // console.debug('collapseHood',collapseHood);
   element.updateIcon('hoodicon', 'hoodText', collapseHood);
@@ -210,7 +209,7 @@ export function fCollapseGalaxy() {
 
 export function fCollapseGuild() {
   collapseGuild = !collapseGuild;
-  document.getElementById('guildCopyID').style.display =
+  document.getElementById('guildCopyID')!.style.display =
     collapseGuild ? 'none' : 'block';
   // console.debug('collapseGuild',collapseGuild);
   element.updateIcon('guildicon', 'guildText', collapseGuild);
@@ -266,18 +265,18 @@ export function fcollapseGVGAllGuildsPower() {
 
 export function fCollapseArmy() {
   collapseArmy = !collapseArmy;
-  document.getElementById('armyUnits').innerHTML =
+  document.getElementById('armyUnits')!.innerHTML =
     collapseArmy ?
-      document.getElementById('armyUnits2').innerHTML +
+      document.getElementById('armyUnits2')!.innerHTML +
       ' ' +
-      document.getElementById('armyUnits3').innerHTML
+      document.getElementById('armyUnits3')!.innerHTML
     : '';
   element.updateIcon('armyicon', 'armyText', collapseArmy);
 }
 
 export function fCollapseGoods() {
   collapseGoods = !collapseGoods;
-  document.getElementById('goodsCopyID').style.display =
+  document.getElementById('goodsCopyID')!.style.display =
     collapseGoods ? 'none' : 'block';
   element.updateIcon('goodsicon', 'goodsText', collapseGoods);
 }
@@ -286,7 +285,7 @@ export function fCollapseStats() {
   fHideAllTooltips();
   collapseStats = !collapseStats;
   // console.debug('collapseStats',collapseStats);
-  document.getElementById('citystatsCopyID').style.display =
+  document.getElementById('citystatsCopyID')!.style.display =
     collapseStats ? 'none' : 'block';
   element.updateIcon('citystatsicon', 'citystatsText', collapseStats);
 }
@@ -299,16 +298,16 @@ export function fCollapseRewards() {
 
 export function fCollapseGBDonors() {
   collapseGBDonors = !collapseGBDonors;
-  document.getElementById('donorCopyID').style.display =
+  document.getElementById('donorCopyID')!.style.display =
     collapseGBDonors ? 'none' : 'block';
   element.updateIcon('donoricon', 'donorcollapse', collapseGBDonors);
 }
 
 export function fCollapseInvested() {
   collapseInvested = !collapseInvested;
-  document.getElementById('onHandFP').innerHTML =
-    collapseInvested ? document.getElementById('onHandFP2').innerHTML : '';
-  document.getElementById('investedCopyID').style.display =
+  document.getElementById('onHandFP')!.innerHTML =
+    collapseInvested ? document.getElementById('onHandFP2')!.innerHTML : '';
+  document.getElementById('investedCopyID')!.style.display =
     collapseInvested ? 'none' : 'block';
   element.updateIcon('investedicon', 'investedText', collapseInvested);
 }
@@ -323,7 +322,7 @@ export function fCollapseInvested() {
 export function fCollapseDonation() {
   collapseDonation = !collapseDonation;
   // console.debug('fCollapseDonation',collapseOptions);
-  document.getElementById('donationCopyID').style.display =
+  document.getElementById('donationCopyID')!.style.display =
     collapseDonation ? 'none' : 'block';
   element.updateIcon('donationicon', 'donationText3', collapseDonation);
 }
@@ -332,10 +331,10 @@ export function fCollapseBattleground() {
   collapseBattleground = !collapseBattleground;
   // console.debug('fCollapseBattleground',collapseOptions);
   if (document.getElementById('battlegroundPostID'))
-    document.getElementById('battlegroundPostID').style.display =
+    document.getElementById('battlegroundPostID')!.style.display =
       collapseBattleground ? 'none' : 'block';
   if (document.getElementById('battlegroundCopyID'))
-    document.getElementById('battlegroundCopyID').style.display =
+    document.getElementById('battlegroundCopyID')!.style.display =
       collapseBattleground ? 'none' : 'block';
   element.updateIcon(
     'battlegroundicon',
@@ -362,14 +361,14 @@ export function fCollapseBuildings() {
 
 export function fCollapseExpedition() {
   collapseExpedition = !collapseExpedition;
-  document.getElementById('expeditionCopyID').style.display =
+  document.getElementById('expeditionCopyID')!.style.display =
     collapseExpedition ? 'none' : 'block';
   element.updateIcon('expeditionicon', 'expeditionText', collapseExpedition);
 }
 
 export function fCollapseTreasury() {
   collapseTreasury = !collapseTreasury;
-  document.getElementById('treasuryCopyID').style.display =
+  document.getElementById('treasuryCopyID')!.style.display =
     collapseTreasury ? 'none' : 'block';
   element.updateIcon('treasuryicon', 'treasuryText', collapseTreasury);
 }
@@ -381,7 +380,7 @@ export function fCollapseTreasuryLog() {
 
 export function fCollapseTarget() {
   collapseTarget = !collapseTarget;
-  document.getElementById('targetPostID').style.display =
+  document.getElementById('targetPostID')!.style.display =
     collapseTarget ? 'none' : 'block';
   element.updateIcon('targeticon', 'targetText', collapseTarget);
 }
@@ -404,7 +403,7 @@ export function fCollapseCultural() {
 export function fCollapseClipboard() {
   collapseClipboard = !collapseClipboard;
   storage.set('collapseClipboard', collapseClipboard);
-  document.getElementById('clipboardCopyID').style.display =
+  document.getElementById('clipboardCopyID')!.style.display =
     collapseClipboard ? 'none' : 'block';
   element.updateIcon('clipboardicon', 'clipboardText', collapseClipboard);
 }
