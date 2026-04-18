@@ -1,30 +1,79 @@
-# FoE Info
+# FoE Info Extension
 
-# How to build the project
+Chrome extension panel for Forge of Empires that augments in-game data, guild tooling, and quality-of-life overlays.
 
-- Clone the repo
-- Open in your IDE (eg [VS Code](https://code.visualstudio.com/download) / [IntelliJ](https://www.jetbrains.com/idea/download/))
-- Open a terminal in your IDE, type `npm install` to install the project dependencies
-- Open your IDE, and hit the `CTRL+P` keybinding and type `ext install esbenp.prettier-vscode` to install prettier in your IDE
-- Type `npm run dev` to start the dev server (or you can use tasks in your IDE)
+## Quick Start
 
-# Installation of the extension
+1. Clone the repository.
+2. Install dependencies.
 
-- Open [chrome://extensions](chrome://extensions)
-- Enable 'Developer Mode' checkbox
-- Click 'Load unpacked extensions...'
-- Select the `build/FoE-Info-Dev` folder
+```bash
+npm install
+```
 
-# Using the extension
+3. Build extension assets.
 
-- Open your browser, goto `https://en0.forgeofempires.com` (you may use a different language, of course)
-- Ctrl-Shift-I to open devtools
-- Click on `>>` in the devtools menu, then select `FoE-Info-Dev`
-- Start the game to run FoE-Info
-- You can click on the tools icon to change options
+```bash
+npm run build-foe-info
+```
 
-# Debugging
+4. Open `chrome://extensions`, enable Developer Mode, and load unpacked extension from `build/FoE-Info_WEBSTORE`.
 
-- Right-click on the FoE-Info panel and select `inspect`
-- On the new window that opens, select `console` to see any errors or debug info
-- You can also click on the FoE-Info logo to enable debug mode (this will output more info when you load the game)
+## Development Commands
+
+1. Watch-mode dev build:
+
+```bash
+npm run dev
+```
+
+2. TypeScript check:
+
+```bash
+npm run typecheck
+```
+
+3. Handler regression tests:
+
+```bash
+npm run test:handlers
+```
+
+4. Formatting checks:
+
+```bash
+npm run check
+npm run format
+```
+
+## Runtime Usage
+
+1. Open Forge of Empires in the browser.
+2. Open DevTools.
+3. In DevTools tabs, choose FoE-Info panel.
+4. Use the options icon to configure feature toggles.
+
+## Project Structure
+
+1. `src/js/index.ts`:
+Main extension entry and dispatcher wiring.
+2. `src/js/msg/`:
+Service handlers and request-handler modules.
+3. `src/css/`:
+Shared styles and page-level stylesheets.
+4. `src/chrome/`:
+Manifest and extension HTML templates.
+5. `tests/handlers/`:
+Vitest regression suite for request handlers.
+
+## Additional Documentation
+
+1. Architecture guide: `ARCHITECTURE.md`.
+2. Multi-phase roadmap: `ROADMAP_PHASES.md`.
+3. Permission reduction strategy: `PERMISSIONS_AUDIT.md`.
+
+## Debugging Tips
+
+1. Right-click inside FoE-Info panel and choose Inspect.
+2. Use console output for service routing and payload diagnostics.
+3. Enable extension debug mode from the FoE-Info UI when deeper traces are needed.
