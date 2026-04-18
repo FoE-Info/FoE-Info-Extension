@@ -65,6 +65,7 @@ import { handleGuildBattlegroundRequest } from './msg/GuildBattlegroundRequestHa
 import { guildExpeditionService } from './msg/GuildExpeditionService.js';
 import { handleGuildExpeditionServiceRequest } from './msg/GuildExpeditionRequestHandler.js';
 import { handleClanServiceRequest } from './msg/ClanServiceRequestHandler.js';
+import { handleCityMapServiceRequest } from './msg/CityMapRequestHandler.js';
 import { handleInventoryServiceRequest } from './msg/InventoryRequestHandler.js';
 import { handleOtherPlayerServiceRequest } from './msg/OtherPlayerRequestHandler.js';
 import {
@@ -505,6 +506,10 @@ const setPlayerState = (name, id) => {
   PlayerID = id;
 };
 
+const getPlayerName = () => {
+  return PlayerName;
+};
+
 const setCityProtections = (protections) => {
   CityProtections = protections;
 };
@@ -938,102 +943,20 @@ function handleRequestFinished(request) {
               /*Resource Service */
               getPlayerResources(msg);
             }
-          } else if (msg.requestClass == 'CityMapService') {
-            if (msg.requestMethod == 'getEntities') {
-              /*getEntities*/
-              var outputHTML = '';
-              //output.innerHTML = "";
-              //overview.innerHTML = "";
-              // console.debug(msg);
-              if (msg.responseData.length) {
-                // console.debug('msg:', msg.responseData);
-                for (var j = 0; j < msg.responseData.length; j++) {
-                  if (msg.responseData[j].player_id == MyInfo.id) {
-                  }
-                }
-              }
-            } else if (msg.requestMethod == 'updateEntity') {
-              /*GB Info */
-              // console.debug('msg:', msg);
-              var outputHTML = '';
-              //output.innerHTML = "";
-              //overview.innerHTML = "";
-              // if (debugEnabled == true)
-              // 	console.debug(contentType,msg.requestClass,msg.requestMethod);
-              if (msg.responseData.length) {
-                console.debug('msg:', msg.responseData);
-                // console.debug(collapseOptions);
-                console.debug(GBselected);
-                var levelText = '';
-                for (var j = 0; j < msg.responseData.length; j++) {
-                  const selected = msg.responseData[j];
-                  if (selected.type == 'greatbuilding') {
-                    if (selected.player_id == MyInfo.id) {
-                      // PlayerName = MyInfo.name;
-                      // PlayerID = MyInfo.id;
-                      setPlayerName(MyInfo.name, MyInfo.id);
-                    }
-
-                    GBselected.player = selected.player_id;
-                    GBselected.id = selected.id;
-                    GBselected.name = helper.fGBname(selected.cityentity_id);
-                    // console.debug(GBselected.name,CityEntityDefs[selected.cityentity_id],selected);
-                    var era = selected.cityentity_id.split('_', 2);
-                    GBselected.era = helper.fGVGagesname(era[1]);
-                    // console.debug(GBselected.era);
-                    GBselected.level = selected.level;
-                    GBselected.max_level = selected.max_level;
-                    GBselected.connected = selected.connected;
-                    // GBlevelNext = 0;
-                    // console.debug('GBlevelNext');
-                    // outputHTML += `<div>${PlayerName} ${GBselected.name}<br>Current Level ${GBselected.level} Max Level ${GBselected.max_level}</div>`;
-                    // levelText += `<div>Level ${GBselected.level + 1} (Max ${GBselected.max_level})</div>`;
-                    GBselected.total = selected.state.forge_points_for_level_up;
-                    // donor2HTML += GBselected.total + '\n';
-                    if (selected.state.invested_forge_points)
-                      GBselected.current = selected.state.invested_forge_points;
-                    else GBselected.current = 0;
-                    levelText += `<table>`;
-                    levelText += `<tr><td colspan="2">Level ${GBselected.level} (Max ${
-                      GBselected.max_level
-                    })</td></tr><tr><td>${GBselected.current} of ${
-                      GBselected.total
-                    } FP <span data-i18n="total">total</span></td><td><span data-i18n="remaining">remaining</span>: ${
-                      GBselected.total - GBselected.current
-                    }FP</td></tr>`;
-                    // levelText += `</table></div></div>`;
-                    var date = selected.state.next_state_transition_at;
-                    // console.debug(date);
-                    if (date && date != 2147483647) {
-                      var timer = new Date(date * 1000);
-                      levelText += `<tr><td colspan="2">Ready: ${timer.toLocaleString()}</td></tr>`;
-                      // console.debug(timer,levelText);
-                    }
-                    levelText += `</table></div></div>`;
-                  }
-                  // else
-                  // levelText = '';
-                  // console.debug(levelText);
-                }
-                outputHTML = `<div class="alert alert-dark alert-dismissible show collapsed" href="#infoText" aria-expanded="true" aria-controls="infoText" data-bs-toggle="collapse" role="alert">${element.close()}<p id="infoTextLabel"><strong><span data-i18n="gb">GB</span> <span data-i18n="info">Info</span>:</strong> ${PlayerName} | ${
-                  GBselected.name
-                } [${GBselected.level}/${GBselected.max_level}]</p>`;
-                outputHTML += `<div id="infoText" class="alert-dark collapse ${
-                  collapse.collapseGBInfo ? '' : 'show'
-                }">`;
-              }
-              console.debug(GBselected);
-              // console.debug('showGBInfo',showGBInfo,outputHTML);
-              if (showOptions.showGBInfo && levelText) {
-                info.innerHTML = outputHTML + levelText;
-                document
-                  .getElementById('infoTextLabel')
-                  .addEventListener('click', collapse.fCollapseGBInfo);
-                $('body').i18n();
-              }
-
-              /*City Stats */
-            }
+          } else if (
+            handleCityMapServiceRequest(msg, {
+              MyInfo,
+              GBselected,
+              helper,
+              setPlayerName,
+              element,
+              collapse,
+              PlayerName: getPlayerName,
+              info,
+              showOptions,
+            })
+          ) {
+            // handled in module
           } else if (
             msg.requestClass == 'StartupService' &&
             msg.requestMethod == 'getData'
