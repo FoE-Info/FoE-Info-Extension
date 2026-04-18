@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -18,8 +18,8 @@ import * as element from '../fn/AddElement';
 import { donationDIV2 } from '../index';
 import { toolOptions, setExpeditionSize } from '../fn/globals';
 
-export function guildExpeditionService(msg) {
-  var ExpeditionPerformance = [];
+export function guildExpeditionService(msg: Record<string, unknown>) {
+  var ExpeditionPerformance: Array<[string, number]> = [];
   var expeditionHTML = `<div id="expeditionTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
 		${element.close()}
 		<p id="expeditionTextLabel" href="#expeditionText" data-bs-toggle="collapse">
@@ -36,27 +36,28 @@ export function guildExpeditionService(msg) {
   }px" class="alert-info overflow collapse ${
     collapse.collapseExpedition ? '' : 'show'
   }"><table><tr><th>Member</th><th>Points</th><th>Encounters</th></tr>`;
-  msg.responseData.forEach((entry) => {
+  (msg.responseData as Array<Record<string, unknown>>).forEach((entry) => {
     var solvedEncounters = 0;
     var expeditionPoints = 0;
-    if (entry.solvedEncounters) solvedEncounters = entry.solvedEncounters;
-    if (entry.expeditionPoints) expeditionPoints = entry.expeditionPoints;
-    ExpeditionPerformance.push([entry.player.name, solvedEncounters]);
-    expeditionHTML += `<tr><td>${entry.player.name}</td><td>${expeditionPoints} </td><td>${solvedEncounters} </td></tr>`;
-    console.debug(entry.player.name, entry);
+    if (entry.solvedEncounters) solvedEncounters = entry.solvedEncounters as number;
+    if (entry.expeditionPoints) expeditionPoints = entry.expeditionPoints as number;
+    const playerName = (entry.player as Record<string, unknown>).name as string;
+    ExpeditionPerformance.push([playerName, solvedEncounters]);
+    expeditionHTML += `<tr><td>${playerName}</td><td>${expeditionPoints} </td><td>${solvedEncounters} </td></tr>`;
+    console.debug(playerName, entry);
   });
   // console.debug(ExpeditionPerformance);
   donationDIV2.innerHTML = expeditionHTML + `</table></div></div>`;
   document
-    .getElementById('expeditionCopyID')
+    .getElementById('expeditionCopyID')!
     .addEventListener('click', copy.ExpeditionCopy);
   document
-    .getElementById('expeditionicon')
+    .getElementById('expeditionicon')!
     .addEventListener('click', collapse.fCollapseExpedition);
   document
-    .getElementById('expeditionTextLabel')
+    .getElementById('expeditionTextLabel')!
     .addEventListener('click', collapse.fCollapseExpedition);
-  const expeditionDiv = document.getElementById('expeditionText');
+  const expeditionDiv = document.getElementById('expeditionText')!;
   const resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
       if (entry.contentRect && entry.contentRect.height)
@@ -64,5 +65,5 @@ export function guildExpeditionService(msg) {
     }
   });
   resizeObserver.observe(expeditionDiv);
-  $('body').i18n();
+  ($('body') as JQuery & { i18n(): void }).i18n();
 }
