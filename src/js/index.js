@@ -48,11 +48,9 @@ import {
   getConversation,
 } from './msg/ConversationService.js';
 import {
-  contributeForgePoints,
-  getConstruction,
-  getConstructionRanking,
   setCurrentPercent,
 } from './msg/GreatBuildingsService.js';
+import { handleGreatBuildingsServiceRequest } from './msg/GreatBuildingsRequestHandler.js';
 import {
   clearBattleground,
   getBattleground,
@@ -60,9 +58,8 @@ import {
   getLeaderboard,
   getPlayerLeaderboard,
   getState,
-  removeSignal,
-  setSignal,
 } from './msg/GuildBattlegroundService.js';
+import { handleGuildBattlegroundSignalsRequest } from './msg/GuildBattlegroundSignalsRequestHandler.js';
 import { guildExpeditionService } from './msg/GuildExpeditionService.js';
 import {
   otherPlayerService,
@@ -386,7 +383,7 @@ content.appendChild(treasury);
 treasury.id = 'treasury';
 export var treasuryLog = document.createElement('div');
 content.appendChild(treasuryLog);
-treasury.id = 'treasuryLog';
+treasuryLog.id = 'treasuryLog';
 export var clipboard = document.createElement('div');
 content.appendChild(clipboard);
 clipboard.id = 'clipboard';
@@ -463,6 +460,19 @@ const formatBytes = (size) => {
   return `${parseInt(size / 1000)} KB`;
 };
 
+const safeJsonParse = (text, context) => {
+  if (!text || typeof text !== 'string') {
+    return null;
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    console.warn(`Failed to parse JSON (${context})`, error);
+    return null;
+  }
+};
+
 document.querySelector('#go-to-options').addEventListener('click', function () {
   // console.debug('options');
 
@@ -509,9 +519,10 @@ window
     document.body.classList.toggle('text-light');
     if (matches) {
       console.log('change to dark mode!');
-      darkMode == 'dark';
+      darkMode = 'dark';
     } else {
       console.log('change to light mode!');
+      darkMode = 'light';
     }
   });
 function onEvent(message, params) {
@@ -706,7 +717,10 @@ function handleRequestFinished(request) {
     request.getContent().then(async ([body, mimeType]) => {
       // console.log("Content: ", body);
       // console.log("MIME type: ", mimeType);
-      const parsed = JSON.parse(body);
+      const parsed = safeJsonParse(body, 'network response body');
+      if (!parsed) {
+        return;
+      }
       // console.debug('parsed:', parsed);
       if (parsed && parsed.length) {
         for (var i = 0; i < parsed.length; i++) {
@@ -1331,22 +1345,8 @@ function handleRequestFinished(request) {
             // }
           } else if (msg.requestClass == 'GreatBuildingsService') {
             /*GB Donors */
-            if (msg.requestMethod == 'getConstructionRanking') {
-              // console.debug('msg:', msg);
-              getConstructionRanking(
-                msg,
-                JSON.parse(request.request.postData.text),
-              );
-            } else if (msg.requestMethod == 'getConstruction') {
-              // console.debug('msg:', msg);
-              getConstruction(msg);
-
-              /* GB Add FP*/
-            } else if (msg.requestMethod == 'contributeForgePoints') {
-              console.debug('msg:', msg);
-              contributeForgePoints(msg.responseData);
-
-              /*Invested */
+            if (handleGreatBuildingsServiceRequest(msg, request, safeJsonParse)) {
+              // handled in module
             } else if (msg.requestMethod == 'getContributions') {
               var reward = 0;
               var invested = 0;
@@ -1529,18 +1529,9 @@ function handleRequestFinished(request) {
             } else console.debug('GuildBattlegroundBuildingService', msg);
           } else if (msg.requestClass == 'GuildBattlegroundSignalsService') {
             // GuildBattleground
-            const payload = JSON.parse(request.request.postData.text)[0]
-              .requestData;
-            // console.debug("GuildBattlegroundSignalsService", msg,payload);
-            if (msg.requestMethod == 'setSignal') {
-              /*Guild Battleground*/
-              //console.debug("set msg.requestMethod", msg.requestMethod);
-              setSignal(msg, payload);
-            } else if (msg.requestMethod == 'removeSignal') {
-              /*Guild Battleground*/
-              //console.debug("remove msg.requestMethod", msg.requestMethod);
-              removeSignal(msg, payload);
-            } else console.debug('GuildBattlegroundSignalsService', msg);
+            if (!handleGuildBattlegroundSignalsRequest(msg, request, safeJsonParse)) {
+              console.debug('GuildBattlegroundSignalsService', msg);
+            }
             // console.debug("GuildBattlegroundSignalsService", msg,JSON.parse(request.request.postData.text));
           } else if (
             msg.__class__ &&
