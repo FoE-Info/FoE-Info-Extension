@@ -72,7 +72,7 @@ import { handleOtherPlayerServiceRequest } from './msg/OtherPlayerRequestHandler
 import {
   otherPlayerService,
   otherPlayerServiceUpdateActions,
-} from './msg/OtherPlayerService.js';
+} from './msg/OtherPlayerService';
 import {
   availableFP,
   getPlayerResources,
