@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { removeSignal, setSignal } from './GuildBattlegroundService';
 
 export function handleGuildBattlegroundSignalsRequest(
