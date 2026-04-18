@@ -13,7 +13,7 @@
  * ________________________________________________________________
  */
 
-import { City, Galaxy, showGalaxy } from './StartupService.js';
+import { City, Galaxy, showGalaxy } from './StartupService';
 import { checkDebug, Bonus } from '../index';
 import { showOptions } from '../vars/showOptions.js';
 import * as collapse from '../fn/collapse';

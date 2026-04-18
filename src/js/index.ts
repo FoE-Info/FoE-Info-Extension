@@ -87,7 +87,7 @@ import {
   City,
   emissaryService,
   startupService,
-} from './msg/StartupService.js';
+} from './msg/StartupService';
 import { handleStartupServiceRequest } from './msg/StartupRequestHandler';
 import {
   handleBlueprintServiceRequest,

@@ -18,7 +18,7 @@ import * as collapse from '../fn/collapse';
 import * as copy from '../fn/copy';
 import * as storage from '../fn/storage';
 import * as element from '../fn/AddElement';
-import { City } from './StartupService.js';
+import { City } from './StartupService';
 import {
   setPlayerName,
   MyInfo,

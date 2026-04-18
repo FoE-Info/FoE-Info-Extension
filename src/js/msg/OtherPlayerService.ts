@@ -40,7 +40,7 @@ import {
   PlayerID,
 } from '../index';
 import { toolOptions, setFriendsSize } from '../fn/globals';
-import { fArcname } from './StartupService.js';
+import { fArcname } from './StartupService';
 
 var friendsHTML = '';
 
