@@ -32,15 +32,16 @@ This document tracks current permissions and proposes staged, reversible changes
 
 No permission changes are applied yet. Use this sequence when implementing in future milestones.
 
-### Stage 1: Remove legacy Discord domain if telemetry confirms no usage
+### Stage 1: Remove legacy Discord domain if telemetry confirms no usage (Completed)
 
 - Candidate removal:
   - host_permissions: https://discordapp.com/api/webhooks/*
 - Reason:
   - Legacy domain; modern webhook endpoint is discord.com.
-- Validation before removal:
-  - Confirm no runtime requests to discordapp.com in current logic.
-  - Run Chrome smoke test for webhook export path.
+- Validation performed:
+  - Runtime webhook defaults and examples in source were migrated to discord.com.
+  - Source manifests no longer include discordapp.com host permissions.
+  - Handler regression tests and type checks passed after change.
 - Rollback:
   - Re-add exact host pattern in all source manifests.
 

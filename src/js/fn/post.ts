@@ -55,7 +55,7 @@ async function postData(url = '', data = {}) {
 export function postToDiscord(text: string) {
   // test-test channel
   var webHookUrl =
-    'https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij';
+    'https://discord.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij';
 
   const hook = getKey(webHookUrl);
 
@@ -145,7 +145,7 @@ export function postToDiscord(text: string) {
 
   // const data = { username: 'example' };
 
-  // fetch('https://discordapp.com/api/webhooks/687279023335800877/rtsthZ8GIxsD9LYhlluZHyqOQGQtZmOkaiNLKcAHRshWLPoUZqO1_XTuOObFeJqL4zyQ', {
+  // fetch('https://discord.com/api/webhooks/687279023335800877/rtsthZ8GIxsD9LYhlluZHyqOQGQtZmOkaiNLKcAHRshWLPoUZqO1_XTuOObFeJqL4zyQ', {
   //   method: 'POST', // or 'PUT'
   //   headers: {
   // 	'Content-Type': 'application/json',
@@ -298,7 +298,7 @@ export function postAlerttoDsicord() {
 
 export function logToDiscord(text: string) {
   var webHookUrl =
-    'https://discordapp.com/api/webhooks/690589445145231410/XQehmPTFdg82ijxxXMXMeYDuIkCuKokSDOVLztN737J60NCJ6nN3qzBlMjIxMJG0N-jq';
+    'https://discord.com/api/webhooks/690589445145231410/XQehmPTFdg82ijxxXMXMeYDuIkCuKokSDOVLztN737J60NCJ6nN3qzBlMjIxMJG0N-jq';
   // log channel
 
   var selection = window.getSelection();
