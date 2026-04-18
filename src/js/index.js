@@ -18,7 +18,6 @@ import '@wikimedia/jquery.i18n/src/jquery.i18n.fallbacks.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.language.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.messagestore.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.parser.js';
-import BigNumber from 'bignumber.js';
 import 'bootstrap';
 import collapseOptions, * as collapse from './fn/collapse.js';
 import browser from 'webextension-polyfill';
@@ -499,6 +498,16 @@ const setAvailablePacksFP = (amount) => {
   availablePacksFP = amount;
 };
 
+const getAvailablePacksFP = () => {
+  return availablePacksFP;
+};
+
+const setAvailableFPText = () => {
+  if (document.getElementById('availableFPID'))
+    document.getElementById('availableFPID').textContent =
+      availablePacksFP + availableFP;
+};
+
 const getPlayerID = () => {
   return PlayerID;
 };
@@ -882,17 +891,6 @@ function handleRequestFinished(request) {
             msg.requestMethod == 'getDeposits'
           ) {
             /*CampaignService*/
-          } else if (msg.requestClass == 'ConversationService') {
-            if (msg.requestMethod == 'getCategory') {
-              /*ConversationService */
-              conversationService(msg);
-            } else if (msg.requestMethod == 'getOverviewForCategory') {
-              /*ConversationService */
-              conversationService(msg);
-            } else if (msg.requestMethod == 'getConversation') {
-              /*ConversationService */
-              getConversation(msg);
-            }
           } else if (
             handleOtherPlayerServiceRequest(msg, {
               helper,
@@ -1010,114 +1008,27 @@ function handleRequestFinished(request) {
               getTotalAvailableFP,
             });
           } else if (msg.requestClass == 'GreatBuildingsService') {
-            /*GB Donors */
-            if (handleGreatBuildingsServiceRequest(msg, request, safeJsonParse)) {
-              // handled in module
-            } else if (msg.requestMethod == 'getContributions') {
-              var reward = 0;
-              var invested = 0;
-              var cityinvestedHTML = ``;
-              cityinvested.innerHTML = ``;
-              // if (debugEnabled == true)
-              // 	cityinvestedHTML += `<div>${contentType} : ${msg.requestClass} : ${msg.requestMethod}</div>`;
-              if (showOptions.showInvested && msg.responseData.length) {
-                var numGB = 0;
-                for (var j = 0; j < msg.responseData.length; j++) {
-                  invested += msg.responseData[j].forge_points;
-                  if (msg.responseData[j].rank < 6) {
-                    if (
-                      msg.responseData[j].reward.strategy_point_amount &&
-                      msg.responseData[j].forge_points > 9
-                    ) {
-                      reward +=
-                        msg.responseData[j].reward.strategy_point_amount;
-                      numGB++;
-                    }
-                    console.debug(
-                      'invested: ',
-                      numGB,
-                      msg.responseData[j].forge_points,
-                      invested,
-                      reward,
-                    );
-                  }
-                }
-                const rewardBonus = BigNumber(City.ArcBonus)
-                  .div(100)
-                  .plus(1)
-                  .times(reward)
-                  .dp(0);
-                console.debug(
-                  BigNumber(City.ArcBonus),
-                  BigNumber(City.ArcBonus).div(100),
-                  BigNumber(City.ArcBonus).div(100).plus(1),
-                  BigNumber(City.ArcBonus).div(100).plus(1).times(reward),
-                );
-                console.debug(
-                  availablePacksFP,
+            if (
+              handleGreatBuildingsServiceRequest(
+                msg,
+                request,
+                safeJsonParse,
+                {
+                  showOptions,
+                  cityinvested,
+                  City,
+                  availablePacksFP: getAvailablePacksFP,
                   availableFP,
-                  reward,
-                  invested,
-                  rewardBonus,
-                );
-                cityinvestedHTML = `<div id="investedDiv" class="alert alert-success alert-dismissible collapsed" role="alert">`;
-                cityinvestedHTML += element.close();
-                cityinvestedHTML += `<p id="investedTextLabel" href="#investedText" aria-expanded="true" aria-controls="investedText" data-bs-toggle="collapse">`;
-                cityinvestedHTML += element.icon(
-                  'investedicon',
-                  'investedText',
-                  collapse.collapseInvested,
-                );
-                cityinvestedHTML += `<strong>FP Status: </strong><span id="onHandFP">${
-                  collapse.collapseInvested ?
-                    availablePacksFP + availableFP
-                  : ''
-                }</span></p>`;
-                cityinvestedHTML += element.copy(
-                  'investedCopyID',
-                  'success',
-                  'right',
-                  collapse.collapseInvested,
-                );
-                cityinvestedHTML += `<div id="investedText" class="collapse ${
-                  collapse.collapseInvested ? '' : 'show'
-                }">`;
-                cityinvestedHTML += `On Hand FP: <span id="onHandFP2">${availablePacksFP + availableFP}</span><br>`;
-                cityinvestedHTML += `FP Invested: ${invested} (${numGB} GB)<br>`;
-                if (City.ArcBonus > 90)
-                  cityinvestedHTML += `<span data-i18n="gb">GB</span> <span data-i18n="reward">Rewards:</span>: ${rewardBonus} (+${City.ArcBonus}%)`;
-                else
-                  cityinvestedHTML += `<span data-i18n="gb">GB</span> <span data-i18n="reward">Rewards:</span>: ${rewardBonus}`;
-                cityinvestedHTML += `<br>Total FP: ${availablePacksFP + availableFP + Number(rewardBonus)}</p>`;
-
-                cityinvested.innerHTML = cityinvestedHTML + `</div></div>`;
-                document
-                  .getElementById('investedTextLabel')
-                  .addEventListener('click', collapse.fCollapseInvested);
-                document
-                  .getElementById('investedCopyID')
-                  .addEventListener('click', copy.fInvestedCopy);
-                $('#investedDiv').i18n();
-              }
-
-              /* GvG Info*/
-            } else if (msg.requestMethod == 'getOtherPlayerOverview') {
-              /*GB Last Donor Date */
-              var overviewtxt = ``;
-              // console.debug('msg:', msg);
-              // console.debug(showGBLastDonor);
-              if (msg.responseData.length) {
-                for (var j = 0; j < msg.responseData.length; j++) {
-                  var player = msg.responseData[j].player;
-                  setPlayerName(player.name, player.player_id);
-                }
-              }
-            } else if (msg.requestMethod == 'getAvailablePackageForgePoints') {
-              /*ForgePoints*/
-              availablePacksFP = msg.responseData[0];
-              if (document.getElementById('availableFPID'))
-                document.getElementById('availableFPID').textContent =
-                  availablePacksFP + availableFP;
+                  element,
+                  collapse,
+                  copy,
+                  setPlayerName,
+                  setAvailablePacksFP,
+                  setAvailableFPText,
+                },
+              )
+            ) {
+              // handled in module
             }
           } else if (msg.requestClass == 'ClanBattleService') {
             if (
