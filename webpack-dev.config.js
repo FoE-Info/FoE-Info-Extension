@@ -39,6 +39,19 @@ module.exports = {
         // use: ["babel-loader"]
       },
       {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: 'tsconfig.build.json',
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+      {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
@@ -127,6 +140,7 @@ module.exports = {
     }),
   ],
   resolve: {
+    extensions: ['.ts', '.js', '.json'],
     fallback: {
       fs: false,
       // crypto: require.resolve('crypto-browserify'),

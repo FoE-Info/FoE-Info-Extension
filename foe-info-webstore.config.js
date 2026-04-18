@@ -62,6 +62,19 @@ module.exports = {
         // use: ["babel-loader"]
       },
       {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: 'tsconfig.build.json',
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+      {
         test: /\.(sa|sc|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,
@@ -172,6 +185,7 @@ module.exports = {
     }),
   ],
   resolve: {
+    extensions: ['.ts', '.js', '.json'],
     fallback: {
       fs: false,
     },
