@@ -1,4 +1,3 @@
-// @ts-nocheck
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -22,12 +21,19 @@ import {
   incidents,
   url,
 } from '../index';
+const _url = url as unknown as Record<string, string>;
+const _CityEntityDefs = CityEntityDefs as unknown as Record<string, { name: string }>;
+const _hiddenRewards = hiddenRewards as unknown as Array<Record<string, unknown>>;
+const _Goods = Goods as unknown as Record<string, unknown>;
 import {
   BattlegroundPerformance,
   BGtime,
   GuildMembers,
 } from '../msg/GuildBattlegroundService';
+const _BattlegroundPerformance = BattlegroundPerformance as unknown as Array<Record<string, unknown>>;
+const _GuildMembers = GuildMembers as unknown as Array<Record<string, unknown>>;
 import { ResourceNames } from '../msg/ResourceService';
+const _ResourceNames = ResourceNames as unknown as Record<string, string>;
 import { showOptions } from '../vars/showOptions';
 import * as collapse from './collapse';
 import { fCollapseIncidents } from './collapse';
@@ -46,17 +52,17 @@ function setHeight() {
   setBattlegroundSize(heightGBG);
 }
 
-export function fResourceShortName(name) {
+export function fResourceShortName(name: string) {
   if (name == 'sacrificial_offerings') {
     return 'Offerings';
   } else if (name == 'something else') {
     return 'something';
-  } else if (ResourceNames[name]) {
-    return ResourceNames[name];
+  } else if (_ResourceNames[name]) {
+    return _ResourceNames[name];
   } else return name;
 }
 
-export function fRewardShortName(reward) {
+export function fRewardShortName(reward: string) {
   if (reward == 'Fragment of Statue Of Honor Selection Kit') {
     return 'SoH Fragment';
   } else if (reward == 'Statue Of Honor Selection Kit') {
@@ -67,7 +73,7 @@ export function fRewardShortName(reward) {
     return reward.slice(2);
   } else if (reward.split(' ')[0] == '5x' || reward.split(' ')[0] == '10') {
     return reward.slice(3);
-  } else if (!isNaN(reward.split(' ')[0])) {
+  } else if (!isNaN(Number(reward.split(' ')[0]))) {
     return reward.slice(reward.indexOf(' ') + 1);
   } else if (reward.includes('Coins')) {
     return 'Coins';
@@ -97,7 +103,7 @@ export function fRewardShortName(reward) {
   }
 }
 
-export function fGBsname(city_entity) {
+export function fGBsname(city_entity: string) {
   if (city_entity == 'Castel del Monte') {
     return 'CdM';
   } else if (city_entity == 'Innovation Tower') {
@@ -184,9 +190,9 @@ export function fGBsname(city_entity) {
   return city_entity.slice(0, 10);
 }
 
-export function fEntityNameTrim(name) {
-  if (!CityEntityDefs[name]) return name;
-  var trimName = CityEntityDefs[name].name;
+export function fEntityNameTrim(name: string) {
+  if (!_CityEntityDefs[name]) return name;
+  var trimName = _CityEntityDefs[name].name;
   if (trimName.includes(' - Lv.'))
     return trimName.substring(0, trimName.indexOf(' - Lv.'));
   else if (trimName.includes('Lv. 2 - '))
@@ -196,16 +202,16 @@ export function fEntityNameTrim(name) {
   else return trimName;
 }
 
-export function fGBname(city_entity) {
+export function fGBname(city_entity: string) {
   var GB_name = city_entity;
 
   // if(CityEntityDefs[city_entity] &&  CityEntityDefs[city_entity].name == "Galata Tower")
   // 	console.debug(CityEntityDefs[city_entity]);
 
   // return GBdefs[city_entity];
-  if (CityEntityDefs[city_entity]) {
+  if (_CityEntityDefs[city_entity]) {
     // console.debug(CityEntityDefs[city_entity].name,CityEntityDefs);
-    return CityEntityDefs[city_entity].name;
+    return _CityEntityDefs[city_entity].name;
   }
   // console.debug(city_entity,CityEntityDefs);
 
@@ -276,8 +282,8 @@ export function fGBname(city_entity) {
   return GB_name;
 }
 
-export function fIncidentName(incidentName) {
-  var incident = {};
+export function fIncidentName(incidentName: string) {
+  var incident: { type: string; text: string } = { type: '?', text: incidentName };
 
   if (incidentName == 'incident_fallen_tree_1x1') {
     incident.type = 'r';
@@ -394,7 +400,7 @@ export function fIncidentName(incidentName) {
   return incident;
 }
 
-export function fLevelfromAge(age) {
+export function fLevelfromAge(age: string) {
   if (age == 'BronzeAge') {
     return 1;
   } else if (age == 'IronAge') {
@@ -454,7 +460,7 @@ export function fLevelfromAge(age) {
 // added SASH - 22 ages
 export const numAges = 22;
 
-export function fAgefromLevel(level) {
+export function fAgefromLevel(level: number) {
   if (level == 1) {
     return 'BronzeAge';
   } else if (level == 2) {
@@ -507,7 +513,7 @@ export function fAgefromLevel(level) {
   return -1;
 }
 
-export function fGVGagesname(age) {
+export function fGVGagesname(age: string) {
   var name = age;
 
   if (age == 'BronzeAge') {
@@ -560,31 +566,31 @@ export function fGVGagesname(age) {
   return name;
 }
 
-export function fGoodsTally(age, good) {
+export function fGoodsTally(age: string, good: number) {
   // console.debug(age,good);
-  if (age == 'BronzeAge') Goods.ba += good;
-  else if (age == 'IronAge') Goods.ia += good;
-  else if (age == 'EarlyMiddleAge') Goods.ema += good;
-  else if (age == 'HighMiddleAge') Goods.hma += good;
-  else if (age == 'LateMiddleAge') Goods.lma += good;
-  else if (age == 'ColonialAge') Goods.cma += good;
-  else if (age == 'IndustrialAge') Goods.ina += good;
-  else if (age == 'ProgressiveEra') Goods.pe += good;
-  else if (age == 'ModernEra') Goods.me += good;
-  else if (age == 'PostModernEra') Goods.pme += good;
-  else if (age == 'ContemporaryEra') Goods.ce += good;
-  else if (age == 'TomorrowEra') Goods.te += good;
-  else if (age == 'FutureEra') Goods.fe += good;
-  else if (age == 'ArcticFuture') Goods.af += good;
-  else if (age == 'OceanicFuture') Goods.of += good;
-  else if (age == 'VirtualFuture') Goods.vf += good;
-  else if (age == 'SpaceAgeMars') Goods.sam += good;
-  else if (age == 'SpaceAgeAsteroidBelt') Goods.saab += good;
-  else if (age == 'SpaceAgeVenus') Goods.sav += good;
-  else if (age == 'SpaceAgeJupiterMoon') Goods.sajm += good;
-  else if (age == 'SpaceAgeTitan') Goods.sat += good;
-  else if (age == 'SpaceAgeSpaceHub') Goods.sash += good;
-  else if (age == 'NoAge') Goods.noage += good;
+  if (age == 'BronzeAge') (_Goods as Record<string, number>).ba += good;
+  else if (age == 'IronAge') (_Goods as Record<string, number>).ia += good;
+  else if (age == 'EarlyMiddleAge') (_Goods as Record<string, number>).ema += good;
+  else if (age == 'HighMiddleAge') (_Goods as Record<string, number>).hma += good;
+  else if (age == 'LateMiddleAge') (_Goods as Record<string, number>).lma += good;
+  else if (age == 'ColonialAge') (_Goods as Record<string, number>).cma += good;
+  else if (age == 'IndustrialAge') (_Goods as Record<string, number>).ina += good;
+  else if (age == 'ProgressiveEra') (_Goods as Record<string, number>).pe += good;
+  else if (age == 'ModernEra') (_Goods as Record<string, number>).me += good;
+  else if (age == 'PostModernEra') (_Goods as Record<string, number>).pme += good;
+  else if (age == 'ContemporaryEra') (_Goods as Record<string, number>).ce += good;
+  else if (age == 'TomorrowEra') (_Goods as Record<string, number>).te += good;
+  else if (age == 'FutureEra') (_Goods as Record<string, number>).fe += good;
+  else if (age == 'ArcticFuture') (_Goods as Record<string, number>).af += good;
+  else if (age == 'OceanicFuture') (_Goods as Record<string, number>).of += good;
+  else if (age == 'VirtualFuture') (_Goods as Record<string, number>).vf += good;
+  else if (age == 'SpaceAgeMars') (_Goods as Record<string, number>).sam += good;
+  else if (age == 'SpaceAgeAsteroidBelt') (_Goods as Record<string, number>).saab += good;
+  else if (age == 'SpaceAgeVenus') (_Goods as Record<string, number>).sav += good;
+  else if (age == 'SpaceAgeJupiterMoon') (_Goods as Record<string, number>).sajm += good;
+  else if (age == 'SpaceAgeTitan') (_Goods as Record<string, number>).sat += good;
+  else if (age == 'SpaceAgeSpaceHub') (_Goods as Record<string, number>).sash += good;
+  else if (age == 'NoAge') (_Goods as Record<string, number>).noage += good;
   else console.debug(age, good);
 }
 
@@ -594,16 +600,16 @@ export function fShowIncidents() {
   var textCurrent = '';
   var textComing = '';
   var tooltipHTML = '';
-  if (showOptions && showOptions.showIncidents && hiddenRewards.length) {
+  if (showOptions && showOptions.showIncidents && _hiddenRewards.length) {
     fHideTooltips();
-    for (var j = 0; j < hiddenRewards.length; j++) {
-      const incident = hiddenRewards[j];
-      if (incident.position.context == 'guildExpedition') continue;
-      const incidentName = fIncidentName(incident.type);
+    for (var j = 0; j < _hiddenRewards.length; j++) {
+      const incident = _hiddenRewards[j];
+      if ((incident.position as Record<string, string>)?.context == 'guildExpedition') continue;
+      const incidentName = fIncidentName(incident.type as string);
       if (incidentName.type == '?') console.debug(incident);
       // console.debug(incidentName.text,incidentName,incident);
-      var start = new Date(incident.startTime);
-      var finish = new Date(incident.expireTime);
+      var start = new Date(incident.startTime as string).getTime() / 1000;
+      var finish = new Date(incident.expireTime as string).getTime() / 1000;
       var diffText = '';
       start -= Date.now() / 1000;
       finish -= Date.now() / 1000;
@@ -630,7 +636,7 @@ export function fShowIncidents() {
         // textCurrent += `Reward ${j+1}: ${msg.responseData.hiddenRewards[j].type} ${timer.toUTCString()}<br>`;
 
         type += incidentName.type;
-        if (incident.rarity != 'common')
+        if ((incident.rarity as string) != 'common')
           textCurrent += `<span class='green'>${incidentName.text}</span>`;
         else textCurrent += incidentName.text;
         textCurrent += ` for ` + diffText + `<br>`;
@@ -665,10 +671,10 @@ export function fShowIncidents() {
       // $('#incidentsTip').tooltip({html: true,placement: 'bottom'});
       //   });
       document
-        .getElementById('incidentsTextLabel')
+        .getElementById('incidentsTextLabel')!
         .addEventListener('click', fCollapseIncidents);
       document
-        .getElementById('incidentsTip')
+        .getElementById('incidentsTip')!
         .addEventListener('onmouseleave', fHideTooltips);
 
       const incidents_tooltip = document.getElementById('incidents_tooltip');
@@ -679,7 +685,7 @@ export function fShowIncidents() {
           delay: { show: 100, hide: 300 },
         };
         // const tooltip = new Tooltip(incidents_tooltip, options);
-        const popover = new Popover(incidents_tooltip, options);
+        const popover = new Popover(incidents_tooltip, options as unknown as Parameters<typeof Popover.getOrCreateInstance>[1]);
       }
 
       // $('#incidents_tooltip').tooltip({
@@ -719,7 +725,7 @@ export function fshowBattleground() {
 	${element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground)}
 	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p>${element.close()}`;
 
-  if (url.sheetGuildURL)
+  if (_url.sheetGuildURL)
     battlegroundHTML += element.post(
       'battlegroundPostID',
       'info',
@@ -739,7 +745,7 @@ export function fshowBattleground() {
   battlegroundHTML += `<p class="showGBGchanges"><input type="checkbox" id="showGBGchanges"><label for="showGBGchanges">show changes only</label></p>
 	${BGtime ? '<p>Last Saved: ' + BGtime + '</p>' : ''}
 	<div><table id="gbg-table" class="gbg-table"><tr><th>Member</th><th>Negs</th><th>Fights</th><th>Attrition</th></tr>`;
-  BattlegroundPerformance.forEach((entry) => {
+  _BattlegroundPerformance.forEach((entry) => {
     // console.debug(entry);
     var wonNegotiations = 0;
     var wonBattles = 0;
@@ -747,9 +753,9 @@ export function fshowBattleground() {
     var negotiationsDiff = 0;
     var attrition = 0;
     var attritionDiff = 0;
-    if (entry.wonNegotiations) wonNegotiations = entry.wonNegotiations;
-    if (entry.wonBattles) wonBattles = entry.wonBattles;
-    if (entry.attrition) attrition = entry.attrition;
+    if (entry.wonNegotiations) wonNegotiations = entry.wonNegotiations as number;
+    if (entry.wonBattles) wonBattles = entry.wonBattles as number;
+    if (entry.attrition) attrition = entry.attrition as number;
 
     // console.debug(playerInfo);
     // console.debug(entry.player.name,BattlegroundPerformance);
@@ -758,11 +764,11 @@ export function fshowBattleground() {
 
     // console.debug('GuildMembers',entry.player.name,BattlegroundPerformance[BattlegroundPerformance.indexOf(entry.player.name)],GuildMembers[entry.player.name],GuildMembers[entry.player.name].wonBattles);
     // if(GuildMembers[entry.player.name]){
-    var player = GuildMembers.find((id) => id.name == entry.name);
+    var player = _GuildMembers.find((id) => id.name == entry.name);
     // console.debug(player);
-    battleDiff = wonBattles - player.wonBattles;
-    negotiationsDiff = wonNegotiations - player.wonNegotiations;
-    attritionDiff = attrition - player.attrition;
+    battleDiff = wonBattles - (player?.wonBattles as number ?? 0);
+    negotiationsDiff = wonNegotiations - (player?.wonNegotiations as number ?? 0);
+    attritionDiff = attrition - (player?.attrition as number ?? 0);
     // }
     // console.debug(entry.name,battleDiff,negotiationsDiff);
     if (
@@ -771,7 +777,7 @@ export function fshowBattleground() {
       negotiationsDiff ||
       attritionDiff
     ) {
-      battlegroundHTML += `<tr><td>${entry.name}</td><td>${wonNegotiations}`;
+      battlegroundHTML += `<tr><td>${entry.name as string}</td><td>${wonNegotiations}`;
       if (negotiationsDiff)
         battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
       battlegroundHTML += `</td><td>${wonBattles}`;
@@ -796,24 +802,23 @@ export function fshowBattleground() {
     /* donationDIV.innerHTML = battlegroundHTML + `</table></div><p class="showGBGchanges"><input type="checkbox" id="showGBGchanges" value="${showOptions.showBattlegroundChanges}"/> <label for="showGBGchanges">show changes only</label></p></div>`; */
   }
   donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div></div>`;
-  if (url.sheetGuildURL)
+  if (_url.sheetGuildURL)
     document
-      .getElementById('battlegroundPostID')
+      .getElementById('battlegroundPostID')!
       .addEventListener('click', post_webstore.postGBGtoSS);
   // else
   document
-    .getElementById('battlegroundCopyID')
+    .getElementById('battlegroundCopyID')!
     .addEventListener('click', copy.BattlegroundCopy);
 
-  document
-    .getElementById('battlegroundTextLabel')
+  document.getElementById('battlegroundTextLabel')!
     .addEventListener('click', collapse.fCollapseBattleground);
   document
-    .getElementById('showGBGchanges')
+    .getElementById('showGBGchanges')!
     .addEventListener('click', fshowBattlegroundChanges);
-  document.getElementById('showGBGchanges').checked =
-    showOptions.showBattlegroundChanges;
-  const battlegroundDiv = document.getElementById('battlegroundCollapse');
+  (document.getElementById('showGBGchanges') as HTMLInputElement).checked =
+    showOptions.showBattlegroundChanges as boolean;
+  const battlegroundDiv = document.getElementById('battlegroundCollapse')!;
   battlegroundDiv.addEventListener('mouseup', setHeight);
   const resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
@@ -823,19 +828,19 @@ export function fshowBattleground() {
   });
   resizeObserver.observe(battlegroundDiv);
   console.debug($('#battlegroundCollapse').height());
-  if ($('#battlegroundCollapse').height() > toolOptions.battlegroundsSize) {
+  if (($('#battlegroundCollapse').height() as number) > toolOptions.battlegroundsSize) {
     $('#battlegroundCollapse').height(toolOptions.battlegroundsSize);
   }
-  $('body').i18n();
+  ($('body') as JQuery & { i18n(): void }).i18n();
 }
 
 export function checkGBG() {
-  if (MyGuildPermissions & 64 && url.discordTargetURL) return true;
-  else if (DEV) return true;
+  if (MyGuildPermissions & 64 && _url.discordTargetURL) return true;
+  else if (typeof (window as unknown as Record<string, unknown>).DEV !== 'undefined' && (window as unknown as Record<string, unknown>).DEV) return true;
   else return false;
 }
 
-export function setMyGuildPermissions(permissions) {
+export function setMyGuildPermissions(permissions: number) {
   MyGuildPermissions = permissions;
 }
 
