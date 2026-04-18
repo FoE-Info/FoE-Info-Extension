@@ -1,5 +1,5 @@
 // @ts-nocheck
-import * as storage from './storage.js';
+import * as storage from './storage';
 
 function fCollapseIcon(id, _href, collapse) {
   if (document.getElementById(`${id}`) != null)

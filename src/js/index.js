@@ -29,7 +29,7 @@ import {
   toolOptions,
 } from './fn/globals';
 import * as helper from './fn/helper';
-import * as storage from './fn/storage.js';
+import * as storage from './fn/storage';
 import * as element from './fn/AddElement';
 import { armyUnitManagementService } from './msg/ArmyUnitManagementService.js';
 import { getBonuses, getLimitedBonuses } from './msg/BonusService.js';

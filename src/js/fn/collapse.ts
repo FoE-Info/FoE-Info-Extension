@@ -15,7 +15,7 @@
 import { checkDebug } from '..';
 import * as element from './AddElement';
 
-import * as storage from './storage.js';
+import * as storage from './storage';
 import { Tooltip, Alert, Popover } from 'bootstrap';
 
 export var collapseFriends = true;

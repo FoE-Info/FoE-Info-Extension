@@ -12,7 +12,7 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import * as storage from './storage.js';
+import * as storage from './storage';
 
 export var toolOptions = {
   armySize: 200,

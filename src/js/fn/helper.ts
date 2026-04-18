@@ -34,7 +34,7 @@ import { fCollapseIncidents } from './collapse';
 import * as copy from './copy';
 import { setBattlegroundSize, toolOptions } from './globals';
 import * as post_webstore from './post';
-import * as storage from './storage.js';
+import * as storage from './storage';
 import * as element from './AddElement';
 import browser from 'webextension-polyfill';
 
