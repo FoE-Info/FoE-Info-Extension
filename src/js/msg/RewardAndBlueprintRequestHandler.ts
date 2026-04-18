@@ -57,6 +57,8 @@ type RewardSetData = {
   context?: string;
 };
 
+type CollectRewardResponse = [RewardData[]?, string?];
+
 export function handleRewardServiceRequest(
   msg: RewardServiceMessage,
   showOptions: RewardServiceOptions,
@@ -67,12 +69,12 @@ export function handleRewardServiceRequest(
   }
 
   if (msg.requestMethod === 'collectReward') {
-    const data = msg.responseData as unknown[] | undefined;
+    const data = msg.responseData as CollectRewardResponse | undefined;
     if (data && data.length) {
-      const rewardRows = data[0] as RewardData[] | undefined;
+      const rewardRows = data[0];
       const reward = rewardRows?.[0];
       if (reward) {
-        reward.source = data[1] as string;
+        reward.source = data[1];
         console.debug(data[1], reward);
         if (showOptions.showGBGrewards) {
           showReward(reward);
@@ -84,7 +86,9 @@ export function handleRewardServiceRequest(
     if (data && Object.prototype.hasOwnProperty.call(data, 'reward')) {
       const rewards = data.reward?.rewards ?? [];
       if (rewards.length) {
-        (rewards as RewardData[] & { source?: string }).source = data.context;
+        rewards.forEach((reward) => {
+          reward.source = data.context;
+        });
         console.debug(rewards);
         if (showOptions.showRewards) {
           rewards.forEach((reward) => {

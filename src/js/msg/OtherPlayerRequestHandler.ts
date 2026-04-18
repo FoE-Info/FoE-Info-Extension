@@ -111,8 +111,9 @@ export function handleOtherPlayerServiceRequest(
       otherPlayerService(msg);
     }
   } else if (msg.requestMethod === 'rewardPlunder') {
-    const rewards = (msg.responseData as OtherPlayerRewardPlunder[])[0].product
-      .resources;
+    const rewards =
+      (msg.responseData as OtherPlayerRewardPlunder[] | undefined)?.[0]?.product
+        ?.resources ?? {};
     Object.keys(rewards).forEach((reward) => {
       const name = helper.fResourceShortName(reward);
       const qty = rewards[reward];
@@ -123,16 +124,19 @@ export function handleOtherPlayerServiceRequest(
       rewardsOtherPlayer[name] += qty;
     });
 
-    const reward = [] as unknown as RewardData;
-    reward.source = 'otherPlayer';
-    reward.name = '';
-    reward.amount = 0;
+    const reward: RewardData = {
+      source: 'otherPlayer',
+      name: '',
+      amount: 0,
+    };
 
     if (showOptions.showGErewards) {
       showReward(reward);
     }
   } else if (msg.requestMethod === 'rewardResources') {
-    const rewards = (msg.responseData as OtherPlayerRewardResources).resources;
+    const rewards =
+      (msg.responseData as OtherPlayerRewardResources | undefined)?.resources ??
+      {};
 
     Object.keys(rewards).forEach((reward) => {
       const name = helper.fResourceShortName(reward);
@@ -144,10 +148,11 @@ export function handleOtherPlayerServiceRequest(
       rewardsOtherPlayer[name] += qty;
     });
 
-    const reward = [] as unknown as RewardData;
-    reward.source = 'otherPlayer';
-    reward.name = '';
-    reward.amount = 0;
+    const reward: RewardData = {
+      source: 'otherPlayer',
+      name: '',
+      amount: 0,
+    };
 
     if (showOptions.showGErewards) {
       showReward(reward);

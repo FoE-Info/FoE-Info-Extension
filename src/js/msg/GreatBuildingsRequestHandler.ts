@@ -210,7 +210,9 @@ export function handleGreatBuildingsServiceRequest(
   }
 
   if (msg.requestMethod === 'getAvailablePackageForgePoints') {
-    deps.setAvailablePacksFP((msg.responseData as unknown[])[0]);
+    const packagePoints =
+      (msg.responseData as number[] | undefined)?.[0] ?? 0;
+    deps.setAvailablePacksFP(packagePoints);
     deps.setAvailableFPText();
     return true;
   }
