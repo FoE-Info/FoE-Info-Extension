@@ -1,5 +1,7 @@
-// @ts-nocheck
-export function handleClanServiceRequest(msg, deps) {
+export function handleClanServiceRequest(
+  msg: Record<string, any>,
+  deps: Record<string, any>,
+) {
   if (!msg || msg.requestClass !== 'ClanService') {
     return false;
   }
@@ -47,7 +49,7 @@ export function handleClanServiceRequest(msg, deps) {
     if (showOptions.showTreasury && msg.requestMethod == 'getOwnClanData') {
       const members = msg.responseData.members;
       GuildDonations.push([msg.responseData.name, msg.responseData.membersNum]);
-      members.forEach((entry) => {
+      members.forEach((entry: Record<string, any>) => {
         GuildDonations.push([
           entry.rank,
           entry.name,
@@ -85,7 +87,7 @@ export function handleClanServiceRequest(msg, deps) {
           setMyGuildPosition(entry.rank);
         }
       });
-      $('body').i18n();
+      ($('body') as JQuery & { i18n(): void }).i18n();
     }
 
     if (showOptions.showGuild && msg.responseData.members) {
@@ -98,7 +100,7 @@ export function handleClanServiceRequest(msg, deps) {
         collapse.collapseFriends ? '' : 'show'
       }">
 	  <table id="friendsText2"><tr><th>Name</th><th>Title</th><th>ID</th><th>Era</th><th>Battles</th><th>Score</th></tr>`;
-      guildlist.forEach((entry) => {
+      guildlist.forEach((entry: Record<string, any>) => {
         friendsHTML += `<tr><td>${entry.name}</td><td>${entry.title}</td><td>${
           entry.player_id
         }</td><td>${helper.fGVGagesname(entry.era)}</td><td>${entry.won_battles}</td><td>${
@@ -108,13 +110,13 @@ export function handleClanServiceRequest(msg, deps) {
       friendsDiv.innerHTML = friendsHTML + `</table></div></div>`;
       if (collapse.collapseFriends == false) {
         document
-          .getElementById('friendsCopyID')
+          .getElementById('friendsCopyID')!
           .addEventListener('click', copy.fFriendsCopy);
       }
       document
-        .getElementById('friendsTextLabel')
+        .getElementById('friendsTextLabel')!
         .addEventListener('click', collapse.fCollapseFriends);
-      $('body').i18n();
+      ($('body') as JQuery & { i18n(): void }).i18n();
     }
 
     return true;
@@ -122,8 +124,9 @@ export function handleClanServiceRequest(msg, deps) {
 
   if (msg.requestMethod == 'getTreasuryLogs') {
     if (showOptions.showContributions || showOptions.showLogs) {
+      let treasuryHTML = '';
       if (showOptions.showLogs) {
-        var treasuryHTML = treasuryLog.innerHTML;
+        treasuryHTML = treasuryLog.innerHTML;
         if (!treasuryHTML) {
           treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
 							${element.close()}
@@ -137,9 +140,9 @@ export function handleClanServiceRequest(msg, deps) {
       }
 
       const logs = msg.responseData.logs;
-      logs.forEach((entry) => {
+      logs.forEach((entry: Record<string, any>) => {
         if (entry.resource == 'medals') {
-          GuildDonations.forEach((member) => {
+          GuildDonations.forEach((member: any[]) => {
             if (member[1] == entry.player.name) {
               if (entry.action.toLowerCase() == 'guild continent: slot unlocked')
                 member[2] += entry.amount;
@@ -154,7 +157,7 @@ export function handleClanServiceRequest(msg, deps) {
             }
           });
         } else {
-          GuildDonations.forEach((member) => {
+          GuildDonations.forEach((member: any[]) => {
             if (member[1] == entry.player.name) {
               if (
                 entry.action.toLowerCase() == 'siege army deployment' ||
@@ -185,7 +188,7 @@ export function handleClanServiceRequest(msg, deps) {
               }
 
               if (entry.action.toLowerCase() == 'guild treasury donation') {
-                ResourceDefs.forEach((rssDef) => {
+                ResourceDefs.forEach((rssDef: Record<string, any>) => {
                   if (rssDef.id == entry.resource) {
                     member[31 - helper.fLevelfromAge(rssDef.era)] += entry.amount;
                   }
@@ -194,7 +197,7 @@ export function handleClanServiceRequest(msg, deps) {
             }
           });
 
-          GuildTreasury.forEach((rss) => {
+          GuildTreasury.forEach((rss: any[]) => {
             if (entry.resource == rss[0]) {
               if (
                 entry.action.toLowerCase() == 'siege army deployment' ||
@@ -253,7 +256,7 @@ export function handleClanServiceRequest(msg, deps) {
           collapse.collapseTreasury ? '' : 'show'
         }">
 			<table id="treasurytable" class="overflow table collapse show"><tr><th>Name</th><th>Medals Spent</th><th>Medals Returned</th><th>Medals Donated</th><th>Medals Total</th><th>Goods Spent GVG</th><th>Goods Returned GVG</th><th>Goods Spent GBG</th><th>Goods Spent GE</th><th>Goods Donated Building</th><th>Goods Donated ???</th><th>Goods Donated</th><th>SAV</th><th>SAAB</th><th>SAM</th><th>VF</th><th>OF</th><th>AF</th><th>FE</th><th>TE</th><th>CE</th><th>PME</th><th>ME</th><th>PE</th><th>InA</th><th>CA</th><th>LMA</th><th>HMA</th><th>EMA</th><th>IA</th></tr>`;
-        GuildDonations.forEach((member) => {
+        GuildDonations.forEach((member: any[]) => {
           if (member[0] != MyInfo.guild)
             treasuryHTML += `<tr><td>${member[1]}</td><td>${member[2]}</td><td>${
               member[3]
@@ -277,20 +280,20 @@ export function handleClanServiceRequest(msg, deps) {
         if (GuildTreasury) {
           treasuryHTML += `<tr></tr>`;
           treasuryHTML += `<tr><th>Era:Resource</th><th>Treasury</th><th>Donations</th><th>GE Cost</th><th>GVG Cost</th><th>GBG Cost</th><th>Net Change</th></tr>`;
-          GuildTreasury.forEach((rss) => {
+          GuildTreasury.forEach((rss: any[]) => {
             treasuryHTML += `<tr><td>${rss[1]}:${rss[2]}</td><td>${rss[3]}</td><td>${rss[4]}</td><td>${rss[5]}</td><td>${rss[6]}</td><td>${rss[7]}</td><td>${rss[8]}</td></tr>`;
           });
         }
 
         treasury.innerHTML = treasuryHTML + `</table></div>`;
         document
-          .getElementById('treasuryCopyID')
+          .getElementById('treasuryCopyID')!
           .addEventListener('click', copy.TreasuryCopy);
         document
-          .getElementById('treasuryTextLabel')
+          .getElementById('treasuryTextLabel')!
           .addEventListener('click', collapse.fCollapseTreasury);
       }
-      $('body').i18n();
+      ($('body') as JQuery & { i18n(): void }).i18n();
     } else {
       console.debug(msg.responseData.length);
     }
@@ -323,7 +326,7 @@ export function handleClanServiceRequest(msg, deps) {
     if (gvgAges) gvgAges.innerHTML = '';
 
     if (showOptions.showTreasury) {
-      var treasuryHTML = '';
+      let treasuryHTML = '';
 
       treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
 	${element.close()}<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">`;
@@ -349,7 +352,7 @@ export function handleClanServiceRequest(msg, deps) {
       initTreasury(msg.responseData.resources);
 
       for (var i = 0; i < helper.numAges; i++) {
-        ResourceDefs.forEach((rssDef) => {
+        ResourceDefs.forEach((rssDef: Record<string, any>) => {
           if (
             rssDef.era == helper.fAgefromLevel(helper.numAges - i) &&
             resources[rssDef.id]
@@ -364,11 +367,11 @@ export function handleClanServiceRequest(msg, deps) {
 
       treasury.innerHTML = treasuryHTML + `</table></div>`;
       document
-        .getElementById('treasuryCopyID')
+        .getElementById('treasuryCopyID')!
         .addEventListener('click', copy.TreasuryCopy);
       console.debug('GuildTreasury', GuildTreasury);
       document
-        .getElementById('treasuryTextLabel')
+        .getElementById('treasuryTextLabel')!
         .addEventListener('click', collapse.fCollapseTreasury);
       const treasuryDiv = document.getElementById('treasuryText');
       const resizeObserver = new ResizeObserver((entries) => {
@@ -377,8 +380,8 @@ export function handleClanServiceRequest(msg, deps) {
             setTreasurySize(entry.contentRect.height);
         }
       });
-      resizeObserver.observe(treasuryDiv);
-      $('body').i18n();
+      resizeObserver.observe(treasuryDiv!);
+      ($('body') as JQuery & { i18n(): void }).i18n();
     } else {
       console.debug(msg.responseData.length);
     }
