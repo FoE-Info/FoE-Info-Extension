@@ -1,10 +1,9 @@
-// @ts-nocheck
 import { removeSignal, setSignal } from './GuildBattlegroundService';
 
 export function handleGuildBattlegroundSignalsRequest(
-  msg,
-  request,
-  safeJsonParse,
+  msg: Record<string, any>,
+  request: Record<string, any>,
+  safeJsonParse: ((raw: string, context: string) => unknown) | undefined,
 ) {
   if (!msg || msg.requestClass !== 'GuildBattlegroundSignalsService') {
     return false;
