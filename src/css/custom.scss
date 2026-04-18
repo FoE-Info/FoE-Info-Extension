@@ -1,3 +1,18 @@
+:root {
+  --foe-color-background: #222;
+  --foe-color-text-primary: #fff;
+  --foe-color-surface-dark: #292a2d;
+  --foe-color-warning-icon: #808000;
+  --foe-color-favorite: #3d1472;
+  --foe-color-favorite-hover: #808080;
+  --foe-color-scrollbar-track: #f1f1f1;
+  --foe-color-scrollbar-thumb: #888;
+  --foe-color-scrollbar-thumb-hover: #555;
+  --foe-color-invest-good: #007e33;
+  --foe-color-invest-fair: #ff8800;
+  --foe-color-invest-bad: #cc0000;
+}
+
 body {
   /* background-color: var(--nord0); */
   /* color: var(--nord8); */
@@ -9,8 +24,8 @@ body {
   /* background-color: #000; */
   /* background-color: white; */
   /* color: black; */
-  color: var(--color-text-primary);
-  background: var(--color-background);
+  color: var(--color-text-primary, var(--foe-color-text-primary));
+  background: var(--color-background, var(--foe-color-background));
 }
 
 .dark-mode {
@@ -18,7 +33,7 @@ body {
   /* background: var(--color-background); */
   /* background-color: black; */
   /* color: white; */
-  background-color: rgb(41 42 45);
+  background-color: var(--foe-color-surface-dark);
 }
 
 h6 {
@@ -81,17 +96,17 @@ p,
 }
 
 .gvg-warn {
-  color: #808000;
+  color: var(--foe-color-warning-icon);
   vertical-align: middle;
 }
 
 .favorite-btn {
-  background: #3d1472;
-  color: white;
+  background: var(--foe-color-favorite);
+  color: var(--foe-color-text-primary);
 }
 
 .favorite-btn:hover {
-  color: grey;
+  color: var(--foe-color-favorite-hover);
 }
 
 svg {
@@ -130,29 +145,29 @@ svg {
 
 .green {
   /* color: var(--teal, #007E33); */
-  color: #007e33;
-  fw: bold;
+  color: var(--foe-color-invest-good);
+  font-weight: bold;
 }
 
 .red {
   /* color: var(--purple, #CC0000); */
-  color: #cc0000;
-  fw: bold;
+  color: var(--foe-color-invest-bad);
+  font-weight: bold;
 }
 
 .invest-good {
   /* color: var(--teal, #007E33); */
-  color: #007e33;
+  color: var(--foe-color-invest-good);
 }
 
 .invest-fair {
   /* color: var(--yellow, #FF8800); */
-  color: #ff8800;
+  color: var(--foe-color-invest-fair);
 }
 
 .invest-bad {
   /* color: var(--purple, #CC0000); */
-  color: #cc0000;
+  color: var(--foe-color-invest-bad);
 }
 
 /* [data-bs-toggle="collapse"] i:before {
@@ -340,20 +355,20 @@ hr {
 /* Track */
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--foe-color-scrollbar-track);
 }
 
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--foe-color-scrollbar-thumb);
   border-radius: 10px;
 }
 
 /* Handle on hover */
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--foe-color-scrollbar-thumb-hover);
 }
 
 /* Rules for sizing the icon. */
