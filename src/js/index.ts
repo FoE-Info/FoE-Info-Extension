@@ -47,7 +47,7 @@ import { handleClanBattleServiceRequest } from './msg/ClanBattleRequestHandler';
 import {
   conversationService,
   getConversation,
-} from './msg/ConversationService.js';
+} from './msg/ConversationService';
 import {
   setCurrentPercent,
 } from './msg/GreatBuildingsService.js';
