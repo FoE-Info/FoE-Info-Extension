@@ -291,6 +291,30 @@ export function postGBGtoSS() {
   // console.debug(reqData,JSON.stringify(reqData));
 }
 
+export function postGBGtoForgeCompanion() {
+  var forgeCompanionAPI = _url.forgeCompanionURL;
+  if (!forgeCompanionAPI) {
+    return;
+  }
+
+  var reqData = {
+    source: 'foe-info',
+    epoc: EpocTime,
+    world: GameOrigin,
+    gbgData: GBGdata,
+  };
+
+  var oReq = new XMLHttpRequest();
+  oReq.open('POST', forgeCompanionAPI, true);
+  oReq.setRequestHeader('Content-type', 'application/json');
+  oReq.onreadystatechange = function () {
+    if (oReq.readyState == XMLHttpRequest.DONE) {
+      console.debug('Forge Companion import', oReq.responseText);
+    }
+  };
+  oReq.send(JSON.stringify(reqData));
+}
+
 export function postAlerttoDsicord() {
   var copytext = document.getElementById('alertText')!.textContent;
   postToDiscord(copytext);

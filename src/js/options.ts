@@ -113,6 +113,8 @@ function save_options() {
 
   // Google Sheets
   url.sheetGuildURL = document.getElementById('sheetGuildURL').value;
+  // Forge Companion
+  url.forgeCompanionURL = document.getElementById('forgeCompanionURL').value;
   // url.sheetCityURL = document.getElementById('sheetCityURL').value;
   // url.sheetGameURL = document.getElementById('sheetGameURL').value;
 
@@ -134,6 +136,7 @@ function save_options() {
       url: {
         discordTargetURL: url.discordTargetURL,
         sheetGuildURL: url.sheetGuildURL,
+        forgeCompanionURL: url.forgeCompanionURL,
         // sheetCityURL: url.sheetCityURL,
         // sheetGameURL: url.sheetGameURL
       },
@@ -205,6 +208,9 @@ function restore_options() {
             url.discordTargetURL;
         if (url.sheetGuildURL)
           document.getElementById('sheetGuildURL').value = url.sheetGuildURL;
+        if (url.forgeCompanionURL)
+          document.getElementById('forgeCompanionURL').value =
+            url.forgeCompanionURL;
         // if(url.sheetCityURL)
         //    document.getElementById('sheetCityURL').value = url.sheetCityURL;
         // if(url.sheetGameURL)

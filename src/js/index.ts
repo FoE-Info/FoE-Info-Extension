@@ -236,12 +236,9 @@ var title = document.createElement('div');
 document.body.appendChild(title);
 title.id = 'title';
 title.className = 'd-flex flex-row justify-content-between';
-
-// TODO fix dark theme
-if (darkMode == 'dark') {
-  title.className =
-    'd-flex flex-row justify-content-between text-light bg-dark';
-  // --color-background = 'bg-dark';
+const isDarkTheme = darkMode === 'dark';
+if (isDarkTheme) {
+  title.classList.add('text-light', 'bg-dark');
 }
 
 // <div class="p-2"><img src="${./src/icons/Icon24.png}" /></div>
@@ -258,14 +255,10 @@ if (darkMode == 'dark') {
 // </div>`;
 
 var newelement = document.body;
-// TODO fix dark theme
-if (darkMode == 'dark') {
-  // 	newelement.classList.toggle("nord-styles");
-  // 	newelement.classList.toggle("dark-mode");
-  newelement.classList.toggle('bg-dark');
+if (isDarkTheme) {
+  newelement.classList.add('bg-dark');
 }
-// else
-newelement.classList.toggle('bootstrap-styles');
+newelement.classList.add('bootstrap-styles');
 newelement = document.createElement('div');
 newelement.className = 'p-2';
 title.appendChild(newelement);
@@ -281,8 +274,7 @@ newelement = document.createElement('div');
 newelement.className = 'p-8 title';
 title.appendChild(newelement);
 child = document.createElement('h6');
-// TODO fix dark theme
-if (darkMode == 'dark') child.className = 'title text-light bg-dark';
+if (isDarkTheme) child.className = 'title text-light bg-dark';
 else child.className = 'title';
 // child.innerHTML = pkg.name;
 child.textContent = EXT_NAME;

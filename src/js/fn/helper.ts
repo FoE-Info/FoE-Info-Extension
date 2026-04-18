@@ -759,7 +759,7 @@ export function fshowBattleground() {
 	${element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground)}
 	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p>${element.close()}`;
 
-  if (_url.sheetGuildURL)
+  if (_url.sheetGuildURL || _url.forgeCompanionURL)
     battlegroundHTML += element.post(
       'battlegroundPostID',
       'info',
@@ -838,10 +838,15 @@ export function fshowBattleground() {
     /* donationDIV.innerHTML = battlegroundHTML + `</table></div><p class="showGBGchanges"><input type="checkbox" id="showGBGchanges" value="${showOptions.showBattlegroundChanges}"/> <label for="showGBGchanges">show changes only</label></p></div>`; */
   }
   donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div></div>`;
-  if (_url.sheetGuildURL)
-    document
-      .getElementById('battlegroundPostID')!
-      .addEventListener('click', post_webstore.postGBGtoSS);
+  if (_url.sheetGuildURL || _url.forgeCompanionURL)
+    document.getElementById('battlegroundPostID')!.addEventListener('click', () => {
+      if (_url.sheetGuildURL) {
+        post_webstore.postGBGtoSS();
+      }
+      if (_url.forgeCompanionURL) {
+        post_webstore.postGBGtoForgeCompanion();
+      }
+    });
   // else
   document
     .getElementById('battlegroundCopyID')!
