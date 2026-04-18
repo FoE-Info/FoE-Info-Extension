@@ -1,4 +1,3 @@
-// @ts-nocheck
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -61,10 +60,10 @@ export function fInvestedCopy() {
 }
 
 export function DonationCopy() {
-  var selection = window.getSelection();
+  const selection = window.getSelection()!;
   selection.removeAllRanges();
-  var range = document.createRange();
-  var copytext = document.getElementById('copyText');
+  const range = document.createRange();
+  const copytext = document.getElementById('copyText')!;
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
@@ -72,55 +71,47 @@ export function DonationCopy() {
 }
 
 export function fCityStatsCopy() {
-  var cityStatsHTML = '';
-  var selection = window.getSelection();
+  let cityStatsHTML = '';
+  const selection = window.getSelection()!;
   selection.removeAllRanges();
-  var range = document.createRange();
+  const range = document.createRange();
 
-  var copytext = document.getElementById('citystatsLabel');
-  cityStatsHTML = copytext.innerHTML + '<br>';
-  copytext = document.getElementById('citystatsText');
-  cityStatsHTML += copytext.innerHTML;
-  // console.debug(cityStatsHTML);
+  const citystatsLabel = document.getElementById('citystatsLabel')!;
+  cityStatsHTML = citystatsLabel.innerHTML + '<br>';
+  const citystatsText = document.getElementById('citystatsText')!;
+  cityStatsHTML += citystatsText.innerHTML;
   debug.innerHTML = cityStatsHTML;
   range.selectNode(debug);
   selection.addRange(range);
   document.execCommand('copy');
   debug.innerHTML = '';
-  // copyToClipboard('div#citystatsText');
 }
 
 export function fFriendsCopy() {
-  var selection = window.getSelection();
+  const selection = window.getSelection()!;
   selection.removeAllRanges();
-  var range = document.createRange();
-  var copytext = document.getElementById('friendsText2');
-  range.selectNode(copytext);
+  const range = document.createRange();
+  range.selectNode(document.getElementById('friendsText2')!);
   selection.addRange(range);
   document.execCommand('copy');
-  // copyToClipboard('div#friendsText');
 }
 
 export function fGuildCopy() {
-  var selection = window.getSelection();
+  const selection = window.getSelection()!;
   selection.removeAllRanges();
-  var range = document.createRange();
-  var copytext = document.getElementById('guildText2');
-  range.selectNode(copytext);
+  const range = document.createRange();
+  range.selectNode(document.getElementById('guildText2')!);
   selection.addRange(range);
   document.execCommand('copy');
-  // copyToClipboard('div#guildText');
 }
 
 export function fHoodCopy() {
-  var selection = window.getSelection();
+  const selection = window.getSelection()!;
   selection.removeAllRanges();
-  var range = document.createRange();
-  var copytext = document.getElementById('hoodText2');
-  range.selectNode(copytext);
+  const range = document.createRange();
+  range.selectNode(document.getElementById('hoodText2')!);
   selection.addRange(range);
   document.execCommand('copy');
-  // copyToClipboard('div#hoodText');
 }
 
 export function BattlegroundCopy() {
@@ -136,26 +127,23 @@ export function BattlegroundCopy() {
   // document.execCommand("copy");
   // copyTextToClipboard('#gbg-table');
   let node = document.querySelector('#gbg-table');
-  copyNode(node);
+  copyNode(node!);
 }
 
 export function ExpeditionCopy() {
-  var selection = window.getSelection();
+  const selection = window.getSelection()!;
   selection.removeAllRanges();
-  var range = document.createRange();
-  var copytext = document.getElementById('expeditionText');
-  range.selectNode(copytext);
+  const range = document.createRange();
+  range.selectNode(document.getElementById('expeditionText')!);
   selection.addRange(range);
   document.execCommand('copy');
-  // copyToClipboard('div#expeditionText');
 }
 
 export function TreasuryCopy() {
-  var selection = window.getSelection();
+  const selection = window.getSelection()!;
   selection.removeAllRanges();
-  var range = document.createRange();
-  var copytext = document.getElementById('treasurytable');
-  range.selectNode(copytext);
+  const range = document.createRange();
+  range.selectNode(document.getElementById('treasurytable')!);
   selection.addRange(range);
   document.execCommand('copy');
   //copyToClipboard('#treasurytable > tbody');
@@ -163,10 +151,10 @@ export function TreasuryCopy() {
   // copyNode(node);
 }
 
-function copyToClipboard(element) {
-  var $temp = $('<textarea>');
+function copyToClipboard(element: string) {
+  const $temp = $('<textarea>');
   $('body').append($temp);
-  var html = $(element).html();
+  let html = $(element).html() ?? '';
   // if (!element.equals("clipboardText"))
   addToClipboard(element, html);
   html = html.replace(/<br>/g, '\n'); // or \r\n
@@ -184,23 +172,21 @@ function copyToClipboard(element) {
   $temp.remove();
 }
 
-function addToClipboard(element, html) {
-  var clipboard = document.getElementById('clipboard');
+function addToClipboard(element: string, html: string) {
+  let clipboard = document.getElementById('clipboard');
 
   if (clipboard == null) {
-    // console.debug('2');
     clipboard = document.createElement('div');
-    var content = document.getElementById('content');
-    content.appendChild(clipboard);
+    document.getElementById('content')!.appendChild(clipboard);
   }
 
   clipboard.innerHTML += '<br>' + html;
 }
 
-function copyNode(node) {
-  let range = document.createRange();
+function copyNode(node: Node) {
+  const range = document.createRange();
   range.selectNodeContents(node);
-  let select = window.getSelection();
+  const select = window.getSelection()!;
   select.removeAllRanges();
   select.addRange(range);
   document.execCommand('copy');
