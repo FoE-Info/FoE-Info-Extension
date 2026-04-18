@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -14,46 +14,48 @@
  */
 
 import { MilitaryDefs, armyDIV } from '../index';
+const _MilitaryDefs = MilitaryDefs as unknown as Record<string, Record<string, string>>;
 import { toolOptions, setArmySize } from '../fn/globals';
 import { showOptions } from '../vars/showOptions';
 import * as helper from '../fn/helper';
 import * as collapse from '../fn/collapse';
 import * as element from '../fn/AddElement';
 
-var ArmyUnits = [];
+var ArmyUnits: Record<string, number> = {};
 
-export function armyUnitManagementService(msg) {
+export function armyUnitManagementService(msg: Record<string, unknown>) {
   var armyHTML = ``;
   var allUnits = 0;
   var rogues = 0;
 
-  if (msg.responseData.counts.length) {
-    const army = msg.responseData.counts;
-    const unitsPerEra = [];
+  const responseData = msg.responseData as Record<string, unknown>;
+  if ((responseData.counts as unknown[]).length) {
+    const army = responseData.counts as Array<Record<string, unknown>>;
+    const unitsPerEra: Array<{ era: string; text: string }> = [];
     for (var j = army.length - 1; j >= 0; j--) {
       var units = 0;
-      var eraText = helper.fGVGagesname(MilitaryDefs[army[j].unitTypeId].era);
-      let eraId = MilitaryDefs[army[j].unitTypeId].era;
-      if (eraId != 'NoAge' || army[j].unitTypeId == 'rogue') {
-        if (army[j].unattached) units += army[j].unattached;
-        if (army[j].attached) units += army[j].attached;
-        if (army[j].unitTypeId == 'rogue') {
+      const unitTypeId = army[j].unitTypeId as string;
+      var eraText = helper.fGVGagesname(_MilitaryDefs[unitTypeId].era);
+      let eraId = _MilitaryDefs[unitTypeId].era;
+      if (eraId != 'NoAge' || unitTypeId == 'rogue') {
+        if (army[j].unattached) units += army[j].unattached as number;
+        if (army[j].attached) units += army[j].attached as number;
+        if (unitTypeId == 'rogue') {
           rogues += units;
-          if (ArmyUnits[army[j].unitTypeId] == null) {
-            ArmyUnits[army[j].unitTypeId] = units;
+          if (ArmyUnits[unitTypeId] == null) {
+            ArmyUnits[unitTypeId] = units;
           }
         } else {
-          if (ArmyUnits[army[j].unitTypeId] == null) {
-            // ArmyUnits.push({'name':entry.player.name});
-            ArmyUnits[army[j].unitTypeId] = units;
+          if (ArmyUnits[unitTypeId] == null) {
+            ArmyUnits[unitTypeId] = units;
 
             unitsPerEra.push({
               era: eraId,
-              text: `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units}`,
+              text: `${eraText}: ${_MilitaryDefs[unitTypeId].name} ${units}`,
             });
           } else {
-            if (units != ArmyUnits[army[j].unitTypeId]) {
-              var diff = units - ArmyUnits[army[j].unitTypeId];
+            if (units != ArmyUnits[unitTypeId]) {
+              var diff = units - ArmyUnits[unitTypeId];
               armyHTML = `<span class=${diff > 0 ? '"green">+' : '"red">'}${diff}</span>`;
             } else {
               armyHTML = ``;
@@ -62,11 +64,10 @@ export function armyUnitManagementService(msg) {
             unitsPerEra.push({
               era: eraId,
               text:
-                `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units} ` +
+                `${eraText}: ${_MilitaryDefs[unitTypeId].name} ${units} ` +
                 armyHTML,
             });
           }
-          // console.debug(army[j],army[j].unitTypeId,army[j].unattached,army[j].attached,units);
           allUnits += units;
         }
       }
@@ -95,9 +96,9 @@ export function armyUnitManagementService(msg) {
         .join('<br>');
       armyDIV.innerHTML = armyHTML + armyText + `</p></div></div>`;
       document
-        .getElementById('armyTextLabel')
+        .getElementById('armyTextLabel')!
         .addEventListener('click', collapse.fCollapseArmy);
-      const armyDiv = document.getElementById('armyText');
+      const armyDiv = document.getElementById('armyText')!;
       const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
           if (entry.contentRect && entry.contentRect.height)
@@ -105,12 +106,12 @@ export function armyUnitManagementService(msg) {
         }
       });
       resizeObserver.observe(armyDiv);
-      $('body').i18n();
+      ($('body') as JQuery & { i18n(): void }).i18n();
     }
   }
   console.debug(ArmyUnits);
 }
 
 export function clearArmyUnits() {
-  ArmyUnits = [];
+  ArmyUnits = {};
 }
