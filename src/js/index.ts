@@ -51,7 +51,7 @@ import {
 import {
   setCurrentPercent,
 } from './msg/GreatBuildingsService.js';
-import { handleGreatBuildingsServiceRequest } from './msg/GreatBuildingsRequestHandler.js';
+import { handleGreatBuildingsServiceRequest } from './msg/GreatBuildingsRequestHandler';
 import {
   clearBattleground,
   getBattleground,
