@@ -14,7 +14,17 @@
 import browser from 'webextension-polyfill';
 
 console.debug();
-browser.devtools.panels.create(EXT_NAME, null, 'panel.html');
+const createDevtoolsPanel = (uiMode) => {
+	const mode = uiMode === 'traditional' ? 'traditional' : 'classic';
+	const title =
+		mode === 'traditional' ? `${EXT_NAME} (Traditional)` : `${EXT_NAME}`;
+	browser.devtools.panels.create(title, null, `panel.html?uiMode=${mode}`);
+};
+
+browser.storage.local.get('tool').then((result) => {
+	const uiMode = result?.tool?.uiMode || 'classic';
+	createDevtoolsPanel(uiMode);
+});
 
 // browser.devtools.panels.create(EXT_NAME, null, 'panel.html',
 //     function(panel) {

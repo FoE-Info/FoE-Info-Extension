@@ -80,6 +80,10 @@ import {
   emissaryService,
   startupService,
 } from './msg/StartupService.js';
+import {
+  handleBlueprintServiceRequest,
+  handleRewardServiceRequest,
+} from './msg/RewardAndBlueprintRequestHandler.js';
 import setOptions, { showOptions } from './vars/showOptions.js';
 import '../css/main.scss';
 import { mapToStyles } from '@popperjs/core/lib/modifiers/computeStyles.js';
@@ -212,6 +216,11 @@ console.debug(tool.version);
 // 	// el: "i18n/el.json"
 // 		} ).done( function() { console.debug('i18n.load OK') } );
 export var darkMode = browser.devtools.panels.themeName;
+const panelParams = new URLSearchParams(window.location.search);
+export var uiMode =
+  panelParams.get('uiMode') === 'traditional' ? 'traditional' : 'classic';
+document.body.setAttribute('data-ui-mode', uiMode);
+document.body.classList.add(`ui-mode-${uiMode}`);
 // if (window.matchMedia &&
 //     window.matchMedia('(prefers-color-scheme: dark)').matches) {
 // //   img.style.filter="invert(100%)";
@@ -471,6 +480,14 @@ const safeJsonParse = (text, context) => {
     console.warn(`Failed to parse JSON (${context})`, error);
     return null;
   }
+};
+
+const addAvailablePacksFP = (amount) => {
+  availablePacksFP += amount;
+};
+
+const getTotalAvailableFP = () => {
+  return availablePacksFP + availableFP;
 };
 
 document.querySelector('#go-to-options').addEventListener('click', function () {
@@ -1257,36 +1274,7 @@ function handleRequestFinished(request) {
               // add getTimerBoost att/def to A/D info
             }
           } else if (msg.requestClass == 'RewardService') {
-            /*collectReward */
-            //console.debug('cityentity_id:', msg.responseData.cityentity_id);
-            if (msg.requestMethod == 'collectReward') {
-              /**/
-              if (msg.responseData.length) {
-                var reward = msg.responseData[0][0];
-                reward.source = msg.responseData[1];
-                console.debug(msg.responseData[1], reward);
-                if (showOptions.showGBGrewards) {
-                  showReward(reward);
-                }
-              }
-            } else if (msg.requestMethod == 'collectRewardSet') {
-              /**/
-              if (
-                msg.responseData.hasOwnProperty('reward') &&
-                msg.responseData.reward.rewards.length
-              ) {
-                var rewards = msg.responseData.reward.rewards;
-                rewards.source = msg.responseData.context;
-                console.debug(rewards);
-                if (showOptions.showRewards) {
-                  rewards.forEach((reward) => {
-                    showReward(reward);
-                  });
-                }
-              }
-            } else if (msg.requestMethod == '') {
-              /**/
-            } else console.debug('RewardService', msg);
+            handleRewardServiceRequest(msg, showOptions, showReward);
           } else if (
             msg.requestClass == 'CityProductionService' &&
             msg.requestMethod == 'pickupProduction'
@@ -1298,51 +1286,16 @@ function handleRequestFinished(request) {
             msg.requestClass == 'BlueprintService' &&
             msg.requestMethod == 'newReward'
           ) {
-            /*GB Rewards */
-            //console.debug('cityentity_id:', msg.responseData.cityentity_id);
-            //console.debug('cityentity_id:', msg.responseData.building_owner);
-            const GBname = helper.fGBname(msg.responseData.cityentity_id);
-            availablePacksFP += msg.responseData.strategy_point_amount;
-            if (document.getElementById('availableFPID'))
-              document.getElementById('availableFPID').textContent =
-                availablePacksFP + availableFP;
-
-            if (showOptions.showGBRewards) {
-              var oldText = document.getElementById('rewardsText');
-              if (oldText) {
-                oldText.innerHTML =
-                  `${msg.responseData.building_owner.name} ${helper.fGBsname(GBname)} ${msg.responseData.level} - ${
-                    msg.responseData.strategy_point_amount
-                  }FP<br>` + oldText.innerHTML;
-              } else {
-                cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-bs-toggle="collapse">
-	  ${element.icon('rewardsicon', 'rewardsText', collapse.collapseRewards)}
-	  <span data-i18n="reward"><strong>REWARDS:</strong></span></p>
-										${element.close()}
-										<div id="rewardsText" class="overflow resize collapse ${
-                      collapse.collapseRewards ? '' : 'show'
-                    }"><p class="overflow" id="rewardsText">${msg.responseData.building_owner.name} ${helper.fGBsname(
-                      GBname,
-                    )} ${msg.responseData.level} - ${msg.responseData.strategy_point_amount}FP</p></div></div>`;
-
-                // cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show" role="alert">${element.close()}<strong><span data-i18n="gb">GB</span> REWARDS:</strong>
-                // <p class="overflow" id="rewardsText">${msg.responseData.building_owner.name} ${helper.fGBsname(GBname)} ${msg.responseData.level} - ${msg.responseData.strategy_point_amount}FP</p></div>` + cityrewards.innerHTML;
-                document
-                  .getElementById('rewardsTextLabel')
-                  .addEventListener('click', collapse.fCollapseRewards);
-              }
-              // document.getElementById("infoTextLabel").addEventListener("click", collapse.fCollapseGBRewards);
-              rewardObserve();
-            }
-
-            // if (msg.responseData.length) {
-            // 	var reward = msg.responseData[0][0];
-            // 	reward.source = msg.responseData[1];
-            // 	console.debug(msg.responseData[1], reward);
-            // 	if (showOptions.showGBGrewards) {
-            // 		showReward(reward);
-            // 	}
-            // }
+            handleBlueprintServiceRequest(msg, {
+              helper,
+              showOptions,
+              collapse,
+              element,
+              cityrewards,
+              rewardObserve,
+              addAvailablePacksFP,
+              getTotalAvailableFP,
+            });
           } else if (msg.requestClass == 'GreatBuildingsService') {
             /*GB Donors */
             if (handleGreatBuildingsServiceRequest(msg, request, safeJsonParse)) {

@@ -98,6 +98,7 @@ function save_options() {
   //  showOptions.show = document.getElementById('').checked;
 
   tool.language = document.getElementById('language').value;
+  tool.uiMode = document.getElementById('uiMode').value;
   var targets = document.getElementById('targets').value;
   var targetText = document.getElementById('targetText').value;
   var donationPercent = document.getElementById('donationPercent').value;
@@ -121,6 +122,7 @@ function save_options() {
     .set({
       tool: {
         language: tool.language,
+        uiMode: tool.uiMode,
       },
       targets: targets,
       targetText: targetText,
@@ -169,7 +171,10 @@ function restore_options() {
       }
       if (items.tool) {
         document.getElementById('language').value = items.tool.language;
+        document.getElementById('uiMode').value = items.tool.uiMode || 'classic';
         console.debug(items.tool);
+      } else {
+        document.getElementById('uiMode').value = 'classic';
       }
       if (items.targets != null) {
         document.getElementById('targets').value = items.targets;
