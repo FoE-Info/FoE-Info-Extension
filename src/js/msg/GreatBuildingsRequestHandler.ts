@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   contributeForgePoints,
   getConstruction,
@@ -7,10 +6,10 @@ import {
 import BigNumber from 'bignumber.js';
 
 export function handleGreatBuildingsServiceRequest(
-  msg,
-  request,
-  safeJsonParse,
-  deps,
+  msg: Record<string, any>,
+  request: Record<string, any>,
+  safeJsonParse: ((raw: string, context: string) => unknown) | undefined,
+  deps: Record<string, any>,
 ) {
   if (!msg || msg.requestClass !== 'GreatBuildingsService') {
     return false;
@@ -127,12 +126,12 @@ export function handleGreatBuildingsServiceRequest(
 
       cityinvested.innerHTML = cityinvestedHTML + `</div></div>`;
       document
-        .getElementById('investedTextLabel')
+        .getElementById('investedTextLabel')!
         .addEventListener('click', collapse.fCollapseInvested);
       document
-        .getElementById('investedCopyID')
+        .getElementById('investedCopyID')!
         .addEventListener('click', copy.fInvestedCopy);
-      $('#investedDiv').i18n();
+      ($('#investedDiv') as JQuery & { i18n(): void }).i18n();
     }
 
     return true;
