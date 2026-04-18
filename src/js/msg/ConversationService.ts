@@ -1,4 +1,3 @@
-// @ts-nocheck
 /*
  * ________________________________________________________________
  * Copyright (C) 2022 FoE-Info - All Rights Reserved
@@ -24,27 +23,26 @@ import { setCurrentPercent } from './GreatBuildingsService';
 
 // targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
 
-export function conversationService(msg) {
+export function conversationService(msg: Record<string, unknown>) {
   // console.debug(msg);
-  var messages = null;
-  // if(msg.responseData.category.type == 'guild'){
-  if (msg.requestMethod == 'getOverviewForCategory')
-    messages = msg.responseData.category.teasers;
-  else messages = msg.responseData.teasers;
+  const teasers = msg.requestMethod == 'getOverviewForCategory'
+    ? ((msg.responseData as Record<string, unknown>).category as Record<string, unknown>).teasers as Array<Record<string, unknown>>
+    : (msg.responseData as Record<string, unknown>).teasers as Array<Record<string, unknown>>;
   // console.debug(targetsTopic);
   // if(!targetsTopic) targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
-  messages.forEach(function (message) {
+  teasers.forEach(function (message) {
     // console.debug(message.title ,targetsTopic,message.title.toLowerCase().includes(targetsTopic.toLowerCase()));
     // if(message.title == targetsTopic){
     if (
       targetsTopic &&
-      message.title.toLowerCase().includes(targetsTopic.toLowerCase())
+      (message.title as string).toLowerCase().includes(targetsTopic.toLowerCase())
     ) {
-      var targetsGBG = document.createElement('div');
-      var targetsHTML;
+      var targetsGBG: HTMLElement | null;
+      var targetsHTML: string;
       if (document.getElementById('targetsGBG')) {
-        targetsGBG = document.getElementById('targetsGBG');
+        targetsGBG = document.getElementById('targetsGBG')!;
       } else {
+        targetsGBG = document.createElement('div');
         targetsGBG.id = 'targetsGBG';
         targets.appendChild(targetsGBG);
       }
@@ -61,24 +59,26 @@ export function conversationService(msg) {
           collapse.collapseTarget,
         );
 
-      targetsGBG.innerHTML =
+      const lastMsg = message.lastMessage as Record<string, unknown>;
+      const sender = lastMsg.sender as Record<string, string>;
+      targetsGBG!.innerHTML =
         targetsHTML +
         `<p id="targetLabel" href="#targetText" aria-expanded="true" data-bs-toggle="collapse">
       ${element.icon('targeticon', 'targetText', collapse.collapseTarget)}
-                <strong>GBG Targets</strong> ${message.lastMessage.date}</p><p id="targetText" class="collapse ${
+                <strong>GBG Targets</strong> ${lastMsg.date}</p><p id="targetText" class="collapse ${
                   collapse.collapseTarget ? '' : 'show'
-                }">${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br><span class="text-muted">by ${
-                  message.lastMessage.sender.name
+                }">${(lastMsg.text as string).replace(/(?:\r\n|\r|\n)/g, '<br>')}<br><span class="text-muted">by ${
+                  sender.name
                 }. alert @ ${dayjs().format('HH:mm:ss')}</span></p></div>`;
       setTimeout(function () {
-        targetsGBG.innerHTML = '';
+        targetsGBG!.innerHTML = '';
       }, 600000);
       document
-        .getElementById('targetLabel')
+        .getElementById('targetLabel')!
         .addEventListener('click', collapse.fCollapseTarget);
       if (helper.checkGBG())
         document
-          .getElementById('targetPostID')
+          .getElementById('targetPostID')!
           .addEventListener('click', post_webstore.postTargetsToDiscord);
 
       // create alarms for sectors when they open
@@ -90,16 +90,16 @@ export function conversationService(msg) {
   setCurrentPercent(0); // reset to custom %
 }
 
-export function getConversation(msg) {
+export function getConversation(msg: Record<string, unknown>) {
   // console.debug(msg);
   if (msg.hasOwnProperty('responseData') && msg.hasOwnProperty('adminIds')) {
   }
 
   // if title includes donation %, setCurrentPercent for dontation helper
-  getPercent(msg.responseData.title);
+  getPercent((msg.responseData as Record<string, unknown>).title as string);
 }
 
-function getPercent(title) {
+function getPercent(title: string) {
   try {
     console.debug('title', title);
     if (!title || title == '') return;
@@ -158,7 +158,7 @@ function getPercent(title) {
   }
 }
 
-function getIntValue(item, index) {
+function getIntValue(item: string, index: number) {
   console.debug('getIntValue 1', item, ' ', index);
   if (item.includes('Hr')) return;
   item = item.replace('%', '');
