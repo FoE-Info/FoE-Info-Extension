@@ -34,7 +34,7 @@ import * as storage from './fn/storage';
 import * as element from './fn/AddElement';
 import { armyUnitManagementService } from './msg/ArmyUnitManagementService';
 import { getBonuses, getLimitedBonuses } from './msg/BonusService';
-import { pickupProduction } from './msg/CityProductionService.js';
+import { pickupProduction } from './msg/CityProductionService';
 import {
   deploySiegeArmy,
   getContinent,
