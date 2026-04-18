@@ -36,7 +36,7 @@ import { availablePacksFP, Goods, language } from '../index.js';
 import { ResourceDefs, availableFP } from './ResourceService.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse';
-import * as copy from '../fn/copy.js';
+import * as copy from '../fn/copy';
 import * as element from '../fn/AddElement';
 import { showOptions } from '../vars/showOptions.js';
 import { clearArmyUnits } from './ArmyUnitManagementService.js';

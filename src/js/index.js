@@ -21,7 +21,7 @@ import '@wikimedia/jquery.i18n/src/jquery.i18n.parser.js';
 import 'bootstrap';
 import collapseOptions, * as collapse from './fn/collapse';
 import browser from 'webextension-polyfill';
-import * as copy from './fn/copy.js';
+import * as copy from './fn/copy';
 import {
   setRewardSize,
   setToolOptions,

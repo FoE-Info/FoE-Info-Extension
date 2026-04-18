@@ -30,7 +30,7 @@ import { ResourceNames } from '../msg/ResourceService.js';
 import { showOptions } from '../vars/showOptions.js';
 import * as collapse from './collapse';
 import { fCollapseIncidents } from './collapse';
-import * as copy from './copy.js';
+import * as copy from './copy';
 import { setBattlegroundSize, toolOptions } from './globals.js';
 import * as post_webstore from './post.js';
 import * as storage from './storage.js';

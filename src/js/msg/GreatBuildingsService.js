@@ -14,7 +14,7 @@
 import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse';
-import * as copy from '../fn/copy.js';
+import * as copy from '../fn/copy';
 import * as storage from '../fn/storage.js';
 import * as element from '../fn/AddElement';
 import { City } from './StartupService.js';

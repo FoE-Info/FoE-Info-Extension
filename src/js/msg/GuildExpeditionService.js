@@ -12,7 +12,7 @@
  * ________________________________________________________________
  */
 import * as collapse from '../fn/collapse';
-import * as copy from '../fn/copy.js';
+import * as copy from '../fn/copy';
 import * as element from '../fn/AddElement';
 import { donationDIV2 } from '../index.js';
 import { toolOptions, setExpeditionSize } from '../fn/globals.js';
