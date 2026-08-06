@@ -13,3 +13,4 @@
 
 - **Environment & Tool Managers**: Local project tools, PATH, and environment variables are automatically loaded via `.mise.toml`, `.envrc` (direnv), and `.env`.
 - **Sandbox Execution**: Node, NPM, UV, and Mise are installed via Linuxbrew (`/var/home/linuxbrew/.linuxbrew/bin` and `/home/linuxbrew/.linuxbrew/bin`). When running shell commands, use `BypassSandbox: true` to access system Homebrew binaries seamlessly.
+- **IDE & Terminal Integration**: `.vscode/settings.json` injects Linuxbrew PATH into integrated terminal sessions so PATH exports are never required manually.
