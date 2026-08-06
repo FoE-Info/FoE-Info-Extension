@@ -10,6 +10,7 @@ This repository maintains a pre-built knowledge graph in `graphify-out/` detaili
 - **Codebase Queries**: For architectural questions, dependency tracing, or module relationships, execute `graphify query "<question>"` when `graphify-out/graph.json` exists. Use `graphify path "<A>" "<B>"` for node-to-node path analysis and `graphify explain "<concept>"` for module deep dives.
 - **Architecture Overview**: Consult [`graphify-out/GRAPH_REPORT.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/graphify-out/GRAPH_REPORT.md) for core abstractions (god nodes), community breakdown, and cross-module couplings.
 - **Graph Maintenance**: After introducing or editing code, run `graphify update .` to update the AST graph structure.
+- **Git Staging & Ignored Artifacts**: `graphify-out/` is excluded by `.gitignore`. Never pass `graphify-out/` to `git add` during commits; run `graphify update .` locally to keep the knowledge graph synchronized without staging it into git index.
 
 ## Git & Branching Workflow
 
@@ -29,6 +30,7 @@ This repository maintains a pre-built knowledge graph in `graphify-out/` detaili
 - **Modular Webpack Setup**: Webpack configuration uses `webpack-merge` to combine `webpack.common.js` with `webpack.dev.js` (for dev builds) and `webpack.prod.js` (for production webstore builds and ZIP creation). Do not recreate monolithic `webpack-dev.config.js` or `foe-info-webstore.config.js`.
 - **Webpack 5 Asset Modules**: Use native Webpack 5 Asset Modules (`type: 'asset/resource'`) for image assets rather than deprecated `file-loader`.
 - **Cross-Platform NPM Scripts**: Use `cross-env` for setting `NODE_ENV` in `package.json` scripts.
+- **Webpack SplitChunks Vendor Optimization**: Configure `optimization.splitChunks` for shared vendor dependencies (`node_modules`) to eliminate bundle duplication across multi-entrypoint setups (app, options, popup, devtools) and keep asset JS sizes under Webpack performance warning limits (< 244 KiB).
 
 ## Extension & DevTools Code Invariants
 
@@ -43,4 +45,5 @@ This repository maintains a pre-built knowledge graph in `graphify-out/` detaili
 - **Proxy & Alias Key Deduplication**: When managing large entity definition lookup maps with alias prefixes or alternate IDs (e.g. `CityEntityDefs`), avoid duplicating full payload objects under multiple keys in memory and `chrome.storage`. Store canonical objects in a primary map (`rawCityEntityDefs`), maintain an `entityAliasMap`, and use an ES6 `Proxy` with `get`/`has` traps to dynamically resolve alias variations. When persisting to extension storage, always serialize the underlying raw object target (`rawCityEntityDefs`), not the Proxy wrapper.
 - **Concurrent Mirror CDN Fetching**: When fetching static game assets or metadata definitions across mirror CDNs, execute parallel requests using `Promise.any()` rather than sequential fallback iterations to eliminate startup latency overhead.
 - **Per-Key Storage Debouncing Queue**: Use a centralized per-key debouncing queue for storage updates (`storage.set`) so rapid network events or batch handlers collapse duplicate storage write operations into scheduled, debounced flushes.
+- **DOM Batching & Memory Leak Prevention**: Never use repeated string appends (`container.innerHTML += ...`) inside network event handlers or packet interception callbacks (`handleRequestFinished`). Use `document.createElement` and `appendChild` scheduled via `requestAnimationFrame` to avoid continuous DOM re-parsing, memory growth, and main-thread UI freezing.
 
