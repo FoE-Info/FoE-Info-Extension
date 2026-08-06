@@ -718,6 +718,7 @@ function handleRequestFinished(request) {
         if (parsed && parsed.length) {
           for (var i = 0; i < parsed.length; i++) {
             const msg = parsed[i];
+            if (!msg) continue;
 
           console.debug('msg', msg);
 
@@ -727,7 +728,13 @@ function handleRequestFinished(request) {
             msg.requestMethod == 'getMetadata'
           ) {
             try {
-              const requests = msg.responseData.map((item) =>
+              const validItems = (msg.responseData || []).filter(
+                (item) =>
+                  item &&
+                  item.url &&
+                  (item.url.endsWith('.json') || item.url.includes('.json?')),
+              );
+              const requests = validItems.map((item) =>
                 fetch(item.url)
                   .then((r) => r.json())
                   .catch((err) => {
@@ -739,7 +746,7 @@ function handleRequestFinished(request) {
 
               results.forEach((data, idx) => {
                 if (!data) return;
-                const identifier = msg.responseData[idx].identifier;
+                const identifier = validItems[idx].identifier;
                 if (identifier === 'city_entities') {
                   data.forEach(function (msg) {
                     if (
