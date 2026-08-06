@@ -53,8 +53,9 @@ var Profit = 0;
 var Percent = new BigNumber(0);
 const darkMode = false; // dont use darkMode until we sort out a dark theme to use
 
-if (storage.get('useNewDonationPanel') != null)
-  useNewDonationPanel = storage.get('useNewDonationPanel');
+storage.get('useNewDonationPanel').then((val) => {
+  if (val != null) useNewDonationPanel = val;
+});
 
 if (url && url.hasOwnProperty('sheetGameURL'))
   googleSheetGame = url.sheetGameURL;

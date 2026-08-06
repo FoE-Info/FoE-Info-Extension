@@ -14,40 +14,32 @@
 
 import browser from 'webextension-polyfill';
 
-function setStorage(name, value) {
-  console.log(name, value);
-
-  browser.storage.local
-    .set({
+async function setStorage(name, value) {
+  try {
+    await browser.storage.local.set({
       [name]: value,
-    })
-    .then(() => {
-      if (browser.runtime.lastError) {
-        console.log('error: ', browser.runtime.lastError);
-      } else {
-        // some code goes here.
-        // console.log(name,' is set to ' + value,value);
-      }
     });
+  } catch (e) {
+    console.error('Error setting storage index:', name, e);
+  }
 }
 
-function getStorage(name) {
-  // console.log(name);
-  browser.storage.local.get(name).then((result) => {
-    // console.log(name,' is ' + value);
-    if (browser.runtime.lastError) {
-      console.log('Error retrieving index: ' + browser.runtime.lastError);
-      return;
-    }
-    return result[name];
-  });
+async function getStorage(name) {
+  try {
+    const result = await browser.storage.local.get(name);
+    return result ? result[name] : undefined;
+  } catch (e) {
+    console.error('Error retrieving storage index:', name, e);
+    return undefined;
+  }
 }
 
-function removeStorage(name) {
-  // console.log(name);
-  browser.storage.local.remove(name).then(() => {
-    // console.log(name,' is deleted');
-  });
+async function removeStorage(name) {
+  try {
+    await browser.storage.local.remove(name);
+  } catch (e) {
+    console.error('Error removing storage index:', name, e);
+  }
 }
 
 export { setStorage as set, getStorage as get, removeStorage as remove };
