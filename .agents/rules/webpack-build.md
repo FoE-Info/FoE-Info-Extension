@@ -13,6 +13,6 @@ This repository uses Webpack 5 to compile JavaScript, Sass/SCSS, and asset bundl
 
 ## Environment & Tool Execution
 
-- **Environment Integration**: Project environment variables and tool paths are managed locally via `.mise.toml`, `.envrc`, and `.env`.
-- **Sandbox Execution**: When executing `npm` or `node` build commands in shell tasks, set `BypassSandbox: true` to ensure system Homebrew binaries (`/var/home/linuxbrew/.linuxbrew/bin`) are accessible.
+- **Environment Integration**: Project environment variables and tool paths are managed cross-platform via `.mise.toml`, `.envrc`, and `.env`.
+- **Command Execution**: Execute `npm` or `node` build tasks via standard npm script invocation (`npm run dev`, `npm run build-foe-info`).
 - **Verification Rule**: Always verify changes by running `npm run check` and `npm run build-foe-info` before merging topic branches.

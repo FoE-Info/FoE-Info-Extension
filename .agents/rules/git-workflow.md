@@ -11,6 +11,5 @@
 
 ## Environment & Tooling Execution
 
-- **Environment & Tool Managers**: Local project tools, PATH, and environment variables are automatically loaded via `.mise.toml`, `.envrc` (direnv), and `.env`.
-- **Sandbox Execution**: Node, NPM, UV, and Mise are installed via Linuxbrew (`/var/home/linuxbrew/.linuxbrew/bin` and `/home/linuxbrew/.linuxbrew/bin`). When running shell commands, use `BypassSandbox: true` to access system Homebrew binaries seamlessly.
-- **IDE & Terminal Integration**: `.vscode/settings.json` injects Linuxbrew PATH into integrated terminal sessions so PATH exports are never required manually.
+- **Cross-Platform Tooling with Mise**: Local project tools, Node.js, Python/UV, and environment variables are managed portably across operating systems (Linux, macOS, Windows) via `.mise.toml`, `.envrc`, and `.env`.
+- **Cross-Platform Command Execution**: Run build, test, and formatting tasks via `mise` or standard `npm` commands (`npm run check`, `npm run dev`, `npm run build-foe-info`).

@@ -1,5 +1,3 @@
 {
-  "terminal.integrated.env.linux": {
-    "PATH": "/var/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/bin:/var/home/kronikpillow/.local/bin:${env:PATH}"
-  }
+  "terminal.integrated.env.linux": {}
 }

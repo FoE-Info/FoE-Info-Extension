@@ -8,16 +8,15 @@ Cheatsheet and reference guide for AI Coding Agents working on `FoE-Info-Extensi
 
 ### Tool & Environment Auto-Load
 
-The local repository environment is managed via:
+The local repository environment is managed cross-platform via:
 
-- `.mise.toml`: Configures `mise` tool versions (`node`, `uv`) and `PATH`.
+- `.mise.toml`: Configures `mise` tool versions (`node`, `uv`).
 - `.envrc`: Configures `direnv` integration and environment variables.
-- `.env`: Defines project environment variables (`PATH`, `NODE_ENV`).
-- `.vscode/settings.json`: Injects PATH into integrated terminal sessions.
+- `.env`: Defines project environment variables (`NODE_ENV`).
 
 ### Command Execution
 
-When running shell commands via agent tools (`run_command`), set `BypassSandbox: true` to access system Homebrew binaries (`/var/home/linuxbrew/.linuxbrew/bin`) seamlessly.
+Run build, test, and formatting tasks via `mise` or standard `npm` script invocations (`npm run check`, `npm run dev`, `npm run build-foe-info`).
 
 ---
 
