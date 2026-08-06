@@ -32,7 +32,12 @@ import {
   ignoredPlayers,
   debug,
 } from '../index.js';
-import { availablePacksFP, Goods, language, ensureCityEntitiesMetadata } from '../index.js';
+import {
+  availablePacksFP,
+  Goods,
+  language,
+  ensureCityEntitiesMetadata,
+} from '../index.js';
 import { ResourceDefs, availableFP } from './ResourceService.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
@@ -865,8 +870,12 @@ export function startupService(msg) {
       userTooltipHTML += `<a href="https://foe.scoredb.io/${GameOrigin}/Player/${elem}" target="_blank"><strong>${elem}</strong></a><br>`;
     });
   }
-  var boostBadge = City.fpProductionBoost ? ` (+${City.fpProductionBoost}%)` : '';
-  var fpTooltipContent = (City.fpProductionBoost ? `<strong>FP Boost: +${City.fpProductionBoost}%</strong><br>` : '') + tooltipHTML.fp;
+  var boostBadge =
+    City.fpProductionBoost ? ` (+${City.fpProductionBoost}%)` : '';
+  var fpTooltipContent =
+    (City.fpProductionBoost ?
+      `<strong>FP Boost: +${City.fpProductionBoost}%</strong><br>`
+    : '') + tooltipHTML.fp;
   var fpHTML = `<span id="fp" class="pop" data-bs-container="#fp" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${fpTooltipContent}"><span data-i18n="daily">Daily</span>: ${
     City.ForgePoints ? City.ForgePoints : 0
   }FP${boostBadge}</span>`;

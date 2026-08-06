@@ -672,8 +672,7 @@ function handleRequestFinished(request) {
   const isGameJson = /https?:\/\/.*\.forgeofempires\.com\/game\/json/i.test(
     reqUrl,
   );
-  const isMetadata =
-    /https?:\/\/foe.*\.innogamescdn\.com\/start\/metadata/i.test(reqUrl);
+  const isMetadata = /metadata/i.test(reqUrl);
 
   if (isGameJson || isMetadata) {
     // console.debug(request.request.headers);
@@ -722,6 +721,16 @@ function handleRequestFinished(request) {
         }
 
         // console.debug('parsed:', parsed);
+        if (isMetadata && parsed) {
+          processMetadataEntry(parsed);
+          storage.set('CityEntityDefs', CityEntityDefs);
+          metadataLoaded = true;
+          if (pendingStartupMsg) {
+            startupService(pendingStartupMsg);
+            pendingStartupMsg = null;
+          }
+        }
+
         if (parsed && parsed.length) {
           for (var i = 0; i < parsed.length; i++) {
             const msg = parsed[i];
@@ -739,7 +748,9 @@ function handleRequestFinished(request) {
                   (item) =>
                     item &&
                     item.url &&
-                    (item.url.endsWith('.json') || item.url.includes('.json?')),
+                    (item.url.includes('metadata') ||
+                      item.url.endsWith('.json') ||
+                      item.url.includes('.json?')),
                 );
                 const requests = validItems.map((item) => {
                   let fetchUrl = item.url;
@@ -2717,40 +2728,57 @@ function processMetadataEntry(msg) {
     return;
   }
 
-  if (msg.id || msg.asset_id) {
-    if (!msg.name) {
-      msg.name = msg.title || msg.name_key || msg.id || msg.asset_id;
-    }
-    if (msg.id) {
-      CityEntityDefs[msg.id] = msg;
-    }
-    if (msg.asset_id) {
-      CityEntityDefs[msg.asset_id] = msg;
-    }
-    if (msg.id) {
-      var stripped = msg.id
-        .replace(/^(W_|R_|X_)/, '')
-        .replace(/^MultiAge_/, '');
-      if (stripped) {
-        CityEntityDefs[stripped] = msg;
-      }
-    }
-  }
+  if (typeof msg === 'object' && msg !== null) {
+    if (
+      msg.id ||
+      msg.asset_id ||
+      msg.unitTypeId ||
+      msg.__class__ ||
+      (msg.name && typeof msg.name === 'string')
+    ) {
+      const entityId = msg.id || msg.asset_id || msg.unitTypeId;
+      if (entityId) {
+        if (!msg.name) {
+          msg.name = msg.title || msg.name_key || msg.nameKey || entityId;
+        }
+        if (msg.id) CityEntityDefs[msg.id] = msg;
+        if (msg.asset_id) CityEntityDefs[msg.asset_id] = msg;
 
-  if (msg.__class__ && msg.__class__ == 'UnitType') {
-    const unitKey = msg.unitTypeId || msg.id;
-    if (unitKey) {
-      MilitaryDefs[unitKey] = {
-        name: msg.name,
-        era: msg.minEra || msg.era,
-      };
+        var stripped = String(entityId)
+          .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
+          .replace(/^MultiAge_/, '')
+          .replace(/^AllAge_/, '');
+        if (stripped) {
+          CityEntityDefs[stripped] = msg;
+        }
+      }
+
+      if (msg.__class__ === 'UnitType' || msg.unitTypeId) {
+        const unitKey = msg.unitTypeId || msg.id;
+        if (unitKey) {
+          MilitaryDefs[unitKey] = {
+            name: msg.name || unitKey,
+            era: msg.minEra || msg.era,
+          };
+        }
+      } else if (msg.__class__ === 'CastleSystemLevelMetadata') {
+        pushUniqueMetadata(CastleDefs, msg, 'level');
+      } else if (msg.__class__ === 'SelectionKitMetadata') {
+        pushUniqueMetadata(SelectionKitDefs, msg, 'id');
+      } else if (msg.__class__ === 'BoostMetadata') {
+        pushUniqueMetadata(BoostMetadataDefs, msg, 'id');
+      }
+    } else {
+      Object.keys(msg).forEach((key) => {
+        const val = msg[key];
+        if (val && typeof val === 'object') {
+          if (!Array.isArray(val) && !val.id && !val.asset_id) {
+            val.id = key;
+          }
+          processMetadataEntry(val);
+        }
+      });
     }
-  } else if (msg.__class__ && msg.__class__ == 'CastleSystemLevelMetadata') {
-    pushUniqueMetadata(CastleDefs, msg, 'level');
-  } else if (msg.__class__ && msg.__class__ == 'SelectionKitMetadata') {
-    pushUniqueMetadata(SelectionKitDefs, msg, 'id');
-  } else if (msg.__class__ && msg.__class__ == 'BoostMetadata') {
-    pushUniqueMetadata(BoostMetadataDefs, msg, 'id');
   }
 }
 

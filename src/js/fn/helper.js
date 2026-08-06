@@ -185,12 +185,16 @@ export function fGBsname(city_entity) {
 
 export function fEntityNameTrim(name) {
   if (!name) return '';
-  var raw = name;
+  var raw = String(name);
   var keysToTry = [
     raw,
-    raw.replace(/^(W_|R_|X_)/, ''),
-    raw.replace(/^(W_|R_|X_)/, '').replace(/^MultiAge_/, ''),
+    raw.replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, ''),
+    raw
+      .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
+      .replace(/^MultiAge_/, '')
+      .replace(/^AllAge_/, ''),
     raw.replace(/^MultiAge_/, ''),
+    raw.replace(/^AllAge_/, ''),
   ];
   for (var i = 0; i < keysToTry.length; i++) {
     var k = keysToTry[i];
@@ -209,7 +213,19 @@ export function fEntityNameTrim(name) {
   if (gbName && gbName !== raw) {
     return gbName;
   }
-  return raw;
+
+  // Clean Title Fallback when entity is missing from CityEntityDefs
+  var fallback = raw
+    .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
+    .replace(
+      /^(MultiAge_|AllAge_|StoneAge_|BronzeAge_|IronAge_|EarlyMiddleAge_|HighMiddleAge_|LateMiddleAge_|ColonialAge_|IndustrialAge_|ProgressiveEra_|ModernEra_|PostModernEra_|ContemporaryEra_|TomorrowEra_|FutureEra_|ArcticFuture_|OceanicFuture_|VirtualFuture_|SpaceAgeMars_|SpaceAgeAsteroidBelt_|SpaceAgeVenus_|SpaceAgeJupiterMoon_|SpaceAgeSpaceHub_)/i,
+      '',
+    )
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/_/g, ' ')
+    .trim();
+
+  return fallback || raw;
 }
 
 export function fGBname(city_entity) {
