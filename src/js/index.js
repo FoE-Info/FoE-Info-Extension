@@ -672,7 +672,11 @@ function handleRequestFinished(request) {
   const isGameJson = /https?:\/\/.*\.forgeofempires\.com\/game\/json/i.test(
     reqUrl,
   );
-  const isMetadata = /metadata/i.test(reqUrl);
+  const isMetadata =
+    !isGameJson &&
+    (/https?:\/\/foe.*\.innogamescdn\.com\/.*metadata/i.test(reqUrl) ||
+      /\/start\/metadata/i.test(reqUrl) ||
+      /metadata\?id=/i.test(reqUrl));
 
   if (isGameJson || isMetadata) {
     // console.debug(request.request.headers);
@@ -723,7 +727,7 @@ function handleRequestFinished(request) {
         // console.debug('parsed:', parsed);
         if (isMetadata && parsed) {
           processMetadataEntry(parsed);
-          storage.set('CityEntityDefs', CityEntityDefs);
+          saveCityEntityDefsDebounced();
           metadataLoaded = true;
           if (pendingStartupMsg) {
             startupService(pendingStartupMsg);
@@ -2721,6 +2725,15 @@ function pushUniqueMetadata(arr, msg, keyField = 'id') {
   }
 }
 
+let saveMetadataTimer = null;
+function saveCityEntityDefsDebounced() {
+  if (saveMetadataTimer) clearTimeout(saveMetadataTimer);
+  saveMetadataTimer = setTimeout(() => {
+    storage.set('CityEntityDefs', CityEntityDefs);
+    saveMetadataTimer = null;
+  }, 1000);
+}
+
 function processMetadataEntry(msg) {
   if (!msg) return;
   if (Array.isArray(msg)) {
@@ -2729,50 +2742,48 @@ function processMetadataEntry(msg) {
   }
 
   if (typeof msg === 'object' && msg !== null) {
-    if (
-      msg.id ||
-      msg.asset_id ||
-      msg.unitTypeId ||
-      msg.__class__ ||
-      (msg.name && typeof msg.name === 'string')
-    ) {
-      const entityId = msg.id || msg.asset_id || msg.unitTypeId;
-      if (entityId) {
-        if (!msg.name) {
-          msg.name = msg.title || msg.name_key || msg.nameKey || entityId;
-        }
-        if (msg.id) CityEntityDefs[msg.id] = msg;
-        if (msg.asset_id) CityEntityDefs[msg.asset_id] = msg;
-
-        var stripped = String(entityId)
-          .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
-          .replace(/^MultiAge_/, '')
-          .replace(/^AllAge_/, '');
-        if (stripped) {
-          CityEntityDefs[stripped] = msg;
-        }
+    const entityId = msg.id || msg.asset_id || msg.unitTypeId;
+    if (entityId) {
+      if (!msg.name) {
+        msg.name = msg.title || msg.name_key || msg.nameKey || entityId;
       }
+      if (msg.id) CityEntityDefs[msg.id] = msg;
+      if (msg.asset_id) CityEntityDefs[msg.asset_id] = msg;
 
-      if (msg.__class__ === 'UnitType' || msg.unitTypeId) {
-        const unitKey = msg.unitTypeId || msg.id;
-        if (unitKey) {
-          MilitaryDefs[unitKey] = {
-            name: msg.name || unitKey,
-            era: msg.minEra || msg.era,
-          };
-        }
-      } else if (msg.__class__ === 'CastleSystemLevelMetadata') {
-        pushUniqueMetadata(CastleDefs, msg, 'level');
-      } else if (msg.__class__ === 'SelectionKitMetadata') {
-        pushUniqueMetadata(SelectionKitDefs, msg, 'id');
-      } else if (msg.__class__ === 'BoostMetadata') {
-        pushUniqueMetadata(BoostMetadataDefs, msg, 'id');
+      var stripped = String(entityId)
+        .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
+        .replace(/^MultiAge_/, '')
+        .replace(/^AllAge_/, '');
+      if (stripped) {
+        CityEntityDefs[stripped] = msg;
       }
-    } else {
+    }
+
+    if (msg.__class__ === 'UnitType' || msg.unitTypeId) {
+      const unitKey = msg.unitTypeId || msg.id;
+      if (unitKey) {
+        MilitaryDefs[unitKey] = {
+          name: msg.name || unitKey,
+          era: msg.minEra || msg.era,
+        };
+      }
+    } else if (msg.__class__ === 'CastleSystemLevelMetadata') {
+      pushUniqueMetadata(CastleDefs, msg, 'level');
+    } else if (msg.__class__ === 'SelectionKitMetadata') {
+      pushUniqueMetadata(SelectionKitDefs, msg, 'id');
+    } else if (msg.__class__ === 'BoostMetadata') {
+      pushUniqueMetadata(BoostMetadataDefs, msg, 'id');
+    }
+
+    if (!entityId) {
       Object.keys(msg).forEach((key) => {
         const val = msg[key];
         if (val && typeof val === 'object') {
-          if (!Array.isArray(val) && !val.id && !val.asset_id) {
+          if (
+            !Array.isArray(val) &&
+            !val.id &&
+            (val.name || val.abilities || val.type || val.asset_id)
+          ) {
             val.id = key;
           }
           processMetadataEntry(val);
