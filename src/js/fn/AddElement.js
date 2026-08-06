@@ -40,10 +40,34 @@ function fCloseButton() {
   return '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
 }
 
+let pendingUpdates = [];
+let updateScheduled = false;
+
+function batchDOMUpdate(fn) {
+  pendingUpdates.push(fn);
+  if (!updateScheduled) {
+    updateScheduled = true;
+    requestAnimationFrame(() => {
+      const updates = pendingUpdates;
+      pendingUpdates = [];
+      updateScheduled = false;
+      for (const update of updates) {
+        try {
+          update();
+        } catch (err) {
+          console.error('DOM update error in animation frame:', err);
+        }
+      }
+    });
+  }
+}
+
 export {
   fCollapseIcon as updateIcon,
   fAddCollapseIcon as icon,
   fCopyButton as copy,
   fPostButton as post,
   fCloseButton as close,
+  batchDOMUpdate,
 };
+
