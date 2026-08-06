@@ -5,10 +5,17 @@ Guidelines for code structure, DOM manipulation, service dispatching, and math u
 ## Code Conventions & Interfaces
 
 - **Modular Services (`src/js/msg/`)**:
-  - Network message handling is split into domain-specific service files (e.g. [`StartupService.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/msg/StartupService.js), [`GreatBuildingsService.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/msg/GreatBuildingsService.js), [`OtherPlayerService.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/msg/OtherPlayerService.js)).
+  - Network message handling is split into 11 domain-specific service files: `StartupService.js`, `GreatBuildingsService.js`, `GuildBattlegroundService.js`, `OtherPlayerService.js`, `ArmyUnitManagementService.js`, `BonusService.js`, `CityProductionService.js`, `ClanBattleService.js`, `ConversationService.js`, `GuildExpeditionService.js`, and `ResourceService.js`.
   - Service functions accept parsed JSON payload objects and update global state / DOM UI accordingly.
-- **UI & DOM Overlays**:
-  - Use [`src/js/fn/AddElement.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/fn/AddElement.js) and Bootstrap 5 components for injecting custom overlays into Forge of Empires game windows.
+- **UI, Storage & Helper Utilities (`src/js/fn/`)**:
+  - [`AddElement.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/fn/AddElement.js): Overlay container & button construction (`fAddCollapseIcon()`, `fCopyIcon()`, `fPostButton()`, `fCloseButton()`).
+  - [`collapse.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/fn/collapse.js): Panel collapsibility & visibility toggles (`fCollapseStats()`, `fCollapseBattleground()`, `fCollapseArmy()`, `fCollapseFriends()`).
+  - [`constants.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/fn/constants.js): System security constants (`salt`).
+  - [`copy.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/fn/copy.js): Clipboard string formatting for FP investments, donor ratios & GBG status (`BattlegroundCopy()`, `DonorCopy()`).
+  - [`globals.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/fn/globals.js): Extension global UI state setters (`setToolOptions()`, `setFriendsSize()`, `setBattlegroundSize()`, `setArmySize()`).
+  - [`helper.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/fn/helper.js): General UI helpers, age translations (`numAges`, `fGVGagesname()`), incident indicators (`fShowIncidents()`).
+  - [`post.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/fn/post.js): Discord Webhook alert dispatching (`postToDiscord()`, `postAlerttoDsicord()`).
+  - [`storage.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/src/js/fn/storage.js): Async wrapper for `chrome.storage.local` persistent state management.
   - DOM selection and event binding use jQuery 3.7 (`$`).
 - **Precision Math**:
   - Always use `bignumber.js` (`BigNumber`) for large Forge of Empires resource, point, or donor calculation math to prevent JS IEEE 754 float precision loss.
