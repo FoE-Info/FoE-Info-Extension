@@ -743,9 +743,15 @@ function handleRequestFinished(request) {
                 );
                 const requests = validItems.map((item) => {
                   let fetchUrl = item.url;
-                  if (!fetchUrl.startsWith('http://') && !fetchUrl.startsWith('https://')) {
+                  if (
+                    !fetchUrl.startsWith('http://') &&
+                    !fetchUrl.startsWith('https://')
+                  ) {
                     try {
-                      fetchUrl = new URL(item.url, reqUrl || 'https://en0.forgeofempires.com/').href;
+                      fetchUrl = new URL(
+                        item.url,
+                        reqUrl || 'https://en0.forgeofempires.com/',
+                      ).href;
                     } catch (e) {
                       fetchUrl = 'https://en0.forgeofempires.com/' + item.url;
                     }
@@ -778,8 +784,15 @@ function handleRequestFinished(request) {
                 for (const item of msg.responseData) {
                   try {
                     let fetchUrl = item.url;
-                    if (fetchUrl && !fetchUrl.startsWith('http://') && !fetchUrl.startsWith('https://')) {
-                      fetchUrl = new URL(item.url, reqUrl || 'https://en0.forgeofempires.com/').href;
+                    if (
+                      fetchUrl &&
+                      !fetchUrl.startsWith('http://') &&
+                      !fetchUrl.startsWith('https://')
+                    ) {
+                      fetchUrl = new URL(
+                        item.url,
+                        reqUrl || 'https://en0.forgeofempires.com/',
+                      ).href;
                     }
                     const resp = await fetch(fetchUrl);
                     const data = await resp.json();
@@ -1079,10 +1092,11 @@ function handleRequestFinished(request) {
               msg.requestClass == 'StartupService' &&
               msg.requestMethod == 'getData'
             ) {
-              contentType = request.request.headers.find(
-                (header) => header.name === ':authority',
+              contentType = request.request?.headers?.find(
+                (header) => header.name?.toLowerCase() === ':authority',
               );
-              if (contentType) GameOrigin = contentType.value.split('.')[0];
+              if (contentType?.value)
+                GameOrigin = contentType.value.split('.')[0];
               console.debug('GameOrigin:', GameOrigin);
 
               browser.storage.local.getBytesInUse(null).then((size) => {
@@ -1355,10 +1369,18 @@ function handleRequestFinished(request) {
               /*GB Donors */
               if (msg.requestMethod == 'getConstructionRanking') {
                 // console.debug('msg:', msg);
-                getConstructionRanking(
-                  msg,
-                  JSON.parse(request.request.postData.text),
-                );
+                let postPayload = null;
+                try {
+                  if (request.request?.postData?.text) {
+                    postPayload = JSON.parse(request.request.postData.text);
+                  }
+                } catch (e) {
+                  console.debug(
+                    'Failed to parse getConstructionRanking postData JSON:',
+                    e,
+                  );
+                }
+                getConstructionRanking(msg, postPayload);
               } else if (msg.requestMethod == 'getConstruction') {
                 // console.debug('msg:', msg);
                 getConstruction(msg);
@@ -1553,8 +1575,18 @@ function handleRequestFinished(request) {
               } else console.debug('GuildBattlegroundBuildingService', msg);
             } else if (msg.requestClass == 'GuildBattlegroundSignalsService') {
               // GuildBattleground
-              const payload = JSON.parse(request.request.postData.text)[0]
-                .requestData;
+              let payload = null;
+              try {
+                if (request.request?.postData?.text) {
+                  const parsedPost = JSON.parse(request.request.postData.text);
+                  payload = parsedPost?.[0]?.requestData;
+                }
+              } catch (e) {
+                console.debug(
+                  'Failed to parse GuildBattlegroundSignalsService postData JSON:',
+                  e,
+                );
+              }
               // console.debug("GuildBattlegroundSignalsService", msg,payload);
               if (msg.requestMethod == 'setSignal') {
                 /*Guild Battleground*/
@@ -2668,7 +2700,8 @@ function pushUniqueMetadata(arr, msg, keyField = 'id') {
     return;
   }
   const existingIdx = arr.findIndex(
-    (item) => (item[keyField] || item.identifier || item.level || item.name) === keyVal,
+    (item) =>
+      (item[keyField] || item.identifier || item.level || item.name) === keyVal,
   );
   if (existingIdx >= 0) {
     arr[existingIdx] = msg;
@@ -2695,7 +2728,9 @@ function processMetadataEntry(msg) {
       CityEntityDefs[msg.asset_id] = msg;
     }
     if (msg.id) {
-      var stripped = msg.id.replace(/^(W_|R_|X_)/, '').replace(/^MultiAge_/, '');
+      var stripped = msg.id
+        .replace(/^(W_|R_|X_)/, '')
+        .replace(/^MultiAge_/, '');
       if (stripped) {
         CityEntityDefs[stripped] = msg;
       }
@@ -2722,7 +2757,8 @@ function processMetadataEntry(msg) {
 export async function ensureCityEntitiesMetadata() {
   if (Object.keys(CityEntityDefs).length > 20) return;
 
-  const lang = (GameOrigin && GameOrigin.length >= 2) ? GameOrigin.substring(0, 2) : 'en';
+  const lang =
+    GameOrigin && GameOrigin.length >= 2 ? GameOrigin.substring(0, 2) : 'en';
   const urls = [
     `https://foe-${lang}.innogamescdn.com/assets/metadata/city_entities.json`,
     `https://foe-en.innogamescdn.com/assets/metadata/city_entities.json`,
@@ -2743,7 +2779,11 @@ export async function ensureCityEntitiesMetadata() {
         if (Object.keys(CityEntityDefs).length > 0) {
           storage.set('CityEntityDefs', CityEntityDefs);
           metadataLoaded = true;
-          console.debug('CityEntityDefs loaded successfully from CDN:', Object.keys(CityEntityDefs).length, 'entities');
+          console.debug(
+            'CityEntityDefs loaded successfully from CDN:',
+            Object.keys(CityEntityDefs).length,
+            'entities',
+          );
           break;
         }
       }
@@ -2783,7 +2823,9 @@ function onClickHandler(info, tab) {
   }
 }
 
-browser.runtime.onInstalled.addListener(handleInstalled);
+if (browser?.runtime?.onInstalled?.addListener) {
+  browser.runtime.onInstalled.addListener(handleInstalled);
+}
 // Check whether new version is installed
 function handleInstalled(details) {
   if (details.reason == 'install') {

@@ -164,7 +164,15 @@ export function showGreatBuldingDonation() {
             ).dp(0);
           else GBrewards[Rank - 1] = 0;
           Reward[Rank - 1] = BigNumber(GBrewards[Rank - 1])
-            .times(currentPercent ? currentPercent / 100 : 1.9)
+            .times(
+              (
+                currentPercent !== undefined &&
+                  currentPercent !== null &&
+                  !isNaN(currentPercent)
+              ) ?
+                currentPercent / 100
+              : 1.9,
+            )
             .dp(0, 2);
           // console.debug(place.reward.strategy_point_amount,BigNumber(place.reward.strategy_point_amount).dp(0),GBrewards[Rank-1]);
         } else if (Rank == 6) {
