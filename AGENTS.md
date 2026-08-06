@@ -11,3 +11,7 @@ This repository decouples project guidelines into modular rules located in `.age
 
 - [`graphify-sourcemap.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/graphify-sourcemap.md): Knowledge Graph architecture, Graphify navigation, query tools, and git-staging rules.
 - [`git-workflow.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/git-workflow.md): Development branch branching lifecycle, commit conventions, topic branch cleanup, and Linuxbrew tool paths.
+- [`extension-architecture.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/extension-architecture.md): Chrome Manifest V3 extension guidelines, content script execution, permissions, and extension storage.
+- [`webpack-build.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/webpack-build.md): Webpack 5 bundling, dev vs webstore builds, and environment execution.
+- [`codebase-conventions.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/codebase-conventions.md): jQuery DOM injection, network request dispatching, BigNumber precision math, and service interfaces.
+- [`agentic-orchestration.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/agentic-orchestration.md): AI agent workflows, mandatory Graphify AST queries, subagent delegation, and verification protocols.

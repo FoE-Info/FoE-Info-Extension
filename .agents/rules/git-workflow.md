@@ -11,4 +11,5 @@
 
 ## Environment & Tooling Execution
 
-- **Node / NPM Binary Paths**: Node and NPM are installed via Linuxbrew (`/var/home/linuxbrew/.linuxbrew/bin` and `/home/linuxbrew/.linuxbrew/bin`). When executing `npm` or `node` commands, prefix PATH with `export PATH=/var/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/bin:$PATH` and use `BypassSandbox: true`.
+- **Environment & Tool Managers**: Local project tools, PATH, and environment variables are automatically loaded via `.mise.toml`, `.envrc` (direnv), and `.env`.
+- **Sandbox Execution**: Node, NPM, UV, and Mise are installed via Linuxbrew (`/var/home/linuxbrew/.linuxbrew/bin` and `/home/linuxbrew/.linuxbrew/bin`). When running shell commands, use `BypassSandbox: true` to access system Homebrew binaries seamlessly.

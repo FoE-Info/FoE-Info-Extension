@@ -1,0 +1,8 @@
+[tools]
+node = "system"
+uv = "system"
+
+[env]
+_.file = ".env"
+PATH = "/var/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/bin:/var/home/kronikpillow/.local/bin:_PATH"
+NODE_ENV = "development"

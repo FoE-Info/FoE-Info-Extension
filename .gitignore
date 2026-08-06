@@ -3,3 +3,7 @@ build
 package-lock.json
 .idea
 stuff
+.env
+.envrc
+.direnv/
+graphify-out/
