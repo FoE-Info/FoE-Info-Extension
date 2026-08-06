@@ -660,16 +660,9 @@ function handleRequestFinished(request) {
   // console.debug('request',request);
   // console.debug('response',response);
   var contentType = '';
-  var contentHeader = '';
-
-  if (response.httpVersion == 'http/2.0')
-    contentHeader = response.headers.find(
-      (header) => header.name === 'content-type',
-    );
-  else
-    contentHeader = response.headers.find(
-      (header) => header.name === 'Content-Type',
-    );
+  var contentHeader = response?.headers?.find(
+    (header) => header.name.toLowerCase() === 'content-type',
+  );
 
   if (contentHeader) {
     contentType = getType(contentHeader.value);
@@ -677,16 +670,16 @@ function handleRequestFinished(request) {
 
   // if (contentType == "json") {
   if (
-    request.request.url.match(
+    request.request?.url?.match(
       /https:\/\/.*\.forgeofempires\.com\/game\/json\?h=/g,
     ) ||
-    request.request.url.match(
+    request.request?.url?.match(
       /https:\/\/foe.*\.innogamescdn\.com\/start\/metadata\?id=(.*)/g,
     )
   ) {
     // console.debug(request.request.headers);
-    contentType = request.request.headers.find(
-      (header) => header.name === 'client-identification',
+    contentType = request.request?.headers?.find(
+      (header) => header.name.toLowerCase() === 'client-identification',
     );
     // if(contentType) console.debug('client-identification:', contentType.value.substr(8,5));
     // else{
@@ -705,14 +698,26 @@ function handleRequestFinished(request) {
       // console.debug('version:', GameVersion);
     }
 
-    request.getContent().then(async ([body, mimeType]) => {
-      // console.log("Content: ", body);
-      // console.log("MIME type: ", mimeType);
-      const parsed = JSON.parse(body);
-      // console.debug('parsed:', parsed);
-      if (parsed && parsed.length) {
-        for (var i = 0; i < parsed.length; i++) {
-          const msg = parsed[i];
+    request
+      .getContent()
+      .then(async (result) => {
+        if (!result) return;
+        const [body, encoding] = Array.isArray(result) ? result : [result, null];
+        if (!body) return;
+
+        let parsed;
+        try {
+          const rawContent = encoding === 'base64' ? atob(body) : body;
+          parsed = JSON.parse(rawContent);
+        } catch (e) {
+          console.debug('Failed to parse network content JSON:', e);
+          return;
+        }
+
+        // console.debug('parsed:', parsed);
+        if (parsed && parsed.length) {
+          for (var i = 0; i < parsed.length; i++) {
+            const msg = parsed[i];
 
           console.debug('msg', msg);
 
@@ -2603,7 +2608,7 @@ export function showRewards(rewards) {
       });
       text += '</p>';
     }
-  });
+  }).catch((err) => console.debug('getContent error:', err));
 
   cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" href="#rewardsText" data-toggle="collapse">
   ${element.icon('rewardsicon', 'rewardsText', collapse.collapseRewards)}
