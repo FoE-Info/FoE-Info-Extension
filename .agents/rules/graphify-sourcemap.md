@@ -1,11 +1,13 @@
 # Codebase Knowledge Graph & Source Map Rules
 
-This repository maintains a pre-built knowledge graph in `graphify-out/` detailing codebase architecture, god nodes, community dependencies, and file relationships.
+This repository enforces the Graphify Knowledge Graph in `graphify-out/` as the **mandatory primary sourcemap** for codebase architecture, god nodes, community dependencies, and file relationships.
 
 ## Rules & Navigation Workflow
 
-- **Source Map & Architecture**: Reference [`graphify-out/graph.json`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/graphify-out/graph.json) and [`graphify-out/GRAPH_REPORT.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/graphify-out/GRAPH_REPORT.md) as the primary architectural source map for this codebase.
-- **Codebase Queries**: For architectural questions, dependency tracing, or module relationships, execute `graphify query "<question>"` when `graphify-out/graph.json` exists. Use `graphify path "<A>" "<B>"` for node-to-node path analysis and `graphify explain "<concept>"` for module deep dives.
+- **Primary Architectural Sourcemap**: AI agents MUST reference [`graphify-out/graph.json`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/graphify-out/graph.json) and [`graphify-out/GRAPH_REPORT.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/graphify-out/GRAPH_REPORT.md) as the primary architectural sourcemap before conducting broad codebase file searches.
+- **Graphify Navigation & MCP Queries**: For architectural questions, dependency tracing, or module relationships:
+  - **MCP Tools**: Query `graphify-foe-info` MCP tools (`query_graph`, `god_nodes`, `shortest_path`, `get_community`, `get_neighbors`) FIRST for zero-token AST lookups.
+  - **CLI Tools**: Execute `graphify query "<question>"`, `graphify path "<A>" "<B>"`, or `graphify explain "<concept>"` when analyzing call chains or module boundaries.
 - **Architecture Overview**: Consult [`graphify-out/GRAPH_REPORT.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/graphify-out/GRAPH_REPORT.md) for core abstractions (god nodes), community breakdown, and cross-module couplings.
-- **Graph Maintenance**: After introducing or editing code, run `graphify update .` to update the AST graph structure.
-- **Git Staging & Ignored Artifacts**: `graphify-out/` is excluded by `.gitignore`. Never pass `graphify-out/` to `git add` during commits; run `graphify update .` locally to keep the knowledge graph synchronized without staging it into git index.
+- **Graph Freshness & Maintenance**: Compare graph build commit in `GRAPH_REPORT.md` with `git rev-parse HEAD`. After introducing or editing source code, execute `npm run graphify-update` (or `graphify update .`) to update the AST graph structure.
+- **Git Staging Invariant**: `graphify-out/` is git-ignored. NEVER pass `graphify-out/` to `git add` during commits; keep the graph updated locally without committing `graphify-out/` artifacts.
