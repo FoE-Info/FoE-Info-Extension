@@ -7,3 +7,4 @@ stuff
 .envrc
 .direnv/
 graphify-out/
+.venv/

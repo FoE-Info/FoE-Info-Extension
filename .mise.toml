@@ -4,5 +4,7 @@ uv = "latest"
 
 [env]
 _.file = ".env"
+PATH = "./.venv/bin:./node_modules/.bin:_PATH"
 NODE_ENV = "development"
+VIRTUAL_ENV = "./.venv"
 

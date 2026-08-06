@@ -1,0 +1,2 @@
+# Local Python dependencies for FoE-Info-Extension (Graphify AST Knowledge Graph)
+graphifyy>=0.9.34
