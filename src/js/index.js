@@ -2706,7 +2706,7 @@ function processMetadataEntry(msg) {
   } else if (!msg.__class__) {
     return;
   } else {
-    console.debug(msg.name, msg);
+    console.debug(msg.name || msg.identifier || msg.__class__, msg);
   }
 }
 
