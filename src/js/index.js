@@ -214,14 +214,14 @@ console.debug(tool.version);
 // 	en: 'i18n/en.json',
 // 	// el: "i18n/el.json"
 // 		} ).done( function() { console.debug('i18n.load OK') } );
-export var darkMode = browser.devtools.panels.themeName;
+export var darkMode = browser?.devtools?.panels?.themeName || 'default';
 // if (window.matchMedia &&
 //     window.matchMedia('(prefers-color-scheme: dark)').matches) {
 // //   img.style.filter="invert(100%)";
 // 		console.debug('dark mode',window.matchMedia('(prefers-color-scheme: dark)').matches);
 // 		// darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 // }
-console.info('themeName', browser.devtools.panels.themeName);
+console.info('themeName', browser?.devtools?.panels?.themeName);
 var title = document.createElement('div');
 document.body.appendChild(title);
 title.id = 'title';
@@ -634,15 +634,17 @@ function originWithId(header) {
   );
 }
 
-chrome.webRequest.onBeforeSendHeaders.addListener(
-  (details) => {
-    return {
-      requestHeaders: details.requestHeaders.filter((x) => !originWithId(x)),
-    };
-  },
-  { urls: ['https://*.innogamescdn.com/*'] },
-  ['requestHeaders'],
-);
+if (typeof chrome !== 'undefined' && chrome.webRequest?.onBeforeSendHeaders) {
+  chrome.webRequest.onBeforeSendHeaders.addListener(
+    (details) => {
+      return {
+        requestHeaders: details.requestHeaders.filter((x) => !originWithId(x)),
+      };
+    },
+    { urls: ['https://*.innogamescdn.com/*'] },
+    ['requestHeaders'],
+  );
+}
 
 browser.devtools.network.onRequestFinished.addListener(handleRequestFinished);
 
@@ -2780,15 +2782,19 @@ function setHeight() {
   setRewardSize(heightRewards);
 }
 
-browser.runtime.onUpdateAvailable.addListener(handleUpdateAvailable);
 function handleUpdateAvailable(details) {
   console.debug('updating to version ' + details.version);
   alert('updating to version ' + details.version);
   browser.runtime.reload();
 }
 
-let requestingCheck = browser.runtime.requestUpdateCheck();
-requestingCheck.then(onRequested, onError);
+if (browser?.runtime?.onUpdateAvailable && (typeof window === 'undefined' || !window.document)) {
+  browser.runtime.onUpdateAvailable.addListener(handleUpdateAvailable);
+  if (browser.runtime.requestUpdateCheck) {
+    let requestingCheck = browser.runtime.requestUpdateCheck();
+    requestingCheck.then(onRequested, onError);
+  }
+}
 
 function onRequested(status, details) {
   if (status == 'update_available') {
