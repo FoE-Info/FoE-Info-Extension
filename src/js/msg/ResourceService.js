@@ -7,7 +7,7 @@ import * as element from '../fn/AddElement';
 import { showOptions } from '../vars/showOptions.js';
 
 export var ResourceDefs = [];
-export var ResourceNames = [];
+export var ResourceNames = {};
 export var Resources = [];
 export var availableFP = 0;
 
@@ -29,9 +29,12 @@ export function setResourceDefs(msg) {
 }
 
 function loadResourceDefs(msg) {
+  if (!Array.isArray(msg)) return;
   ResourceDefs = msg;
   ResourceDefs.forEach((rssDef) => {
-    ResourceNames[rssDef.id] = rssDef.name;
+    if (rssDef && rssDef.id) {
+      ResourceNames[rssDef.id] = rssDef.name;
+    }
   });
 }
 

@@ -173,7 +173,7 @@ export var CityEntityDefs = new Proxy(rawCityEntityDefs, {
   },
 });
 export var CityProtections = [];
-export var MilitaryDefs = [];
+export var MilitaryDefs = {};
 export var CastleDefs = [];
 export var SelectionKitDefs = [];
 export var BoostMetadataDefs = [];
@@ -2772,13 +2772,27 @@ function pushUniqueMetadata(arr, msg, keyField = 'id') {
     arr.push(msg);
     return;
   }
-  const existingIdx = arr.findIndex(
-    (item) =>
-      (item[keyField] || item.identifier || item.level || item.name) === keyVal,
-  );
-  if (existingIdx >= 0) {
-    arr[existingIdx] = msg;
+  if (!arr._keyMap) {
+    Object.defineProperty(arr, '_keyMap', {
+      value: new Map(),
+      enumerable: false,
+      writable: true,
+      configurable: true,
+    });
+    for (let i = 0; i < arr.length; i++) {
+      const k = arr[i]
+        ? arr[i][keyField] || arr[i].identifier || arr[i].level || arr[i].name
+        : undefined;
+      if (k !== undefined && k !== null) {
+        arr._keyMap.set(k, i);
+      }
+    }
+  }
+  if (arr._keyMap.has(keyVal)) {
+    const idx = arr._keyMap.get(keyVal);
+    arr[idx] = msg;
   } else {
+    arr._keyMap.set(keyVal, arr.length);
     arr.push(msg);
   }
 }
