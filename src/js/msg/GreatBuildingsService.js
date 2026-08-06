@@ -698,7 +698,10 @@ function fDonationSuggest(reward) {
     currentPercent,
     BigNumber(reward).times(currentPercent).div(100).dp(0, 2),
   );
-  return new BigNumber(reward).times(currentPercent).div(100).dp(0, 2);
+  return new BigNumber(reward)
+    .times(currentPercent)
+    .div(100)
+    .dp(0, BigNumber.ROUND_CEIL);
 }
 
 export function setCurrentPercent(percent) {

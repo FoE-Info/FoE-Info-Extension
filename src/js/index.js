@@ -735,8 +735,11 @@ function handleRequestFinished(request) {
       contentType.value &&
       GameVersion != contentType.value.substr(8, 5)
     ) {
-      GameVersion = contentType.value.substr(8, 5);
-      citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${GameVersion}<br>${EXT_NAME}: ${tool.version}</div>`;
+      requestAnimationFrame(() => {
+        const versionDiv = document.createElement('div');
+        versionDiv.innerHTML = `<span data-i18n="gameversion">Game Version</span>: ${GameVersion}<br>${EXT_NAME}: ${tool.version}`;
+        citystats.appendChild(versionDiv);
+      });
       // console.debug('version:', GameVersion);
     }
 
