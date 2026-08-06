@@ -741,59 +741,53 @@ function handleRequestFinished(request) {
                     item.url &&
                     (item.url.endsWith('.json') || item.url.includes('.json?')),
                 );
-                const requests = validItems.map((item) =>
-                  fetch(item.url)
+                const requests = validItems.map((item) => {
+                  let fetchUrl = item.url;
+                  if (!fetchUrl.startsWith('http://') && !fetchUrl.startsWith('https://')) {
+                    try {
+                      fetchUrl = new URL(item.url, reqUrl || 'https://en0.forgeofempires.com/').href;
+                    } catch (e) {
+                      fetchUrl = 'https://en0.forgeofempires.com/' + item.url;
+                    }
+                  }
+                  return fetch(fetchUrl)
                     .then((r) => r.json())
                     .catch((err) => {
-                      console.error('Failed loading metadata', item.url, err);
+                      console.error('Failed loading metadata', fetchUrl, err);
                       return null;
-                    }),
-                );
+                    });
+                });
                 const results = await Promise.all(requests);
 
-                results.forEach((data, idx) => {
+                results.forEach((data) => {
                   if (!data) return;
-                  const identifier = validItems[idx].identifier;
-                  if (identifier === 'city_entities') {
-                    data.forEach(function (msg) {
-                      if (
-                        msg.__class__ &&
-                        msg.__class__.substring(0, 10) == 'CityEntity'
-                      ) {
-                        if (!CityEntityDefs[msg.id]) {
-                          CityEntityDefs[msg.id] = {
-                            name: msg.name,
-                            abilities: [],
-                            entity_levels: [],
-                            available_products: [],
-                          };
-                        }
-                        CityEntityDefs[msg.id] = msg;
-                      } else if (
-                        msg.__class__ &&
-                        msg.__class__ == 'GenericCityEntity'
-                      ) {
-                        if (!CityEntityDefs[msg.id]) {
-                          CityEntityDefs[msg.id] = {
-                            name: msg.name,
-                            abilities: [],
-                            entity_levels: [],
-                            available_products: [],
-                          };
-                        }
-                        CityEntityDefs[msg.id] = msg;
-                      }
-                    });
+                  if (Array.isArray(data)) {
+                    data.forEach(processMetadataEntry);
+                  } else if (typeof data === 'object') {
+                    processMetadataEntry(data);
                   }
                 });
+                storage.set('CityEntityDefs', CityEntityDefs);
                 metadataLoaded = true;
+                if (pendingStartupMsg) {
+                  startupService(pendingStartupMsg);
+                  pendingStartupMsg = null;
+                }
               } catch (err) {
                 console.error('Metadata fetch failed', err);
                 for (const item of msg.responseData) {
                   try {
-                    const resp = await fetch(item.url);
+                    let fetchUrl = item.url;
+                    if (fetchUrl && !fetchUrl.startsWith('http://') && !fetchUrl.startsWith('https://')) {
+                      fetchUrl = new URL(item.url, reqUrl || 'https://en0.forgeofempires.com/').href;
+                    }
+                    const resp = await fetch(fetchUrl);
                     const data = await resp.json();
-                    data.forEach(processMetadataEntry);
+                    if (Array.isArray(data)) {
+                      data.forEach(processMetadataEntry);
+                    } else if (data && typeof data === 'object') {
+                      processMetadataEntry(data);
+                    }
                   } catch (e) {
                     console.error('metadata fetch failed', item, e);
                   }
@@ -2391,8 +2385,9 @@ function receiveStorage(result) {
       // if(key == ResourceDefs)
       setResourceDefs(value);
     } else if (key == 'CityEntityDefs') {
-      // if(key == CityEntityDefs)
-      CityEntityDefs = value;
+      if (value && typeof value === 'object') {
+        Object.assign(CityEntityDefs, value);
+      }
       console.debug(key, value);
     } else if (key == 'tool') {
       if (value.language != 'auto') {
@@ -2420,6 +2415,7 @@ function receiveStorage(result) {
       // console.debug(value);
     } else console.debug(key, value);
   });
+  ensureCityEntitiesMetadata();
 }
 
 export function initTreasury(resources) {
@@ -2664,69 +2660,96 @@ function rewardObserve() {
   }
 }
 
-function processMetadataEntry(msg) {
-  if (
-    msg.__class__ &&
-    (msg.__class__ == 'CityEntityCulturalGoodsBuilding' ||
-      msg.__class__ == 'CityEntityImpediment' ||
-      msg.__class__ == 'CityEntityDiplomacy' ||
-      msg.__class__ == 'CityEntityStaticProvider' ||
-      msg.__class__ == 'CityEntityStreet' ||
-      msg.__class__ == 'CityEntityHub' ||
-      msg.__class__ == 'CityEntityOutpostShip' ||
-      msg.__class__ == 'QuestTabMetadata' ||
-      msg.__class__ == 'ChainMetadata' ||
-      msg.__class__ == 'BuildingSetMetadata' ||
-      msg.__class__ == 'InfoScreen' ||
-      msg.type == 'off_grid')
-  ) {
+function pushUniqueMetadata(arr, msg, keyField = 'id') {
+  if (!msg) return;
+  const keyVal = msg[keyField] || msg.identifier || msg.level || msg.name;
+  if (!keyVal) {
+    arr.push(msg);
     return;
-  } else if (msg.__class__ && msg.__class__.substring(0, 10) == 'CityEntity') {
-    if (!CityEntityDefs[msg.id]) {
-      CityEntityDefs[msg.id] = {
-        name: msg.name,
-        abilities: [],
-        entity_levels: [],
-        available_products: [],
-      };
-    }
-    CityEntityDefs[msg.id] = msg;
-  } else if (msg.__class__ && msg.__class__ == 'GenericCityEntity') {
-    if (!CityEntityDefs[msg.id]) {
-      CityEntityDefs[msg.id] = {
-        name: msg.name,
-        abilities: [],
-        entity_levels: [],
-        available_products: [],
-      };
-    }
-    CityEntityDefs[msg.id] = msg;
-  } else if (msg.__class__ && msg.__class__ == 'UnitType') {
-    MilitaryDefs[msg.unitTypeId] = {
-      name: msg.name,
-      era: msg.minEra,
-    };
-  } else if (msg.__class__ && msg.__class__ == 'CastleSystemLevelMetadata') {
-    CastleDefs.push(msg);
-  } else if (msg.__class__ && msg.__class__ == 'SelectionKitMetadata') {
-    SelectionKitDefs.push(msg);
-  } else if (msg.__class__ && msg.__class__ == 'BoostMetadata') {
-    BoostMetadataDefs.push(msg);
-  } else if (
-    msg.__class__ &&
-    msg.__class__.substring(0, 18) == 'CityEntityCultural'
-  ) {
-    // ignore
-  } else if (msg.__class__ && msg.__class__ == 'BuildingUpgrade') {
-    // ignore
-  } else if (msg.__class__ && msg.__class__ == 'CityMapEntity') {
-    if (msg.id == 'W_MultiAge_WIN22A11b') {
-      console.info(msg.name, msg);
-    }
-  } else if (!msg.__class__) {
-    return;
+  }
+  const existingIdx = arr.findIndex(
+    (item) => (item[keyField] || item.identifier || item.level || item.name) === keyVal,
+  );
+  if (existingIdx >= 0) {
+    arr[existingIdx] = msg;
   } else {
-    console.debug(msg.name || msg.identifier || msg.__class__, msg);
+    arr.push(msg);
+  }
+}
+
+function processMetadataEntry(msg) {
+  if (!msg) return;
+  if (Array.isArray(msg)) {
+    msg.forEach(processMetadataEntry);
+    return;
+  }
+
+  if (msg.id || msg.asset_id) {
+    if (!msg.name) {
+      msg.name = msg.title || msg.name_key || msg.id || msg.asset_id;
+    }
+    if (msg.id) {
+      CityEntityDefs[msg.id] = msg;
+    }
+    if (msg.asset_id) {
+      CityEntityDefs[msg.asset_id] = msg;
+    }
+    if (msg.id) {
+      var stripped = msg.id.replace(/^(W_|R_|X_)/, '').replace(/^MultiAge_/, '');
+      if (stripped) {
+        CityEntityDefs[stripped] = msg;
+      }
+    }
+  }
+
+  if (msg.__class__ && msg.__class__ == 'UnitType') {
+    const unitKey = msg.unitTypeId || msg.id;
+    if (unitKey) {
+      MilitaryDefs[unitKey] = {
+        name: msg.name,
+        era: msg.minEra || msg.era,
+      };
+    }
+  } else if (msg.__class__ && msg.__class__ == 'CastleSystemLevelMetadata') {
+    pushUniqueMetadata(CastleDefs, msg, 'level');
+  } else if (msg.__class__ && msg.__class__ == 'SelectionKitMetadata') {
+    pushUniqueMetadata(SelectionKitDefs, msg, 'id');
+  } else if (msg.__class__ && msg.__class__ == 'BoostMetadata') {
+    pushUniqueMetadata(BoostMetadataDefs, msg, 'id');
+  }
+}
+
+export async function ensureCityEntitiesMetadata() {
+  if (Object.keys(CityEntityDefs).length > 20) return;
+
+  const lang = (GameOrigin && GameOrigin.length >= 2) ? GameOrigin.substring(0, 2) : 'en';
+  const urls = [
+    `https://foe-${lang}.innogamescdn.com/assets/metadata/city_entities.json`,
+    `https://foe-en.innogamescdn.com/assets/metadata/city_entities.json`,
+    `https://foede.innogamescdn.com/assets/metadata/city_entities.json`,
+    `https://foe-us.innogamescdn.com/assets/metadata/city_entities.json`,
+  ];
+
+  for (const cdnUrl of urls) {
+    try {
+      const resp = await fetch(cdnUrl);
+      if (resp.ok) {
+        const data = await resp.json();
+        if (Array.isArray(data)) {
+          data.forEach(processMetadataEntry);
+        } else if (data && typeof data === 'object') {
+          processMetadataEntry(data);
+        }
+        if (Object.keys(CityEntityDefs).length > 0) {
+          storage.set('CityEntityDefs', CityEntityDefs);
+          metadataLoaded = true;
+          console.debug('CityEntityDefs loaded successfully from CDN:', Object.keys(CityEntityDefs).length, 'entities');
+          break;
+        }
+      }
+    } catch (e) {
+      console.error('Failed loading CDN metadata from', cdnUrl, e);
+    }
   }
 }
 

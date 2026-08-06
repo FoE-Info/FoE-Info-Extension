@@ -60,14 +60,58 @@ if (url && url.hasOwnProperty('sheetGameURL'))
   googleSheetGame = url.sheetGameURL;
 
 export function getConstruction(msg) {
-  rankings = msg.responseData.rankings;
+  if (msg && msg.responseData) {
+    if (msg.responseData.rankings) {
+      rankings = msg.responseData.rankings;
+    }
+    if (msg.responseData.invested_forge_points !== undefined) {
+      GBselected.current = msg.responseData.invested_forge_points;
+    } else if (
+      msg.responseData.state &&
+      msg.responseData.state.invested_forge_points !== undefined
+    ) {
+      GBselected.current = msg.responseData.state.invested_forge_points;
+    }
+  }
   console.debug('rankings', rankings);
   showGreatBuldingDonation();
 }
 
 export function contributeForgePoints(msg) {
-  rankings = msg;
-  console.debug('rankings', rankings);
+  let newRankings = null;
+  if (Array.isArray(msg)) {
+    newRankings = msg;
+  } else if (msg && typeof msg === 'object') {
+    if (msg.rankings) newRankings = msg.rankings;
+    if (msg.invested_forge_points !== undefined) {
+      GBselected.current = msg.invested_forge_points;
+    } else if (msg.state && msg.state.invested_forge_points !== undefined) {
+      GBselected.current = msg.state.invested_forge_points;
+    } else if (
+      msg.entity &&
+      msg.entity.state &&
+      msg.entity.state.invested_forge_points !== undefined
+    ) {
+      GBselected.current = msg.entity.state.invested_forge_points;
+    }
+  }
+
+  if (newRankings) {
+    const oldSum =
+      Array.isArray(rankings) ?
+        rankings.reduce((sum, item) => sum + (item.forge_points || 0), 0)
+      : 0;
+    const newSum = newRankings.reduce(
+      (sum, item) => sum + (item.forge_points || 0),
+      0,
+    );
+    if (newSum > oldSum && oldSum > 0) {
+      GBselected.current += newSum - oldSum;
+    }
+    rankings = newRankings;
+  }
+
+  console.debug('rankings', rankings, 'GBselected.current', GBselected.current);
   showGreatBuldingDonation();
 }
 
@@ -120,8 +164,8 @@ export function showGreatBuldingDonation() {
             ).dp(0);
           else GBrewards[Rank - 1] = 0;
           Reward[Rank - 1] = BigNumber(GBrewards[Rank - 1])
-            .times(1.9)
-            .dp(0);
+            .times(currentPercent ? currentPercent / 100 : 1.9)
+            .dp(0, 2);
           // console.debug(place.reward.strategy_point_amount,BigNumber(place.reward.strategy_point_amount).dp(0),GBrewards[Rank-1]);
         } else if (Rank == 6) {
           if (place.forge_points) Top[5] = place.forge_points;
@@ -643,9 +687,9 @@ function fDonationSuggest(reward) {
   console.debug(
     reward,
     currentPercent,
-    BigNumber(reward).times(currentPercent).div(100).dp(0),
+    BigNumber(reward).times(currentPercent).div(100).dp(0, 2),
   );
-  return new BigNumber(reward).times(currentPercent).div(100).dp(0);
+  return new BigNumber(reward).times(currentPercent).div(100).dp(0, 2);
 }
 
 export function setCurrentPercent(percent) {
@@ -1000,7 +1044,7 @@ function getSafe(place) {
     donateSuggest[i] = new BigNumber(GBrewards[i])
       .times(currentPercent)
       .div(100)
-      .dp(0);
+      .dp(0, 2);
     rem -= donateSuggest[i];
     safe[i] = rem <= donateSuggest[i] - Top[place] ? true : false;
   }
@@ -1013,13 +1057,13 @@ function getPlaceValues(place) {
     .dp(0, 2);
   RewardFP = new BigNumber(GBrewards[index])
     .multipliedBy(1 + City.ArcBonus / 100)
-    .dp(0);
+    .dp(0, 2);
   Profit = RewardFP.minus(Donation).toString();
   Percent = new BigNumber(Profit).multipliedBy(100).idiv(Donation);
   const band = fPercentBanded(Percent);
   donateCustom = new BigNumber(GBrewards[index])
     .multipliedBy(currentPercent)
     .div(100)
-    .dp(0);
+    .dp(0, 2);
   remaining = GBselected.total - GBselected.current;
 }

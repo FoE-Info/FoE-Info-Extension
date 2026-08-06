@@ -71,8 +71,7 @@ module.exports = merge(common, {
     }),
     new ZipPlugin({
       path: '../',
-      filename:
-        PACKAGE_NAME + '_WEBSTORE_' + pkg.version + '_' + date + '.zip',
+      filename: PACKAGE_NAME + '_WEBSTORE_' + pkg.version + '_' + date + '.zip',
     }),
   ],
 });

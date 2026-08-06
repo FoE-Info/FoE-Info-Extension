@@ -32,7 +32,7 @@ import {
   ignoredPlayers,
   debug,
 } from '../index.js';
-import { availablePacksFP, Goods, language } from '../index.js';
+import { availablePacksFP, Goods, language, ensureCityEntitiesMetadata } from '../index.js';
 import { ResourceDefs, availableFP } from './ResourceService.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
@@ -45,6 +45,7 @@ export var City = {
   ArcBonus: 90,
   ChatBonus: 0,
   ForgePoints: 0,
+  fpProductionBoost: 0,
   TrazUnits: 0,
   Coins: 0,
   CoinBoost: 0,
@@ -94,8 +95,7 @@ var goodsBuildings = [];
 var clanGoodsBuildings = [];
 
 export function startupService(msg) {
-  // console.debug('parsed:', parsed);
-  // console.debug('msg:', msg);
+  ensureCityEntitiesMetadata();
   const user = msg.responseData.user_data;
   console.debug('user_data:', user);
   // setMyName(user.user_name);
@@ -142,6 +142,7 @@ export function startupService(msg) {
   } else {
     removeDebug();
   }
+  City.ForgePoints = 0;
   var diamonds = 0;
   var clanPower = 0;
   var clanGoods = 0;
@@ -778,6 +779,12 @@ export function startupService(msg) {
     });
   }
 
+  if (City.fpProductionBoost && City.ForgePoints) {
+    City.ForgePoints = Math.round(
+      City.ForgePoints * (1 + City.fpProductionBoost / 100),
+    );
+  }
+
   if (clanGoodsBuildings.length > 0) {
     clanGoodsBuildings.sort(function (b, a) {
       return a.goods - b.goods;
@@ -858,10 +865,11 @@ export function startupService(msg) {
       userTooltipHTML += `<a href="https://foe.scoredb.io/${GameOrigin}/Player/${elem}" target="_blank"><strong>${elem}</strong></a><br>`;
     });
   }
-  userTooltipHTML += `</p>`;
-  var fpHTML = `<span id="fp" class="pop" data-bs-container="#fp" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${
-    tooltipHTML.fp
-  }"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
+  var boostBadge = City.fpProductionBoost ? ` (+${City.fpProductionBoost}%)` : '';
+  var fpTooltipContent = (City.fpProductionBoost ? `<strong>FP Boost: +${City.fpProductionBoost}%</strong><br>` : '') + tooltipHTML.fp;
+  var fpHTML = `<span id="fp" class="pop" data-bs-container="#fp" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${fpTooltipContent}"><span data-i18n="daily">Daily</span>: ${
+    City.ForgePoints ? City.ForgePoints : 0
+  }FP${boostBadge}</span>`;
   var userHTML = `<strong>${GameOrigin.toUpperCase()} ${
     MyInfo.name
   }</strong><span id="user" class="pop" data-bs-container="#user" data-bs-toggle="popover" data-bs-placement="bottom"
@@ -1072,15 +1080,19 @@ export function boostServiceAllBoosts(msg) {
   City.QIAttackingDefense = 0;
   City.QIDefendingAttack = 0;
   City.QIDefendingDefense = 0;
-  var fpProductionBoost = 0;
+  City.fpProductionBoost = 0;
 
   if (msg.responseData.length) {
     var boost = msg.responseData;
     // console.debug('all boosts:', boost);
     for (var j = 0; j < boost.length; j++) {
       if (boost[j].type == 'coin_production') City.CoinBoost += boost[j].value;
-      else if (boost[j].type == 'forge_points_production')
-        fpProductionBoost += boost[j].value;
+      else if (
+        boost[j].type == 'forge_points_production' ||
+        boost[j].type == 'strategy_points_production' ||
+        boost[j].type == 'forge_point_boost'
+      )
+        City.fpProductionBoost += boost[j].value;
       else if (boost[j].type == 'att_boost_attacker') {
         if (boost[j].targetedFeature == 'all') {
           City.Attack += boost[j].value;
@@ -1179,8 +1191,6 @@ export function boostServiceAllBoosts(msg) {
           City.QIDefendingDefense += boost[j].value;
         }
         // console.debug('Attack/Defense for Att/Def:', boost[j].value);
-      } else if (boost[j].type == 'forge_points_production') {
-        City.ForgePoints += boost[j].value;
       } else if (
         boost[j].type != 'city_shield' &&
         boost[j].type != 'life_support' &&
@@ -1192,9 +1202,9 @@ export function boostServiceAllBoosts(msg) {
       )
         console.debug('other boost:', boost[j].type, boost[j]);
     }
-    if (fpProductionBoost && City.ForgePoints) {
-      City.ForgePoints += Math.round(
-        (City.ForgePoints * fpProductionBoost) / 100,
+    if (City.fpProductionBoost && City.ForgePoints) {
+      City.ForgePoints = Math.round(
+        City.ForgePoints * (1 + City.fpProductionBoost / 100),
       );
     }
     // if(showBoosts)

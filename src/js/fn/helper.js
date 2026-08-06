@@ -184,15 +184,32 @@ export function fGBsname(city_entity) {
 }
 
 export function fEntityNameTrim(name) {
-  if (!CityEntityDefs[name]) return name;
-  var trimName = CityEntityDefs[name].name;
-  if (trimName.includes(' - Lv.'))
-    return trimName.substring(0, trimName.indexOf(' - Lv.'));
-  else if (trimName.includes('Lv. 2 - '))
-    return trimName.replace('Lv. 2 - ', '');
-  else if (trimName.includes('Lv. 1 - '))
-    return trimName.replace('Lv. 1 - ', '');
-  else return trimName;
+  if (!name) return '';
+  var raw = name;
+  var keysToTry = [
+    raw,
+    raw.replace(/^(W_|R_|X_)/, ''),
+    raw.replace(/^(W_|R_|X_)/, '').replace(/^MultiAge_/, ''),
+    raw.replace(/^MultiAge_/, ''),
+  ];
+  for (var i = 0; i < keysToTry.length; i++) {
+    var k = keysToTry[i];
+    if (CityEntityDefs && CityEntityDefs[k] && CityEntityDefs[k].name) {
+      var trimName = CityEntityDefs[k].name;
+      if (trimName.includes(' - Lv.'))
+        return trimName.substring(0, trimName.indexOf(' - Lv.'));
+      else if (trimName.includes('Lv. 2 - '))
+        return trimName.replace('Lv. 2 - ', '');
+      else if (trimName.includes('Lv. 1 - '))
+        return trimName.replace('Lv. 1 - ', '');
+      else return trimName;
+    }
+  }
+  var gbName = fGBname(raw);
+  if (gbName && gbName !== raw) {
+    return gbName;
+  }
+  return raw;
 }
 
 export function fGBname(city_entity) {
