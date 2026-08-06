@@ -80,7 +80,7 @@ export function getPlayerLeaderboard(msg) {
         console.debug('items', items);
         if (items[GameOrigin]) GuildMembers = items[GameOrigin];
         // console.debug('GuildMembers',GuildMembers);
-        storage.set(GameOrigin + 'BGtime', EpocTime);
+        storage.setDebounced(GameOrigin + 'BGtime', EpocTime, 1000);
         if (items[GameOrigin + 'BGtime'])
           BGtime = new Date(
             items[GameOrigin + 'BGtime'] * 1000,
@@ -97,7 +97,7 @@ export function getPlayerLeaderboard(msg) {
             }); // if member not listed, add new member
         });
         console.debug('save GBG', GameOrigin, BattlegroundPerformance);
-        storage.set(GameOrigin, BattlegroundPerformance);
+        storage.setDebounced(GameOrigin, BattlegroundPerformance, 1000);
         helper.fshowBattleground();
       });
     // console.debug('BattlegroundPerformance',GBGdata);
