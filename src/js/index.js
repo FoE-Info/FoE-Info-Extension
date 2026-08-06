@@ -668,15 +668,14 @@ function handleRequestFinished(request) {
     contentType = getType(contentHeader.value);
   }
 
-  // if (contentType == "json") {
-  if (
-    request.request?.url?.match(
-      /https:\/\/.*\.forgeofempires\.com\/game\/json\?h=/g,
-    ) ||
-    request.request?.url?.match(
-      /https:\/\/foe.*\.innogamescdn\.com\/start\/metadata\?id=(.*)/g,
-    )
-  ) {
+  const reqUrl = request.request?.url || '';
+  const isGameJson = /https?:\/\/.*\.forgeofempires\.com\/game\/json/i.test(
+    reqUrl,
+  );
+  const isMetadata =
+    /https?:\/\/foe.*\.innogamescdn\.com\/start\/metadata/i.test(reqUrl);
+
+  if (isGameJson || isMetadata) {
     // console.debug(request.request.headers);
     contentType = request.request?.headers?.find(
       (header) => header.name.toLowerCase() === 'client-identification',
@@ -708,7 +707,14 @@ function handleRequestFinished(request) {
 
         let parsed;
         try {
-          const rawContent = encoding === 'base64' ? atob(body) : body;
+          let rawContent;
+          if (encoding === 'base64') {
+            const binary = atob(body);
+            const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+            rawContent = new TextDecoder('utf-8').decode(bytes);
+          } else {
+            rawContent = body;
+          }
           parsed = JSON.parse(rawContent);
         } catch (e) {
           console.debug('Failed to parse network content JSON:', e);
