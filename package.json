@@ -22,14 +22,14 @@
   "scripts": {
     "check": "prettier --check .",
     "format": "prettier --write .",
-    "dev": "cross-env NODE_ENV=development webpack --mode development --config webpack-dev.config.js --watch",
-    "build": "npm run build-foe-info",
-    "build-foe-info": "webpack --config foe-info-webstore.config.js"
+    "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js --watch",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
+    "build-foe-info": "npm run build"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^12.0.2",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.1.0",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.3",
@@ -45,6 +45,7 @@
     "webpack-dev-middleware": "^7.4.2",
     "webpack-dev-server": "^5.2.0",
     "webpack-extension-manifest-plugin": "^0.8.0",
+    "webpack-merge": "^6.0.1",
     "zip-webpack-plugin": "^4.0.3"
   },
   "sideEffects": [
