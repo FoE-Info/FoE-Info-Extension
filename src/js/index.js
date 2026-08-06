@@ -130,8 +130,48 @@ var GuildTreasury = [];
 export var targetsTopic = 'targets';
 export var targetText = '';
 var GuildsGoods = [];
-// var GBdefs = [];
-export var CityEntityDefs = {};
+export const rawCityEntityDefs = {};
+export const entityAliasMap = {};
+
+export var CityEntityDefs = new Proxy(rawCityEntityDefs, {
+  get(target, prop) {
+    if (typeof prop === 'string' || typeof prop === 'number') {
+      const key = String(prop);
+      if (key in target) return target[key];
+      if (key in entityAliasMap && entityAliasMap[key] in target) {
+        return target[entityAliasMap[key]];
+      }
+      const stripped = key
+        .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
+        .replace(/^MultiAge_/, '')
+        .replace(/^AllAge_/, '');
+      if (stripped in target) return target[stripped];
+      if (stripped in entityAliasMap && entityAliasMap[stripped] in target) {
+        return target[entityAliasMap[stripped]];
+      }
+    }
+    return Reflect.get(target, prop);
+  },
+  set(target, prop, value) {
+    return Reflect.set(target, prop, value);
+  },
+  has(target, prop) {
+    if (Reflect.has(target, prop)) return true;
+    const key = String(prop);
+    if (key in entityAliasMap && entityAliasMap[key] in target) return true;
+    const stripped = key
+      .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
+      .replace(/^MultiAge_/, '')
+      .replace(/^AllAge_/, '');
+    return (
+      stripped in target ||
+      (stripped in entityAliasMap && entityAliasMap[stripped] in target)
+    );
+  },
+  ownKeys(target) {
+    return Reflect.ownKeys(target);
+  },
+});
 export var CityProtections = [];
 export var MilitaryDefs = [];
 export var CastleDefs = [];
@@ -788,7 +828,7 @@ function handleRequestFinished(request) {
                     processMetadataEntry(data);
                   }
                 });
-                storage.set('CityEntityDefs', CityEntityDefs);
+                storage.set('CityEntityDefs', rawCityEntityDefs);
                 metadataLoaded = true;
                 if (pendingStartupMsg) {
                   startupService(pendingStartupMsg);
@@ -820,7 +860,7 @@ function handleRequestFinished(request) {
                     console.error('metadata fetch failed', item, e);
                   }
                 }
-                storage.set('CityEntityDefs', CityEntityDefs);
+                storage.set('CityEntityDefs', rawCityEntityDefs);
                 metadataLoaded = true;
                 if (pendingStartupMsg) {
                   startupService(pendingStartupMsg);
@@ -925,7 +965,7 @@ function handleRequestFinished(request) {
                 /*InventoryService*/
                 // 	console.debug("InventoryService",msg.responseData);
                 // console.debug(Object.keys(CityEntityDefs));
-                storage.set('CityEntityDefs', CityEntityDefs);
+                storage.set('CityEntityDefs', rawCityEntityDefs);
                 var forgePoints = 0;
                 if (msg.responseData.length) {
                   for (var j = 0; j < msg.responseData.length; j++) {
@@ -2433,7 +2473,25 @@ function receiveStorage(result) {
       setResourceDefs(value);
     } else if (key == 'CityEntityDefs') {
       if (value && typeof value === 'object') {
-        Object.assign(CityEntityDefs, value);
+        Object.assign(rawCityEntityDefs, value);
+        Object.values(value).forEach((msg) => {
+          if (msg && typeof msg === 'object') {
+            const entityId = msg.id || msg.asset_id || msg.unitTypeId;
+            if (entityId) {
+              const primaryId = msg.id || msg.asset_id || entityId;
+              if (msg.id && msg.id !== primaryId)
+                entityAliasMap[msg.id] = primaryId;
+              if (msg.asset_id && msg.asset_id !== primaryId)
+                entityAliasMap[msg.asset_id] = primaryId;
+              var stripped = String(entityId)
+                .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
+                .replace(/^MultiAge_/, '')
+                .replace(/^AllAge_/, '');
+              if (stripped && stripped !== primaryId)
+                entityAliasMap[stripped] = primaryId;
+            }
+          }
+        });
       }
       console.debug(key, value);
     } else if (key == 'tool') {
@@ -2729,7 +2787,7 @@ let saveMetadataTimer = null;
 function saveCityEntityDefsDebounced() {
   if (saveMetadataTimer) clearTimeout(saveMetadataTimer);
   saveMetadataTimer = setTimeout(() => {
-    storage.set('CityEntityDefs', CityEntityDefs);
+    storage.set('CityEntityDefs', rawCityEntityDefs);
     saveMetadataTimer = null;
   }, 1000);
 }
@@ -2747,15 +2805,22 @@ function processMetadataEntry(msg) {
       if (!msg.name) {
         msg.name = msg.title || msg.name_key || msg.nameKey || entityId;
       }
-      if (msg.id) CityEntityDefs[msg.id] = msg;
-      if (msg.asset_id) CityEntityDefs[msg.asset_id] = msg;
+      const primaryId = msg.id || msg.asset_id || entityId;
+      rawCityEntityDefs[primaryId] = msg;
+
+      if (msg.id && msg.id !== primaryId) {
+        entityAliasMap[msg.id] = primaryId;
+      }
+      if (msg.asset_id && msg.asset_id !== primaryId) {
+        entityAliasMap[msg.asset_id] = primaryId;
+      }
 
       var stripped = String(entityId)
         .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
         .replace(/^MultiAge_/, '')
         .replace(/^AllAge_/, '');
-      if (stripped) {
-        CityEntityDefs[stripped] = msg;
+      if (stripped && stripped !== primaryId) {
+        entityAliasMap[stripped] = primaryId;
       }
     }
 
@@ -2794,7 +2859,7 @@ function processMetadataEntry(msg) {
 }
 
 export async function ensureCityEntitiesMetadata() {
-  if (Object.keys(CityEntityDefs).length > 20) return;
+  if (Object.keys(rawCityEntityDefs).length > 20) return;
 
   const lang =
     GameOrigin && GameOrigin.length >= 2 ? GameOrigin.substring(0, 2) : 'en';
@@ -2805,30 +2870,30 @@ export async function ensureCityEntitiesMetadata() {
     `https://foe-us.innogamescdn.com/assets/metadata/city_entities.json`,
   ];
 
-  for (const cdnUrl of urls) {
-    try {
+  try {
+    const fetchPromises = urls.map(async (cdnUrl) => {
       const resp = await fetch(cdnUrl);
-      if (resp.ok) {
-        const data = await resp.json();
-        if (Array.isArray(data)) {
-          data.forEach(processMetadataEntry);
-        } else if (data && typeof data === 'object') {
-          processMetadataEntry(data);
-        }
-        if (Object.keys(CityEntityDefs).length > 0) {
-          storage.set('CityEntityDefs', CityEntityDefs);
-          metadataLoaded = true;
-          console.debug(
-            'CityEntityDefs loaded successfully from CDN:',
-            Object.keys(CityEntityDefs).length,
-            'entities',
-          );
-          break;
-        }
-      }
-    } catch (e) {
-      console.error('Failed loading CDN metadata from', cdnUrl, e);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      return await resp.json();
+    });
+
+    const data = await Promise.any(fetchPromises);
+    if (Array.isArray(data)) {
+      data.forEach(processMetadataEntry);
+    } else if (data && typeof data === 'object') {
+      processMetadataEntry(data);
     }
+    if (Object.keys(rawCityEntityDefs).length > 0) {
+      storage.set('CityEntityDefs', rawCityEntityDefs);
+      metadataLoaded = true;
+      console.debug(
+        'CityEntityDefs loaded successfully from CDN:',
+        Object.keys(rawCityEntityDefs).length,
+        'entities',
+      );
+    }
+  } catch (e) {
+    console.error('Failed loading CDN metadata from all fallbacks', e);
   }
 }
 
