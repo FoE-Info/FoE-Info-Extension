@@ -1,10 +1,29 @@
 [tools]
 node = "22"
+python = "3.12"
 uv = "latest"
 
 [env]
 _.file = ".env"
-PATH = "./.venv/bin:./node_modules/.bin:_PATH"
 NODE_ENV = "development"
 VIRTUAL_ENV = "./.venv"
 
+[tasks.check]
+description = "Check project code formatting with Prettier"
+run = "npx prettier --check ."
+
+[tasks.format]
+description = "Format project code with Prettier"
+run = "npx prettier --write ."
+
+[tasks.dev]
+description = "Start Webpack development build watcher"
+run = "npx webpack --mode development --config webpack-dev.config.js --watch"
+
+[tasks.build]
+description = "Build optimized production extension bundle"
+run = "npx webpack --config foe-info-webstore.config.js"
+
+[tasks.graphify-update]
+description = "Update AST Knowledge Graph"
+run = "uv run graphify update ."
