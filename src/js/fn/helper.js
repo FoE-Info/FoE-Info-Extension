@@ -12,6 +12,7 @@
  * ________________________________________________________________
  */
 import { Popover } from 'bootstrap';
+import browser from 'webextension-polyfill';
 import {
   CityEntityDefs,
   donationDIV,
@@ -21,21 +22,16 @@ import {
   incidents,
   url,
 } from '../index.js';
-import {
-  BattlegroundPerformance,
-  BGtime,
-  GuildMembers,
-} from '../msg/GuildBattlegroundService.js';
+import { BattlegroundPerformance, BGtime, GuildMembers } from '../msg/GuildBattlegroundService.js';
 import { ResourceNames } from '../msg/ResourceService.js';
 import { showOptions } from '../vars/showOptions.js';
+import * as element from './AddElement';
 import * as collapse from './collapse.js';
 import { fCollapseIncidents } from './collapse.js';
 import * as copy from './copy.js';
 import { setBattlegroundSize, toolOptions } from './globals.js';
 import * as post_webstore from './post.js';
 import * as storage from './storage.js';
-import * as element from './AddElement';
-import browser from 'webextension-polyfill';
 
 var heightGBG = toolOptions.battlegroundsSize;
 export var MyGuildPermissions = 0;
@@ -186,12 +182,9 @@ export function fGBsname(city_entity) {
 export function fEntityNameTrim(name) {
   if (!CityEntityDefs[name]) return name;
   var trimName = CityEntityDefs[name].name;
-  if (trimName.includes(' - Lv.'))
-    return trimName.substring(0, trimName.indexOf(' - Lv.'));
-  else if (trimName.includes('Lv. 2 - '))
-    return trimName.replace('Lv. 2 - ', '');
-  else if (trimName.includes('Lv. 1 - '))
-    return trimName.replace('Lv. 1 - ', '');
+  if (trimName.includes(' - Lv.')) return trimName.substring(0, trimName.indexOf(' - Lv.'));
+  else if (trimName.includes('Lv. 2 - ')) return trimName.replace('Lv. 2 - ', '');
+  else if (trimName.includes('Lv. 1 - ')) return trimName.replace('Lv. 1 - ', '');
   else return trimName;
 }
 
@@ -215,34 +208,26 @@ export function fGBname(city_entity) {
   else if (GB_name == 'X_BronzeAge_Landmark1') GB_name = 'Tower of Babel';
   else if (GB_name == 'X_BronzeAge_Landmark2') GB_name = 'Statue of Zeus';
   else if (GB_name == 'X_IronAge_Landmark1') GB_name = 'Colosseum';
-  else if (GB_name == 'X_IronAge_Landmark2')
-    GB_name = 'Lighthouse of Alexandria';
+  else if (GB_name == 'X_IronAge_Landmark2') GB_name = 'Lighthouse of Alexandria';
   else if (GB_name == 'X_EarlyMiddleAge_Landmark1') GB_name = 'Hagia Sophia';
-  else if (GB_name == 'X_EarlyMiddleAge_Landmark2')
-    GB_name = 'Cathedral of Aachen';
+  else if (GB_name == 'X_EarlyMiddleAge_Landmark2') GB_name = 'Cathedral of Aachen';
   else if (GB_name == 'X_EarlyMiddleAge_Landmark3') GB_name = 'Galata Tower';
-  else if (GB_name == 'X_HighMiddleAge_Landmark1')
-    GB_name = "St. Mark's Basilica";
+  else if (GB_name == 'X_HighMiddleAge_Landmark1') GB_name = "St. Mark's Basilica";
   else if (GB_name == 'X_HighMiddleAge_Landmark3') GB_name = 'Notre Dame';
-  else if (GB_name == 'X_LateMiddleAge_Landmark1')
-    GB_name = "St. Basil's Cathedral";
+  else if (GB_name == 'X_LateMiddleAge_Landmark1') GB_name = "St. Basil's Cathedral";
   else if (GB_name == 'X_LateMiddleAge_Landmark3') GB_name = 'Castel del Monte';
-  else if (GB_name == 'X_ColonialAge_Landmark1')
-    GB_name = 'Frauenkirche of Dresden';
+  else if (GB_name == 'X_ColonialAge_Landmark1') GB_name = 'Frauenkirche of Dresden';
   else if (GB_name == 'X_ColonialAge_Landmark2') GB_name = 'Deal Castle';
-  else if (GB_name == 'X_IndustrialAge_Landmark1')
-    GB_name = 'Royal Albert Hall';
+  else if (GB_name == 'X_IndustrialAge_Landmark1') GB_name = 'Royal Albert Hall';
   else if (GB_name == 'X_IndustrialAge_Landmark2') GB_name = 'Capitol';
   else if (GB_name == 'X_ProgressiveEra_Landmark1') GB_name = 'Alcatraz';
-  else if (GB_name == 'X_ProgressiveEra_Landmark2')
-    GB_name = 'Ch\u00e2teau Frontenac';
+  else if (GB_name == 'X_ProgressiveEra_Landmark2') GB_name = 'Ch\u00e2teau Frontenac';
   else if (GB_name == 'X_ModernEra_Landmark1') GB_name = 'Space Needle';
   else if (GB_name == 'X_ModernEra_Landmark2') GB_name = 'Atomium';
   else if (GB_name == 'X_PostModernEra_Landmark1') GB_name = 'Cape Canaveral';
   else if (GB_name == 'X_PostModernEra_Landmark2') GB_name = 'The Habitat';
   else if (GB_name == 'X_ContemporaryEra_Landmark1') GB_name = 'Lotus Temple';
-  else if (GB_name == 'X_ContemporaryEra_Landmark2')
-    GB_name = 'Innovation Tower';
+  else if (GB_name == 'X_ContemporaryEra_Landmark2') GB_name = 'Innovation Tower';
   else if (GB_name == 'X_TomorrowEra_Landmark1') GB_name = 'Voyager V1';
   else if (GB_name == 'X_TomorrowEra_Landmark2') GB_name = 'Truce Tower';
   else if (GB_name == 'X_FutureEra_Landmark1') GB_name = 'The Arc';
@@ -257,20 +242,14 @@ export function fGBname(city_entity) {
   else if (GB_name == 'X_VirtualFuture_Landmark2') GB_name = 'Himeji Castle';
   else if (GB_name == 'X_SpaceAgeMars_Landmark1') GB_name = 'Star Gazer';
   else if (GB_name == 'X_SpaceAgeMars_Landmark2') GB_name = 'The Virgo Project';
-  else if (GB_name == 'X_SpaceAgeAsteroidBelt_Landmark1')
-    GB_name = 'Space Carrier';
+  else if (GB_name == 'X_SpaceAgeAsteroidBelt_Landmark1') GB_name = 'Space Carrier';
   else if (GB_name == 'X_SpaceAgeVenus_Landmark1') GB_name = 'Flying Island';
   else if (GB_name == 'X_SpaceAgeJupiterMoon_Landmark1') GB_name = 'A.I. Core';
-  else if (GB_name == 'X_SpaceAgeTitan_Landmark1')
-    GB_name = 'Saturn VI Gate CENTAURUS';
-  else if (GB_name == 'X_SpaceAgeTitan_Landmark2')
-    GB_name = 'Saturn VI Gate PEGASUS';
-  else if (GB_name == 'X_SpaceAgeTitan_Landmark3')
-    GB_name = 'Saturn VI Gate HYDRA';
-  else if (GB_name == 'X_SpaceAgeSpaceHub_Landmark1')
-    GB_name = 'Stellar Warship';
-  else if (GB_name == 'X_SpaceAgeSpaceHub_Landmark2')
-    GB_name = 'Cosmic Catalyst';
+  else if (GB_name == 'X_SpaceAgeTitan_Landmark1') GB_name = 'Saturn VI Gate CENTAURUS';
+  else if (GB_name == 'X_SpaceAgeTitan_Landmark2') GB_name = 'Saturn VI Gate PEGASUS';
+  else if (GB_name == 'X_SpaceAgeTitan_Landmark3') GB_name = 'Saturn VI Gate HYDRA';
+  else if (GB_name == 'X_SpaceAgeSpaceHub_Landmark1') GB_name = 'Stellar Warship';
+  else if (GB_name == 'X_SpaceAgeSpaceHub_Landmark2') GB_name = 'Cosmic Catalyst';
   // console.debug(city_entity,CityEntityDefs);
   return GB_name;
 }
@@ -643,9 +622,7 @@ export function fShowIncidents() {
     // data-bs-placement="bottom"
     if (rewards) {
       tooltipHTML = `<div><p>${textCurrent}</p>${
-        textComing != '' ?
-          '<p><strong>Coming Soon:</strong><br>' + textComing + '</p>'
-        : ''
+        textComing != '' ? '<p><strong>Coming Soon:</strong><br>' + textComing + '</p>' : ''
       }`;
       tooltipHTML +=
         '<p><strong>Legend:</strong><br>n/N - Nature<br>s/S - Shore<br>w/W - Water<br>r/R - Road<br> E - Event<br>Capitals = Uncommon/Rare Reward</p></div>';
@@ -663,12 +640,8 @@ export function fShowIncidents() {
       // $(document).ready(function(){
       // $('#incidentsTip').tooltip({html: true,placement: 'bottom'});
       //   });
-      document
-        .getElementById('incidentsTextLabel')
-        .addEventListener('click', fCollapseIncidents);
-      document
-        .getElementById('incidentsTip')
-        .addEventListener('onmouseleave', fHideTooltips);
+      document.getElementById('incidentsTextLabel').addEventListener('click', fCollapseIncidents);
+      document.getElementById('incidentsTip').addEventListener('onmouseleave', fHideTooltips);
 
       const incidents_tooltip = document.getElementById('incidents_tooltip');
       if (incidents_tooltip) {
@@ -764,21 +737,13 @@ export function fshowBattleground() {
     attritionDiff = attrition - player.attrition;
     // }
     // console.debug(entry.name,battleDiff,negotiationsDiff);
-    if (
-      !showOptions.showBattlegroundChanges ||
-      battleDiff ||
-      negotiationsDiff ||
-      attritionDiff
-    ) {
+    if (!showOptions.showBattlegroundChanges || battleDiff || negotiationsDiff || attritionDiff) {
       battlegroundHTML += `<tr><td>${entry.name}</td><td>${wonNegotiations}`;
-      if (negotiationsDiff)
-        battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
+      if (negotiationsDiff) battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
       battlegroundHTML += `</td><td>${wonBattles}`;
-      if (battleDiff)
-        battlegroundHTML += ` <span class="red">+${battleDiff}</span>`;
+      if (battleDiff) battlegroundHTML += ` <span class="red">+${battleDiff}</span>`;
       battlegroundHTML += `</td><td>${attrition}`;
-      if (attritionDiff)
-        battlegroundHTML += ` <span class="red">+${attritionDiff}</span>`;
+      if (attritionDiff) battlegroundHTML += ` <span class="red">+${attritionDiff}</span>`;
       battlegroundHTML += `</td></tr>`;
     }
   });
@@ -800,24 +765,18 @@ export function fshowBattleground() {
       .getElementById('battlegroundPostID')
       .addEventListener('click', post_webstore.postGBGtoSS);
   // else
-  document
-    .getElementById('battlegroundCopyID')
-    .addEventListener('click', copy.BattlegroundCopy);
+  document.getElementById('battlegroundCopyID').addEventListener('click', copy.BattlegroundCopy);
 
   document
     .getElementById('battlegroundTextLabel')
     .addEventListener('click', collapse.fCollapseBattleground);
-  document
-    .getElementById('showGBGchanges')
-    .addEventListener('click', fshowBattlegroundChanges);
-  document.getElementById('showGBGchanges').checked =
-    showOptions.showBattlegroundChanges;
+  document.getElementById('showGBGchanges').addEventListener('click', fshowBattlegroundChanges);
+  document.getElementById('showGBGchanges').checked = showOptions.showBattlegroundChanges;
   const battlegroundDiv = document.getElementById('battlegroundCollapse');
   battlegroundDiv.addEventListener('mouseup', setHeight);
   const resizeObserver = new ResizeObserver((entries) => {
     for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        heightGBG = entry.contentRect.height;
+      if (entry.contentRect && entry.contentRect.height) heightGBG = entry.contentRect.height;
     }
   });
   resizeObserver.observe(battlegroundDiv);

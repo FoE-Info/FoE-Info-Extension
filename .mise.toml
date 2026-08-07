@@ -1,0 +1,61 @@
+[tools]
+node = "22"
+python = "3.12"
+uv = "latest"
+"npm:prettier" = "3.9.6"
+"npm:npm-check-updates" = "latest"
+
+[hooks]
+postinstall = "uv tool install \"graphifyy[gemini,mcp]\""
+
+
+[env]
+_.file = ".env"
+_.path = ["./node_modules/.bin"]
+
+[tasks.check]
+description = "Check project code formatting with Prettier"
+run = "prettier --check ."
+
+[tasks.format]
+description = "Format project code with Prettier"
+run = "prettier --write ."
+
+[tasks.dev]
+description = "Start Webpack development build watcher"
+env = { NODE_ENV = "development" }
+run = "webpack --config webpack.dev.js --watch"
+
+[tasks.build]
+description = "Build optimized production extension bundle"
+env = { NODE_ENV = "production" }
+run = "webpack --config webpack.prod.js"
+
+[tasks."build:dev"]
+description = "Build single development extension bundle"
+env = { NODE_ENV = "development" }
+run = "webpack --config webpack.dev.js"
+
+[tasks.analyze]
+description = "Analyze production bundle composition"
+env = { NODE_ENV = "production", ANALYZE = "true" }
+run = "webpack --config webpack.prod.js"
+
+[tasks.setup]
+description = "Setup complete project environment (mise tools, node_modules, & graphify)"
+run = [
+  "mise install",
+  "npm install"
+]
+
+[tasks.graphify-update]
+description = "Update AST Knowledge Graph"
+run = "graphify update ."
+
+[tasks.outdated]
+description = "Check for package updates with npm-check-updates"
+run = "ncu"
+
+
+
+

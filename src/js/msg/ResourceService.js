@@ -1,9 +1,9 @@
-import { availablePacksFP, goodsDIV } from '../index.js';
-import { toolOptions, setGoodsSize } from '../fn/globals.js';
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
+import { setGoodsSize, toolOptions } from '../fn/globals.js';
 import { fGVGagesname } from '../fn/helper.js';
 import * as storage from '../fn/storage.js';
-import * as element from '../fn/AddElement';
+import { availablePacksFP, goodsDIV } from '../index.js';
 import { showOptions } from '../vars/showOptions.js';
 
 export var ResourceDefs = [];
@@ -40,8 +40,7 @@ export function getPlayerResources(msg) {
     Resources = msg.responseData.resources;
     availableFP = Resources.strategy_points;
     if (document.getElementById('availableFPID'))
-      document.getElementById('availableFPID').textContent =
-        availablePacksFP + availableFP;
+      document.getElementById('availableFPID').textContent = availablePacksFP + availableFP;
     var goodsText = '';
     ResourceDefs.forEach((good) => {
       if (good.abilities.rankingPoints && Resources[good.id])
@@ -52,37 +51,23 @@ export function getPlayerResources(msg) {
       var goodsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
             ${element.close()}`;
       goodsHTML += `<p id="goodsTextLabel" href="#goodsText" data-bs-toggle="collapse">`;
-      goodsHTML += element.icon(
-        'goodsicon',
-        'goodsText',
-        collapse.collapseGoods,
-      );
+      goodsHTML += element.icon('goodsicon', 'goodsText', collapse.collapseGoods);
       goodsHTML += `<strong><span data-i18n="inventory">Goods Inventory</span>:</strong></p>`;
-      goodsHTML += element.copy(
-        'goodsCopyID',
-        'success',
-        'right',
-        collapse.collapseGoods,
-      );
+      goodsHTML += element.copy('goodsCopyID', 'success', 'right', collapse.collapseGoods);
       goodsHTML += `<div id="goodsText" style="height: ${toolOptions.goodsSize}px" class="overflow-y collapse ${
         collapse.collapseGoods ? '' : 'show'
       }"><table><tr><th>Good</th><th>Qty</th><th>Era</th></tr>`;
       goodsDIV.innerHTML = goodsHTML + goodsText + `</table></div></div>`;
-      document
-        .getElementById('goodsTextLabel')
-        .addEventListener('click', collapse.fCollapseGoods);
+      document.getElementById('goodsTextLabel').addEventListener('click', collapse.fCollapseGoods);
       const goodsDiv = document.getElementById('goodsText');
       const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
-          if (entry.contentRect && entry.contentRect.height)
-            setGoodsSize(entry.contentRect.height);
+          if (entry.contentRect && entry.contentRect.height) setGoodsSize(entry.contentRect.height);
         }
       });
       resizeObserver.observe(goodsDiv);
       $('body').i18n();
-      document
-        .getElementById('goodsCopyID')
-        .addEventListener('click', goodsCopy);
+      document.getElementById('goodsCopyID').addEventListener('click', goodsCopy);
     }
   }
 }
