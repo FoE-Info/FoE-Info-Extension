@@ -15,7 +15,7 @@
   "repository": "",
   "private": true,
   "scripts": {
-    "setup": "npm install && (uv tool install \"graphifyy[gemini]\" || pip install \"graphifyy[gemini]\" || echo \"Graphify setup optional/skipped\")",
+    "setup": "mise run setup || npm install",
     "check": "prettier --check .",
     "format": "prettier --write .",
     "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js --watch",
@@ -24,7 +24,7 @@
     "build-foe-info": "npm run build",
     "outdated": "ncu",
     "analyze": "cross-env ANALYZE=true NODE_ENV=production webpack --config webpack.prod.js",
-    "graphify-update": "graphify update . || uvx --from graphifyy graphify update . || pipx run graphifyy update . || echo 'Graphify not found. Run mise install or install uv/pipx to use AST knowledge graph tools.'"
+    "graphify-update": "uvx --from \"graphifyy[gemini,mcp]\" graphify update ."
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
