@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ZipPlugin = require('zip-webpack-plugin');
 const WebpackExtensionManifestPlugin = require('webpack-extension-manifest-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const common = require('./webpack.common.js');
 const baseManifest = require('./src/chrome/manifest_release.json');
 const pkg = require('./package.json');
@@ -81,5 +82,14 @@ module.exports = merge(common, {
       filename:
         PACKAGE_NAME + '_WEBSTORE_' + pkg.version + '_' + date + '.zip',
     }),
+    ...(process.env.ANALYZE === 'true'
+      ? [
+          new BundleAnalyzerPlugin({
+            analyzerMode: 'static',
+            openAnalyzer: false,
+            reportFilename: path.resolve(__dirname, 'build/bundle-report.html'),
+          }),
+        ]
+      : []),
   ],
 });
