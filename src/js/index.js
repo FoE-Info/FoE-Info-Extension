@@ -85,7 +85,6 @@ import {
 } from './msg/StartupService.js';
 import setOptions, { showOptions } from './vars/showOptions.js';
 import '../css/main.scss';
-import { mapToStyles } from '@popperjs/core/lib/modifiers/computeStyles.js';
 console.debug(toolOptions);
 
 let contentTypes = {};
@@ -703,31 +702,37 @@ function handleRequestFinished(request) {
       // console.debug('version:', GameVersion);
     }
 
-    request.getContent().then(async ([body, mimeType]) => {
-      // console.log("Content: ", body);
-      // console.log("MIME type: ", mimeType);
-      const parsed = JSON.parse(body);
-      // console.debug('parsed:', parsed);
-      if (parsed && parsed.length) {
-        for (var i = 0; i < parsed.length; i++) {
-          const msg = parsed[i];
+    request
+      .getContent()
+      .then(async ([body, mimeType]) => {
+        if (!body) return;
+        try {
+          const parsed = JSON.parse(body);
+          // console.debug('parsed:', parsed);
+          if (parsed && parsed.length) {
+            for (var i = 0; i < parsed.length; i++) {
+              const msg = parsed[i];
+              if (!msg || typeof msg !== 'object') continue;
 
-          console.debug('msg', msg);
+              console.debug('msg', msg);
 
-          // check if this is static data service info that holds all URLs to all metadata files
-          if (
-            msg.requestClass === 'StaticDataService' &&
-            msg.requestMethod == 'getMetadata'
-          ) {
-            try {
-              const requests = msg.responseData.map((item) =>
-                fetch(item.url)
-                  .then((r) => r.json())
-                  .catch((err) => {
-                    console.error('Failed loading metadata', item.url, err);
-                    return null;
-                  }),
-              );
+              // check if this is static data service info that holds all URLs to all metadata files
+              if (
+                msg.requestClass === 'StaticDataService' &&
+                msg.requestMethod == 'getMetadata'
+              ) {
+                try {
+                  const requests = (msg.responseData || []).map((item) => {
+                    if (!item || !item.url || item.url.endsWith('.mo')) {
+                      return Promise.resolve(null);
+                    }
+                    return fetch(item.url)
+                      .then((r) => r.json())
+                      .catch((err) => {
+                        console.error('Failed loading metadata', item.url, err);
+                        return null;
+                      });
+                  });
               const results = await Promise.all(requests);
 
               results.forEach((data, idx) => {
@@ -2040,12 +2045,13 @@ function handleRequestFinished(request) {
         }
       } else {
         // console.debug('parsed:', parsed);
-        if (parsed && parsed.player_name && parsed.worlds) {
-          worlds = parsed.worlds;
-          console.debug('worlds', worlds);
-        }
       }
-    });
+    } catch (err) {
+      console.error('Error handling network response:', err);
+    }
+  }).catch((err) => {
+    console.error('Error in request.getContent():', err);
+  });
   }
 }
 

@@ -163,44 +163,61 @@ export function TreasuryCopy() {
 }
 
 function copyToClipboard(element) {
-  var $temp = $('<textarea>');
-  $('body').append($temp);
-  var html = $(element).html();
-  // if (!element.equals("clipboardText"))
+  const el = typeof element === 'string' ? document.querySelector(element) : element;
+  if (!el) return;
+  let html = el.innerHTML || '';
   addToClipboard(element, html);
-  html = html.replace(/<br>/g, '\n'); // or \r\n
-  html = html.replace(/<\/tr>/g, '\n'); // or \r\n
-  html = html.replace(/<p>/g, ''); // or \r\n
-  html = html.replace(/<tr>/g, ''); // or \r\n
-  html = html.replace(/<td>/g, ''); // or \r\n
-  html = html.replace(/<\/td>/g, ''); // or \r\n
-  html = html.replace(/<\/p>/g, '\n'); // or \r\n
-  html = html.replace(/<\/?span[^>]*>/g, ''); // or \r\n
-  // html = html.replace(/<\/span>/g, ""); // or \r\n
-  console.debug(html);
-  $temp.val(html).select();
+  html = html.replace(/<br\s*\/?>/gi, '\n');
+  html = html.replace(/<\/tr>/gi, '\n');
+  html = html.replace(/<\/?(p|tr|td)[^>]*>/gi, '');
+  html = html.replace(/<\/p>/gi, '\n');
+  html = html.replace(/<\/?span[^>]*>/gi, '');
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(html).catch(() => fallbackCopy(html));
+  } else {
+    fallbackCopy(html);
+  }
+}
+
+function fallbackCopy(text) {
+  const temp = document.createElement('textarea');
+  temp.value = text;
+  document.body.appendChild(temp);
+  temp.select();
   document.execCommand('copy');
-  $temp.remove();
+  temp.remove();
 }
 
 function addToClipboard(element, html) {
-  var clipboard = document.getElementById('clipboard');
+  let clipboard = document.getElementById('clipboard');
 
   if (clipboard == null) {
-    // console.debug('2');
     clipboard = document.createElement('div');
-    var content = document.getElementById('content');
-    content.appendChild(clipboard);
+    const content = document.getElementById('content');
+    if (content) content.appendChild(clipboard);
   }
 
   clipboard.innerHTML += '<br>' + html;
 }
 
 function copyNode(node) {
-  let range = document.createRange();
-  range.selectNodeContents(node);
-  let select = window.getSelection();
-  select.removeAllRanges();
-  select.addRange(range);
-  document.execCommand('copy');
+  if (!node) return;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(node.innerText || node.textContent || '').catch(() => {
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const select = window.getSelection();
+      select.removeAllRanges();
+      select.addRange(range);
+      document.execCommand('copy');
+    });
+  } else {
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    const select = window.getSelection();
+    select.removeAllRanges();
+    select.addRange(range);
+    document.execCommand('copy');
+  }
 }

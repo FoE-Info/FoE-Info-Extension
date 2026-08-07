@@ -42,7 +42,7 @@ module.exports = merge(common, {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'build/' + PACKAGE_NAME),
-    publicPath: '/',
+    publicPath: '',
   },
   plugins: [
     new webpack.DefinePlugin({

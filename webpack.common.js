@@ -41,7 +41,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      browser: 'browser',
     }),
     new webpack.ProgressPlugin(),
     new CleanWebpackPlugin({
@@ -92,6 +91,9 @@ module.exports = {
     }),
   ],
   resolve: {
+    alias: {
+      jquery: path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js'),
+    },
     fallback: {
       fs: false,
     },

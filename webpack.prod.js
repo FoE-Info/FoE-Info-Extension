@@ -58,7 +58,7 @@ module.exports = merge(common, {
     filename: '[name].js',
     chunkFilename: '[name].js',
     path: path.resolve(__dirname, 'build/' + PACKAGE_NAME + '_WEBSTORE'),
-    publicPath: '/',
+    publicPath: '',
   },
   plugins: [
     new MiniCssExtractPlugin(),
