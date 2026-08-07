@@ -26,6 +26,17 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
   plugins: [
     new webpack.ProvidePlugin({
       $: 'jquery',
@@ -42,25 +53,25 @@ module.exports = {
       manifest: 'manifest.json',
       filename: 'panel.html',
       template: './src/chrome/panel.html',
-      chunks: ['app'],
+      chunks: ['vendors', 'app'],
     }),
     new HtmlWebpackPlugin({
       title: 'FoE-Info',
       filename: 'options.html',
       template: './src/chrome/options.html',
-      chunks: ['options'],
+      chunks: ['vendors', 'options'],
     }),
     new HtmlWebpackPlugin({
       title: 'FoE-Info',
       filename: 'popup.html',
       template: './src/chrome/popup.html',
-      chunks: ['popup'],
+      chunks: ['vendors', 'popup'],
     }),
     new HtmlWebpackPlugin({
       title: 'FoE-Info',
       filename: 'devtools.html',
       template: './src/chrome/devtools.html',
-      chunks: ['devtools'],
+      chunks: ['vendors', 'devtools'],
     }),
     new CopyPlugin({
       patterns: [
