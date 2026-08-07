@@ -3,3 +3,19 @@ build
 package-lock.json
 .idea
 stuff
+.env
+.envrc
+.direnv/
+graphify-out/
+.venv/
+
+# Agent configuration & rules
+.agents/
+AGENTS.md
+.graphifyignore
+docs/knowledgebase/agent-workflow-guide.md
+
+# Local environment & tool configurations
+.mise.toml
+.vscode/settings.json
+requirements.txt
