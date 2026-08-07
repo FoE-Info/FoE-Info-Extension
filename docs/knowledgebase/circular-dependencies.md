@@ -1,6 +1,6 @@
 # FoE-Info-Extension: Circular Dependency Analysis & Refactoring Plan
 
-**Source Files**: `graphify-out/GRAPH_REPORT.md`, `src/js/fn/`, `src/js/msg/`, `src/js/index.js`  
+**Source Files**: `graphify-out/GRAPH_REPORT.md`, `src/js/fn/`, `src/js/msg/`, `src/js/index.js`
 
 ---
 

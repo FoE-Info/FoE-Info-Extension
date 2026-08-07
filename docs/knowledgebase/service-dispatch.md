@@ -1,6 +1,6 @@
 # FoE-Info-Extension: Service Dispatch & Network Interception Technical Reference
 
-**Source Files**: `src/js/index.js`, `src/js/msg/`  
+**Source Files**: `src/js/index.js`, `src/js/msg/`
 
 ---
 

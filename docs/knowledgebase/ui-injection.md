@@ -1,6 +1,6 @@
 # FoE-Info-Extension: DOM Manipulation & UI Injection Catalog
 
-**Source Files**: `src/js/fn/`, `src/js/vars/`  
+**Source Files**: `src/js/fn/`, `src/js/vars/`
 
 ---
 
