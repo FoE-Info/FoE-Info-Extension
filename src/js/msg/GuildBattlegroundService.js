@@ -11,27 +11,27 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { Tooltip, Alert, Popover } from 'bootstrap';
+import { Alert, Popover, Tooltip } from 'bootstrap';
 import browser from 'webextension-polyfill';
-import { showOptions } from '../vars/showOptions.js';
-import * as helper from '../fn/helper.js';
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
-import * as element from '../fn/AddElement';
-import * as storage from '../fn/storage.js';
+import { setBuildingCostSize, toolOptions } from '../fn/globals.js';
+import * as helper from '../fn/helper.js';
 import * as post_webstore from '../fn/post.js';
+import * as storage from '../fn/storage.js';
 import {
   BuildingDefs,
+  donationDIV,
+  EpocTime,
+  GameOrigin,
+  targets,
+  targetText,
+  url,
   VolcanoProvinceDefs,
   WaterfallProvinceDefs,
-  targets,
-  donationDIV,
-  GameOrigin,
-  EpocTime,
-  url,
-  targetText,
 } from '../index.js';
-import { toolOptions, setBuildingCostSize } from '../fn/globals.js';
+import { showOptions } from '../vars/showOptions.js';
 
 export var BattlegroundPerformance = [];
 export var GuildMembers = [];
@@ -74,32 +74,28 @@ export function getPlayerLeaderboard(msg) {
   console.debug('2', showOptions.showBattleground);
 
   if (showOptions.showBattleground) {
-    browser.storage.local
-      .get([GameOrigin, GameOrigin + 'BGtime'])
-      .then((items) => {
-        console.debug('items', items);
-        if (items[GameOrigin]) GuildMembers = items[GameOrigin];
-        // console.debug('GuildMembers',GuildMembers);
-        storage.set(GameOrigin + 'BGtime', EpocTime);
-        if (items[GameOrigin + 'BGtime'])
-          BGtime = new Date(
-            items[GameOrigin + 'BGtime'] * 1000,
-          ).toLocaleString();
-        else BGtime = 'not set';
+    browser.storage.local.get([GameOrigin, GameOrigin + 'BGtime']).then((items) => {
+      console.debug('items', items);
+      if (items[GameOrigin]) GuildMembers = items[GameOrigin];
+      // console.debug('GuildMembers',GuildMembers);
+      storage.set(GameOrigin + 'BGtime', EpocTime);
+      if (items[GameOrigin + 'BGtime'])
+        BGtime = new Date(items[GameOrigin + 'BGtime'] * 1000).toLocaleString();
+      else BGtime = 'not set';
 
-        BattlegroundPerformance.forEach((entry) => {
-          // console.debug('entry',entry);
-          if (GuildMembers.find((id) => id.name == entry.name) == null)
-            GuildMembers.push({
-              name: entry.name,
-              wonNegotiations: 0,
-              wonBattles: 0,
-            }); // if member not listed, add new member
-        });
-        console.debug('save GBG', GameOrigin, BattlegroundPerformance);
-        storage.set(GameOrigin, BattlegroundPerformance);
-        helper.fshowBattleground();
+      BattlegroundPerformance.forEach((entry) => {
+        // console.debug('entry',entry);
+        if (GuildMembers.find((id) => id.name == entry.name) == null)
+          GuildMembers.push({
+            name: entry.name,
+            wonNegotiations: 0,
+            wonBattles: 0,
+          }); // if member not listed, add new member
       });
+      console.debug('save GBG', GameOrigin, BattlegroundPerformance);
+      storage.set(GameOrigin, BattlegroundPerformance);
+      helper.fshowBattleground();
+    });
     // console.debug('BattlegroundPerformance',GBGdata);
     $('body').i18n();
   }
@@ -182,9 +178,7 @@ export function getState(msg) {
         .getElementById('battlegroundPostID')
         .addEventListener('click', post_webstore.postGBGtoSS);
     // else
-    document
-      .getElementById('battlegroundCopyID')
-      .addEventListener('click', copy.BattlegroundCopy);
+    document.getElementById('battlegroundCopyID').addEventListener('click', copy.BattlegroundCopy);
     document
       .getElementById('battlegroundicon')
       .addEventListener('click', collapse.fCollapseBattleground);
@@ -284,8 +278,7 @@ export function clearBattleground() {
   BattlegroundPerformance = [];
   GuildMembers = [];
   map = {};
-  if (document.getElementById('costs'))
-    document.getElementById('costs').innerHTML = '';
+  if (document.getElementById('costs')) document.getElementById('costs').innerHTML = '';
 }
 
 function buildingCostCopy() {
@@ -329,14 +322,7 @@ function copyToClipboard(element) {
   var html = $(element).html();
   console.debug(html);
   // var html = $(element).text();
-  html = $('<div />')
-    .html(html)
-    .find('span')
-    .contents()
-    .unwrap()
-    .end()
-    .end()
-    .html();
+  html = $('<div />').html(html).find('span').contents().unwrap().end().end().html();
   html = html.replace(/<\/?p[^>]*>/g, '').replace(/<br>/g, '\r\n'); // or \r\n
   console.debug(html);
   $temp.val(html).select();
@@ -455,12 +441,7 @@ function checkProvinces() {
   // if(url.sheetGuildURL)
   //     targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID"><span data-i18n="post">Post</span></button>`;
   // else
-  targetsHTML += element.copy(
-    'targetCopyID',
-    'primary',
-    'right',
-    collapse.collapseBattleground,
-  );
+  targetsHTML += element.copy('targetCopyID', 'primary', 'right', collapse.collapseBattleground);
   targetsHTML += `<p id="targetGenLabel" href="#targetGenCollapse" aria-expanded="true" data-bs-toggle="collapse">
       ${element.icon('targetGenicon', 'targetGenCollapse', collapse.collapseTargetGen)}
         <strong>GBG Target Generator:</strong></p>`;
@@ -507,14 +488,9 @@ function checkProvinces() {
         //check connected provinces for siege camps
         if (thisdef && thisdef.connections) {
           thisdef.connections.forEach((connection) => {
-            const provinceData = mapSorted.find(
-              (province) => province.id == connection,
-            );
+            const provinceData = mapSorted.find((province) => province.id == connection);
             // console.debug(connection,provinceData);
-            if (
-              provinceData.placedBuildings &&
-              currentParticipantId == provinceData.ownerId
-            ) {
+            if (provinceData.placedBuildings && currentParticipantId == provinceData.ownerId) {
               provinceData.placedBuildings.forEach((building) => {
                 let att = attritionReduction(building.id);
                 if (building.readyAt < EpocTime) {
@@ -539,23 +515,16 @@ function checkProvinces() {
           });
         }
         if (campsReady > 80) campsReady = 80;
-        if (campsNotReady > 0)
-          campsNotReady = Math.min(80 - campsReady, campsNotReady);
+        if (campsNotReady > 0) campsNotReady = Math.min(80 - campsReady, campsNotReady);
         var text = name[0] + name[1];
         var campsText = '';
         if (showOptions.GBGshowSC && (campsReady || campsNotReady)) {
           campsText = ' ';
-          if (campsReady && !campsNotReady)
-            campsText += '(' + (100 - campsReady) + '%)';
-          else if (campsNotReady && !campsReady)
-            campsText += '[' + (100 - campsNotReady) + '% UC]';
+          if (campsReady && !campsNotReady) campsText += '(' + (100 - campsReady) + '%)';
+          else if (campsNotReady && !campsReady) campsText += '[' + (100 - campsNotReady) + '% UC]';
           else if (campsReady && campsNotReady)
             campsText +=
-              '(' +
-              (100 - campsReady) +
-              '%) [' +
-              (100 - campsNotReady - campsReady) +
-              '% UC]';
+              '(' + (100 - campsReady) + '%) [' + (100 - campsNotReady - campsReady) + '% UC]';
           else campsText += '(! SC)';
         }
         if (targetText) text += ' ' + targetText;
@@ -591,9 +560,7 @@ function checkProvinces() {
       textProvinceLocked +
       `</p></div>`;
 
-    document
-      .getElementById('targetCopyID')
-      .addEventListener('click', targetCopy);
+    document.getElementById('targetCopyID').addEventListener('click', targetCopy);
     document
       .getElementById('targetGenLabel')
       .addEventListener('click', collapse.fCollapseTargetGen);
@@ -626,9 +593,7 @@ function showBuildingCost(msg) {
       console.debug(province);
       const costs = province.availableBuildings;
       const slots = province.totalBuildingSlots;
-      var name = ProvinceDefs.find((def) => def.id == province.id).name.split(
-        ' ',
-      );
+      var name = ProvinceDefs.find((def) => def.id == province.id).name.split(' ');
       // var slots = ProvinceDefs.find(def => def.id == province.id).totalBuildingSlots;
       // console.debug(name,costsHTML);
 
@@ -675,20 +640,13 @@ function showBuildingCost(msg) {
     <p id="buildingCostTextLabel" href="#buildingCostText" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse">
       ${element.icon('buildingCosticon', 'buildingCostText', collapse.collapseBuildingCost)}
     <strong>GBG Building Costs:</strong></p>` +
-    element.copy(
-      'buildingCostID',
-      'primary',
-      'right',
-      collapse.collapseBuildingCost,
-    ) +
+    element.copy('buildingCostID', 'primary', 'right', collapse.collapseBuildingCost) +
     `<table style="height: ${toolOptions.buildingCostSize}px"  id="buildingCostText" class="overflow-y table collapse ${
       collapse.collapseBuildingCost == false ? 'show' : ''
     }">` +
     costsHTML +
     `</table></div>`;
-  document
-    .getElementById('buildingCostID')
-    .addEventListener('click', buildingCostCopy);
+  document.getElementById('buildingCostID').addEventListener('click', buildingCostCopy);
   document
     .getElementById('buildingCostTextLabel')
     .addEventListener('click', collapse.fCollapseBuildingCost);

@@ -17,11 +17,11 @@
 // import $ from "jquery";
 // import 'bootstrap';
 // import Discord  from 'discord.js';
-import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index.js';
+import { Alert, Popover, Tooltip } from 'bootstrap';
+import { alerts, EpocTime, GameOrigin, MyInfo, url } from '../index.js';
+import { GBGdata } from '../msg/GuildBattlegroundService.js';
 import * as element from './AddElement';
 import * as helper from './helper.js';
-import { Tooltip, Alert, Popover } from 'bootstrap';
-import { GBGdata } from '../msg/GuildBattlegroundService.js';
 
 // Example POST method implementation:
 async function postData(url = '', data = {}) {
@@ -51,9 +51,8 @@ async function postData(url = '', data = {}) {
 }
 
 export function postToDiscord(text) {
-  // test-test channel
-  var webHookUrl =
-    'https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij';
+  var webHookUrl = url.discordURL || '';
+  if (!webHookUrl) return;
 
   const hook = getKey(webHookUrl);
 
@@ -143,7 +142,7 @@ export function postToDiscord(text) {
 
   // const data = { username: 'example' };
 
-  // fetch('https://discordapp.com/api/webhooks/687279023335800877/rtsthZ8GIxsD9LYhlluZHyqOQGQtZmOkaiNLKcAHRshWLPoUZqO1_XTuOObFeJqL4zyQ', {
+  // fetch('https://discord.com/api/webhooks/<WEBHOOK_ID>/<WEBHOOK_TOKEN>', {
   //   method: 'POST', // or 'PUT'
   //   headers: {
   // 	'Content-Type': 'application/json',
@@ -295,8 +294,8 @@ export function postAlerttoDsicord() {
 }
 
 export function logToDiscord(text) {
-  var webHookUrl =
-    'https://discordapp.com/api/webhooks/690589445145231410/XQehmPTFdg82ijxxXMXMeYDuIkCuKokSDOVLztN737J60NCJ6nN3qzBlMjIxMJG0N-jq';
+  var webHookUrl = url.discordLogURL || url.discordURL || '';
+  if (!webHookUrl) return;
   // log channel
 
   var selection = window.getSelection();

@@ -1,8 +1,9 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= htmlWebpackPlugin.options.title %> Options</title>
-    <script type="module" src="browser-polyfill.js"></script>
   </head>
 
   <body>
@@ -49,13 +50,7 @@
             </label>
             <label>
               Suffix with this text
-              <input
-                type="text"
-                class="form-control"
-                id="donationSuffix"
-                value=""
-                size="20"
-              />
+              <input type="text" class="form-control" id="donationSuffix" value="" size="20" />
             </label>
             <label>
               Hide Unsafe Spots
@@ -133,23 +128,11 @@
           </label>
           <label>
             Add text to target generator
-            <input
-              type="text"
-              class="form-control"
-              id="targetText"
-              value=""
-              size="40"
-            />
+            <input type="text" class="form-control" id="targetText" value="" size="40" />
           </label>
           <label>
             Search message topics for targets
-            <input
-              type="text"
-              class="form-control"
-              id="targets"
-              value="targets"
-              size="40"
-            />
+            <input type="text" class="form-control" id="targets" value="targets" size="40" />
           </label>
         </div>
       </div>

@@ -11,15 +11,10 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import {
-  showReward,
-  rewardsArmy,
-  rewardsCity,
-  MilitaryDefs,
-} from '../index.js';
-import { updateGalaxy } from './StartupService.js';
-import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
+import { MilitaryDefs, rewardsArmy, rewardsCity, showReward } from '../index.js';
+import { showOptions } from '../vars/showOptions.js';
+import { updateGalaxy } from './StartupService.js';
 
 export function pickupProduction(msg) {
   if (msg.responseData.militaryProducts.length) {
@@ -28,8 +23,7 @@ export function pickupProduction(msg) {
     // var unitsList = {};
     units.forEach((unit) => {
       var name = '';
-      if (MilitaryDefs[unit.unitTypeId])
-        name = MilitaryDefs[unit.unitTypeId].name;
+      if (MilitaryDefs[unit.unitTypeId]) name = MilitaryDefs[unit.unitTypeId].name;
       else name = unit.unitTypeId;
       console.debug(unit.unitTypeId, name);
       if (rewardsArmy[name]) rewardsArmy[name]++;
@@ -49,18 +43,13 @@ export function pickupProduction(msg) {
         // updateGalaxy(reward.cityentity_id);
         // var resources = reward.state.current_product.product.resources;
         // console.debug(resources);
-        Object.keys(reward.state.current_product.product.resources).forEach(
-          (resource) => {
-            const name = helper.fResourceShortName(resource);
-            // console.debug(name,resource)
-            if (rewardsCity[name])
-              rewardsCity[name] +=
-                reward.state.current_product.product.resources[resource];
-            else
-              rewardsCity[name] =
-                reward.state.current_product.product.resources[resource];
-          },
-        );
+        Object.keys(reward.state.current_product.product.resources).forEach((resource) => {
+          const name = helper.fResourceShortName(resource);
+          // console.debug(name,resource)
+          if (rewardsCity[name])
+            rewardsCity[name] += reward.state.current_product.product.resources[resource];
+          else rewardsCity[name] = reward.state.current_product.product.resources[resource];
+        });
       }
       if (
         reward.state.hasOwnProperty('productionOption') &&
@@ -74,18 +63,13 @@ export function pickupProduction(msg) {
             element.hasOwnProperty('playerResources') &&
             element.playerResources.hasOwnProperty('resources')
           )
-            Object.keys(element.playerResources.resources).forEach(
-              (resource) => {
-                const name = helper.fResourceShortName(resource);
-                // console.debug(name,resource)
-                if (rewardsCity[name])
-                  rewardsCity[name] +=
-                    reward.state.current_product.product.resources[resource];
-                else
-                  rewardsCity[name] =
-                    reward.state.current_product.product.resources[resource];
-              },
-            );
+            Object.keys(element.playerResources.resources).forEach((resource) => {
+              const name = helper.fResourceShortName(resource);
+              // console.debug(name,resource)
+              if (rewardsCity[name])
+                rewardsCity[name] += reward.state.current_product.product.resources[resource];
+              else rewardsCity[name] = reward.state.current_product.product.resources[resource];
+            });
         });
       }
     });

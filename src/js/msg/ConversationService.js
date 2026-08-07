@@ -12,13 +12,13 @@
  * ________________________________________________________________
  */
 
-import { Tooltip, Alert, Popover } from 'bootstrap';
+import { Alert, Popover, Tooltip } from 'bootstrap';
 import dayjs from 'dayjs';
-import { targets, targetsTopic } from '../index.js';
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as helper from '../fn/helper.js';
 import * as post_webstore from '../fn/post.js';
-import * as element from '../fn/AddElement';
+import { targets, targetsTopic } from '../index.js';
 import { setCurrentPercent } from './GreatBuildingsService.js';
 
 // targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
@@ -27,18 +27,14 @@ export function conversationService(msg) {
   // console.debug(msg);
   var messages = null;
   // if(msg.responseData.category.type == 'guild'){
-  if (msg.requestMethod == 'getOverviewForCategory')
-    messages = msg.responseData.category.teasers;
+  if (msg.requestMethod == 'getOverviewForCategory') messages = msg.responseData.category.teasers;
   else messages = msg.responseData.teasers;
   // console.debug(targetsTopic);
   // if(!targetsTopic) targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
   messages.forEach(function (message) {
     // console.debug(message.title ,targetsTopic,message.title.toLowerCase().includes(targetsTopic.toLowerCase()));
     // if(message.title == targetsTopic){
-    if (
-      targetsTopic &&
-      message.title.toLowerCase().includes(targetsTopic.toLowerCase())
-    ) {
+    if (targetsTopic && message.title.toLowerCase().includes(targetsTopic.toLowerCase())) {
       var targetsGBG = document.createElement('div');
       var targetsHTML;
       if (document.getElementById('targetsGBG')) {
@@ -53,12 +49,7 @@ export function conversationService(msg) {
       targetsHTML = `<div id="alert-${timerId}" class="alert alert-info alert-dismissible show" role="alert">`;
       targetsHTML += element.close();
       if (helper.checkGBG())
-        targetsHTML += element.post(
-          'targetPostID',
-          'primary',
-          'right',
-          collapse.collapseTarget,
-        );
+        targetsHTML += element.post('targetPostID', 'primary', 'right', collapse.collapseTarget);
 
       targetsGBG.innerHTML =
         targetsHTML +
@@ -72,9 +63,7 @@ export function conversationService(msg) {
       setTimeout(function () {
         targetsGBG.innerHTML = '';
       }, 600000);
-      document
-        .getElementById('targetLabel')
-        .addEventListener('click', collapse.fCollapseTarget);
+      document.getElementById('targetLabel').addEventListener('click', collapse.fCollapseTarget);
       if (helper.checkGBG())
         document
           .getElementById('targetPostID')
@@ -144,8 +133,7 @@ function getPercent(title) {
     else if (title.includes('198%')) setCurrentPercent(198);
     else if (title.includes('199%')) setCurrentPercent(199);
     else if (title.includes('200%')) setCurrentPercent(200);
-    else if (title.includes('1.9') || title.includes('1,9'))
-      setCurrentPercent(190);
+    else if (title.includes('1.9') || title.includes('1,9')) setCurrentPercent(190);
     else {
       console.debug('in else 2');
       setCurrentPercent(190);
