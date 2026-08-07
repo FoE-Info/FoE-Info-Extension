@@ -1,27 +1,37 @@
 {
-  // See https://go.microsoft.com/fwlink/?LinkId=733558
-  // for the documentation about the tasks.json format
   "version": "2.0.0",
   "tasks": [
     {
       "type": "npm",
-      "script": "build-foe-info",
-      "problemMatcher": ["$eslint-compact"],
-      "group": "build"
+      "script": "build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "label": "npm: build",
+      "detail": "Build optimized production extension bundle"
     },
     {
       "type": "npm",
       "script": "dev",
-      "problemMatcher": ["$eslint-compact"],
+      "problemMatcher": [],
       "label": "npm: dev",
-      "detail": "NODE_ENV=development webpack --mode development --config webpack-dev.config.js --watch"
+      "detail": "Start Webpack development build watcher"
+    },
+    {
+      "type": "npm",
+      "script": "check",
+      "problemMatcher": [],
+      "label": "npm: check",
+      "detail": "Check code formatting with Prettier"
     },
     {
       "type": "npm",
       "script": "format",
-      "problemMatcher": ["$eslint-compact"],
+      "problemMatcher": [],
       "label": "npm: format",
-      "detail": "prettier --write ."
+      "detail": "Format project code with Prettier"
     }
   ]
 }
