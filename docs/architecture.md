@@ -200,27 +200,29 @@ The extension utilizes Webpack 5 to compile ES modular source code into browser-
 
 ### 5.1 Build Configuration Architecture
 
-The repository contains two Webpack configurations:
+The Webpack build is split across **three modular configuration files** using `webpack-merge`:
 
-1. `[webpack-dev.config.js](../webpack-dev.config.js)`: Optimized for development iteration, retaining console logs and providing inline source maps.
-2. `[foe-info-webstore.config.js](../foe-info-webstore.config.js)`: Production pipeline optimized for minification, code stripping, asset extraction, and Webstore release packaging.
+1. `[webpack.common.js](../webpack.common.js)`: Shared base configuration — entry points, loaders, plugins, and `splitChunks` vendor extraction applicable to all build targets.
+2. `[webpack.dev.js](../webpack.dev.js)`: Development overrides — merges `common`, adds `style-loader` for CSS, `inline-source-map`, dev-server, and sets `DEV: true` / `WEBSTORE: false`.
+3. `[webpack.prod.js](../webpack.prod.js)`: Production overrides — merges `common`, adds `MiniCssExtractPlugin`, `TerserPlugin`, `BundleAnalyzerPlugin`, and `ZipPlugin`.
 
-| Feature / Setting                   | `[webpack-dev.config.js](../webpack-dev.config.js)` (Development) | `[foe-info-webstore.config.js](../foe-info-webstore.config.js)` (Production Webstore) |
-| ----------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| **Build Target Directory**          | `build/FoE-Info-DEV/`                                             | `build/FoE-Info_WEBSTORE/`                                                            |
-| **Webpack Mode**                    | `'development'`                                                   | `'production'`                                                                        |
-| **Source Maps**                     | `inline-source-map`                                               | Disabled                                                                              |
-| **Code Minification**               | Disabled                                                          | `TerserPlugin` (ECMA 6 target, mangling enabled)                                      |
-| **Console Cleaning**                | Retains all `console.*` output                                    | Strips `console.info` and `console.debug`                                             |
-| **CSS Processing**                  | `style-loader` (Injects `<style>` tags)                           | `MiniCssExtractPlugin` (Extracts standalone `.css` assets)                            |
-| **Base Manifest Source**            | `[src/chrome/manifest.json](../src/chrome/manifest.json)`         | `[src/chrome/manifest_release.json](../src/chrome/manifest_release.json)`             |
-| **Extension Name (`EXT_NAME`)**     | `"FoE-Info-DEV"`                                                  | `"FoE-Info"`                                                                          |
-| **Global Defines (`DefinePlugin`)** | `DEV: true`, `WEBSTORE: false`                                    | `DEV: false`, `WEBSTORE: true`                                                        |
-| **Archive Packaging**               | Disabled                                                          | `ZipPlugin` generates `FoE-Info_WEBSTORE_<version>_<date>.zip`                        |
+| Feature / Setting                   | `[webpack.dev.js](../webpack.dev.js)` (Development) | `[webpack.prod.js](../webpack.prod.js)` (Production Webstore) |
+| ----------------------------------- | --------------------------------------------------- | ------------------------------------------------------------- |
+| **Build Target Directory**          | `build/FoE-Info-DEV/`                               | `build/FoE-Info_WEBSTORE/`                                    |
+| **Webpack Mode**                    | `'development'`                                     | `'production'`                                                |
+| **Source Maps**                     | `inline-source-map`                                 | Disabled                                                      |
+| **Code Minification**               | Disabled                                            | `TerserPlugin` (ECMA 2018 target, mangling enabled)           |
+| **Console Cleaning**                | Retains all `console.*` output                      | Strips `console.info` and `console.debug`                     |
+| **CSS Processing**                  | `style-loader` (Injects `<style>` tags)             | `MiniCssExtractPlugin` (Extracts standalone `.css` assets)    |
+| **Base Manifest Source**            | `src/chrome/manifest.json`                          | `src/chrome/manifest_release.json`                            |
+| **Extension Name (`EXT_NAME`)**     | `"FoE-Info-DEV"`                                   | `"FoE-Info"`                                                  |
+| **Global Defines (`DefinePlugin`)** | `DEV: true`, `WEBSTORE: false`                      | `DEV: false`, `WEBSTORE: true`                                |
+| **Archive Packaging**               | Disabled                                            | `ZipPlugin` generates `FoE-Info_WEBSTORE_<version>_<date>.zip` |
+| **Bundle Analysis**                 | Disabled                                            | `BundleAnalyzerPlugin` (opt-in via `ANALYZE=true`)            |
 
 ### 5.2 Entry Chunks & Asset Mapping
 
-Both configurations define four output entry chunks:
+The shared base (`webpack.common.js`) defines four output entry chunks:
 
 ```javascript
 entry: {
@@ -231,28 +233,29 @@ entry: {
 }
 ```
 
+A `splitChunks` vendor cache group is configured in `webpack.common.js` to extract shared node_modules (jQuery, Bootstrap) into a `vendors.js` chunk, preventing duplication across entry points.
+
 ### 5.3 Automated Global Injection (`webpack.ProvidePlugin`)
 
-To streamline module development and avoid repetitive imports across files, Webpack automatically provisions global variables:
+To streamline module development and avoid repetitive imports across files, `webpack.common.js` automatically provisions global variables:
 
 ```javascript
 new webpack.ProvidePlugin({
   $: 'jquery',
   jQuery: 'jquery',
-  browser: 'webextension-polyfill',
 });
 ```
 
-This guarantees that jQuery (`$`, `jQuery`) and the webextension API polyfill (`browser`) are universally available across all bundled modules.
+This guarantees that jQuery (`$`, `jQuery`) are universally available across all bundled modules. The `webextension-polyfill` (`browser`) is imported explicitly in files that require it.
 
 ### 5.4 Production Minification & Console Stripping (`TerserPlugin`)
 
-In `[foe-info-webstore.config.js](../foe-info-webstore.config.js)`, `TerserPlugin` performs AST transformations to minify code and strip non-essential debug logging:
+In `[webpack.prod.js](../webpack.prod.js)`, `TerserPlugin` performs AST transformations to minify code and strip non-essential debug logging:
 
 ```javascript
 new TerserPlugin({
   terserOptions: {
-    ecma: 6,
+    ecma: 2018,
     compress: {
       pure_funcs: ['console.info', 'console.debug'],
     },
@@ -260,7 +263,6 @@ new TerserPlugin({
       comments: false,
     },
     mangle: true,
-    module: true,
   },
   extractComments: false,
 });
@@ -272,6 +274,7 @@ new TerserPlugin({
 2. **`HtmlWebpackPlugin`**: Injects compiled bundle tags into HTML templates (`panel.html`, `options.html`, `popup.html`, `devtools.html`).
 3. **`WebpackExtensionManifestPlugin`**: Reads `[src/chrome/manifest_release.json](../src/chrome/manifest_release.json)`, injects version metadata from `package.json`, and writes `manifest.json` into the build directory.
 4. **`ZipPlugin`**: Compresses the build output directory into a production Webstore distribution ZIP archive (`FoE-Info_WEBSTORE_<version>_<YYYY-MM-DD>.zip`) located in `build/`.
+5. **`BundleAnalyzerPlugin`**: Generates a static HTML bundle report (`build/bundle-report.html`) when `ANALYZE=true` is set. Triggered via `npm run analyze`.
 
 ---
 

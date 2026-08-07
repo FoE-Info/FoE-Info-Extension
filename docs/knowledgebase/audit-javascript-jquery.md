@@ -271,8 +271,8 @@ npx eslint src/js --fix
 | Location                                   | Issue                                                                                          | Action                                                         |
 | ------------------------------------------ | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | `src/js/index.js:88`                       | `import { mapToStyles } from '@popperjs/core/lib/modifiers/computeStyles.js'`                  | Remove — `mapToStyles` is not referenced in index.js           |
-| `foe-info-webstore.config.js` TerserPlugin | `output: null` — deprecated key (should be `format`) and is overridden by later `format: null` | Remove `output: null`; keep only `format: { comments: false }` |
-| `foe-info-webstore.config.js` TerserPlugin | `format: {}` then `format: null` — null overwrites the options object                          | Replace both with a single `format: { comments: false }`       |
+| `webpack.prod.js` TerserPlugin | `output: null` — deprecated key (should be `format`) and is overridden by later `format: null` | ✅ RESOLVED — `output: null` removed; only single `format: { comments: false }` remains |
+| `webpack.prod.js` TerserPlugin | `format: {}` then `format: null` — null overwrites the options object                          | ✅ RESOLVED — consolidated to single `format: { comments: false }`                       |
 | `src/js/index.js:593`                      | jQuery version check debug log                                                                 | Remove                                                         |
 
 ---
@@ -366,7 +366,7 @@ if (Object.hasOwn(obj, key)) { ... }
 | **CRITICAL** | No `try/catch` in `handleRequestFinished`               | `src/js/index.js`                                  | Wrap entire dispatch in try/catch                | 30 min   |
 | **HIGH**     | Migrate `document.execCommand('copy')` to Clipboard API | `src/js/fn/copy.js`, `GuildBattlegroundService.js` | Use `navigator.clipboard.writeText()` + fallback | 2 hrs    |
 | **HIGH**     | Remove unused `mapToStyles` import                      | `src/js/index.js:88`                               | Delete import line                               | 5 min    |
-| **HIGH**     | Fix TerserPlugin dead config                            | `foe-info-webstore.config.js`                      | Consolidate to `format: { comments: false }`     | 10 min   |
+| **HIGH**     | Fix TerserPlugin dead config                            | `webpack.prod.js`                                  | ✅ RESOLVED — consolidated to `format: { comments: false }`     |          |
 | **HIGH**     | Scope all `$('body').i18n()` calls to containers        | All msg services                                   | Replace with `$(container).i18n()`               | 2 hrs    |
 | **HIGH**     | Replace jQuery textarea pattern with vanilla            | `copy.js`, `GuildBattlegroundService.js`           | `document.createElement` + `element.innerHTML`   | 1 hr     |
 | **MEDIUM**   | Replace jQuery `.height()` with vanilla                 | `helper.js`, `index.js`                            | `offsetHeight` / `el.style.height =`             | 30 min   |

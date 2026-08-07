@@ -166,29 +166,31 @@ The extension manifest is declared in `src/chrome/manifest.json` for development
 
 ## 4. Webpack 5 Build Pipeline Architecture
 
-The project employs Webpack 5 to handle ES module bundling, SCSS/Sass compilation, HTML template injection, asset distribution, and manifest transformation. Two specialized build configurations exist in the project root:
+The project employs Webpack 5 to handle ES module bundling, SCSS/Sass compilation, HTML template injection, asset distribution, and manifest transformation. The Webpack configuration is split across **three modular files** using `webpack-merge`:
 
-1. `webpack-dev.config.js` — Optimized for developer iteration and live debugging.
-2. `foe-info-webstore.config.js` — Production pipeline optimized for minification, code stripping, asset extraction, and Webstore zip packaging.
+1. `webpack.common.js` — Shared base: entry points, loaders, asset modules, `splitChunks` vendor extraction, and shared plugins.
+2. `webpack.dev.js` — Development overrides: merges `common`, adds `style-loader` for CSS, `inline-source-map`, dev-server config, and `DEV: true`.
+3. `webpack.prod.js` — Production pipeline: merges `common`, adds `MiniCssExtractPlugin`, `TerserPlugin`, `BundleAnalyzerPlugin`, and `ZipPlugin`.
 
 ### 4.1 Comparative Configuration Matrix
 
-| Feature / Setting                   | `webpack-dev.config.js` (Development)              | `foe-info-webstore.config.js` (Production Webstore)            |
+| Feature / Setting                   | `webpack.dev.js` (Development)                     | `webpack.prod.js` (Production Webstore)                        |
 | ----------------------------------- | -------------------------------------------------- | -------------------------------------------------------------- |
 | **Build Target Directory**          | `build/FoE-Info-DEV/`                              | `build/FoE-Info_WEBSTORE/`                                     |
 | **Webpack Mode**                    | `'development'`                                    | `'production'`                                                 |
 | **Source Maps**                     | `inline-source-map`                                | Disabled                                                       |
-| **Code Minification**               | None                                               | `TerserPlugin` (ECMA 6, pure_funcs stripped, comments removed) |
+| **Code Minification**               | None                                               | `TerserPlugin` (ECMA 2018, pure_funcs stripped, comments removed) |
 | **Console Cleaning**                | Retains all `console.*` output                     | Strips `console.info` and `console.debug` calls                |
 | **CSS Processing**                  | `style-loader` (Injects `<style>` blocks into DOM) | `MiniCssExtractPlugin` (Extracts standalone `.css` assets)     |
 | **Base Manifest Source**            | `src/chrome/manifest.json`                         | `src/chrome/manifest_release.json`                             |
 | **Package Name (`EXT_NAME`)**       | `"FoE-Info-DEV"`                                   | `"FoE-Info"`                                                   |
 | **Global Defines (`DefinePlugin`)** | `DEV: true`, `WEBSTORE: false`                     | `DEV: false`, `WEBSTORE: true`                                 |
 | **Archive Generation**              | Disabled                                           | `ZipPlugin` generates `FoE-Info_WEBSTORE_<version>_<date>.zip` |
+| **Bundle Analysis**                 | Disabled                                           | `BundleAnalyzerPlugin` (opt-in via `ANALYZE=true`)             |
 
 ### 4.2 Entry Points & Output Chunks
 
-Both configurations define four entry chunks mapping to their respective source entry points:
+The shared base (`webpack.common.js`) defines four entry chunks mapping to their respective source entry points:
 
 ```javascript
 entry: {
@@ -199,28 +201,29 @@ entry: {
 }
 ```
 
+A `splitChunks` vendor cache group in `webpack.common.js` extracts shared node_modules (jQuery, Bootstrap) into a `vendors.js` chunk shared across all entry points, eliminating duplication.
+
 ### 4.3 Automated Global Provisioning (`webpack.ProvidePlugin`)
 
-To streamline module development and prevent repetitive boilerplate imports, Webpack automatically injects global bindings:
+To streamline module development and prevent repetitive boilerplate imports, `webpack.common.js` automatically injects global bindings:
 
 ```javascript
 new webpack.ProvidePlugin({
   $: 'jquery',
   jQuery: 'jquery',
-  browser: 'webextension-polyfill',
 });
 ```
 
-This guarantees that jQuery (`$`, `jQuery`) and the cross-browser Extension API wrapper (`browser`) are universally accessible across all bundled files without explicit `import` statements.
+This guarantees that jQuery (`$`, `jQuery`) are universally accessible across all bundled files without explicit `import` statements. The `webextension-polyfill` (`browser`) is imported explicitly where needed.
 
-### 4.4 Production Optimization & Packaging (`foe-info-webstore.config.js`)
+### 4.4 Production Optimization & Packaging (`webpack.prod.js`)
 
 In production mode, `TerserPlugin` performs AST transformations to optimize bundle size and strip debug logs:
 
 ```javascript
 new TerserPlugin({
   terserOptions: {
-    ecma: 6,
+    ecma: 2018,
     compress: {
       pure_funcs: ['console.info', 'console.debug'],
     },
@@ -228,7 +231,6 @@ new TerserPlugin({
       comments: false,
     },
     mangle: true,
-    module: true,
   },
   extractComments: false,
 });

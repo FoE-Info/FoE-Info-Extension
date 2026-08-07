@@ -1,8 +1,9 @@
 # Node.js Toolchain & Webpack Build Audit
 
-**Source Files**: `package.json`, `foe-info-webstore.config.js`, `webpack-dev.config.js`, `.mise.toml`
+**Source Files**: `package.json`, `webpack.common.js`, `webpack.dev.js`, `webpack.prod.js`
 
----
+> **Note**: `foe-info-webstore.config.js` and `webpack-dev.config.js` were deleted and replaced by the modular 3-file setup (`webpack.common.js`, `webpack.dev.js`, `webpack.prod.js`) using `webpack-merge` as of commit `5b6604d`.
+
 
 ## 1. Toolchain Overview
 
@@ -10,58 +11,48 @@
 Node.js 22 (via mise)
 Python 3.12 (via mise, for graphify)
 uv latest (for Python tooling)
-npm workspaces (packages/* — currently unused)
 ```
 
-**mise.toml tasks** vs **npm scripts** — full redundancy:
+### npm Scripts
 
-| Task              | mise.toml                                          | package.json                                   | Status                                           |
-| ----------------- | -------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------ |
-| `check`           | `npx prettier --check .`                           | `prettier --check .`                           | Duplicate                                        |
-| `format`          | `npx prettier --write .`                           | `prettier --write .`                           | Duplicate                                        |
-| `dev`             | `npx webpack ... --watch`                          | `NODE_ENV=... webpack --watch`                 | Slight difference (NODE_ENV set in package.json) |
-| `build`           | `npx webpack --config foe-info-webstore.config.js` | `webpack --config foe-info-webstore.config.js` | Near-duplicate                                   |
-| `graphify-update` | `uv run graphify update .`                         | `graphify update .`                            | Different runners                                |
+| Script         | Command                                                                | Notes                              |
+| -------------- | ---------------------------------------------------------------------- | ---------------------------------- |
+| `check`        | `prettier --check .`                                                   | Format validation                  |
+| `format`       | `prettier --write .`                                                   | Auto-format                        |
+| `dev`          | `cross-env NODE_ENV=development webpack --config webpack.dev.js --watch` | Watch + rebuild (DEV mode)       |
+| `build:dev`    | `cross-env NODE_ENV=development webpack --config webpack.dev.js`       | One-shot dev build                 |
+| `build`        | `cross-env NODE_ENV=production webpack --config webpack.prod.js`       | Production build (Webstore)        |
+| `build-foe-info` | `npm run build`                                                      | Alias for `build`                  |
+| `analyze`      | `cross-env ANALYZE=true NODE_ENV=production webpack --config webpack.prod.js` | Bundle analysis report      |
 
-**Missing tasks** (should be added):
+**Missing tasks** (still not added):
 
 - `lint` — ESLint (not installed)
 - `test` — no test runner configured
-- `analyze` — webpack-bundle-analyzer (installed but not wired)
 - `type-check` — no TypeScript
 
 ---
 
 ## 2. Dependency Audit
 
-### 2.1 Misclassified Dependencies
+### 2.1 Misclassified Dependencies — ✅ RESOLVED
 
-**Severity**: HIGH
+Previously, `sass` and `sass-loader` were in `dependencies`. Both have been moved to `devDependencies`.
 
-The following build-time tools are in `dependencies` instead of `devDependencies`:
+### 2.2 Removed Packages
 
-| Package       | In `dependencies` | Should Be         |
-| ------------- | ----------------- | ----------------- |
-| `sass`        | ✅ (wrong)        | `devDependencies` |
-| `sass-loader` | ✅ (wrong)        | `devDependencies` |
-
-Sass and its loader are build-time tools that produce CSS. They are never required at runtime by the extension. Moving them to `devDependencies` reduces production installation size.
-
-### 2.2 Deprecated Packages
-
-| Package        | Version  | Issue                                           | Replacement                        |
-| -------------- | -------- | ----------------------------------------------- | ---------------------------------- |
-| `file-loader`  | `^6.2.0` | Deprecated — no Webpack 5 Asset Modules support | Webpack 5 `type: 'asset/resource'` |
-| `style-loader` | `^4.0.0` | Dev only (correct for dev config)               | Keep in devDeps only               |
+| Package                  | Was              | Status                                    |
+| ------------------------ | ---------------- | ----------------------------------------- |
+| `file-loader`            | devDependencies  | **Removed** — replaced by Webpack 5 Asset Modules (`type: 'asset/resource'`) |
+| `license-webpack-plugin` | devDependencies  | **Removed**                               |
+| `webpack-dev-middleware` | devDependencies  | **Removed** — was unused                  |
 
 ### 2.3 Installed But Not Wired
 
 | Package                   | Purpose                   | Issue                                                      |
 | ------------------------- | ------------------------- | ---------------------------------------------------------- |
-| `webpack-bundle-analyzer` | Bundle size visualization | Installed but no script or task uses it                    |
-| `webpack-dev-middleware`  | Dev server middleware     | Installed but unused (direct webpack --watch used instead) |
-| `webpack-dev-server`      | Dev server                | Installed but devServer.contentBase config is deprecated   |
-| `license-webpack-plugin`  | License extraction        | Commented out in both configs                              |
+| `webpack-bundle-analyzer` | Bundle size visualization | Installed; wired via `npm run analyze` (`ANALYZE=true`)    |
+| `webpack-dev-server`      | Dev server                | Installed; configured in `webpack.dev.js` with `devServer.static` |
 
 ### 2.4 Dependency Usage Assessment
 
@@ -71,146 +62,70 @@ Sass and its loader are build-time tools that produce CSS. They are never requir
 | `webhook-discord`       | Assess              | `post.js` uses raw `fetch()`/`XMLHttpRequest` — may not use this package |
 | `@popperjs/core`        | Yes (via Bootstrap) | Also imported directly in index.js (`mapToStyles` — unused import)       |
 | `bignumber.js`          | Yes                 | GBG sector costs, GB donation calculations                               |
-| `webextension-polyfill` | Yes                 | browser.\* API compatibility layer                                       |
+| `webextension-polyfill` | Yes                 | browser.* API compatibility layer                                        |
+| `cross-env`             | Yes                 | Cross-platform `NODE_ENV` injection in npm scripts                       |
 
 ---
 
-## 3. Webpack Production Config Issues
+## 3. Webpack Production Config (`webpack.prod.js`)
 
-**File**: `foe-info-webstore.config.js`
+### 3.1 TerserPlugin — ✅ RESOLVED
 
-### 3.1 TerserPlugin Dead Configuration
-
-**Severity**: CRITICAL
-
-```javascript
-// Current (broken):
-new TerserPlugin({
-    terserOptions: {
-        format: {
-            comments: false,    // ← This config object
-        },
-        // ...
-        output: null,           // ← Deprecated key (renamed to 'format')
-        format: null,           // ← This NULL overwrites the format: {} above!
-        // ...
-    },
-    extractComments: false,
-}),
-```
-
-**Result**: `format: null` overwrites `format: { comments: false }`. Comments are NOT stripped. The `output: null` is a deprecated alias that is also a no-op.
-
-**Fix**:
+The dead-config bug (`format: null` overwriting `format: {}`) has been fixed. Current config:
 
 ```javascript
 new TerserPlugin({
     terserOptions: {
-        ecma: 2015,
+        ecma: 2018,
         compress: {
             pure_funcs: ['console.info', 'console.debug'],
         },
         format: {
-            comments: false,   // ← Only here, not overridden
+            comments: false,
         },
         mangle: true,
-        module: true,
     },
     extractComments: false,
 }),
 ```
 
-### 3.2 No `optimization.splitChunks`
+### 3.2 `optimization.splitChunks` — ✅ RESOLVED
 
-**Severity**: HIGH
-
-Without `splitChunks`, every entry point bundles its entire dependency tree independently:
-
-```
-app.js (359 KiB)     = index.js + Bootstrap JS + jQuery + all services
-options.js (~245 KiB) = options.js + Bootstrap JS + jQuery (duplicated!)
-popup.js             = popup.js + Bootstrap JS + jQuery (duplicated!)
-devtools.js          = devtools.js + Bootstrap JS (duplicated!)
-```
-
-Bootstrap (~130 KiB) and jQuery (~87 KiB) are duplicated across all 4 entry chunks.
-
-**Fix**:
+Vendor splitting is now configured in `webpack.common.js`:
 
 ```javascript
 optimization: {
-    minimize: true,
-    minimizer: [/* TerserPlugin */],
-    runtimeChunk: 'single',
     splitChunks: {
         cacheGroups: {
             vendor: {
                 test: /[\\/]node_modules[\\/]/,
                 name: 'vendors',
                 chunks: 'all',
-                priority: 20,
-            },
-            bootstrap: {
-                test: /[\\/]node_modules[\\/](bootstrap|@popperjs)[\\/]/,
-                name: 'bootstrap',
-                chunks: 'all',
-                priority: 30,
             },
         },
     },
 },
 ```
 
-**Estimated saving**: ~220 KiB deduplicated across chunks.
+Bootstrap and jQuery are extracted into a shared `vendors.js` chunk, eliminating duplication across entry points.
 
-### 3.3 `file-loader` → Asset Modules Migration
+### 3.3 Asset Modules (replacing `file-loader`) — ✅ RESOLVED
 
-**Severity**: HIGH
-
-`file-loader` is deprecated in Webpack 5. Webpack 5 natively supports asset modules:
+`file-loader` has been removed. `webpack.common.js` uses Webpack 5 native Asset Modules:
 
 ```javascript
-// Before (file-loader):
 {
-    test: /\.(png|svg|jpg|gif)$/,
-    use: ['file-loader'],
-},
-
-// After (Webpack 5 Asset Modules):
-{
-    test: /\.(png|svg|jpg|gif)$/,
+    test: /\.(png|svg|jpg|jpeg|gif)$/i,
     type: 'asset/resource',
     generator: {
-        filename: 'assets/[name].[contenthash][ext]',
+        filename: 'images/[name][ext]',
     },
 },
 ```
 
-### 3.4 Consolidated CopyPlugin
+### 3.4 Consolidated CopyPlugin — ✅ RESOLVED
 
-**Severity**: LOW
-
-5 separate `CopyPlugin` instances can be merged:
-
-```javascript
-// Before (5 separate calls):
-new CopyPlugin({ patterns: [{ from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js' }] }),
-new CopyPlugin({ patterns: [{ from: './src/i18n', to: 'i18n' }] }),
-new CopyPlugin({ patterns: [{ from: './src/icons/common', to: 'icons' }] }),
-new CopyPlugin({ patterns: [{ from: './src/icons/foe-info', to: 'icons' }] }),
-new CopyPlugin({ patterns: [{ from: 'src/images/logo90.png', to: 'icons/' }] }),
-
-// After (single call):
-new CopyPlugin({
-    patterns: [
-        { from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js' },
-        { from: './src/i18n', to: 'i18n' },
-        { from: './src/icons/common', to: 'icons' },
-        { from: './src/icons/foe-info', to: 'icons' },
-        { from: 'src/images/logo90.png', to: 'icons/' },
-    ],
-}),
-```
+All copy patterns are now in a single `CopyPlugin` call in `webpack.common.js`.
 
 ### 3.5 No PurgeCSS
 
@@ -224,7 +139,7 @@ Bootstrap 5 CSS (518 KiB) includes every Bootstrap component. A DevTools panel u
 npm install --save-dev purgecss-webpack-plugin glob
 ```
 
-**Config** (add to `foe-info-webstore.config.js`):
+**Config** (add to `webpack.prod.js`):
 
 ```javascript
 const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
@@ -245,45 +160,38 @@ new PurgeCSSPlugin({
 
 ---
 
-## 4. Webpack Dev Config Issues
+## 4. Webpack Dev Config (`webpack.dev.js`)
 
-**File**: `webpack-dev.config.js`
+### 4.1 `devServer.static` — ✅ RESOLVED
 
-### 4.1 Deprecated `devServer.contentBase`
-
-**Severity**: MEDIUM
+The deprecated `devServer.contentBase` has been replaced with `devServer.static`:
 
 ```javascript
-// Current (deprecated in webpack-dev-server v4):
-devServer: {
-    contentBase: './build/' + PACKAGE_NAME,
-},
-
-// Fix (webpack-dev-server v4+):
 devServer: {
     static: {
-        directory: path.join(__dirname, 'build/' + PACKAGE_NAME),
+        directory: path.resolve(__dirname, 'build/' + PACKAGE_NAME),
     },
+    hot: true,
+    port: 3000,
 },
 ```
 
-### 4.2 Inconsistent CSS Handling
+### 4.2 CSS Handling
 
 ```javascript
-// Dev config CSS rules (inconsistent):
+// Dev config CSS rules (unified):
 {
-    test: /\.css$/,
-    use: ['style-loader', 'css-loader'],  // ← No postcss-loader
-},
-{
-    test: /\.scss$/,
-    use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],  // ← Has postcss
+    test: /\.(sa|sc|c)ss$/,
+    use: [
+        'style-loader',
+        'css-loader',
+        'postcss-loader',
+        { loader: 'sass-loader', options: { sassOptions: { quietDeps: true } } },
+    ],
 },
 ```
 
-If `postcss.config.js` has autoprefixer (common), `.css` files won't get autoprefixed in dev mode but `.scss` files will. This inconsistency causes different CSS output between dev and prod.
-
-**Fix**: Add `postcss-loader` to the `.css` rule.
+All CSS/SCSS variants go through `postcss-loader` and `sass-loader` in dev mode.
 
 ### 4.3 Slow Source Maps
 
@@ -295,9 +203,9 @@ devtool: 'inline-source-map',  // ← Slowest rebuild: full source maps inlined
 devtool: 'eval-cheap-module-source-map',  // 10x faster, still debuggable
 ```
 
-### 4.4 No Hot Module Replacement
+### 4.4 HMR Note
 
-The dev config uses `--watch` flag (via npm script) rather than HMR. Since this is a Chrome Extension (not a web app), HMR has limited applicability (extension pages need manual reload after rebuild). The watch approach is appropriate.
+The dev config uses webpack-dev-server with `hot: true`. Since this is a Chrome Extension (not a web app), HMR has limited applicability (extension pages need manual reload after rebuild). The watch approach via `npm run dev` is appropriate for development iteration.
 
 ---
 
@@ -335,23 +243,19 @@ The dev config uses `--watch` flag (via npm script) rather than HMR. Since this 
 
 ## 7. Recommended Improvements (Prioritized)
 
-| Priority     | Issue                                                                 | File                          | Action                                                        | Effort                   |
-| ------------ | --------------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------- | ------------------------ | ------ |
-| **CRITICAL** | TerserPlugin dead config (`format: null` overwrites `format: {}`)     | `foe-info-webstore.config.js` | Consolidate to single `format: { comments: false }`           | 5 min                    |
-| **HIGH**     | No `splitChunks` — Bootstrap/jQuery duplicated in all entry chunks    | `foe-info-webstore.config.js` | Add `optimization.splitChunks` + `runtimeChunk: 'single'`     | 1 hr                     |
-| **HIGH**     | No PurgeCSS — full Bootstrap 5 CSS (518 KiB) in bundle                | `foe-info-webstore.config.js` | Add `purgecss-webpack-plugin`                                 | 2 hrs                    |
-| **HIGH**     | `file-loader` deprecated                                              | Both configs                  | Migrate to Webpack 5 Asset Modules (`type: 'asset/resource'`) | 30 min                   |
-| **HIGH**     | `sass` + `sass-loader` in `dependencies` instead of `devDependencies` | `package.json`                | Move to `devDependencies`                                     | 5 min                    |
-| **HIGH**     | No ESLint                                                             | project root                  | Add ESLint with `no-var`, `prefer-const`, `no-unused-vars`    | 2 hrs                    |
-| **HIGH**     | Wire `webpack-bundle-analyzer`                                        | `package.json` + `mise.toml`  | Add `analyze` script: `webpack ... --profile --json           | webpack-bundle-analyzer` | 30 min |
-| **MEDIUM**   | `devServer.contentBase` deprecated                                    | `webpack-dev.config.js`       | Update to `devServer.static.directory`                        | 5 min                    |
-| **MEDIUM**   | Inconsistent postcss-loader in dev CSS rules                          | `webpack-dev.config.js`       | Add `postcss-loader` to `.css` rule                           | 5 min                    |
-| **MEDIUM**   | Slow `inline-source-map` devtool                                      | `webpack-dev.config.js`       | Switch to `eval-cheap-module-source-map`                      | 2 min                    |
-| **MEDIUM**   | No `optimization.runtimeChunk`                                        | `foe-info-webstore.config.js` | Add `runtimeChunk: 'single'`                                  | 2 min                    |
-| **LOW**      | 5 separate `CopyPlugin` calls                                         | `foe-info-webstore.config.js` | Merge into one `patterns` array                               | 10 min                   |
-| **LOW**      | `verbose: true` on `CleanWebpackPlugin`                               | Both configs                  | Set `verbose: false`                                          | 2 min                    |
-| **LOW**      | Unused `webpack-dev-middleware` dependency                            | `package.json`                | `npm uninstall webpack-dev-middleware`                        | 2 min                    |
-| **LOW**      | Redundant mise.toml / npm scripts duplication                         | `mise.toml`                   | Keep mise.toml as canonical, remove npm script duplicates     | 15 min                   |
+| Priority     | Issue                                                                 | File                          | Action                                                        | Effort   | Status       |
+| ------------ | --------------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------- | -------- | ------------ |
+| **CRITICAL** | TerserPlugin dead config (`format: null` overwrites `format: {}`)     | `webpack.prod.js`             | Consolidated to single `format: { comments: false }`          | 5 min    | ✅ DONE      |
+| **HIGH**     | No `splitChunks` — Bootstrap/jQuery duplicated in all entry chunks    | `webpack.common.js`           | Added `optimization.splitChunks` vendor cache group           | 1 hr     | ✅ DONE      |
+| **HIGH**     | `file-loader` deprecated                                              | Both configs                  | Migrated to Webpack 5 Asset Modules (`type: 'asset/resource'`)| 30 min   | ✅ DONE      |
+| **HIGH**     | `sass` + `sass-loader` in `dependencies` instead of `devDependencies` | `package.json`                | Moved to `devDependencies`                                     | 5 min    | ✅ DONE      |
+| **HIGH**     | Wire `webpack-bundle-analyzer`                                        | `package.json`                | Added `analyze` script (`ANALYZE=true npm run build`)         | 30 min   | ✅ DONE      |
+| **HIGH**     | `devServer.contentBase` deprecated                                    | `webpack.dev.js`              | Updated to `devServer.static.directory`                       | 5 min    | ✅ DONE      |
+| **HIGH**     | 5 separate `CopyPlugin` calls                                         | `webpack.common.js`           | Merged into one `patterns` array                              | 10 min   | ✅ DONE      |
+| **HIGH**     | No PurgeCSS — full Bootstrap 5 CSS (518 KiB) in bundle                | `webpack.prod.js`             | Add `purgecss-webpack-plugin`                                 | 2 hrs    | ⏳ PENDING   |
+| **HIGH**     | No ESLint                                                             | project root                  | Add ESLint with `no-var`, `prefer-const`, `no-unused-vars`    | 2 hrs    | ⏳ PENDING   |
+| **MEDIUM**   | Slow `inline-source-map` devtool                                      | `webpack.dev.js`              | Switch to `eval-cheap-module-source-map`                      | 2 min    | ⏳ PENDING   |
+| **MEDIUM**   | No `optimization.runtimeChunk`                                        | `webpack.prod.js`             | Add `runtimeChunk: 'single'`                                  | 2 min    | ⏳ PENDING   |
 
 ---
 
@@ -446,7 +350,7 @@ run = "npx eslint src/js --fix"
 
 [tasks.analyze]
 description = "Analyze webpack bundle sizes"
-run = "npx webpack --config foe-info-webstore.config.js --profile --json > build/stats.json && npx webpack-bundle-analyzer build/stats.json"
+run = "npm run analyze"
 
 [tasks.test]
 description = "Run unit tests"

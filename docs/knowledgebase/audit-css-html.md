@@ -392,7 +392,7 @@ export function setArmySize(h) {
 | **HIGH**     | Add `aria-hidden="true"` to all icon elements              | `src/js/fn/AddElement.js`     | Add to all `<i class="material-icons...">` elements     |
 | **HIGH**     | Add `alt` to popup logo `<img>`                            | `src/chrome/popup.html`       | Add `alt="FoE-Info logo"`                               |
 | **HIGH**     | Add `lang="en"` to all `<html>` elements                   | All 4 HTML files              | Add lang attribute                                      |
-| **HIGH**     | Add PurgeCSS plugin to Webpack                             | `foe-info-webstore.config.js` | Install `purgecss-webpack-plugin`, configure for `src/` |
+| **HIGH**     | Add PurgeCSS plugin to Webpack                             | `webpack.prod.js`             | Install `purgecss-webpack-plugin`, configure for `src/` |
 | **MEDIUM**   | Move inline CSS out of panel.html                          | `src/chrome/panel.html`       | Migrate to `custom.scss`                                |
 | **MEDIUM**   | Fix `fw: bold` typo                                        | `src/chrome/panel.html`       | Change to `font-weight: bold`                           |
 | **MEDIUM**   | Replace CDN fonts with local npm package                   | `src/chrome/panel.html`       | `npm install @material-symbols/font-300`                |

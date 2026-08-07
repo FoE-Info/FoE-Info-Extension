@@ -426,27 +426,27 @@ The [`src/js/fn/copy.js`](../src/js/fn/copy.js) module formats HTML panel fragme
 
 ### 7.2 The Three Copy Mechanism Strategies
 
-#### Strategy 1: Dynamic Textarea Scratch Buffer (`copyToClipboard`)
+#### Strategy 1: Clipboard API with Fallback (`copyToClipboard`)
 
 Used by `fClipboardCopy`, `DonorCopy`, `DonorCopy2`, and `fInvestedCopy`:
 
-1. Dynamically constructs a hidden `<textarea>` element using jQuery: `var $temp = $('<textarea>');`.
-2. Appends `$temp` to `document.body`.
-3. Reads HTML from target: `var html = $(element).html();`.
-4. Appends snapshot to `#clipboard` container via `addToClipboard(element, html)`.
-5. Passes HTML through sequential regex text transformation filters.
-6. Sets `$temp.val(html).select()` and calls `document.execCommand('copy')`.
-7. Removes `$temp` from the DOM.
+1. Reads the target element via `document.querySelector(element)`.
+2. Extracts the raw `innerHTML` and appends a snapshot to `#clipboard` via `addToClipboard(element, html)`.
+3. Passes the HTML through sequential regex text transformation filters.
+4. Attempts to write plain-text to the system clipboard via `navigator.clipboard.writeText(html)` (Async Clipboard API).
+5. On failure, falls back to `fallbackCopy(text)`: creates a temporary `<textarea>`, sets its value, calls `.select()` and `document.execCommand('copy')`, then removes it.
 
 #### Strategy 2: Selection Range API (`document.createRange` / `copyNode`)
 
-Used by `DonationCopy`, `fFriendsCopy`, `fGuildCopy`, `fHoodCopy`, `BattlegroundCopy`, `ExpeditionCopy`, `TreasuryCopy`:
+Used by `DonationCopy`, `fFriendsCopy`, `fGuildCopy`, `fHoodCopy`, `ExpeditionCopy`, `TreasuryCopy`:
 
 1. Instantiates a Range object: `let range = document.createRange();`.
 2. Selects target node: `range.selectNode(copytext)` or `range.selectNodeContents(node)`.
 3. Clears selection: `window.getSelection().removeAllRanges();`.
 4. Adds range to selection: `window.getSelection().addRange(range);`.
 5. Triggers `document.execCommand('copy')`.
+
+`BattlegroundCopy` uses `copyNode(node)`, which attempts `navigator.clipboard.writeText(node.innerText)` first, then falls back to the selection range API.
 
 #### Strategy 3: Hidden Debug Node Buffer (`fCityStatsCopy`)
 
@@ -463,15 +463,14 @@ Used by `fCityStatsCopy`:
 `copyToClipboard(element)` sanitizes raw HTML into clean multi-line plain text:
 
 ```javascript
-html = html.replace(/<br>/g, '\n');
-html = html.replace(/<\/tr>/g, '\n');
-html = html.replace(/<p>/g, '');
-html = html.replace(/<tr>/g, '');
-html = html.replace(/<td>/g, '');
-html = html.replace(/<\/td>/g, '');
-html = html.replace(/<\/p>/g, '\n');
-html = html.replace(/<\/?span[^>]*>/g, '');
+html = html.replace(/<br\s*\/?>/gi, '\n');
+html = html.replace(/<\/tr>/gi, '\n');
+html = html.replace(/<\/?(p|tr|td)[^>]*>/gi, '');
+html = html.replace(/<\/p>/gi, '\n');
+html = html.replace(/<\/?span[^>]*>/gi, '');
 ```
+
+> **Note**: The regex patterns now use case-insensitive flags (`gi`) and a consolidated tag-stripping pattern for `p`, `tr`, `td` elements.
 
 ---
 
@@ -625,4 +624,5 @@ To verify that all utility modules and their dependencies compile cleanly under 
 npm run build
 ```
 
-The Webpack bundler executes using `foe-info-webstore.config.js` and outputs production assets to `dist/webstore/`.
+The Webpack bundler executes using `webpack.prod.js` (merging `webpack.common.js`) and outputs production assets to `build/FoE-Info_WEBSTORE/`.
+
