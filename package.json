@@ -22,7 +22,8 @@
   "scripts": {
     "check": "prettier --check .",
     "format": "prettier --write .",
-    "dev": "set NODE_ENV=development && webpack --mode development --config webpack-dev.config.js --watch",
+    "dev": "NODE_ENV=development webpack --mode development --config webpack-dev.config.js --watch",
+    "build": "npm run build-foe-info",
     "build-foe-info": "webpack --config foe-info-webstore.config.js",
     "graphify-update": "graphify update ."
   },

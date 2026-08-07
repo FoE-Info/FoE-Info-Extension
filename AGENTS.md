@@ -10,6 +10,7 @@ This repository decouples project guidelines into modular rules located in `.age
 ## Modular Rules Directory
 
 - [`graphify-sourcemap.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/graphify-sourcemap.md): Knowledge Graph architecture, Graphify navigation, query tools, and git-staging rules.
+- [`environment-paths.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/environment-paths.md): OSTree / Silverblue path resolution, environment auto-activation, and direct MCP tool execution.
 - [`git-workflow.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/git-workflow.md): Development branch branching lifecycle, commit conventions, topic branch cleanup, and Linuxbrew tool paths.
 - [`extension-architecture.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/extension-architecture.md): Chrome Manifest V3 extension guidelines, content script execution, permissions, and extension storage.
 - [`webpack-build.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/webpack-build.md): Webpack 5 bundling, dev vs webstore builds, and environment execution.
