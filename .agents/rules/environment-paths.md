@@ -16,7 +16,7 @@ This workspace uses `mise` (installed via Linuxbrew) for managing Node, Python, 
 ## Execution Guidelines
 
 1. `node`, `npm`, `npx`, `uv`, `python`, and `pip` are dynamically resolved by `mise` shims in all subshells.
-2. This repository does **NOT** use `.venv` virtualenvs. Tools (e.g. `graphify`) are installed globally via `uv tool` per `.mise.toml` hooks.
+2. This repository uses zero-install on-demand execution via `uvx` (`uvx --from "graphifyy[gemini,mcp]" ...`). No local `.venv` or manual `pip install` steps are needed.
 3. Do **NOT** hardcode specific version numbers (e.g. `22.23.2`) in scripts or commands — `mise` reads `.mise.toml` automatically.
 4. Do **NOT** run `which`, `export PATH`, or manual setup commands in chat — tools are pre-activated.
 5. Project `.env` environment variables are loaded automatically by `mise` and `~/.antigravity_env.sh`.

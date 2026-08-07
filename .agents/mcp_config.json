@@ -1,10 +1,10 @@
 {
   "mcpServers": {
     "graphify": {
-      "command": "mise",
+      "command": "uvx",
       "args": [
-        "exec",
-        "--",
+        "--from",
+        "graphifyy[gemini,mcp]",
         "graphify-mcp",
         "graphify-out/graph.json"
       ]
