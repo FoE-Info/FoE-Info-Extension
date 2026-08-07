@@ -1,3 +1,9 @@
+# FoE-Info Extension
+
+Copyright (C) 2026 FoE-Info Contributors
+
+---
+
 ### GNU AFFERO GENERAL PUBLIC LICENSE
 
 Version 3, 19 November 2007
