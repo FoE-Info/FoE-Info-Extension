@@ -16,9 +16,28 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.(sa|sc|c)ss$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                quietDeps: true,
+              },
+            },
+          },
+        ],
       },
     ],
+  },
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, 'build/' + PACKAGE_NAME),
+    },
+    hot: true,
+    port: 3000,
   },
   output: {
     filename: '[name].js',
