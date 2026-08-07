@@ -10,4 +10,6 @@ This repository enforces the Graphify Knowledge Graph in `graphify-out/` as the 
   - **CLI Tools**: Execute `graphify query "<question>"`, `graphify path "<A>" "<B>"`, or `graphify explain "<concept>"` when analyzing call chains or module boundaries.
 - **Architecture Overview**: Consult [`graphify-out/GRAPH_REPORT.md`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/graphify-out/GRAPH_REPORT.md) for core abstractions (god nodes), community breakdown, and cross-module couplings.
 - **Graph Freshness & Maintenance**: Compare graph build commit in `GRAPH_REPORT.md` with `git rev-parse HEAD`. After introducing or editing source code, execute `npm run graphify-update` (or `graphify update .`) to update the AST graph structure.
+- **Ignore Rules (`.graphifyignore`)**: Maintain `.graphifyignore` with `docs/` and `.agents/` to prevent generated documentation and agent metadata from polluting the codebase AST graph.
+- **Python Environment Resolution**: Use `.venv/bin/python` for Graphify execution commands to ensure the project virtualenv with installed `graphify` modules is targeted.
 - **Git Staging Invariant**: `graphify-out/` is git-ignored. NEVER pass `graphify-out/` to `git add` during commits; keep the graph updated locally without committing `graphify-out/` artifacts.

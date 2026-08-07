@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "graphify-foe-info": {
+      "command": "/var/home/kronikpillow/Projects/FoE-Info-Extension/.venv/bin/graphify-mcp",
+      "args": [
+        "/var/home/kronikpillow/Projects/FoE-Info-Extension/graphify-out/graph.json"
+      ]
+    },
+    "chrome-devtools": {
+      "command": "/var/home/kronikpillow/.local/share/mise/installs/node/22.23.2/bin/npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--browser-url=http://127.0.0.1:9222"
+      ]
+    }
+  }
+}
