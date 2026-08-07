@@ -1,0 +1,65 @@
+# FoE-Info-Extension Documentation Index
+
+Welcome to the **FoE-Info-Extension** documentation hub. This directory contains comprehensive documentation for developers, maintainers, and AI coding agents working on the repository.
+
+---
+
+## 1. Top-Level Overviews (`docs/`)
+
+High-level architectural, service, and utility overviews designed for onboarding and system understanding:
+
+- **[System Architecture Guide](system-architecture.md)**
+  - Chrome Manifest V3 security boundaries & permissions rationale.
+  - Out-of-band network request interception lifecycle (`browser.devtools.network.onRequestFinished`).
+  - Webpack 5 development and production build pipeline architecture.
+  - High-level Mermaid.js component interaction and execution diagrams.
+
+- **[Domain Message Services Reference](domain-services.md)**
+  - Functional overview of all 11 domain service modules in `src/js/msg/`.
+  - Overview of domain state tracking (Great Buildings, Guild Battlegrounds, Guild Expedition, Army units, City production, Resources).
+
+- **[Helper Utilities Catalog](helper-utilities.md)**
+  - Overview of DOM rendering, overlay collapsibility, clipboard formatting, and precision math helpers in `src/js/fn/`.
+
+---
+
+## 2. Internal Knowledgebase (`docs/knowledgebase/`)
+
+Granular technical specifications, function-by-function manuals, agent workflow protocols, and static codebase audits:
+
+- **[Codebase Technical Manual](knowledgebase/codebase-technical-manual.md)**
+  - Function-by-function breakdown of content scripts, DevTools initialization, options controllers, and popup fallbacks.
+  - Catalog of utility functions in `src/js/fn/*`.
+  - Feature flag state lifecycle management (`showOptions.js`).
+
+- **[Agentic Workflow & Maintenance Guide](knowledgebase/agent-workflow-guide.md)**
+  - AI coding agent standards for Google Antigravity (AGY) SDK integration.
+  - Workspace customization layout (`.agents/rules/`, `.agents/skills/`, `.agents/plugins/`).
+  - MCP server configurations (`chrome_devtools`, `graphify`).
+  - Graphify AST knowledge graph commands and query protocols.
+  - Git branching lifecycle (`feat/*`, `fix/*`) and verification standards (`npm run check && npm run build`).
+
+- **[Service Dispatch & JSON Payload Specs](knowledgebase/service-dispatch.md)**
+  - Low-level JSON payload structure specifications and event dispatching tables for intercepted Innogames API requests.
+
+- **[UI Injection & Panel Rendering Manual](knowledgebase/ui-injection.md)**
+  - Technical manual for DevTools panel mounting, Bootstrap 5 styling, and jQuery DOM manipulation rules.
+
+- **[Circular Dependency Audit](knowledgebase/circular-dependencies.md)**
+  - Analysis of module import graphs and strategies for preventing circular dependency cycles.
+
+### Static Codebase Audits (`docs/knowledgebase/audit-*.md`)
+
+- [Chrome DevTools Audit](knowledgebase/audit-chrome-devtools.md)
+- [Chrome Extension MV3 Audit](knowledgebase/audit-chrome-extension.md)
+- [CSS & HTML Audit](knowledgebase/audit-css-html.md)
+- [JavaScript & jQuery Audit](knowledgebase/audit-javascript-jquery.md)
+- [Node.js & Webpack Audit](knowledgebase/audit-nodejs-webpack.md)
+
+---
+
+## 3. Knowledge Graph & AST Analysis
+
+The repository maintains an automated AST knowledge graph in [`graphify-out/`](../graphify-out):
+
+- **[GRAPH_REPORT.md](../graphify-out/GRAPH_REPORT.md)**: Visual breakdown of central god nodes, module communities, and cohesion scores.
