@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "graphify": {
+      "command": "mise",
+      "args": [
+        "exec",
+        "--",
+        "graphify-mcp",
+        "graphify-out/graph.json"
+      ]
+    },
+    "chrome_devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--auto-connect",
+        "--experimentalMemory",
+        "--experimentalScreencast"
+      ]
+    }
+  }
+}

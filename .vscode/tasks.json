@@ -1,27 +1,72 @@
 {
-  // See https://go.microsoft.com/fwlink/?LinkId=733558
-  // for the documentation about the tasks.json format
   "version": "2.0.0",
   "tasks": [
     {
       "type": "npm",
-      "script": "build-foe-info",
-      "problemMatcher": ["$eslint-compact"],
-      "group": "build"
+      "script": "build",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "label": "npm: build",
+      "detail": "Build optimized production extension bundle"
     },
     {
       "type": "npm",
       "script": "dev",
-      "problemMatcher": ["$eslint-compact"],
+      "problemMatcher": [],
       "label": "npm: dev",
-      "detail": "NODE_ENV=development webpack --mode development --config webpack-dev.config.js --watch"
+      "detail": "Start Webpack development build watcher"
+    },
+    {
+      "type": "npm",
+      "script": "build:dev",
+      "problemMatcher": [],
+      "label": "npm: build:dev",
+      "detail": "Build single development extension bundle"
+    },
+    {
+      "type": "npm",
+      "script": "analyze",
+      "problemMatcher": [],
+      "label": "npm: analyze",
+      "detail": "Analyze production bundle composition"
+    },
+    {
+      "type": "npm",
+      "script": "check",
+      "problemMatcher": [],
+      "label": "npm: check",
+      "detail": "Check code formatting with Prettier"
     },
     {
       "type": "npm",
       "script": "format",
-      "problemMatcher": ["$eslint-compact"],
+      "problemMatcher": [],
       "label": "npm: format",
-      "detail": "prettier --write ."
+      "detail": "Format project code with Prettier"
+    },
+    {
+      "type": "npm",
+      "script": "graphify-update",
+      "problemMatcher": [],
+      "label": "npm: graphify-update",
+      "detail": "Update AST Knowledge Graph"
+    },
+    {
+      "type": "npm",
+      "script": "outdated",
+      "problemMatcher": [],
+      "label": "npm: outdated",
+      "detail": "Check for package updates with npm-check-updates"
+    },
+    {
+      "type": "shell",
+      "command": "mise run setup || npm install",
+      "problemMatcher": [],
+      "label": "setup: install environment",
+      "detail": "Setup project tools and dependencies"
     }
   ]
 }

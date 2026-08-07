@@ -1,0 +1,8 @@
+{
+  "hooks": [
+    {
+      "event": "SessionStart",
+      "command": "eval \"$(mise hook-env -s bash)\""
+    }
+  ]
+}
