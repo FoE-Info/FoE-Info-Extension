@@ -5,6 +5,7 @@ Guidelines for code structure, DOM manipulation, service dispatching, and math u
 ## Git & Remote Workflow Invariants
 
 - **Git Push Approval**: NEVER execute `git push` or modify remote branches without explicit, prior user approval in chat. Local commits and branch checkouts can be created, but remote push operations must strictly wait for user authorization.
+- **Branch Preservation**: NEVER delete, prune, or force-reset local topic or scratch branches (e.g. `fix/...`, `feat/...`) without explicit, prior user confirmation.
 
 ## Documentation Hierarchy & Scope
 
