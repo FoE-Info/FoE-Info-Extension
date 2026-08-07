@@ -1,7 +1,2 @@
-@import 'bootstrap/scss/bootstrap';
-@import 'custom.scss';
-
-.bootstrap-styles {
-  @import 'bootstrap/scss/bootstrap';
-  @import 'custom.scss';
-}
+@use 'bootstrap/scss/bootstrap' as *;
+@use 'custom.scss';

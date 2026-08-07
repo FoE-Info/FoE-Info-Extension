@@ -11,11 +11,11 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
-import * as element from '../fn/AddElement';
+import { setExpeditionSize, toolOptions } from '../fn/globals.js';
 import { donationDIV2 } from '../index.js';
-import { toolOptions, setExpeditionSize } from '../fn/globals.js';
 
 export function guildExpeditionService(msg) {
   var ExpeditionPerformance = [];
@@ -24,12 +24,7 @@ export function guildExpeditionService(msg) {
 		<p id="expeditionTextLabel" href="#expeditionText" data-bs-toggle="collapse">
       ${element.icon('expeditionicon', 'expeditionText', collapse.collapseExpedition)}
 		<strong>Guild Expedition:</strong></p>`;
-  expeditionHTML += element.copy(
-    'expeditionCopyID',
-    'info',
-    'right',
-    collapse.collapseExpedition,
-  );
+  expeditionHTML += element.copy('expeditionCopyID', 'info', 'right', collapse.collapseExpedition);
   expeditionHTML += `<div id="expeditionText" style="height: ${
     toolOptions.expeditionSize
   }px" class="alert-info overflow collapse ${
@@ -46,12 +41,8 @@ export function guildExpeditionService(msg) {
   });
   // console.debug(ExpeditionPerformance);
   donationDIV2.innerHTML = expeditionHTML + `</table></div></div>`;
-  document
-    .getElementById('expeditionCopyID')
-    .addEventListener('click', copy.ExpeditionCopy);
-  document
-    .getElementById('expeditionicon')
-    .addEventListener('click', collapse.fCollapseExpedition);
+  document.getElementById('expeditionCopyID').addEventListener('click', copy.ExpeditionCopy);
+  document.getElementById('expeditionicon').addEventListener('click', collapse.fCollapseExpedition);
   document
     .getElementById('expeditionTextLabel')
     .addEventListener('click', collapse.fCollapseExpedition);

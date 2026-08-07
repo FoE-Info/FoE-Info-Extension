@@ -12,12 +12,12 @@
  * ________________________________________________________________
  */
 
-import { MilitaryDefs, armyDIV } from '../index.js';
-import { toolOptions, setArmySize } from '../fn/globals.js';
-import { showOptions } from '../vars/showOptions.js';
-import * as helper from '../fn/helper.js';
-import * as collapse from '../fn/collapse.js';
 import * as element from '../fn/AddElement';
+import * as collapse from '../fn/collapse.js';
+import { setArmySize, toolOptions } from '../fn/globals.js';
+import * as helper from '../fn/helper.js';
+import { armyDIV, MilitaryDefs } from '../index.js';
+import { showOptions } from '../vars/showOptions.js';
 
 var ArmyUnits = [];
 
@@ -60,9 +60,7 @@ export function armyUnitManagementService(msg) {
 
             unitsPerEra.push({
               era: eraId,
-              text:
-                `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units} ` +
-                armyHTML,
+              text: `${eraText}: ${MilitaryDefs[army[j].unitTypeId].name} ${units} ` + armyHTML,
             });
           }
           // console.debug(army[j],army[j].unitTypeId,army[j].unattached,army[j].attached,units);
@@ -87,20 +85,15 @@ export function armyUnitManagementService(msg) {
         diff != 0 ? diff : ''
       }</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
       const armyText = unitsPerEra
-        .sort(
-          (a, b) => helper.fLevelfromAge(b.era) - helper.fLevelfromAge(a.era),
-        )
+        .sort((a, b) => helper.fLevelfromAge(b.era) - helper.fLevelfromAge(a.era))
         .map((item) => item.text)
         .join('<br>');
       armyDIV.innerHTML = armyHTML + armyText + `</p></div></div>`;
-      document
-        .getElementById('armyTextLabel')
-        .addEventListener('click', collapse.fCollapseArmy);
+      document.getElementById('armyTextLabel').addEventListener('click', collapse.fCollapseArmy);
       const armyDiv = document.getElementById('armyText');
       const resizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
-          if (entry.contentRect && entry.contentRect.height)
-            setArmySize(entry.contentRect.height);
+          if (entry.contentRect && entry.contentRect.height) setArmySize(entry.contentRect.height);
         }
       });
       resizeObserver.observe(armyDiv);
