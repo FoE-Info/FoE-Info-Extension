@@ -58,11 +58,11 @@ The workspace exposes agent behaviors via standard customization roots:
   - [`extension-architecture.md`](../../.agents/rules/extension-architecture.md): Chrome Manifest V3 entry points and security invariants.
   - [`graphify.md`](../../.agents/rules/graphify.md): Knowledge graph query protocols.
   - [`webpack-build.md`](../../.agents/rules/webpack-build.md): Webpack compilation checklist.
-- **Skills (`.agents/skills/`)**: Specialized domain cheatsheets (`css-expert`, `html-expert`, `javascript-expert`, `jquery-expert`, `nodejs-expert`, `webpack-expert`).
-- **Plugins (`.agents/plugins/`)**:
-  - `chrome-devtools-plugin`: Browser automation, a11y, LCP, and memory leak debugging skills.
+- **Skills (`.agents/skills/`)**:
+  - `chrome-devtools`, `a11y-debugging`, `debug-optimize-lcp`, `memory-leak-debugging`, and `troubleshooting`: Browser automation and diagnostics.
   - `google-antigravity-sdk`: Agent design, orchestration, subagent delegation, and safety policy reference docs.
-  - `modern-web-guidance-plugin`: Manifest V3 extension guidelines and Webstore publishing tools.
+  - `modern-web-guidance` and `chrome-extensions`: Current web-platform and Manifest V3 guidance.
+  - `css-expert`, `html-expert`, `javascript-expert`, `jquery-expert`, `nodejs-expert`, and `webpack-expert`: Specialized implementation guidance.
 
 ---
 
@@ -82,7 +82,7 @@ The extension project connects to MCP servers configured in [`.agents/mcp_config
 
 ## 4. Graphify Knowledge Graph Protocol
 
-The codebase maintains a persistent knowledge graph in [`graphify-out/`](../../graphify-out). Source code is extracted deterministically through AST analysis; changed documentation, papers, and images can add semantic nodes and inferred relationships.
+The codebase maintains a local persistent knowledge graph in `graphify-out/`, which is generated and ignored by Git. Source code is extracted deterministically through AST analysis; changed documentation, papers, and images can add semantic nodes and inferred relationships.
 
 ### CLI & MCP Tools
 
@@ -111,7 +111,7 @@ Before modifying codebase logic, query the knowledge graph to understand symbol 
   # Preserve curated labels and fill only missing community names
   uvx --from "graphifyy[gemini,mcp]==0.9.36" graphify label . --missing-only
 
-  # Keep the full graph queryable while scoping report exploration to src/
+  # Keep the full graph queryable while scoping the architecture report to src/ code
   npm run graphify-filter-surprises
   ```
 
@@ -125,14 +125,14 @@ Graphify combines deterministic source extraction with model-assisted semantic e
 - Prefer source locations and deterministic call/import edges when graph output conflicts with implementation details.
 - Review extraction, graph-health, deduplication, and missing-node warnings before treating an update as complete.
 - After any command that regenerates `GRAPH_REPORT.md`, run `npm run graphify-filter-surprises`. The standard `npm run graphify-update` and `mise run graphify-update` tasks do this automatically.
-- Interpret the filtered **Surprising Connections** and **Suggested Questions** sections as source-code exploration, not a defect verdict. Both sections are regenerated from `src/` nodes only; documentation, agent configuration, build tooling, and repository metadata remain available to ordinary graph queries.
-- Keep generated metrics in [`GRAPH_REPORT.md`](../../graphify-out/GRAPH_REPORT.md) instead of copying them into long-lived documentation where they can become stale.
+- Interpret `GRAPH_REPORT.md` as a runtime-architecture view, not a summary of the complete query corpus or a defect verdict. Every report section is regenerated from code nodes under `src/` only; documentation, agent configuration, build tooling, repository metadata, and non-code assets remain available to ordinary `graph.json` queries without contributing to report rankings or metrics.
+- Keep generated metrics in local `graphify-out/GRAPH_REPORT.md` instead of copying them into long-lived documentation where they can become stale.
 
 ---
 
 ## 5. Git Branching & Verification Lifecycle
 
-Follow the strict branching lifecycle defined in [`git-workflow.md`](../../.agents/rules/git-workflow.md):
+Follow the Git and remote workflow invariants in [`codebase-conventions.md`](../../.agents/rules/codebase-conventions.md):
 
 1. **Topic Branch Creation**:
    ```bash

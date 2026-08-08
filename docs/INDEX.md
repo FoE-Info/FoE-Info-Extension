@@ -34,7 +34,7 @@ Granular technical specifications, function-by-function manuals, agent workflow 
 
 - **[Agentic Workflow & Maintenance Guide](knowledgebase/agent-workflow-guide.md)**
   - AI coding agent standards for Google Antigravity (AGY) SDK integration.
-  - Workspace customization layout (`.agents/rules/`, `.agents/skills/`, `.agents/plugins/`).
+  - Workspace customization layout (`.agents/rules/`, `.agents/skills/`, hooks, and MCP configuration).
   - MCP server configurations (`chrome_devtools`, `graphify`).
   - Graphify AST knowledge graph commands and query protocols.
   - Git branching lifecycle (`feat/*`, `fix/*`) and verification standards (`npm run check && npm run build`).
@@ -64,13 +64,13 @@ defects, and the boundary between static findings and browser testing still requ
 
 ## 3. Knowledge Graph Analysis
 
-The repository maintains an automated knowledge graph in [`graphify-out/`](../graphify-out). Source code is indexed deterministically through AST extraction, while documentation and other semantic content can contribute concepts and inferred relationships through Gemini.
+The repository generates a local automated knowledge graph in `graphify-out/`. The directory is ignored by Git; source code is indexed deterministically through AST extraction, while documentation and other semantic content can contribute concepts and inferred relationships through Gemini.
 
-- **[GRAPH_REPORT.md](../graphify-out/GRAPH_REPORT.md)**: Visual breakdown of central god nodes, module communities, and cohesion scores.
-- **[graph.html](../graphify-out/graph.html)**: Interactive browser visualization for exploring nodes, relationships, and communities.
-- **[graph.json](../graphify-out/graph.json)**: Machine-readable graph data for queries and downstream analysis.
+- **`GRAPH_REPORT.md`**: Visual breakdown of central god nodes, module communities, and cohesion scores.
+- **`graph.html`**: Interactive browser visualization for exploring nodes, relationships, and communities.
+- **`graph.json`**: Machine-readable graph data for queries and downstream analysis.
 
-The graph is refreshed incrementally and its current node, edge, community, cohesion, and token-cost metrics are recorded in [GRAPH_REPORT.md](../graphify-out/GRAPH_REPORT.md). After code-only changes, run `mise run graphify-update` (or `npm run graphify-update`). For semantic documentation updates with richer inferred relationships, run:
+The graph is refreshed incrementally and its current node, edge, community, cohesion, and token-cost metrics are recorded in local `graphify-out/GRAPH_REPORT.md`. After code-only changes, run `mise run graphify-update` (or `npm run graphify-update`). For semantic documentation updates with richer inferred relationships, run:
 
 ```bash
 graphify extract . --mode deep
@@ -79,4 +79,4 @@ graphify label . --missing-only
 npm run graphify-filter-surprises
 ```
 
-The labeling command preserves existing curated names and fills only missing or placeholder community labels. The final repository-local filter retains documentation, agent configuration, and repository metadata in `graph.json` for queries, but recreates **Surprising Connections** and **Suggested Questions** from nodes sourced under `src/` only. Within that source-only view, Graphify's normal surprise-ranking exclusions still omit routine imports, containment/method edges, same-file relationships, file hubs, and synthetic concept nodes.
+The labeling command preserves existing curated names and fills only missing or placeholder community labels. The final repository-local reporting pass retains documentation, agent configuration, build tooling, repository metadata, and non-code assets in `graph.json` for queries, but recreates the entire `GRAPH_REPORT.md` runtime-architecture view from code nodes under `src/` only. Its metrics, hubs, communities, cycles, hyperedges, knowledge gaps, surprising connections, and suggested questions therefore describe extension implementation rather than the wider knowledge corpus.

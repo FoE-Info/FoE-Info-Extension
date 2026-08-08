@@ -123,6 +123,7 @@ const ROUTINE_RELATIONS = new Set(['contains', 'imports', 'imports_from', 'metho
 const DEFAULT_GRAPH = 'graphify-out/graph.json';
 const DEFAULT_REPORT = 'graphify-out/GRAPH_REPORT.md';
 const MAX_CONNECTIONS = 5;
+const MAX_GOD_NODES = 10;
 const MAX_QUESTIONS = 5;
 
 function endpointId(endpoint) {
@@ -132,6 +133,14 @@ function endpointId(endpoint) {
 function isExtensionSource(sourceFile) {
   const normalized = sourceFile.replaceAll('\\', '/');
   return normalized.startsWith('src/') || normalized.includes('/src/');
+}
+
+function isRuntimeCodeNode(node) {
+  const sourceFile = node.source_file ?? '';
+  return (
+    isExtensionSource(sourceFile) &&
+    (node.file_type === 'code' || fileCategory(sourceFile) === 'code')
+  );
 }
 
 function isFileNode(node) {
@@ -373,21 +382,319 @@ function formatSuggestedSection(questions) {
   return lines.join('\n');
 }
 
-function replaceReportSection(report, sectionName, replacement, { appendIfMissing = false } = {}) {
-  const heading = new RegExp(`^## ${sectionName}.*$`, 'm');
-  const match = heading.exec(report);
-  if (!match) {
-    if (appendIfMissing) return `${report.replace(/\n*$/, '\n\n')}${replacement}\n`;
-    throw new Error(`GRAPH_REPORT.md has no ${sectionName} section`);
+function runtimeGraph(graph) {
+  const nodes = (graph.nodes ?? []).filter(isRuntimeCodeNode);
+  const nodeIds = new Set(nodes.map((node) => node.id));
+  const links = (graph.links ?? []).filter(
+    (edge) => nodeIds.has(endpointId(edge.source)) && nodeIds.has(endpointId(edge.target)),
+  );
+  const hyperedges = (graph.hyperedges ?? []).filter((hyperedge) => {
+    const members = hyperedge.nodes ?? [];
+    return members.length > 0 && members.every((node) => nodeIds.has(endpointId(node)));
+  });
+
+  return { ...graph, nodes, links, hyperedges };
+}
+
+function runtimeDegrees(graph) {
+  const degrees = new Map(graph.nodes.map((node) => [node.id, 0]));
+  for (const edge of graph.links) {
+    const sourceId = endpointId(edge.source);
+    const targetId = endpointId(edge.target);
+    degrees.set(sourceId, (degrees.get(sourceId) ?? 0) + 1);
+    degrees.set(targetId, (degrees.get(targetId) ?? 0) + 1);
+  }
+  return degrees;
+}
+
+function plural(count, singular, pluralForm = `${singular}s`) {
+  return count === 1 ? singular : pluralForm;
+}
+
+function formatSummarySection(graph, communities) {
+  const sourceFiles = new Set(graph.nodes.map((node) => node.source_file));
+  const confidenceCounts = new Map();
+  for (const edge of graph.links) {
+    const confidence = edge.confidence ?? 'EXTRACTED';
+    confidenceCounts.set(confidence, (confidenceCounts.get(confidence) ?? 0) + 1);
   }
 
-  const sectionStart = match.index;
-  const afterHeading = sectionStart + match[0].length;
-  const nextHeading = /^## /m.exec(report.slice(afterHeading));
-  const sectionEnd = nextHeading ? afterHeading + nextHeading.index : report.length;
-  const suffix = report.slice(sectionEnd).replace(/^\n+/, '');
+  const confidenceSummary = [...confidenceCounts.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([confidence, count]) => `${confidence}: ${count}`)
+    .join(' · ');
 
-  return `${report.slice(0, sectionStart).replace(/\n*$/, '\n\n')}${replacement}\n\n${suffix}`;
+  return [
+    '## Summary (`src/` code only)',
+    '',
+    `- ${graph.nodes.length} code ${plural(graph.nodes.length, 'node')} · ${graph.links.length} ${plural(graph.links.length, 'relationship')} · ${sourceFiles.size} source ${plural(sourceFiles.size, 'file')}`,
+    `- ${communities.length} runtime ${plural(communities.length, 'community', 'communities')}`,
+    `- Confidence: ${confidenceSummary || 'no relationships'}`,
+  ].join('\n');
+}
+
+function communityName(nodes) {
+  const sourceCounts = new Map();
+  for (const node of nodes) {
+    const sourceFile = node.source_file ?? 'unknown';
+    sourceCounts.set(sourceFile, (sourceCounts.get(sourceFile) ?? 0) + 1);
+  }
+
+  const [dominantSource = 'runtime'] = [...sourceCounts.entries()].sort(
+    ([leftFile, leftCount], [rightFile, rightCount]) =>
+      rightCount - leftCount || leftFile.localeCompare(rightFile),
+  )[0] ?? ['runtime', 0];
+  return path.posix.basename(dominantSource.replaceAll('\\', '/'));
+}
+
+function runtimeCommunities(graph, degrees) {
+  const grouped = new Map();
+  for (const node of graph.nodes) {
+    const community = node.community ?? 'unclustered';
+    if (!grouped.has(community)) grouped.set(community, []);
+    grouped.get(community).push(node);
+  }
+
+  return [...grouped.entries()]
+    .map(([id, nodes]) => {
+      const nodeIds = new Set(nodes.map((node) => node.id));
+      const internalEdges = graph.links.filter(
+        (edge) => nodeIds.has(endpointId(edge.source)) && nodeIds.has(endpointId(edge.target)),
+      ).length;
+      const possibleEdges = (nodes.length * (nodes.length - 1)) / 2;
+      return {
+        cohesion: possibleEdges === 0 ? 0 : internalEdges / possibleEdges,
+        id,
+        internalEdges,
+        name: communityName(nodes),
+        nodes: [...nodes].sort(
+          (left, right) =>
+            (degrees.get(right.id) ?? 0) - (degrees.get(left.id) ?? 0) ||
+            String(left.label).localeCompare(String(right.label)),
+        ),
+      };
+    })
+    .sort(
+      (left, right) =>
+        right.nodes.length - left.nodes.length || String(left.id).localeCompare(String(right.id)),
+    );
+}
+
+function formatCommunityHubsSection(communities) {
+  const lines = ['## Community Hubs (`src/` code only)', ''];
+  if (communities.length === 0) {
+    lines.push('_No runtime communities were found._');
+    return lines.join('\n');
+  }
+
+  for (const community of communities) {
+    lines.push(
+      `- ${markdownCode(community.name)} — ${community.nodes.length} ${plural(community.nodes.length, 'node')}, ${community.internalEdges} internal ${plural(community.internalEdges, 'edge')}`,
+    );
+  }
+  return lines.join('\n');
+}
+
+function formatGodNodesSection(graph, degrees) {
+  const hubs = [...graph.nodes]
+    .filter((node) => (degrees.get(node.id) ?? 0) > 0)
+    .sort(
+      (left, right) =>
+        (degrees.get(right.id) ?? 0) - (degrees.get(left.id) ?? 0) ||
+        String(left.label).localeCompare(String(right.label)),
+    )
+    .slice(0, MAX_GOD_NODES);
+  const lines = ['## God Nodes (`src/` code only)', ''];
+  if (hubs.length === 0) {
+    lines.push('_No connected runtime code nodes were found._');
+    return lines.join('\n');
+  }
+
+  hubs.forEach((node, index) => {
+    const degree = degrees.get(node.id) ?? 0;
+    lines.push(
+      `${index + 1}. ${markdownCode(node.label)} - ${degree} ${plural(degree, 'edge')} (${node.source_file}${node.source_location ? ` ${node.source_location}` : ''})`,
+    );
+  });
+  return lines.join('\n');
+}
+
+function runtimeImportCycles(graph) {
+  const nodes = new Map(graph.nodes.map((node) => [node.id, node]));
+  const adjacency = new Map();
+  const addFile = (sourceFile) => {
+    if (!adjacency.has(sourceFile)) adjacency.set(sourceFile, new Set());
+  };
+
+  for (const edge of graph.links) {
+    if (!String(edge.relation ?? '').startsWith('import')) continue;
+    const source = nodes.get(endpointId(edge.source));
+    const target = nodes.get(endpointId(edge.target));
+    if (!source?.source_file || !target?.source_file) continue;
+    if (source.source_file === target.source_file) continue;
+    addFile(source.source_file);
+    addFile(target.source_file);
+    adjacency.get(source.source_file).add(target.source_file);
+  }
+
+  let nextIndex = 0;
+  const indices = new Map();
+  const lowLinks = new Map();
+  const stack = [];
+  const onStack = new Set();
+  const components = [];
+  const connect = (sourceFile) => {
+    indices.set(sourceFile, nextIndex);
+    lowLinks.set(sourceFile, nextIndex);
+    nextIndex += 1;
+    stack.push(sourceFile);
+    onStack.add(sourceFile);
+
+    for (const targetFile of adjacency.get(sourceFile) ?? []) {
+      if (!indices.has(targetFile)) {
+        connect(targetFile);
+        lowLinks.set(sourceFile, Math.min(lowLinks.get(sourceFile), lowLinks.get(targetFile)));
+      } else if (onStack.has(targetFile)) {
+        lowLinks.set(sourceFile, Math.min(lowLinks.get(sourceFile), indices.get(targetFile)));
+      }
+    }
+
+    if (lowLinks.get(sourceFile) !== indices.get(sourceFile)) return;
+    const component = [];
+    let member;
+    do {
+      member = stack.pop();
+      onStack.delete(member);
+      component.push(member);
+    } while (member !== sourceFile);
+    if (component.length > 1) components.push(component.sort());
+  };
+
+  for (const sourceFile of [...adjacency.keys()].sort()) {
+    if (!indices.has(sourceFile)) connect(sourceFile);
+  }
+  return components.sort(
+    (left, right) => right.length - left.length || left[0].localeCompare(right[0]),
+  );
+}
+
+function formatImportCyclesSection(cycles) {
+  const lines = ['## Import Cycles (`src/` code only)', ''];
+  if (cycles.length === 0) {
+    lines.push('_No strongly connected runtime import groups were found._');
+    return lines.join('\n');
+  }
+
+  for (const cycle of cycles) {
+    lines.push(
+      `- ${cycle.length}-module strongly connected group: ${cycle.map(markdownCode).join(' ↔ ')}`,
+    );
+  }
+  return lines.join('\n');
+}
+
+function formatHyperedgesSection(graph) {
+  const lines = ['## Hyperedges (`src/` code only)', ''];
+  if (graph.hyperedges.length === 0) {
+    lines.push('_No runtime-only hyperedges were found._');
+    return lines.join('\n');
+  }
+
+  for (const hyperedge of graph.hyperedges) {
+    const members = (hyperedge.nodes ?? []).map(endpointId).map(markdownCode).join(', ');
+    lines.push(
+      `- **${hyperedge.label ?? hyperedge.id ?? 'Runtime group'}** — ${members} [${hyperedge.confidence ?? 'EXTRACTED'}]`,
+    );
+  }
+  return lines.join('\n');
+}
+
+function formatCommunitiesSection(communities, degrees) {
+  const lines = [`## Communities (${communities.length} runtime total)`, ''];
+  if (communities.length === 0) {
+    lines.push('_No runtime communities were found._');
+    return lines.join('\n');
+  }
+
+  for (const community of communities) {
+    const nodes = community.nodes
+      .slice(0, 8)
+      .map((node) => markdownCode(node.label))
+      .join(', ');
+    const omitted = community.nodes.length - Math.min(community.nodes.length, 8);
+    const highestDegree = Math.max(...community.nodes.map((node) => degrees.get(node.id) ?? 0));
+    lines.push(
+      `### Runtime Community ${community.id} — ${markdownCode(community.name)}`,
+      `Cohesion: ${community.cohesion.toFixed(2)} · Highest degree: ${highestDegree}`,
+      `Nodes (${community.nodes.length}): ${nodes}${omitted > 0 ? ` (+${omitted} more)` : ''}`,
+      '',
+    );
+  }
+  return lines.join('\n').trimEnd();
+}
+
+function formatKnowledgeGapsSection(graph, degrees) {
+  const isolated = graph.nodes
+    .filter((node) => (degrees.get(node.id) ?? 0) === 0)
+    .sort((left, right) => String(left.label).localeCompare(String(right.label)));
+  const lines = ['## Knowledge Gaps (`src/` code only)', ''];
+  if (isolated.length === 0) {
+    lines.push('_Every indexed runtime code node participates in at least one relationship._');
+    return lines.join('\n');
+  }
+
+  lines.push(
+    `- ${isolated.length} runtime code ${plural(isolated.length, 'node')} currently ${plural(isolated.length, 'has', 'have')} no relationship within the source-only graph.`,
+  );
+  for (const node of isolated.slice(0, 10)) {
+    lines.push(`  - ${markdownCode(node.label)} — ${node.source_file}`);
+  }
+  if (isolated.length > 10) lines.push(`  - …and ${isolated.length - 10} more.`);
+  return lines.join('\n');
+}
+
+function formatRuntimeReport(graph) {
+  const scopedGraph = runtimeGraph(graph);
+  const degrees = runtimeDegrees(scopedGraph);
+  const communities = runtimeCommunities(scopedGraph, degrees);
+  const connections = selectSourceSurprises(scopedGraph);
+  const questions = sourceQuestions(scopedGraph);
+  const cycles = runtimeImportCycles(scopedGraph);
+
+  return {
+    connections,
+    questions,
+    report: [
+      '# Runtime Architecture Graph Report',
+      '',
+      '_This report is derived only from code nodes under `src/`. The full graph remains unchanged and keeps documentation, `.agents`, build tooling, and repository metadata available for queries._',
+      '',
+      '## Scope',
+      '',
+      '- Included: executable extension code and runtime configuration under `src/`.',
+      '- Excluded from reporting: documentation, agent configuration, build tooling, repository metadata, and non-code assets.',
+      '- Query behavior: `graphify-out/graph.json` still contains the complete repository graph.',
+      '',
+      formatSummarySection(scopedGraph, communities),
+      '',
+      formatCommunityHubsSection(communities),
+      '',
+      formatGodNodesSection(scopedGraph, degrees),
+      '',
+      formatSurprisingSection(connections),
+      '',
+      formatImportCyclesSection(cycles),
+      '',
+      formatHyperedgesSection(scopedGraph),
+      '',
+      formatCommunitiesSection(communities, degrees),
+      '',
+      formatKnowledgeGapsSection(scopedGraph, degrees),
+      '',
+      formatSuggestedSection(questions),
+      '',
+    ].join('\n'),
+  };
 }
 
 async function main() {
@@ -398,24 +705,11 @@ async function main() {
     },
   });
   const graph = JSON.parse(await readFile(values.graph, 'utf8'));
-  const report = await readFile(values.report, 'utf8');
-  const connections = selectSourceSurprises(graph);
-  const questions = sourceQuestions(graph);
-  const withSurprises = replaceReportSection(
-    report,
-    'Surprising Connections',
-    formatSurprisingSection(connections),
-  );
-  const updatedReport = replaceReportSection(
-    withSurprises,
-    'Suggested Questions',
-    formatSuggestedSection(questions),
-    { appendIfMissing: true },
-  );
-  await writeFile(values.report, updatedReport);
+  const { connections, questions, report } = formatRuntimeReport(graph);
+  await writeFile(values.report, report);
   const noun = connections.length === 1 ? 'connection' : 'connections';
   console.log(
-    `Updated ${values.report} with ${connections.length} surprising ${noun} and ${questions.length} suggested questions scoped to src/.`,
+    `Updated ${values.report} as a runtime-only architecture report with ${connections.length} surprising ${noun} and ${questions.length} suggested questions.`,
   );
 }
 

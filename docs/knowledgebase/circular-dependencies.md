@@ -21,7 +21,7 @@ The recommended fix is a phased state extraction refactoring, outlined in [Secti
 
 ## 2. Knowledge Graph Metrics & God Node Analysis
 
-Graph totals change whenever source code or documentation is re-indexed. Use [`graphify-out/GRAPH_REPORT.md`](../../graphify-out/GRAPH_REPORT.md) for the current node, edge, community, and centrality values. The stable architectural signal is the concentration of responsibilities in the following hubs.
+Graph totals change whenever source code or documentation is re-indexed. Use local `graphify-out/GRAPH_REPORT.md` for the current node, edge, community, and centrality values. The stable architectural signal is the concentration of responsibilities in the following hubs.
 
 ### 2.1 God Node Betweenness Table
 

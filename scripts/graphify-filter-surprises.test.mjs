@@ -9,6 +9,121 @@ import { fileURLToPath } from 'node:url';
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const scriptPath = path.join(projectRoot, 'scripts/graphify-filter-surprises.mjs');
 
+test('regenerates the architecture report from runtime source code only', async () => {
+  const fixtureDir = await mkdtemp(path.join(tmpdir(), 'graphify-runtime-report-'));
+  const graphPath = path.join(fixtureDir, 'graph.json');
+  const reportPath = path.join(fixtureDir, 'GRAPH_REPORT.md');
+  const graph = {
+    nodes: [
+      {
+        id: 'request',
+        label: 'handleRequest()',
+        file_type: 'code',
+        source_file: 'src/js/request.js',
+        community: 1,
+      },
+      {
+        id: 'dispatch',
+        label: 'dispatchService()',
+        file_type: 'code',
+        source_file: 'src/js/dispatch.js',
+        community: 2,
+      },
+      {
+        id: 'documentation',
+        label: 'DevTools Network Dispatch Architecture',
+        file_type: 'concept',
+        source_file: 'docs/domain-services.md',
+        community: 3,
+      },
+      {
+        id: 'agent-rule',
+        label: 'Agent Workflow',
+        file_type: 'document',
+        source_file: '.agents/rules/workflow.md',
+        community: 4,
+      },
+      {
+        id: 'logo',
+        label: 'Logo Asset',
+        file_type: 'image',
+        source_file: 'src/images/logo.png',
+        community: 5,
+      },
+    ],
+    links: [
+      {
+        source: 'request',
+        target: 'dispatch',
+        relation: 'calls',
+        confidence: 'EXTRACTED',
+      },
+      {
+        source: 'request',
+        target: 'documentation',
+        relation: 'documented_by',
+        confidence: 'INFERRED',
+      },
+      {
+        source: 'request',
+        target: 'agent-rule',
+        relation: 'governed_by',
+        confidence: 'INFERRED',
+      },
+    ],
+    hyperedges: [
+      {
+        label: 'Mixed Documentation Group',
+        nodes: ['request', 'documentation', 'agent-rule'],
+        confidence: 'INFERRED',
+      },
+    ],
+  };
+  await writeFile(graphPath, JSON.stringify(graph));
+  await writeFile(
+    reportPath,
+    [
+      '# Graph report',
+      '## Summary',
+      '- 5 nodes',
+      '## Community Hubs',
+      '- Documentation',
+      '## God Nodes',
+      '1. DevTools Network Dispatch Architecture',
+      '## Surprising Connections',
+      '- stale',
+      '## Import Cycles',
+      '- stale',
+      '## Hyperedges',
+      '- Mixed Documentation Group',
+      '## Communities',
+      '- Agent Workflow',
+      '## Knowledge Gaps',
+      '- docs/domain-services.md',
+      '## Suggested Questions',
+      '- stale',
+    ].join('\n'),
+  );
+
+  const result = spawnSync(
+    process.execPath,
+    [scriptPath, '--graph', graphPath, '--report', reportPath],
+    { encoding: 'utf8' },
+  );
+
+  assert.equal(result.status, 0, result.stderr);
+  const report = await readFile(reportPath, 'utf8');
+  assert.match(report, /^# Runtime Architecture Graph Report/m);
+  assert.match(report, /2 code nodes · 1 relationship · 2 source files/);
+  assert.match(report, /`handleRequest\(\)` - 1 edge/);
+  assert.match(report, /`dispatchService\(\)` - 1 edge/);
+  assert.doesNotMatch(
+    report,
+    /DevTools Network Dispatch Architecture|Agent Workflow|Mixed Documentation Group|Logo Asset/,
+  );
+  assert.deepEqual(JSON.parse(await readFile(graphPath, 'utf8')), graph);
+});
+
 test('limits surprising connections to the extension source tree', async () => {
   const fixtureDir = await mkdtemp(path.join(tmpdir(), 'graphify-surprises-'));
   const graphPath = path.join(fixtureDir, 'graph.json');
@@ -118,13 +233,13 @@ test('limits surprising connections to the extension source tree', async () => {
   assert.equal(result.status, 0, result.stderr);
   const report = await readFile(reportPath, 'utf8');
   assert.match(report, /`readState\(\)` --calls--> `writeState\(\)`/);
-  assert.match(report, /`writeState\(\)` --references--> `Logo`/);
   assert.doesNotMatch(
     report,
-    /Documentation Catalog|Agent Workflow|package.json|`scripts`|stale documentation result/,
+    /Documentation Catalog|Agent Workflow|package.json|`scripts`|Logo|stale documentation result/,
   );
   assert.match(report, /## Surprising Connections \(`src\/` only\)/);
-  assert.match(report, /## Import Cycles\n- existing cycle/);
+  assert.match(report, /## Import Cycles \(`src\/` code only\)/);
+  assert.doesNotMatch(report, /existing cycle/);
 });
 
 test('limits suggested questions to source-tree nodes', async () => {
@@ -184,7 +299,7 @@ test('limits suggested questions to source-tree nodes', async () => {
   assert.match(report, /## Suggested Questions \(`src\/` only\)/);
   assert.match(report, /`handleRequest\(\)`.*`dispatchService\(\)`/);
   assert.doesNotMatch(report, /Agent Workflow|Architecture Guide|`scripts`|package\.json/);
-  assert.match(report, /## End/);
+  assert.doesNotMatch(report, /## End/);
 });
 
 test('keeps same-community cross-file relationships allowed by Graphify', async () => {
@@ -273,5 +388,9 @@ test('preserves Graphify edge order when surprise scores tie', async () => {
 
   assert.equal(result.status, 0, result.stderr);
   const report = await readFile(reportPath, 'utf8');
-  assert.ok(report.indexOf('`zSource()`') < report.indexOf('`aSource()`'));
+  const surprisingSection = report.slice(
+    report.indexOf('## Surprising Connections'),
+    report.indexOf('## Import Cycles'),
+  );
+  assert.ok(surprisingSection.indexOf('`zSource()`') < surprisingSection.indexOf('`aSource()`'));
 });

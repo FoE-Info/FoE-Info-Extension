@@ -91,6 +91,32 @@ test('keeps project agent configuration graphable and machine-portable', async (
   }
 });
 
+test('does not retain obsolete repository artifacts or stale generated-output links', async () => {
+  const obsoleteFiles = [
+    '.gitattributes',
+    'src/.babelrc',
+    'src/chrome/manifest_firefox.json',
+    'src/images/logo48.png',
+  ];
+  for (const file of obsoleteFiles) {
+    const fileStat = await stat(path.join(projectRoot, file)).catch((error) => {
+      if (error.code === 'ENOENT') return undefined;
+      throw error;
+    });
+    assert.equal(fileStat, undefined, `${file} should not exist`);
+  }
+
+  const docsIndex = await readProjectFile('docs/INDEX.md');
+  const circularDependencies = await readProjectFile('docs/knowledgebase/circular-dependencies.md');
+  const workflowGuide = await readProjectFile('docs/knowledgebase/agent-workflow-guide.md');
+  assert.doesNotMatch(docsIndex, /\.agents\/plugins\//);
+  assert.doesNotMatch(workflowGuide, /\.agents\/plugins\//);
+  assert.doesNotMatch(workflowGuide, /git-workflow\.md/);
+  assert.doesNotMatch(docsIndex, /\]\(\.\.\/graphify-out\//);
+  assert.doesNotMatch(circularDependencies, /\]\(\.\.\/\.\.\/graphify-out/);
+  assert.doesNotMatch(workflowGuide, /\]\(\.\.\/\.\.\/graphify-out/);
+});
+
 test('keeps environment and dependency guidance aligned with the repository', async () => {
   const conventions = await readProjectFile('.agents/rules/codebase-conventions.md');
   const environmentLoader = await readProjectFile('.agents/env.sh');
