@@ -5,12 +5,8 @@ uv = "latest"
 "npm:prettier" = "3.9.6"
 "npm:npm-check-updates" = "latest"
 
-[hooks]
-postinstall = "uv tool install \"graphifyy[gemini,mcp]\""
-
-
 [env]
-_.file = ".env"
+_.file = [".env", ".env.local"]
 _.path = ["./node_modules/.bin"]
 
 [tasks.check]
@@ -42,7 +38,7 @@ env = { NODE_ENV = "production", ANALYZE = "true" }
 run = "webpack --config webpack.prod.js"
 
 [tasks.setup]
-description = "Setup complete project environment (mise tools, node_modules, & graphify)"
+description = "Setup complete project environment (mise tools & node_modules)"
 run = [
   "mise install",
   "npm install"
@@ -50,12 +46,8 @@ run = [
 
 [tasks.graphify-update]
 description = "Update AST Knowledge Graph"
-run = "graphify update ."
+run = "uvx --from \"graphifyy[gemini,mcp]\" graphify update ."
 
 [tasks.outdated]
 description = "Check for package updates with npm-check-updates"
 run = "ncu"
-
-
-
-

@@ -1,5 +1,16 @@
 node_modules
 build
-package-lock.json
 .idea
 stuff
+.env*
+.envrc
+.direnv/
+graphify-out/
+.venv/
+
+
+# Local environment & tool configurations
+.mise.local.toml
+.vscode/settings.json
+requirements.txt
+
