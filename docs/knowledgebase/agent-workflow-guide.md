@@ -8,10 +8,9 @@ Comprehensive cheatsheet, operational reference, and workflow guide for AI Codin
 
 ### Environment & Tool Auto-Loading
 
-The local repository environment is managed cross-platform via `mise` and `direnv`:
+The local repository environment is managed cross-platform via `mise` and the repository agent loader:
 
-- **`.mise.toml`**: Configures Node.js 22, Python 3.12, the latest `uv`, project-local executable paths, and `.env`/`.env.local` loading.
-- **`.envrc`**: Enables `direnv` integration where available.
+- **`.mise.toml`**: Configures Node.js 22, Python 3.12, `uv` 0.12.3, project-local executable paths, and `.env`/`.env.local` loading.
 - **`.agents/env.sh`**: Resolves the repository root, activates `mise`/local executable paths, and loads `.env` followed by `.env.local` for non-interactive agent shells.
 
 ### Command Execution
@@ -46,7 +45,7 @@ When operating within the Google Antigravity (AGY) SDK environment:
    - The Antigravity reactive wakeup system will automatically resume agent execution upon event completion or subagent response.
 3. **Sandbox Protocol**:
    - Run commands in Standard Sandbox mode first.
-   - Only use `BypassSandbox: true` when executing host system binaries or accessing non-sandboxed tools (e.g. `uvx --from "graphifyy[gemini,mcp]" graphify ...`).
+   - Only use `BypassSandbox: true` when executing host system binaries or accessing non-sandboxed tools (e.g. `uvx --from "graphifyy[gemini,mcp]==0.9.36" graphify ...`).
 
 ### Workspace Customization Structure (`.agents/`)
 
@@ -98,21 +97,21 @@ Before modifying codebase logic, query the knowledge graph to understand symbol 
 - **CLI Commands**:
   ```bash
   # Query architecture or function relationships
-  uvx --from "graphifyy[gemini,mcp]" graphify query "how does GreatBuildingsService process donations"
+  uvx --from "graphifyy[gemini,mcp]==0.9.36" graphify query "how does GreatBuildingsService process donations"
 
   # Incrementally update code changes through deterministic AST extraction
-  uvx --from "graphifyy[gemini,mcp]" graphify update .
+  uvx --from "graphifyy[gemini,mcp]==0.9.36" graphify update .
 
   # Incrementally extract semantic content with richer inferred relationships
-  uvx --from "graphifyy[gemini,mcp]" graphify extract . --mode deep
+  uvx --from "graphifyy[gemini,mcp]==0.9.36" graphify extract . --mode deep
 
   # Refresh communities, the report, and the interactive visualization
-  uvx --from "graphifyy[gemini,mcp]" graphify cluster-only .
+  uvx --from "graphifyy[gemini,mcp]==0.9.36" graphify cluster-only .
 
   # Preserve curated labels and fill only missing community names
-  uvx --from "graphifyy[gemini,mcp]" graphify label . --missing-only
+  uvx --from "graphifyy[gemini,mcp]==0.9.36" graphify label . --missing-only
 
-  # Keep docs queryable while omitting local docs from surprise ranking
+  # Keep the full graph queryable while scoping report exploration to src/
   npm run graphify-filter-surprises
   ```
 
@@ -126,7 +125,7 @@ Graphify combines deterministic source extraction with model-assisted semantic e
 - Prefer source locations and deterministic call/import edges when graph output conflicts with implementation details.
 - Review extraction, graph-health, deduplication, and missing-node warnings before treating an update as complete.
 - After any command that regenerates `GRAPH_REPORT.md`, run `npm run graphify-filter-surprises`. The standard `npm run graphify-update` and `mise run graphify-update` tasks do this automatically.
-- Interpret the filtered **Surprising Connections** section as exploration, not a defect verdict. The repository adds only the local `docs/` exclusion; Graphify's normal candidate and ranking rules remain in effect.
+- Interpret the filtered **Surprising Connections** and **Suggested Questions** sections as source-code exploration, not a defect verdict. Both sections are regenerated from `src/` nodes only; documentation, agent configuration, build tooling, and repository metadata remain available to ordinary graph queries.
 - Keep generated metrics in [`GRAPH_REPORT.md`](../../graphify-out/GRAPH_REPORT.md) instead of copying them into long-lived documentation where they can become stale.
 
 ---
@@ -148,7 +147,7 @@ Follow the strict branching lifecycle defined in [`git-workflow.md`](../../.agen
    ```
 4. **Graph Synchronization**:
    ```bash
-   uvx --from "graphifyy[gemini,mcp]" graphify update .
+   uvx --from "graphifyy[gemini,mcp]==0.9.36" graphify update .
    ```
 5. **Merge & Branch Cleanup**:
    ```bash

@@ -13,7 +13,7 @@ Guidelines for AI agents operating within the Google Antigravity (AGY) SDK envir
 ## Tool Execution & Sandbox Protocol
 
 1. **Command Execution**: Run commands in the standard sandbox first. Chain commands only when later steps must stop after an earlier failure; request elevated execution only after a required command fails because of sandbox restrictions.
-2. **Dedicated Branching**: Always create a topic branch (`feat/...` or `fix/...`) off `development` before modifying source files per [`codebase-conventions.md#git--remote-workflow-invariants`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/.agents/rules/codebase-conventions.md).
+2. **Dedicated Branching**: Always create a topic branch (`feat/...` or `fix/...`) off `development` before modifying source files per [`codebase-conventions.md#git--remote-workflow-invariants`](./codebase-conventions.md#git--remote-workflow-invariants).
 3. **Precision Editing**: Use the host's patch-based editing tool for surgical changes while preserving existing structure, comments, and docstrings.
 4. **Verification Protocol**: Gather concrete empirical runtime verification (`npm run check` and `npm run build`) before declaring task completion.
 5. **Path Guardrail**: Use absolute paths for tool-call path parameters when the tool does not establish a working directory. Keep paths inside version-controlled project configuration relative to the repository root so clones remain portable; use absolute paths only when an external tool explicitly requires them.

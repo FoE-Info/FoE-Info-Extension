@@ -4,7 +4,7 @@
       "command": "uvx",
       "args": [
         "--from",
-        "graphifyy[gemini,mcp]",
+        "graphifyy[gemini,mcp]==0.9.36",
         "graphify-mcp",
         "graphify-out/graph.json"
       ]
@@ -13,7 +13,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "chrome-devtools-mcp@latest",
+        "chrome-devtools-mcp@1.6.0",
         "--auto-connect",
         "--experimentalMemory",
         "--experimentalScreencast"

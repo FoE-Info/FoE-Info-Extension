@@ -123,14 +123,15 @@ const ROUTINE_RELATIONS = new Set(['contains', 'imports', 'imports_from', 'metho
 const DEFAULT_GRAPH = 'graphify-out/graph.json';
 const DEFAULT_REPORT = 'graphify-out/GRAPH_REPORT.md';
 const MAX_CONNECTIONS = 5;
+const MAX_QUESTIONS = 5;
 
 function endpointId(endpoint) {
   return typeof endpoint === 'object' && endpoint !== null ? endpoint.id : endpoint;
 }
 
-function isLocalDocsSource(sourceFile) {
+function isExtensionSource(sourceFile) {
   const normalized = sourceFile.replaceAll('\\', '/');
-  return normalized.startsWith('docs/') || normalized.includes('/docs/');
+  return normalized.startsWith('src/') || normalized.includes('/src/');
 }
 
 function isFileNode(node) {
@@ -228,11 +229,11 @@ function connectionScore(source, target, edge, degrees) {
   return { reasons, score };
 }
 
-function selectSurprisesWithoutDocs(graph, limit = MAX_CONNECTIONS) {
+function selectSourceSurprises(graph, limit = MAX_CONNECTIONS) {
   const nodes = new Map((graph.nodes ?? []).map((node) => [node.id, node]));
   const includedNodeIds = new Set(
     [...nodes.values()]
-      .filter((node) => !isLocalDocsSource(node.source_file ?? ''))
+      .filter((node) => isExtensionSource(node.source_file ?? ''))
       .map((node) => node.id),
   );
   const degrees = new Map();
@@ -251,7 +252,7 @@ function selectSurprisesWithoutDocs(graph, limit = MAX_CONNECTIONS) {
     const target = nodes.get(endpointId(edge.target));
     if (!source || !target) continue;
     if (!source.source_file || !target.source_file) continue;
-    if (isLocalDocsSource(source.source_file) || isLocalDocsSource(target.source_file)) continue;
+    if (!isExtensionSource(source.source_file) || !isExtensionSource(target.source_file)) continue;
     if (source.source_file === target.source_file) continue;
     if (ROUTINE_RELATIONS.has(edge.relation)) continue;
     if (isConceptNode(source) || isConceptNode(target)) continue;
@@ -270,14 +271,14 @@ function markdownCode(value) {
 
 function formatSurprisingSection(connections) {
   const lines = [
-    '## Surprising Connections (`docs/` excluded)',
+    '## Surprising Connections (`src/` only)',
     '',
-    '_Repository policy: Graphify’s standard surprise ranking is applied after omitting nodes sourced from the local `docs/` folder. All other source types and Graphify’s built-in candidate rules are unchanged._',
+    '_Repository policy: Graphify’s standard surprise ranking is applied only to nodes sourced from the extension implementation under `src/`. Documentation, agent configuration, build tooling, and other repository metadata remain queryable in the graph but are excluded here._',
     '',
   ];
 
   if (connections.length === 0) {
-    lines.push('_No qualifying relationships were found after excluding `docs/`._');
+    lines.push('_No qualifying relationships were found within `src/`._');
     return lines.join('\n');
   }
 
@@ -292,10 +293,93 @@ function formatSurprisingSection(connections) {
   return lines.join('\n');
 }
 
-function replaceSurprisingSection(report, replacement) {
-  const heading = /^## Surprising Connections.*$/m;
+function sourceQuestions(graph, limit = MAX_QUESTIONS) {
+  const nodes = new Map(
+    (graph.nodes ?? [])
+      .filter((node) => isExtensionSource(node.source_file ?? ''))
+      .map((node) => [node.id, node]),
+  );
+  const edges = (graph.links ?? [])
+    .map((edge) => ({
+      edge,
+      source: nodes.get(endpointId(edge.source)),
+      target: nodes.get(endpointId(edge.target)),
+    }))
+    .filter(({ source, target }) => source && target);
+  const degrees = new Map();
+  for (const { source, target } of edges) {
+    degrees.set(source.id, (degrees.get(source.id) ?? 0) + 1);
+    degrees.set(target.id, (degrees.get(target.id) ?? 0) + 1);
+  }
+
+  const questions = [];
+  const seen = new Set();
+  const add = (question, rationale) => {
+    if (questions.length >= limit || seen.has(question)) return;
+    seen.add(question);
+    questions.push({ question, rationale });
+  };
+
+  for (const { edge, source, target } of edges.filter(
+    ({ edge }) => edge.confidence === 'INFERRED' || edge.confidence === 'AMBIGUOUS',
+  )) {
+    add(
+      `Is the ${String(edge.confidence).toLowerCase()} ${markdownCode(source.label)} --${edge.relation ?? 'related_to'}--> ${markdownCode(target.label)} source-code relationship correct?`,
+      `${source.source_file} → ${target.source_file}`,
+    );
+  }
+
+  const hubs = [...nodes.values()].sort(
+    (left, right) =>
+      (degrees.get(right.id) ?? 0) - (degrees.get(left.id) ?? 0) ||
+      String(left.label).localeCompare(String(right.label)),
+  );
+  for (const node of hubs) {
+    const degree = degrees.get(node.id) ?? 0;
+    if (degree === 0) continue;
+    add(
+      `What extension behavior depends on ${markdownCode(node.label)}, and what would be affected if it changed?`,
+      `${degree} relationship${degree === 1 ? '' : 's'} within ${node.source_file}.`,
+    );
+  }
+
+  for (const { edge, source, target } of edges) {
+    if (source.source_file === target.source_file) continue;
+    add(
+      `Why does ${markdownCode(source.label)} --${edge.relation ?? 'related_to'}--> ${markdownCode(target.label)} across these source modules?`,
+      `${source.source_file} → ${target.source_file}`,
+    );
+  }
+
+  return questions;
+}
+
+function formatSuggestedSection(questions) {
+  const lines = [
+    '## Suggested Questions (`src/` only)',
+    '',
+    '_Questions derived only from extension implementation nodes and relationships under `src/`._',
+    '',
+  ];
+
+  if (questions.length === 0) {
+    lines.push('_No source-code questions could be generated from the current graph._');
+    return lines.join('\n');
+  }
+
+  for (const { question, rationale } of questions) {
+    lines.push(`- **${question}**`, `  _${rationale}_`);
+  }
+  return lines.join('\n');
+}
+
+function replaceReportSection(report, sectionName, replacement, { appendIfMissing = false } = {}) {
+  const heading = new RegExp(`^## ${sectionName}.*$`, 'm');
   const match = heading.exec(report);
-  if (!match) throw new Error('GRAPH_REPORT.md has no Surprising Connections section');
+  if (!match) {
+    if (appendIfMissing) return `${report.replace(/\n*$/, '\n\n')}${replacement}\n`;
+    throw new Error(`GRAPH_REPORT.md has no ${sectionName} section`);
+  }
 
   const sectionStart = match.index;
   const afterHeading = sectionStart + match[0].length;
@@ -315,12 +399,23 @@ async function main() {
   });
   const graph = JSON.parse(await readFile(values.graph, 'utf8'));
   const report = await readFile(values.report, 'utf8');
-  const connections = selectSurprisesWithoutDocs(graph);
-  const updatedReport = replaceSurprisingSection(report, formatSurprisingSection(connections));
+  const connections = selectSourceSurprises(graph);
+  const questions = sourceQuestions(graph);
+  const withSurprises = replaceReportSection(
+    report,
+    'Surprising Connections',
+    formatSurprisingSection(connections),
+  );
+  const updatedReport = replaceReportSection(
+    withSurprises,
+    'Suggested Questions',
+    formatSuggestedSection(questions),
+    { appendIfMissing: true },
+  );
   await writeFile(values.report, updatedReport);
   const noun = connections.length === 1 ? 'connection' : 'connections';
   console.log(
-    `Updated ${values.report} with ${connections.length} surprising ${noun} after excluding docs/.`,
+    `Updated ${values.report} with ${connections.length} surprising ${noun} and ${questions.length} suggested questions scoped to src/.`,
   );
 }
 

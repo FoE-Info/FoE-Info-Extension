@@ -41,13 +41,13 @@ If you prefer not to use `mise`:
    - **With `uv` / `uvx`** (recommended): Use `uv` (`curl -LsSf https://astral.sh/uv/install.sh | sh`) for on-demand isolated execution (`uvx`).
    - **With `pipx`** (the direct pip-ecosystem counterpart to `uvx`):
      ```bash
-     pipx install "graphifyy[gemini,mcp]"
+     pipx install "graphifyy[gemini,mcp]==0.9.36"
      # Or run on-demand without global install:
-     pipx run --spec "graphifyy[gemini,mcp]" graphify update .
+     pipx run --spec "graphifyy[gemini,mcp]==0.9.36" graphify update .
      ```
    - **With `pip`**:
      ```bash
-     pip install "graphifyy[gemini,mcp]"
+     pip install "graphifyy[gemini,mcp]==0.9.36"
      ```
 4. Run project build, maintenance, and verification commands using standard `npm`, `npx`, and `uvx` / `pipx run`:
    ```bash
@@ -61,19 +61,20 @@ If you prefer not to use `mise`:
 
 Both `mise run <task>` and `npm run <task>` can be used interchangeably:
 
-| Task Command                                           | Description                                                                                                     |
-| :----------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
-| `mise run setup` / `npm run setup`                     | Installs project tools via `mise` and Node packages via `npm install`.                                          |
-| `mise run dev` / `npm run dev`                         | Starts Webpack in watch mode using [`webpack.dev.js`](webpack.dev.js) (outputs to `build/FoE-Info-DEV`).        |
-| `mise run build:dev` / `npm run build:dev`             | Runs a single non-watching development compilation.                                                             |
-| `mise run build` / `npm run build`                     | Compiles optimized production bundle via [`webpack.prod.js`](webpack.prod.js) and creates Webstore release ZIP. |
-| `mise run build-foe-info` / `npm run build-foe-info`   | Alias for production webstore build.                                                                            |
-| `mise run check` / `npm run check`                     | Validates code formatting across the repository with Prettier.                                                  |
-| `mise run format` / `npm run format`                   | Automatically formats codebase files using Prettier.                                                            |
-| `mise run analyze` / `npm run analyze`                 | Generates bundle composition analysis using Webpack Bundle Analyzer.                                            |
-| `mise run outdated` / `npm run outdated`               | Checks for dependency updates using `npx npm-check-updates`.                                                    |
-| `mise run graphify-update` / `npm run graphify-update` | Updates the graph, then applies normal surprise ranking with local `docs/` nodes omitted.                       |
-| `npm run graphify-filter-surprises`                    | Reapplies the repository's docs-exclusion surprise policy to an existing Graphify report.                       |
+| Task Command                                                               | Description                                                                                                     |
+| :------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| `mise run setup` / `npm run setup`                                         | Installs project tools via `mise` and Node packages via `npm install`.                                          |
+| `mise run dev` / `npm run dev`                                             | Starts Webpack in watch mode using [`webpack.dev.js`](webpack.dev.js) (outputs to `build/FoE-Info-DEV`).        |
+| `mise run build:dev` / `npm run build:dev`                                 | Runs a single non-watching development compilation.                                                             |
+| `mise run build` / `npm run build`                                         | Compiles optimized production bundle via [`webpack.prod.js`](webpack.prod.js) and creates Webstore release ZIP. |
+| `mise run check` / `npm run check`                                         | Validates code formatting across the repository with Prettier.                                                  |
+| `mise run format` / `npm run format`                                       | Automatically formats codebase files using Prettier.                                                            |
+| `mise run analyze` / `npm run analyze`                                     | Generates bundle composition analysis using Webpack Bundle Analyzer.                                            |
+| `mise run outdated` / `npm run outdated`                                   | Checks for dependency updates using the pinned `npm-check-updates` tool.                                        |
+| `mise run graphify-update` / `npm run graphify-update`                     | Updates the graph, then scopes report surprises and suggested questions to `src/`.                              |
+| `mise run test:config` / `npm run test:config`                             | Verifies task parity, version pins, portable links, and environment safeguards.                                 |
+| `mise run test:graphify-report` / `npm run test:graphify-report`           | Tests the repository's Graphify surprise policy.                                                                |
+| `mise run graphify-filter-surprises` / `npm run graphify-filter-surprises` | Rebuilds report surprises and suggested questions using only `src/` nodes.                                      |
 
 ---
 

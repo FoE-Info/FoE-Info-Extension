@@ -1,9 +1,9 @@
 [tools]
 node = "22"
 python = "3.12"
-uv = "latest"
+uv = "0.12.3"
 "npm:prettier" = "3.9.6"
-"npm:npm-check-updates" = "latest"
+"npm:npm-check-updates" = "23.0.1"
 
 [env]
 _.file = [".env", ".env.local"]
@@ -27,10 +27,6 @@ description = "Build optimized production extension bundle"
 env = { NODE_ENV = "production" }
 run = "webpack --config webpack.prod.js"
 
-[tasks.build-foe-info]
-description = "Alias for production build"
-run = "webpack --config webpack.prod.js"
-
 [tasks."build:dev"]
 description = "Build single development extension bundle"
 env = { NODE_ENV = "development" }
@@ -49,10 +45,22 @@ run = [
 ]
 
 [tasks.graphify-update]
-description = "Update the knowledge graph and omit docs/ from surprise ranking"
+description = "Update the graph and scope exploration sections to src/"
 env = { UV_CACHE_DIR = "{{config_root}}/.cache/uv", UV_TOOL_DIR = "{{config_root}}/.cache/uv/tools" }
-run = "(command -v uvx >/dev/null 2>&1 && uvx --from \"graphifyy[gemini,mcp]\" graphify update . || (command -v pipx >/dev/null 2>&1 && pipx run --spec \"graphifyy[gemini,mcp]\" graphify update . || graphify update .)) && npm run graphify-filter-surprises"
+run = "(command -v uvx >/dev/null 2>&1 && uvx --from \"graphifyy[gemini,mcp]==0.9.36\" graphify update . || (command -v pipx >/dev/null 2>&1 && pipx run --spec \"graphifyy[gemini,mcp]==0.9.36\" graphify update . || graphify update .)) && npm run graphify-filter-surprises"
 
 [tasks.outdated]
 description = "Check for package updates with npm-check-updates"
-run = "npx npm-check-updates"
+run = "npx --yes npm-check-updates@23.0.1"
+
+[tasks."test:config"]
+description = "Test repository configuration synchronization"
+run = "node scripts/repository-config.test.mjs"
+
+[tasks."test:graphify-report"]
+description = "Test Graphify report surprise filtering"
+run = "node scripts/graphify-filter-surprises.test.mjs"
+
+[tasks.graphify-filter-surprises]
+description = "Scope Graphify surprises and questions to src/"
+run = "node scripts/graphify-filter-surprises.mjs"

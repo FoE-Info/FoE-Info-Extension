@@ -8,6 +8,7 @@ export NODE_ENV="development"
 set -a
 for AGENTS_ENV_FILE in "$AGENTS_PROJECT_ROOT/.env" "$AGENTS_PROJECT_ROOT/.env.local"; do
   if [ -f "$AGENTS_ENV_FILE" ]; then
+    chmod 600 "$AGENTS_ENV_FILE" 2>/dev/null || true
     source "$AGENTS_ENV_FILE" 2>/dev/null
   fi
 done

@@ -14,13 +14,6 @@
     },
     {
       "type": "npm",
-      "script": "build-foe-info",
-      "problemMatcher": [],
-      "label": "npm: build-foe-info",
-      "detail": "Alias for production extension bundle"
-    },
-    {
-      "type": "npm",
       "script": "dev",
       "problemMatcher": [],
       "label": "npm: dev",
@@ -59,7 +52,7 @@
       "script": "graphify-update",
       "problemMatcher": [],
       "label": "npm: graphify-update",
-      "detail": "Update AST Knowledge Graph"
+      "detail": "Update the graph and scope exploration sections to src/"
     },
     {
       "type": "npm",
@@ -69,11 +62,32 @@
       "detail": "Check for package updates with npm-check-updates"
     },
     {
-      "type": "shell",
-      "command": "mise run setup || npm install",
+      "type": "npm",
+      "script": "setup",
       "problemMatcher": [],
-      "label": "setup: install environment",
+      "label": "npm: setup",
       "detail": "Setup project tools and dependencies"
+    },
+    {
+      "type": "npm",
+      "script": "test:config",
+      "problemMatcher": [],
+      "label": "npm: test:config",
+      "detail": "Test repository configuration synchronization"
+    },
+    {
+      "type": "npm",
+      "script": "test:graphify-report",
+      "problemMatcher": [],
+      "label": "npm: test:graphify-report",
+      "detail": "Test Graphify report surprise filtering"
+    },
+    {
+      "type": "npm",
+      "script": "graphify-filter-surprises",
+      "problemMatcher": [],
+      "label": "npm: graphify-filter-surprises",
+      "detail": "Scope Graphify surprises and questions to src/"
     }
   ]
 }
