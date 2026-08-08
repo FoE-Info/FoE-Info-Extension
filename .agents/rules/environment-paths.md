@@ -17,7 +17,7 @@ This workspace uses `mise` (installed via Linuxbrew) for managing Node, Python, 
 
 1. `node`, `npm`, `npx`, `uv`, `python`, and `pip` are dynamically resolved by `mise` shims in all subshells.
 2. **Zero-Install & Multi-Ecosystem Python Tools**: For Python CLI tools (such as `graphify`), task runners and rules must use a 3-tier fallback chain (`uvx` -> `pipx run` -> direct binary) to support `mise`, `uv`, `pipx`, and standard `pip` setups seamlessly:
-   `command -v uvx >/dev/null 2>&1 && uvx --from "package[extras]" command ... || (command -v pipx >/dev/null 2>&1 && pipx run --spec "package[extras]" command ... || command ...)`
+   `command -v uvx >/dev/null 2>&1 && uvx --from "graphifyy[gemini,mcp]" graphify ... || (command -v pipx >/dev/null 2>&1 && pipx run --spec "graphifyy[gemini,mcp]" graphify ... || graphify ...)`
 3. Do **NOT** hardcode specific version numbers (e.g. `22.23.2`) in scripts or commands — `mise` reads `.mise.toml` automatically.
 4. Prefer the activated toolchain. Read-only resolution checks such as `command -v` are appropriate when diagnosing setup; do not mutate `PATH` ad hoc when `.agents/env.sh` or `mise` can establish it consistently.
 5. **Environment Variable Loading**: Antigravity runs non-interactive `bash -c` subshells that may not inherit vars from `systemd environment.d`, `~/.bashrc.d/`, or `mise`. Before running a command that needs project environment variables, prefix it with `source .agents/env.sh &&`. The loader resolves the repository root from its own location, sources `.env` followed by `.env.local`, and adds the `mise` and local binary directories to `PATH`. Never print secret values while diagnosing availability.
