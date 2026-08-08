@@ -1,91 +1,145 @@
-# Node.js Toolchain & Webpack Build Audit
+# Node.js Toolchain & Webpack Audit
 
-**Verified against**: `package.json`, `.mise.toml`, `webpack.common.js`, `webpack.dev.js`, and `webpack.prod.js` on 2026-08-08.
+**Verified**: 2026-08-08 against `package.json`, `package-lock.json`, `.mise.toml`,
+`webpack.common.js`, `webpack.dev.js`, and `webpack.prod.js`.
 
-## Toolchain
+## Executive summary
 
-The supported local environment is Node.js 22, Python 3.12, and the latest `uv`, all managed by `mise`. npm owns JavaScript dependencies through `package-lock.json`; Python is used only for repository tooling such as graphify.
+Node.js is a build/tooling runtime in this repository; there is no Node server or API
+surface to assess. Dependency resolution, formatting, production compilation, and the
+npm advisory audit pass. The main gaps are application quality gates (no application
+tests, linting, or type checks), oversized shared assets, an unused runtime dependency,
+and Webpack configuration that loads the 218 KiB vendor chunk into even the minimal
+popup/devtools pages.
 
-`mise run setup` is the canonical bootstrap command. It installs the pinned tools and runs `npm install`. `npm run setup` delegates to that task when `mise` is available and otherwise installs npm dependencies plus a graphify-capable Python runner.
+## Toolchain and tasks
 
-## Task parity
+`.mise.toml` pins Node 22 and Python 3.12 and exposes tasks matching the npm scripts.
+`mise run setup` installs the managed tools and npm packages. `npm run setup` delegates
+to `mise` where available and otherwise provides npm/Graphify fallbacks.
 
-| Task              | `mise` behavior                                            | npm behavior                               | Status  |
-| ----------------- | ---------------------------------------------------------- | ------------------------------------------ | ------- |
-| `setup`           | Installs tools and npm packages                            | Delegates to `mise`, with manual fallbacks | Aligned |
-| `check`           | Runs Prettier in check mode                                | Same                                       | Aligned |
-| `format`          | Formats with Prettier                                      | Same                                       | Aligned |
-| `dev`             | Development Webpack watcher                                | Same, with `NODE_ENV=development`          | Aligned |
-| `build:dev`       | One development compilation                                | Same, with `NODE_ENV=development`          | Aligned |
-| `build`           | Optimized production compilation                           | Same, with `NODE_ENV=production`           | Aligned |
-| `build-foe-info`  | Production-build alias                                     | Delegates to `npm run build`               | Aligned |
-| `analyze`         | Production build with bundle report                        | Same, with `ANALYZE=true`                  | Aligned |
-| `outdated`        | Runs `npm-check-updates`                                   | Same                                       | Aligned |
-| `graphify-update` | Updates the graph through `uvx`, `pipx`, or local graphify | Same                                       | Aligned |
+| Capability                 | Command                            | State                    |
+| -------------------------- | ---------------------------------- | ------------------------ |
+| Formatting                 | `npm run check` / `npm run format` | Configured with Prettier |
+| Development watch          | `npm run dev`                      | Configured               |
+| One-shot development build | `npm run build:dev`                | Configured               |
+| Production build/ZIP       | `npm run build`                    | Configured               |
+| Bundle report              | `npm run analyze`                  | Configured               |
+| Graph refresh              | `npm run graphify-update`          | Configured               |
+| Graph report policy tests  | `npm run test:graphify-report`     | Configured; tooling only |
+| JavaScript lint            | —                                  | Missing                  |
+| Application tests          | —                                  | Missing                  |
+| Type checking              | —                                  | Missing                  |
+| CI workflow                | —                                  | Missing                  |
 
-The project does not currently define lint, unit-test, or type-check tasks. `npm run check` validates formatting only.
+Prettier is a formatter, not a correctness or security linter. Add an explicit
+`validate` task that runs formatting, ESLint, tests, and both development/production
+compilation as those gates are introduced.
 
-## Dependency classification
+## Dependency audit
 
-Runtime libraries are in `dependencies`; Webpack, its loaders and plugins, Sass, Prettier, and development tooling are in `devDependencies`. The earlier Sass misclassification has been corrected. The current manifest does not depend on the deprecated `file-loader`, `webpack-dev-middleware`, or `license-webpack-plugin` packages.
+The lockfile resolves 461 total packages (10 production, 452 development, 15 optional,
+and one peer as reported by npm; categories overlap npm's total accounting).
+`npm audit --audit-level=high` reported zero known vulnerabilities on the verification
+date.
 
-Items still worth reviewing:
+Confirmed dependency observations:
 
-- `webhook-discord` should remain a runtime dependency only if bundled application code imports it.
-- `@popperjs/core` is provided transitively by Bootstrap but may still be justified if source code imports it directly.
-- There is no automated dependency-security script; use `npm audit --audit-level=high` during maintenance.
+- `webhook-discord` is declared but no source or Webpack configuration imports it. It
+  is also unsuitable for the current browser-side posting implementation. Remove it
+  after a clean build/behavior check.
+- `@popperjs/core` is a required Bootstrap peer and is bundled through Bootstrap's
+  tooltip/popover usage. Keeping it as a direct dependency is appropriate.
+- `postcss-loader` runs without a repository PostCSS configuration or plugins such as
+  Autoprefixer. It currently adds a pipeline stage with no documented transformation;
+  either configure the intended policy or remove the loader.
+- Runtime and development dependencies are otherwise classified consistently with
+  their browser/build usage.
 
 ## Webpack architecture
 
-### Shared configuration
+`webpack.common.js` defines four entry points and four HtmlWebpackPlugin pages. Images
+use Webpack 5 asset modules, static translations/icons/polyfill files are copied, and
+third-party modules are forced into a named `vendors` cache group.
 
-`webpack.common.js` defines four entry points (`app`, `options`, `devtools`, and `popup`), extracts shared third-party modules into `vendors.js`, emits images through Webpack 5 asset modules, generates the four extension HTML pages, and copies static icons, translations, and the browser polyfill.
+Development uses injected styles and inline source maps. Production extracts CSS,
+minifies JavaScript with Terser, emits the Webstore manifest, creates a dated ZIP, and
+can emit a static bundle-analyzer report. Stable filenames are reasonable for an
+extension package whose manifest and HTML refer to local assets.
 
-### Development build
+### Measured production output
 
-`webpack.dev.js`:
+| Asset/entry          |                    Size |
+| -------------------- | ----------------------: |
+| `vendors.js`         | 223,528 bytes (218 KiB) |
+| `app.js`             | 144,044 bytes (141 KiB) |
+| `app.css`            | 237,270 bytes (232 KiB) |
+| `options.js`         |             8,534 bytes |
+| `options.css`        | 234,124 bytes (229 KiB) |
+| app entry total      |                 591 KiB |
+| options entry total  |                 455 KiB |
+| devtools entry total |                 220 KiB |
+| popup entry total    |                 220 KiB |
+| release ZIP          |                 295 KiB |
 
-- writes unpacked-extension assets to `build/FoE-Info-DEV`;
-- uses `inline-source-map` and injects styles with `style-loader`;
-- processes CSS and Sass through `css-loader`, `postcss-loader`, and `sass-loader`;
-- uses the current `devServer.static.directory` configuration;
-- sets `DEV=true` and emits a development manifest.
+The production build completes but emits three performance warnings: release ZIP
+asset size, app/options entrypoint size, and Webpack's code-splitting recommendation.
 
-The normal `dev` task runs Webpack in watch mode. Although a dev-server configuration exists, Chrome extensions still need an extension reload when background or manifest behavior changes.
+### High: minimal pages receive the global vendor chunk
 
-### Production build
+Every HtmlWebpackPlugin instance explicitly includes `vendors`, including
+`popup.html` and `devtools.html`. Those pages therefore each load about 218 KiB of
+shared vendor JavaScript while their own entry scripts are only about 1.6–1.7 KiB.
+Split cache groups by entry/dependency set or allow Webpack/HtmlWebpackPlugin to inject
+only chunks actually required by each entry. Confirm the resulting chunk dependency
+order in all four generated pages.
 
-`webpack.prod.js`:
+### Medium: full Bootstrap CSS is compiled twice across pages
 
-- writes the Webstore extension to `build/FoE-Info_WEBSTORE`;
-- extracts CSS with `mini-css-extract-plugin`;
-- minifies JavaScript with a valid Terser configuration and removes selected debug logging;
-- emits a dated release ZIP beside the build directory;
-- sets `WEBSTORE=true` and emits the release manifest;
-- generates `build/bundle-report.html` when `ANALYZE=true` (`mise run analyze` or `npm run analyze`).
+The app and options entries each emit a roughly 230 KiB stylesheet. This is not an
+accidental duplicate inside `main.scss`; it is duplication across two entry outputs.
+Options uses only a small subset of Bootstrap. Import component-level Sass for each
+surface, or emit a shared CSS asset if extension-page caching and CSP behavior are
+verified. Any PurgeCSS approach needs a comprehensive safelist because the app builds
+many Bootstrap class names dynamically in template strings.
 
-The earlier Terser, asset-module, shared-vendor, CopyPlugin, bundle-analyzer, and deprecated dev-server findings have all been resolved.
+### Medium: browser compatibility policy is implicit
 
-## Current improvement opportunities
+The manifest says Chrome 88+, Webpack has no explicit `target`/Browserslist policy,
+and no Babel rule transpiles source. The current source is therefore shipped close to
+its authored syntax. Document supported Chrome/Firefox versions and encode them in
+Browserslist/Webpack so dependency updates can be checked against an intentional
+runtime contract.
 
-| Priority | Area                      | Recommendation                                                                                                                  |
-| -------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| High     | Automated tests           | Add a focused test runner for calculation and message-dispatch logic.                                                           |
-| High     | JavaScript linting        | Add ESLint separately from the existing Prettier formatting check.                                                              |
-| Medium   | CI                        | Run setup, formatting, tests (once present), and production compilation in CI.                                                  |
-| Medium   | CSS size                  | Measure the production bundle before adopting PurgeCSS; dynamically generated Bootstrap class names require a careful safelist. |
-| Low      | Development rebuild speed | Compare `inline-source-map` with a cheaper development source-map mode using representative rebuild timings.                    |
-| Low      | Runtime dependency review | Confirm `webhook-discord` and direct Popper usage remain necessary.                                                             |
+### Low: development-server intent is unclear
 
-## Verification commands
+The normal `dev` script uses Webpack watch, not `webpack serve`; the `devServer`
+configuration is therefore dormant in the documented workflow. Remove it or add and
+document a tested serve task. Extension reload is still required for relevant
+manifest/runtime changes.
 
-```bash
-mise run setup
-mise run check
-mise run build:dev
-mise run build
-mise run analyze
-mise run graphify-update
+## Prioritized remediation
+
+| Priority | Action                                                                                            |
+| -------- | ------------------------------------------------------------------------------------------------- |
+| P0       | Add tests for storage, posting, calculations, and request dispatch before architectural refactors |
+| P0       | Add ESLint and a single `validate` task; run it in CI                                             |
+| P1       | Stop injecting the global vendor chunk into popup/devtools unless their chunk graphs require it   |
+| P1       | Remove unused `webhook-discord` after build/runtime verification                                  |
+| P1       | Reduce Bootstrap imports per entry and measure with `npm run analyze`                             |
+| P2       | Configure or remove the pass-through PostCSS stage                                                |
+| P2       | Encode the browser support/output target policy                                                   |
+| P2       | Remove or document the dormant dev-server configuration                                           |
+
+## Verification record
+
+```text
+npm ls --depth=0               PASS
+npm run check                  PASS
+npm run test:graphify-report   PASS: 2 tests
+npm run build                  PASS with 3 performance warnings
+npm audit --audit-level=high   PASS: 0 known vulnerabilities
 ```
 
-Use `build/FoE-Info-DEV` for an unpacked development extension and `build/FoE-Info_WEBSTORE` for production verification.
+The npm audit result is time-sensitive and should be regenerated in CI or release
+maintenance rather than treated as a permanent guarantee.

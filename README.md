@@ -72,7 +72,8 @@ Both `mise run <task>` and `npm run <task>` can be used interchangeably:
 | `mise run format` / `npm run format`                   | Automatically formats codebase files using Prettier.                                                            |
 | `mise run analyze` / `npm run analyze`                 | Generates bundle composition analysis using Webpack Bundle Analyzer.                                            |
 | `mise run outdated` / `npm run outdated`               | Checks for dependency updates using `npx npm-check-updates`.                                                    |
-| `mise run graphify-update` / `npm run graphify-update` | Updates the codebase AST knowledge graph in `graphify-out/` via `uvx`.                                          |
+| `mise run graphify-update` / `npm run graphify-update` | Updates the graph, then applies normal surprise ranking with local `docs/` nodes omitted.                       |
+| `npm run graphify-filter-surprises`                    | Reapplies the repository's docs-exclusion surprise policy to an existing Graphify report.                       |
 
 ---
 

@@ -499,7 +499,9 @@ The [`src/js/fn/constants.js`](../src/js/fn/constants.js) module defines system-
 export const salt = 'notquitesafewaytostoreinfo';
 ```
 
-- **`salt`**: Legacy cryptographic salt string used by internal key hashing functions (`getKey(text)`).
+- **`salt`**: Unused legacy constant. The former key helper is commented out; `post.js`
+  still calls the now-undefined `getKey`, which is tracked as a P0 defect in the
+  JavaScript audit.
 
 ---
 

@@ -50,6 +50,10 @@ Granular technical specifications, function-by-function manuals, agent workflow 
 
 ### Static Codebase Audits (`docs/knowledgebase/audit-*.md`)
 
+The Chrome extension, CSS/HTML, JavaScript/jQuery, and Node.js/Webpack audits were
+re-verified on 2026-08-08. Each records its commands, measured bundle sizes, confirmed
+defects, and the boundary between static findings and browser testing still required.
+
 - [Chrome DevTools Audit](knowledgebase/audit-chrome-devtools.md)
 - [Chrome Extension MV3 Audit](knowledgebase/audit-chrome-extension.md)
 - [CSS & HTML Audit](knowledgebase/audit-css-html.md)
@@ -72,6 +76,7 @@ The graph is refreshed incrementally and its current node, edge, community, cohe
 graphify extract . --mode deep
 graphify cluster-only .
 graphify label . --missing-only
+npm run graphify-filter-surprises
 ```
 
-The final labeling command preserves existing curated names and fills only missing or placeholder community labels.
+The labeling command preserves existing curated names and fills only missing or placeholder community labels. The final repository-local filter retains documentation in `graph.json` for queries, but omits nodes sourced from the local `docs/` folder when recreating **Surprising Connections**. Images, licenses, Graphify memory, same-community relationships, and other non-`docs/` sources remain eligible under Graphify's standard ranking rules. Graphify itself continues to omit routine imports, containment/method edges, same-file relationships, file hubs, and synthetic concept nodes.

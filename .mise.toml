@@ -49,9 +49,9 @@ run = [
 ]
 
 [tasks.graphify-update]
-description = "Update AST Knowledge Graph"
+description = "Update the knowledge graph and omit docs/ from surprise ranking"
 env = { UV_CACHE_DIR = "{{config_root}}/.cache/uv", UV_TOOL_DIR = "{{config_root}}/.cache/uv/tools" }
-run = "command -v uvx >/dev/null 2>&1 && uvx --from \"graphifyy[gemini,mcp]\" graphify update . || (command -v pipx >/dev/null 2>&1 && pipx run --spec \"graphifyy[gemini,mcp]\" graphify update . || graphify update .)"
+run = "(command -v uvx >/dev/null 2>&1 && uvx --from \"graphifyy[gemini,mcp]\" graphify update . || (command -v pipx >/dev/null 2>&1 && pipx run --spec \"graphifyy[gemini,mcp]\" graphify update . || graphify update .)) && npm run graphify-filter-surprises"
 
 [tasks.outdated]
 description = "Check for package updates with npm-check-updates"

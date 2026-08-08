@@ -111,6 +111,9 @@ Before modifying codebase logic, query the knowledge graph to understand symbol 
 
   # Preserve curated labels and fill only missing community names
   uvx --from "graphifyy[gemini,mcp]" graphify label . --missing-only
+
+  # Keep docs queryable while omitting local docs from surprise ranking
+  npm run graphify-filter-surprises
   ```
 
 ### Interpreting Graph Results
@@ -122,6 +125,8 @@ Graphify combines deterministic source extraction with model-assisted semantic e
 - A dropped hyperedge means its referenced node IDs did not resolve in the built graph. The underlying concepts or source files may still be present under different canonical IDs.
 - Prefer source locations and deterministic call/import edges when graph output conflicts with implementation details.
 - Review extraction, graph-health, deduplication, and missing-node warnings before treating an update as complete.
+- After any command that regenerates `GRAPH_REPORT.md`, run `npm run graphify-filter-surprises`. The standard `npm run graphify-update` and `mise run graphify-update` tasks do this automatically.
+- Interpret the filtered **Surprising Connections** section as exploration, not a defect verdict. The repository adds only the local `docs/` exclusion; Graphify's normal candidate and ranking rules remain in effect.
 - Keep generated metrics in [`GRAPH_REPORT.md`](../../graphify-out/GRAPH_REPORT.md) instead of copying them into long-lived documentation where they can become stale.
 
 ---

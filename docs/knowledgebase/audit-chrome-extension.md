@@ -1,301 +1,155 @@
 # Chrome Extension MV3 Audit
 
-**Source Files**: `src/chrome/manifest.json`, `src/js/index.js`, `src/js/devtools.js`
+**Verified**: 2026-08-08 against all three manifests, generated production assets,
+and Chrome-extension API call sites.
 
----
+## Architecture
 
-## 1. Extension Architecture Overview
+The extension uses a valid DevTools-only MV3 topology with no service worker:
 
-FoE-Info-Extension uses an **unusual but valid MV3 architecture** with no background service worker:
-
-```
-manifest.json
-├── action.default_popup → popup.html (action button in toolbar)
-├── devtools_page → devtools.html → devtools.js → panel.html
-│   └── browser.devtools.panels.create() spawns the actual panel
-├── options_ui.page → options.html
-├── externally_connectable → https://*.forgeofempires.com/game/*
-└── (no background) ← No service worker
+```text
+action popup ───────────────► popup.html / popup.js
+devtools_page ─► devtools.js ─► panel.html / app.js
+options_ui ─────────────────► options.html / options.js
 ```
 
-**Why no background service worker works here**: The extension's logic all runs inside the DevTools panel. The DevTools panel is an extension page that persists as long as DevTools is open — it doesn't have the service worker's 30-second idle shutdown. This is an architecturally correct choice for a DevTools extension.
+`devtools.js` correctly creates `panel.html` using a path relative to the extension
+root. The panel exists only while DevTools is open and is destroyed when DevTools
+closes. A service worker is unnecessary for the current network-inspection feature,
+but installation/update-only work cannot reliably live in a panel that is normally
+closed when those events occur.
 
----
+All manifest icon references exist and match their declared pixel dimensions. The
+production build populates the blank source `name`, `short_name`, and `version` fields.
 
-## 2. Manifest Fields Audit
+## Confirmed findings
 
-| Field                    | Value                                           | Status | Notes                                                         |
-| ------------------------ | ----------------------------------------------- | ------ | ------------------------------------------------------------- |
-| `manifest_version`       | 3                                               | ✅     | Correct — MV3                                                 |
-| `minimum_chrome_version` | `"88.0"`                                        | ⚠️     | Chrome 88 = first MV3, but many MV3 features stabilized later |
-| `name`                   | `""`                                            | ✅     | Populated at build time by `WebpackExtensionManifestPlugin`   |
-| `version`                | `""`                                            | ✅     | Populated at build time from `package.json`                   |
-| `description`            | `"Essential Info for Forge of Empires addicts"` | ✅     | Clear, concise                                                |
-| `homepage_url`           | Set                                             | ✅     | Valid                                                         |
-| `externally_connectable` | `["https://*.forgeofempires.com/game/*"]`       | ⚠️     | See §6                                                        |
-| `devtools_page`          | `"devtools.html"`                               | ✅     | Correct DevTools panel registration                           |
-| `options_ui.open_in_tab` | `false`                                         | ✅     | Opens inline in settings (preferred)                          |
+### P0: the `webRequest` listener is observational, not modifying
 
-### `minimum_chrome_version` Assessment
+`index.js` registers `onBeforeSendHeaders` with only `requestHeaders` and returns a
+modified header array. Without the blocking mode, Chrome ignores that return value, so
+the intended removal of the extension `Origin` header does not occur.
 
-`"88.0"` is technically correct for MV3, but the extension uses APIs that were stabilized in later versions:
+Do not fix this by merely adding `blocking`: in MV3, `webRequestBlocking` is generally
+reserved for policy-installed extensions. First confirm whether stripping `Origin` is
+actually required. If it is, implement and test a narrowly scoped
+`declarativeNetRequest` `modifyHeaders` rule; otherwise remove the ineffective listener
+and reassess whether the `webRequest` permission is needed at all. See Chrome's
+[webRequest](https://developer.chrome.com/docs/extensions/reference/api/webRequest)
+and
+[declarativeNetRequest](https://developer.chrome.com/docs/extensions/reference/api/declarativeNetRequest)
+documentation.
 
-| API Used                                     | Stable Chrome Version     |
-| -------------------------------------------- | ------------------------- |
-| `browser.devtools.network.onRequestFinished` | Chrome 18+ (stable in 88) |
-| `webextension-polyfill`                      | Chrome 88+                |
-| `chrome.webRequest.onBeforeSendHeaders`      | Chrome 88+                |
-| `Clipboard API` (if adopted)                 | Chrome 66+                |
+### P0: required permissions are requested again at runtime
 
-**Recommendation**: Keep at `"88.0"` — no compelling reason to bump unless specific APIs require higher versions.
+`storage` and `clipboardWrite` are declared in `permissions`, not
+`optional_permissions`, yet the panel/options code calls `browser.permissions.request`
+for them. Required permissions are granted at install time; runtime requests are for
+optional permissions and should be initiated by a user gesture.
 
----
+Remove these request flows and use the APIs directly with normal error handling. If a
+permission becomes optional, move it to `optional_permissions` and keep the request
+inside a clear user action. See Chrome's
+[Permissions API](https://developer.chrome.com/docs/extensions/reference/api/permissions).
 
-## 3. Permissions Audit
+### P0: externally sourced text reaches privileged extension HTML
 
-### 3.1 Permissions Table
+Game payloads and a Google endpoint response are interpolated into `innerHTML`; the
+fallback at `fn/post.js:348` assigns the raw response. HTTPS and CSP do not make remote
+text safe HTML. Render untrusted values with `textContent` or a reviewed sanitizer and
+keep extension-page DOM construction explicit.
 
-| Permission         | Used   | Necessity            | Risk Level | Notes                                                            |
-| ------------------ | ------ | -------------------- | ---------- | ---------------------------------------------------------------- |
-| `storage`          | ✅     | Required             | Low        | All user settings and cached data                                |
-| `unlimitedStorage` | Verify | Assess               | Low        | `CityEntityDefs` + `ResourceDefs` may approach default 5MB limit |
-| `clipboardWrite`   | ✅     | Required (currently) | Low        | For `document.execCommand('copy')`                               |
-| `webRequest`       | ✅     | Required             | **HIGH**   | See critical analysis §4                                         |
+### P1: host access is broader or malformed
 
-### 3.2 `unlimitedStorage` Assessment
+| Pattern                                 | Finding                                                                      |
+| --------------------------------------- | ---------------------------------------------------------------------------- |
+| `https://*.forgeofempires.com/game/*`   | Core interception scope; verify every observed endpoint stays under `/game/` |
+| `https://*.google.com/*`                | Far broader than user-configured Apps Script posting requires                |
+| `https://*.googleusercontent.com/`      | Missing the required `/*` path form for a match pattern                      |
+| `https://discordapp.com/api/webhooks/*` | Legacy duplicate; verify and remove if `discord.com` covers supported URLs   |
+| `https://discord.com/api/webhooks/*`    | Correctly scoped to webhook paths                                            |
+| `https://*.innogamescdn.com/*`          | Used for metadata requests; retain only if current traffic verifies it       |
 
-The extension saves `CityEntityDefs` (full metadata for all city entities) and `ResourceDefs` (all game resources) to local storage. Depending on game content, these could approach Chrome's default 5MB storage limit. `unlimitedStorage` is justified but should be documented for Chrome Web Store reviewers.
+Replace the broad Google pattern with the exact tested Apps Script/content hosts.
+Host permissions should match validated URL parsing in `post.js`; a manifest allowlist
+is not a substitute for runtime validation.
 
-### 3.3 `clipboardWrite` Assessment
+### P1: `externally_connectable` has no consumer
 
-Currently required for `document.execCommand('copy')` which is deprecated. If migrated to the modern Clipboard API (`navigator.clipboard.writeText()`):
+The manifests allow Forge of Empires pages to connect externally, but there is no
+`runtime.onMessageExternal` or `runtime.onConnectExternal` listener. Remove the field
+unless external messaging is intentionally added with sender/origin validation.
 
-- In **extension contexts** (DevTools panel), `navigator.clipboard` works **without** any permission declaration
-- Chrome extensions running in extension page contexts have automatic clipboard access when the document is focused
-- **Recommendation**: Migrate to Clipboard API → remove `clipboardWrite` permission
+### P1: clipboard permission remains in active use
 
----
+The source has 13 active `document.execCommand('copy')` calls plus two Clipboard API
+paths that fall back to `execCommand`. Keep `clipboardWrite` until all copy flows are
+migrated and tested in the DevTools panel. Then verify focused extension-page behavior
+before removing the permission.
 
-## 4. `webRequest` — Critical MV3 Compliance Analysis
+### P1: install/update listeners live in the panel entry
 
-**Severity**: CRITICAL
+`index.js` registers `runtime.onInstalled`, `runtime.onUpdateAvailable`, and immediately
+calls `runtime.requestUpdateCheck()`. The panel is not normally open at installation,
+and forcing update checks every time a panel starts is noisy and can be throttled. Move
+true lifecycle work to a service worker if it is required; otherwise remove these
+listeners/checks and rely on Chrome's update lifecycle.
 
-### 4.1 Current Usage
+### P2: permission necessity needs measurement
 
-```javascript
-// src/js/index.js:637
-chrome.webRequest.onBeforeSendHeaders.addListener(
-  (details) => {
-    return {
-      requestHeaders: details.requestHeaders.filter((x) => !originWithId(x)), // ← RETURNS modified headers
-    };
-  },
-  { urls: ['https://*.innogamescdn.com/*'] },
-  ['requestHeaders'], // ← Reads request headers
-);
+Chrome storage local has a 10 MB limit in current Chrome versions unless
+`unlimitedStorage` applies. The extension stores large metadata objects, but the docs
+do not record measured peak usage. Capture `storage.local.getBytesInUse(null)` under a
+representative account before declaring `unlimitedStorage` permanently necessary.
+
+## CSP and remote resources
+
+The extension-page CSP retains the MV3 minimum `script-src 'self'; object-src 'self'`
+and no inline scripts or event-handler attributes were found. Inline CSS and two
+remote Google Fonts stylesheets remain; they are not remote executable JavaScript, but
+they create privacy, offline, and rendering dependencies. Bundle icons locally and
+move inline styles into compiled Sass.
+
+`browser-polyfill.js` is exposed as a web-accessible resource to Forge of Empires pages,
+but no page injection/reference was found in the audited source. Remove that exposure
+if runtime testing confirms it is unused.
+
+## Security and data handling
+
+- User-configured Discord webhook URLs contain credentials and are stored in
+  `storage.local`; do not log or export them.
+- `storage.set` currently logs every stored key/value through `console.log`.
+- Posting code does not consistently validate destination hosts, HTTP status, network
+  errors, or timeouts.
+- The manifest declares no analytics and no hardcoded live credentials were found.
+- `npm audit --audit-level=high` reported zero known package vulnerabilities on the
+  verification date; this does not cover application logic.
+
+## Prioritized remediation
+
+| Priority | Action                                                                          |
+| -------- | ------------------------------------------------------------------------------- |
+| P0       | Remove or replace the ineffective webRequest header mutation with tested DNR    |
+| P0       | Remove runtime requests for already-required permissions                        |
+| P0       | Stop rendering remote/game values as unsanitized extension HTML                 |
+| P1       | Narrow/fix host patterns and validate posting destinations                      |
+| P1       | Remove unused `externally_connectable` and web-accessible resource declarations |
+| P1       | Move or remove lifecycle/update logic currently registered in the panel         |
+| P1       | Complete Clipboard API migration before revisiting `clipboardWrite`             |
+| P2       | Measure storage use before keeping `unlimitedStorage`                           |
+| P2       | Raise/document the browser support floor and test Chrome plus Firefox manifests |
+
+## Verification record
+
+```text
+Manifest V3                         PASS
+Production manifest generation     PASS
+Referenced icon existence/sizing   PASS
+Production build                   PASS with performance warnings
+npm dependency audit               PASS: 0 known vulnerabilities
+Live browser permission/CSP tests  NOT RUN
 ```
 
-The listener **returns a modified `requestHeaders` array** — this is **blocking/modifying mode**.
-
-### 4.2 MV3 Blocking Restrictions
-
-| Context                         | Blocking webRequest       | Observer-only webRequest |
-| ------------------------------- | ------------------------- | ------------------------ |
-| Background Service Worker (MV3) | ❌ Removed                | ✅ Allowed               |
-| Extension Page (MV3)            | ⚠️ See below              | ✅ Allowed               |
-| DevTools Panel (MV3)            | ⚠️ Same as extension page | ✅ Allowed               |
-
-**Key finding**: The Chrome documentation states that in MV3, `webRequest` can **observe** requests in extension pages, but **header modification** (blocking mode — returning `{requestHeaders: ...}`) is restricted to the background service worker context AND requires the `blocking` option in the filter.
-
-Looking at the current code:
-
-- The filter is `['requestHeaders']` — NOT `['requestHeaders', 'blocking']`
-- Without `'blocking'` in the filter array, the return value is **ignored**
-- This means the Origin header stripping **may not be working** in the current implementation
-
-### 4.3 Impact Assessment
-
-**If Origin header stripping is non-functional**, CDN requests to `*.innogamescdn.com` will include the extension Origin header. Innogames CDN servers may:
-
-1. Ignore it (most likely — CDN servers are typically permissive)
-2. Block the request (unlikely but possible for metadata fetches)
-3. Return CORS-error (possible if CDN has strict CORS policy)
-
-The extension has been working for years suggesting option 1 (CDN ignores the header), but the intent of the code (privacy: hiding the extension origin) is not being achieved.
-
-### 4.4 Recommended Fix
-
-**Option A**: Add `'blocking'` to the filter and verify it works from DevTools panel context:
-
-```javascript
-chrome.webRequest.onBeforeSendHeaders.addListener(
-  (details) => ({
-    requestHeaders: details.requestHeaders.filter((x) => !originWithId(x)),
-  }),
-  { urls: ['https://*.innogamescdn.com/*'] },
-  ['requestHeaders', 'blocking'], // ← Add 'blocking'
-);
-```
-
-Note: This may require the `webRequestBlocking` permission in some Chrome versions.
-
-**Option B**: Migrate to `declarativeNetRequest` (the MV3-compliant approach):
-
-```json
-// In manifest.json:
-"permissions": ["declarativeNetRequest"],
-"declarative_net_request": {
-    "rule_resources": [{
-        "id": "strip_origin",
-        "enabled": true,
-        "path": "rules/strip_origin.json"
-    }]
-}
-```
-
-```json
-// rules/strip_origin.json:
-[
-  {
-    "id": 1,
-    "priority": 1,
-    "action": {
-      "type": "modifyHeaders",
-      "requestHeaders": [{ "header": "Origin", "operation": "remove" }]
-    },
-    "condition": {
-      "urlFilter": "*.innogamescdn.com",
-      "resourceTypes": ["xmlhttprequest", "other"]
-    }
-  }
-]
-```
-
----
-
-## 5. `host_permissions` Audit
-
-| Host Pattern                            | Purpose                         | Issue                                                                      | Recommendation                                                                |
-| --------------------------------------- | ------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `https://*.forgeofempires.com/game/*`   | Game API interception           | Path `/game/*` may miss some API endpoints                                 | Verify completeness                                                           |
-| `https://*.google.com/*`                | Google Sheets posting           | **Very broad** — covers all Google services including gmail.com, drive.com | Narrow to `https://script.google.com/*` and `https://sheets.googleapis.com/*` |
-| `https://*.googleusercontent.com/`      | Google Content URLs             | **Missing trailing `/*`** — pattern won't match any paths                  | Fix to `https://*.googleusercontent.com/*`                                    |
-| `https://discordapp.com/api/webhooks/*` | Discord webhook                 | Old domain — Discord migrated to discord.com years ago                     | Remove if discord.com always succeeds                                         |
-| `https://discord.com/api/webhooks/*`    | Discord webhook                 | ✅ Correct                                                                 | Keep                                                                          |
-| `https://*.innogamescdn.com/*`          | CDN metadata + header stripping | ✅ Required                                                                | Keep                                                                          |
-
-### Google Sheets URL Pattern Fix
-
-The current `*.google.com/*` pattern is flagged by Chrome Web Store reviewers as unnecessarily broad. The extension only posts to Google Sheets Web App URLs (format: `https://script.google.com/macros/s/SCRIPT_ID/exec`).
-
-```json
-// Before:
-"https://*.google.com/*",
-"https://*.googleusercontent.com/",
-
-// After:
-"https://script.google.com/macros/s/*/exec",
-"https://*.googleusercontent.com/*"
-```
-
----
-
-## 6. `externally_connectable` Analysis
-
-```json
-"externally_connectable": {
-    "matches": ["https://*.forgeofempires.com/game/*"]
-}
-```
-
-**What this enables**: JavaScript running on `*.forgeofempires.com/game/*` pages can call `chrome.runtime.connect()` or `chrome.runtime.sendMessage()` to communicate with this extension.
-
-**What's missing**: No `runtime.onMessageExternal` or `runtime.onConnectExternal` listener is defined anywhere in the codebase. The extension declares it can receive external connections but never handles them.
-
-**Risk**: A compromised or malicious page on `*.forgeofempires.com` could attempt to send messages to the extension. Without a handler, messages are silently dropped — no data exposure risk currently. However, the `externally_connectable` declaration creates a surface that should either be:
-
-1. Used intentionally (with a message handler)
-2. Removed if unused
-
-**Recommendation**: Remove `externally_connectable` from manifest.json if no external messaging is required.
-
----
-
-## 7. DevTools Panel Architecture Assessment
-
-The `devtools_page` → `devtools.js` → `panels.create()` → `panel.html` chain is **correct MV3 implementation**:
-
-```javascript
-// src/js/devtools.js (correct):
-browser.devtools.panels.create(EXT_NAME, null, 'panel.html').then((panel) => {
-  // Panel created
-});
-```
-
-**DevTools-specific behaviors**:
-
-- Panel has access to `chrome.devtools.*` APIs only from the devtools page context
-- `browser.devtools.network.onRequestFinished` fires in the panel's JS context
-- Panel process is separate from the inspected page's process
-- Panel persists through page navigations (correct behavior for FoE)
-
-**No issues** with the DevTools panel architecture.
-
----
-
-## 8. Content Security Policy
-
-```json
-"content_security_policy": {
-    "extension_pages": "script-src 'self' ; object-src 'self'"
-}
-```
-
-**Assessment**: ✅ Correct and minimal.
-
-- No `unsafe-eval` — prevents code injection
-- No `unsafe-inline` — prevents inline script execution
-- `object-src 'self'` — prevents plugin embedding
-
-**Potential addition**: If bundled Material Icons fonts are added locally, no CSP changes needed. If Google Fonts CDN is retained, the stylesheet link (not a script) is not governed by `script-src` — no CSP change required.
-
----
-
-## 9. Security Analysis
-
-| Concern                                                  | Location            | Severity | Notes                                                                                                                                  |
-| -------------------------------------------------------- | ------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `innerHTML` injection without sanitization               | All msg services    | MEDIUM   | Game API responses written directly to innerHTML. A compromised FoE API could inject HTML. Mitigation: game API is HTTPS + same origin |
-| No input validation on `postData` URLs                   | `src/js/fn/post.js` | LOW      | Discord/Sheets URLs from user-configured options                                                                                       |
-| `externally_connectable` without handler                 | `manifest.json`     | LOW      | Silent message drop — no data exposure                                                                                                 |
-| `web_accessible_resources` exposes `browser-polyfill.js` | `manifest.json`     | INFO     | Low risk — polyfill is a public library                                                                                                |
-| Origin header stripping may not work                     | `src/js/index.js`   | MEDIUM   | See §4 — may not be achieving intended privacy goal                                                                                    |
-
----
-
-## 10. Chrome Web Store Compliance
-
-For Web Store submission, the following justifications will be required:
-
-| Permission               | Justification Text (draft)                                                                                                                                      |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `webRequest`             | Required to strip the extension Origin header from CDN metadata requests to innogamescdn.com to prevent extension detection by the game server.                 |
-| `unlimitedStorage`       | The extension caches city entity metadata (CityEntityDefs) and resource definitions (ResourceDefs) that together can exceed Chrome's default 5MB storage limit. |
-| `https://*.google.com/*` | **Change to narrower pattern first** — then justify: Used to post guild statistics to user-configured Google Sheets Web App URL.                                |
-| `clipboardWrite`         | Required for the copy-to-clipboard functionality in donation calculator and social list export features.                                                        |
-
----
-
-## 11. Recommended Improvements (Prioritized)
-
-| Priority     | Issue                                                                                | Action                                                           |
-| ------------ | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| **CRITICAL** | `webRequest` header modification may be non-functional (missing `'blocking'` filter) | Add `'blocking'` to filter or migrate to `declarativeNetRequest` |
-| **HIGH**     | `https://*.google.com/*` too broad                                                   | Narrow to `https://script.google.com/macros/s/*/exec`            |
-| **HIGH**     | `https://*.googleusercontent.com/` missing `/*`                                      | Fix to `https://*.googleusercontent.com/*`                       |
-| **HIGH**     | `externally_connectable` declared but unused                                         | Remove from manifest if no external messaging needed             |
-| **HIGH**     | `clipboardWrite` may become unnecessary                                              | Migrate to Clipboard API → remove permission                     |
-| **MEDIUM**   | `innerHTML` injection without sanitization                                           | Add DOMPurify or manual sanitization layer for API responses     |
-| **MEDIUM**   | `https://discordapp.com` (old domain)                                                | Remove if discord.com always works                               |
-| **LOW**      | `minimum_chrome_version: "88"`                                                       | Bump to `"102"` where MV3 APIs were more fully stabilized        |
-| **LOW**      | `webRequest` permission justification                                                | Prepare Web Store reviewer justification text                    |
+This is a static/build audit. Reload behavior, DevTools network interception,
+declarative header modification, clipboard permissions, and store-review behavior
+must be verified in Chrome before closing those findings.

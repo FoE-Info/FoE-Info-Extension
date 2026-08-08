@@ -6,14 +6,14 @@
 
 ## 1. Executive Summary
 
-Graphify static analysis of the FoE-Info-Extension codebase detected **14 distinct circular dependency cycles** (20 total 3-file cycle tuples) in the ES module dependency graph. All cycles originate from a single structural defect: **The Triangular Dependency Pattern**, where UI helper modules (`src/js/fn/*.js`) import state and DOM handles from the application root (`src/js/index.js`), which in turn imports the message services (`src/js/msg/*.js`) that import those same UI helpers.
+The latest verified Graphify snapshot lists **20 three-file cycle paths**, grouped below into 14 recurring import patterns. They share one structural defect: **The Triangular Dependency Pattern**, where UI helper modules (`src/js/fn/*.js`) import state and DOM handles from the application root (`src/js/index.js`), which in turn imports the message services (`src/js/msg/*.js`) that import those same UI helpers.
 
-While Webpack 5's runtime module resolution tolerates these cycles (the extension builds and runs correctly), they impose significant maintenance costs:
+Webpack 5 can bundle these cycles and the production build currently succeeds, but they impose significant maintenance costs and runtime initialization risk:
 
 - **Tight coupling** between the UI helper layer and application state prevents independent testing or reuse of either layer.
 - **Difficulty tracing data flow** — any change to a state variable in `index.js` can have unpredictable knock-on effects across multiple cycle participants.
 - **Impediment to refactoring** — extracting any single service or utility requires untangling all cycles it participates in simultaneously.
-- **Graphify cohesion score** for the `index.js` community: **0.07** (maximum possible: 1.0 — extremely low cohesion, indicating high inter-domain coupling).
+- **Low architectural cohesion** around `index.js`, which mixes request routing, global state, DOM ownership, and debug behavior.
 
 The recommended fix is a phased state extraction refactoring, outlined in [Section 5](#5-recommended-refactoring-strategies).
 
@@ -21,28 +21,19 @@ The recommended fix is a phased state extraction refactoring, outlined in [Secti
 
 ## 2. Knowledge Graph Metrics & God Node Analysis
 
-Graphify processed the full codebase and produced the following metrics:
-
-| Metric                            | Value              |
-| --------------------------------- | ------------------ |
-| **Total Nodes**                   | 435                |
-| **Total Edges**                   | 718                |
-| **Communities Detected**          | 23                 |
-| **Circular Dependency Cycles**    | 14 distinct cycles |
-| **3-File Cycle Tuples**           | 20                 |
-| **`index.js` Community Cohesion** | 0.07 (very low)    |
+Graph totals change whenever source code or documentation is re-indexed. Use [`graphify-out/GRAPH_REPORT.md`](../../graphify-out/GRAPH_REPORT.md) for the current node, edge, community, and centrality values. The stable architectural signal is the concentration of responsibilities in the following hubs.
 
 ### 2.1 God Node Betweenness Table
 
 God nodes are modules or functions with disproportionately high edge counts or betweenness centrality — they represent architectural bottlenecks where changes have the widest blast radius.
 
-| God Node                     | Edge Count       | Betweenness | Location                              | Structural Impact                                                                                                                                                                                                                                  |
-| ---------------------------- | ---------------- | ----------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `handleRequestFinished()`    | **47 edges**     | 0.009       | `src/js/index.js`                     | **Primary bottleneck.** Single monolithic network request handler dispatching to all 11 message services and multiple inline UI state functions. Any new API route requires modifying this function directly.                                      |
-| `src/js/index.js` (module)   | **90 out-edges** | High        | `src/js/index.js`                     | **Monolithic root hub.** Holds all global state variables (`MyInfo`, `GameOrigin`, `CityEntityDefs`, etc.), all DOM node handles (`donationDIV`, `incidents`, `alerts`, `debug`), and all network listeners. Imported by every service and helper. |
-| `showGreatBuldingDonation()` | **15 edges**     | Medium      | `src/js/msg/GreatBuildingsService.js` | Central rendering pipeline for GB donation calculations. Imports from 4 other modules.                                                                                                                                                             |
-| `startupService()`           | **14 edges**     | Medium      | `src/js/msg/StartupService.js`        | Primary city initialization — reads `CityEntityDefs`, `ResourceDefs`, `MilitaryDefs`, and writes to `#citystats`.                                                                                                                                  |
-| `checkDebug()`               | **10 edges**     | Medium      | `src/js/index.js`                     | Debug logging utility invoked across `fn/collapse.js`, `fn/helper.js`, and multiple `msg/*.js` services. Being in `index.js` creates cycles in every importer.                                                                                     |
+| God Node                     | Location                              | Structural Impact                                                                                                                                                                                      |
+| ---------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `handleRequestFinished()`    | `src/js/index.js`                     | **Primary bottleneck.** Single monolithic network request handler dispatching to message services and multiple inline UI state functions. Any new API route requires modifying this function directly. |
+| `src/js/index.js` (module)   | `src/js/index.js`                     | **Monolithic root hub.** Holds global state variables, DOM node handles, and network listeners. It is imported by services and helpers that the module itself imports.                                 |
+| `showGreatBuldingDonation()` | `src/js/msg/GreatBuildingsService.js` | Central rendering pipeline for Great Building donation calculations. Imports from several other modules.                                                                                               |
+| `startupService()`           | `src/js/msg/StartupService.js`        | Primary city initialization path — reads definition data and writes the resulting city statistics.                                                                                                     |
+| `checkDebug()`               | `src/js/index.js`                     | Debug logging utility invoked across helpers and message services. Keeping it in `index.js` creates cycles in its importers.                                                                           |
 
 ---
 

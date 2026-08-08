@@ -14,8 +14,8 @@ FoE-Info-Extension runs exclusively in the **Chrome DevTools Panel** context —
 | Persistence model    | Panel lives as long as DevTools is open      | No service worker startup latency                   |
 | DOM rendering target | `panel.html` (its own renderer)              | Isolated from game page; no shared DOM              |
 | Network access       | `browser.devtools.network.onRequestFinished` | All traffic captured synchronously in panel process |
-| JS bundle size       | 359 KiB (app.js)                             | Loaded once at panel open                           |
-| CSS bundle size      | 518 KiB (app.css)                            | Loaded once at panel open                           |
+| JS bundle size       | 141 KiB app + 218 KiB shared vendors         | Measured production output on 2026-08-08            |
+| CSS bundle size      | 232 KiB (app.css)                            | Measured production output on 2026-08-08            |
 
 ---
 
@@ -46,32 +46,29 @@ request.getContent().then(async ([body, mimeType]) => {
 - No `requestAnimationFrame()` batching of DOM updates
 - No `DocumentFragment` to batch table insertions
 
-**Recommendation**: Wrap DOM mutations in `requestAnimationFrame()` or `queueMicrotask()` to defer layout thrashing.
+**Recommendation**: Batch DOM reads and writes, render one subtree per update, and
+slice any measured task over 50 ms with `scheduler.yield()` plus a `setTimeout`
+fallback. A microtask does not yield to rendering.
 
 ---
 
 ### 2.2 Bootstrap 5 Full Bundle — CSS Parse Cost
 
-**File**: `src/css/main.scss` → app.css (518 KiB)  
+**File**: `src/css/main.scss` → app.css (232 KiB measured on 2026-08-08)
 **Risk**: HIGH (initial load only)
 
 The full Bootstrap 5 CSS bundle is parsed on panel open. In Chrome DevTools panel context, CSS parsing is synchronous and blocks the initial render.
 
-**Key issue**: `main.scss` contains:
+`main.scss` currently contains:
 
 ```scss
-@import 'bootstrap/scss/bootstrap'; // Full Bootstrap
-@import 'custom.scss';
-
-.bootstrap-styles {
-  @import 'bootstrap/scss/bootstrap'; // DUPLICATE — imported twice
-  @import 'custom.scss';
-}
+@use 'bootstrap/scss/bootstrap' as *;
+@use 'custom.scss';
 ```
 
-This causes Bootstrap CSS to be generated **twice** in the output. The `.bootstrap-styles` wrapper has no consumers in the current codebase and should be removed.
-
-**Estimated savings**: ~50% CSS reduction (~260 KiB) by removing the duplicate import.
+The previously documented `.bootstrap-styles` duplicate no longer exists. Bootstrap is
+still the dominant cost; reduce it with component-level Sass imports and measure the
+result rather than assuming a fixed percentage saving.
 
 ---
 
@@ -97,7 +94,7 @@ $('body').i18n(); // Triggers full DOM traversal for i18n replacement
 
 ### 2.4 jQuery `.i18n()` Call Pattern — Full Document Traversal
 
-**Occurrences**: 14 calls across the codebase — all target `$('body')`.
+**Occurrences**: 18 active full-body calls across the codebase, plus two scoped calls.
 
 ```javascript
 // Every service does this after DOM update:
@@ -241,28 +238,28 @@ To profile the live extension:
 
 ## 5. Performance Budget Recommendations
 
-| Metric                   | Current            | Target        | Action                            |
-| ------------------------ | ------------------ | ------------- | --------------------------------- |
-| JS bundle (app.js)       | 359 KiB            | < 200 KiB     | splitChunks, jQuery removal       |
-| CSS bundle (app.css)     | 518 KiB            | < 100 KiB     | PurgeCSS                          |
-| CSS duplicate            | ~260 KiB redundant | 0             | Remove `.bootstrap-styles` import |
-| External font requests   | 2 CDN requests     | 0             | Bundle locally                    |
-| Storage reads on init    | N sequential reads | 1 batch       | `storage.get(null)`               |
-| `$('body').i18n()` scope | Full document      | Per container | Scoped i18n calls                 |
+| Metric                    | Current        | Target          | Action                                |
+| ------------------------- | -------------- | --------------- | ------------------------------------- |
+| JS bundle (app + vendors) | 359 KiB        | < 300 KiB       | entry-aware splitting and measurement |
+| CSS bundle (app.css)      | 232 KiB        | < 150 KiB       | component-level Bootstrap imports     |
+| CSS framework scope       | Full Bootstrap | Used components | Component-level Sass imports          |
+| External font requests    | 2 CDN requests | 0               | Bundle locally                        |
+| Storage reads on init     | 1 batch        | 1 batch         | Keep `storage.get(null)`              |
+| `$('body').i18n()` scope  | Full document  | Per container   | Scoped i18n calls                     |
 
 ---
 
 ## 6. Critical Findings Summary
 
-| #   | Finding                                                                  | Severity | File                    | Fix                                      |
-| --- | ------------------------------------------------------------------------ | -------- | ----------------------- | ---------------------------------------- |
-| 1   | Bootstrap CSS imported twice in main.scss                                | HIGH     | `src/css/main.scss`     | Remove `.bootstrap-styles` wrapper block |
-| 2   | `$('body').i18n()` full doc traversal on every data update               | HIGH     | All msg services        | Scope to `$(container).i18n()`           |
-| 3   | External CDN fonts block panel initial render                            | MEDIUM   | `src/chrome/panel.html` | Bundle fonts locally                     |
-| 4   | ResizeObserver triggers full table re-render on every resize             | MEDIUM   | `src/js/fn/helper.js`   | Debounce callback (100ms)                |
-| 5   | Bootstrap Popovers not disposed before `incidents.innerHTML` replacement | MEDIUM   | `src/js/fn/helper.js`   | Call `.dispose()` before replacement     |
-| 6   | Sequential storage reads at startup                                      | LOW      | `src/js/index.js`       | Batch with `storage.get(null)`           |
-| 7   | No `requestAnimationFrame` batching of DOM updates                       | LOW      | `src/js/index.js`       | Batch DOM mutations per frame            |
+| #   | Finding                                                                  | Severity | File                    | Fix                                   |
+| --- | ------------------------------------------------------------------------ | -------- | ----------------------- | ------------------------------------- |
+| 1   | Full Bootstrap CSS compiled for the panel                                | HIGH     | `src/css/main.scss`     | Import measured component subset      |
+| 2   | `$('body').i18n()` full doc traversal on every data update               | HIGH     | All msg services        | Scope to `$(container).i18n()`        |
+| 3   | External CDN fonts block panel initial render                            | MEDIUM   | `src/chrome/panel.html` | Bundle fonts locally                  |
+| 4   | Nine ResizeObservers are created without disconnect/unobserve            | MEDIUM   | Dynamic render paths    | Own, debounce, and dispose observers  |
+| 5   | Bootstrap Popovers not disposed before `incidents.innerHTML` replacement | MEDIUM   | `src/js/fn/helper.js`   | Call `.dispose()` before replacement  |
+| 6   | Dynamic observers can repeatedly write stored panel sizes                | LOW      | Resize callbacks        | Deduplicate/debounce persisted values |
+| 7   | No `requestAnimationFrame` batching of DOM updates                       | LOW      | `src/js/index.js`       | Batch DOM mutations per frame         |
 
 ---
 
