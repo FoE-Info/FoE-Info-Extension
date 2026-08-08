@@ -5,6 +5,7 @@ stuff
 .env*
 .envrc
 .direnv/
+.cache/
 graphify-out/
 .venv/
 
@@ -13,4 +14,3 @@ graphify-out/
 .mise.local.toml
 .vscode/settings.json
 requirements.txt
-

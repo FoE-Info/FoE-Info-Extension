@@ -10,20 +10,24 @@ Comprehensive cheatsheet, operational reference, and workflow guide for AI Codin
 
 The local repository environment is managed cross-platform via `mise` and `direnv`:
 
-- **`.mise.toml`**: Configures required versions for `node` (v22.x) and `uv`.
-- **`.envrc`**: Enables `direnv` integration to auto-load `.env`.
-- **`.env`**: Sets project execution variables (`NODE_ENV`).
+- **`.mise.toml`**: Configures Node.js 22, Python 3.12, the latest `uv`, project-local executable paths, and `.env`/`.env.local` loading.
+- **`.envrc`**: Enables `direnv` integration where available.
+- **`.agents/env.sh`**: Resolves the repository root, activates `mise`/local executable paths, and loads `.env` followed by `.env.local` for non-interactive agent shells.
 
 ### Command Execution
 
-Always run task scripts via `mise` or standard `npm` invocations:
+Always run task scripts via `mise run <task>` or standard `npm run <task>` invocations:
 
 ```bash
+# Environment Setup
+mise run setup        # Installs toolchains via mise & dependencies via npm
+
 # Verification & Quality Checks
 npm run check         # Prettier formatting check
 npm run format        # Auto-format codebase
 npm run build         # Production Webpack compilation & ZIP packaging
 npm run dev           # Watch mode development build
+npm run graphify-update # AST knowledge graph synchronization via uvx
 ```
 
 ---
@@ -42,7 +46,7 @@ When operating within the Google Antigravity (AGY) SDK environment:
    - The Antigravity reactive wakeup system will automatically resume agent execution upon event completion or subagent response.
 3. **Sandbox Protocol**:
    - Run commands in Standard Sandbox mode first.
-   - Only use `BypassSandbox: true` when executing host system binaries or accessing non-sandboxed tools (e.g. `mise exec -- graphify ...`).
+   - Only use `BypassSandbox: true` when executing host system binaries or accessing non-sandboxed tools (e.g. `uvx --from "graphifyy[gemini,mcp]" graphify ...`).
 
 ### Workspace Customization Structure (`.agents/`)
 
@@ -77,9 +81,9 @@ The extension project connects to MCP servers configured in [`.agents/mcp_config
 
 ---
 
-## 4. Graphify AST Knowledge Graph Protocol
+## 4. Graphify Knowledge Graph Protocol
 
-The codebase maintains a persistent AST knowledge graph in [`graphify-out/`](../../graphify-out).
+The codebase maintains a persistent knowledge graph in [`graphify-out/`](../../graphify-out). Source code is extracted deterministically through AST analysis; changed documentation, papers, and images can add semantic nodes and inferred relationships.
 
 ### CLI & MCP Tools
 
@@ -94,11 +98,31 @@ Before modifying codebase logic, query the knowledge graph to understand symbol 
 - **CLI Commands**:
   ```bash
   # Query architecture or function relationships
-  mise exec -- graphify query "how does GreatBuildingsService process donations"
+  uvx --from "graphifyy[gemini,mcp]" graphify query "how does GreatBuildingsService process donations"
 
-  # Update AST graph after code modifications (AST-only, zero API cost)
-  mise exec -- graphify update .
+  # Incrementally update code changes through deterministic AST extraction
+  uvx --from "graphifyy[gemini,mcp]" graphify update .
+
+  # Incrementally extract semantic content with richer inferred relationships
+  uvx --from "graphifyy[gemini,mcp]" graphify extract . --mode deep
+
+  # Refresh communities, the report, and the interactive visualization
+  uvx --from "graphifyy[gemini,mcp]" graphify cluster-only .
+
+  # Preserve curated labels and fill only missing community names
+  uvx --from "graphifyy[gemini,mcp]" graphify label . --missing-only
   ```
+
+### Interpreting Graph Results
+
+Graphify combines deterministic source extraction with model-assisted semantic extraction. Use the graph as a navigation aid and verify architectural conclusions against source code:
+
+- Treat `INFERRED` edges as hypotheses until their source relationship is confirmed.
+- A file that produces no semantic nodes is not evidence that the file is irrelevant; Graphify keeps empty extractions eligible for later retries.
+- A dropped hyperedge means its referenced node IDs did not resolve in the built graph. The underlying concepts or source files may still be present under different canonical IDs.
+- Prefer source locations and deterministic call/import edges when graph output conflicts with implementation details.
+- Review extraction, graph-health, deduplication, and missing-node warnings before treating an update as complete.
+- Keep generated metrics in [`GRAPH_REPORT.md`](../../graphify-out/GRAPH_REPORT.md) instead of copying them into long-lived documentation where they can become stale.
 
 ---
 
@@ -119,7 +143,7 @@ Follow the strict branching lifecycle defined in [`git-workflow.md`](../../.agen
    ```
 4. **Graph Synchronization**:
    ```bash
-   mise exec -- graphify update .
+   uvx --from "graphifyy[gemini,mcp]" graphify update .
    ```
 5. **Merge & Branch Cleanup**:
    ```bash

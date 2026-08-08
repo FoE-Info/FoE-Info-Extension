@@ -58,8 +58,20 @@ Granular technical specifications, function-by-function manuals, agent workflow 
 
 ---
 
-## 3. Knowledge Graph & AST Analysis
+## 3. Knowledge Graph Analysis
 
-The repository maintains an automated AST knowledge graph in [`graphify-out/`](../graphify-out):
+The repository maintains an automated knowledge graph in [`graphify-out/`](../graphify-out). Source code is indexed deterministically through AST extraction, while documentation and other semantic content can contribute concepts and inferred relationships through Gemini.
 
 - **[GRAPH_REPORT.md](../graphify-out/GRAPH_REPORT.md)**: Visual breakdown of central god nodes, module communities, and cohesion scores.
+- **[graph.html](../graphify-out/graph.html)**: Interactive browser visualization for exploring nodes, relationships, and communities.
+- **[graph.json](../graphify-out/graph.json)**: Machine-readable graph data for queries and downstream analysis.
+
+The graph is refreshed incrementally and its current node, edge, community, cohesion, and token-cost metrics are recorded in [GRAPH_REPORT.md](../graphify-out/GRAPH_REPORT.md). After code-only changes, run `mise run graphify-update` (or `npm run graphify-update`). For semantic documentation updates with richer inferred relationships, run:
+
+```bash
+graphify extract . --mode deep
+graphify cluster-only .
+graphify label . --missing-only
+```
+
+The final labeling command preserves existing curated names and fills only missing or placeholder community labels.

@@ -10,8 +10,9 @@ This repository uses Webpack 5 with `webpack-merge` to compile JavaScript, Sass/
   - Run via `npm run dev` (watch mode) or `npm run build:dev` (single build).
   - Enables inline source maps, fast incremental compilation, and quieted SCSS deprecation warnings.
 - **Production / Webstore Build**: [`webpack.prod.js`](file:///var/home/kronikpillow/Projects/FoE-Info-Extension/webpack.prod.js)
-  - Run via `npm run build` or `npm run build:dev`.
+  - Run via `npm run build`, `npm run build-foe-info`, or their equivalent `mise` tasks.
   - Compiles optimized production bundle into `build/FoE-Info_WEBSTORE/` and creates extension ZIP packages via `zip-webpack-plugin`.
+  - Run `npm run analyze` or `mise run analyze` to generate `build/bundle-report.html` without opening a browser.
 
 ## Environment & Tool Execution
 

@@ -14,4 +14,4 @@ Standard workflow for creating release bundles for Chrome WebStore submission.
 
 3. **Verify Output Bundle**:
    - Production distribution files compiled in `build/FoE-Info_WEBSTORE/`.
-   - Release ZIP generated in `build/FoE-Info_WEBSTORE.zip`.
+   - Release ZIP generated as `build/FoE-Info_WEBSTORE_<version>_<YYYY-MM-DD>.zip`.

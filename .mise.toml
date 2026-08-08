@@ -27,6 +27,10 @@ description = "Build optimized production extension bundle"
 env = { NODE_ENV = "production" }
 run = "webpack --config webpack.prod.js"
 
+[tasks.build-foe-info]
+description = "Alias for production build"
+run = "webpack --config webpack.prod.js"
+
 [tasks."build:dev"]
 description = "Build single development extension bundle"
 env = { NODE_ENV = "development" }
@@ -46,8 +50,9 @@ run = [
 
 [tasks.graphify-update]
 description = "Update AST Knowledge Graph"
-run = "uvx --from \"graphifyy[gemini,mcp]\" graphify update ."
+env = { UV_CACHE_DIR = "{{config_root}}/.cache/uv", UV_TOOL_DIR = "{{config_root}}/.cache/uv/tools" }
+run = "command -v uvx >/dev/null 2>&1 && uvx --from \"graphifyy[gemini,mcp]\" graphify update . || (command -v pipx >/dev/null 2>&1 && pipx run --spec \"graphifyy[gemini,mcp]\" graphify update . || graphify update .)"
 
 [tasks.outdated]
 description = "Check for package updates with npm-check-updates"
-run = "ncu"
+run = "npx npm-check-updates"
