@@ -3,3 +3,5 @@ build
 package-lock.json
 .idea
 src/js/fn/constants.js
+graphify-out
+
