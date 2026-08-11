@@ -14,3 +14,9 @@ graphify-out/
 .mise.local.toml
 .vscode/settings.json
 requirements.txt
+
+# Local agent configuration & documentation (uncommitted)
+.agents/
+docs/
+skills-lock.json
+
