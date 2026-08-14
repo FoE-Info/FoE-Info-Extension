@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "name": "FoE-Info-Extension Stack",
+  "catalog": {
+    "package": "agentic-awesome-skills",
+    "version": "15.13.0",
+    "integrity": "sha256-6525dc6ab92e4a541d6e58bc74ee69ffc72fb816c1cbb6bfdfc1e98fe3f9ba07"
+  },
+  "targets": [{ "host": "claude", "scope": "project" }],
+  "profile": {
+    "goals": [
+      "Maintain and audit a Manifest V3 Chrome DevTools extension",
+      "Harden security/privacy posture (CSP, permissions, XSS)",
+      "Improve accessibility of extension UI pages",
+      "Manage webhook/API integrations (Discord, Google Sheets)",
+      "Support dynamic browser testing via DevTools",
+      "Keep maintenance changes surgical and well-scoped"
+    ],
+    "projectType": "browser-extension",
+    "languages": ["javascript", "scss"],
+    "frameworks": ["jquery", "bootstrap", "webpack"],
+    "constraints": [
+      "No test runner currently configured",
+      "No jQuery/SCSS/webpack-specific catalog skill available"
+    ]
+  },
+  "skills": [
+    { "id": "browser-extension-builder" },
+    { "id": "api-integration" },
+    { "id": "browser-testing-with-devtools" },
+    { "id": "007" },
+    { "id": "accesslint-audit" },
+    { "id": "andrej-karpathy" }
+  ]
+}

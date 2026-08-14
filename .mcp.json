@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "graphify": {
+      "type": "stdio",
+      "command": "graphify-mcp",
+      "args": ["graphify-out/graph.json"],
+      "env": {}
+    },
+    "aas": {
+      "command": "/var/home/linuxbrew/.linuxbrew/Cellar/node/26.7.0/bin/node",
+      "args": [
+        "/var/home/kronikpillow/.cache/aas/runtimes/15.13.0/sha512-DdRFToYwlGsKnCdTtuUOwtCrJ1Jtki8qE93gqDHXji1Gcv1cDCb312XiYoBn2iSlFMNMF-olvvEqGBUTgRuuvw/package/tools/bin/aas-mcp.js",
+        "--cache-root",
+        "/var/home/kronikpillow/.cache/aas"
+      ],
+      "env": {}
+    },
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@1.7.0",
+        "--auto-connect",
+        "--experimentalMemory",
+        "--experimentalScreencast"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/var/home/kronikpillow/.local/bin/graphify hook-guard search"
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/var/home/kronikpillow/.local/bin/graphify hook-guard read"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "mcp__aas__search_skills",
+      "mcp__aas__get_skill",
+      "mcp__aas__compose_stack",
+      "mcp__aas__inspect_stack",
+      "mcp__graphify__query_graph",
+      "mcp__graphify__graph_stats",
+      "Bash(graphify query *)",
+      "Bash(graphify explain *)",
+      "Bash(npm view *)",
+      "Bash(aas catalog status *)",
+      "Bash(aas --help)",
+      "Bash(systemctl --user show-environment)"
+    ]
+  }
+}

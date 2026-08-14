@@ -1,16 +1,15 @@
-node_modules
-build
-.idea
-stuff
-.env*
-.envrc
-.direnv/
 .cache/
-graphify-out/
-.venv/
-
-
-# Local environment & tool configurations
-.mise.local.toml
+node_modules/
+build/
+graphify-out/cost.json        # local only
+graphify-out/cache/            # optional: commit for speed, skip to keep repo small
 .vscode/settings.json
-requirements.txt
+
+# Claude Code: personal/local-only, not shared project config
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/*.graphify-bak
+
+# aas: local install state tied to this machine (not the declarative stack)
+.aas/
+aas-plan.json

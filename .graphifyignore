@@ -1,0 +1,25 @@
+# Agent and repository-tooling internals are not application documentation.
+.agents/
+.aas/
+.claude/
+.codex/
+AGENTS.md
+CLAUDE.md
+aas-stack.json
+
+# Generated graph artifacts must never become graph input.
+graphify-out/cost.json        # local only
+graphify-out/cache/           # optional: commit for speed, skip to keep repo small
+
+# The full license text does not describe application architecture.
+LICENSE.md
+
+# Redundant icon/logo resolutions - same visual content as Icon128.png / logo.png,
+# already represented by those nodes in the graph. Without this, --update re-queues
+# them forever since the collapsed-icon node only stamps one representative file.
+src/icons/foe-info/Icon16.png
+src/icons/foe-info/Icon24.png
+src/icons/foe-info/Icon32.png
+src/icons/foe-info/Icon48.png
+src/icons/foe-info/Icon64.png
+src/images/logo90.png
