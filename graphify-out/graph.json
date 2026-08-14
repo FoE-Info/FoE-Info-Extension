@@ -68,7 +68,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "set()",
       "id": "src_js_fn_collapse_set"
     },
@@ -80,7 +80,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setbuildingcostsize()",
       "id": "src_js_fn_globals_setbuildingcostsize"
     },
@@ -92,7 +92,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setrewardsize()",
       "id": "src_js_fn_globals_setrewardsize"
     },
@@ -104,7 +104,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "settooloptions()",
       "id": "src_js_fn_globals_settooloptions"
     },
@@ -116,7 +116,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "clearcultural()",
       "id": "src_js_index_clearcultural"
     },
@@ -128,7 +128,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "clearexpedition()",
       "id": "src_js_index_clearexpedition"
     },
@@ -140,7 +140,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "clearforbattleground()",
       "id": "src_js_index_clearforbattleground"
     },
@@ -152,7 +152,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "clearformaincity()",
       "id": "src_js_index_clearformaincity"
     },
@@ -164,7 +164,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "clearstartup()",
       "id": "src_js_index_clearstartup"
     },
@@ -176,7 +176,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "clearvisitplayer()",
       "id": "src_js_index_clearvisitplayer"
     },
@@ -188,7 +188,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "fcleardforgvg()",
       "id": "src_js_index_fcleardforgvg"
     },
@@ -200,7 +200,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "formatbytes()",
       "id": "src_js_index_formatbytes"
     },
@@ -212,7 +212,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "gettype()",
       "id": "src_js_index_gettype"
     },
@@ -224,7 +224,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "handleinstalled()",
       "id": "src_js_index_handleinstalled"
     },
@@ -236,7 +236,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "handlerequestfinished()",
       "id": "src_js_index_handlerequestfinished"
     },
@@ -248,7 +248,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "handleupdateavailable()",
       "id": "src_js_index_handleupdateavailable"
     },
@@ -260,7 +260,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "inittreasury()",
       "id": "src_js_index_inittreasury"
     },
@@ -272,7 +272,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "onclickhandler()",
       "id": "src_js_index_onclickhandler"
     },
@@ -284,7 +284,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "onerror()",
       "id": "src_js_index_onerror"
     },
@@ -296,7 +296,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "onevent()",
       "id": "src_js_index_onevent"
     },
@@ -308,7 +308,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "onrequested()",
       "id": "src_js_index_onrequested"
     },
@@ -320,7 +320,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "originwithid()",
       "id": "src_js_index_originwithid"
     },
@@ -332,7 +332,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "processmetadataentry()",
       "id": "src_js_index_processmetadataentry"
     },
@@ -344,9 +344,21 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "receivestorage()",
       "id": "src_js_index_receivestorage"
+    },
+    {
+      "label": "removeDebug()",
+      "file_type": "code",
+      "source_file": "src/js/index.js",
+      "source_location": "L2607",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "index.js",
+      "norm_label": "removedebug()",
+      "id": "src_js_index_removedebug"
     },
     {
       "label": "rewardObserve()",
@@ -356,7 +368,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "rewardobserve()",
       "id": "src_js_index_rewardobserve"
     },
@@ -368,7 +380,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setheight()",
       "id": "src_js_index_setheight"
     },
@@ -380,7 +392,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setmyguild()",
       "id": "src_js_index_setmyguild"
     },
@@ -392,7 +404,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setmyguildid()",
       "id": "src_js_index_setmyguildid"
     },
@@ -404,7 +416,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setmyguildpermissions()",
       "id": "src_js_index_setmyguildpermissions"
     },
@@ -416,7 +428,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setmyguildposition()",
       "id": "src_js_index_setmyguildposition"
     },
@@ -428,7 +440,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setmyid()",
       "id": "src_js_index_setmyid"
     },
@@ -440,7 +452,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setmyname()",
       "id": "src_js_index_setmyname"
     },
@@ -452,7 +464,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "showrewards()",
       "id": "src_js_index_showrewards"
     },
@@ -464,9 +476,21 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "storagechange()",
       "id": "src_js_index_storagechange"
+    },
+    {
+      "label": "toggleDebug()",
+      "file_type": "code",
+      "source_file": "src/js/index.js",
+      "source_location": "L2593",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "index.js",
+      "norm_label": "toggledebug()",
+      "id": "src_js_index_toggledebug"
     },
     {
       "label": "conversationService()",
@@ -476,7 +500,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "conversationservice()",
       "id": "src_js_msg_conversationservice_conversationservice"
     },
@@ -488,7 +512,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "getconversation()",
       "id": "src_js_msg_conversationservice_getconversation"
     },
@@ -500,7 +524,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "getintvalue()",
       "id": "src_js_msg_conversationservice_getintvalue"
     },
@@ -512,7 +536,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "getpercent()",
       "id": "src_js_msg_conversationservice_getpercent"
     },
@@ -524,7 +548,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setcurrentpercent()",
       "id": "src_js_msg_greatbuildingsservice_setcurrentpercent"
     },
@@ -536,7 +560,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "attritionreduction()",
       "id": "src_js_msg_guildbattlegroundservice_attritionreduction"
     },
@@ -548,7 +572,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "buildingcostcopy()",
       "id": "src_js_msg_guildbattlegroundservice_buildingcostcopy"
     },
@@ -560,7 +584,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "checkprovinces()",
       "id": "src_js_msg_guildbattlegroundservice_checkprovinces"
     },
@@ -572,7 +596,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "clearbattleground()",
       "id": "src_js_msg_guildbattlegroundservice_clearbattleground"
     },
@@ -584,7 +608,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "copytoclipboard()",
       "id": "src_js_msg_guildbattlegroundservice_copytoclipboard"
     },
@@ -596,7 +620,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "getbattleground()",
       "id": "src_js_msg_guildbattlegroundservice_getbattleground"
     },
@@ -608,7 +632,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "getbuildings()",
       "id": "src_js_msg_guildbattlegroundservice_getbuildings"
     },
@@ -620,7 +644,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "getleaderboard()",
       "id": "src_js_msg_guildbattlegroundservice_getleaderboard"
     },
@@ -632,7 +656,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "getplayerleaderboard()",
       "id": "src_js_msg_guildbattlegroundservice_getplayerleaderboard"
     },
@@ -644,7 +668,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "getstate()",
       "id": "src_js_msg_guildbattlegroundservice_getstate"
     },
@@ -656,7 +680,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "removesignal()",
       "id": "src_js_msg_guildbattlegroundservice_removesignal"
     },
@@ -668,7 +692,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "setsignal()",
       "id": "src_js_msg_guildbattlegroundservice_setsignal"
     },
@@ -680,7 +704,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "showbuildingcost()",
       "id": "src_js_msg_guildbattlegroundservice_showbuildingcost"
     },
@@ -692,7 +716,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "targetcopy()",
       "id": "src_js_msg_guildbattlegroundservice_targetcopy"
     },
@@ -704,9 +728,21 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "timegbg()",
       "id": "src_js_msg_guildbattlegroundservice_timegbg"
+    },
+    {
+      "label": "boostService()",
+      "file_type": "code",
+      "source_file": "src/js/msg/StartupService.js",
+      "source_location": "L882",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "index.js",
+      "norm_label": "boostservice()",
+      "id": "src_js_msg_startupservice_boostservice"
     },
     {
       "label": "boostServiceAllBoosts()",
@@ -716,7 +752,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "boostserviceallboosts()",
       "id": "src_js_msg_startupservice_boostserviceallboosts"
     },
@@ -728,7 +764,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "set()",
       "id": "src_js_vars_showoptions_set"
     },
@@ -2041,18 +2077,6 @@
       "id": "src_js_index_checkdebug"
     },
     {
-      "label": "removeDebug()",
-      "file_type": "code",
-      "source_file": "src/js/index.js",
-      "source_location": "L2607",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "StartupService.js",
-      "norm_label": "removedebug()",
-      "id": "src_js_index_removedebug"
-    },
-    {
       "label": "setMyInfo()",
       "file_type": "code",
       "source_file": "src/js/index.js",
@@ -2087,18 +2111,6 @@
       "community_name": "StartupService.js",
       "norm_label": "showreward()",
       "id": "src_js_index_showreward"
-    },
-    {
-      "label": "toggleDebug()",
-      "file_type": "code",
-      "source_file": "src/js/index.js",
-      "source_location": "L2593",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "StartupService.js",
-      "norm_label": "toggledebug()",
-      "id": "src_js_index_toggledebug"
     },
     {
       "label": "armyUnitManagementService()",
@@ -2231,18 +2243,6 @@
       "community_name": "StartupService.js",
       "norm_label": "otherplayerserviceupdateactions()",
       "id": "src_js_msg_otherplayerservice_otherplayerserviceupdateactions"
-    },
-    {
-      "label": "boostService()",
-      "file_type": "code",
-      "source_file": "src/js/msg/StartupService.js",
-      "source_location": "L882",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "StartupService.js",
-      "norm_label": "boostservice()",
-      "id": "src_js_msg_startupservice_boostservice"
     },
     {
       "label": "emissaryService()",
@@ -2635,7 +2635,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "index.js",
       "id": "src_js_index"
     },
@@ -2646,7 +2646,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "contenttypes",
       "id": "src_js_index_contenttypes"
     },
@@ -2657,7 +2657,7 @@
       "source_location": "L2628",
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "requestingcheck",
       "id": "src_js_index_requestingcheck"
     },
@@ -2668,7 +2668,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "conversationservice.js",
       "id": "src_js_msg_conversationservice"
     },
@@ -2679,7 +2679,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "community": 0,
-      "community_name": "Toolbar & Panel State Setters",
+      "community_name": "index.js",
       "norm_label": "guildbattlegroundservice.js",
       "id": "src_js_msg_guildbattlegroundservice"
     },
@@ -2750,270 +2750,6 @@
       "id": "src_js_msg_resourceservice"
     },
     {
-      "label": "audit-chrome-devtools.md",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_devtools",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "audit-chrome-devtools.md"
-    },
-    {
-      "label": "Architecture",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L26",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_devtools_architecture",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "architecture"
-    },
-    {
-      "label": "Chrome DevTools Panel Audit",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_devtools_chrome_devtools_panel_audit",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "chrome devtools panel audit"
-    },
-    {
-      "label": "Confirmed findings",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_devtools_confirmed_findings",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "confirmed findings"
-    },
-    {
-      "label": "Gaps in this pass",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L35",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_devtools_gaps_in_this_pass",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "gaps in this pass"
-    },
-    {
-      "label": "P1: No `<body>` element (see also CSS/HTML audit)",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L19",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_devtools_p1_no_body_element_see_also_css_html_audit",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p1: no `<body>` element (see also css/html audit)"
-    },
-    {
-      "label": "P1: Panel loads Google Fonts over the network at runtime",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L12",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_devtools_p1_panel_loads_google_fonts_over_the_network_at_runtime",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p1: panel loads google fonts over the network at runtime"
-    },
-    {
-      "label": "audit-chrome-extension.md",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_extension",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "audit-chrome-extension.md"
-    },
-    {
-      "label": "Chrome Extension MV3 Audit",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_extension_chrome_extension_mv3_audit",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "chrome extension mv3 audit"
-    },
-    {
-      "label": "Confirmed findings",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L6",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "confirmed findings"
-    },
-    {
-      "label": "P0: `webRequest.onBeforeSendHeaders` is a silent no-op",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L8",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_extension_p0_webrequest_onbeforesendheaders_is_a_silent_no_op",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p0: `webrequest.onbeforesendheaders` is a silent no-op"
-    },
-    {
-      "label": "P1: Unused permission surface",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L20",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_extension_p1_unused_permission_surface",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p1: unused permission surface"
-    },
-    {
-      "label": "P2: `minimum_chrome_version` inconsistency",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L29",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_extension_p2_minimum_chrome_version_inconsistency",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p2: `minimum_chrome_version` inconsistency"
-    },
-    {
-      "label": "What's solid",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L35",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_chrome_extension_what_s_solid",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "what's solid"
-    },
-    {
-      "label": "audit-css-html.md",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "audit-css-html.md"
-    },
-    {
-      "label": "Confirmed findings",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L6",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html_confirmed_findings",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "confirmed findings"
-    },
-    {
-      "label": "CSS & HTML Audit",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html_css_html_audit",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "css & html audit"
-    },
-    {
-      "label": "P1: No `<body>` element in HTML templates",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L14",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html_p1_no_body_element_in_html_templates",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p1: no `<body>` element in html templates"
-    },
-    {
-      "label": "P1: Undefined custom properties silently fall back to `transparent`",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L8",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html_p1_undefined_custom_properties_silently_fall_back_to_transparent",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p1: undefined custom properties silently fall back to `transparent`"
-    },
-    {
-      "label": "P2: Dead CSS",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L33",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html_p2_dead_css",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p2: dead css"
-    },
-    {
-      "label": "P2: Hardcoded colors bypass design tokens",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L27",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html_p2_hardcoded_colors_bypass_design_tokens",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p2: hardcoded colors bypass design tokens"
-    },
-    {
-      "label": "P2: Invalid CSS silently dropped",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L20",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html_p2_invalid_css_silently_dropped",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p2: invalid css silently dropped"
-    },
-    {
-      "label": "P2: `options.html` accessibility and i18n gaps",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L38",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html_p2_options_html_accessibility_and_i18n_gaps",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p2: `options.html` accessibility and i18n gaps"
-    },
-    {
-      "label": "What's solid",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L45",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_css_html_what_s_solid",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "what's solid"
-    },
-    {
       "label": "audit-nodejs-webpack.md",
       "file_type": "document",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
@@ -3028,7 +2764,7 @@
       "label": "Confirmed findings",
       "file_type": "document",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L6",
+      "source_location": "L9",
       "_origin": "ast",
       "id": "docs_knowledgebase_audit_nodejs_webpack_confirmed_findings",
       "community": 10,
@@ -3047,158 +2783,103 @@
       "norm_label": "node.js & webpack audit"
     },
     {
-      "label": "P1: No lint, type-check, or test gate",
+      "label": "P1: `npm run check` (the only automated gate) currently fails on files outside the source tree",
       "file_type": "document",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L8",
+      "source_location": "L11",
       "_origin": "ast",
-      "id": "docs_knowledgebase_audit_nodejs_webpack_p1_no_lint_type_check_or_test_gate",
+      "id": "docs_knowledgebase_audit_nodejs_webpack_p1_npm_run_check_the_only_automated_gate_currently_fails_on_files_outside_the_source_tree",
       "community": 10,
       "community_name": "Confirmed findings",
-      "norm_label": "p1: no lint, type-check, or test gate"
+      "norm_label": "p1: `npm run check` (the only automated gate) currently fails on files outside the source tree"
     },
     {
-      "label": "P1: Production build has no source maps",
+      "label": "P1: `postcss-loader` runs in both dev and prod CSS pipelines with no PostCSS config anywhere in the repo",
       "file_type": "document",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L16",
+      "source_location": "L78",
       "_origin": "ast",
-      "id": "docs_knowledgebase_audit_nodejs_webpack_p1_production_build_has_no_source_maps",
+      "id": "docs_knowledgebase_audit_nodejs_webpack_p1_postcss_loader_runs_in_both_dev_and_prod_css_pipelines_with_no_postcss_config_anywhere_in_the_repo",
       "community": 10,
       "community_name": "Confirmed findings",
-      "norm_label": "p1: production build has no source maps"
+      "norm_label": "p1: `postcss-loader` runs in both dev and prod css pipelines with no postcss config anywhere in the repo"
     },
     {
-      "label": "P2: Dependency pinning inconsistency",
+      "label": "P1: The single static `vendors` cache group forces the entire jQuery/Bootstrap/i18n bundle onto `devtools.html` and `popup.html`, which don't use any of it",
       "file_type": "document",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L21",
+      "source_location": "L55",
       "_origin": "ast",
-      "id": "docs_knowledgebase_audit_nodejs_webpack_p2_dependency_pinning_inconsistency",
+      "id": "docs_knowledgebase_audit_nodejs_webpack_p1_the_single_static_vendors_cache_group_forces_the_entire_jquery_bootstrap_i18n_bundle_onto_devtools_html_and_popup_html_which_don_t_use_any_of_it",
       "community": 10,
       "community_name": "Confirmed findings",
-      "norm_label": "p2: dependency pinning inconsistency"
+      "norm_label": "p1: the single static `vendors` cache group forces the entire jquery/bootstrap/i18n bundle onto `devtools.html` and `popup.html`, which don't use any of it"
     },
     {
-      "label": "P2: Prettier invoked via `npx`, not a pinned devDependency",
+      "label": "P2: `allowScripts` field in package.json has no effect",
       "file_type": "document",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L27",
+      "source_location": "L25",
       "_origin": "ast",
-      "id": "docs_knowledgebase_audit_nodejs_webpack_p2_prettier_invoked_via_npx_not_a_pinned_devdependency",
+      "id": "docs_knowledgebase_audit_nodejs_webpack_p2_allowscripts_field_in_package_json_has_no_effect",
       "community": 10,
       "community_name": "Confirmed findings",
-      "norm_label": "p2: prettier invoked via `npx`, not a pinned devdependency"
+      "norm_label": "p2: `allowscripts` field in package.json has no effect"
+    },
+    {
+      "label": "P2: No `.nvmrc`/`.npmrc` to enforce the `engines.node` pin",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_nodejs_webpack_p2_no_nvmrc_npmrc_to_enforce_the_engines_node_pin",
+      "community": 10,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: no `.nvmrc`/`.npmrc` to enforce the `engines.node` pin"
+    },
+    {
+      "label": "P2: `setup` script hard-fails on missing `uv`/`uvx`, with the failure surfacing after `npm install` already succeeded",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_nodejs_webpack_p2_setup_script_hard_fails_on_missing_uv_uvx_with_the_failure_surfacing_after_npm_install_already_succeeded",
+      "community": 10,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: `setup` script hard-fails on missing `uv`/`uvx`, with the failure surfacing after `npm install` already succeeded"
+    },
+    {
+      "label": "P2: Two dead/no-op module rules in `webpack.common.js`",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
+      "source_location": "L95",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_nodejs_webpack_p2_two_dead_no_op_module_rules_in_webpack_common_js",
+      "community": 10,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: two dead/no-op module rules in `webpack.common.js`"
+    },
+    {
+      "label": "P2: `webpack.dev.js`'s `devServer` block is unreachable from any npm script and wouldn't help this project's dev loop if it were",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
+      "source_location": "L112",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_nodejs_webpack_p2_webpack_dev_js_s_devserver_block_is_unreachable_from_any_npm_script_and_wouldn_t_help_this_project_s_dev_loop_if_it_were",
+      "community": 10,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: `webpack.dev.js`'s `devserver` block is unreachable from any npm script and wouldn't help this project's dev loop if it were"
     },
     {
       "label": "What's solid",
       "file_type": "document",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L33",
+      "source_location": "L125",
       "_origin": "ast",
       "id": "docs_knowledgebase_audit_nodejs_webpack_what_s_solid",
       "community": 10,
       "community_name": "Confirmed findings",
       "norm_label": "what's solid"
-    },
-    {
-      "label": "audit-summary.md",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_summary",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "audit-summary.md"
-    },
-    {
-      "label": "Audit matrix",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L19",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_summary_audit_matrix",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "audit matrix"
-    },
-    {
-      "label": "Codebase Audit Summary",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_summary_codebase_audit_summary",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "codebase audit summary"
-    },
-    {
-      "label": "Outcome",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L11",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_summary_outcome",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "outcome"
-    },
-    {
-      "label": "P0: fix silent breakage and the security-relevant sink",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L33",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_summary_p0_fix_silent_breakage_and_the_security_relevant_sink",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p0: fix silent breakage and the security-relevant sink"
-    },
-    {
-      "label": "P1: correctness bugs and process gaps",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L43",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_summary_p1_correctness_bugs_and_process_gaps",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p1: correctness bugs and process gaps"
-    },
-    {
-      "label": "P2: cleanup and polish",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L58",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_summary_p2_cleanup_and_polish",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "p2: cleanup and polish"
-    },
-    {
-      "label": "Prioritized remediation roadmap",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L31",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_summary_prioritized_remediation_roadmap",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "prioritized remediation roadmap"
-    },
-    {
-      "label": "Re-running this audit",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L70",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_summary_re_running_this_audit",
-      "community": 10,
-      "community_name": "Confirmed findings",
-      "norm_label": "re-running this audit"
     },
     {
       "label": "copy.js",
@@ -3217,10 +2898,10 @@
       "source_file": "package.json",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "package_dependencies",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "dependencies"
+      "norm_label": "dependencies",
+      "id": "package_dependencies"
     },
     {
       "label": "bignumber.js",
@@ -3228,10 +2909,10 @@
       "source_file": "package.json",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "package_dependencies_bignumber_js",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "bignumber.js"
+      "norm_label": "bignumber.js",
+      "id": "package_dependencies_bignumber_js"
     },
     {
       "label": "bootstrap",
@@ -3239,10 +2920,10 @@
       "source_file": "package.json",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "package_dependencies_bootstrap",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "bootstrap"
+      "norm_label": "bootstrap",
+      "id": "package_dependencies_bootstrap"
     },
     {
       "label": "dayjs",
@@ -3250,10 +2931,10 @@
       "source_file": "package.json",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "package_dependencies_dayjs",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "dayjs"
+      "norm_label": "dayjs",
+      "id": "package_dependencies_dayjs"
     },
     {
       "label": "jquery",
@@ -3261,10 +2942,10 @@
       "source_file": "package.json",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "package_dependencies_jquery",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "jquery"
+      "norm_label": "jquery",
+      "id": "package_dependencies_jquery"
     },
     {
       "label": "@popperjs/core",
@@ -3272,10 +2953,10 @@
       "source_file": "package.json",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "package_dependencies_popperjs_core",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "@popperjs/core"
+      "norm_label": "@popperjs/core",
+      "id": "package_dependencies_popperjs_core"
     },
     {
       "label": "webextension-polyfill",
@@ -3283,10 +2964,10 @@
       "source_file": "package.json",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "package_dependencies_webextension_polyfill",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "webextension-polyfill"
+      "norm_label": "webextension-polyfill",
+      "id": "package_dependencies_webextension_polyfill"
     },
     {
       "label": "@wikimedia/jquery.i18n",
@@ -3294,10 +2975,10 @@
       "source_file": "package.json",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "package_dependencies_wikimedia_jquery_i18n",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "@wikimedia/jquery.i18n"
+      "norm_label": "@wikimedia/jquery.i18n",
+      "id": "package_dependencies_wikimedia_jquery_i18n"
     },
     {
       "label": "bignumber.js",
@@ -3305,10 +2986,10 @@
       "source_file": "package.json",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "bignumber_js",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "bignumber.js"
+      "norm_label": "bignumber.js",
+      "id": "bignumber_js"
     },
     {
       "label": "bootstrap",
@@ -3316,10 +2997,10 @@
       "source_file": "package.json",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "bootstrap",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "bootstrap"
+      "norm_label": "bootstrap",
+      "id": "bootstrap"
     },
     {
       "label": "dayjs",
@@ -3327,10 +3008,10 @@
       "source_file": "package.json",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "dayjs",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "dayjs"
+      "norm_label": "dayjs",
+      "id": "dayjs"
     },
     {
       "label": "jquery",
@@ -3338,10 +3019,10 @@
       "source_file": "package.json",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "jquery",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "jquery"
+      "norm_label": "jquery",
+      "id": "jquery"
     },
     {
       "label": "@popperjs/core",
@@ -3349,10 +3030,10 @@
       "source_file": "package.json",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "popperjs_core",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "@popperjs/core"
+      "norm_label": "@popperjs/core",
+      "id": "popperjs_core"
     },
     {
       "label": "webextension-polyfill",
@@ -3360,10 +3041,10 @@
       "source_file": "package.json",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "webextension_polyfill",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "webextension-polyfill"
+      "norm_label": "webextension-polyfill",
+      "id": "webextension_polyfill"
     },
     {
       "label": "@wikimedia/jquery.i18n",
@@ -3371,10 +3052,43 @@
       "source_file": "package.json",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "wikimedia_jquery_i18n",
       "community": 12,
       "community_name": "Third-Party Runtime Libraries",
-      "norm_label": "@wikimedia/jquery.i18n"
+      "norm_label": "@wikimedia/jquery.i18n",
+      "id": "wikimedia_jquery_i18n"
+    },
+    {
+      "label": "audit-css-html.md",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html",
+      "community": 13,
+      "community_name": "audit-summary.md",
+      "norm_label": "audit-css-html.md"
+    },
+    {
+      "label": "CSS & HTML Audit",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_css_html_audit",
+      "community": 13,
+      "community_name": "audit-summary.md",
+      "norm_label": "css & html audit"
+    },
+    {
+      "label": "What's solid",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L201",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_what_s_solid",
+      "community": 13,
+      "community_name": "audit-summary.md",
+      "norm_label": "what's solid"
     },
     {
       "label": "audit-javascript-jquery.md",
@@ -3384,19 +3098,8 @@
       "_origin": "ast",
       "id": "docs_knowledgebase_audit_javascript_jquery",
       "community": 13,
-      "community_name": "Confirmed findings",
+      "community_name": "audit-summary.md",
       "norm_label": "audit-javascript-jquery.md"
-    },
-    {
-      "label": "Confirmed findings",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L6",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
-      "community": 13,
-      "community_name": "Confirmed findings",
-      "norm_label": "confirmed findings"
     },
     {
       "label": "JavaScript & jQuery Audit",
@@ -3406,85 +3109,41 @@
       "_origin": "ast",
       "id": "docs_knowledgebase_audit_javascript_jquery_javascript_jquery_audit",
       "community": 13,
-      "community_name": "Confirmed findings",
+      "community_name": "audit-summary.md",
       "norm_label": "javascript & jquery audit"
     },
     {
-      "label": "P0: `fn/storage.js` never returns its promises",
+      "label": "Running priority total (all 3 passes \u2014 final)",
       "file_type": "document",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L8",
+      "source_location": "L252",
       "_origin": "ast",
-      "id": "docs_knowledgebase_audit_javascript_jquery_p0_fn_storage_js_never_returns_its_promises",
+      "id": "docs_knowledgebase_audit_javascript_jquery_running_priority_total_all_3_passes_final",
       "community": 13,
-      "community_name": "Confirmed findings",
-      "norm_label": "p0: `fn/storage.js` never returns its promises"
-    },
-    {
-      "label": "P0: Unescaped server-controlled strings reach `innerHTML`",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L16",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_javascript_jquery_p0_unescaped_server_controlled_strings_reach_innerhtml",
-      "community": 13,
-      "community_name": "Confirmed findings",
-      "norm_label": "p0: unescaped server-controlled strings reach `innerhtml`"
-    },
-    {
-      "label": "P1: Assignment-vs-comparison bugs",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L34",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_javascript_jquery_p1_assignment_vs_comparison_bugs",
-      "community": 13,
-      "community_name": "Confirmed findings",
-      "norm_label": "p1: assignment-vs-comparison bugs"
-    },
-    {
-      "label": "P1: `ReferenceError` on undeclared variables",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L24",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_javascript_jquery_p1_referenceerror_on_undeclared_variables",
-      "community": 13,
-      "community_name": "Confirmed findings",
-      "norm_label": "p1: `referenceerror` on undeclared variables"
-    },
-    {
-      "label": "P1: Silent data bugs",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L42",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_javascript_jquery_p1_silent_data_bugs",
-      "community": 13,
-      "community_name": "Confirmed findings",
-      "norm_label": "p1: silent data bugs"
-    },
-    {
-      "label": "P2: Anti-patterns",
-      "file_type": "document",
-      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L60",
-      "_origin": "ast",
-      "id": "docs_knowledgebase_audit_javascript_jquery_p2_anti_patterns",
-      "community": 13,
-      "community_name": "Confirmed findings",
-      "norm_label": "p2: anti-patterns"
+      "community_name": "audit-summary.md",
+      "norm_label": "running priority total (all 3 passes \u2014 final)"
     },
     {
       "label": "What's solid",
       "file_type": "document",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L74",
+      "source_location": "L235",
       "_origin": "ast",
       "id": "docs_knowledgebase_audit_javascript_jquery_what_s_solid",
       "community": 13,
-      "community_name": "Confirmed findings",
+      "community_name": "audit-summary.md",
       "norm_label": "what's solid"
+    },
+    {
+      "label": "audit-summary.md",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_summary",
+      "community": 13,
+      "community_name": "audit-summary.md",
+      "norm_label": "audit-summary.md"
     },
     {
       "label": "helper.js",
@@ -3638,6 +3297,413 @@
       "community_name": "options.js",
       "norm_label": "showoptions",
       "id": "src_js_options_showoptions"
+    },
+    {
+      "label": "Confirmed findings",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "confirmed findings"
+    },
+    {
+      "label": "P0 (confirmed instance of documented repo-wide gotcha): unescaped `innerHTML` interpolation of player/guild-controlled strings",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p0_confirmed_instance_of_documented_repo_wide_gotcha_unescaped_innerhtml_interpolation_of_player_guild_controlled_strings",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p0 (confirmed instance of documented repo-wide gotcha): unescaped `innerhtml` interpolation of player/guild-controlled strings"
+    },
+    {
+      "label": "P0: `fn/post.js`'s `postToDiscord()` calls an undefined `getKey()` \u2014 throws immediately, before ever sending a request",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p0_fn_post_js_s_posttodiscord_calls_an_undefined_getkey_throws_immediately_before_ever_sending_a_request",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p0: `fn/post.js`'s `posttodiscord()` calls an undefined `getkey()` \u2014 throws immediately, before ever sending a request"
+    },
+    {
+      "label": "P0: `fn/storage.js`'s `getStorage()` never returns its promise \u2014 the one real caller that depends on the return value is permanently broken",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L81",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p0_fn_storage_js_s_getstorage_never_returns_its_promise_the_one_real_caller_that_depends_on_the_return_value_is_permanently_broken",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p0: `fn/storage.js`'s `getstorage()` never returns its promise \u2014 the one real caller that depends on the return value is permanently broken"
+    },
+    {
+      "label": "P0: `msg/GuildBattlegroundService.js:115` references an undeclared `output` \u2014 `getLeaderboard()` throws every time it's called, GBG Leaderboard never renders",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L115",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p0_msg_guildbattlegroundservice_js_115_references_an_undeclared_output_getleaderboard_throws_every_time_it_s_called_gbg_leaderboard_never_renders",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p0: `msg/guildbattlegroundservice.js:115` references an undeclared `output` \u2014 `getleaderboard()` throws every time it's called, gbg leaderboard never renders"
+    },
+    {
+      "label": "P0: Saving Options silently deletes the `clipboard` setting from storage, permanently disabling the clipboard feature",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p0_saving_options_silently_deletes_the_clipboard_setting_from_storage_permanently_disabling_the_clipboard_feature",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p0: saving options silently deletes the `clipboard` setting from storage, permanently disabling the clipboard feature"
+    },
+    {
+      "label": "P0: Two independent default-value sources for `showOptions` disagree on 3 keys",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p0_two_independent_default_value_sources_for_showoptions_disagree_on_3_keys",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p0: two independent default-value sources for `showoptions` disagree on 3 keys"
+    },
+    {
+      "label": "P1: Assignment-instead-of-comparison bug live in three `msg/*.js` clan-goods branches (confirms `src/js/CLAUDE.md:23`)",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L130",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p1_assignment_instead_of_comparison_bug_live_in_three_msg_js_clan_goods_branches_confirms_src_js_claude_md_23",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: assignment-instead-of-comparison bug live in three `msg/*.js` clan-goods branches (confirms `src/js/claude.md:23`)"
+    },
+    {
+      "label": "P1: `chrome.webRequest.onBeforeSendHeaders.addListener` at `index.js:613-621` is a no-op \u2014 the Origin-header strip never happens",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p1_chrome_webrequest_onbeforesendheaders_addlistener_at_index_js_613_621_is_a_no_op_the_origin_header_strip_never_happens",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: `chrome.webrequest.onbeforesendheaders.addlistener` at `index.js:613-621` is a no-op \u2014 the origin-header strip never happens"
+    },
+    {
+      "label": "P1 (confirms `src/js/CLAUDE.md:15`): `$('body').i18n()` re-scans the entire panel DOM on nearly every dispatched network message instead of scoping to just-inserted content",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L219",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p1_confirms_src_js_claude_md_15_body_i18n_re_scans_the_entire_panel_dom_on_nearly_every_dispatched_network_message_instead_of_scoping_to_just_inserted_content",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1 (confirms `src/js/claude.md:15`): `$('body').i18n()` re-scans the entire panel dom on nearly every dispatched network message instead of scoping to just-inserted content"
+    },
+    {
+      "label": "P1: `getSafe()`/`getPlaceValues()` in `GreatBuildingsService.js` mix plain-JS-number arithmetic into a BigNumber-based calculation",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L143",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p1_getsafe_getplacevalues_in_greatbuildingsservice_js_mix_plain_js_number_arithmetic_into_a_bignumber_based_calculation",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: `getsafe()`/`getplacevalues()` in `greatbuildingsservice.js` mix plain-js-number arithmetic into a bignumber-based calculation"
+    },
+    {
+      "label": "P1: OS dark-mode change listener has a dead comparison instead of an assignment \u2014 `darkMode` state never updates",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p1_os_dark_mode_change_listener_has_a_dead_comparison_instead_of_an_assignment_darkmode_state_never_updates",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: os dark-mode change listener has a dead comparison instead of an assignment \u2014 `darkmode` state never updates"
+    },
+    {
+      "label": "P1: `ResizeObserver` instances are created and `.observe()`d on nearly every network-response render, and `.disconnect()` is never called anywhere in the codebase",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L201",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p1_resizeobserver_instances_are_created_and_observe_d_on_nearly_every_network_response_render_and_disconnect_is_never_called_anywhere_in_the_codebase",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: `resizeobserver` instances are created and `.observe()`d on nearly every network-response render, and `.disconnect()` is never called anywhere in the codebase"
+    },
+    {
+      "label": "P1: Unguarded `.find()` result in `fshowBattleground()` \u2014 throws if a battleground participant isn't in `GuildMembers`",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L171",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p1_unguarded_find_result_in_fshowbattleground_throws_if_a_battleground_participant_isn_t_in_guildmembers",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: unguarded `.find()` result in `fshowbattleground()` \u2014 throws if a battleground participant isn't in `guildmembers`"
+    },
+    {
+      "label": "P2: `fn/copy.js:14`'s `import $ from 'jquery'` is dead code \u2014 `$` is never referenced anywhere in the file",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L229",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p2_fn_copy_js_14_s_import_from_jquery_is_dead_code_is_never_referenced_anywhere_in_the_file",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: `fn/copy.js:14`'s `import $ from 'jquery'` is dead code \u2014 `$` is never referenced anywhere in the file"
+    },
+    {
+      "label": "P2: Guard-clause coverage is inconsistent across `msg/*.js` \u2014 several files dereference `msg.responseData.*` with no top-level check",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L186",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_javascript_jquery_p2_guard_clause_coverage_is_inconsistent_across_msg_js_several_files_dereference_msg_responsedata_with_no_top_level_check",
+      "community": 17,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: guard-clause coverage is inconsistent across `msg/*.js` \u2014 several files dereference `msg.responsedata.*` with no top-level check"
+    },
+    {
+      "label": "Confirmed findings",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_confirmed_findings",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "confirmed findings"
+    },
+    {
+      "label": "P0: Debug rainbow colors override a live, currently-rendered icon",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p0_debug_rainbow_colors_override_a_live_currently_rendered_icon",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p0: debug rainbow colors override a live, currently-rendered icon"
+    },
+    {
+      "label": "P1: Hardcoded colors bypass design tokens",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p1_hardcoded_colors_bypass_design_tokens",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: hardcoded colors bypass design tokens"
+    },
+    {
+      "label": "P1: Invalid CSS silently dropped, breaking the intended styling",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p1_invalid_css_silently_dropped_breaking_the_intended_styling",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: invalid css silently dropped, breaking the intended styling"
+    },
+    {
+      "label": "P1: `panel.html`'s own inline `<style>` block repeats the `fw: bold;` bug independently of custom.scss",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L120",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p1_panel_html_s_own_inline_style_block_repeats_the_fw_bold_bug_independently_of_custom_scss",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: `panel.html`'s own inline `<style>` block repeats the `fw: bold;` bug independently of custom.scss"
+    },
+    {
+      "label": "P1: `popup.html`'s clickable options icon has no accessible name and isn't keyboard-operable",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L161",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p1_popup_html_s_clickable_options_icon_has_no_accessible_name_and_isn_t_keyboard_operable",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: `popup.html`'s clickable options icon has no accessible name and isn't keyboard-operable"
+    },
+    {
+      "label": "P1: Static HTML templates have zero `data-i18n` coverage \u2014 `src/CLAUDE.md:16`'s \"match panel.html/popup.html\" guidance points at nothing in those files",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L141",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p1_static_html_templates_have_zero_data_i18n_coverage_src_claude_md_16_s_match_panel_html_popup_html_guidance_points_at_nothing_in_those_files",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: static html templates have zero `data-i18n` coverage \u2014 `src/claude.md:16`'s \"match panel.html/popup.html\" guidance points at nothing in those files"
+    },
+    {
+      "label": "P1: Undefined custom properties silently fall back to `transparent`/inherited",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p1_undefined_custom_properties_silently_fall_back_to_transparent_inherited",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: undefined custom properties silently fall back to `transparent`/inherited"
+    },
+    {
+      "label": "P1: `_variables.scss` is never imported \u2014 the whole Bootstrap override file is dead",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p1_variables_scss_is_never_imported_the_whole_bootstrap_override_file_is_dead",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: `_variables.scss` is never imported \u2014 the whole bootstrap override file is dead"
+    },
+    {
+      "label": "P2: `.dark-mode` class is unreachable dead code",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L112",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p2_dark_mode_class_is_unreachable_dead_code",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: `.dark-mode` class is unreachable dead code"
+    },
+    {
+      "label": "P2: `devtools.html` is missing the `lang` attribute present on the other three templates",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L177",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p2_devtools_html_is_missing_the_lang_attribute_present_on_the_other_three_templates",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: `devtools.html` is missing the `lang` attribute present on the other three templates"
+    },
+    {
+      "label": "P2: Heading levels skip straight to `<h6>`/`<h2>` with no `<h1>` anywhere",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L187",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p2_heading_levels_skip_straight_to_h6_h2_with_no_h1_anywhere",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: heading levels skip straight to `<h6>`/`<h2>` with no `<h1>` anywhere"
+    },
+    {
+      "label": "P2: Large commented-out dead-style block",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L106",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_css_html_p2_large_commented_out_dead_style_block",
+      "community": 18,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: large commented-out dead-style block"
+    },
+    {
+      "label": "audit-chrome-extension.md",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_extension",
+      "community": 19,
+      "community_name": "Confirmed findings",
+      "norm_label": "audit-chrome-extension.md"
+    },
+    {
+      "label": "Confirmed findings",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
+      "community": 19,
+      "community_name": "Confirmed findings",
+      "norm_label": "confirmed findings"
+    },
+    {
+      "label": "Extension / MV3 Audit",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_extension_extension_mv3_audit",
+      "community": 19,
+      "community_name": "Confirmed findings",
+      "norm_label": "extension / mv3 audit"
+    },
+    {
+      "label": "P1: `google.com`/`googleusercontent.com` host_permissions have zero active call sites",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_extension_p1_google_com_googleusercontent_com_host_permissions_have_zero_active_call_sites",
+      "community": 19,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: `google.com`/`googleusercontent.com` host_permissions have zero active call sites"
+    },
+    {
+      "label": "P1: `webRequest.onBeforeSendHeaders` listener is a silent no-op",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_extension_p1_webrequest_onbeforesendheaders_listener_is_a_silent_no_op",
+      "community": 19,
+      "community_name": "Confirmed findings",
+      "norm_label": "p1: `webrequest.onbeforesendheaders` listener is a silent no-op"
+    },
+    {
+      "label": "P2: `CLAUDE.md`'s \"content-script traffic controller\" description doesn't match how `index.js` actually runs",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L48",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_extension_p2_claude_md_s_content_script_traffic_controller_description_doesn_t_match_how_index_js_actually_runs",
+      "community": 19,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: `claude.md`'s \"content-script traffic controller\" description doesn't match how `index.js` actually runs"
+    },
+    {
+      "label": "P2: `externally_connectable` and `web_accessible_resources` expose surface nothing consumes",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_extension_p2_externally_connectable_and_web_accessible_resources_expose_surface_nothing_consumes",
+      "community": 19,
+      "community_name": "Confirmed findings",
+      "norm_label": "p2: `externally_connectable` and `web_accessible_resources` expose surface nothing consumes"
+    },
+    {
+      "label": "What's solid",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_extension_what_s_solid",
+      "community": 19,
+      "community_name": "Confirmed findings",
+      "norm_label": "what's solid"
     },
     {
       "label": "manifest.json",
@@ -4058,15 +4124,169 @@
       "id": "ref_webrequest"
     },
     {
+      "label": "Audit matrix",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_summary_audit_matrix",
+      "community": 20,
+      "community_name": "Audit Summary",
+      "norm_label": "audit matrix"
+    },
+    {
+      "label": "Audit Summary",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_summary_audit_summary",
+      "community": 20,
+      "community_name": "Audit Summary",
+      "norm_label": "audit summary"
+    },
+    {
+      "label": "Outcome",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_summary_outcome",
+      "community": 20,
+      "community_name": "Audit Summary",
+      "norm_label": "outcome"
+    },
+    {
+      "label": "P0 \u2014 breaks something now",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_summary_p0_breaks_something_now",
+      "community": 20,
+      "community_name": "Audit Summary",
+      "norm_label": "p0 \u2014 breaks something now"
+    },
+    {
+      "label": "P1 \u2014 real correctness or process gap",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_summary_p1_real_correctness_or_process_gap",
+      "community": 20,
+      "community_name": "Audit Summary",
+      "norm_label": "p1 \u2014 real correctness or process gap"
+    },
+    {
+      "label": "P2 \u2014 cleanup / polish",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L55",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_summary_p2_cleanup_polish",
+      "community": 20,
+      "community_name": "Audit Summary",
+      "norm_label": "p2 \u2014 cleanup / polish"
+    },
+    {
+      "label": "Prioritized remediation roadmap",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_summary_prioritized_remediation_roadmap",
+      "community": 20,
+      "community_name": "Audit Summary",
+      "norm_label": "prioritized remediation roadmap"
+    },
+    {
+      "label": "Re-running this audit",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_summary_re_running_this_audit",
+      "community": 20,
+      "community_name": "Audit Summary",
+      "norm_label": "re-running this audit"
+    },
+    {
+      "label": "audit-chrome-devtools.md",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_devtools",
+      "community": 21,
+      "community_name": "DevTools Panel Audit",
+      "norm_label": "audit-chrome-devtools.md"
+    },
+    {
+      "label": "Confirmed findings",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_devtools_confirmed_findings",
+      "community": 21,
+      "community_name": "DevTools Panel Audit",
+      "norm_label": "confirmed findings"
+    },
+    {
+      "label": "DevTools Panel Audit",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_devtools_devtools_panel_audit",
+      "community": 21,
+      "community_name": "DevTools Panel Audit",
+      "norm_label": "devtools panel audit"
+    },
+    {
+      "label": "P1: `panel.html` makes two external network requests on every panel open, breaking offline use and leaking to Google",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_devtools_p1_panel_html_makes_two_external_network_requests_on_every_panel_open_breaking_offline_use_and_leaking_to_google",
+      "community": 21,
+      "community_name": "DevTools Panel Audit",
+      "norm_label": "p1: `panel.html` makes two external network requests on every panel open, breaking offline use and leaking to google"
+    },
+    {
+      "label": "What's solid",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_devtools_what_s_solid",
+      "community": 21,
+      "community_name": "DevTools Panel Audit",
+      "norm_label": "what's solid"
+    },
+    {
+      "label": "Worth investigating (not a confirmed bug \u2014 flagging with evidence, not fabricating a performance number)",
+      "file_type": "document",
+      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "docs_knowledgebase_audit_chrome_devtools_worth_investigating_not_a_confirmed_bug_flagging_with_evidence_not_fabricating_a_performance_number",
+      "community": 21,
+      "community_name": "DevTools Panel Audit",
+      "norm_label": "worth investigating (not a confirmed bug \u2014 flagging with evidence, not fabricating a performance number)"
+    },
+    {
       "label": "devDependencies",
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L36",
       "_origin": "ast",
-      "id": "package_devdependencies",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "devdependencies"
+      "norm_label": "devdependencies",
+      "id": "package_devdependencies"
     },
     {
       "label": "copy-webpack-plugin",
@@ -4074,10 +4294,10 @@
       "source_file": "package.json",
       "source_location": "L38",
       "_origin": "ast",
-      "id": "package_devdependencies_copy_webpack_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "copy-webpack-plugin"
+      "norm_label": "copy-webpack-plugin",
+      "id": "package_devdependencies_copy_webpack_plugin"
     },
     {
       "label": "cross-env",
@@ -4085,10 +4305,10 @@
       "source_file": "package.json",
       "source_location": "L39",
       "_origin": "ast",
-      "id": "package_devdependencies_cross_env",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "cross-env"
+      "norm_label": "cross-env",
+      "id": "package_devdependencies_cross_env"
     },
     {
       "label": "css-loader",
@@ -4096,10 +4316,10 @@
       "source_file": "package.json",
       "source_location": "L40",
       "_origin": "ast",
-      "id": "package_devdependencies_css_loader",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "css-loader"
+      "norm_label": "css-loader",
+      "id": "package_devdependencies_css_loader"
     },
     {
       "label": "html-webpack-plugin",
@@ -4107,10 +4327,10 @@
       "source_file": "package.json",
       "source_location": "L41",
       "_origin": "ast",
-      "id": "package_devdependencies_html_webpack_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "html-webpack-plugin"
+      "norm_label": "html-webpack-plugin",
+      "id": "package_devdependencies_html_webpack_plugin"
     },
     {
       "label": "@ianvs/prettier-plugin-sort-imports",
@@ -4118,10 +4338,10 @@
       "source_file": "package.json",
       "source_location": "L37",
       "_origin": "ast",
-      "id": "package_devdependencies_ianvs_prettier_plugin_sort_imports",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "@ianvs/prettier-plugin-sort-imports"
+      "norm_label": "@ianvs/prettier-plugin-sort-imports",
+      "id": "package_devdependencies_ianvs_prettier_plugin_sort_imports"
     },
     {
       "label": "mini-css-extract-plugin",
@@ -4129,10 +4349,10 @@
       "source_file": "package.json",
       "source_location": "L42",
       "_origin": "ast",
-      "id": "package_devdependencies_mini_css_extract_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "mini-css-extract-plugin"
+      "norm_label": "mini-css-extract-plugin",
+      "id": "package_devdependencies_mini_css_extract_plugin"
     },
     {
       "label": "postcss-loader",
@@ -4140,10 +4360,10 @@
       "source_file": "package.json",
       "source_location": "L43",
       "_origin": "ast",
-      "id": "package_devdependencies_postcss_loader",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "postcss-loader"
+      "norm_label": "postcss-loader",
+      "id": "package_devdependencies_postcss_loader"
     },
     {
       "label": "sass",
@@ -4151,10 +4371,10 @@
       "source_file": "package.json",
       "source_location": "L44",
       "_origin": "ast",
-      "id": "package_devdependencies_sass",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "sass"
+      "norm_label": "sass",
+      "id": "package_devdependencies_sass"
     },
     {
       "label": "sass-loader",
@@ -4162,10 +4382,10 @@
       "source_file": "package.json",
       "source_location": "L45",
       "_origin": "ast",
-      "id": "package_devdependencies_sass_loader",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "sass-loader"
+      "norm_label": "sass-loader",
+      "id": "package_devdependencies_sass_loader"
     },
     {
       "label": "style-loader",
@@ -4173,10 +4393,10 @@
       "source_file": "package.json",
       "source_location": "L46",
       "_origin": "ast",
-      "id": "package_devdependencies_style_loader",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "style-loader"
+      "norm_label": "style-loader",
+      "id": "package_devdependencies_style_loader"
     },
     {
       "label": "terser-webpack-plugin",
@@ -4184,10 +4404,10 @@
       "source_file": "package.json",
       "source_location": "L47",
       "_origin": "ast",
-      "id": "package_devdependencies_terser_webpack_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "terser-webpack-plugin"
+      "norm_label": "terser-webpack-plugin",
+      "id": "package_devdependencies_terser_webpack_plugin"
     },
     {
       "label": "webpack",
@@ -4195,10 +4415,10 @@
       "source_file": "package.json",
       "source_location": "L48",
       "_origin": "ast",
-      "id": "package_devdependencies_webpack",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack"
+      "norm_label": "webpack",
+      "id": "package_devdependencies_webpack"
     },
     {
       "label": "webpack-bundle-analyzer",
@@ -4206,10 +4426,10 @@
       "source_file": "package.json",
       "source_location": "L49",
       "_origin": "ast",
-      "id": "package_devdependencies_webpack_bundle_analyzer",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-bundle-analyzer"
+      "norm_label": "webpack-bundle-analyzer",
+      "id": "package_devdependencies_webpack_bundle_analyzer"
     },
     {
       "label": "webpack-cli",
@@ -4217,10 +4437,10 @@
       "source_file": "package.json",
       "source_location": "L50",
       "_origin": "ast",
-      "id": "package_devdependencies_webpack_cli",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-cli"
+      "norm_label": "webpack-cli",
+      "id": "package_devdependencies_webpack_cli"
     },
     {
       "label": "webpack-dev-server",
@@ -4228,10 +4448,10 @@
       "source_file": "package.json",
       "source_location": "L51",
       "_origin": "ast",
-      "id": "package_devdependencies_webpack_dev_server",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-dev-server"
+      "norm_label": "webpack-dev-server",
+      "id": "package_devdependencies_webpack_dev_server"
     },
     {
       "label": "webpack-extension-manifest-plugin",
@@ -4239,10 +4459,10 @@
       "source_file": "package.json",
       "source_location": "L52",
       "_origin": "ast",
-      "id": "package_devdependencies_webpack_extension_manifest_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-extension-manifest-plugin"
+      "norm_label": "webpack-extension-manifest-plugin",
+      "id": "package_devdependencies_webpack_extension_manifest_plugin"
     },
     {
       "label": "webpack-merge",
@@ -4250,10 +4470,10 @@
       "source_file": "package.json",
       "source_location": "L53",
       "_origin": "ast",
-      "id": "package_devdependencies_webpack_merge",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-merge"
+      "norm_label": "webpack-merge",
+      "id": "package_devdependencies_webpack_merge"
     },
     {
       "label": "zip-webpack-plugin",
@@ -4261,10 +4481,10 @@
       "source_file": "package.json",
       "source_location": "L54",
       "_origin": "ast",
-      "id": "package_devdependencies_zip_webpack_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "zip-webpack-plugin"
+      "norm_label": "zip-webpack-plugin",
+      "id": "package_devdependencies_zip_webpack_plugin"
     },
     {
       "label": "copy-webpack-plugin",
@@ -4272,10 +4492,10 @@
       "source_file": "package.json",
       "source_location": "L38",
       "_origin": "ast",
-      "id": "copy_webpack_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "copy-webpack-plugin"
+      "norm_label": "copy-webpack-plugin",
+      "id": "copy_webpack_plugin"
     },
     {
       "label": "cross-env",
@@ -4283,10 +4503,10 @@
       "source_file": "package.json",
       "source_location": "L39",
       "_origin": "ast",
-      "id": "cross_env",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "cross-env"
+      "norm_label": "cross-env",
+      "id": "cross_env"
     },
     {
       "label": "css-loader",
@@ -4294,10 +4514,10 @@
       "source_file": "package.json",
       "source_location": "L40",
       "_origin": "ast",
-      "id": "css_loader",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "css-loader"
+      "norm_label": "css-loader",
+      "id": "css_loader"
     },
     {
       "label": "html-webpack-plugin",
@@ -4305,10 +4525,10 @@
       "source_file": "package.json",
       "source_location": "L41",
       "_origin": "ast",
-      "id": "html_webpack_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "html-webpack-plugin"
+      "norm_label": "html-webpack-plugin",
+      "id": "html_webpack_plugin"
     },
     {
       "label": "@ianvs/prettier-plugin-sort-imports",
@@ -4316,10 +4536,10 @@
       "source_file": "package.json",
       "source_location": "L37",
       "_origin": "ast",
-      "id": "ianvs_prettier_plugin_sort_imports",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "@ianvs/prettier-plugin-sort-imports"
+      "norm_label": "@ianvs/prettier-plugin-sort-imports",
+      "id": "ianvs_prettier_plugin_sort_imports"
     },
     {
       "label": "mini-css-extract-plugin",
@@ -4327,10 +4547,10 @@
       "source_file": "package.json",
       "source_location": "L42",
       "_origin": "ast",
-      "id": "mini_css_extract_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "mini-css-extract-plugin"
+      "norm_label": "mini-css-extract-plugin",
+      "id": "mini_css_extract_plugin"
     },
     {
       "label": "postcss-loader",
@@ -4338,10 +4558,10 @@
       "source_file": "package.json",
       "source_location": "L43",
       "_origin": "ast",
-      "id": "postcss_loader",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "postcss-loader"
+      "norm_label": "postcss-loader",
+      "id": "postcss_loader"
     },
     {
       "label": "sass",
@@ -4349,10 +4569,10 @@
       "source_file": "package.json",
       "source_location": "L44",
       "_origin": "ast",
-      "id": "sass",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "sass"
+      "norm_label": "sass",
+      "id": "sass"
     },
     {
       "label": "sass-loader",
@@ -4360,10 +4580,10 @@
       "source_file": "package.json",
       "source_location": "L45",
       "_origin": "ast",
-      "id": "sass_loader",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "sass-loader"
+      "norm_label": "sass-loader",
+      "id": "sass_loader"
     },
     {
       "label": "style-loader",
@@ -4371,10 +4591,10 @@
       "source_file": "package.json",
       "source_location": "L46",
       "_origin": "ast",
-      "id": "style_loader",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "style-loader"
+      "norm_label": "style-loader",
+      "id": "style_loader"
     },
     {
       "label": "terser-webpack-plugin",
@@ -4382,10 +4602,10 @@
       "source_file": "package.json",
       "source_location": "L47",
       "_origin": "ast",
-      "id": "terser_webpack_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "terser-webpack-plugin"
+      "norm_label": "terser-webpack-plugin",
+      "id": "terser_webpack_plugin"
     },
     {
       "label": "webpack",
@@ -4393,10 +4613,10 @@
       "source_file": "package.json",
       "source_location": "L48",
       "_origin": "ast",
-      "id": "webpack",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack"
+      "norm_label": "webpack",
+      "id": "webpack"
     },
     {
       "label": "webpack-bundle-analyzer",
@@ -4404,10 +4624,10 @@
       "source_file": "package.json",
       "source_location": "L49",
       "_origin": "ast",
-      "id": "webpack_bundle_analyzer",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-bundle-analyzer"
+      "norm_label": "webpack-bundle-analyzer",
+      "id": "webpack_bundle_analyzer"
     },
     {
       "label": "webpack-cli",
@@ -4415,10 +4635,10 @@
       "source_file": "package.json",
       "source_location": "L50",
       "_origin": "ast",
-      "id": "webpack_cli",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-cli"
+      "norm_label": "webpack-cli",
+      "id": "webpack_cli"
     },
     {
       "label": "webpack-dev-server",
@@ -4426,10 +4646,10 @@
       "source_file": "package.json",
       "source_location": "L51",
       "_origin": "ast",
-      "id": "webpack_dev_server",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-dev-server"
+      "norm_label": "webpack-dev-server",
+      "id": "webpack_dev_server"
     },
     {
       "label": "webpack-extension-manifest-plugin",
@@ -4437,10 +4657,10 @@
       "source_file": "package.json",
       "source_location": "L52",
       "_origin": "ast",
-      "id": "webpack_extension_manifest_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-extension-manifest-plugin"
+      "norm_label": "webpack-extension-manifest-plugin",
+      "id": "webpack_extension_manifest_plugin"
     },
     {
       "label": "webpack-merge",
@@ -4448,10 +4668,10 @@
       "source_file": "package.json",
       "source_location": "L53",
       "_origin": "ast",
-      "id": "webpack_merge",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "webpack-merge"
+      "norm_label": "webpack-merge",
+      "id": "webpack_merge"
     },
     {
       "label": "zip-webpack-plugin",
@@ -4459,10 +4679,10 @@
       "source_file": "package.json",
       "source_location": "L54",
       "_origin": "ast",
-      "id": "zip_webpack_plugin",
       "community": 3,
       "community_name": "devDependencies",
-      "norm_label": "zip-webpack-plugin"
+      "norm_label": "zip-webpack-plugin",
+      "id": "zip_webpack_plugin"
     },
     {
       "label": "constants.js",
@@ -4525,10 +4745,10 @@
       "source_file": "package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "package",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "package.json"
+      "norm_label": "package.json",
+      "id": "package"
     },
     {
       "label": "allowScripts",
@@ -4536,10 +4756,10 @@
       "source_file": "package.json",
       "source_location": "L60",
       "_origin": "ast",
-      "id": "package_allowscripts",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "allowscripts"
+      "norm_label": "allowscripts",
+      "id": "package_allowscripts"
     },
     {
       "label": "core-js@3.50.0",
@@ -4547,10 +4767,10 @@
       "source_file": "package.json",
       "source_location": "L62",
       "_origin": "ast",
-      "id": "package_allowscripts_core_js_3_50_0",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "core-js@3.50.0"
+      "norm_label": "core-js@3.50.0",
+      "id": "package_allowscripts_core_js_3_50_0"
     },
     {
       "label": "@parcel/watcher@2.6.0",
@@ -4558,10 +4778,10 @@
       "source_file": "package.json",
       "source_location": "L61",
       "_origin": "ast",
-      "id": "package_allowscripts_parcel_watcher_2_6_0",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "@parcel/watcher@2.6.0"
+      "norm_label": "@parcel/watcher@2.6.0",
+      "id": "package_allowscripts_parcel_watcher_2_6_0"
     },
     {
       "label": "engines",
@@ -4569,10 +4789,10 @@
       "source_file": "package.json",
       "source_location": "L17",
       "_origin": "ast",
-      "id": "package_engines",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "engines"
+      "norm_label": "engines",
+      "id": "package_engines"
     },
     {
       "label": "node",
@@ -4580,10 +4800,10 @@
       "source_file": "package.json",
       "source_location": "L18",
       "_origin": "ast",
-      "id": "package_engines_node",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "node"
+      "norm_label": "node",
+      "id": "package_engines_node"
     },
     {
       "label": "license",
@@ -4591,10 +4811,10 @@
       "source_file": "package.json",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "package_license",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "license"
+      "norm_label": "license",
+      "id": "package_license"
     },
     {
       "label": "name",
@@ -4602,10 +4822,10 @@
       "source_file": "package.json",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "package_name",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "name"
+      "norm_label": "name",
+      "id": "package_name"
     },
     {
       "label": "packageManager",
@@ -4613,10 +4833,10 @@
       "source_file": "package.json",
       "source_location": "L16",
       "_origin": "ast",
-      "id": "package_packagemanager",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "packagemanager"
+      "norm_label": "packagemanager",
+      "id": "package_packagemanager"
     },
     {
       "label": "private",
@@ -4624,10 +4844,10 @@
       "source_file": "package.json",
       "source_location": "L15",
       "_origin": "ast",
-      "id": "package_private",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "private"
+      "norm_label": "private",
+      "id": "package_private"
     },
     {
       "label": "repository",
@@ -4635,10 +4855,10 @@
       "source_file": "package.json",
       "source_location": "L14",
       "_origin": "ast",
-      "id": "package_repository",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "repository"
+      "norm_label": "repository",
+      "id": "package_repository"
     },
     {
       "label": "scripts",
@@ -4646,10 +4866,10 @@
       "source_file": "package.json",
       "source_location": "L20",
       "_origin": "ast",
-      "id": "package_scripts",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "scripts"
+      "norm_label": "scripts",
+      "id": "package_scripts"
     },
     {
       "label": "analyze",
@@ -4657,10 +4877,10 @@
       "source_file": "package.json",
       "source_location": "L34",
       "_origin": "ast",
-      "id": "package_scripts_analyze",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "analyze"
+      "norm_label": "analyze",
+      "id": "package_scripts_analyze"
     },
     {
       "label": "build",
@@ -4668,10 +4888,10 @@
       "source_file": "package.json",
       "source_location": "L32",
       "_origin": "ast",
-      "id": "package_scripts_build",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "build"
+      "norm_label": "build",
+      "id": "package_scripts_build"
     },
     {
       "label": "build:dev",
@@ -4679,10 +4899,10 @@
       "source_file": "package.json",
       "source_location": "L31",
       "_origin": "ast",
-      "id": "package_scripts_build_dev",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "build:dev"
+      "norm_label": "build:dev",
+      "id": "package_scripts_build_dev"
     },
     {
       "label": "check",
@@ -4690,10 +4910,10 @@
       "source_file": "package.json",
       "source_location": "L28",
       "_origin": "ast",
-      "id": "package_scripts_check",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "check"
+      "norm_label": "check",
+      "id": "package_scripts_check"
     },
     {
       "label": "dev",
@@ -4701,10 +4921,10 @@
       "source_file": "package.json",
       "source_location": "L30",
       "_origin": "ast",
-      "id": "package_scripts_dev",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "dev"
+      "norm_label": "dev",
+      "id": "package_scripts_dev"
     },
     {
       "label": "format",
@@ -4712,10 +4932,10 @@
       "source_file": "package.json",
       "source_location": "L29",
       "_origin": "ast",
-      "id": "package_scripts_format",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "format"
+      "norm_label": "format",
+      "id": "package_scripts_format"
     },
     {
       "label": "graphify:install",
@@ -4723,10 +4943,10 @@
       "source_file": "package.json",
       "source_location": "L22",
       "_origin": "ast",
-      "id": "package_scripts_graphify_install",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "graphify:install"
+      "norm_label": "graphify:install",
+      "id": "package_scripts_graphify_install"
     },
     {
       "label": "graphify:mcp",
@@ -4734,10 +4954,10 @@
       "source_file": "package.json",
       "source_location": "L27",
       "_origin": "ast",
-      "id": "package_scripts_graphify_mcp",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "graphify:mcp"
+      "norm_label": "graphify:mcp",
+      "id": "package_scripts_graphify_mcp"
     },
     {
       "label": "graphify:query",
@@ -4745,10 +4965,10 @@
       "source_file": "package.json",
       "source_location": "L25",
       "_origin": "ast",
-      "id": "package_scripts_graphify_query",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "graphify:query"
+      "norm_label": "graphify:query",
+      "id": "package_scripts_graphify_query"
     },
     {
       "label": "graphify:setup",
@@ -4756,10 +4976,10 @@
       "source_file": "package.json",
       "source_location": "L23",
       "_origin": "ast",
-      "id": "package_scripts_graphify_setup",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "graphify:setup"
+      "norm_label": "graphify:setup",
+      "id": "package_scripts_graphify_setup"
     },
     {
       "label": "graphify:status",
@@ -4767,10 +4987,10 @@
       "source_file": "package.json",
       "source_location": "L26",
       "_origin": "ast",
-      "id": "package_scripts_graphify_status",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "graphify:status"
+      "norm_label": "graphify:status",
+      "id": "package_scripts_graphify_status"
     },
     {
       "label": "graphify:update",
@@ -4778,10 +4998,10 @@
       "source_file": "package.json",
       "source_location": "L24",
       "_origin": "ast",
-      "id": "package_scripts_graphify_update",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "graphify:update"
+      "norm_label": "graphify:update",
+      "id": "package_scripts_graphify_update"
     },
     {
       "label": "outdated",
@@ -4789,10 +5009,10 @@
       "source_file": "package.json",
       "source_location": "L33",
       "_origin": "ast",
-      "id": "package_scripts_outdated",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "outdated"
+      "norm_label": "outdated",
+      "id": "package_scripts_outdated"
     },
     {
       "label": "setup",
@@ -4800,10 +5020,10 @@
       "source_file": "package.json",
       "source_location": "L21",
       "_origin": "ast",
-      "id": "package_scripts_setup",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "setup"
+      "norm_label": "setup",
+      "id": "package_scripts_setup"
     },
     {
       "label": "sideEffects",
@@ -4811,10 +5031,10 @@
       "source_file": "package.json",
       "source_location": "L56",
       "_origin": "ast",
-      "id": "package_sideeffects",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "sideeffects"
+      "norm_label": "sideeffects",
+      "id": "package_sideeffects"
     },
     {
       "label": "version",
@@ -4822,10 +5042,10 @@
       "source_file": "package.json",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "package_version",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "version"
+      "norm_label": "version",
+      "id": "package_version"
     },
     {
       "label": "*.css",
@@ -4833,10 +5053,10 @@
       "source_file": "package.json",
       "source_location": "L56",
       "_origin": "ast",
-      "id": "ref_css",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "*.css"
+      "norm_label": "*.css",
+      "id": "ref_css"
     },
     {
       "label": "*.scss",
@@ -4844,10 +5064,10 @@
       "source_file": "package.json",
       "source_location": "L56",
       "_origin": "ast",
-      "id": "ref_scss",
       "community": 5,
       "community_name": "scripts",
-      "norm_label": "*.scss"
+      "norm_label": "*.scss",
+      "id": "ref_scss"
     },
     {
       "label": "ArmyUnitManagementService.js",
@@ -4921,10 +5141,10 @@
       "source_file": "webpack.common.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "webpack_common",
       "community": 8,
       "community_name": "webpack.prod.js",
-      "norm_label": "webpack.common.js"
+      "norm_label": "webpack.common.js",
+      "id": "webpack_common"
     },
     {
       "label": "CopyPlugin",
@@ -4932,10 +5152,10 @@
       "source_file": "webpack.common.js",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "webpack_common_copyplugin",
       "community": 8,
       "community_name": "webpack.prod.js",
-      "norm_label": "copyplugin"
+      "norm_label": "copyplugin",
+      "id": "webpack_common_copyplugin"
     },
     {
       "label": "HtmlWebpackPlugin",
@@ -4943,10 +5163,10 @@
       "source_file": "webpack.common.js",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "webpack_common_htmlwebpackplugin",
       "community": 8,
       "community_name": "webpack.prod.js",
-      "norm_label": "htmlwebpackplugin"
+      "norm_label": "htmlwebpackplugin",
+      "id": "webpack_common_htmlwebpackplugin"
     },
     {
       "label": "path",
@@ -4954,10 +5174,10 @@
       "source_file": "webpack.common.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "webpack_common_path",
       "community": 8,
       "community_name": "webpack.prod.js",
-      "norm_label": "path"
+      "norm_label": "path",
+      "id": "webpack_common_path"
     },
     {
       "label": "webpack",
@@ -4965,10 +5185,10 @@
       "source_file": "webpack.common.js",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "webpack_common_webpack",
       "community": 8,
       "community_name": "webpack.prod.js",
-      "norm_label": "webpack"
+      "norm_label": "webpack",
+      "id": "webpack_common_webpack"
     },
     {
       "label": "webpack.dev.js",
@@ -7703,9 +7923,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_sideeffects",
-      "target": "ref_css",
-      "confidence_score": 1.0
+      "target": "ref_css"
     },
     {
       "relation": "extends",
@@ -7715,9 +7935,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_sideeffects",
-      "target": "ref_scss",
-      "confidence_score": 1.0
+      "target": "ref_scss"
     },
     {
       "relation": "extends",
@@ -7859,9 +8079,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies_bignumber_js",
-      "target": "bignumber_js",
-      "confidence_score": 1.0
+      "target": "bignumber_js"
     },
     {
       "relation": "imports",
@@ -7871,9 +8091,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies_bootstrap",
-      "target": "bootstrap",
-      "confidence_score": 1.0
+      "target": "bootstrap"
     },
     {
       "relation": "imports",
@@ -7883,9 +8103,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies_dayjs",
-      "target": "dayjs",
-      "confidence_score": 1.0
+      "target": "dayjs"
     },
     {
       "relation": "imports",
@@ -7895,9 +8115,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies_jquery",
-      "target": "jquery",
-      "confidence_score": 1.0
+      "target": "jquery"
     },
     {
       "relation": "imports",
@@ -7907,9 +8127,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies_popperjs_core",
-      "target": "popperjs_core",
-      "confidence_score": 1.0
+      "target": "popperjs_core"
     },
     {
       "relation": "imports",
@@ -7919,9 +8139,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies_webextension_polyfill",
-      "target": "webextension_polyfill",
-      "confidence_score": 1.0
+      "target": "webextension_polyfill"
     },
     {
       "relation": "imports",
@@ -7931,9 +8151,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies_wikimedia_jquery_i18n",
-      "target": "wikimedia_jquery_i18n",
-      "confidence_score": 1.0
+      "target": "wikimedia_jquery_i18n"
     },
     {
       "relation": "imports",
@@ -7943,9 +8163,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_copy_webpack_plugin",
-      "target": "copy_webpack_plugin",
-      "confidence_score": 1.0
+      "target": "copy_webpack_plugin"
     },
     {
       "relation": "imports",
@@ -7955,9 +8175,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_cross_env",
-      "target": "cross_env",
-      "confidence_score": 1.0
+      "target": "cross_env"
     },
     {
       "relation": "imports",
@@ -7967,9 +8187,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_css_loader",
-      "target": "css_loader",
-      "confidence_score": 1.0
+      "target": "css_loader"
     },
     {
       "relation": "imports",
@@ -7979,9 +8199,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_html_webpack_plugin",
-      "target": "html_webpack_plugin",
-      "confidence_score": 1.0
+      "target": "html_webpack_plugin"
     },
     {
       "relation": "imports",
@@ -7991,9 +8211,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_ianvs_prettier_plugin_sort_imports",
-      "target": "ianvs_prettier_plugin_sort_imports",
-      "confidence_score": 1.0
+      "target": "ianvs_prettier_plugin_sort_imports"
     },
     {
       "relation": "imports",
@@ -8003,9 +8223,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_mini_css_extract_plugin",
-      "target": "mini_css_extract_plugin",
-      "confidence_score": 1.0
+      "target": "mini_css_extract_plugin"
     },
     {
       "relation": "imports",
@@ -8015,9 +8235,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_postcss_loader",
-      "target": "postcss_loader",
-      "confidence_score": 1.0
+      "target": "postcss_loader"
     },
     {
       "relation": "imports",
@@ -8027,9 +8247,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_sass",
-      "target": "sass",
-      "confidence_score": 1.0
+      "target": "sass"
     },
     {
       "relation": "imports",
@@ -8039,9 +8259,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_sass_loader",
-      "target": "sass_loader",
-      "confidence_score": 1.0
+      "target": "sass_loader"
     },
     {
       "relation": "imports",
@@ -8051,9 +8271,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_style_loader",
-      "target": "style_loader",
-      "confidence_score": 1.0
+      "target": "style_loader"
     },
     {
       "relation": "imports",
@@ -8063,9 +8283,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_terser_webpack_plugin",
-      "target": "terser_webpack_plugin",
-      "confidence_score": 1.0
+      "target": "terser_webpack_plugin"
     },
     {
       "relation": "imports",
@@ -8075,9 +8295,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_webpack",
-      "target": "webpack",
-      "confidence_score": 1.0
+      "target": "webpack"
     },
     {
       "relation": "imports",
@@ -8087,9 +8307,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_webpack_bundle_analyzer",
-      "target": "webpack_bundle_analyzer",
-      "confidence_score": 1.0
+      "target": "webpack_bundle_analyzer"
     },
     {
       "relation": "imports",
@@ -8099,9 +8319,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_webpack_cli",
-      "target": "webpack_cli",
-      "confidence_score": 1.0
+      "target": "webpack_cli"
     },
     {
       "relation": "imports",
@@ -8111,9 +8331,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_webpack_dev_server",
-      "target": "webpack_dev_server",
-      "confidence_score": 1.0
+      "target": "webpack_dev_server"
     },
     {
       "relation": "imports",
@@ -8123,9 +8343,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_webpack_extension_manifest_plugin",
-      "target": "webpack_extension_manifest_plugin",
-      "confidence_score": 1.0
+      "target": "webpack_extension_manifest_plugin"
     },
     {
       "relation": "imports",
@@ -8135,9 +8355,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_webpack_merge",
-      "target": "webpack_merge",
-      "confidence_score": 1.0
+      "target": "webpack_merge"
     },
     {
       "relation": "imports",
@@ -8147,9 +8367,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_zip_webpack_plugin",
-      "target": "zip_webpack_plugin",
-      "confidence_score": 1.0
+      "target": "zip_webpack_plugin"
     },
     {
       "relation": "imports",
@@ -10091,18 +10311,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_chrome_devtools",
-      "target": "docs_knowledgebase_audit_chrome_devtools_chrome_devtools_panel_audit",
+      "target": "docs_knowledgebase_audit_chrome_devtools_devtools_panel_audit",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_devtools_chrome_devtools_panel_audit",
-      "target": "docs_knowledgebase_audit_chrome_devtools_confirmed_findings",
+      "source": "docs_knowledgebase_audit_chrome_devtools_confirmed_findings",
+      "target": "docs_knowledgebase_audit_chrome_devtools_p1_panel_html_makes_two_external_network_requests_on_every_panel_open_breaking_offline_use_and_leaking_to_google",
       "confidence_score": 1.0
     },
     {
@@ -10112,41 +10332,30 @@
       "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_devtools_chrome_devtools_panel_audit",
-      "target": "docs_knowledgebase_audit_chrome_devtools_architecture",
+      "source": "docs_knowledgebase_audit_chrome_devtools_devtools_panel_audit",
+      "target": "docs_knowledgebase_audit_chrome_devtools_what_s_solid",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L35",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_devtools_chrome_devtools_panel_audit",
-      "target": "docs_knowledgebase_audit_chrome_devtools_gaps_in_this_pass",
+      "source": "docs_knowledgebase_audit_chrome_devtools_devtools_panel_audit",
+      "target": "docs_knowledgebase_audit_chrome_devtools_worth_investigating_not_a_confirmed_bug_flagging_with_evidence_not_fabricating_a_performance_number",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L12",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_devtools_confirmed_findings",
-      "target": "docs_knowledgebase_audit_chrome_devtools_p1_panel_loads_google_fonts_over_the_network_at_runtime",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L19",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_devtools_confirmed_findings",
-      "target": "docs_knowledgebase_audit_chrome_devtools_p1_no_body_element_see_also_css_html_audit",
+      "source": "docs_knowledgebase_audit_chrome_devtools_devtools_panel_audit",
+      "target": "docs_knowledgebase_audit_chrome_devtools_confirmed_findings",
       "confidence_score": 1.0
     },
     {
@@ -10157,28 +10366,61 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_chrome_extension",
-      "target": "docs_knowledgebase_audit_chrome_extension_chrome_extension_mv3_audit",
+      "target": "docs_knowledgebase_audit_chrome_extension_extension_mv3_audit",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L35",
+      "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_extension_chrome_extension_mv3_audit",
-      "target": "docs_knowledgebase_audit_chrome_extension_what_s_solid",
+      "source": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
+      "target": "docs_knowledgebase_audit_chrome_extension_p1_google_com_googleusercontent_com_host_permissions_have_zero_active_call_sites",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L6",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_extension_chrome_extension_mv3_audit",
+      "source": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
+      "target": "docs_knowledgebase_audit_chrome_extension_p2_externally_connectable_and_web_accessible_resources_expose_surface_nothing_consumes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
+      "target": "docs_knowledgebase_audit_chrome_extension_p2_claude_md_s_content_script_traffic_controller_description_doesn_t_match_how_index_js_actually_runs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
+      "target": "docs_knowledgebase_audit_chrome_extension_p1_webrequest_onbeforesendheaders_listener_is_a_silent_no_op",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_chrome_extension_extension_mv3_audit",
       "target": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
       "confidence_score": 1.0
     },
@@ -10186,33 +10428,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L20",
+      "source_location": "L54",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
-      "target": "docs_knowledgebase_audit_chrome_extension_p1_unused_permission_surface",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L29",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
-      "target": "docs_knowledgebase_audit_chrome_extension_p2_minimum_chrome_version_inconsistency",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/knowledgebase/audit-chrome-extension.md",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_extension_confirmed_findings",
-      "target": "docs_knowledgebase_audit_chrome_extension_p0_webrequest_onbeforesendheaders_is_a_silent_no_op",
+      "source": "docs_knowledgebase_audit_chrome_extension_extension_mv3_audit",
+      "target": "docs_knowledgebase_audit_chrome_extension_what_s_solid",
       "confidence_score": 1.0
     },
     {
@@ -10230,73 +10450,139 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L14",
+      "source_location": "L106",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
-      "target": "docs_knowledgebase_audit_css_html_p1_no_body_element_in_html_templates",
+      "target": "docs_knowledgebase_audit_css_html_p2_large_commented_out_dead_style_block",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L20",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
-      "target": "docs_knowledgebase_audit_css_html_p2_invalid_css_silently_dropped",
+      "target": "docs_knowledgebase_audit_css_html_p2_dark_mode_class_is_unreachable_dead_code",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L27",
+      "source_location": "L120",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
-      "target": "docs_knowledgebase_audit_css_html_p2_hardcoded_colors_bypass_design_tokens",
+      "target": "docs_knowledgebase_audit_css_html_p1_panel_html_s_own_inline_style_block_repeats_the_fw_bold_bug_independently_of_custom_scss",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L33",
+      "source_location": "L141",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
-      "target": "docs_knowledgebase_audit_css_html_p2_dead_css",
+      "target": "docs_knowledgebase_audit_css_html_p1_static_html_templates_have_zero_data_i18n_coverage_src_claude_md_16_s_match_panel_html_popup_html_guidance_points_at_nothing_in_those_files",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L38",
+      "source_location": "L161",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
-      "target": "docs_knowledgebase_audit_css_html_p2_options_html_accessibility_and_i18n_gaps",
+      "target": "docs_knowledgebase_audit_css_html_p1_popup_html_s_clickable_options_icon_has_no_accessible_name_and_isn_t_keyboard_operable",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L8",
+      "source_location": "L177",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
-      "target": "docs_knowledgebase_audit_css_html_p1_undefined_custom_properties_silently_fall_back_to_transparent",
+      "target": "docs_knowledgebase_audit_css_html_p2_devtools_html_is_missing_the_lang_attribute_present_on_the_other_three_templates",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L45",
+      "source_location": "L187",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
+      "target": "docs_knowledgebase_audit_css_html_p2_heading_levels_skip_straight_to_h6_h2_with_no_h1_anywhere",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
+      "target": "docs_knowledgebase_audit_css_html_p1_undefined_custom_properties_silently_fall_back_to_transparent_inherited",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
+      "target": "docs_knowledgebase_audit_css_html_p1_variables_scss_is_never_imported_the_whole_bootstrap_override_file_is_dead",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
+      "target": "docs_knowledgebase_audit_css_html_p0_debug_rainbow_colors_override_a_live_currently_rendered_icon",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
+      "target": "docs_knowledgebase_audit_css_html_p1_hardcoded_colors_bypass_design_tokens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_css_html_confirmed_findings",
+      "target": "docs_knowledgebase_audit_css_html_p1_invalid_css_silently_dropped_breaking_the_intended_styling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-css-html.md",
+      "source_location": "L201",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_css_html_css_html_audit",
@@ -10307,7 +10593,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-css-html.md",
-      "source_location": "L6",
+      "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_css_html_css_html_audit",
@@ -10329,88 +10615,198 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L16",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
-      "target": "docs_knowledgebase_audit_javascript_jquery_p0_unescaped_server_controlled_strings_reach_innerhtml",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p0_fn_post_js_s_posttodiscord_calls_an_undefined_getkey_throws_immediately_before_ever_sending_a_request",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L24",
+      "source_location": "L115",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
-      "target": "docs_knowledgebase_audit_javascript_jquery_p1_referenceerror_on_undeclared_variables",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p0_msg_guildbattlegroundservice_js_115_references_an_undeclared_output_getleaderboard_throws_every_time_it_s_called_gbg_leaderboard_never_renders",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L34",
+      "source_location": "L130",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
-      "target": "docs_knowledgebase_audit_javascript_jquery_p1_assignment_vs_comparison_bugs",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p1_assignment_instead_of_comparison_bug_live_in_three_msg_js_clan_goods_branches_confirms_src_js_claude_md_23",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L42",
+      "source_location": "L143",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
-      "target": "docs_knowledgebase_audit_javascript_jquery_p1_silent_data_bugs",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p1_getsafe_getplacevalues_in_greatbuildingsservice_js_mix_plain_js_number_arithmetic_into_a_bignumber_based_calculation",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L60",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
-      "target": "docs_knowledgebase_audit_javascript_jquery_p2_anti_patterns",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p0_two_independent_default_value_sources_for_showoptions_disagree_on_3_keys",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L8",
+      "source_location": "L171",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
-      "target": "docs_knowledgebase_audit_javascript_jquery_p0_fn_storage_js_never_returns_its_promises",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p1_unguarded_find_result_in_fshowbattleground_throws_if_a_battleground_participant_isn_t_in_guildmembers",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L6",
+      "source_location": "L186",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_javascript_jquery_javascript_jquery_audit",
-      "target": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p2_guard_clause_coverage_is_inconsistent_across_msg_js_several_files_dereference_msg_responsedata_with_no_top_level_check",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
-      "source_location": "L74",
+      "source_location": "L201",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p1_resizeobserver_instances_are_created_and_observe_d_on_nearly_every_network_response_render_and_disconnect_is_never_called_anywhere_in_the_codebase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L219",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p1_confirms_src_js_claude_md_15_body_i18n_re_scans_the_entire_panel_dom_on_nearly_every_dispatched_network_message_instead_of_scoping_to_just_inserted_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L229",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p2_fn_copy_js_14_s_import_from_jquery_is_dead_code_is_never_referenced_anywhere_in_the_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p1_chrome_webrequest_onbeforesendheaders_addlistener_at_index_js_613_621_is_a_no_op_the_origin_header_strip_never_happens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p1_os_dark_mode_change_listener_has_a_dead_comparison_instead_of_an_assignment_darkmode_state_never_updates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p0_saving_options_silently_deletes_the_clipboard_setting_from_storage_permanently_disabling_the_clipboard_feature",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p0_confirmed_instance_of_documented_repo_wide_gotcha_unescaped_innerhtml_interpolation_of_player_guild_controlled_strings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
+      "target": "docs_knowledgebase_audit_javascript_jquery_p0_fn_storage_js_s_getstorage_never_returns_its_promise_the_one_real_caller_that_depends_on_the_return_value_is_permanently_broken",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L235",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_javascript_jquery_javascript_jquery_audit",
       "target": "docs_knowledgebase_audit_javascript_jquery_what_s_solid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L252",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_javascript_jquery_audit",
+      "target": "docs_knowledgebase_audit_javascript_jquery_running_priority_total_all_3_passes_final",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-javascript-jquery.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_javascript_jquery_javascript_jquery_audit",
+      "target": "docs_knowledgebase_audit_javascript_jquery_confirmed_findings",
       "confidence_score": 1.0
     },
     {
@@ -10428,51 +10824,95 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L16",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_nodejs_webpack_confirmed_findings",
-      "target": "docs_knowledgebase_audit_nodejs_webpack_p1_production_build_has_no_source_maps",
+      "target": "docs_knowledgebase_audit_nodejs_webpack_p1_npm_run_check_the_only_automated_gate_currently_fails_on_files_outside_the_source_tree",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L21",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_nodejs_webpack_confirmed_findings",
-      "target": "docs_knowledgebase_audit_nodejs_webpack_p2_dependency_pinning_inconsistency",
+      "target": "docs_knowledgebase_audit_nodejs_webpack_p2_webpack_dev_js_s_devserver_block_is_unreachable_from_any_npm_script_and_wouldn_t_help_this_project_s_dev_loop_if_it_were",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L27",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_nodejs_webpack_confirmed_findings",
-      "target": "docs_knowledgebase_audit_nodejs_webpack_p2_prettier_invoked_via_npx_not_a_pinned_devdependency",
+      "target": "docs_knowledgebase_audit_nodejs_webpack_p2_allowscripts_field_in_package_json_has_no_effect",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L8",
+      "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_nodejs_webpack_confirmed_findings",
-      "target": "docs_knowledgebase_audit_nodejs_webpack_p1_no_lint_type_check_or_test_gate",
+      "target": "docs_knowledgebase_audit_nodejs_webpack_p2_setup_script_hard_fails_on_missing_uv_uvx_with_the_failure_surfacing_after_npm_install_already_succeeded",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L33",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_nodejs_webpack_confirmed_findings",
+      "target": "docs_knowledgebase_audit_nodejs_webpack_p2_no_nvmrc_npmrc_to_enforce_the_engines_node_pin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_nodejs_webpack_confirmed_findings",
+      "target": "docs_knowledgebase_audit_nodejs_webpack_p1_the_single_static_vendors_cache_group_forces_the_entire_jquery_bootstrap_i18n_bundle_onto_devtools_html_and_popup_html_which_don_t_use_any_of_it",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
+      "source_location": "L78",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_nodejs_webpack_confirmed_findings",
+      "target": "docs_knowledgebase_audit_nodejs_webpack_p1_postcss_loader_runs_in_both_dev_and_prod_css_pipelines_with_no_postcss_config_anywhere_in_the_repo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
+      "source_location": "L95",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_nodejs_webpack_confirmed_findings",
+      "target": "docs_knowledgebase_audit_nodejs_webpack_p2_two_dead_no_op_module_rules_in_webpack_common_js",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
+      "source_location": "L125",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_nodejs_webpack_node_js_webpack_audit",
@@ -10483,7 +10923,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-nodejs-webpack.md",
-      "source_location": "L6",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_nodejs_webpack_node_js_webpack_audit",
@@ -10498,28 +10938,17 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_summary",
-      "target": "docs_knowledgebase_audit_summary_codebase_audit_summary",
+      "target": "docs_knowledgebase_audit_summary_audit_summary",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L11",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_summary_codebase_audit_summary",
-      "target": "docs_knowledgebase_audit_summary_outcome",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L19",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_knowledgebase_audit_summary_codebase_audit_summary",
+      "source": "docs_knowledgebase_audit_summary_audit_summary",
       "target": "docs_knowledgebase_audit_summary_audit_matrix",
       "confidence_score": 1.0
     },
@@ -10527,11 +10956,22 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L31",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_summary_codebase_audit_summary",
+      "source": "docs_knowledgebase_audit_summary_audit_summary",
       "target": "docs_knowledgebase_audit_summary_prioritized_remediation_roadmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/knowledgebase/audit-summary.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "docs_knowledgebase_audit_summary_audit_summary",
+      "target": "docs_knowledgebase_audit_summary_outcome",
       "confidence_score": 1.0
     },
     {
@@ -10541,7 +10981,7 @@
       "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "docs_knowledgebase_audit_summary_codebase_audit_summary",
+      "source": "docs_knowledgebase_audit_summary_audit_summary",
       "target": "docs_knowledgebase_audit_summary_re_running_this_audit",
       "confidence_score": 1.0
     },
@@ -10549,33 +10989,33 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L33",
+      "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_summary_prioritized_remediation_roadmap",
-      "target": "docs_knowledgebase_audit_summary_p0_fix_silent_breakage_and_the_security_relevant_sink",
+      "target": "docs_knowledgebase_audit_summary_p0_breaks_something_now",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L43",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_summary_prioritized_remediation_roadmap",
-      "target": "docs_knowledgebase_audit_summary_p1_correctness_bugs_and_process_gaps",
+      "target": "docs_knowledgebase_audit_summary_p1_real_correctness_or_process_gap",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L58",
+      "source_location": "L55",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_summary_prioritized_remediation_roadmap",
-      "target": "docs_knowledgebase_audit_summary_p2_cleanup_and_polish",
+      "target": "docs_knowledgebase_audit_summary_p2_cleanup_polish",
       "confidence_score": 1.0
     },
     {
@@ -10618,9 +11058,9 @@
       "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_license",
-      "confidence_score": 1.0
+      "target": "package_license"
     },
     {
       "relation": "contains",
@@ -10629,9 +11069,9 @@
       "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_repository",
-      "confidence_score": 1.0
+      "target": "package_repository"
     },
     {
       "relation": "contains",
@@ -10640,9 +11080,9 @@
       "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_private",
-      "confidence_score": 1.0
+      "target": "package_private"
     },
     {
       "relation": "contains",
@@ -10651,9 +11091,9 @@
       "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_packagemanager",
-      "confidence_score": 1.0
+      "target": "package_packagemanager"
     },
     {
       "relation": "contains",
@@ -10662,9 +11102,9 @@
       "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_engines",
-      "confidence_score": 1.0
+      "target": "package_engines"
     },
     {
       "relation": "contains",
@@ -10673,9 +11113,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_name",
-      "confidence_score": 1.0
+      "target": "package_name"
     },
     {
       "relation": "contains",
@@ -10684,9 +11124,9 @@
       "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_scripts",
-      "confidence_score": 1.0
+      "target": "package_scripts"
     },
     {
       "relation": "contains",
@@ -10695,9 +11135,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_version",
-      "confidence_score": 1.0
+      "target": "package_version"
     },
     {
       "relation": "contains",
@@ -10706,9 +11146,9 @@
       "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_devdependencies",
-      "confidence_score": 1.0
+      "target": "package_devdependencies"
     },
     {
       "relation": "contains",
@@ -10717,9 +11157,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_dependencies",
-      "confidence_score": 1.0
+      "target": "package_dependencies"
     },
     {
       "relation": "contains",
@@ -10728,9 +11168,9 @@
       "source_location": "L56",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_sideeffects",
-      "confidence_score": 1.0
+      "target": "package_sideeffects"
     },
     {
       "relation": "contains",
@@ -10739,9 +11179,9 @@
       "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_allowscripts",
-      "confidence_score": 1.0
+      "target": "package_allowscripts"
     },
     {
       "relation": "contains",
@@ -10750,9 +11190,9 @@
       "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_allowscripts",
-      "target": "package_allowscripts_parcel_watcher_2_6_0",
-      "confidence_score": 1.0
+      "target": "package_allowscripts_parcel_watcher_2_6_0"
     },
     {
       "relation": "contains",
@@ -10761,9 +11201,9 @@
       "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_allowscripts",
-      "target": "package_allowscripts_core_js_3_50_0",
-      "confidence_score": 1.0
+      "target": "package_allowscripts_core_js_3_50_0"
     },
     {
       "relation": "contains",
@@ -10772,9 +11212,9 @@
       "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_jquery",
-      "confidence_score": 1.0
+      "target": "package_dependencies_jquery"
     },
     {
       "relation": "contains",
@@ -10783,9 +11223,9 @@
       "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_webextension_polyfill",
-      "confidence_score": 1.0
+      "target": "package_dependencies_webextension_polyfill"
     },
     {
       "relation": "contains",
@@ -10794,9 +11234,9 @@
       "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_popperjs_core",
-      "confidence_score": 1.0
+      "target": "package_dependencies_popperjs_core"
     },
     {
       "relation": "contains",
@@ -10805,9 +11245,9 @@
       "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_wikimedia_jquery_i18n",
-      "confidence_score": 1.0
+      "target": "package_dependencies_wikimedia_jquery_i18n"
     },
     {
       "relation": "contains",
@@ -10816,9 +11256,9 @@
       "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_bignumber_js",
-      "confidence_score": 1.0
+      "target": "package_dependencies_bignumber_js"
     },
     {
       "relation": "contains",
@@ -10827,9 +11267,9 @@
       "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_bootstrap",
-      "confidence_score": 1.0
+      "target": "package_dependencies_bootstrap"
     },
     {
       "relation": "contains",
@@ -10838,9 +11278,9 @@
       "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_dependencies",
-      "target": "package_dependencies_dayjs",
-      "confidence_score": 1.0
+      "target": "package_dependencies_dayjs"
     },
     {
       "relation": "contains",
@@ -10849,9 +11289,9 @@
       "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_ianvs_prettier_plugin_sort_imports",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_ianvs_prettier_plugin_sort_imports"
     },
     {
       "relation": "contains",
@@ -10860,9 +11300,9 @@
       "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_copy_webpack_plugin",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_copy_webpack_plugin"
     },
     {
       "relation": "contains",
@@ -10871,9 +11311,9 @@
       "source_location": "L39",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_cross_env",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_cross_env"
     },
     {
       "relation": "contains",
@@ -10882,9 +11322,9 @@
       "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_css_loader",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_css_loader"
     },
     {
       "relation": "contains",
@@ -10893,9 +11333,9 @@
       "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_html_webpack_plugin",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_html_webpack_plugin"
     },
     {
       "relation": "contains",
@@ -10904,9 +11344,9 @@
       "source_location": "L42",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_mini_css_extract_plugin",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_mini_css_extract_plugin"
     },
     {
       "relation": "contains",
@@ -10915,9 +11355,9 @@
       "source_location": "L43",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_postcss_loader",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_postcss_loader"
     },
     {
       "relation": "contains",
@@ -10926,9 +11366,9 @@
       "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_sass",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_sass"
     },
     {
       "relation": "contains",
@@ -10937,9 +11377,9 @@
       "source_location": "L45",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_sass_loader",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_sass_loader"
     },
     {
       "relation": "contains",
@@ -10948,9 +11388,9 @@
       "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_style_loader",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_style_loader"
     },
     {
       "relation": "contains",
@@ -10959,9 +11399,9 @@
       "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_terser_webpack_plugin",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_terser_webpack_plugin"
     },
     {
       "relation": "contains",
@@ -10970,9 +11410,9 @@
       "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_webpack",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_webpack"
     },
     {
       "relation": "contains",
@@ -10981,9 +11421,9 @@
       "source_location": "L49",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_webpack_bundle_analyzer",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_webpack_bundle_analyzer"
     },
     {
       "relation": "contains",
@@ -10992,9 +11432,9 @@
       "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_webpack_cli",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_webpack_cli"
     },
     {
       "relation": "contains",
@@ -11003,9 +11443,9 @@
       "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_webpack_dev_server",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_webpack_dev_server"
     },
     {
       "relation": "contains",
@@ -11014,9 +11454,9 @@
       "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_webpack_extension_manifest_plugin",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_webpack_extension_manifest_plugin"
     },
     {
       "relation": "contains",
@@ -11025,9 +11465,9 @@
       "source_location": "L53",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_webpack_merge",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_webpack_merge"
     },
     {
       "relation": "contains",
@@ -11036,9 +11476,9 @@
       "source_location": "L54",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_zip_webpack_plugin",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_zip_webpack_plugin"
     },
     {
       "relation": "contains",
@@ -11047,9 +11487,9 @@
       "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_engines",
-      "target": "package_engines_node",
-      "confidence_score": 1.0
+      "target": "package_engines_node"
     },
     {
       "relation": "contains",
@@ -11058,9 +11498,9 @@
       "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_setup",
-      "confidence_score": 1.0
+      "target": "package_scripts_setup"
     },
     {
       "relation": "contains",
@@ -11069,9 +11509,9 @@
       "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_graphify_install",
-      "confidence_score": 1.0
+      "target": "package_scripts_graphify_install"
     },
     {
       "relation": "contains",
@@ -11080,9 +11520,9 @@
       "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_graphify_setup",
-      "confidence_score": 1.0
+      "target": "package_scripts_graphify_setup"
     },
     {
       "relation": "contains",
@@ -11091,9 +11531,9 @@
       "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_graphify_update",
-      "confidence_score": 1.0
+      "target": "package_scripts_graphify_update"
     },
     {
       "relation": "contains",
@@ -11102,9 +11542,9 @@
       "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_graphify_query",
-      "confidence_score": 1.0
+      "target": "package_scripts_graphify_query"
     },
     {
       "relation": "contains",
@@ -11113,9 +11553,9 @@
       "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_graphify_status",
-      "confidence_score": 1.0
+      "target": "package_scripts_graphify_status"
     },
     {
       "relation": "contains",
@@ -11124,9 +11564,9 @@
       "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_graphify_mcp",
-      "confidence_score": 1.0
+      "target": "package_scripts_graphify_mcp"
     },
     {
       "relation": "contains",
@@ -11135,9 +11575,9 @@
       "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_check",
-      "confidence_score": 1.0
+      "target": "package_scripts_check"
     },
     {
       "relation": "contains",
@@ -11146,9 +11586,9 @@
       "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_format",
-      "confidence_score": 1.0
+      "target": "package_scripts_format"
     },
     {
       "relation": "contains",
@@ -11157,9 +11597,9 @@
       "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_dev",
-      "confidence_score": 1.0
+      "target": "package_scripts_dev"
     },
     {
       "relation": "contains",
@@ -11168,9 +11608,9 @@
       "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_build_dev",
-      "confidence_score": 1.0
+      "target": "package_scripts_build_dev"
     },
     {
       "relation": "contains",
@@ -11179,9 +11619,9 @@
       "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_build",
-      "confidence_score": 1.0
+      "target": "package_scripts_build"
     },
     {
       "relation": "contains",
@@ -11190,9 +11630,9 @@
       "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_outdated",
-      "confidence_score": 1.0
+      "target": "package_scripts_outdated"
     },
     {
       "relation": "contains",
@@ -11201,9 +11641,9 @@
       "source_location": "L34",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_analyze",
-      "confidence_score": 1.0
+      "target": "package_scripts_analyze"
     },
     {
       "relation": "contains",
@@ -13819,9 +14259,9 @@
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "webpack_common",
-      "target": "webpack_common_path",
-      "confidence_score": 1.0
+      "target": "webpack_common_path"
     },
     {
       "relation": "contains",
@@ -13830,9 +14270,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "webpack_common",
-      "target": "webpack_common_webpack",
-      "confidence_score": 1.0
+      "target": "webpack_common_webpack"
     },
     {
       "relation": "contains",
@@ -13841,9 +14281,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "webpack_common",
-      "target": "webpack_common_copyplugin",
-      "confidence_score": 1.0
+      "target": "webpack_common_copyplugin"
     },
     {
       "relation": "contains",
@@ -13852,9 +14292,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "webpack_common",
-      "target": "webpack_common_htmlwebpackplugin",
-      "confidence_score": 1.0
+      "target": "webpack_common_htmlwebpackplugin"
     },
     {
       "relation": "contains",
@@ -14068,19 +14508,8 @@
     {
       "relation": "references",
       "confidence": "EXTRACTED",
-      "source_file": "docs/knowledgebase/audit-chrome-devtools.md",
-      "source_location": "L22",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_knowledgebase_audit_chrome_devtools",
-      "target": "docs_knowledgebase_audit_css_html",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L23",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_summary",
@@ -14091,7 +14520,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L24",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_summary",
@@ -14102,7 +14531,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L26",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_summary",
@@ -14113,7 +14542,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L28",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_summary",
@@ -14124,7 +14553,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "docs/knowledgebase/audit-summary.md",
-      "source_location": "L29",
+      "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_knowledgebase_audit_summary",
@@ -14900,5 +15329,5 @@
       "source_file": "README.md"
     }
   ],
-  "built_at_commit": "346f413200a313cbb0c5b3b5132e608e9af22bad"
+  "built_at_commit": "783beee1e5dee7e06377561ce71b6828b2947e2e"
 }
