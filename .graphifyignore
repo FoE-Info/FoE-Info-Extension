@@ -1,9 +1,7 @@
 # Agent and repository-tooling internals are not application documentation.
-.agents/
 .aas/
 .claude/
 .codex/
-AGENTS.md
 CLAUDE.md
 aas-stack.json
 

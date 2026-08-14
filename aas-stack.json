@@ -9,27 +9,42 @@
   "targets": [{ "host": "claude", "scope": "project" }],
   "profile": {
     "goals": [
-      "Maintain and audit a Manifest V3 Chrome DevTools extension",
-      "Harden security/privacy posture (CSP, permissions, XSS)",
-      "Improve accessibility of extension UI pages",
-      "Manage webhook/API integrations (Discord, Google Sheets)",
-      "Support dynamic browser testing via DevTools",
-      "Keep maintenance changes surgical and well-scoped"
+      "Bugfix a Manifest V3 Chrome DevTools extension",
+      "Diagnose and reproduce defects via dynamic browser testing (DevTools, console, network)",
+      "Harden security/privacy posture (CSP, permissions, XSS) while fixing bugs",
+      "Fix accessibility defects on extension UI pages",
+      "Fix webhook/API integration bugs (Discord, Google Sheets)",
+      "Keep fixes surgical and well-scoped — no unrelated refactors"
     ],
     "projectType": "browser-extension",
     "languages": ["javascript", "scss"],
     "frameworks": ["jquery", "bootstrap", "webpack"],
     "constraints": [
       "No test runner currently configured",
-      "No jQuery/SCSS/webpack-specific catalog skill available"
+      "No jQuery/SCSS/webpack-specific catalog skill available",
+      "No catalog skill dedicated to chrome.storage or cross-context extension messaging",
+      "No Discord/Google Sheets-specific skill; only generic webhook/API patterns available"
     ]
   },
   "skills": [
     { "id": "browser-extension-builder" },
-    { "id": "api-integration" },
+    { "id": "chrome-extension-developer" },
     { "id": "browser-testing-with-devtools" },
+    { "id": "bug-hunter" },
     { "id": "007" },
     { "id": "accesslint-audit" },
-    { "id": "andrej-karpathy" }
+    { "id": "ckw-design" },
+    { "id": "api-integration" },
+    { "id": "i18n-localization" },
+    { "id": "agents-md" },
+    { "id": "andrej-karpathy" },
+    { "id": "brainstorming" },
+    { "id": "lint-and-validate" },
+    { "id": "create-pr" },
+    { "id": "systematic-debugging" },
+    { "id": "security-auditor" },
+    { "id": "concise-planning" },
+    { "id": "test-driven-development" },
+    { "id": "git-pushing" }
   ]
 }

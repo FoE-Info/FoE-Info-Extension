@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/var/home/kronikpillow/.local/bin/graphify hook-guard search"
+            "command": "graphify hook-guard search"
           }
         ]
       },
@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/var/home/kronikpillow/.local/bin/graphify hook-guard read"
+            "command": "graphify hook-guard read"
           }
         ]
       }
@@ -23,18 +23,45 @@
   },
   "permissions": {
     "allow": [
-      "mcp__aas__search_skills",
-      "mcp__aas__get_skill",
-      "mcp__aas__compose_stack",
-      "mcp__aas__inspect_stack",
-      "mcp__graphify__query_graph",
-      "mcp__graphify__graph_stats",
-      "Bash(graphify query *)",
-      "Bash(graphify explain *)",
+      "mcp__aas",
+      "mcp__graphify",
+      "mcp__chrome-devtools",
+      "Bash(graphify *)",
+      "Bash(npx graphify *)",
+      "Bash(npm run *)",
+      "Bash(npm ls *)",
+      "Bash(npm --version)",
       "Bash(npm view *)",
-      "Bash(aas catalog status *)",
+      "Bash(npm audit *)",
+      "Bash(npm outdated *)",
+      "Bash(npm why *)",
+      "Bash(npx --yes prettier@3.9.6 *)",
+      "Bash(npx --yes sass *)",
+      "Bash(npx -y modern-web-guidance@latest *)",
+      "Bash(git status *)",
+      "Bash(git check-ignore *)",
+      "Bash(git add *)",
+      "Bash(aas catalog *)",
+      "Bash(aas stack *)",
+      "Bash(aas mcp *)",
       "Bash(aas --help)",
-      "Bash(systemctl --user show-environment)"
-    ]
-  }
+      "Bash(uv tool *)",
+      "Bash(node -e *)",
+      "Bash(grep *)",
+      "Bash(awk *)",
+      "Bash(sort *)",
+      "Bash(echo *)",
+      "Bash(cd *)",
+      "Bash(claude mcp list)",
+      "Bash(systemctl --user show-environment)",
+      "Read(//tmp/**)",
+      "WebSearch",
+      "WebFetch(domain:developer.chrome.com)",
+      "WebFetch(domain:chromedevtools.github.io)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:groups.google.com)"
+    ],
+    "deny": ["Bash(git push --force*)", "Bash(git reset --hard*)"]
+  },
+  "enabledMcpjsonServers": ["graphify", "aas", "chrome-devtools"]
 }

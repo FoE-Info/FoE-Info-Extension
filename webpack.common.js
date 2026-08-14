@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -37,16 +36,15 @@ module.exports = {
       },
     },
   },
+  output: {
+    clean: true,
+  },
   plugins: [
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
     }),
     new webpack.ProgressPlugin(),
-    new CleanWebpackPlugin({
-      verbose: true,
-      cleanStaleWebpackAssets: false,
-    }),
     new HtmlWebpackPlugin({
       title: 'FoE-Info',
       manifest: 'manifest.json',

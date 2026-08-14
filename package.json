@@ -8,28 +8,33 @@
     "bootstrap": "^5.3.8",
     "dayjs": "^1.11.21",
     "jquery": "^4.0.0",
-    "webextension-polyfill": "^0.12.0",
-    "webhook-discord": "^3.7.8"
+    "webextension-polyfill": "^0.12.0"
   },
   "license": "AGPL-3.0-or-later",
   "repository": "",
   "private": true,
+  "packageManager": "npm@12.0.2",
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "scripts": {
-    "setup": "mise run setup || (npm install && (command -v uv >/dev/null 2>&1 || (command -v pipx >/dev/null 2>&1 && pipx install \"graphifyy[gemini,mcp]==0.9.36\" || pip install \"graphifyy[gemini,mcp]==0.9.36\")))",
-    "check": "prettier --check .",
-    "format": "prettier --write .",
-    "dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js --watch",
-    "build:dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
-    "outdated": "npx --yes npm-check-updates@23.0.1",
-    "analyze": "cross-env ANALYZE=true NODE_ENV=production webpack --config webpack.prod.js",
-    "test:graphify-report": "node scripts/graphify-filter-surprises.test.mjs",
-    "graphify-filter-surprises": "node scripts/graphify-filter-surprises.mjs",
-    "graphify-update": "UV_CACHE_DIR=\"$PWD/.cache/uv\"; UV_TOOL_DIR=\"$PWD/.cache/uv/tools\"; export UV_CACHE_DIR UV_TOOL_DIR; (command -v uvx >/dev/null 2>&1 && uvx --from \"graphifyy[gemini,mcp]==0.9.36\" graphify update . || (command -v pipx >/dev/null 2>&1 && pipx run --spec \"graphifyy[gemini,mcp]==0.9.36\" graphify update . || graphify update .)) && npm run graphify-filter-surprises"
+    "setup": "npm install && npm --version && uv --version && npx --yes prettier@3.9.6 --version && uvx --version",
+    "graphify:install": "uv tool install --upgrade 'graphifyy[mcp]==0.9.41'",
+    "graphify:setup": "npm run graphify:install && graphify codex install && graphify claude install && graphify hook install && graphify update .",
+    "graphify:update": "graphify update .",
+    "graphify:query": "graphify query",
+    "graphify:status": "graphify hook status && graphify diagnose multigraph",
+    "graphify:mcp": "graphify-mcp graphify-out/graph.json",
+    "check": "npx --yes prettier@3.9.6 --check .",
+    "format": "npx --yes prettier@3.9.6 --write .",
+    "dev": "npx cross-env NODE_ENV=development npx webpack --config webpack.dev.js --watch",
+    "build:dev": "npx cross-env NODE_ENV=development npx webpack --config webpack.dev.js",
+    "build": "npx cross-env NODE_ENV=production npx webpack --config webpack.prod.js",
+    "outdated": "npx --yes npm-check-updates@23.0.2",
+    "analyze": "npx cross-env ANALYZE=true NODE_ENV=production npx webpack --config webpack.prod.js"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
-    "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^14.0.0",
     "cross-env": "^10.1.0",
     "css-loader": "^7.1.4",
@@ -51,5 +56,9 @@
   "sideEffects": [
     "*.css",
     "*.scss"
-  ]
+  ],
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "core-js@3.50.0": true
+  }
 }

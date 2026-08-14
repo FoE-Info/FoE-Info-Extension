@@ -6,7 +6,6 @@ graphify-out/cache/            # optional: commit for speed, skip to keep repo s
 .vscode/settings.json
 
 # Claude Code: personal/local-only, not shared project config
-.claude/settings.local.json
 .claude/scheduled_tasks.lock
 .claude/*.graphify-bak
 

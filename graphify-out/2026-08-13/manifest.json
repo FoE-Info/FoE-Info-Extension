@@ -1,0 +1,252 @@
+{
+  ".mcp.json": {
+    "mtime": 1786576409.7661536,
+    "ast_hash": "28c53a6af52f028af2522fc9cb32cb3a",
+    "semantic_hash": "28c53a6af52f028af2522fc9cb32cb3a"
+  },
+  "package.json": {
+    "mtime": 1786574851.0927706,
+    "ast_hash": "b1817ca88072ecf492a44945cea20ac2",
+    "semantic_hash": "b1817ca88072ecf492a44945cea20ac2"
+  },
+  "src/chrome/manifest.json": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "04b26c10faff8979bcc0eec22f50bb2d",
+    "semantic_hash": "04b26c10faff8979bcc0eec22f50bb2d"
+  },
+  "src/js/devtools.js": {
+    "mtime": 1785981220.9646113,
+    "ast_hash": "049aaaa563b20b6772f4abaefaf7a59c",
+    "semantic_hash": "049aaaa563b20b6772f4abaefaf7a59c"
+  },
+  "src/js/fn/AddElement.js": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "e5321c251ae80c2eb19a69f4fc755ce7",
+    "semantic_hash": "e5321c251ae80c2eb19a69f4fc755ce7"
+  },
+  "src/js/fn/collapse.js": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "c4d586e46254ada74d17f1442816bb04",
+    "semantic_hash": "c4d586e46254ada74d17f1442816bb04"
+  },
+  "src/js/fn/constants.js": {
+    "mtime": 1785981220.964726,
+    "ast_hash": "b9f58367081a3d9f0426ba4da9b7be59",
+    "semantic_hash": "b9f58367081a3d9f0426ba4da9b7be59"
+  },
+  "src/js/fn/copy.js": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "d08c6f6d09fe924eae0045c540f62739",
+    "semantic_hash": "d08c6f6d09fe924eae0045c540f62739"
+  },
+  "src/js/fn/globals.js": {
+    "mtime": 1785981220.964726,
+    "ast_hash": "4eee70f230bb2c44790688d306c46c79",
+    "semantic_hash": "4eee70f230bb2c44790688d306c46c79"
+  },
+  "src/js/fn/helper.js": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "34e13b4b01d336e6241d9172c291df7a",
+    "semantic_hash": "34e13b4b01d336e6241d9172c291df7a"
+  },
+  "src/js/fn/post.js": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "9d8df649f5bf5180517313235e1e92af",
+    "semantic_hash": "9d8df649f5bf5180517313235e1e92af"
+  },
+  "src/js/fn/storage.js": {
+    "mtime": 1786118695.1813076,
+    "ast_hash": "ab8e7439c1c3c139b22730f5424bb218",
+    "semantic_hash": "ab8e7439c1c3c139b22730f5424bb218"
+  },
+  "src/js/index.js": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "45d4fb99be7fd639e17aba5b264f8850",
+    "semantic_hash": "45d4fb99be7fd639e17aba5b264f8850"
+  },
+  "src/js/msg/ArmyUnitManagementService.js": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "ee018c436d1d24e3fc4be88f169ca24e",
+    "semantic_hash": "ee018c436d1d24e3fc4be88f169ca24e"
+  },
+  "src/js/msg/BonusService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "2d41b046089710c74ab724184c19b07c",
+    "semantic_hash": "2d41b046089710c74ab724184c19b07c"
+  },
+  "src/js/msg/CityProductionService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "ba29146751d45913018f3777fb9b248e",
+    "semantic_hash": "ba29146751d45913018f3777fb9b248e"
+  },
+  "src/js/msg/ClanBattleService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "eb31fc81b28847abc15a87b338b7b1b3",
+    "semantic_hash": "eb31fc81b28847abc15a87b338b7b1b3"
+  },
+  "src/js/msg/ConversationService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "09b7aca6d71d262eece96d5cdd3164ca",
+    "semantic_hash": "09b7aca6d71d262eece96d5cdd3164ca"
+  },
+  "src/js/msg/GreatBuildingsService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "2f1e48a9aa356040a87dc2e93c6e0825",
+    "semantic_hash": "2f1e48a9aa356040a87dc2e93c6e0825"
+  },
+  "src/js/msg/GuildBattlegroundService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "958c0b3e1585726a6f081b9df77d4c75",
+    "semantic_hash": "958c0b3e1585726a6f081b9df77d4c75"
+  },
+  "src/js/msg/GuildExpeditionService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "becdc9ede1c62a6258444c898dd5d31b",
+    "semantic_hash": "becdc9ede1c62a6258444c898dd5d31b"
+  },
+  "src/js/msg/OtherPlayerService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "f17dbd9588f9a6ec2ab078d18b68144a",
+    "semantic_hash": "f17dbd9588f9a6ec2ab078d18b68144a"
+  },
+  "src/js/msg/ResourceService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "56b6f0348587798830ebe4779fe05fa1",
+    "semantic_hash": "56b6f0348587798830ebe4779fe05fa1"
+  },
+  "src/js/msg/StartupService.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "2572944a25f383e5e7826b1cc9d469f1",
+    "semantic_hash": "2572944a25f383e5e7826b1cc9d469f1"
+  },
+  "src/js/options.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "402c24845a2dc2ebcd218bc915e60fc8",
+    "semantic_hash": "402c24845a2dc2ebcd218bc915e60fc8"
+  },
+  "src/js/popup.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "24d5c96752d91ada5db7ea2720a18fb0",
+    "semantic_hash": "24d5c96752d91ada5db7ea2720a18fb0"
+  },
+  "src/js/vars/showOptions.js": {
+    "mtime": 1785981220.9653156,
+    "ast_hash": "d77504061e161aa317b5f2105969d506",
+    "semantic_hash": "d77504061e161aa317b5f2105969d506"
+  },
+  "webpack.common.js": {
+    "mtime": 1786551774.5852475,
+    "ast_hash": "3ee88369cea10bbdaa1b660fc4cdc058",
+    "semantic_hash": "3ee88369cea10bbdaa1b660fc4cdc058"
+  },
+  "webpack.dev.js": {
+    "mtime": 1786155082.480991,
+    "ast_hash": "63da185d672a938046406a07a59b12af",
+    "semantic_hash": "63da185d672a938046406a07a59b12af"
+  },
+  "webpack.prod.js": {
+    "mtime": 1786155082.4824624,
+    "ast_hash": "09c0df2166bb66ac5c8ff32790cf1ec4",
+    "semantic_hash": "09c0df2166bb66ac5c8ff32790cf1ec4"
+  },
+  "CLAUDE.md": {
+    "mtime": 1786583249.2516272,
+    "ast_hash": "548788f49a5b02c242d01ecb17dbe1d8",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1786569436.7335987,
+    "ast_hash": "307e0977b3787b080579484c41eeeef3",
+    "semantic_hash": "307e0977b3787b080579484c41eeeef3"
+  },
+  "SECURITY.md": {
+    "mtime": 1786569436.7425985,
+    "ast_hash": "205b2e6e02d6a8bd3fde05a0ae1c5414",
+    "semantic_hash": "205b2e6e02d6a8bd3fde05a0ae1c5414"
+  },
+  "src/chrome/devtools.html": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "f426aa61d247417b82db827782e4bfd5",
+    "semantic_hash": "f426aa61d247417b82db827782e4bfd5"
+  },
+  "src/chrome/options.html": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "f06d5a88050511d4e88a725aa2fbb6a4",
+    "semantic_hash": "f06d5a88050511d4e88a725aa2fbb6a4"
+  },
+  "src/chrome/panel.html": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "45b9a32519682724f1fd704b6459e9c2",
+    "semantic_hash": "45b9a32519682724f1fd704b6459e9c2"
+  },
+  "src/chrome/popup.html": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "e5d1f2c7ebbb892cb8367e5f5417c4b8",
+    "semantic_hash": "e5d1f2c7ebbb892cb8367e5f5417c4b8"
+  },
+  "src/icons/common/tools.svg": {
+    "mtime": 1785981220.9643536,
+    "ast_hash": "c8acc02d884502423f784f2bf64e546c",
+    "semantic_hash": "c8acc02d884502423f784f2bf64e546c"
+  },
+  "src/icons/foe-info/Icon128.png": {
+    "mtime": 1785981220.9643536,
+    "ast_hash": "490e5faa78912cd41c21676b3c823dfd",
+    "semantic_hash": "490e5faa78912cd41c21676b3c823dfd"
+  },
+  "src/images/logo.png": {
+    "mtime": 1785981220.9644406,
+    "ast_hash": "15732e608c4bb5571f100237bbe9b6b4",
+    "semantic_hash": "15732e608c4bb5571f100237bbe9b6b4"
+  },
+  ".vscode/tasks.json": {
+    "mtime": 1786566159.5461538,
+    "ast_hash": "",
+    "semantic_hash": ""
+  },
+  "skills-lock.json": {
+    "mtime": 1786577178.3532069,
+    "ast_hash": "",
+    "semantic_hash": ""
+  },
+  "src/chrome/manifest_release.json": {
+    "mtime": 1786155082.4804914,
+    "ast_hash": "",
+    "semantic_hash": ""
+  },
+  "src/i18n/de.json": {
+    "mtime": 1785981220.964064,
+    "ast_hash": "",
+    "semantic_hash": ""
+  },
+  "src/i18n/el.json": {
+    "mtime": 1785981220.9642031,
+    "ast_hash": "",
+    "semantic_hash": ""
+  },
+  "src/i18n/en.json": {
+    "mtime": 1785981220.9642031,
+    "ast_hash": "",
+    "semantic_hash": ""
+  },
+  "src/i18n/es.json": {
+    "mtime": 1785981220.9642031,
+    "ast_hash": "",
+    "semantic_hash": ""
+  },
+  "src/i18n/fr.json": {
+    "mtime": 1785981220.9642031,
+    "ast_hash": "",
+    "semantic_hash": ""
+  },
+  "src/i18n/gr.json": {
+    "mtime": 1785981220.9642031,
+    "ast_hash": "",
+    "semantic_hash": ""
+  },
+  "src/i18n/it.json": {
+    "mtime": 1785981220.9642031,
+    "ast_hash": "",
+    "semantic_hash": ""
+  }
+}
