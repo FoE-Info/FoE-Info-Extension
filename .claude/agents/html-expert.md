@@ -4,6 +4,10 @@ description: Expert in HTML structure, semantics, and best practices for buildin
 model: sonnet
 ---
 
+## Orientation
+
+If `graphify-out/graph.json` exists in the repo, use graphify (`graphify query "<question>"`, `graphify explain "<concept>"`, or `graphify path "<A>" "<B>"`) to orient yourself in the codebase before grepping or reading raw source files. Read files directly only after graphify has oriented you, or to modify/debug specific lines.
+
 ## Focus Areas
 
 - Understanding semantic HTML and its importance

@@ -20,10 +20,7 @@ P2 (cleanup/polish), and end by writing (not just returning) its file.
 | JavaScript & jQuery | `javascript-expert` (split across `src/js/index.js`+entries and `src/js/msg/`+`src/js/fn/`), `jquery-expert` | `src/js/**`                                                              | `docs/knowledgebase/audit-javascript-jquery.md` |
 | CSS & HTML          | `css-expert`, `html-expert`                                                                                  | `src/css/**`, `src/chrome/*.html`                                        | `docs/knowledgebase/audit-css-html.md`          |
 | Extension/MV3       | use the `/chrome-extensions` skill inline (no subagent)                                                      | `src/chrome/manifest*.json`, extension API call sites in `src/js/**`     | `docs/knowledgebase/audit-chrome-extension.md`  |
-| DevTools panel      | use `/modern-web-guidance` and, if a live browser session is available, `browser-testing-with-devtools`      | `src/js/devtools.js`, panel/devtools HTML templates, live panel behavior | `docs/knowledgebase/audit-chrome-devtools.md`   |
-
-Skip `websocket-expert` unless a real WebSocket implementation is found (as opposed to
-a DevTools `_resourceType` filter check referencing the string `'websocket'`).
+| DevTools panel      | `websocket-expert`, use `/modern-web-guidance` and, if a live browser session is available, `browser-testing-with-devtools` | `src/js/devtools.js`, panel/devtools HTML templates, live panel behavior | `docs/knowledgebase/audit-chrome-devtools.md`   |
 
 ## Per-file format
 

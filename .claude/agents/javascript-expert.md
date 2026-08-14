@@ -4,6 +4,10 @@ description: Expert in modern JavaScript specializing in language features, opti
 model: sonnet
 ---
 
+## Orientation
+
+If `graphify-out/graph.json` exists in the repo, use graphify (`graphify query "<question>"`, `graphify explain "<concept>"`, or `graphify path "<A>" "<B>"`) to orient yourself in the codebase before grepping or reading raw source files. Read files directly only after graphify has oriented you, or to modify/debug specific lines.
+
 ## Focus Areas
 
 - ES6+ features (let, const, arrow functions, template literals)

@@ -9,21 +9,26 @@
   "targets": [{ "host": "claude", "scope": "project" }],
   "profile": {
     "goals": [
-      "Bugfix a Manifest V3 Chrome DevTools extension",
+      "Develop and maintain a Manifest V3 Chrome DevTools extension (features, bugfixes, refactors)",
       "Diagnose and reproduce defects via dynamic browser testing (DevTools, console, network)",
-      "Harden security/privacy posture (CSP, permissions, XSS) while fixing bugs",
-      "Fix accessibility defects on extension UI pages",
-      "Fix webhook/API integration bugs (Discord, Google Sheets)",
-      "Keep fixes surgical and well-scoped — no unrelated refactors"
+      "Harden security/privacy posture (CSP, permissions, XSS) across all changes",
+      "Fix and prevent accessibility defects on extension UI pages (popup, options, DevTools panel)",
+      "Build and troubleshoot webhook/API integrations (Discord, Google Sheets)",
+      "Keep changes surgical and well-scoped — no unrelated refactors",
+      "Maintain accurate CLAUDE.md/agent instructions and i18n locale files",
+      "Document the codebase for AI-agent navigation, using graphify's knowledge graph as the source map"
     ],
     "projectType": "browser-extension",
     "languages": ["javascript", "scss"],
     "frameworks": ["jquery", "bootstrap", "webpack"],
     "constraints": [
-      "No test runner currently configured",
+      "No test runner configured; Prettier is the only automated gate",
+      "Manual verification via unpacked extension is required, not optional",
       "No jQuery/SCSS/webpack-specific catalog skill available",
-      "No catalog skill dedicated to chrome.storage or cross-context extension messaging",
-      "No Discord/Google Sheets-specific skill; only generic webhook/API patterns available"
+      "No catalog skill for chrome.storage or cross-context messaging",
+      "No Discord/Google Sheets-specific skill; only generic webhook/API",
+      "No GitHub Actions/CI configured; only generic git/PR skills",
+      "graphify is the authoritative codebase map; not in the aas catalog"
     ]
   },
   "skills": [
@@ -37,14 +42,12 @@
     { "id": "api-integration" },
     { "id": "i18n-localization" },
     { "id": "agents-md" },
+    { "id": "agents-generator" },
     { "id": "andrej-karpathy" },
     { "id": "brainstorming" },
     { "id": "lint-and-validate" },
-    { "id": "create-pr" },
-    { "id": "systematic-debugging" },
-    { "id": "security-auditor" },
+    { "id": "pr-writer" },
     { "id": "concise-planning" },
-    { "id": "test-driven-development" },
     { "id": "git-pushing" }
   ]
 }
