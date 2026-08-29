@@ -33,7 +33,11 @@ import {
   debug,
 } from '../index.js';
 import { availablePacksFP, Goods, language } from '../index.js';
-import { ResourceDefs, availableFP } from './ResourceService.js';
+import {
+  ResourceDefs,
+  availableFP,
+  getPlayerResources,
+} from './ResourceService.js';
 import * as helper from '../fn/helper.js';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
@@ -93,7 +97,7 @@ var fpBuildings = [];
 var goodsBuildings = [];
 var clanGoodsBuildings = [];
 
-export function startupService(msg) {
+export async function startupService(msg) {
   // console.debug('parsed:', parsed);
   // console.debug('msg:', msg);
   const user = msg.responseData.user_data;
@@ -111,6 +115,11 @@ export function startupService(msg) {
     user.era,
   );
   helper.setMyGuildPermissions(user.clan_permissions);
+  if (msg.responseData.resources) {
+    getPlayerResources({ responseData: msg.responseData.resources });
+  } else if (user && user.resources) {
+    getPlayerResources({ responseData: user.resources });
+  }
   clearArmyUnits();
   Galaxy.bonus = [];
   // Galaxy.amount = 0;
@@ -790,6 +799,7 @@ export function startupService(msg) {
     });
   }
 
+  Goods.sad = 0;
   Goods.sash = 0;
   Goods.sat = 0;
   Goods.sajm = 0;
@@ -805,8 +815,8 @@ export function startupService(msg) {
   Goods.pme = 0;
   Goods.me = 0;
   Goods.pe = 0;
-  Goods.ina = 0;
-  Goods.cma = 0;
+  Goods.inda = 0;
+  Goods.ca = 0;
   Goods.lma = 0;
   Goods.hma = 0;
   Goods.ema = 0;
@@ -1303,8 +1313,8 @@ function showTooltips() {
     'pme',
     'me',
     'pe',
-    'ina',
-    'cma',
+    'inda',
+    'ca',
     'lma',
     'hma',
     'ema',
@@ -1443,7 +1453,7 @@ function fGoodsText(age, goods) {
     return `<p>` + goods['LateMiddleAge'] + `</p>`;
   } else if (age == 'ca') {
     return `<p>` + goods['ColonialAge'] + `</p>`;
-  } else if (age == 'ina') {
+  } else if (age == 'inda') {
     return `<p>` + goods['IndustrialAge'] + `</p>`;
   } else if (age == 'pe') {
     return `<p>` + goods['ProgressiveEra'] + `</p>`;
@@ -1475,6 +1485,12 @@ function fGoodsText(age, goods) {
     return `<p>` + goods['SpaceAgeTitan'] + `</p>`;
   } else if (age == 'sash') {
     return `<p>` + goods['SpaceAgeSpaceHub'] + `</p>`;
+  } else if (age == 'sad') {
+    return (
+      `<p>` +
+      (goods['StellarAgeDiscovery'] || goods['SpaceAgeDiscovery'] || '') +
+      `</p>`
+    );
   } else console.debug(age);
 }
 
