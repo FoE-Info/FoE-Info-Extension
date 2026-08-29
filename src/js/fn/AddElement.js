@@ -1,13 +1,10 @@
 import * as storage from './storage.js';
 
 function fCollapseIcon(id, _href, collapse) {
-  if (document.getElementById(`${id}`) != null)
-    document.getElementById(`${id}`).outerHTML = fAddCollapseIcon(
-      id,
-      _href,
-      collapse,
-    );
-  storage.set(`${collapse}`, collapse);
+  const el = document.getElementById(`${id}`);
+  if (el) {
+    el.innerText = `${collapse ? 'add' : 'remove'}_circle_outline`;
+  }
 }
 
 function fAddCollapseIcon(id, _href, collapse) {
