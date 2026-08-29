@@ -116,11 +116,14 @@ export function getLeaderboard(msg) {
       guild.victoryPointsHourly ? guild.victoryPointsHourly : 0
     }</td><td>${guild.victoryPointsTotal ? guild.victoryPointsTotal : 0}</td></tr>`;
   });
-  output.innerHTML =
-    `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<strong>GBG Leaderboard:</strong>
-            <p id="leaderboardText"><table>` +
-    leaderboardHTML +
-    `</table></p></div>`;
+  const outputEl = document.getElementById('output');
+  if (outputEl) {
+    outputEl.innerHTML =
+      `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<strong>GBG Leaderboard:</strong>
+              <p id="leaderboardText"><table>` +
+      leaderboardHTML +
+      `</table></p></div>`;
+  }
 }
 
 export function getState(msg) {
@@ -617,7 +620,8 @@ function showBuildingCost(msg) {
     costsDiv = document.getElementById('costs');
   } else {
     costsDiv.id = 'costs';
-    content.appendChild(costsDiv);
+    const contentEl = document.getElementById('content');
+    if (contentEl) contentEl.appendChild(costsDiv);
   }
   // var province = ProvinceDefs.find(def => def.id == provinceId);
   map
@@ -692,15 +696,9 @@ function showBuildingCost(msg) {
   document
     .getElementById('buildingCostTextLabel')
     .addEventListener('click', collapse.fCollapseBuildingCost);
-  const costsTextDiv = document.getElementById('buildingCostText');
-  const resizeObserver = new ResizeObserver((entries) => {
-    // console.debug(entries);
-    for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        setBuildingCostSize(entry.contentRect.height);
-    }
+  helper.observeElementSize(costsDiv, (height) => {
+    setBuildingCostSize(height);
   });
-  resizeObserver.observe(costsDiv);
   $('body').i18n();
   // console.debug(toolOptions);
   console.debug('collapseBuildingCost', collapse);

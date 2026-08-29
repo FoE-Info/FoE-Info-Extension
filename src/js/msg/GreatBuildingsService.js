@@ -74,7 +74,8 @@ export function contributeForgePoints(msg) {
 export function showGreatBuldingDonation() {
   var outputHTML = '';
   var donorsHTML = '';
-  overview.innerHTML = '';
+  const overview = document.getElementById('overview');
+  if (overview) overview.innerHTML = '';
   //greatbuilding.innerHTML = ``;
   outputHTML = `<div class="alert alert-success alert-dismissible" role="alert">
     <p id="donorTextLabel" data-bs-toggle="collapse" href="#donorcollapse">`;
@@ -254,7 +255,7 @@ export function showGreatBuldingDonation() {
         olddonationHTML += `<p class=""><span data-i18n="add">Add</span> ${
           currentPercent ?
             (Donation - donateCustom) * 2
-          : (Donation - donate190) * 2
+          : (Donation - (donateSuggest[0] || 0)) * 2
         }FP <span data-i18n="safe">to make safe for</span> ${currentPercent ? currentPercent / 100 : '1.9'}</p>`;
       copyText += getDonations(1, safe, donateSuggest);
     }
@@ -547,7 +548,8 @@ export function getConstructionRanking(msg, data) {
   var rowsHTML = '';
   // if(donorContainer.textContent)
   // donorHTML = donorContainer.textContent;
-  overview.innerHTML = '';
+  const overview = document.getElementById('overview');
+  if (overview) overview.innerHTML = '';
   //greatbuilding.innerHTML = ``;
   outputHTML = `<div class="alert alert-success alert-dismissible show" role="alert">`;
   outputHTML += element.close();

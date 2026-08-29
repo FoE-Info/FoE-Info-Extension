@@ -97,13 +97,9 @@ export function armyUnitManagementService(msg) {
         .getElementById('armyTextLabel')
         .addEventListener('click', collapse.fCollapseArmy);
       const armyDiv = document.getElementById('armyText');
-      const resizeObserver = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          if (entry.contentRect && entry.contentRect.height)
-            setArmySize(entry.contentRect.height);
-        }
+      helper.observeElementSize(armyDiv, (height) => {
+        setArmySize(height);
       });
-      resizeObserver.observe(armyDiv);
       $('body').i18n();
     }
   }

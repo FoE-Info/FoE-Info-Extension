@@ -15,7 +15,7 @@ import * as storage from './storage.js';
 
 export var toolOptions = {
   armySize: 200,
-  goodsSize: 200,
+  goodsSize: 160,
   friendsSize: 200,
   treasurySize: 200,
   gvgSize: 200,

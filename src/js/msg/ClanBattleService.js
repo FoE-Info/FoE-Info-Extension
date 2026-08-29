@@ -17,6 +17,7 @@ import { toolOptions, setGVGSize } from '../fn/globals.js';
 import { showOptions } from '../vars/showOptions.js';
 import * as collapse from '../fn/collapse.js';
 import * as element from '../fn/AddElement';
+import * as helper from '../fn/helper.js';
 import { fGVGagesname } from '../fn/helper.js';
 import BigNumber from 'bignumber.js';
 
@@ -33,7 +34,7 @@ var gvgAgeNotloadList = [
   'PME',
   'ME',
   'PE',
-  'InA',
+  'IndA',
   'CA',
   'LMA',
   'HMA',
@@ -360,16 +361,16 @@ export function getProvinceDetailed(msg) {
     clanHTML += `</p>`;
     gvgAllGuildsPowerTextDiv.innerHTML = clanHTML;
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.contentRect && entry.contentRect.height)
-          setGVGSize(entry.contentRect.height);
-      }
+    [
+      'gvgOverviewTextP',
+      'gvgGuildPowerTextP',
+      'gvgCurrAgeTextP',
+      'gvgAllGuildsPowerTextP',
+    ].forEach((id) => {
+      helper.observeElementSize(document.getElementById(id), (height) => {
+        setGVGSize(height);
+      });
     });
-    resizeObserver.observe(document.getElementById('gvgOverviewTextP'));
-    resizeObserver.observe(document.getElementById('gvgGuildPowerTextP'));
-    resizeObserver.observe(document.getElementById('gvgCurrAgeTextP'));
-    resizeObserver.observe(document.getElementById('gvgAllGuildsPowerTextP'));
     $('body').i18n();
 
     // console.debug(Guilds,GuildSectors,GuildPower,GVGstatus);

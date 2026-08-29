@@ -4,12 +4,12 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@wikimedia/jquery.i18n": "1.0.9",
-    "bignumber.js": "^9.1.2",
-    "bootstrap": "^5.3.3",
-    "dayjs": "^1.11.13",
+    "bignumber.js": "^9.3.1",
+    "bootstrap": "^5.3.8",
+    "dayjs": "^1.11.23",
     "jquery": "^3.7.1",
-    "sass": "^1.85.0",
-    "sass-loader": "^16.0.5",
+    "sass": "^1.103.1",
+    "sass-loader": "^16.0.8",
     "webextension-polyfill": "^0.12.0",
     "webhook-discord": "^3.7.8"
   },
@@ -20,32 +20,58 @@
     "packages/*"
   ],
   "scripts": {
-    "check": "prettier --check .",
+    "build": "webpack --config foe-info-webstore.config.js",
+    "build-foe-info": "webpack --config foe-info-webstore.config.js",
+    "build:dev": "webpack --mode development --config webpack-dev.config.js",
+    "dev": "cross-env NODE_ENV=development webpack --mode development --config webpack-dev.config.js --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "dev": "set NODE_ENV=development && webpack --mode development --config webpack-dev.config.js --watch",
-    "build-foe-info": "webpack --config foe-info-webstore.config.js"
+    "format:check": "prettier --check .",
+    "validate": "npm run format:check && npm run lint",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,scss,md,html}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
-    "copy-webpack-plugin": "^12.0.2",
-    "css-loader": "^7.1.2",
+    "copy-webpack-plugin": "^14.0.0",
+    "cross-env": "^10.1.0",
+    "css-loader": "^7.1.5",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "^10.1.8",
     "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.6.3",
+    "globals": "^17.11.0",
+    "html-webpack-plugin": "^5.6.8",
+    "husky": "^9.1.7",
     "license-webpack-plugin": "^4.0.2",
-    "mini-css-extract-plugin": "^2.9.2",
-    "postcss-loader": "^8.1.1",
-    "prettier": "3.5.1",
+    "lint-staged": "^17.4.1",
+    "mini-css-extract-plugin": "^2.10.2",
+    "postcss-loader": "^8.2.1",
+    "prettier": "3.9.6",
     "style-loader": "^4.0.0",
-    "webpack": "^5.98.0",
+    "terser-webpack-plugin": "^5.6.1",
+    "webpack": "^5.110.1",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-middleware": "^7.4.2",
-    "webpack-dev-server": "^5.2.0",
+    "webpack-dev-middleware": "^7.4.5",
+    "webpack-dev-server": "^6.0.0",
     "webpack-extension-manifest-plugin": "^0.8.0",
     "zip-webpack-plugin": "^4.0.3"
   },
   "sideEffects": [
     "*.css",
     "*.scss"
-  ]
+  ],
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "core-js@3.50.0": true
+  }
 }

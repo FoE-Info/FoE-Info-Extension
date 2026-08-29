@@ -116,9 +116,12 @@ export function getLimitedBonuses(msg) {
       document
         .getElementById('bonusTextLabel')
         .addEventListener('click', collapse.fCollapseBonus);
-    } else if (
-      !(Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
-    ) {
+    } else if (!(
+      Bonus.aid ||
+      Bonus.spoils ||
+      Bonus.diplomatic ||
+      Bonus.strike
+    )) {
       bonus.innerHTML = ``;
     }
   }

@@ -23,6 +23,8 @@ import * as helper from './helper.js';
 import { Tooltip, Alert, Popover } from 'bootstrap';
 import { GBGdata } from '../msg/GuildBattlegroundService.js';
 
+var alertTimer = null;
+
 // Example POST method implementation:
 async function postData(url = '', data = {}) {
   // Default options are marked with *
@@ -55,7 +57,7 @@ export function postToDiscord(text) {
   var webHookUrl =
     'https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij';
 
-  const hook = getKey(webHookUrl);
+  const hook = webHookUrl;
 
   console.log(hook);
 
@@ -340,19 +342,24 @@ export function postPlayerToSS(visitData) {
     if (oReq.readyState == XMLHttpRequest.DONE) {
       // alert(oReq.responseText);
       console.debug(oReq.responseText);
+      if (alertTimer) clearTimeout(alertTimer);
       try {
-        alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
+        alerts.innerHTML = `<div id="alertWrapper" class="alert alert-danger alert-dismissible show " role="alert">
 				${element.close()}
 				<p id="alertText"><strong>Guild Stats: </strong><br>${JSON.parse(oReq.responseText).result}
 				</p></div>`;
       } catch {
         alerts.innerHTML = oReq.responseText;
       }
-      setTimeout(function () {
-        const alert = Alert.getOrCreateInstance(`#alertText`);
-        alert.close();
-        alert.dispose();
+      alertTimer = setTimeout(function () {
+        const alertElement = document.getElementById('alertWrapper');
+        if (alertElement) {
+          const alert = Alert.getOrCreateInstance(alertElement);
+          alert.close();
+          alert.dispose();
+        }
         alerts.innerHTML = '';
+        alertTimer = null;
       }, 60000);
     }
   };

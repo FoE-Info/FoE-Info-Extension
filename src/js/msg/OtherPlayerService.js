@@ -69,6 +69,7 @@ var entityVisitCityDefense = 0;
 var tooltipHTML = [];
 var goodsList = [];
 var Goods = {
+  sad: 0,
   sash: 0,
   sat: 0,
   sajm: 0,
@@ -84,8 +85,8 @@ var Goods = {
   pme: 0,
   me: 0,
   pe: 0,
-  ina: 0,
-  cma: 0,
+  inda: 0,
+  ca: 0,
   lma: 0,
   hma: 0,
   ema: 0,
@@ -98,7 +99,7 @@ export var friends = [];
 export var guildMembers = [];
 export var hoodlist = [];
 
-export function otherPlayerService(msg) {
+export async function otherPlayerService(msg) {
   var googleSheetAPI = url.sheetGuildURL;
   var visitForgePoints = 0;
   var visitArcBonus = null;
@@ -123,6 +124,8 @@ export function otherPlayerService(msg) {
   var visitCentaurusLevel = null;
   var visitPegasusLevel = null;
   var visitHydraLevel = null;
+  var visitStellarWarshipLevel = null;
+  var visitCosmicCatalystLevel = null;
   var visitstatsHTML = ``;
   var clanPower = 0;
   var clanBuildings = 0;
@@ -155,6 +158,7 @@ export function otherPlayerService(msg) {
   visitData = [];
   visitAD = [];
   Goods = {
+    sad: 0,
     sash: 0,
     sat: 0,
     sajm: 0,
@@ -170,8 +174,8 @@ export function otherPlayerService(msg) {
     pme: 0,
     me: 0,
     pe: 0,
-    ina: 0,
-    cma: 0,
+    inda: 0,
+    ca: 0,
     lma: 0,
     hma: 0,
     ema: 0,
@@ -1194,14 +1198,9 @@ export function otherPlayerServiceUpdateActions(msg) {
         document
           .getElementById('listTextLabel')
           .addEventListener('click', collapse.fCollapseLists);
-        const resizeObserver = new ResizeObserver((entries) => {
-          for (const entry of entries) {
-            if (entry.contentRect && entry.contentRect.height) {
-              setFriendsSize(entry.contentRect.height);
-            }
-          }
+        helper.observeElementSize(friendsDiv, (height) => {
+          setFriendsSize(height);
         });
-        resizeObserver.observe(friendsDiv);
       }
     }
   }
@@ -1498,14 +1497,13 @@ function fBoost(boost) {
 }
 
 function fGoodsTally(age, good) {
-  // console.debug(age,good);
   if (age == 'BronzeAge') Goods.ba += good;
   else if (age == 'IronAge') Goods.ia += good;
   else if (age == 'EarlyMiddleAge') Goods.ema += good;
   else if (age == 'HighMiddleAge') Goods.hma += good;
   else if (age == 'LateMiddleAge') Goods.lma += good;
-  else if (age == 'ColonialAge') Goods.cma += good;
-  else if (age == 'IndustrialAge') Goods.ina += good;
+  else if (age == 'ColonialAge') Goods.ca += good;
+  else if (age == 'IndustrialAge') Goods.inda += good;
   else if (age == 'ProgressiveEra') Goods.pe += good;
   else if (age == 'ModernEra') Goods.me += good;
   else if (age == 'PostModernEra') Goods.pme += good;
@@ -1521,6 +1519,8 @@ function fGoodsTally(age, good) {
   else if (age == 'SpaceAgeJupiterMoon') Goods.sajm += good;
   else if (age == 'SpaceAgeTitan') Goods.sat += good;
   else if (age == 'SpaceAgeSpaceHub') Goods.sash += good;
+  else if (age == 'StellarAgeDiscovery' || age == 'SpaceAgeDiscovery')
+    Goods.sad += good;
   else if (age == 'NoAge') Goods.noage += good;
   else console.debug(age, good);
 }

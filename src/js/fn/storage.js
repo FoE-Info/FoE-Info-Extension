@@ -15,8 +15,6 @@
 import browser from 'webextension-polyfill';
 
 function setStorage(name, value) {
-  console.log(name, value);
-
   browser.storage.local
     .set({
       [name]: value,

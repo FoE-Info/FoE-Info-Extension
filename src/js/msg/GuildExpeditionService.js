@@ -14,6 +14,7 @@
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
 import * as element from '../fn/AddElement';
+import * as helper from '../fn/helper.js';
 import { donationDIV2 } from '../index.js';
 import { toolOptions, setExpeditionSize } from '../fn/globals.js';
 
@@ -56,12 +57,8 @@ export function guildExpeditionService(msg) {
     .getElementById('expeditionTextLabel')
     .addEventListener('click', collapse.fCollapseExpedition);
   const expeditionDiv = document.getElementById('expeditionText');
-  const resizeObserver = new ResizeObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        setExpeditionSize(entry.contentRect.height);
-    }
+  helper.observeElementSize(expeditionDiv, (height) => {
+    setExpeditionSize(height);
   });
-  resizeObserver.observe(expeditionDiv);
   $('body').i18n();
 }
