@@ -184,15 +184,26 @@ export function fGBsname(city_entity) {
 }
 
 export function fEntityNameTrim(name) {
-  if (!CityEntityDefs[name]) return name;
-  var trimName = CityEntityDefs[name].name;
-  if (trimName.includes(' - Lv.'))
-    return trimName.substring(0, trimName.indexOf(' - Lv.'));
-  else if (trimName.includes('Lv. 2 - '))
-    return trimName.replace('Lv. 2 - ', '');
-  else if (trimName.includes('Lv. 1 - '))
-    return trimName.replace('Lv. 1 - ', '');
-  else return trimName;
+  if (!name) return '';
+  if (
+    typeof CityEntityDefs !== 'undefined' &&
+    CityEntityDefs[name] &&
+    CityEntityDefs[name].name
+  ) {
+    var trimName = CityEntityDefs[name].name;
+    if (trimName.includes(' - Lv.'))
+      return trimName.substring(0, trimName.indexOf(' - Lv.'));
+    else if (trimName.includes('Lv. 2 - '))
+      return trimName.replace('Lv. 2 - ', '');
+    else if (trimName.includes('Lv. 1 - '))
+      return trimName.replace('Lv. 1 - ', '');
+    else return trimName;
+  }
+  if (typeof fGBname === 'function') {
+    var gbName = fGBname(name);
+    if (gbName && gbName !== name) return gbName;
+  }
+  return name;
 }
 
 export function fGBname(city_entity) {

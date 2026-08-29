@@ -49,6 +49,7 @@ export var City = {
   ArcBonus: 90,
   ChatBonus: 0,
   ForgePoints: 0,
+  fpProductionBoost: 0,
   TrazUnits: 0,
   Coins: 0,
   CoinBoost: 0,
@@ -766,36 +767,101 @@ export async function startupService(msg) {
   }
 
   if (goodsBuildings.length > 0) {
-    goodsBuildings.sort(function (b, a) {
-      return a.goods - b.goods;
+    const groupedGoods = {};
+    goodsBuildings.forEach((entry) => {
+      const bName = entry.name || 'Unknown Building';
+      if (!groupedGoods[bName]) {
+        groupedGoods[bName] = {
+          name: bName,
+          unitGoods: entry.goods,
+          totalGoods: 0,
+          count: 0,
+        };
+      }
+      groupedGoods[bName].totalGoods += entry.goods;
+      groupedGoods[bName].count += 1;
     });
+
+    const groupedList = Object.values(groupedGoods);
+    groupedList.sort((a, b) => b.totalGoods - a.totalGoods);
+
     tooltipHTML.totalGoods = ``;
-    goodsBuildings.forEach((entry, id) => {
-      tooltipHTML.totalGoods += `${entry.goods} ${entry.name}<br>`;
-      // console.debug(entry);
+    groupedList.forEach((entry) => {
+      if (entry.count > 1) {
+        tooltipHTML.totalGoods += `${entry.totalGoods} ${entry.name} (x${entry.count})<br>`;
+      } else {
+        tooltipHTML.totalGoods += `${entry.totalGoods} ${entry.name}<br>`;
+      }
     });
   }
 
   if (fpBuildings.length > 0) {
-    fpBuildings.sort(function (b, a) {
-      return a.fp - b.fp;
+    const groupedFP = {};
+    fpBuildings.forEach((entry) => {
+      const bName = entry.name || 'Unknown Building';
+      if (!groupedFP[bName]) {
+        groupedFP[bName] = {
+          name: bName,
+          unitFp: entry.fp,
+          totalFp: 0,
+          count: 0,
+        };
+      }
+      groupedFP[bName].totalFp += entry.fp;
+      groupedFP[bName].count += 1;
     });
+
+    const groupedList = Object.values(groupedFP);
+    groupedList.sort((a, b) => b.totalFp - a.totalFp);
+
     tooltipHTML.fp = ``;
-    fpBuildings.forEach((entry, id) => {
-      tooltipHTML.fp += `${entry.fp}FP ${entry.name}<br>`;
-      // console.debug(entry);
+    let baseFpSum = 0;
+    groupedList.forEach((entry) => {
+      baseFpSum += entry.totalFp;
+      if (entry.count > 1) {
+        tooltipHTML.fp += `${entry.totalFp}FP ${entry.name} (x${entry.count})<br>`;
+      } else {
+        tooltipHTML.fp += `${entry.totalFp}FP ${entry.name}<br>`;
+      }
     });
+
+    if (City.fpProductionBoost > 0) {
+      const boostedTotal = Math.round(
+        (City.ForgePoints * (100 + City.fpProductionBoost)) / 100,
+      );
+      tooltipHTML.fp += `<br><strong>Base: ${City.ForgePoints}FP (+${City.fpProductionBoost}% Boost = ${boostedTotal}FP)</strong>`;
+      City.ForgePoints = boostedTotal;
+    }
   }
 
   if (clanGoodsBuildings.length > 0) {
-    clanGoodsBuildings.sort(function (b, a) {
-      return a.goods - b.goods;
+    const groupedClanGoods = {};
+    clanGoodsBuildings.forEach((entry) => {
+      const bName = entry.name || 'Unknown Building';
+      if (!groupedClanGoods[bName]) {
+        groupedClanGoods[bName] = {
+          name: bName,
+          unitGoods: entry.goods,
+          totalGoods: 0,
+          count: 0,
+          era: entry.era || '',
+        };
+      }
+      groupedClanGoods[bName].totalGoods += entry.goods;
+      groupedClanGoods[bName].count += 1;
     });
+
+    const groupedList = Object.values(groupedClanGoods);
+    groupedList.sort((a, b) => b.totalGoods - a.totalGoods);
+
     tooltipHTML.clanGoods = ``;
-    clanGoodsBuildings.forEach((entry, id) => {
-      tooltipHTML.clanGoods += `${entry.goods} ${entry.name}<br>`;
-      if (DEV && checkDebug())
-        console.debug('clanGoodsBuildings', entry.goods, entry.name);
+    groupedList.forEach((entry) => {
+      const eraSuffix = entry.era ? ` ${entry.era}` : '';
+      if (entry.count > 1) {
+        tooltipHTML.clanGoods += `${entry.totalGoods} ${entry.name}${eraSuffix} (x${entry.count})<br>`;
+      } else {
+        tooltipHTML.clanGoods += `${entry.totalGoods} ${entry.name}${eraSuffix}<br>`;
+      }
     });
   }
 
@@ -1082,15 +1148,18 @@ export function boostServiceAllBoosts(msg) {
   City.QIAttackingDefense = 0;
   City.QIDefendingAttack = 0;
   City.QIDefendingDefense = 0;
-  var fpProductionBoost = 0;
+  City.fpProductionBoost = 0;
 
   if (msg.responseData.length) {
     var boost = msg.responseData;
     // console.debug('all boosts:', boost);
     for (var j = 0; j < boost.length; j++) {
       if (boost[j].type == 'coin_production') City.CoinBoost += boost[j].value;
-      else if (boost[j].type == 'forge_points_production')
-        fpProductionBoost += boost[j].value;
+      else if (
+        boost[j].type == 'forge_points_production' ||
+        boost[j].type == 'fp_production_boost'
+      )
+        City.fpProductionBoost += boost[j].value;
       else if (boost[j].type == 'att_boost_attacker') {
         if (boost[j].targetedFeature == 'all') {
           City.Attack += boost[j].value;
@@ -1202,10 +1271,14 @@ export function boostServiceAllBoosts(msg) {
       )
         console.debug('other boost:', boost[j].type, boost[j]);
     }
-    if (fpProductionBoost && City.ForgePoints) {
-      City.ForgePoints += Math.round(
-        (City.ForgePoints * fpProductionBoost) / 100,
+    if (City.fpProductionBoost && City.ForgePoints) {
+      City.ForgePoints = Math.round(
+        (City.ForgePoints * (100 + City.fpProductionBoost)) / 100,
       );
+      const fpSpan = document.getElementById('fp');
+      if (fpSpan) {
+        fpSpan.innerHTML = `<span data-i18n="daily">Daily</span>: ${City.ForgePoints}FP`;
+      }
     }
     // if(showBoosts)
     // output.innerHTML = `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}Boosts:<p>Coins ${CoinBoost}%</p><p>Attack ${Attack}%</p><p>Defense ${Defense}%</p></div>`;

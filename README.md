@@ -28,3 +28,8 @@
 - Right-click on the FoE-Info panel and select `inspect`
 - On the new window that opens, select `console` to see any errors or debug info
 - You can also click on the FoE-Info logo to enable debug mode (this will output more info when you load the game)
+
+# License & Trademarks
+
+- **Code License**: This project is open-source software licensed under the [GNU AGPL v3](LICENSE.md).
+- **Trademarks**: _Forge of Empires_ and its logos/graphics are trademarks and copyright of InnoGames GmbH. This extension is an unofficial fan project and is not affiliated with or endorsed by InnoGames GmbH.

@@ -4,3 +4,5 @@ package-lock.json
 .idea
 stuff
 graphify-out/
+.agents/
+.graphifyignore
