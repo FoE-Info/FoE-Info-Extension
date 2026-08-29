@@ -271,6 +271,16 @@ export function fGBname(city_entity) {
     GB_name = 'Stellar Warship';
   else if (GB_name == 'X_SpaceAgeSpaceHub_Landmark2')
     GB_name = 'Cosmic Catalyst';
+  else if (
+    GB_name == 'X_StellarAgeDiscovery_Landmark1' ||
+    GB_name == 'X_SpaceAgeDiscovery_Landmark1'
+  )
+    GB_name = 'Landmark 1';
+  else if (
+    GB_name == 'X_StellarAgeDiscovery_Landmark2' ||
+    GB_name == 'X_SpaceAgeDiscovery_Landmark2'
+  )
+    GB_name = 'Landmark 2';
   // console.debug(city_entity,CityEntityDefs);
   return GB_name;
 }
@@ -438,6 +448,8 @@ export function fLevelfromAge(age) {
     return 21;
   } else if (age == 'SpaceAgeSpaceHub') {
     return 22;
+  } else if (age == 'StellarAgeDiscovery' || age == 'SpaceAgeDiscovery') {
+    return 23;
   }
   // else if (age =="AllAge")
   // {
@@ -451,7 +463,8 @@ export function fLevelfromAge(age) {
 // added SAJM - 20 ages
 // added SAT - 21 ages
 // added SASH - 22 ages
-export const numAges = 22;
+// added SAD - 23 ages
+export const numAges = 23;
 
 export function fAgefromLevel(level) {
   if (level == 1) {
@@ -498,6 +511,8 @@ export function fAgefromLevel(level) {
     return 'SpaceAgeTitan';
   } else if (level == 22) {
     return 'SpaceAgeSpaceHub';
+  } else if (level == 23) {
+    return 'StellarAgeDiscovery';
   }
   // else if (age =="AllAge")
   // {
@@ -522,7 +537,7 @@ export function fGVGagesname(age) {
   } else if (age == 'ColonialAge') {
     name = 'CA';
   } else if (age == 'IndustrialAge') {
-    name = 'InA';
+    name = 'IndA';
   } else if (age == 'ProgressiveEra') {
     name = 'PE';
   } else if (age == 'ModernEra') {
@@ -553,6 +568,8 @@ export function fGVGagesname(age) {
     name = 'SAT';
   } else if (age === 'SpaceAgeSpaceHub') {
     name = 'SASH';
+  } else if (age === 'StellarAgeDiscovery' || age === 'SpaceAgeDiscovery') {
+    name = 'SAD';
   } else if (age == 'AllAge') {
     name = 'AA';
   }
@@ -566,8 +583,8 @@ export function fGoodsTally(age, good) {
   else if (age == 'EarlyMiddleAge') Goods.ema += good;
   else if (age == 'HighMiddleAge') Goods.hma += good;
   else if (age == 'LateMiddleAge') Goods.lma += good;
-  else if (age == 'ColonialAge') Goods.cma += good;
-  else if (age == 'IndustrialAge') Goods.ina += good;
+  else if (age == 'ColonialAge') Goods.ca += good;
+  else if (age == 'IndustrialAge') Goods.inda += good;
   else if (age == 'ProgressiveEra') Goods.pe += good;
   else if (age == 'ModernEra') Goods.me += good;
   else if (age == 'PostModernEra') Goods.pme += good;
@@ -583,6 +600,8 @@ export function fGoodsTally(age, good) {
   else if (age == 'SpaceAgeJupiterMoon') Goods.sajm += good;
   else if (age == 'SpaceAgeTitan') Goods.sat += good;
   else if (age == 'SpaceAgeSpaceHub') Goods.sash += good;
+  else if (age == 'StellarAgeDiscovery' || age == 'SpaceAgeDiscovery')
+    Goods.sad += good;
   else if (age == 'NoAge') Goods.noage += good;
   else console.debug(age, good);
 }
@@ -668,7 +687,7 @@ export function fShowIncidents() {
         .addEventListener('click', fCollapseIncidents);
       document
         .getElementById('incidentsTip')
-        .addEventListener('onmouseleave', fHideTooltips);
+        .addEventListener('mouseleave', fHideTooltips);
 
       const incidents_tooltip = document.getElementById('incidents_tooltip');
       if (incidents_tooltip) {
@@ -814,18 +833,32 @@ export function fshowBattleground() {
     showOptions.showBattlegroundChanges;
   const battlegroundDiv = document.getElementById('battlegroundCollapse');
   battlegroundDiv.addEventListener('mouseup', setHeight);
-  const resizeObserver = new ResizeObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        heightGBG = entry.contentRect.height;
-    }
+  observeElementSize(battlegroundDiv, (height) => {
+    heightGBG = height;
   });
-  resizeObserver.observe(battlegroundDiv);
   console.debug($('#battlegroundCollapse').height());
   if ($('#battlegroundCollapse').height() > toolOptions.battlegroundsSize) {
     $('#battlegroundCollapse').height(toolOptions.battlegroundsSize);
   }
   $('body').i18n();
+}
+
+const activeObservers = new WeakMap();
+
+export function observeElementSize(element, callback) {
+  if (!element) return;
+  if (activeObservers.has(element)) {
+    activeObservers.get(element).disconnect();
+  }
+  const observer = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.contentRect && entry.contentRect.height) {
+        callback(entry.contentRect.height);
+      }
+    }
+  });
+  observer.observe(element);
+  activeObservers.set(element, observer);
 }
 
 export function checkGBG() {
