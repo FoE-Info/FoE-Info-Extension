@@ -1,0 +1,26 @@
+# Dependencies & Package Lockfiles
+node_modules/
+vendor/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build & Bundled Assets
+build/
+dist/
+*.min.js
+*.min.css
+*.map
+
+# Logs, Cache & Generated Graph Assets
+*.log
+__pycache__/
+.cache/
+graphify-out/
+.git/
+
+# Environment & IDE Metadata
+.env*
+.idea/
+.vscode/
+.DS_Store
