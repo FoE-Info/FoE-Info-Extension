@@ -19,27 +19,31 @@ import '@wikimedia/jquery.i18n/src/jquery.i18n.parser.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.language.js';
 import BigNumber from 'bignumber.js';
-import { Tooltip, Alert, Popover } from 'bootstrap';
-import {
-  CityEntityDefs,
-  setMyInfo,
-  MyInfo,
-  GameOrigin,
-  EpocTime,
-  debugEnabled,
-  checkDebug,
-  removeDebug,
-  ignoredPlayers,
-  debug,
-} from '../index.js';
-import { availablePacksFP, Goods, language } from '../index.js';
-import { ResourceDefs, availableFP } from './ResourceService.js';
-import * as helper from '../fn/helper.js';
+import { Alert, Popover, Tooltip } from 'bootstrap';
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
-import * as element from '../fn/AddElement';
+import * as helper from '../fn/helper.js';
 import { showOptions } from '../vars/showOptions.js';
+import {
+  availablePacksFP,
+  checkDebug,
+  CityEntityDefs,
+  debug,
+  debugEnabled,
+  EpocTime,
+  GameOrigin,
+  Goods,
+  ignoredPlayers,
+  language,
+  MyInfo,
+  playerNameCache,
+  removeDebug,
+  setMyInfo,
+  updatePlayerNameCache,
+} from '../vars/state.js';
 import { clearArmyUnits } from './ArmyUnitManagementService.js';
+import { availableFP, ResourceDefs } from './ResourceService.js';
 
 export var City = {
   ArcBonus: 90,
@@ -93,10 +97,101 @@ var fpBuildings = [];
 var goodsBuildings = [];
 var clanGoodsBuildings = [];
 
+const pendingScoreDBFetches = new Set();
+
+function getScoreDBOrigin() {
+  return (GameOrigin && GameOrigin.trim() ? GameOrigin : 'en7').toLowerCase();
+}
+
+function formatPlayerLabel(id) {
+  const key = String(id);
+  const cached = playerNameCache[key];
+  if (cached && cached.currentName) {
+    if (cached.previousNames && cached.previousNames.length > 0) {
+      const prev = cached.previousNames[cached.previousNames.length - 1];
+      return `${cached.currentName} <small class="text-muted">(formerly ${prev})</small>`;
+    }
+    return cached.currentName;
+  }
+
+  if (!pendingScoreDBFetches.has(key)) {
+    pendingScoreDBFetches.add(key);
+    const origin = getScoreDBOrigin();
+    fetch(`https://foe.scoredb.io/${origin}/Player/${id}`)
+      .then((res) => res.text())
+      .then((html) => {
+        const match = html.match(/<title>([^<-]+)\s*-\s*[^<]+<\/title>/i);
+        if (match && match[1]) {
+          const fetchedName = match[1].trim();
+          updatePlayerNameCache(id, fetchedName);
+          updateIgnoreListUI();
+        }
+      })
+      .catch((err) => console.warn('ScoreDB fetch error for player', id, err));
+  }
+
+  return `#${id}`;
+}
+
+export function getUserTooltipHTML() {
+  var html = `<p class="pop">`;
+  const origin = getScoreDBOrigin();
+  let hasIgnoredBy = false;
+  if (
+    ignoredPlayers &&
+    ignoredPlayers.ignoredByPlayerIds &&
+    Object.keys(ignoredPlayers.ignoredByPlayerIds).length > 0
+  ) {
+    hasIgnoredBy = true;
+    html += `<strong>Ignored By:</strong><br>`;
+    Object.values(ignoredPlayers.ignoredByPlayerIds).forEach((elem) => {
+      const label = formatPlayerLabel(elem);
+      html += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a><br>`;
+    });
+  }
+  let hasIgnoring = false;
+  if (
+    ignoredPlayers &&
+    ignoredPlayers.ignoredPlayerIds &&
+    Object.keys(ignoredPlayers.ignoredPlayerIds).length > 0
+  ) {
+    hasIgnoring = true;
+    html += `<strong>Ignoring:</strong><br>`;
+    Object.values(ignoredPlayers.ignoredPlayerIds).forEach((elem) => {
+      const label = formatPlayerLabel(elem);
+      html += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a><br>`;
+    });
+  }
+  if (!hasIgnoredBy && !hasIgnoring) {
+    html += `<em>None</em>`;
+  }
+  html += `</p>`;
+  return html;
+}
+
+export function updateIgnoreListUI() {
+  const userElem = document.getElementById('user');
+  if (!userElem) return;
+  const newHTML = getUserTooltipHTML();
+  const escapedHTML = newHTML.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+  userElem.setAttribute('data-bs-content', escapedHTML);
+
+  try {
+    const popover = Popover.getInstance(userElem);
+    if (popover) {
+      popover.setContent({ '.popover-body': newHTML });
+    }
+  } catch (e) {
+    console.warn('Popover update error:', e);
+  }
+}
+
 export function startupService(msg) {
-  // console.debug('parsed:', parsed);
-  // console.debug('msg:', msg);
-  const user = msg.responseData.user_data;
+  const user = msg.responseData ? msg.responseData.user_data : null;
+  if (!user) {
+    console.error('startupService received payload without user_data', msg);
+    return;
+  }
   console.debug('user_data:', user);
   // setMyName(user.user_name);
   // setMyInfo.id(user.player_id);
@@ -153,7 +248,11 @@ export function startupService(msg) {
   // Galaxy.html = '';
   // Galaxy.amount = 0;
 
-  if (msg.responseData.city_map.entities.length) {
+  if (
+    msg.responseData.city_map &&
+    msg.responseData.city_map.entities &&
+    msg.responseData.city_map.entities.length
+  ) {
     var map_entities = msg.responseData.city_map.entities;
     console.debug(map_entities, CityEntityDefs);
     for (var id = 0; id < map_entities.length; id++) {
@@ -790,6 +889,7 @@ export function startupService(msg) {
     });
   }
 
+  Goods.sad = 0;
   Goods.sash = 0;
   Goods.sat = 0;
   Goods.sajm = 0;
@@ -843,22 +943,10 @@ export function startupService(msg) {
     if (Goods[age]) goodsHTML += fGoodsHTML(age, tooltipHTML.goods);
   }
 
-  // console.debug('Ignored By:',msg.responseData.ignoredByPlayerIds);
-  // console.debug('Ignoring:',msg.responseData.ignoredPlayerIds);
-  var userTooltipHTML = `<p class="pop">`;
-  if (ignoredPlayers.ignoredByPlayerIds.length > 0) {
-    userTooltipHTML += `<strong>Ignored By:</strong><br>`;
-    Object.values(ignoredPlayers.ignoredByPlayerIds).forEach((elem) => {
-      userTooltipHTML += `<a href="https://foe.scoredb.io/${GameOrigin}/Player/${elem}" target="_blank"><strong>${elem}</strong></a><br>`;
-    });
-  }
-  if (ignoredPlayers.ignoredPlayerIds.length > 0) {
-    userTooltipHTML += `<strong>Ignoring:</strong><br>`;
-    Object.values(ignoredPlayers.ignoredPlayerIds).forEach((elem) => {
-      userTooltipHTML += `<a href="https://foe.scoredb.io/${GameOrigin}/Player/${elem}" target="_blank"><strong>${elem}</strong></a><br>`;
-    });
-  }
-  userTooltipHTML += `</p>`;
+  const userTooltipHTML = getUserTooltipHTML();
+  const userTooltipHTMLEscaped = userTooltipHTML
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
   var fpHTML = `<span id="fp" class="pop" data-bs-container="#fp" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${
     tooltipHTML.fp
   }"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
@@ -866,12 +954,12 @@ export function startupService(msg) {
     MyInfo.name
   }</strong><span id="user" class="pop" data-bs-container="#user" data-bs-toggle="popover" data-bs-placement="bottom"
         title="Playing <strong>FoE</strong> since<br>${new Date(MyInfo.createdAt * 1000).toLocaleString()}"
-        data-bs-content='${userTooltipHTML}</p>'>
-        <span class="material-icons-outlined md-12 info-icon" id="infoIcon">info</span>`;
+        data-bs-content='${userTooltipHTMLEscaped}'>
+        <span class="material-icons-outlined md-12 info-icon" id="infoIcon">info</span></span>`;
   var clanGoodsHTML = `<span id="clanGoods" class="pop" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
   var totalGoodsHTML = `<span id="goods" class="pop" data-bs-container="#goods" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
-  citystatsHTML = element.close() + `<p>`;
+  citystatsHTML = `<p>`;
   // citystatsHTML = `<p href="#citystatsText" data-bs-toggle="collapse" id="citystatsLabel">`;
   citystatsHTML += element.icon(
     'citystatsicon',
@@ -935,16 +1023,16 @@ export function startupService(msg) {
   citystatsHTML += `</div></div>`;
   //citystatsHTML += `<hr>`;
   // console.debug('citystatsHTML:',citystatsHTML);
-  // console.debug('showOptions:',showOptions);
-
-  if (showOptions.showStats) {
+  if (showOptions.showStats !== false) {
     var citystats = document.getElementById('citystats');
 
     if (citystats == null) {
-      // console.debug('2');
       citystats = document.createElement('div');
-      var list = document.getElementById('content');
-      list.insertBefore(citystats, list.childNodes[0]);
+      var list =
+        document.getElementById('content') ||
+        document.body ||
+        document.documentElement;
+      if (list) list.insertBefore(citystats, list.childNodes[0] || null);
       citystats.id = 'citystats';
     }
 
@@ -1224,29 +1312,26 @@ export function fArcname() {
 
 function fLoadi18n() {
   try {
+    const getURL = (path) =>
+      typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL ?
+        chrome.runtime.getURL(path)
+      : path;
     $.i18n()
       .load({
-        en: 'i18n/en.json',
-        // nl: "i18n/nl.json",
-        // fi: "i18n/fi.json",
-        fr: 'i18n/fr.json',
-        // de: "i18n/de.json",
-        el: 'i18n/el.json',
-        gr: 'i18n/gr.json',
-        // it: "i18n/it.json",
-        // pt: "i18n/pt.json",
-        // ru: "i18n/ru.json",
-        // sr_Cyrl: "i18n/sr_cyrl.json",
-        // sr_Latn: "i18n/sr_latn.json",
-        // sr: "i18n/sr.json",
-        es: 'i18n/es.json',
-        // sv: "i18n/sv.json"
+        en: getURL('i18n/en.json'),
+        fr: getURL('i18n/fr.json'),
+        el: getURL('i18n/el.json'),
+        gr: getURL('i18n/gr.json'),
+        es: getURL('i18n/es.json'),
       })
       .done(function () {
         console.debug('i18n.load OK');
+        if (window.jQuery && typeof window.jQuery.fn.i18n === 'function') {
+          $('body').i18n();
+        }
       });
-  } catch {
-    console.debug('i18n.load error');
+  } catch (e) {
+    console.debug('i18n.load error', e);
   }
 }
 
@@ -1288,6 +1373,7 @@ var LANGUAGE_BY_LOCALE = {
 
 function showTooltips() {
   const Ages = [
+    'sad',
     'sash',
     'sat',
     'sajm',
@@ -1475,6 +1561,8 @@ function fGoodsText(age, goods) {
     return `<p>` + goods['SpaceAgeTitan'] + `</p>`;
   } else if (age == 'sash') {
     return `<p>` + goods['SpaceAgeSpaceHub'] + `</p>`;
+  } else if (age == 'sad') {
+    return `<p>` + goods['StellarAgeDiscovery'] + `</p>`;
   } else console.debug(age);
 }
 
