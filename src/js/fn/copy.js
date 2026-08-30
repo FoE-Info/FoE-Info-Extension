@@ -12,7 +12,7 @@
  * ________________________________________________________________
  */
 import $ from 'jquery';
-import { debug } from '../index.js';
+import { debug } from '../vars/state.js';
 
 export function fClipboardCopy() {
   // var selection = window.getSelection();
@@ -162,25 +162,30 @@ export function TreasuryCopy() {
   // copyNode(node);
 }
 
-function copyToClipboard(element) {
-  var $temp = $('<textarea>');
-  $('body').append($temp);
-  var html = $(element).html();
-  // if (!element.equals("clipboardText"))
+async function copyToClipboard(element) {
+  const el = document.querySelector(element);
+  if (!el) return;
+  let html = el.innerHTML;
   addToClipboard(element, html);
-  html = html.replace(/<br>/g, '\n'); // or \r\n
-  html = html.replace(/<\/tr>/g, '\n'); // or \r\n
-  html = html.replace(/<p>/g, ''); // or \r\n
-  html = html.replace(/<tr>/g, ''); // or \r\n
-  html = html.replace(/<td>/g, ''); // or \r\n
-  html = html.replace(/<\/td>/g, ''); // or \r\n
-  html = html.replace(/<\/p>/g, '\n'); // or \r\n
-  html = html.replace(/<\/?span[^>]*>/g, ''); // or \r\n
-  // html = html.replace(/<\/span>/g, ""); // or \r\n
-  console.debug(html);
-  $temp.val(html).select();
-  document.execCommand('copy');
-  $temp.remove();
+  html = html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/tr>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]+>/g, '');
+
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(html);
+    } else {
+      var $temp = $('<textarea>');
+      $('body').append($temp);
+      $temp.val(html).select();
+      document.execCommand('copy');
+      $temp.remove();
+    }
+  } catch (err) {
+    console.error('Clipboard write failed:', err);
+  }
 }
 
 function addToClipboard(element, html) {

@@ -17,43 +17,40 @@
 // import $ from "jquery";
 // import 'bootstrap';
 // import Discord  from 'discord.js';
-import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index.js';
+import { Alert, Popover, Tooltip } from 'bootstrap';
+import { GBGdata } from '../msg/GuildBattlegroundService.js';
+import { alerts, EpocTime, GameOrigin, MyInfo, url } from '../vars/state.js';
 import * as element from './AddElement';
 import * as helper from './helper.js';
-import { Tooltip, Alert, Popover } from 'bootstrap';
-import { GBGdata } from '../msg/GuildBattlegroundService.js';
 
 // Example POST method implementation:
-async function postData(url = '', data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'include', // include, *same-origin, omit
+async function postData(targetUrl = '', data = {}) {
+  const response = await fetch(targetUrl, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'include',
     headers: {
       'content-type': 'application/json',
-      // "Access-Control-Allow-Origin": "*",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'strict-origin-when-cross-origin', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
-  }).then((response) => {
-    console.debug(response); // JSON data parsed by `data.json()` call
-    for (var item of response.headers.entries()) {
-      console.debug(item);
-    }
+    redirect: 'follow',
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    body: JSON.stringify(data),
   });
 
-  console.debug(response);
-  return response.json(); // parses JSON response into native JavaScript objects
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
 }
 
 export function postToDiscord(text) {
-  // test-test channel
-  var webHookUrl =
-    'https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij';
+  var webHookUrl = url.discordTargetURL;
+  if (!webHookUrl) {
+    console.warn('Discord Webhook URL is not configured in options.');
+    return;
+  }
 
   const hook = getKey(webHookUrl);
 
@@ -295,9 +292,11 @@ export function postAlerttoDsicord() {
 }
 
 export function logToDiscord(text) {
-  var webHookUrl =
-    'https://discordapp.com/api/webhooks/690589445145231410/XQehmPTFdg82ijxxXMXMeYDuIkCuKokSDOVLztN737J60NCJ6nN3qzBlMjIxMJG0N-jq';
-  // log channel
+  var webHookUrl = url.discordLogURL || url.discordTargetURL;
+  if (!webHookUrl) {
+    console.warn('Discord Log Webhook URL is not configured.');
+    return;
+  }
 
   var selection = window.getSelection();
   selection.removeAllRanges();

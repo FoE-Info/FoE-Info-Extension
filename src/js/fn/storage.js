@@ -15,39 +15,44 @@
 import browser from 'webextension-polyfill';
 
 function setStorage(name, value) {
-  console.log(name, value);
-
-  browser.storage.local
-    .set({
-      [name]: value,
-    })
-    .then(() => {
-      if (browser.runtime.lastError) {
-        console.log('error: ', browser.runtime.lastError);
-      } else {
-        // some code goes here.
-        // console.log(name,' is set to ' + value,value);
-      }
-    });
+  try {
+    if (browser && browser.storage && browser.storage.local) {
+      browser.storage.local
+        .set({ [name]: value })
+        .catch((err) => console.warn('setStorage error:', err));
+    }
+  } catch (e) {
+    console.warn('setStorage exception:', e);
+  }
 }
 
 function getStorage(name) {
-  // console.log(name);
-  browser.storage.local.get(name).then((result) => {
-    // console.log(name,' is ' + value);
-    if (browser.runtime.lastError) {
-      console.log('Error retrieving index: ' + browser.runtime.lastError);
-      return;
+  try {
+    if (browser && browser.storage && browser.storage.local) {
+      return browser.storage.local
+        .get(name)
+        .then((result) => (result ? result[name] : null))
+        .catch((err) => {
+          console.warn('getStorage error:', err);
+          return null;
+        });
     }
-    return result[name];
-  });
+  } catch (e) {
+    console.warn('getStorage exception:', e);
+  }
+  return Promise.resolve(null);
 }
 
 function removeStorage(name) {
-  // console.log(name);
-  browser.storage.local.remove(name).then(() => {
-    // console.log(name,' is deleted');
-  });
+  try {
+    if (browser && browser.storage && browser.storage.local) {
+      browser.storage.local
+        .remove(name)
+        .catch((err) => console.warn('removeStorage error:', err));
+    }
+  } catch (e) {
+    console.warn('removeStorage exception:', e);
+  }
 }
 
 export { setStorage as set, getStorage as get, removeStorage as remove };

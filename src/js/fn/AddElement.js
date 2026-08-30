@@ -17,14 +17,14 @@ function fAddCollapseIcon(id, _href, collapse) {
 }
 
 function fCopyButton(id, colour, pos, collapse) {
-  console.debug(collapse);
+  // console.debug(collapse);
   return `<span id="${id}" class="badge rounded-pill bg-${colour} float-end ${pos}-button" style="display: ${
     collapse ? 'none' : 'block'
   }" data-i18n="copy">Copy</span>`;
 }
 
 function fCopyIcon(id, colour, pos, collapse) {
-  console.debug(collapse);
+  // console.debug(collapse);
   return `<span class="bi ${pos}-icon float-end material-symbols-outlined" id="${id}" style="display: ${
     collapse ? 'none' : 'block'
   }">content_copy</span>`;
