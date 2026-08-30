@@ -34,88 +34,77 @@ export function setToolOptions(value) {
 
 export function setFriendsSize(height) {
   if (height > toolOptions.minSize) {
-    // console.debug('setFriendsSize',height,toolOptions);
-    toolOptions.friendsSize = height > 500 ? 500 : height;
+    toolOptions.friendsSize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setArmySize(height) {
-  // 'armySize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.armySize = height > 500 ? 500 : height;
+    toolOptions.armySize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setGoodsSize(height) {
-  // 'armySize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.goodsSize = height > 500 ? 500 : height;
+    toolOptions.goodsSize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setTreasurySize(height) {
-  // 'treasurySize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.treasurySize = height > 500 ? 500 : height;
+    toolOptions.treasurySize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setGVGSize(height) {
-  // 'gvgSize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.gvgSize = height > 500 ? 500 : height;
+    toolOptions.gvgSize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setLogsSize(height) {
-  // 'logsSize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.logsSize = height > 500 ? 500 : height;
+    toolOptions.logsSize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setBattlegroundSize(height) {
-  // 'battlegroundsSize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.battlegroundsSize = height > 500 ? 500 : height;
+    toolOptions.battlegroundsSize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setExpeditionSize(height) {
-  // 'expeditionSize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.expeditionSize = height > 500 ? 500 : height;
+    toolOptions.expeditionSize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setVisitSize(height) {
-  // 'visitSize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.visitSize = height > 500 ? 500 : height;
+    toolOptions.visitSize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setRewardSize(height) {
-  // 'rewardSize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.rewardSize = height > 500 ? 500 : height;
+    toolOptions.rewardSize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
 
 export function setBuildingCostSize(height) {
-  // 'rewardSize': 200,
   if (height > toolOptions.minSize) {
-    toolOptions.buildingCostSize = height > 500 ? 500 : height;
+    toolOptions.buildingCostSize = Math.round(height);
     storage.set('toolOptions', toolOptions);
   }
 }
