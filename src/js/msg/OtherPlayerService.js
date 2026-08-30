@@ -11,7 +11,7 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { Tooltip, Alert, Popover } from 'bootstrap';
+import { Alert, Popover, Tooltip } from 'bootstrap';
 import '@wikimedia/jquery.i18n/libs/CLDRPluralRuleParser/src/CLDRPluralRuleParser.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.messagestore.js';
@@ -20,25 +20,25 @@ import '@wikimedia/jquery.i18n/src/jquery.i18n.parser.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.emitter.js';
 import '@wikimedia/jquery.i18n/src/jquery.i18n.language.js';
 import BigNumber from 'bignumber.js';
-
-import { showOptions } from '../vars/showOptions.js';
-import * as helper from '../fn/helper.js';
-import * as collapse from '../fn/collapse.js';
-import * as post_webstore from '../fn/post.js';
-import * as copy from '../fn/copy.js';
 import * as element from '../fn/AddElement';
+import * as collapse from '../fn/collapse.js';
+import * as copy from '../fn/copy.js';
+import { setFriendsSize, toolOptions } from '../fn/globals.js';
+import * as helper from '../fn/helper.js';
+import * as post_webstore from '../fn/post.js';
+import { showOptions } from '../vars/showOptions.js';
 import {
-  CityEntityDefs,
-  setPlayerName,
-  CityProtections,
-  PlayerName,
   checkDebug,
-  url,
-  MyInfo,
+  CityEntityDefs,
+  CityProtections,
   GameOrigin,
+  MyInfo,
   PlayerID,
-} from '../index.js';
-import { toolOptions, setFriendsSize } from '../fn/globals.js';
+  PlayerName,
+  setPlayerName,
+  updatePlayerNameCache,
+  url,
+} from '../vars/state.js';
 import { fArcname } from './StartupService.js';
 
 var friendsHTML = '';
@@ -69,6 +69,7 @@ var entityVisitCityDefense = 0;
 var tooltipHTML = [];
 var goodsList = [];
 var Goods = {
+  sad: 0,
   sash: 0,
   sat: 0,
   sajm: 0,
@@ -155,6 +156,7 @@ export function otherPlayerService(msg) {
   visitData = [];
   visitAD = [];
   Goods = {
+    sad: 0,
     sash: 0,
     sat: 0,
     sajm: 0,
@@ -309,6 +311,10 @@ export function otherPlayerService(msg) {
         visitStellarWarshipLevel = mapID.level;
       else if (mapID.cityentity_id == 'X_SpaceAgeSpaceHub_Landmark2')
         visitCosmicCatalystLevel = mapID.level;
+      else if (mapID.cityentity_id == 'X_SpaceAgeDiscovery_Landmark1')
+        visitSADLandmark1Level = mapID.level;
+      else if (mapID.cityentity_id == 'X_SpaceAgeDiscovery_Landmark2')
+        visitSADLandmark2Level = mapID.level;
       else {
         // const entity = CityEntityDefs[mapID.cityentity_id];
         // if(entity.type != 'tower' && entity.type != 'street' && entity.type != 'hub_main' && entity.type != 'hub_part' && entity.type != 'off_grid'){
@@ -858,9 +864,13 @@ export function otherPlayerService(msg) {
   // MyInfo.guild = msg.responseData.user_data.clan_name;
   // console.debug('user :', MyInfo.id,MyInfo.name,MyInfo.guild);
 
+  const origin = (
+    GameOrigin && GameOrigin.trim() ?
+      GameOrigin
+    : 'en7').toLowerCase();
   visitstatsHTML = `<div  role="alert">
 	${element.close()}
-	<p href="#visitstatsText" data-bs-toggle="collapse"><a href="https://foe.scoredb.io/${GameOrigin}/Player/${PlayerID}" target="_blank"><strong>${PlayerName}</strong></a> (${
+	<p href="#visitstatsText" data-bs-toggle="collapse"><a href="https://foe.scoredb.io/${origin}/Player/${PlayerID}" target="_blank"><strong>${PlayerName}</strong></a> (${
     player.clan && player.clan.name ? player.clan.name : 'NO GUILD'
   })</p>`;
 
@@ -934,7 +944,8 @@ export function otherPlayerService(msg) {
     const age = helper.fGVGagesname(
       helper.fAgefromLevel(helper.numAges - index),
     );
-    if (Goods[age.toLowerCase()]) clanGoodsHTML += age + `:${Goods.sajm}<br>`;
+    if (Goods[age.toLowerCase()])
+      clanGoodsHTML += age + `:${Goods[age.toLowerCase()]}<br>`;
   }
 
   visitstatsHTML += `Age: ${msg.responseData.other_player_era.match(/[A-Z][a-z]+|[0-9]+/g).join(' ')}<br>`;
@@ -1071,6 +1082,14 @@ export function otherPlayerServiceUpdateActions(msg) {
     friends = msg.friends;
     guildMembers = msg.guildMembers;
     hoodlist = msg.neighbours;
+
+    [...(friends || []), ...(guildMembers || []), ...(hoodlist || [])].forEach(
+      (item) => {
+        if (item && item.player_id && item.name) {
+          updatePlayerNameCache(item.player_id, item.name);
+        }
+      },
+    );
 
     // console.debug(friends);
     // var type = friends[0].__class__;
@@ -1521,6 +1540,7 @@ function fGoodsTally(age, good) {
   else if (age == 'SpaceAgeJupiterMoon') Goods.sajm += good;
   else if (age == 'SpaceAgeTitan') Goods.sat += good;
   else if (age == 'SpaceAgeSpaceHub') Goods.sash += good;
+  else if (age == 'StellarAgeDiscovery') Goods.sad += good;
   else if (age == 'NoAge') Goods.noage += good;
   else console.debug(age, good);
 }

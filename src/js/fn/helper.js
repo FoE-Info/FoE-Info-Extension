@@ -12,6 +12,14 @@
  * ________________________________________________________________
  */
 import { Popover } from 'bootstrap';
+import browser from 'webextension-polyfill';
+import {
+  BattlegroundPerformance,
+  BGtime,
+  GuildMembers,
+} from '../msg/GuildBattlegroundService.js';
+import { ResourceNames } from '../msg/ResourceService.js';
+import { showOptions } from '../vars/showOptions.js';
 import {
   CityEntityDefs,
   donationDIV,
@@ -20,28 +28,37 @@ import {
   hiddenRewards,
   incidents,
   url,
-} from '../index.js';
-import {
-  BattlegroundPerformance,
-  BGtime,
-  GuildMembers,
-} from '../msg/GuildBattlegroundService.js';
-import { ResourceNames } from '../msg/ResourceService.js';
-import { showOptions } from '../vars/showOptions.js';
+} from '../vars/state.js';
+import * as element from './AddElement';
 import * as collapse from './collapse.js';
 import { fCollapseIncidents } from './collapse.js';
 import * as copy from './copy.js';
 import { setBattlegroundSize, toolOptions } from './globals.js';
 import * as post_webstore from './post.js';
 import * as storage from './storage.js';
-import * as element from './AddElement';
-import browser from 'webextension-polyfill';
 
 var heightGBG = toolOptions.battlegroundsSize;
 export var MyGuildPermissions = 0;
 
+export function escapeHTML(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+export function translateContainer(container = document.body) {
+  if (window.jQuery && typeof window.jQuery.fn.i18n === 'function') {
+    const $target = $(container);
+    $target.find('[data-i18n]').addBack('[data-i18n]').i18n();
+  }
+}
+
 function setHeight() {
-  console.debug('mouseup', heightGBG);
+  // console.debug('mouseup', heightGBG);
   setBattlegroundSize(heightGBG);
 }
 
@@ -179,7 +196,7 @@ export function fGBsname(city_entity) {
     return 'CC';
   }
 
-  console.debug(city_entity);
+  // console.debug(city_entity);
   return city_entity.slice(0, 10);
 }
 
@@ -271,6 +288,10 @@ export function fGBname(city_entity) {
     GB_name = 'Stellar Warship';
   else if (GB_name == 'X_SpaceAgeSpaceHub_Landmark2')
     GB_name = 'Cosmic Catalyst';
+  else if (GB_name == 'X_SpaceAgeDiscovery_Landmark1')
+    GB_name = 'Space Age Discovery Landmark 1';
+  else if (GB_name == 'X_SpaceAgeDiscovery_Landmark2')
+    GB_name = 'Space Age Discovery Landmark 2';
   // console.debug(city_entity,CityEntityDefs);
   return GB_name;
 }
@@ -438,6 +459,8 @@ export function fLevelfromAge(age) {
     return 21;
   } else if (age == 'SpaceAgeSpaceHub') {
     return 22;
+  } else if (age == 'StellarAgeDiscovery') {
+    return 23;
   }
   // else if (age =="AllAge")
   // {
@@ -451,7 +474,8 @@ export function fLevelfromAge(age) {
 // added SAJM - 20 ages
 // added SAT - 21 ages
 // added SASH - 22 ages
-export const numAges = 22;
+// added SAD - 23 ages
+export const numAges = 23;
 
 export function fAgefromLevel(level) {
   if (level == 1) {
@@ -498,6 +522,8 @@ export function fAgefromLevel(level) {
     return 'SpaceAgeTitan';
   } else if (level == 22) {
     return 'SpaceAgeSpaceHub';
+  } else if (level == 23) {
+    return 'StellarAgeDiscovery';
   }
   // else if (age =="AllAge")
   // {
@@ -553,6 +579,8 @@ export function fGVGagesname(age) {
     name = 'SAT';
   } else if (age === 'SpaceAgeSpaceHub') {
     name = 'SASH';
+  } else if (age === 'StellarAgeDiscovery') {
+    name = 'SAD';
   } else if (age == 'AllAge') {
     name = 'AA';
   }
@@ -583,8 +611,9 @@ export function fGoodsTally(age, good) {
   else if (age == 'SpaceAgeJupiterMoon') Goods.sajm += good;
   else if (age == 'SpaceAgeTitan') Goods.sat += good;
   else if (age == 'SpaceAgeSpaceHub') Goods.sash += good;
+  else if (age == 'StellarAgeDiscovery') Goods.sad += good;
   else if (age == 'NoAge') Goods.noage += good;
-  else console.debug(age, good);
+  // else console.debug(age, good);
 }
 
 export function fShowIncidents() {
@@ -821,11 +850,15 @@ export function fshowBattleground() {
     }
   });
   resizeObserver.observe(battlegroundDiv);
-  console.debug($('#battlegroundCollapse').height());
-  if ($('#battlegroundCollapse').height() > toolOptions.battlegroundsSize) {
-    $('#battlegroundCollapse').height(toolOptions.battlegroundsSize);
+  const battlegroundEl = document.getElementById('battlegroundCollapse');
+  if (battlegroundEl) {
+    const currentHeight = battlegroundEl.clientHeight;
+    // console.debug('battlegroundCollapse height:', currentHeight);
+    if (currentHeight > toolOptions.battlegroundsSize) {
+      battlegroundEl.style.height = `${toolOptions.battlegroundsSize}px`;
+    }
   }
-  $('body').i18n();
+  translateContainer(donationDIV);
 }
 
 export function checkGBG() {
