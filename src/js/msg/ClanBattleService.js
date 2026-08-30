@@ -12,13 +12,14 @@
  * ________________________________________________________________
  */
 
-import { gvg, MyInfo } from '../index.js';
-import { toolOptions, setGVGSize } from '../fn/globals.js';
-import { showOptions } from '../vars/showOptions.js';
-import * as collapse from '../fn/collapse.js';
-import * as element from '../fn/AddElement';
-import { fGVGagesname } from '../fn/helper.js';
 import BigNumber from 'bignumber.js';
+import * as element from '../fn/AddElement';
+import * as collapse from '../fn/collapse.js';
+import { setGVGSize, toolOptions } from '../fn/globals.js';
+import { fGVGagesname } from '../fn/helper.js';
+import * as helper from '../fn/helper.js';
+import { showOptions } from '../vars/showOptions.js';
+import { gvg, MyInfo } from '../vars/state.js';
 
 export var gvgContainer = null;
 export var gvgSummary = null;
@@ -158,7 +159,7 @@ export function getContinent(msg) {
     var gvgOverviewText = document.getElementById('gvgOverviewText');
     gvgOverviewText.innerHTML = clanHTML;
 
-    $('body').i18n();
+    helper.translateContainer(gvgOverviewText);
   } else {
     console.debug(msg.responseData.length);
   }
@@ -370,7 +371,7 @@ export function getProvinceDetailed(msg) {
     resizeObserver.observe(document.getElementById('gvgGuildPowerTextP'));
     resizeObserver.observe(document.getElementById('gvgCurrAgeTextP'));
     resizeObserver.observe(document.getElementById('gvgAllGuildsPowerTextP'));
-    $('body').i18n();
+    helper.translateContainer(gvg);
 
     // console.debug(Guilds,GuildSectors,GuildPower,GVGstatus);
   } else {

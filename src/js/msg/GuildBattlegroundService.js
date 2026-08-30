@@ -11,27 +11,27 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { Tooltip, Alert, Popover } from 'bootstrap';
+import { Alert, Popover, Tooltip } from 'bootstrap';
 import browser from 'webextension-polyfill';
-import { showOptions } from '../vars/showOptions.js';
-import * as helper from '../fn/helper.js';
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
-import * as element from '../fn/AddElement';
-import * as storage from '../fn/storage.js';
+import { setBuildingCostSize, toolOptions } from '../fn/globals.js';
+import * as helper from '../fn/helper.js';
 import * as post_webstore from '../fn/post.js';
+import * as storage from '../fn/storage.js';
+import { showOptions } from '../vars/showOptions.js';
 import {
   BuildingDefs,
+  donationDIV,
+  EpocTime,
+  GameOrigin,
+  targets,
+  targetText,
+  url,
   VolcanoProvinceDefs,
   WaterfallProvinceDefs,
-  targets,
-  donationDIV,
-  GameOrigin,
-  EpocTime,
-  url,
-  targetText,
-} from '../index.js';
-import { toolOptions, setBuildingCostSize } from '../fn/globals.js';
+} from '../vars/state.js';
 
 export var BattlegroundPerformance = [];
 export var GuildMembers = [];
@@ -101,7 +101,7 @@ export function getPlayerLeaderboard(msg) {
         helper.fshowBattleground();
       });
     // console.debug('BattlegroundPerformance',GBGdata);
-    $('body').i18n();
+    helper.translateContainer(battlegroundDIV);
   }
 }
 
@@ -701,7 +701,7 @@ function showBuildingCost(msg) {
     }
   });
   resizeObserver.observe(costsDiv);
-  $('body').i18n();
+  helper.translateContainer(costsDiv);
   // console.debug(toolOptions);
   console.debug('collapseBuildingCost', collapse);
 }

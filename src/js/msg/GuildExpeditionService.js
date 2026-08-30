@@ -11,11 +11,11 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
-import * as element from '../fn/AddElement';
-import { donationDIV2 } from '../index.js';
-import { toolOptions, setExpeditionSize } from '../fn/globals.js';
+import { setExpeditionSize, toolOptions } from '../fn/globals.js';
+import { donationDIV2 } from '../vars/state.js';
 
 export function guildExpeditionService(msg) {
   var ExpeditionPerformance = [];

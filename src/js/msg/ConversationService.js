@@ -12,13 +12,13 @@
  * ________________________________________________________________
  */
 
-import { Tooltip, Alert, Popover } from 'bootstrap';
+import { Alert, Popover, Tooltip } from 'bootstrap';
 import dayjs from 'dayjs';
-import { targets, targetsTopic } from '../index.js';
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as helper from '../fn/helper.js';
 import * as post_webstore from '../fn/post.js';
-import * as element from '../fn/AddElement';
+import { targets, targetsTopic } from '../vars/state.js';
 import { setCurrentPercent } from './GreatBuildingsService.js';
 
 // targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
@@ -60,15 +60,21 @@ export function conversationService(msg) {
           collapse.collapseTarget,
         );
 
+      const safeText = helper
+        .escapeHTML(message.lastMessage.text)
+        .replace(/(?:\r\n|\r|\n)/g, '<br>');
+      const safeSender = helper.escapeHTML(message.lastMessage.sender.name);
+      const safeDate = helper.escapeHTML(message.lastMessage.date);
+
       targetsGBG.innerHTML =
         targetsHTML +
         `<p id="targetLabel" href="#targetText" aria-expanded="true" data-bs-toggle="collapse">
       ${element.icon('targeticon', 'targetText', collapse.collapseTarget)}
-                <strong>GBG Targets</strong> ${message.lastMessage.date}</p><p id="targetText" class="collapse ${
+                <strong>GBG Targets</strong> ${safeDate}</p><p id="targetText" class="collapse ${
                   collapse.collapseTarget ? '' : 'show'
-                }">${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br><span class="text-muted">by ${
-                  message.lastMessage.sender.name
-                }. alert @ ${dayjs().format('HH:mm:ss')}</span></p></div>`;
+                }">${safeText}<br><span class="text-muted">by ${safeSender}. alert @ ${dayjs().format(
+                  'HH:mm:ss',
+                )}</span></p></div>`;
       setTimeout(function () {
         targetsGBG.innerHTML = '';
       }, 600000);

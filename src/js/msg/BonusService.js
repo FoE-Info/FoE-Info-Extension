@@ -12,11 +12,11 @@
  * ________________________________________________________________
  */
 
-import { City, Galaxy, showGalaxy } from './StartupService.js';
-import { checkDebug, Bonus } from '../index.js';
-import { showOptions } from '../vars/showOptions.js';
-import * as collapse from '../fn/collapse.js';
 import * as element from '../fn/AddElement';
+import * as collapse from '../fn/collapse.js';
+import { showOptions } from '../vars/showOptions.js';
+import { Bonus, checkDebug } from '../vars/state.js';
+import { City, Galaxy, showGalaxy } from './StartupService.js';
 
 export function getBonuses(msg) {
   console.debug('Info Erased');
@@ -116,9 +116,12 @@ export function getLimitedBonuses(msg) {
       document
         .getElementById('bonusTextLabel')
         .addEventListener('click', collapse.fCollapseBonus);
-    } else if (
-      !(Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
-    ) {
+    } else if (!(
+      Bonus.aid ||
+      Bonus.spoils ||
+      Bonus.diplomatic ||
+      Bonus.strike
+    )) {
       bonus.innerHTML = ``;
     }
   }

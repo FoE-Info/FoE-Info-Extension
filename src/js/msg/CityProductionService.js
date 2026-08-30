@@ -11,15 +11,11 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import {
-  showReward,
-  rewardsArmy,
-  rewardsCity,
-  MilitaryDefs,
-} from '../index.js';
-import { updateGalaxy } from './StartupService.js';
-import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
+import { showReward } from '../index.js';
+import { showOptions } from '../vars/showOptions.js';
+import { MilitaryDefs, rewardsArmy, rewardsCity } from '../vars/state.js';
+import { updateGalaxy } from './StartupService.js';
 
 export function pickupProduction(msg) {
   if (msg.responseData.militaryProducts.length) {

@@ -12,12 +12,12 @@
  * ________________________________________________________________
  */
 
-import { MilitaryDefs, armyDIV } from '../index.js';
-import { toolOptions, setArmySize } from '../fn/globals.js';
-import { showOptions } from '../vars/showOptions.js';
-import * as helper from '../fn/helper.js';
-import * as collapse from '../fn/collapse.js';
 import * as element from '../fn/AddElement';
+import * as collapse from '../fn/collapse.js';
+import { setArmySize, toolOptions } from '../fn/globals.js';
+import * as helper from '../fn/helper.js';
+import { showOptions } from '../vars/showOptions.js';
+import { armyDIV, MilitaryDefs } from '../vars/state.js';
 
 var ArmyUnits = [];
 
@@ -104,7 +104,7 @@ export function armyUnitManagementService(msg) {
         }
       });
       resizeObserver.observe(armyDiv);
-      $('body').i18n();
+      helper.translateContainer(armyDiv);
     }
   }
   console.debug(ArmyUnits);

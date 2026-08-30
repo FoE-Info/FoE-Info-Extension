@@ -11,31 +11,33 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { showOptions } from '../vars/showOptions.js';
-import * as helper from '../fn/helper.js';
+
+// import '../../css/main.css';
+import BigNumber from 'bignumber.js';
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
+import * as helper from '../fn/helper.js';
 import * as storage from '../fn/storage.js';
-import * as element from '../fn/AddElement';
-import { City } from './StartupService.js';
+import { showOptions } from '../vars/showOptions.js';
 import {
-  setPlayerName,
-  MyInfo,
-  PlayerID,
-  PlayerName,
-  donationDIV,
   donation2DIV,
+  donationDIV,
   donationDIV2,
-  GBselected,
-  greatbuilding,
   donationPercent,
   donationSuffix,
   GameOrigin,
+  GBselected,
+  greatbuilding,
+  MyInfo,
+  PlayerID,
+  PlayerName,
+  setPlayerName,
   url,
-} from '../index.js';
-// import '../../css/main.css';
-import BigNumber from 'bignumber.js';
+} from '../vars/state.js';
 import { friends, guildMembers, hoodlist } from './OtherPlayerService';
+import { City } from './StartupService.js';
+
 var Top = [0, 0, 0, 0, 0, 0];
 var GBrewards = [0, 0, 0, 0, 0];
 var Reward = [0, 0, 0, 0, 0];
@@ -131,15 +133,16 @@ export function showGreatBuldingDonation() {
           // else{
           // console.debug('place.forge_points:', place.player.name,place.forge_points,place.reward.strategy_point_amount);
           if (place.player.name != 'No contributor yet') {
+            const safePlayerName = helper.escapeHTML(place.player.name);
             if (place.reward && place.reward.strategy_point_amount) {
-              donorsHTML += `${place.player.name} ${place.forge_points}FP ${BigNumber(
+              donorsHTML += `${safePlayerName} ${place.forge_points}FP ${BigNumber(
                 place.forge_points,
               )
                 .times(100)
                 .div(place.reward.strategy_point_amount)
                 .toFormat(0)}%`;
             } else {
-              donorsHTML += `${place.player.name} ${place.forge_points}FP`;
+              donorsHTML += `${safePlayerName} ${place.forge_points}FP`;
             }
           }
           // }
@@ -193,7 +196,7 @@ export function showGreatBuldingDonation() {
     olddonationHTML += `<div id="donationText3" class="collapse ${
       collapse.collapseDonation ? '' : 'show'
     }"><p>${getPlayerLink()}<br>`;
-    olddonationHTML += `<span id="GBselected">${GBselected.name} ${GBselected.level + 1}</span></p>`;
+    olddonationHTML += `<span id="GBselected">${helper.escapeHTML(GBselected.name)} ${GBselected.level + 1}</span></p>`;
     if (GBselected.connected == null) {
       olddonationHTML += '<p class="red">*** DISCONNECTED ***</p>';
     }
@@ -519,7 +522,7 @@ export function showGreatBuldingDonation() {
         .getElementById('GBselected')
         .addEventListener('click', clickDonation);
 
-      $('body').i18n();
+      helper.translateContainer(donationDIV);
     }
   }
 }
@@ -611,7 +614,7 @@ export function getConstructionRanking(msg, data) {
       .getElementById('donorTextLabel2')
       .addEventListener('click', collapse.fCollapseGBDonors);
     // }
-    $('body').i18n();
+    helper.translateContainer(greatbuilding);
   }
 }
 
@@ -937,9 +940,13 @@ function getDonations_new(place, safe, donateSuggest) {
 }
 
 function getPlayerLink() {
+  const origin = (
+    GameOrigin && GameOrigin.trim() ?
+      GameOrigin
+    : 'en7').toLowerCase();
   return (
     '<a href="https://foe.scoredb.io/' +
-    GameOrigin +
+    origin +
     '/Player/' +
     PlayerID +
     '" target="_blank">' +
