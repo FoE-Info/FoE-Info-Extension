@@ -2,9 +2,9 @@
   "action": {
     "default_popup": "popup.html"
   },
-  "name": "",
-  "short_name": "",
-  "version": "",
+  "name": "FoE-Info",
+  "short_name": "FoE-Info",
+  "version": "0.0.832",
   "manifest_version": 3,
   "minimum_chrome_version": "88.0",
   "description": "Essential Info for Forge of Empires addicts",
@@ -12,6 +12,20 @@
   "externally_connectable": {
     "matches": ["https://*.forgeofempires.com/game/*"]
   },
+  "content_scripts": [
+    {
+      "matches": ["https://*.forgeofempires.com/game/*"],
+      "js": ["xhrInterceptor.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://*.forgeofempires.com/game/*"],
+      "js": ["contentBridge.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ],
   "devtools_page": "devtools.html",
   "options_ui": {
     "page": "options.html",
@@ -37,7 +51,8 @@
     "https://*.googleusercontent.com/",
     "https://discordapp.com/api/webhooks/*",
     "https://discord.com/api/webhooks/*",
-    "https://*.innogamescdn.com/*"
+    "https://*.innogamescdn.com/*",
+    "https://*.scoredb.io/*"
   ],
   "web_accessible_resources": [
     {

@@ -37,7 +37,8 @@
     "https://*.googleusercontent.com/",
     "https://discordapp.com/api/webhooks/*",
     "https://discord.com/api/webhooks/*",
-    "https://*.innogamescdn.com/*"
+    "https://*.innogamescdn.com/*",
+    "https://*.scoredb.io/*"
   ],
   "web_accessible_resources": [
     {
