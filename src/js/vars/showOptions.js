@@ -17,7 +17,7 @@ export var showTreasury = true;
 export var showVisit = true;
 export var showSettlement = true;
 export var showArmy = true;
-export var showGoods = false;
+export var showGoods = true;
 export var showLeaderboard = false;
 export var showGBGrewards = true;
 export var GBGprovinceTime = true;
@@ -34,17 +34,14 @@ export var clipboard = true;
 
 export default function set(name, state) {
   console.debug(name, state);
-  // console.debug(this,this[name]);
-  // if(name == 'showOptions'){
+  if (!state || typeof state !== 'object') return;
 
   Object.entries(state).forEach((entry) => {
     const [key, value] = entry;
-    // console.debug(key, value);
     items[key] = value;
   });
 
   console.debug(items);
-  // }
 }
 
 var items = {

@@ -13,22 +13,44 @@
  */
 import browser from 'webextension-polyfill';
 
-console.debug();
-browser.devtools.panels.create(EXT_NAME, null, 'panel.html');
+let panelWindow = null;
+let pendingRequests = [];
 
-// browser.devtools.panels.create(EXT_NAME, null, 'panel.html',
-//     function(panel) {
-//         // panel.themeName("dark");
-//     }
-// );
+function isRelevantRequest(request) {
+  if (!request || !request.request || !request.request.url) return false;
+  return request.request.url.includes('/game/json');
+}
 
-// browser.storage.local.get('tool').then( (result) => {
-//     // post.log('result', result);
-//     // console.log('result', result);
-//     // console.log('showIncidents', showIncidents);
-//         if(result.tool && result.tool.hasOwnProperty('mode')){
-//             // console.log('stealth mode is ' + toolMode);
-//             if(result.tool.mode)
-//                 browser.devtools.panels.create(EXT_NAME, null, 'panel.html');
-//         }
-// });
+function flushPending() {
+  if (
+    panelWindow &&
+    typeof panelWindow.handleRequestFinished === 'function' &&
+    pendingRequests.length > 0
+  ) {
+    const toProcess = pendingRequests;
+    pendingRequests = [];
+    toProcess.forEach((req) => {
+      try {
+        panelWindow.handleRequestFinished(req);
+      } catch (e) {
+        console.error('Error in handleRequestFinished:', e);
+      }
+    });
+  }
+}
+
+// Create DevTools panel
+browser.devtools.panels.create(EXT_NAME, null, 'panel.html').then((panel) => {
+  panel.onShown.addListener((win) => {
+    panelWindow = win;
+    flushPending();
+  });
+});
+
+// Pass network entries directly to panelWindow
+browser.devtools.network.onRequestFinished.addListener((request) => {
+  if (!isRelevantRequest(request)) return;
+  pendingRequests.push(request);
+  if (pendingRequests.length > 500) pendingRequests.shift();
+  flushPending();
+});

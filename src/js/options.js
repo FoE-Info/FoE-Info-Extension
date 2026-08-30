@@ -13,6 +13,7 @@
  */
 import browser from 'webextension-polyfill';
 import '../css/options.scss';
+
 // import "bootstrap/scss/bootstrap";
 
 const showOptions = {
@@ -35,7 +36,7 @@ const showOptions = {
   showVisit: true,
   showSettlement: true,
   showArmy: true,
-  showGoods: false,
+  showGoods: true,
   showLeaderboard: false,
   showGBGrewards: true,
   GBGprovinceTime: true,
