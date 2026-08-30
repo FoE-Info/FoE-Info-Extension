@@ -42,6 +42,45 @@ p,
   padding-right: 0.625em;
 }
 
+#goodstable,
+.goods-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 3px 6px;
+    vertical-align: middle;
+  }
+
+  th {
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+  th.text-start,
+  td.text-start {
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th.text-end,
+  td.text-end {
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .special-goods-header {
+    text-align: center;
+    font-weight: bold;
+    padding: 6px 0 4px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
 .showGBGchanges {
   margin: 0.5em;
   vertical-align: middle;
@@ -290,15 +329,13 @@ hr {
 
 .overflow {
   overflow: auto;
-  resize: vertical;
-  /* max-height: 16em; */
+  max-height: max-content;
 }
 
 .overflow-y {
   overflow-y: auto;
   overflow-x: hidden;
-  /* max-height: 16em; */
-  resize: vertical;
+  max-height: max-content;
 }
 
 .no-overflow,
@@ -316,8 +353,9 @@ hr {
 }
 
 .resize {
-  overflow: auto;
   resize: vertical;
+  overflow: auto;
+  max-height: max-content !important;
 }
 
 .popover {
