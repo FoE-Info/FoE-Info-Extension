@@ -1,0 +1,10 @@
+#!/bin/sh
+# The gate that must pass before code leaves the machine. `npm test` alone
+# skips format, lint and typecheck, so a push could carry code that
+# `npm run verify` — and CI — would reject.
+npm run verify
+_VERIFY_STATUS=$?
+
+# Exit with verify's own status. Nothing may follow that can turn a failing
+# gate into a passing push.
+exit "$_VERIFY_STATUS"
