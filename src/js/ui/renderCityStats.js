@@ -162,7 +162,7 @@ function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
     }
     container.className =
       isOwnCity ?
-        'alert alert-warning show collapsed mb-2'
+        'alert alert-dismissible alert-warning show collapsed mb-2'
       : 'alert alert-dismissible alert-dark show collapsed mb-2';
     container.innerHTML = html;
 

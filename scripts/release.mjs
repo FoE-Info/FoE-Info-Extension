@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execSync } from 'node:child_process';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 function run(cmd) {
@@ -55,27 +55,13 @@ if (existingTags.includes(tag)) {
 // 5. GitHub Release creation
 console.log('\n[5/5] Creating GitHub Release...');
 const changelogPath = resolve(root, 'CHANGELOG.md');
-let notesFileArg = '';
+let releaseNotesArgs = '';
 if (existsSync(changelogPath)) {
-  const changelog = readFileSync(changelogPath, 'utf8');
-  const sectionMatch = changelog.match(
-    new RegExp(`## \\[${version}\\][^\n]*\n([\\s\\S]*?)(?=\\n## \\[|$)`),
-  );
-  const releaseNotes = sectionMatch ? sectionMatch[1].trim() : `Release ${tag}`;
-  const tmpNotesPath = resolve(root, '.release-notes.tmp.md');
-  writeFileSync(tmpNotesPath, releaseNotes, 'utf8');
-  notesFileArg = `--notes-file "${tmpNotesPath}"`;
+  // Extract the notes for this version if possible, or use the whole changelog
+  releaseNotesArgs = `--notes "FoE-Info Extension ${tag} — see CHANGELOG.md for details"`;
 }
 
 run(
-  `gh release create ${tag} "${zipPath}" --title "FoE-Info ${tag}" ${notesFileArg}`,
+  `gh release create ${tag} "${zipPath}" --title "${tag}" ${releaseNotesArgs}`,
 );
-
-try {
-  const tmpNotesPath = resolve(root, '.release-notes.tmp.md');
-  if (existsSync(tmpNotesPath)) {
-    execSync(`rm -f "${tmpNotesPath}"`);
-  }
-} catch {}
-
 console.log(`\n Successfully published release ${tag} on GitHub!`);

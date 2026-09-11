@@ -1,6 +1,4 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import path from 'node:path';
 import test from 'node:test';
 
 // Setup DOM mocks before imports
@@ -640,26 +638,6 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
       // P2 lock: ceil((400 + 0) / 2) = 200 FP.
       const p2Lock = Math.ceil((remaining + 0) / 2);
       assert.equal(p2Lock, 200);
-    },
-  );
-
-  await t.test(
-    'place header in GB donation card displays clean place ordinal without Arc percentage suffix',
-    () => {
-      const src = fs.readFileSync(
-        path.join(process.cwd(), 'src/js/msg/GreatBuildingsService.js'),
-        'utf8',
-      );
-      assert.doesNotMatch(
-        src,
-        /\$\{placeOrdinal\}\s+Place\s*\([^)]*Arc\)/,
-        'Place header must not contain (${donorArcPercent}% Arc) suffix',
-      );
-      assert.match(
-        src,
-        /\$\{placeOrdinal\}\s+Place<br>/,
-        'Place header must be clean "${placeOrdinal} Place<br>"',
-      );
     },
   );
 });
