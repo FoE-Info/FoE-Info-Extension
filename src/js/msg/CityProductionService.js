@@ -25,44 +25,30 @@ export function pickupProduction(msg) {
   if (!resp) return;
 
   if (Array.isArray(resp.militaryProducts) && resp.militaryProducts.length) {
-    var units = resp.militaryProducts;
-    // var numUnits = msg.responseData.militaryProducts.length;
-    // var unitsList = {};
+    const units = resp.militaryProducts;
     units.forEach((unit) => {
-      var name = '';
-      if (MilitaryDefs[unit.unitTypeId])
-        name = MilitaryDefs[unit.unitTypeId].name;
-      else name = unit.unitTypeId;
-      logger.debug('Military unit pickup:', unit.unitTypeId, name);
+      if (!unit) return;
+      const unitId = unit.unitTypeId;
+      const name =
+        (unitId && MilitaryDefs[unitId]?.name) || unitId || 'Unknown Unit';
+      logger.debug('Military unit pickup:', unitId, name);
       if (rewardsArmy[name]) rewardsArmy[name]++;
       else rewardsArmy[name] = 1;
     });
   }
   if (Array.isArray(resp.updatedEntities) && resp.updatedEntities.length) {
-    var rewards = resp.updatedEntities;
+    const rewards = resp.updatedEntities;
     rewards.forEach((reward) => {
+      if (!reward) return;
       updateGalaxy(reward);
-      // console.debug(reward.state.current_product.hasOwnProperty('product') , reward.state.current_product.product.hasOwnProperty('resources'));
-      if (
-        reward.state.hasOwnProperty('current_product') &&
-        reward.state.current_product.hasOwnProperty('product') &&
-        reward.state.current_product.product.hasOwnProperty('resources')
-      ) {
-        // updateGalaxy(reward.cityentity_id);
-        // var resources = reward.state.current_product.product.resources;
-        // console.debug(resources);
-        Object.keys(reward.state.current_product.product.resources).forEach(
-          (resource) => {
-            const name = helper.fResourceShortName(resource);
-            // console.debug(name,resource)
-            if (rewardsCity[name])
-              rewardsCity[name] +=
-                reward.state.current_product.product.resources[resource];
-            else
-              rewardsCity[name] =
-                reward.state.current_product.product.resources[resource];
-          },
-        );
+      const resources = reward.state?.current_product?.product?.resources;
+      if (resources && typeof resources === 'object') {
+        Object.keys(resources).forEach((resource) => {
+          const name = helper.fResourceShortName(resource);
+          const amt = Number(resources[resource]) || 0;
+          if (rewardsCity[name]) rewardsCity[name] += amt;
+          else rewardsCity[name] = amt;
+        });
       }
       if (
         reward.state &&

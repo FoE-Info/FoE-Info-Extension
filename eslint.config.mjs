@@ -19,6 +19,18 @@ export default [
   js.configs.recommended,
   eslintConfigPrettier,
   {
+    files: ['src/**/*.{js,mjs,cjs}'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        ...globals.chrome,
+        ...globals.webextensions,
+      },
+    },
+  },
+  {
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

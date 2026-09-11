@@ -1140,48 +1140,31 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
     },
   );
 
-  // Test 17: BoostService.getAllBoosts Legacy Bridge Registration
+  // Test 17: Shared RPC keys are owned by modern services, not the bridge
   await t.test(
-    'legacyBridge: registers and dispatches BoostService.getAllBoosts to boostServiceAllBoosts',
+    'legacyBridge: defers BoostService.getAllBoosts to the modern service',
     async () => {
       const dispatcher = new MessageDispatcher();
       let captured = null;
-      const boostServiceAllBoosts = (msg) => {
-        captured = msg;
-        return { success: true };
-      };
+      registerLegacyBridge(dispatcher, {
+        boostServiceAllBoosts: (msg) => {
+          captured = msg;
+        },
+      });
 
-      registerLegacyBridge(dispatcher, { boostServiceAllBoosts });
-
-      const msg = {
+      const res = await dispatcher.dispatchSingle({
         __class__: 'ServerRequest',
         requestClass: 'BoostService',
         requestMethod: 'getAllBoosts',
-        responseData: [
-          {
-            type: 'att_boost_attacker',
-            targetedFeature: 'battleground',
-            value: 55,
-          },
-          {
-            type: 'att_boost_attacker',
-            targetedFeature: 'guild_expedition',
-            value: 40,
-          },
-          {
-            type: 'att_boost_attacker',
-            targetedFeature: 'guild_raids',
-            value: 30,
-          },
-          { type: 'att_boost_attacker', targetedFeature: 'all', value: 25 },
-        ],
-      };
+        responseData: [],
+      });
 
-      const res = await dispatcher.dispatchBatch([msg]);
-      assert.equal(res.succeeded, 1);
-      assert.ok(captured);
-      assert.equal(captured.responseData.length, 4);
-      assert.equal(captured.responseData[0].value, 55);
+      assert.equal(captured, null);
+      assert.deepEqual(res, {
+        unhandled: true,
+        requestClass: 'BoostService',
+        requestMethod: 'getAllBoosts',
+      });
     },
   );
 

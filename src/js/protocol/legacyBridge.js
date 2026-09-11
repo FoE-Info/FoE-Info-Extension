@@ -21,7 +21,6 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
 
   const {
     startupService,
-    emissaryService,
     getConstruction,
     contributeForgePoints,
     getConstructionRanking,
@@ -56,10 +55,8 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     getTreasuryBag,
     getTreasuryLogs,
     treasuryService,
-    getOutposts,
     getAdvancements,
     outpostService,
-    boostServiceAllBoosts,
     showOptions = {},
   } = handlers;
 
@@ -117,13 +114,6 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
   });
   if (startupService) {
     dispatcher.register('StartupService', 'getOverview', startupService);
-  }
-  if (emissaryService) {
-    dispatcher.register('EmissaryService', 'getOverview', emissaryService);
-    dispatcher.register('EmissaryService', 'getAssigned', emissaryService);
-  }
-  if (boostServiceAllBoosts) {
-    dispatcher.register('BoostService', 'getAllBoosts', boostServiceAllBoosts);
   }
 
   // Great Buildings
@@ -483,10 +473,6 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
   }
 
   // Cultural Settlements & Outposts
-  const outpostHandler = getOutposts || outpostService?.getAll;
-  if (outpostHandler) {
-    dispatcher.register('OutpostService', 'getAll', outpostHandler);
-  }
   const advancementHandler =
     getAdvancements || outpostService?.handleAdvancements;
   if (advancementHandler) {
