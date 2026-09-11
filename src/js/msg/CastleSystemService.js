@@ -8,6 +8,19 @@
 
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 
+let logger = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('CastleSystemService');
+} catch {
+  logger = {
+    debug: () => {},
+    info: () => {},
+    warn: () => {},
+    error: () => {},
+  };
+}
+
 class CastleSystemService {
   constructor() {
     this.level = 0;
@@ -57,6 +70,13 @@ class CastleSystemService {
       data.dailyRewardCollectionAvailableAt || 0;
     this.lastUpdated = Date.now();
 
+    logger.debug('getOverview parsed', {
+      dailyPointsCollectionAvailableAt: this.dailyPointsCollectionAvailableAt,
+      dailyBonusPointsCollectionAvailableAt:
+        this.dailyBonusPointsCollectionAvailableAt,
+      dailyRewardCollectionAvailableAt: this.dailyRewardCollectionAvailableAt,
+    });
+
     return {
       success: true,
       dailyPointsCollectionAvailableAt: this.dailyPointsCollectionAvailableAt,
@@ -76,6 +96,11 @@ class CastleSystemService {
     this.level = typeof data.level === 'number' ? data.level : 0;
     this.nextCastlePoints = data.nextCastlePoints || null;
     this.lastUpdated = Date.now();
+
+    logger.debug('getCastleSystemPlayer parsed', {
+      level: this.level,
+      nextCastlePoints: this.nextCastlePoints,
+    });
 
     return {
       success: true,
@@ -144,8 +169,12 @@ class CastleSystemService {
       6: 45,
       7: 60,
     };
-    if (!(s in stageBoostMap)) return null;
+    if (!(s in stageBoostMap)) {
+      logger.debug('getBoostsForStage unknown stage', { stage });
+      return null;
+    }
     const boost = stageBoostMap[s];
+    logger.debug('getBoostsForStage resolved', { stage: s, boost });
     return {
       attackerAtt: boost,
       attackerDef: boost,

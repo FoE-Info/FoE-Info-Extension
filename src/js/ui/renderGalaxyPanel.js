@@ -91,7 +91,7 @@ function renderGalaxyPanel({
         <span class="header-icon collapse-toggle fw-bold font-monospace" id="galaxyicon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="galaxyText" data-bs-target="#galaxyText" data-bs-toggle="collapse">${collapseIcon}</span>
         <strong><span data-i18n="galaxy_double_collection">${titleText}</span></strong>
       </p>
-      <div id="galaxyText" class="resize collapse ${collapseClass}" style="max-height: 20em !important; overflow-y: auto !important;">
+      <div id="galaxyText" class="resize collapse ${collapseClass}" style="max-height: 20em; overflow-y: auto;">
         <p class="mb-1"><span data-i18n="tries_remaining">${triesText}</span> <span id="galaxyID">${validCharges}</span></p>
         ${buildingsHtml}
       </div>

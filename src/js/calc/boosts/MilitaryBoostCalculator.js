@@ -193,14 +193,29 @@ function tallySingleBoost(b, rawBoosts, qiBoosts = null, prodBoosts = null) {
 
   // QI specific economy boosts
   else if (qiBoosts) {
-    if (type === 'guild_raids_coin_boost')
+    if (
+      type === 'guild_raids_coins_production' ||
+      type === 'guild_raids_coins_start' ||
+      type === 'guild_raids_coin_boost'
+    ) {
       qiBoosts.coins = qiBoosts.coins.plus(val);
-    else if (type === 'guild_raids_supply_boost')
+    } else if (
+      type === 'guild_raids_supplies_production' ||
+      type === 'guild_raids_supply_boost'
+    ) {
       qiBoosts.supplies = qiBoosts.supplies.plus(val);
-    else if (type === 'guild_raids_goods_boost')
+    } else if (
+      type === 'guild_raids_goods_start' ||
+      type === 'guild_raids_goods_boost'
+    ) {
       qiBoosts.goods = qiBoosts.goods.plus(val);
-    else if (type === 'guild_raids_action_points_boost')
+    } else if (
+      type === 'guild_raids_action_points_collection' ||
+      type === 'guild_raids_action_points_capacity' ||
+      type === 'guild_raids_action_points_boost'
+    ) {
       qiBoosts.actions = qiBoosts.actions.plus(val);
+    }
   }
 }
 

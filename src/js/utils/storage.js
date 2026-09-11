@@ -40,15 +40,20 @@ function sanitizeKey(key) {
   return key;
 }
 
+function isWorldScopedKey(name) {
+  return name === 'toolOptions' || name.startsWith('collapse');
+}
+
 function updateCache(obj) {
   if (obj && typeof obj === 'object') {
     for (const key of Object.keys(obj)) {
       const cleanKey = sanitizeKey(key);
-      if (cleanKey) {
+      if (!cleanKey) continue;
+      if (cleanKey.startsWith('world:')) {
         storageCache[cleanKey] = obj[key];
-        if (cleanKey.startsWith('world:')) {
-          memoryWorldCache[cleanKey.slice(6)] = obj[key];
-        }
+        memoryWorldCache[cleanKey.slice(6)] = obj[key];
+      } else if (!isWorldScopedKey(cleanKey)) {
+        storageCache[cleanKey] = obj[key];
       }
     }
   }
@@ -91,9 +96,13 @@ function setStorage(name, value) {
     const local = getStorageLocal();
     if (local) {
       local
-        .set({ [cleanKey]: value })
-        .catch((err) => console.warn('setStorage error:', err));
+        .remove(cleanKey)
+        .catch((err) => console.warn('setStorage cleanup error:', err));
     }
+    return;
+  }
+  if (name.startsWith('collapse')) {
+    setCollapse(name, value);
     return;
   }
 
@@ -112,6 +121,7 @@ function getStorage(name, callback) {
     return Promise.resolve(null);
   }
 
+  const worldScoped = isWorldScopedKey(name);
   const settings = memoryWorldCache[getCurrentWorld()];
   let val;
   if (settings) {
@@ -119,36 +129,37 @@ function getStorage(name, callback) {
     else if (name === 'investSettings' || name === 'showOptions')
       val = settings.showOptions;
     else if (name === 'toolOptions') val = settings.toolOptions;
+    else if (name.startsWith('collapse')) val = settings.collapses?.[name];
     else if (name === 'donation') val = settings.donation;
     else if (name === 'url') val = settings.webhooks;
   }
-  if (val === undefined) val = storageCache[cleanKey];
+  if (val === undefined && !worldScoped) val = storageCache[cleanKey];
 
   const local = getStorageLocal();
-  if (local) {
-    return local
-      .get(cleanKey)
-      .then((result) => {
-        const stored = result ? result[cleanKey] : null;
-        if (stored !== undefined) storageCache[cleanKey] = stored;
-        const finalVal = stored !== undefined ? stored : (val ?? null);
-        if (typeof callback === 'function') callback(null, finalVal);
-        return finalVal;
-      })
-      .catch((err) => {
-        console.warn('getStorage error:', err);
-        if (typeof callback === 'function') callback(err, val ?? null);
-        return val ?? null;
-      });
+  if (!local || worldScoped) {
+    if (typeof callback === 'function') callback(null, val ?? null);
+    return Promise.resolve(val ?? null);
   }
-
-  if (typeof callback === 'function') callback(null, val ?? null);
-  return Promise.resolve(val ?? null);
+  return local
+    .get(cleanKey)
+    .then((result) => {
+      const stored = result ? result[cleanKey] : null;
+      if (stored !== undefined) storageCache[cleanKey] = stored;
+      const finalVal = stored !== undefined ? stored : (val ?? null);
+      if (typeof callback === 'function') callback(null, finalVal);
+      return finalVal;
+    })
+    .catch((err) => {
+      console.warn('getStorage error:', err);
+      if (typeof callback === 'function') callback(err, val ?? null);
+      return val ?? null;
+    });
 }
 
 function getSync(name) {
   const cleanKey = sanitizeKey(name);
   if (!cleanKey) return null;
+  const worldScoped = isWorldScopedKey(name);
   const settings = memoryWorldCache[getCurrentWorld()];
   if (settings) {
     if (name === 'hiddenInvestments')
@@ -158,9 +169,37 @@ function getSync(name) {
     if (name === 'donation') return settings.donation || {};
     if (name === 'url') return settings.webhooks || {};
     if (name === 'toolOptions') return settings.toolOptions || {};
+    if (name.startsWith('collapse')) return settings.collapses?.[name] ?? null;
     if (settings[name] !== undefined) return settings[name];
   }
+  if (worldScoped) return null;
   return storageCache[cleanKey] !== undefined ? storageCache[cleanKey] : null;
+}
+
+function setCollapse(name, value) {
+  const cleanKey = sanitizeKey(name);
+  if (!cleanKey || !cleanKey.startsWith('collapse')) return;
+  const currentWorld = getCurrentWorld();
+  if (memoryWorldCache[currentWorld]) {
+    memoryWorldCache[currentWorld].collapses = {
+      ...memoryWorldCache[currentWorld].collapses,
+      [cleanKey]: value,
+    };
+  }
+  saveWorldSettings(currentWorld, { collapses: { [cleanKey]: value } });
+  const local = getStorageLocal();
+  if (local) {
+    local
+      .remove(cleanKey)
+      .catch((err) => console.warn('setCollapse cleanup error:', err));
+  }
+}
+
+function getCollapse(name) {
+  const cleanKey = sanitizeKey(name);
+  if (!cleanKey || !cleanKey.startsWith('collapse')) return null;
+  const settings = memoryWorldCache[getCurrentWorld()];
+  return settings?.collapses?.[cleanKey] ?? null;
 }
 
 function removeStorage(name) {
@@ -202,6 +241,9 @@ module.exports = {
   set: setStorage,
   get: getStorage,
   getSync,
+  setCollapse,
+  getCollapse,
+  isWorldScopedKey,
   remove: removeStorage,
   updateCache,
   sanitizeKey,

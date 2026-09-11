@@ -37,6 +37,14 @@ try {
   logger = createLogger('NetworkListener');
 } catch {}
 
+let escapeHTML = (s) => String(s ?? '');
+try {
+  const formatters = require('../utils/formatters.js');
+  if (typeof formatters.escapeHTML === 'function') {
+    escapeHTML = formatters.escapeHTML;
+  }
+} catch {}
+
 let activeDeps = {};
 let currentGameVersion = 0;
 const processedPayloadCache = new Map();
@@ -109,9 +117,10 @@ function notifyGameVersionChange(newVersion, deps) {
     if (typeof deps.onGameVersionChange === 'function') {
       deps.onGameVersionChange(newVersion);
     } else if (deps.citystats) {
-      const extName = deps.extName || 'FoE-Info';
-      const toolVersion = deps.toolVersion || '';
-      deps.citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${newVersion}<br>${extName}: ${toolVersion}</div>`;
+      const extName = escapeHTML(deps.extName || 'FoE-Info');
+      const toolVersion = escapeHTML(deps.toolVersion || '');
+      const safeVersion = escapeHTML(newVersion);
+      deps.citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${safeVersion}<br>${extName}: ${toolVersion}</div>`;
     }
   }
 }
