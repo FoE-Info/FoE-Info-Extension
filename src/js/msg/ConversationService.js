@@ -21,6 +21,10 @@ let dayjs;
 try {
   dayjs = require('dayjs');
 } catch {}
+let dateUtils = {};
+try {
+  dateUtils = require('../utils/date.js');
+} catch {}
 let element = { close: () => '', post: () => '', icon: () => '' };
 try {
   element = require('../ui/AddElement.js');
@@ -157,14 +161,26 @@ function renderTargetMessage(message) {
           })[m],
       );
 
-  const rawDate =
-    message?.lastMessage?.date ||
-    message?.date ||
-    (dayjs ? dayjs().format('HH:mm:ss') : '');
+  const rawDate = message?.lastMessage?.date || message?.date;
+  let formattedDate = '';
+  if (typeof rawDate === 'number') {
+    formattedDate =
+      typeof dateUtils.formatTime === 'function' ? dateUtils.formatTime(rawDate)
+      : dayjs ? dayjs(rawDate * 1000).format('HH:mm:ss')
+      : new Date(rawDate * 1000).toLocaleTimeString();
+  } else if (rawDate) {
+    formattedDate = String(rawDate);
+  } else {
+    formattedDate =
+      typeof dateUtils.formatTime === 'function' ?
+        dateUtils.formatTime(Math.floor(Date.now() / 1000))
+      : dayjs ? dayjs().format('HH:mm:ss')
+      : '';
+  }
   const safeDate =
     typeof helper?.escapeHTML === 'function' ?
-      helper.escapeHTML(rawDate)
-    : String(rawDate).replace(
+      helper.escapeHTML(formattedDate)
+    : String(formattedDate).replace(
         /[&<>"']/g,
         (m) =>
           ({
@@ -181,15 +197,19 @@ function renderTargetMessage(message) {
       element.icon('targeticon', 'targetText', collapse.collapseTarget)
     : '';
 
+  const alertTime =
+    typeof dateUtils.formatTime === 'function' ?
+      dateUtils.formatTime(Math.floor(Date.now() / 1000))
+    : dayjs ? dayjs().format('HH:mm:ss')
+    : '';
+
   targetsGBG.innerHTML =
     targetsHTML +
     `<p id="targetLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#targetText" aria-expanded="${!collapse.collapseTarget}" aria-controls="targetText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
   ${iconHTML}
             <strong>GBG Targets</strong> ${safeDate}</p><p id="targetText" class="collapse ${
               collapse.collapseTarget ? '' : 'show'
-            }">${safeText}<br><span class="text-muted">by ${safeSender}. alert @ ${
-              dayjs ? dayjs().format('HH:mm:ss') : ''
-            }</span></p></div>`;
+            }">${safeText}<br><span class="text-muted">by ${safeSender}. alert @ ${alertTime}</span></p></div>`;
 
   if (targetsTimer) clearTimeout(targetsTimer);
   targetsTimer = setTimeout(function () {

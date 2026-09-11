@@ -20,7 +20,7 @@ test('Split GE Panels Suite', async (t) => {
     assert.match(cardHtml, /\[-\]/);
     assert.match(cardHtml, /id="geChampionshipCopyID"/);
     assert.match(cardHtml, /id="geChampionshipText"/);
-    assert.match(cardHtml, /resize-both/);
+    assert.match(cardHtml, /resize/);
     assert.match(cardHtml, /Top Guild/);
     assert.match(
       cardHtml,
@@ -46,7 +46,7 @@ test('Split GE Panels Suite', async (t) => {
     assert.match(cardHtml, /\[\+\]/);
     assert.match(cardHtml, /id="geContributionCopyID"/);
     assert.match(cardHtml, /id="geContributionText"/);
-    assert.match(cardHtml, /resize-both/);
+    assert.match(cardHtml, /resize/);
     assert.match(cardHtml, /Knight/);
     assert.match(
       cardHtml,

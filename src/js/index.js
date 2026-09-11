@@ -83,6 +83,8 @@ import {
   handleRequestFinished,
   initNetworkListeners,
 } from './protocol/networkListener.js';
+import { initWebRequestFilter } from './protocol/webRequestFilter.js';
+import * as entityDefsCache from './state/entityDefsCache.js';
 import {
   handleReceiveStorage,
   handleStorageChange,
@@ -302,7 +304,6 @@ export var worlds = [];
 // var GBinfo = [];
 // var GBrequest = [];
 var GuildDonations = [];
-var GuildTreasury = [];
 var GuildsGoods = [];
 // var GBdefs = [];
 export var CityEntityDefs = {};
@@ -321,77 +322,48 @@ export var hiddenRewards = [];
 // store StartupService message until metadata is ready
 var pendingStartupMsg = null;
 var lastStartupMsg = null;
-var saveCityEntityDefsTimer = null;
-let cityEntityDefsDirty = false;
 const fetchedMetadataUrls = new Set();
-var startupRerunTimer = null;
 
-export function markCityEntityDefsDirty() {
-  cityEntityDefsDirty = true;
-}
-
-export function isCityEntityDefsDirty() {
-  return cityEntityDefsDirty;
-}
-
-function scheduleStartupRerun(msg) {
-  if (!msg) return;
-  if (startupRerunTimer) clearTimeout(startupRerunTimer);
-  startupRerunTimer = setTimeout(() => {
-    startupRerunTimer = null;
-    startupService(msg);
-  }, 1000);
-}
+export const markCityEntityDefsDirty = entityDefsCache.markCityEntityDefsDirty;
+export const isCityEntityDefsDirty = entityDefsCache.isCityEntityDefsDirty;
 
 export function flushCityEntityDefs() {
-  if (saveCityEntityDefsTimer) {
-    clearTimeout(saveCityEntityDefsTimer);
-    saveCityEntityDefsTimer = null;
-  }
-  if (!cityEntityDefsDirty) return;
-  cityEntityDefsDirty = false;
-  if (CityEntityDefs && Object.keys(CityEntityDefs).length > 0) {
-    storage.set('CityEntityDefs', CityEntityDefs);
-  }
+  return entityDefsCache.flushCityEntityDefs({
+    storage,
+    CityEntityDefs,
+  });
 }
 
-export async function resolveMissingCityEntities(ids) {
-  return metadataService.resolveMissingCityEntities(ids, () => {
-    saveCityEntityDefsDebounced();
-    const targetMsg = lastStartupMsg || serviceLastStartupMsg;
-    if (targetMsg) {
-      scheduleStartupRerun(targetMsg);
-    } else {
-      renderLiveCityStats();
-    }
+export function resolveMissingCityEntities(ids) {
+  return entityDefsCache.resolveMissingCityEntities(ids, {
+    metadataService,
+    storage,
+    CityEntityDefs,
+    lastStartupMsg: lastStartupMsg || serviceLastStartupMsg,
+    startupService,
+    renderLiveCityStats,
   });
 }
 
 export function resolveMissingCityEntitiesFromMap(mapEntities) {
-  if (!mapEntities || !Array.isArray(mapEntities)) return;
-  const missing = mapEntities
-    .map((e) => e && e.cityentity_id)
-    .filter((cid) => cid && !helper.getCityEntityDef(cid));
-  if (missing.length > 0) {
-    resolveMissingCityEntities(missing);
-  }
-}
-
-if (typeof window !== 'undefined' && window.addEventListener) {
-  window.addEventListener('beforeunload', () => {
-    if (cityEntityDefsDirty || saveCityEntityDefsTimer) {
-      flushCityEntityDefs();
-    }
+  return entityDefsCache.resolveMissingCityEntitiesFromMap(mapEntities, {
+    helper,
+    metadataService,
+    storage,
+    CityEntityDefs,
+    lastStartupMsg: lastStartupMsg || serviceLastStartupMsg,
+    startupService,
+    renderLiveCityStats,
   });
 }
 
-function saveCityEntityDefsDebounced() {
-  cityEntityDefsDirty = true;
-  if (saveCityEntityDefsTimer) clearTimeout(saveCityEntityDefsTimer);
-  saveCityEntityDefsTimer = setTimeout(() => {
-    flushCityEntityDefs();
-  }, 5000);
-}
+entityDefsCache.initEntityDefsUnloadHandler(
+  typeof window !== 'undefined' ? window : null,
+  {
+    storage,
+    CityEntityDefs,
+  },
+);
 
 export const processMetadataData = metadataService.processMetadataData;
 export var Goods = {
@@ -562,18 +534,6 @@ if (showOptions.clipboard) {
 // GE panel
 // Treasury info
 
-// var newDiv = document.createElement("div");
-// cityincidents.innerHTML = "This is a new div.";
-// content.appendChild(newDiv);
-
-const getType = (type) => {
-  return type.replace(/.*(javascript|image|html|font|json|css|text).*/g, '$1');
-};
-
-const formatBytes = (size) => {
-  return `${parseInt(size / 1000)} KB`;
-};
-
 document.querySelector('#go-to-options').addEventListener('click', function () {
   if (browser.runtime && browser.runtime.openOptionsPage) {
     browser.runtime.openOptionsPage();
@@ -724,34 +684,7 @@ Promise.resolve(true).then((result) => {
 
 // console.debug(showOptions);
 
-/* don't send the origin, so that they don't see the request coming from Chrome extension */
-function originWithId(header) {
-  return (
-    header.name.toLowerCase() === 'origin' &&
-    (header.value.indexOf('moz-extension://') === 0 ||
-      header.value.indexOf('chrome-extension://') === 0)
-  );
-}
-
-if (
-  typeof chrome !== 'undefined' &&
-  chrome.webRequest &&
-  chrome.webRequest.onBeforeSendHeaders
-) {
-  try {
-    chrome.webRequest.onBeforeSendHeaders.addListener(
-      (details) => {
-        return {
-          requestHeaders: details.requestHeaders.filter(
-            (x) => !originWithId(x),
-          ),
-        };
-      },
-      { urls: ['https://*.innogamescdn.com/*'] },
-      ['requestHeaders'],
-    );
-  } catch (e) {}
-}
+initWebRequestFilter();
 
 window.handleRequestFinished = handleRequestFinished;
 window.handleRawNetworkEntry = handleRawNetworkEntry;
@@ -885,13 +818,17 @@ function storageChange(changes, namespace) {
   handleStorageChange(changes, namespace, storageDeps);
 }
 
-export function setMyInfo(name, id, clan, clan_id, createdAt, era) {
+export function setMyInfo(name, id, clan, clan_id, createdAt, era, score = 0) {
   MyInfo.name = name;
   MyInfo.id = id;
   MyInfo.guild = clan;
   MyInfo.guildID = clan_id;
   MyInfo.createdAt = createdAt;
   MyInfo.era = era;
+  if (score !== undefined && score !== null) {
+    const num = Number(score);
+    MyInfo.score = Number.isFinite(num) ? num : 0;
+  }
 }
 
 export function setMyName(name) {
@@ -949,7 +886,6 @@ function clearStartup() {
   clearStartupHelper(getPanelContainers(), {
     reset: () => {
       GuildDonations = [];
-      GuildTreasury = [];
       GuildsGoods = [];
       Bonus = {
         aid: 0,
@@ -971,47 +907,7 @@ function receiveStorage(result) {
 }
 
 export function processTreasuryData(resources) {
-  renderTreasuryPanel(resources, {
-    containers: getPanelContainers(),
-    showOptions,
-    toolOptions,
-    collapse,
-    element,
-    helper,
-    ResourceDefs,
-    copy,
-    initTreasury,
-    setTreasurySize,
-    translateContainer,
-    document,
-    ResizeObserver:
-      typeof ResizeObserver !== 'undefined' ? ResizeObserver : null,
-  });
-}
-
-export function initTreasury(resources) {
-  GuildTreasury = [];
-  for (var i = 0; i < helper.numAges; i++) {
-    ResourceDefs.forEach((rssDef) => {
-      if (
-        helper.fLevelfromAge(rssDef.era) == helper.numAges - i &&
-        resources[rssDef.id]
-      ) {
-        GuildTreasury.push([
-          rssDef.id,
-          helper.fGVGagesname(rssDef.era),
-          rssDef.name,
-          resources[rssDef.id],
-          0,
-          0,
-          0,
-          0,
-        ]);
-        // ID, era name, rss name, treasury qty, donation, GE spend, GBG spend, net change
-      }
-    });
-  }
-  console.debug(GuildTreasury);
+  renderTreasuryPanel(resources);
 }
 
 export const processMetadataEntry = metadataService.processMetadataEntry;

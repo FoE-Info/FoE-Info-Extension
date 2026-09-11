@@ -212,4 +212,37 @@ describe('ConversationService Suite', () => {
     // Reset back
     setTargetsTopic('targets');
   });
+
+  it('formats numeric Unix epoch timestamps into human-readable times', () => {
+    const epochSeconds = 1710000000; // Fixed timestamp
+    const msg = {
+      requestClass: 'ConversationService',
+      requestMethod: 'getTeaser',
+      responseData: [
+        {
+          id: 'conv_timestamp_test',
+          title: 'Battleground Targets',
+          lastMessage: {
+            text: 'B4B RUSH (20%)',
+            sender: { name: 'General' },
+            date: epochSeconds,
+          },
+        },
+      ],
+    };
+
+    conversationService(msg);
+
+    const container = global.document.getElementById('targetsGBG');
+    assert.ok(container);
+    // Should NOT render raw integer digits "1710000000" as the time
+    assert.doesNotMatch(
+      container.innerHTML,
+      /<strong>GBG Targets<\/strong>\s*1710000000/,
+    );
+    assert.match(
+      container.innerHTML,
+      /<strong>GBG Targets<\/strong>\s*\d{2}:\d{2}/,
+    );
+  });
 });

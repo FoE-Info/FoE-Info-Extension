@@ -9,8 +9,8 @@
  * No schema assumptions — the graph reflects the actual game data structure.
  *
  * Emits:
- *   - graphify-out/metadata/graph.json (NetworkX / graphify-compatible node-link format)
- *   - graphify-out/metadata/GRAPH_SUMMARY.md (Topology documentation)
+ *   - ../metadata-store/graphify-out/graph.json (NetworkX / graphify-compatible node-link format)
+ *   - ../metadata-store/graphify-out/GRAPH_SUMMARY.md (Topology documentation)
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -19,10 +19,17 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
-const STORE_DIR = path.join(ROOT_DIR, 'metadata-store');
+const STORE_DIR =
+  process.env.METADATA_STORE_DIR ||
+  [
+    path.resolve(ROOT_DIR, '..', 'metadata-store'),
+    path.join(ROOT_DIR, 'metadata-store'),
+  ].find((p) => fs.existsSync(p)) ||
+  path.resolve(ROOT_DIR, '..', 'metadata-store');
 const ENTITIES_DIR = path.join(STORE_DIR, 'entities');
 const RPC_DIR = path.join(STORE_DIR, 'rpc');
-const OUT_DIR = path.join(ROOT_DIR, 'graphify-out', 'metadata');
+const OUT_DIR =
+  process.env.GRAPHIFY_OUT || path.join(STORE_DIR, 'graphify-out');
 if (!fs.existsSync(OUT_DIR)) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
 }
@@ -47,20 +54,31 @@ const links = [];
 const entityIdSet = new Set();
 
 function addNode(id, type, label, data = {}, sourceFile = '') {
-  if (nodes.has(id)) return;
-  nodes.set(id, {
-    id,
-    type,
-    label: label || id,
+  const strId = String(id);
+  if (nodes.has(strId)) return;
+  const strLabel = String(label ?? id);
+  nodes.set(strId, {
+    id: strId,
+    type: String(type || 'entity'),
+    label: strLabel,
     data,
-    source_file: sourceFile,
+    source_file: sourceFile || 'metadata-store',
   });
-  entityIdSet.add(id);
+  entityIdSet.add(strId);
 }
 
 function addLink(source, target, relation, data = {}) {
   if (source && target && source !== target) {
-    links.push({ source, target, relation, ...data });
+    links.push({
+      source: String(source),
+      target: String(target),
+      relation: String(relation || 'related_to'),
+      confidence: 'EXTRACTED',
+      confidence_score: 1.0,
+      source_file: data.source_file || 'metadata-store',
+      weight: 1.0,
+      ...data,
+    });
   }
 }
 

@@ -39,14 +39,14 @@
 - Consumes: `element.icon(id, target, collapse)`
 - Produces: `element.icon` returning `[-]` (expanded) and `[+]` (collapsed), title headers without `data-bs-toggle="collapse"`, robust options page launcher.
 
-- [ ] **Step 1: Write characterization tests for icon text and title decoupling**
+- [x] **Step 1: Write characterization tests for icon text and title decoupling**
 
 Create `tests/ui/collapse-icons-and-titles.test.mjs`:
 Verify `element.icon('testId', 'targetId', false)` renders `[-]`.
 Verify `element.icon('testId', 'targetId', true)` renders `[+]`.
 Verify `AddElement.updateIcon` swaps text between `[-]` and `[+]`.
 
-- [ ] **Step 2: Update manifest.json and containerBinding.js for Settings Page opening**
+- [x] **Step 2: Update manifest.json and containerBinding.js for Settings Page opening**
 
 In `src/chrome/manifest.json`:
 Set `"options_ui": { "page": "options.html", "open_in_tab": true }`.
@@ -67,7 +67,7 @@ optionsBtn.addEventListener('click', () => {
 });
 ```
 
-- [ ] **Step 3: Update collapse icons to `[-]` and `[+]` and decouple title clicks**
+- [x] **Step 3: Update collapse icons to `[-]` and `[+]` and decouple title clicks**
 
 In `src/js/ui/AddElement.js`:
 Update `fAddCollapseIcon`:
@@ -99,13 +99,13 @@ Remove `data-bs-toggle="collapse"`, `href="#..."`, and `role="button"` from titl
 - `src/js/msg/GuildBattlegroundService.js` (`#battlegroundResultTextLabel`, `#targetGenLabel`)
 - `src/js/fn/helper.js` (`#battlegroundTextLabel`)
 
-- [ ] **Step 4: Fix Battleground Results toggle glitch (Item 8)**
+- [x] **Step 4: Fix Battleground Results toggle glitch (Item 8)**
 
 In `src/js/msg/GuildBattlegroundService.js:157`:
 Ensure `<p id="battlegroundResultTextLabel">` does NOT have `data-bs-toggle="collapse"`.
 Ensure click listener in `GuildBattlegroundService.js` and `helper.js` targets `#battlegroundicon` cleanly, updating `collapse.fCollapseBattleground` without double-toggle desync.
 
-- [ ] **Step 5: Run verification gate**
+- [x] **Step 5: Run verification gate**
 
 Run `npm test`, `npm run check`, `npm run lint`, `npm run build:dev`. Verify all pass.
 
@@ -130,14 +130,14 @@ Run `npm test`, `npm run check`, `npm run lint`, `npm run build:dev`. Verify all
 - Consumes: `.resize-both` SCSS class, `showOptions` flags.
 - Produces: `showGoods: false` on login, visible `#treasury` panel, `resize: both` on requested panels.
 
-- [ ] **Step 1: Write characterization tests for visibility defaults and panel resize classes**
+- [x] **Step 1: Write characterization tests for visibility defaults and panel resize classes**
 
 Create `tests/ui/panel-resize-and-visibility.test.mjs`:
 Verify `createFreshWorldSettings().showGoods` is `false`.
 Verify `ArmyUnitManagementService`, `OtherPlayerService` (friends, guild, hood), and `GuildBattlegroundService` (results) include `resize-both` or horizontal resize classes on their collapsible content divs.
 Verify `TreasuryService.renderTreasuryPanel` renders into `#treasury` and sets `display = ''` when `showTreasury` is true.
 
-- [ ] **Step 2: Add horizontal resize styles in custom.scss**
+- [x] **Step 2: Add horizontal resize styles in custom.scss**
 
 In `src/css/custom.scss`:
 Add `.resize-both`:
@@ -153,7 +153,7 @@ Add `.resize-both`:
 
 Update `.resize` to allow `overflow: auto;`.
 
-- [ ] **Step 3: Update panel markup to use resize-both**
+- [x] **Step 3: Update panel markup to use resize-both**
 
 In `src/js/msg/ArmyUnitManagementService.js:256`:
 Add `resize-both` to `#armyText`.
@@ -162,7 +162,7 @@ Add `resize-both` to `#listsText`, `#friendsText`, `#guildText`, `#hoodText`.
 In `src/js/msg/GuildBattlegroundService.js:164`:
 Add `resize-both` to `#battlegroundTextCollapse` and `#battlegroundCollapse`.
 
-- [ ] **Step 4: Make Goods Inventory not show up on login (Item 5)**
+- [x] **Step 4: Make Goods Inventory not show up on login (Item 5)**
 
 In `src/js/state/factoryDefaults.js:28`:
 Change `showGoods: true` to `showGoods: false`.
@@ -171,7 +171,7 @@ Change `export var showGoods = true;` to `export var showGoods = false;`.
 In `src/js/msg/ResourceService.js:15`:
 Set `let showOptions = { showGoods: false };`.
 
-- [ ] **Step 5: Fix Treasury Goods display (Item 6)**
+- [x] **Step 5: Fix Treasury Goods display (Item 6)**
 
 In `src/js/msg/TreasuryService.js`:
 In `renderTreasuryPanel(reserves)`:
@@ -180,7 +180,7 @@ Ensure it checks `showOptions?.showTreasury !== false`.
 Ensure it clears `d-none` and sets `targetEl.style.display = ''`.
 Ensure both `Map` (reserves) and plain object resources are correctly iterated and formatted.
 
-- [ ] **Step 6: Run verification gate**
+- [x] **Step 6: Run verification gate**
 
 Run `npm test`, `npm run check`, `npm run lint`, `npm run build:dev`. Verify all pass.
 
@@ -202,7 +202,7 @@ Run `npm test`, `npm run check`, `npm run lint`, `npm run build:dev`. Verify all
 - Consumes: `ClanService` RPC messages, `GuildExpeditionService` ranking/contribution data.
 - Produces: `wrapChampionshipCard` and `wrapContributionCard` independent panels in `expeditionTables.js`, automated guild panel display on clan menu RPCs.
 
-- [ ] **Step 1: Write characterization tests for split GE panels and Guild menu trigger**
+- [x] **Step 1: Write characterization tests for split GE panels and Guild menu trigger**
 
 Create `tests/ui/split-ge-panels.test.mjs`:
 Verify `expeditionTables.js` exports `wrapChampionshipCard` and `wrapContributionCard` as separate standalone cards.
@@ -210,7 +210,7 @@ Verify each card contains its own header, `[-]`/`[+]` button, copy button, and t
 Create `tests/msg/guild-menu-trigger.test.mjs`:
 Verify `ClanService.getOverview`, `ClanService.getOwnClanData`, `ClanService.getClanData`, `ClanService.getMembers` route to `otherPlayerServiceUpdateActions` and ensure the guild panel is shown/expanded.
 
-- [ ] **Step 2: Connect Guild Menu RPCs in legacyBridge.js and OtherPlayerService.js**
+- [x] **Step 2: Connect Guild Menu RPCs in legacyBridge.js and OtherPlayerService.js**
 
 In `src/js/protocol/legacyBridge.js`:
 Register:
@@ -224,7 +224,7 @@ Register:
   In `OtherPlayerService.js`:
   When `autoExpandGuild` is triggered, ensure `#friends` and `#guildText` are visible and uncollapsed (`collapse.collapseGuild = false`).
 
-- [ ] **Step 3: Split GE Championship and Member Contributions into 2 separate panels**
+- [x] **Step 3: Split GE Championship and Member Contributions into 2 separate panels**
 
 In `src/js/ui/expeditionTables.js`:
 Replace `wrapExpeditionCard` and `buildSubpanel` with:
@@ -236,7 +236,7 @@ Replace `wrapExpeditionCard` and `buildSubpanel` with:
   In `src/js/msg/GuildExpeditionService.js`:
   Render both cards independently into `#info` or their target containers, allowing both to remain visible and expandable simultaneously.
 
-- [ ] **Step 4: Run verification gate**
+- [x] **Step 4: Run verification gate**
 
 Run `npm test`, `npm run check`, `npm run lint`, `npm run build:dev`. Verify all pass.
 
@@ -258,7 +258,7 @@ Run `npm test`, `npm run check`, `npm run lint`, `npm run build:dev`. Verify all
 - Consumes: `global:settings` storage key, `resolveMissingCityEntities`, Space Age unit definitions.
 - Produces: Synced date/time config in panel, prioritized `BuildingEntityLookup` loading before entity resolution, preserved `City.ForgePoints`, trimmed `FGX-` unit names.
 
-- [ ] **Step 1: Write characterization tests for SAD unit trimming, time formatting sync, and metadata order**
+- [x] **Step 1: Write characterization tests for SAD unit trimming, time formatting sync, and metadata order**
 
 Create `tests/msg/sad-units-trimming.test.mjs`:
 Verify SAD units:
@@ -272,7 +272,7 @@ Verify SAD units:
   Create `tests/utils/date-config-sync.test.mjs`:
   Verify `handleReceiveStorage` and `handleStorageChange` ingest `global:settings` and call `setTimeFormattingConfig`.
 
-- [ ] **Step 2: Implement SAD unit name trimming in ArmyUnitManagementService.js**
+- [x] **Step 2: Implement SAD unit name trimming in ArmyUnitManagementService.js**
 
 In `src/js/msg/ArmyUnitManagementService.js:175-188`:
 Strip `FGX-\d+\s*` from `unitName`:
@@ -281,7 +281,7 @@ Strip `FGX-\d+\s*` from `unitName`:
 unitName = unitName.replace(/^FGX-\d+\s*/i, '');
 ```
 
-- [ ] **Step 3: Ingest global:settings in storageListener.js for time formatting (Item 10)**
+- [x] **Step 3: Ingest global:settings in storageListener.js for time formatting (Item 10)**
 
 In `src/js/state/storageListener.js`:
 In `handleReceiveStorage(result)`:
@@ -291,14 +291,14 @@ In `handleStorageChange(changes)`:
 Check `changes['global:settings']?.newValue?.timeFormatting`:
 Call `setTimeFormattingConfig(newValue.timeFormatting)`.
 
-- [ ] **Step 4: Fix metadata loading order and Daily FP reset bug (Items 2, 12)**
+- [x] **Step 4: Fix metadata loading order and Daily FP reset bug (Items 2, 12)**
 
 In `src/js/state/storageListener.js:handleReceiveStorage`:
 Process `BuildingEntityLookup` and definition caches BEFORE processing `CityEntityDefs` and map resolution.
 In `src/js/msg/StartupService.js:1247`:
 When `resolveMissingCityEntities(missing, callback)` completes, re-evaluate city stats from `lastStartupMsg` so buildings that were previously missing their entity definition are recalculated and included in `City.ForgePoints` and city stats, preventing Daily FP from wiping to 0.
 
-- [ ] **Step 5: Run full verification gate**
+- [x] **Step 5: Run full verification gate**
 
 Run `npm run verify` (format, check, i18n, test, build:dev) and `npm run graph:foe-info:ast`.
 Confirm all 449+ unit tests pass, 0 lint errors, 0 build errors.

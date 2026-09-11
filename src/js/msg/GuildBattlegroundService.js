@@ -31,10 +31,12 @@ import {
   buildBuildingCostsTableHTML,
   buildingCostCopy,
   buildLeaderboardHTML,
+  copyToClipboard,
   renderBuildingCostCard,
   renderTargetGeneratorCard,
   targetCopy,
 } from '../ui/gbgProvinceView.js';
+import { renderBattlegroundResultCard } from '../ui/renderBattlegroundResultCard.js';
 import { formatDateTime } from '../utils/date.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
@@ -130,18 +132,75 @@ export function getPlayerLeaderboard(msg) {
 
 export function getLeaderboard(msg) {
   const leaderboard = msg.responseData;
-  var leaderboardHTML = buildLeaderboardHTML(leaderboard);
+  const isCollapsed = Boolean(collapse?.collapseGBGLeaderboard);
+  const iconHtml =
+    element && typeof element.icon === 'function' ?
+      element.icon('gbgLeaderboardIcon', 'gbgLeaderboardCollapse', isCollapsed)
+    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="gbgLeaderboardIcon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" data-bs-target="#gbgLeaderboardCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
+  const closeBtn =
+    element && typeof element.close === 'function' ?
+      element.close()
+    : '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+  const copyBtn =
+    element && typeof element.copy === 'function' ?
+      element.copy('gbgLeaderboardCopyID', 'info', 'right', isCollapsed)
+    : `<span id="gbgLeaderboardCopyID" role="button" tabindex="0" class="badge rounded-pill bg-info float-end right-button" style="display: ${isCollapsed ? 'none' : 'block'}" data-i18n="copy">Copy</span>`;
+
+  const leaderboardHTML = buildLeaderboardHTML(leaderboard);
   const targetEl =
     (typeof document !== 'undefined' &&
       document.getElementById('gbgLeaderboard')) ||
     gbgLeaderboardDIV ||
     output;
+
   if (targetEl) {
-    targetEl.innerHTML =
-      `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<strong>GBG Leaderboard:</strong>
-              <p id="leaderboardText"><table>` +
-      leaderboardHTML +
-      `</table></p></div>`;
+    const tableMarkup =
+      leaderboardHTML.startsWith('<table') ? leaderboardHTML : (
+        `<table class="goods-table w-100">${leaderboardHTML}</table>`
+      );
+
+    targetEl.innerHTML = `<div id="gbgLeaderboardCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
+      ${closeBtn}
+      <p id="gbgLeaderboardTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#gbgLeaderboardCollapse" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
+        ${iconHtml}
+        <strong>GBG Leaderboard:</strong>
+      </p>
+      ${copyBtn}
+      <div id="gbgLeaderboardCollapse" class="alert-info overflow resize collapse ${isCollapsed ? '' : 'show'}">
+        <div id="leaderboardText" class="mt-1">${tableMarkup}</div>
+      </div>
+    </div>`;
+
+    const labelEl = document.getElementById('gbgLeaderboardTextLabel');
+    if (labelEl) {
+      labelEl.addEventListener('click', (e) => {
+        if (e.target?.closest?.('#gbgLeaderboardIcon')) return;
+        if (typeof collapse?.fCollapseGBGLeaderboard === 'function') {
+          collapse.fCollapseGBGLeaderboard();
+        }
+      });
+    }
+
+    const iconEl = document.getElementById('gbgLeaderboardIcon');
+    if (iconEl && typeof collapse?.fCollapseGBGLeaderboard === 'function') {
+      iconEl.addEventListener('click', (e) => {
+        e?.stopPropagation?.();
+        collapse.fCollapseGBGLeaderboard();
+      });
+    }
+
+    const copyEl = document.getElementById('gbgLeaderboardCopyID');
+    if (copyEl) {
+      copyEl.addEventListener('click', () => {
+        if (typeof copyToClipboard === 'function') {
+          copyToClipboard('#leaderboardText');
+        }
+      });
+    }
+
+    if (helper && typeof helper.translateContainer === 'function') {
+      helper.translateContainer(targetEl);
+    }
   }
 }
 
@@ -153,85 +212,33 @@ export function getState(msg) {
     storage.remove(GameOrigin);
     BattlegroundPerformance.length = 0;
     GBGdata.length = 0;
-    var totalFights = 0;
-    var totalNegs = 0;
-    var battlegroundHTML = `<div id="battlegroundResultCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
-        ${element.close()}
-        <p id="battlegroundResultTextLabel" class="cursor-pointer" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundTextCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundTextCollapse" style="cursor: pointer; user-select: none;">
-      ${element.icon('battlegroundicon', 'battlegroundTextCollapse', collapse.collapseBattleground)}
-        <strong>Battleground Result:</strong></p>`;
-    // if (url.sheetGuildURL)
-    //   battlegroundHTML += element.post(
-    //     "battlegroundPostID",
-    //     "info",
-    //     "mid",
-    //     collapse.collapseBattleground
-    //   );
-    battlegroundHTML += element.copy(
-      'battlegroundCopyID',
-      'info',
-      'right',
-      collapse.collapseBattleground,
-    );
-    battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive resize-both collapse ${
-      collapse.collapseBattleground ? '' : 'show'
-    }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table w-100"><thead><tr><th class="text-center">Rank</th><th class="text-start">Member</th><th class="text-center">Negs</th><th class="text-center">Fights</th><th class="text-center">Attrition</th></tr></thead><tbody>`;
-    msg.responseData.playerLeaderboardEntries.forEach((entry) => {
-      var wonNegotiations = 0;
-      var wonBattles = 0;
-      var attrition = 0;
-      if (entry.negotiationsWon) wonNegotiations = entry.negotiationsWon;
-      if (entry.battlesWon) wonBattles = entry.battlesWon;
-      if (entry.attrition) attrition = entry.attrition;
-      BattlegroundPerformance.push([
-        entry.rank,
-        entry.player.name,
-        wonNegotiations,
-        wonBattles,
-        attrition,
-      ]);
-      const safePlayerName = helper.escapeHTML(entry.player.name);
-      battlegroundHTML += `<tr><td class="text-center">${entry.rank}</td><td class="text-start">${safePlayerName}</td><td class="text-center">${wonNegotiations}</td><td class="text-center">${wonBattles}</td><td class="text-center">${attrition}</td></tr>`;
-      // console.debug(entry.rank,entry.name,wonNegotiations,wonBattles);
-      totalFights += wonBattles;
-      totalNegs += wonNegotiations;
-    });
-    battlegroundHTML += `</tbody><tfoot><tr><th></th><th class="text-start">Guild Total</th><th class="text-center">${totalNegs}</th><th class="text-center">${totalFights}</th><th></th></tr></tfoot>`;
 
     const targetEl =
       (typeof document !== 'undefined' &&
         document.getElementById('battleground')) ||
       battlegroundDIV ||
       donationDIV;
-    if (targetEl) {
-      targetEl.innerHTML = battlegroundHTML + `</table></div></div></div>`;
-    }
-    const postEl = document.getElementById('battlegroundPostID');
-    if (postEl && url.sheetGuildURL) {
-      postEl.addEventListener('click', post_webstore.postGBGtoSS);
-    } else {
-      const copyEl = document.getElementById('battlegroundCopyID');
-      if (copyEl) copyEl.addEventListener('click', copy.BattlegroundCopy);
-    }
-    const labelEl = document.getElementById('battlegroundResultTextLabel');
-    if (labelEl) {
-      labelEl.addEventListener('click', (e) => {
-        if (
-          e?.target &&
-          typeof e.target.closest === 'function' &&
-          e.target.closest('#battlegroundicon')
-        ) {
-          return;
-        }
-        collapse.fCollapseBattleground();
-      });
-    }
-    const iconEl = document.getElementById('battlegroundicon');
-    if (iconEl && iconEl !== labelEl) {
-      iconEl.addEventListener('click', () => {
-        collapse.fCollapseBattleground();
-      });
-    }
+
+    renderBattlegroundResultCard(msg.responseData, {
+      targetEl,
+      collapseState: collapse.collapseBattleground,
+      helper,
+      element,
+      collapse,
+      copy,
+      url,
+      post_webstore,
+      onRow: (row) => {
+        BattlegroundPerformance.push([
+          row.rank,
+          row.name,
+          row.negotiations,
+          row.fights,
+          row.attrition,
+        ]);
+      },
+    });
+
     msg.responseData.playerLeaderboardEntries.forEach((entry) => {
       // console.debug(entry);
       var wonNegotiations = 0;

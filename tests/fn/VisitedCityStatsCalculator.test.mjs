@@ -388,10 +388,12 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
         __dirname,
         '../../docs/har/visit-robinmagister.har',
       );
-      const entitiesDir = path.resolve(
-        __dirname,
-        '../../metadata-store/entities',
-      );
+      const entitiesDir =
+        [
+          path.resolve(__dirname, '../../../metadata-store/entities'),
+          path.resolve(__dirname, '../../metadata-store/entities'),
+        ].find((p) => fs.existsSync(p)) ||
+        path.resolve(__dirname, '../../../metadata-store/entities');
 
       function extractVisitData(harPath) {
         if (!fs.existsSync(harPath)) return null;

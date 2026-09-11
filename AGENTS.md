@@ -11,14 +11,13 @@ This document defines the workspace architecture, command runners, multi-graph k
 - **Strictly Agentic Environment**: Never generate IDE configs (`.vscode/`, `.idea/`, `launch.json`). Task execution relies exclusively on `package.json` runners and Antigravity tooling.
 - **Antigravity Version Context**: Electron Antigravity 2.0+ started the agentic work; Antigravity CLI did the most recent work (grant rebuilds, MCP portability); Antigravity-IDE base is barely used. OpenCode continues when Antigravity runs out — see `antigravity-interop` skill for handoff protocol.
 - **FoE Expert Caveat**: Many FoE custom expert/subagent claims were AI-inferred by Antigravity from inspecting the codebase (which was broken at the time) + live network/RPCs. Some claims may be inaccurate (GB calculations was wrong). Treat expert claims as hypotheses — always verify against source code.
-- **Git Boundaries & Worktrees**: Worktrees reside in `.worktrees/<branch>`. Core configurations (`.agents/`, `AGENTS.md`) are tracked in Git, ensuring new worktrees instantly inherit all 36 subagents, 16 rules, and 53 skills (53 on-demand runbooks and procedures).
+- **Git Boundaries & Worktrees**: Worktrees reside in `.worktrees/<branch>`. Core configurations (`.agents/`, `AGENTS.md`) are tracked in Git, ensuring new worktrees instantly inherit all 36 subagents, 17 rules, and 53 skills (53 on-demand runbooks and procedures).
 - **Artifact Boundaries**: Never pass `ArtifactMetadata` when modifying repository files. It is reserved exclusively for `<appDataDir>/brain/<conversation-id>/` artifacts.
 
 ```text
 FoE-Info-Extension/
-├── .agents/                 # Antigravity root: 36 subagents, 16 rules, 53 skills, hooks, MCP
-├── graphify-out/            # Knowledge graphs (git-ignored: foe-info/, metadata/, forge-hammer/, low-tool/, foe-info-original/)
-├── metadata-store/          # Offline InnoGames entity databases and RPC captures (read-only)
+├── .agents/                 # Antigravity root: 36 subagents, 17 rules, 53 skills, hooks, MCP
+├── graphify-out/            # Knowledge graphs (foe-info/, metadata symlink -> ../metadata-store/graphify-out)
 ├── src/
 │   ├── chrome/              # MV3 manifests, panel.html, options.html
 │   ├── css/                 # Bootstrap 5.3 theme and component stylesheets
@@ -60,7 +59,7 @@ Consult knowledge graphs before wide disk searches:
 
 1. **`graphify-foe-info`** (`graphify-out/foe-info/graph.json`): FoE-Info AST, call graphs, module dependencies.
 2. **`graphify-foe-info-original`** (`../FoE-Info-Extension-original/graphify-out/graph.json`): Original pre-agentic v1 baseline AST (commit `8c681d1`; frozen sibling snapshot).
-3. **`graphify-metadata-store`** (`graphify-out/metadata/graph.json`): 5,400+ game entities, building definitions, GBs, Allies.
+3. **`graphify-metadata-store`** (`../metadata-store/graphify-out/graph.json`): 5,400+ game entities, building definitions, GBs, Allies.
 4. **`graphify-forge-hammer`** (`../forge-hammer/graphify-out/graph.json`): Competitor browser extension architecture graph (optional sibling repo clone).
 5. **`graphify-low-tool`** (`../LoW-Tool/graphify-out/graph.json`): Original closed-source implementation graph (optional sibling repo clone); source of removed FoE-Info features.
 
@@ -68,49 +67,34 @@ Consult knowledge graphs before wide disk searches:
 
 ---
 
-## 4. Codebase Quality Invariants (16 Core Rules)
+## 4. Codebase Quality Invariants (17 Core Rules)
 
-All agents strictly adhere to these 16 rules (managed under `.agents/rules/` with core invariants on `always_on` and scoped workflows on `model_decision`):
+All agents adhere to 17 rules in `.agents/rules/` (`always_on` invariants and `model_decision` workflows):
 
-1. [**Superpowers**](.agents/rules/superpowers.md): Mandatory skill consultation (`"Using [skill] to [purpose]"`) before modifying code.
-2. [**Verification Before Completion**](.agents/rules/verification-before-completion.md): Strict mandate for fresh terminal verification evidence.
-3. [**Small Incremental Changes**](.agents/rules/small-incremental-changes.md): Work in slices $\le 100$ lines, surgical blast radius, stop-the-line on failure.
-4. [**Subagent Delegation**](.agents/rules/subagent-delegation.md): Delegate to specialist if role fits; main agent executes when no role fits.
-5. [**Knowledge Graph Integration**](.agents/rules/graphify.md): Query graphs before wide grep; maintain AST freshness.
-6. [**Modular Architecture**](.agents/rules/modular-architecture.md): Hard cap $\le 600$ lines/file, single responsibility, strict directory taxonomy.
-7. [**Monolith Containment**](.agents/rules/monolith-containment.md): Zero inline logic additions to `index.js` or `StartupService.js`.
-8. [**Dynamic Runtime Metadata**](.agents/rules/dynamic-runtime-metadata.md): Zero static entity JSON in `src/`; runtime is 100% dynamic network RPC.
-9. [**BigNumber Precision**](.agents/rules/bignumber-precision.md): Mandatory `bignumber.js` with `BigNumber.ROUND_HALF_UP` for all Arc boost & FP math.
-10. [**i18n Compliance**](.agents/rules/i18n-compliance.md): Mandatory `data-i18n` in HTML and `t('key')` in JS; zero hardcoded English.
-11. [**Scope Control**](.agents/rules/scope-control.md): Modify only requested target files.
-12. [**Security Permissions**](.agents/rules/security-permissions.md): No wildcard permissions (`*`); prevent duplicate MCP servers.
-13. [**Browser Environment Hygiene**](.agents/rules/browser-environment-hygiene.md): Use `foe-browser` (port 9222); mandatory game reload (F5) on extension restart.
-14. [**Workspace Structure**](.agents/rules/workspace-structure.md): Agent resources in `.agents/`; brain artifacts in `<appDataDir>/brain/`.
-15. [**Unslop Commits**](.agents/rules/unslop-commit.md): Concise Conventional Commits $\le 72$ chars without AI marketing fluff.
-16. [**Debuggability by Design**](.agents/rules/debuggability-by-design.md): All features, calculators, RPC services, network interceptors, storage routines, and UI renderers must implement debug-mode debuggability via `logger.js` (silent in standard mode, console diagnostics in debug mode; see [docs/debugging.md](docs/debugging.md)).
+1. [Superpowers](.agents/rules/superpowers.md) · 2. [Verification Before Completion](.agents/rules/verification-before-completion.md) · 3. [Small Incremental Changes](.agents/rules/small-incremental-changes.md) · 4. [Subagent Delegation](.agents/rules/subagent-delegation.md) · 5. [Knowledge Graph Integration](.agents/rules/graphify.md) · 6. [Modular Architecture](.agents/rules/modular-architecture.md) · 7. [Monolith Containment](.agents/rules/monolith-containment.md) · 8. [Dynamic Runtime Metadata](.agents/rules/dynamic-runtime-metadata.md) · 9. [BigNumber Precision](.agents/rules/bignumber-precision.md) · 10. [i18n Compliance](.agents/rules/i18n-compliance.md) · 11. [Scope Control](.agents/rules/scope-control.md) · 12. [Security Permissions](.agents/rules/security-permissions.md) · 13. [Browser Environment Hygiene](.agents/rules/browser-environment-hygiene.md) · 14. [Workspace Structure](.agents/rules/workspace-structure.md) · 15. [Unslop Commits](.agents/rules/unslop-commit.md) · 16. [Debuggability by Design](.agents/rules/debuggability-by-design.md) · 17. [Release Policy](.agents/rules/release-policy.md).
 
 ---
 
 ## 5. Subagent Delegation Directory (36 Specialists)
 
-Canonical personas live in [`.agents/agents/`](.agents/agents/) (opencode-hosted via thin shims in `.opencode/agents/`). Delegate tasks matching specialist roles across 4 squads (main agent executes if no subagent fits):
+Canonical personas live in [`.agents/agents/`](.agents/agents/) (opencode shims in `.opencode/agents/`). Consult `<subagents>` for all 36 available specialists across 4 squads:
 
-- **Knowledge Graph & Architecture (8)**: [`graph-knowledge-explorer`](.agents/agents/graph-knowledge-explorer.md), [`forge-hammer-comparator`](.agents/agents/forge-hammer-comparator.md), [`low-tool-comparator`](.agents/agents/low-tool-comparator.md), [`foe-info-original-comparator`](.agents/agents/foe-info-original-comparator.md), [`forge-hammer-kg-explorer`](.agents/agents/forge-hammer-kg-explorer.md), [`low-tool-kg-explorer`](.agents/agents/low-tool-kg-explorer.md), [`foe-info-original-kg-explorer`](.agents/agents/foe-info-original-kg-explorer.md), [`codebase-modernization-architect`](.agents/agents/codebase-modernization-architect.md).
-- **FoE Game Domain (15)**: [`foe-great-buildings-expert`](.agents/agents/foe-great-buildings-expert.md), [`foe-sniping-expert`](.agents/agents/foe-sniping-expert.md), [`foe-guild-battlegrounds-expert`](.agents/agents/foe-guild-battlegrounds-expert.md), [`foe-guild-expedition-expert`](.agents/agents/foe-guild-expedition-expert.md), [`foe-quantum-incursions-expert`](.agents/agents/foe-quantum-incursions-expert.md), [`foe-pvp-expert`](.agents/agents/foe-pvp-expert.md), [`foe-game-data-expert`](.agents/agents/foe-game-data-expert.md), [`foe-city-optimizer`](.agents/agents/foe-city-optimizer.md), [`foe-combat-boost-analyst`](.agents/agents/foe-combat-boost-analyst.md), [`foe-historical-allies-expert`](.agents/agents/foe-historical-allies-expert.md), [`foe-event-mechanics-expert`](.agents/agents/foe-event-mechanics-expert.md), [`foe-settlements-expert`](.agents/agents/foe-settlements-expert.md), [`foe-antiques-dealer-expert`](.agents/agents/foe-antiques-dealer-expert.md), [`monolith-refactoring-specialist`](.agents/agents/monolith-refactoring-specialist.md), [`discord-webhook-integrator`](.agents/agents/discord-webhook-integrator.md).
-- **Extension Architecture & QA (9)**: [`chrome-extension-architect`](.agents/agents/chrome-extension-architect.md), [`extension-release-engineer`](.agents/agents/extension-release-engineer.md), [`cdp-test-engineer`](.agents/agents/cdp-test-engineer.md), [`extension-security-auditor`](.agents/agents/extension-security-auditor.md), [`code-reviewer`](.agents/agents/code-reviewer.md), [`adversarial-debater`](.agents/agents/adversarial-debater.md), [`performance-memory-profiler`](.agents/agents/performance-memory-profiler.md), [`accessibility-specialist`](.agents/agents/accessibility-specialist.md), [`localization-expert`](.agents/agents/localization-expert.md).
-- **Web Engineering & UI (4)**: [`ui-design-system-architect`](.agents/agents/ui-design-system-architect.md), [`javascript-expert`](.agents/agents/javascript-expert.md), [`typescript-expert`](.agents/agents/typescript-expert.md), [`webpack-expert`](.agents/agents/webpack-expert.md).
+- **Knowledge Graph & Architecture (8)**: Graphify AST traversal, refactoring, and peer comparisons.
+- **FoE Game Domain (15)**: Math, combat boosts, GBs, snipes, QI, GBG, GE, settlements, and RPC data.
+- **Extension Architecture & QA (9)**: CDP browser automation, security audits, code reviews, and releases.
+- **Web Engineering & UI (4)**: Bootstrap 5.3 layouts, TypeScript, JavaScript, and Webpack.
 
 ---
 
 ## 6. Skills & Runbooks Taxonomy (53 Skills)
 
-Discovered from [`.agents/skills/`](.agents/skills/) and `.agents/skills.json` (load on demand):
+53 on-demand runbooks and procedures discovered from [`.agents/skills/`](.agents/skills/) (consult `<skills>` catalog for triggers):
 
-1. **FoE Domain (7)**: `add-rpc-service`, `add-feature-panel`, `ingest-game-metadata`, `graphify`, `ephemeral-llama-swap`, `api-testing-observability-api-mock`, `protocol-reverse-engineering`.
-2. **Code Quality (13)**: `refactor-index-slice`, `service-extractor`, `codebase-modernization-planner`, `complexity-cuts`, `migrate-jquery-to-native`, `brooks-lint`, `test-driven-development`, `test-guard`, `systematic-debugging`, `verification-before-completion`, `unslop-commit`, `codebase-audit-pre-push`, `debate-review`.
-3. **Browser Diagnostics (10)**: `browser-testing`, `audit-memory-leaks`, `chrome-devtools`, `cookie-debugging`, `chrome-devtools-troubleshooting`, `chrome-extensions`, `debug-optimize-lcp`, `fixing-motion-performance`, `modern-web-guidance`, `ui-ux-pro-max`.
-4. **Localization & Release (8)**: `i18n-audit`, `a11y-debugging`, `supply-chain-risk-auditor`, `cross-platform-contract-propagation-audit`, `package-release`, `git-hooks-automation`, `changelog-automation`, `frontend-security-coder`.
-5. **Multi-Agent Orchestration (15)**: `using-superpowers`, `brainstorming`, `writing-plans`, `executing-plans`, `subagent-driven-development`, `using-git-worktrees`, `finishing-a-development-branch`, `requesting-code-review`, `receiving-code-review`, `writing-skills`, `writing-agents`, `writing-rules`, `writing-hooks`, `github`, `antigravity-interop`.
+- **FoE Domain (7)**: RPC handlers, UI panel scaffolding, metadata ingestion, reverse engineering.
+- **Code Quality (13)**: Monolith decomposition, TDD, systematic debugging, complexity cuts, audits.
+- **Browser Diagnostics (10)**: CDP test harness, memory leaks, DevTools, rendering performance.
+- **Localization & Release (8)**: i18n audits, a11y, supply chain security, packaging.
+- **Multi-Agent Orchestration (15)**: Superpowers, planning, git worktrees, rule/skill/agent authoring.
 
 ---
 
@@ -128,5 +112,5 @@ Discovered from [`.agents/skills/`](.agents/skills/) and `.agents/skills.json` (
 
 - **Precedence**: Workspace Root (`.agents/`, `AGENTS.md`) $\to$ Declared Configs (`skills.json`) $\to$ Global (`~/.gemini/config/`) $\to$ Built-in.
 - **Progressive Disclosure**: Skills load on-demand; rules inject contextually or via `always_on`; subagents load only when invoked.
-- **Dual-Harness MCP Registration**: The Antigravity CLI reads the workspace `.agents/mcp_config.json` to discover all 6 servers (chrome-devtools, graphify-foe-info, graphify-forge-hammer, graphify-metadata-store, graphify-foe-info-original, graphify-low-tool); opencode reads its own `opencode.json` `mcp` block. Both use native `env` injection and relative graph paths for portability — no absolute `/var/home/kronikpillow/...` paths. Antigravity permission grants must use the `mcp(server/tool)` wrapper form — bare `server/tool` strings are rejected as "invalid grant string" by the CLI's `permission_grant_store`. Global grants live in `~/.gemini/config/config.json` (`userSettings.globalPermissionGrants.allow`); project-scoped grants in `~/.gemini/config/projects/<id>.json`.
+- **Dual-Harness MCP Registration**: Antigravity CLI reads `.agents/mcp_config.json` for all 6 servers (`chrome-devtools`, `graphify-foe-info`, `graphify-forge-hammer`, `graphify-metadata-store`, `graphify-foe-info-original`, `graphify-low-tool`); opencode reads `opencode.json`. Permission grants use `mcp(server/tool)` wrapper syntax in `~/.gemini/config/config.json`.
 - **Documentation**: [Antigravity Docs](https://antigravity.google/docs) | [Skills](https://antigravity.google/docs/skills) | [Rules](https://antigravity.google/docs/rules-workflows) | [Hooks](https://antigravity.google/docs/hooks) | [MCP](https://antigravity.google/docs/mcp).

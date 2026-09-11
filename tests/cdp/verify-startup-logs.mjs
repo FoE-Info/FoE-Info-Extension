@@ -229,7 +229,7 @@ async function main() {
         for (const key of Object.keys(diagnosticCounts))
           if (text.includes(`[FoE-Info:${key}]`)) diagnosticCounts[key]++;
       }
-      // Game-side logs originate from xhr-interceptor in the page context. Keep their original panel copy only.
+      // Game-side logs originate from xhrInterceptor in the page context. Keep their original panel copy only.
       if (
         text.includes('[TIMING:') &&
         !(source === 'game' && /\[TIMING:P[13456][a-z]*\]/.test(text))

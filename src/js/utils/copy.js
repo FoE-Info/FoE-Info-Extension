@@ -11,48 +11,57 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { debug } from '../state/state.js';
+let debug = null;
+try {
+  debug = require('../state/state.js').debug;
+} catch {}
 
-export function fClipboardCopy() {
+function fClipboardCopy() {
   copyToClipboard('div#clipboardText');
 }
 
-export function DonorCopy() {
+function DonorCopy() {
   copyToClipboard('#donorText');
 }
 
-export function DonorCopy2() {
+function DonorCopy2() {
   copyToClipboard('div#donorTextCollapse');
 }
 
-export function fInvestedCopy() {
+function fInvestedCopy() {
   copyToClipboard('div#investedText');
 }
 
-export function fGBInfoCopy() {
+function fGBInfoCopy() {
   copyToClipboard('div#gbInfoCollapse');
 }
 
-export function DonationCopy() {
+function DonationCopy() {
+  var copytext =
+    typeof document !== 'undefined' ?
+      document.getElementById('copyText')
+    : null;
+  if (!copytext) return;
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById('copyText');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-export function fCityStatsCopy() {
-  var cityStatsHTML = '';
+function fCityStatsCopy() {
+  if (typeof document === 'undefined') return;
+  var labelEl = document.getElementById('citystatsLabel');
+  var textEl = document.getElementById('citystatsText');
+  if (!labelEl && !textEl) return;
+  var cityStatsHTML =
+    (labelEl ? labelEl.innerHTML + '<br>' : '') +
+    (textEl ? textEl.innerHTML : '');
+  if (!debug) return;
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-
-  var copytext = document.getElementById('citystatsLabel');
-  cityStatsHTML = copytext.innerHTML + '<br>';
-  copytext = document.getElementById('citystatsText');
-  cityStatsHTML += copytext.innerHTML;
   debug.innerHTML = cityStatsHTML;
   range.selectNode(debug);
   selection.addRange(range);
@@ -60,52 +69,70 @@ export function fCityStatsCopy() {
   debug.innerHTML = '';
 }
 
-export function fFriendsCopy() {
+function fFriendsCopy() {
+  var copytext =
+    typeof document !== 'undefined' ?
+      document.getElementById('friendsText2')
+    : null;
+  if (!copytext) return;
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById('friendsText2');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-export function fGuildCopy() {
+function fGuildCopy() {
+  var copytext =
+    typeof document !== 'undefined' ?
+      document.getElementById('guildText2')
+    : null;
+  if (!copytext) return;
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById('guildText2');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-export function fHoodCopy() {
+function fHoodCopy() {
+  var copytext =
+    typeof document !== 'undefined' ?
+      document.getElementById('hoodText2')
+    : null;
+  if (!copytext) return;
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById('hoodText2');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-export function BattlegroundCopy() {
+function BattlegroundCopy() {
   let node = document.querySelector('#gbg-table');
-  copyNode(node);
+  if (node) copyNode(node);
 }
 
-export function ExpeditionCopy() {
+function ExpeditionCopy(targetId = 'geContributionText') {
+  if (typeof document === 'undefined') return;
+  var copytext =
+    (targetId ? document.getElementById(targetId) : null) ||
+    document.getElementById('geContributionText') ||
+    document.getElementById('geChampionshipText') ||
+    document.getElementById('expeditionText');
+  if (!copytext) return;
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
-  var copytext = document.getElementById('expeditionText');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-export async function TreasuryCopy() {
+async function TreasuryCopy() {
   const table = document.getElementById('treasurytable');
   if (!table) return;
 
@@ -191,6 +218,7 @@ function addToClipboard(element, html) {
 }
 
 function copyNode(node) {
+  if (!node) return;
   let range = document.createRange();
   range.selectNodeContents(node);
   let select = window.getSelection();
@@ -198,3 +226,20 @@ function copyNode(node) {
   select.addRange(range);
   document.execCommand('copy');
 }
+
+module.exports = {
+  fClipboardCopy,
+  DonorCopy,
+  DonorCopy2,
+  fInvestedCopy,
+  fGBInfoCopy,
+  DonationCopy,
+  fCityStatsCopy,
+  fFriendsCopy,
+  fGuildCopy,
+  fHoodCopy,
+  BattlegroundCopy,
+  ExpeditionCopy,
+  TreasuryCopy,
+};
+module.exports.default = module.exports;

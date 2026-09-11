@@ -16,6 +16,7 @@ test('FACTORY_WORLD_SETTINGS and FACTORY_GLOBAL_SETTINGS are deeply frozen', () 
   assert.ok(Object.isFrozen(FACTORY_WORLD_SETTINGS.webhooks));
   assert.ok(Object.isFrozen(FACTORY_WORLD_SETTINGS.toolOptions));
   assert.strictEqual(FACTORY_WORLD_SETTINGS.toolOptions.minSize, 50);
+  assert.strictEqual(FACTORY_WORLD_SETTINGS.toolOptions.armySize, 185);
   assert.ok(Object.isFrozen(FACTORY_WORLD_SETTINGS.caches));
   assert.ok(Object.isFrozen(FACTORY_WORLD_SETTINGS.caches.hiddenInvestments));
 

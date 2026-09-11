@@ -80,6 +80,22 @@ function setStorage(name, value) {
     saveWorldSettings(currentWorld, { showOptions: value });
     return;
   }
+  if (name === 'toolOptions') {
+    if (memoryWorldCache[currentWorld]) {
+      memoryWorldCache[currentWorld].toolOptions = {
+        ...memoryWorldCache[currentWorld].toolOptions,
+        ...value,
+      };
+    }
+    saveWorldSettings(currentWorld, { toolOptions: value });
+    const local = getStorageLocal();
+    if (local) {
+      local
+        .set({ [cleanKey]: value })
+        .catch((err) => console.warn('setStorage error:', err));
+    }
+    return;
+  }
 
   const local = getStorageLocal();
   if (local) {
@@ -102,6 +118,9 @@ function getStorage(name, callback) {
     if (name === 'hiddenInvestments') val = settings.caches?.hiddenInvestments;
     else if (name === 'investSettings' || name === 'showOptions')
       val = settings.showOptions;
+    else if (name === 'toolOptions') val = settings.toolOptions;
+    else if (name === 'donation') val = settings.donation;
+    else if (name === 'url') val = settings.webhooks;
   }
   if (val === undefined) val = storageCache[cleanKey];
 

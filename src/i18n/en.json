@@ -130,5 +130,11 @@
   "ge_championship": "GE Championship",
   "ge_member_contributions": "GE Leaderboard",
   "special_goods": "Special Goods",
-  "loading-metadata": "Loading metadata..."
+  "loading-metadata": "Loading metadata...",
+  "type": "Type",
+  "amount": "Amount",
+  "name": "Name",
+  "title": "Title",
+  "era": "Era",
+  "battles": "Battles"
 }

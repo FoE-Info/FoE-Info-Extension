@@ -173,13 +173,17 @@ test('City Card Bonus Lines Suite', async (t) => {
   );
 
   await t.test(
-    'buildOwnCityCard: has clickable title to collapse, collapse icon, and close button',
+    'buildOwnCityCard: has clickable title to collapse and collapse icon, but no close button',
     () => {
       const html = buildOwnCityCard(baseOwnParams);
       assert.match(html, /<strong[^>]*data-bs-toggle="collapse"/);
       assert.match(html, /<strong[^>]*role="button"/);
       assert.match(html, /id="citystatsicon"[^>]*data-bs-toggle="collapse"/);
-      assert.match(html, /id="citystats-close-btn"/);
+      assert.doesNotMatch(
+        html,
+        /id="citystats-close-btn"/,
+        'Own city card must not have a close button',
+      );
     },
   );
 });
