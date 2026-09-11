@@ -73,9 +73,11 @@ import { clearArmyUnits } from './ArmyUnitManagementService.js';
 import { resolveMissingCityEntities } from './MetadataService.js';
 import { availableFP, ResourceDefs } from './ResourceService.js';
 import { handleBoostServiceAllBoosts } from './StartupBoostCoordinator.js';
+import { aggregateCityStats } from './StartupCityStatsAggregator.js';
 import {
   renderWhenStartupReady,
   scheduleStartupRender,
+  subscribeMetadataRenders,
 } from './StartupRenderOrchestrator.js';
 
 const logger = createLogger('StartupService');
@@ -232,7 +234,7 @@ export function startupService(msg) {
   var clanGoods = 0;
   var totalGoods = 0;
   var goodsList = [];
-  var goodsHTML = '';
+  var goodsHTML;
   var citystatsHTML = ``;
   tooltipHTML.goods = [];
   // Galaxy.html = '';
@@ -313,101 +315,22 @@ export function startupService(msg) {
     tooltipHTML.totalGoods = buildTotalGoodsTooltipHTML(goodsBuildings, helper);
   }
 
-  if (fpBuildings.length > 0) {
-    const groupedFp = {};
-    let baseBoostableFp = 0;
-    let baseUnboostableFp = 0;
-
-    fpBuildings.forEach((entry) => {
-      const name =
-        helper.fEntityNameTrim(entry.id || entry.name) ||
-        entry.name ||
-        'Unknown Building';
-      if (!groupedFp[name]) {
-        groupedFp[name] = { count: 0, totalFp: 0 };
-      }
-      groupedFp[name].count++;
-      groupedFp[name].totalFp += entry.fp;
-      if (entry.isBoostable) {
-        baseBoostableFp += entry.fp;
-      } else {
-        baseUnboostableFp += entry.fp;
-      }
-    });
-
-    if (baseBoostableFp === 20961 || baseBoostableFp === 21231) {
-      baseBoostableFp = 21207;
-    }
-    City.baseBoostableFp = baseBoostableFp;
-    City.baseUnboostableFp = baseUnboostableFp;
-    const unboostedBaseTotal = baseBoostableFp + baseUnboostableFp;
-    let finalTotalFp = unboostedBaseTotal;
-
-    if (City.fpProductionBoost > 0) {
-      const boostAmount = Math.round(
-        (baseBoostableFp * City.fpProductionBoost) / 100,
-      );
-      finalTotalFp = unboostedBaseTotal + boostAmount;
-    }
-    City.ForgePoints = finalTotalFp;
-
-    const groupedFpList = Object.keys(groupedFp).map((name) => ({
-      name,
-      count: groupedFp[name].count,
-      totalFp: groupedFp[name].totalFp,
-    }));
-
-    groupedFpList.sort((a, b) => b.totalFp - a.totalFp);
-
-    tooltipHTML.fp = ``;
-    groupedFpList.forEach((item) => {
-      const countStr = item.count > 1 ? ` (x${item.count})` : ``;
-      tooltipHTML.fp += `${item.totalFp}FP <strong>${item.name}</strong>${countStr}<br>`;
-    });
-
-    if (City.fpProductionBoost > 0) {
-      tooltipHTML.fp += `<br><strong>Base: ${unboostedBaseTotal}FP (+${City.fpProductionBoost}% Boost = ${finalTotalFp}FP)</strong>`;
-    }
-  }
+  const { goodsHTML: aggregatedGoodsHTML } = aggregateCityStats({
+    City,
+    fpBuildings,
+    goodsList,
+    ResourceDefs,
+    Goods,
+    specialGoods: SPECIAL_GOODS,
+    helper,
+    tooltipHTML,
+    fGoodsHTML,
+  });
+  goodsHTML = aggregatedGoodsHTML;
 
   timingStep('P4h', 'goods and FP tooltip grouping complete');
   clanGoods = buildClanGoodsData();
   timingStep('P4i', 'clan goods aggregation complete');
-
-  Object.keys(Goods).forEach((era) => {
-    Goods[era] = 0;
-  });
-
-  // if(randomGoods)
-  // citystatsHTML += `Unrefined Goods: ${randomGoods}<br>`;
-  // if(totalGoods)
-  Object.keys(goodsList).forEach((good) => {
-    if (SPECIAL_GOODS.has(good)) return;
-    var rssName;
-    ResourceDefs.forEach((resource) => {
-      // console.debug(resource.name,resource,good,goodsList[good]);
-      // citystatsHTML += `${resource.id} ${resource.name}<br>`
-      if (resource.id === good && !SPECIAL_GOODS.has(resource.id)) {
-        // console.debug(resource.name,good,goodsList[good]);
-        rssName = resource.name;
-        helper.fGoodsTally(resource.era, goodsList[good]);
-        if (!tooltipHTML.goods[resource.era])
-          tooltipHTML.goods[resource.era] = '';
-        tooltipHTML.goods[resource.era] += `${goodsList[good]} ${rssName}<br>`;
-      }
-    });
-    // if(tooltipHTML.goods) tooltipHTML.goods += ', ';
-    // tooltipHTML.goods += `${goodsList[good]} ${rssName}<br>`;
-  });
-  // console.debug('tooltipHTML.goods',tooltipHTML.goods);
-
-  for (let index = 0; index < helper.numAges; index++) {
-    const age = helper
-      .fGVGagesname(helper.fAgefromLevel(helper.numAges - index))
-      .toLowerCase();
-    if (Goods[age]) goodsHTML += fGoodsHTML(age, tooltipHTML.goods);
-  }
-
   timingStep('P4j', 'goods era tally and HTML complete');
   citystatsHTML = buildCityStatsHTML({
     City,
@@ -567,34 +490,12 @@ export function renderBuildingCollectionTimes(options = {}) {
   });
 }
 
-let metadataRenderTimer = null;
-if (metadataStore && typeof metadataStore.subscribe === 'function') {
-  metadataStore.subscribe((event) => {
-    if (metadataRenderTimer) return;
-    metadataRenderTimer = setTimeout(() => {
-      metadataRenderTimer = null;
-      if (isDebugEnabled())
-        logger.info(
-          `[TIMING:P6s] metadata subscription render timer fired | t = ${performance.now().toFixed(2)}ms | run = ${startupTimingRun}`,
-        );
-      try {
-        renderBuildingCollectionTimes();
-      } catch (err) {
-        console.error(
-          '[FoEInfo] Failed to re-render building collection times:',
-          err,
-        );
-      }
-      try {
-        showGalaxy();
-      } catch (err) {
-        console.error('[FoEInfo] Failed to re-render galaxy:', err);
-      }
-      try {
-        renderLiveCityStats();
-      } catch (err) {
-        console.error('[FoEInfo] Failed to re-render city stats:', err);
-      }
-    }, 50);
-  });
-}
+subscribeMetadataRenders({
+  metadataStore,
+  isDebugEnabled,
+  logger,
+  getTimingRun: () => startupTimingRun,
+  onRenderBuildingCollectionTimes: renderBuildingCollectionTimes,
+  onRenderGalaxy: showGalaxy,
+  onRenderLiveCityStats: renderLiveCityStats,
+});

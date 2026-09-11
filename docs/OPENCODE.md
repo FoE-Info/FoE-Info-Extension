@@ -79,6 +79,14 @@ Formatting excludes existing `docs/antigravity_prompt_*.md` conversation artifac
 
 ## Active Dual-Harness Tasks
 
-- **[COMPLETED] Town Hall / Beta Debug Panel Height & Scroll Refactor**: See [`docs/plans/2026-09-11-town-hall-beta-debug-panel.md`](plans/2026-09-11-town-hall-beta-debug-panel.md). Completed by OpenCode, verified, and committed.
-- **[COMPLETED] Era Mapping Extraction from helper.js**: See [`docs/plans/2026-09-11-era-mapping-extraction.md`](plans/2026-09-11-era-mapping-extraction.md). Completed by OpenCode, verified, and committed.
-- **[PENDING] Next Task Assignment**: Status board idle; awaiting next architectural task assignment from Antigravity/user.
+- **[COMPLETED] Town Hall / Beta Debug Panel Height & Scroll Refactor**: See [`docs/plans/2026-09-11-town-hall-beta-debug-panel.md`](plans/2026-09-11-town-hall-beta-debug-panel.md).
+- **[COMPLETED] Era Mapping Extraction from helper.js**: See [`docs/plans/2026-09-11-era-mapping-extraction.md`](plans/2026-09-11-era-mapping-extraction.md).
+- **[COMPLETED] GBG Target Generator Card Extraction**: See [`docs/plans/2026-09-11-gbg-and-helper-decomposition.md`](plans/2026-09-11-gbg-and-helper-decomposition.md).
+- **[COMPLETED] Slices 1, 2 & 3 Heavy Lifter (F5, F6, F18, F19, F21, F23)**:
+  - Worktree: `.worktrees/opencode-slices-heavy` on branch `feat/opencode-slices-heavy` (commit `1343183`)
+  - Delivered:
+    1. **F5 (`GuildBattlegroundService.js`)**: Extracted the shared signal payload resolution and signal-list mutation into `src/js/msg/GbgSignalPayloadHandler.js` (`createLogger('GbgSignalPayloadHandler')`); `updateSignal`/`setSignal`/`removeSignal` now delegate to `resolveSignalData`, `resolveSignalTarget`, `applySignalToList`, and `removeSignalFromList`. Service reduced **857 → 596 lines** (≤ 600 hard cap).
+    2. **F6 (TypeScript mirrors)**: Reconciled `src/js/ui/cardVisibility.ts`, `src/js/ui/panelDispatcher.ts`, `src/js/calc/GbgCalculator.ts`, and `src/js/calc/GreatBuildingCalculator.ts` with their shipping `.js` twins — restored the guarded lazy-require/logging behavior, removed divergent debug-only branches, and aligned `renderTreasuryPanel` options sourcing; `npx tsc --noEmit` clean.
+    3. **F18/F19 (`BoostService.js`)**: Added `if (!item) continue;` to the `getAllBoosts` item loop; `applyBoostsToCity` now accumulates through `BigNumber.plus` and converts to `Number` only in the final export loop.
+    4. **F21/F23 (a11y)**: Added `tabindex="0"` to popover triggers in `statFormatters.js` and `cityStatsHtmlBuilder.js`; converted informational cards in `expeditionTables.js`, `renderBattlegroundResultCard.js`, and `gbgProvinceView.js` to `role="status" aria-live="polite"`.
+  - Verification: `npm run verify` exit 0 (768/768 tests, lint clean, dev build compiles), `npx tsc --noEmit` exit 0, `npm run check` clean.

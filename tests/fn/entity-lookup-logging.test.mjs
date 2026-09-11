@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import { fGBname } from '../../src/js/calc/gbNaming.js';
 import { MetadataStore } from '../../src/js/state/MetadataStore.js';
 import logger from '../../src/js/utils/logger.js';
 
@@ -18,9 +19,13 @@ function setup(t, defs, metadata = null) {
       source.indexOf('export function fGoodsTally('),
     )
     .replaceAll('export function ', 'function ');
+  const cityEntityDefs = defs || store.createLegacyCityEntityProxy();
+  const currentMetadataStore = metadata || store;
   const context = {
-    metadataStore: metadata || store,
-    CityEntityDefs: defs || store.createLegacyCityEntityProxy(),
+    metadataStore: currentMetadataStore,
+    CityEntityDefs: cityEntityDefs,
+    fGBname: (entity, reportLookup = true) =>
+      fGBname(entity, reportLookup, cityEntityDefs, currentMetadataStore),
   };
   vm.runInNewContext(lookups, context);
   const debug = t.mock.method(console, 'debug', () => {});
