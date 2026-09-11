@@ -11,10 +11,12 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { Popover } from 'bootstrap';
 import browser from 'webextension-polyfill';
+import { metadataStore } from '../state/MetadataStore.js';
+import * as element from '../ui/AddElement.js';
 import { showOptions } from '../vars/showOptions.js';
 import {
+  battlegroundDIV,
   BattlegroundPerformance,
   BGtime,
   BuildingEntityLookup,
@@ -23,91 +25,39 @@ import {
   GameOrigin,
   Goods,
   GuildMembers,
-  hiddenRewards,
-  incidents,
-  ResourceNames,
   url,
 } from '../vars/state.js';
-import * as element from './AddElement';
 import * as collapse from './collapse.js';
-import { fCollapseIncidents } from './collapse.js';
 import * as copy from './copy.js';
 import { setBattlegroundSize, toolOptions } from './globals.js';
 import { translateContainer as nativeTranslateContainer } from './i18n.js';
 import * as post_webstore from './post.js';
 import * as storage from './storage.js';
 
+export {
+  escapeHTML,
+  formatEntityId,
+  fResourceShortName,
+  fRewardShortName,
+} from '../utils/formatters.js';
+
+export {
+  fIncidentName,
+  fShowIncidents,
+  renderIncidentsPanel,
+} from '../ui/incidentsPanel.js';
+
 var heightGBG = toolOptions.battlegroundsSize;
 let gbgResizeObserver = null;
 export var MyGuildPermissions = 0;
-
-export function escapeHTML(str) {
-  if (str === null || str === undefined) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
 
 export function translateContainer(container = document.body) {
   nativeTranslateContainer(container);
 }
 
 function setHeight() {
-  // console.debug('mouseup', heightGBG);
-  setBattlegroundSize(heightGBG);
-}
-
-export function fResourceShortName(name) {
-  if (name == 'sacrificial_offerings') {
-    return 'Offerings';
-  } else if (name == 'something else') {
-    return 'something';
-  } else if (ResourceNames[name]) {
-    return ResourceNames[name];
-  } else return name;
-}
-
-export function fRewardShortName(reward) {
-  if (reward == 'Fragment of Statue Of Honor Selection Kit') {
-    return 'SoH Fragment';
-  } else if (reward == 'Statue Of Honor Selection Kit') {
-    return 'SoH Kit';
-  } else if (reward == 'Fragment of The Great Elephant Selection Kit') {
-    return 'Elephant Fragment';
-  } else if (reward.split(' ')[0] == '1' || reward.split(' ')[0] == '5') {
-    return reward.slice(2);
-  } else if (reward.split(' ')[0] == '5x' || reward.split(' ')[0] == '10') {
-    return reward.slice(3);
-  } else if (!isNaN(reward.split(' ')[0])) {
-    return reward.slice(reward.indexOf(' ') + 1);
-  } else if (reward.includes('Coins')) {
-    return 'Coins';
-  } else if (reward.includes('Goods')) {
-    return 'Goods';
-  } else if (reward.includes('Supplies')) {
-    return 'Supplies';
-  } else if (reward.includes('Rogue')) {
-    return 'Rogues';
-  } else if (reward.includes('Medals')) {
-    return 'Medals';
-  }
-
-  // else if (reward =="something else")
-  // {
-  // 	return "something";
-  // }
-  else if (reward.includes('Forge Points')) {
-    return 'Forge Points';
-  }
-  // else if (reward =="something else")
-  // {
-  // 	return "something";
-  // }
-  else {
-    return reward;
+  if (!showOptions.showBattlegroundChanges && heightGBG) {
+    setBattlegroundSize(heightGBG);
   }
 }
 
@@ -197,14 +147,6 @@ export function fGBsname(city_entity) {
   return city_entity.slice(0, 10);
 }
 
-export function formatEntityId(id) {
-  if (!id) return '';
-  if (typeof id === 'object') {
-    return id.value || id.id || id.identifier || String(id);
-  }
-  return String(id);
-}
-
 export function getCityEntityDef(id) {
   if (!id) return null;
   let rawId = id;
@@ -234,20 +176,36 @@ export function getCityEntityDef(id) {
   ];
 
   for (const key of candidates) {
-    if (CityEntityDefs[key]) {
-      const def = CityEntityDefs[key];
+    const def = CityEntityDefs[key];
+    if (def) {
       const entityName = def.name || def.Name || def.title;
       if (entityName) {
+        metadataStore.reportEntityLookup(strId, def);
         return { ...def, name: entityName };
       }
     }
   }
 
-  const gbName = fGBname(strId) || fGBname(cleanId);
+  if (metadataStore && typeof metadataStore.getEntity === 'function') {
+    for (const key of candidates) {
+      const meta = metadataStore.peekEntity(key);
+      if (meta) {
+        const entityName = meta.name || meta.Name || meta.title;
+        if (entityName) {
+          metadataStore.reportEntityLookup(strId, meta);
+          return { ...meta, name: entityName };
+        }
+      }
+    }
+  }
+
+  const gbName = fGBname(strId, false) || fGBname(cleanId, false);
   if (gbName && gbName !== strId && gbName !== cleanId) {
+    metadataStore.reportEntityLookup(strId, true);
     return { id: strId, name: gbName };
   }
 
+  metadataStore.reportEntityLookup(strId, false);
   return null;
 }
 
@@ -275,10 +233,22 @@ export function fEntityNameTrim(name) {
     return gbName;
   }
 
+  const metadata = metadataStore?.getEntity?.(raw);
+  const metadataName = metadata?.name || metadata?.Name || metadata?.title;
+  if (metadataName) {
+    if (metadataName.includes(' - Lv.'))
+      return metadataName.substring(0, metadataName.indexOf(' - Lv.'));
+    else if (metadataName.includes('Lv. 2 - '))
+      return metadataName.replace('Lv. 2 - ', '');
+    else if (metadataName.includes('Lv. 1 - '))
+      return metadataName.replace('Lv. 1 - ', '');
+    return metadataName;
+  }
+
   return raw;
 }
 
-export function fGBname(city_entity) {
+export function fGBname(city_entity, reportLookup = true) {
   if (!city_entity) return '';
   var GB_name = String(city_entity);
   const cleanId = GB_name.replace(/^building_entity_/, '').replace(
@@ -297,10 +267,14 @@ export function fGBname(city_entity) {
     `M_MultiAge_${cleanId}`,
   ];
   for (const key of candidates) {
-    if (CityEntityDefs[key]) {
-      const def = CityEntityDefs[key];
+    const def = CityEntityDefs[key];
+    if (def) {
       const name = def.name || def.Name || def.title;
-      if (name) return name;
+      if (name) {
+        if (reportLookup)
+          metadataStore.reportEntityLookup(String(city_entity), def);
+        return name;
+      }
     }
   }
   // console.debug(city_entity,CityEntityDefs);
@@ -373,125 +347,12 @@ export function fGBname(city_entity) {
   else if (GB_name == 'X_SpaceAgeDiscovery_Landmark2')
     GB_name = 'Space Age Discovery Landmark 2';
   // console.debug(city_entity,CityEntityDefs);
+  if (reportLookup)
+    metadataStore.reportEntityLookup(
+      String(city_entity),
+      GB_name !== String(city_entity),
+    );
   return GB_name;
-}
-
-export function fIncidentName(incidentName) {
-  var incident = {};
-
-  if (incidentName == 'incident_fallen_tree_1x1') {
-    incident.type = 'r';
-    incident.text = 'Fallen Tree';
-  } else if (incidentName == 'incident_fallen_tree_2x2') {
-    incident.type = '<strong>R</strong>';
-    incident.text = 'Fallen Tree 2x2';
-  } else if (incidentName == 'incident_pothole_1x1') {
-    incident.type = 'r';
-    incident.text = 'Pothole';
-  } else if (incidentName == 'incident_pothole_2x2') {
-    incident.type = '<strong>R</strong>';
-    incident.text = 'Pothole';
-  } else if (incidentName == 'incident_blocked_road_1x1') {
-    incident.type = 'r';
-    incident.text = 'Road';
-  } else if (incidentName == 'incident_blocked_road_2x2') {
-    incident.type = '<strong>R</strong>';
-    incident.text = 'Blocked Road';
-  } else if (incidentName == 'incident_dinosaur_bones') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Dinosaur Bones';
-  } else if (incidentName == 'incident_statue') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Statue';
-  } else if (incidentName == 'incident_fruit_vendor') {
-    incident.type = 'n';
-    incident.text = 'Fruit Vendor';
-  } else if (incidentName == 'incident_treasure_chest') {
-    incident.type = 'n';
-    incident.text = 'Treasure Chest';
-  } else if (incidentName == 'incident_overgrowth') {
-    incident.type = 'n';
-    incident.text = 'Overgrowth';
-  } else if (incidentName == 'incident_clothesline') {
-    incident.type = 'n';
-    incident.text = 'Clothesline';
-  } else if (incidentName == 'incident_beehive') {
-    incident.type = 'n';
-    incident.text = 'Beehive';
-  } else if (incidentName == 'incident_broken_cart') {
-    incident.type = 'n';
-    incident.text = 'Broken Cart';
-  } else if (incidentName == 'incident_musician') {
-    incident.type = 'n';
-    incident.text = 'Musician';
-  } else if (incidentName == 'incident_kite') {
-    incident.type = 'n';
-    incident.text = 'Kite';
-  } else if (incidentName == 'incident_sculptor') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Sculptor';
-  } else if (incidentName == 'incident_stick_hut') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Stick Hut';
-  } else if (incidentName == 'incident_wine_cask') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Wine Cask';
-  } else if (incidentName == 'incident_mammoth_bones') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Mammoth Bones';
-  } else if (incidentName == 'incident_crates') {
-    incident.type = 'n';
-    incident.text = 'Crates';
-  } else if (incidentName == 'incident_flotsam') {
-    incident.type = 's';
-    incident.text = 'Flotsam';
-  } else if (incidentName == 'incident_shipwreck') {
-    incident.type = '<strong>S</strong>';
-    incident.text = 'Shipwreck';
-  } else if (incidentName == 'incident_sos') {
-    incident.type = 's';
-    incident.text = 'SOS';
-  } else if (incidentName == 'incident_fisherman') {
-    incident.type = 'w';
-    incident.text = 'Fisherman';
-  } else if (incidentName == 'incident_castaway') {
-    incident.type = 'w';
-    incident.text = 'Castaway';
-  } else if (incidentName == 'incident_rhino') {
-    incident.type = '<strong>W</strong>';
-    incident.text = 'Rhino';
-  } else if (incidentName == 'spring_cherry_tree') {
-    incident.type = `<span class='green'>E</span>`;
-    incident.text = 'Cherry Tree';
-  } else if (incidentName.includes('ages_birthday_gift')) {
-    incident.type = `<span class='green'>E</span>`;
-    incident.text = 'Paper Money';
-  } else if (incidentName == 'incident_car_accident') {
-    incident.type = '<strong>R</strong>';
-    incident.text = 'Car Accident';
-  } else if (incidentName == 'fall_apple_tree') {
-    incident.type = `<span class='green'>E</span>`;
-    incident.text = 'Apple Tree';
-  } else if (incidentName == 'incident_quicksand') {
-    incident.type = 'n';
-    incident.text = 'Quicksand';
-  } else if (incidentName == 'incident_beach_gear') {
-    incident.type = 's';
-    incident.text = 'Beach Gear';
-  } else if (incidentName == 'incident_floating_chest') {
-    incident.type = 'w';
-    incident.text = 'Floating Chest';
-  } else if (incidentName == 'incident_chest') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Chest';
-  } else if (incidentName == 'incident_hero') {
-    incident.type = '<strong>E</strong>';
-    incident.text = 'Travel Rations';
-  } else {
-    incident.type = '?';
-    incident.text = incidentName;
-  }
-  return incident;
 }
 
 export function fLevelfromAge(age) {
@@ -612,7 +473,7 @@ export function fAgefromLevel(level) {
   return -1;
 }
 
-export function fGVGagesname(age) {
+export function fEraAbbreviation(age) {
   var name = age;
 
   if (age == 'BronzeAge') {
@@ -666,6 +527,7 @@ export function fGVGagesname(age) {
   }
   return name;
 }
+export const fGVGagesname = fEraAbbreviation;
 
 export function fGoodsTally(age, good) {
   // console.debug(age,good);
@@ -696,148 +558,7 @@ export function fGoodsTally(age, good) {
   // else console.debug(age, good);
 }
 
-export function fShowIncidents() {
-  const targetIncidents =
-    (typeof document !== 'undefined' && document.getElementById('incidents')) ||
-    incidents;
-
-  var rewards = 0;
-  var type = '';
-  var textCurrent = '';
-  var textComing = '';
-  var tooltipHTML = '';
-  if (
-    showOptions &&
-    showOptions.showIncidents &&
-    hiddenRewards &&
-    hiddenRewards.length
-  ) {
-    fHideTooltips();
-    for (var j = 0; j < hiddenRewards.length; j++) {
-      const incident = hiddenRewards[j];
-      if (!incident || !incident.position) continue;
-      if (incident.position.context == 'guildExpedition') continue;
-      const incidentName = fIncidentName(incident.type);
-      if (incidentName.type == '?') console.debug(incident);
-      // console.debug(incidentName.text,incidentName,incident);
-      var start = new Date(incident.startTime);
-      var finish = new Date(incident.expireTime);
-      var diffText = '';
-      start -= Date.now() / 1000;
-      finish -= Date.now() / 1000;
-      if (start < 0) var diff = Math.abs(start);
-      else var diff = Math.abs(finish);
-      // console.debug(start,finish,diff,Date.now()/1000);
-      // get hours
-      var hours = Math.floor(diff / 3600) % 24;
-      // document.write("<br>Difference (Hours): "+hours);
-      diffText += `${hours}:`;
-
-      // get minutes
-      var minutes = Math.floor(diff / 60) % 60;
-      // document.write("<br>Difference (Minutes): "+minutes);
-      diffText += `${minutes}:`;
-
-      // get seconds
-      var seconds = Math.floor(diff) % 60;
-      // document.write("<br>Difference (Seconds): "+seconds);
-      diffText += `${seconds}`;
-
-      if (start < 0) {
-        rewards++;
-        // textCurrent += `Reward ${j+1}: ${msg.responseData.hiddenRewards[j].type} ${timer.toUTCString()}<br>`;
-
-        type += incidentName.type;
-        if (incident.rarity != 'common')
-          textCurrent += `<span class='green'>${incidentName.text}</span>`;
-        else textCurrent += incidentName.text;
-        textCurrent += ` for ` + diffText + `<br>`;
-      } else {
-        textComing += incidentName.text + ` in ` + diffText + `<br>`;
-      }
-    }
-    // var timer = new Date(Date.now());
-    // output.innerHTML += `<div>Now: ${timer.toUTCString()}</div>`;
-    // console.debug(rewards,type,textCurrent,textComing);
-    // data-bs-placement="bottom"
-    if (!targetIncidents) return;
-
-    if (rewards) {
-      tooltipHTML = `<div><p>${textCurrent}</p>${
-        textComing != '' ?
-          '<p><strong>Coming Soon:</strong><br>' + textComing + '</p>'
-        : ''
-      }`;
-      tooltipHTML +=
-        '<p><strong>Legend:</strong><br>n/N - Nature<br>s/S - Shore<br>w/W - Water<br>r/R - Road<br> E - Event<br>Capitals = Uncommon/Rare Reward</p></div>';
-      targetIncidents.innerHTML = `<div id="incidentsTip" class="alert alert-light alert-dismissible show collapsed" role="alert">
-            <p id="incidentsTextLabel" href="#incidentsText" data-bs-toggle="collapse">
-			${element.icon('incidentsicon', 'incidentsText', collapse.collapseIncidents)}
-			<span id="incidents_tooltip" class="pop" data-bs-container="#incidents_tooltip" data-bs-toggle="popover" data-bs-placement="bottom" title="Incidents" data-bs-content="${tooltipHTML}"><strong><span data-i18n="incident">Incidents</span>:</strong></span> ${type}</p>
-            ${element.close()}
-            <div id="incidentsText" class="collapse ${collapse.collapseIncidents ? '' : 'show'} alert-light">
-            ${tooltipHTML}</div></div>`;
-      // outputHTML += '<div id="incidentsText" class="collapse show">';
-      //$('.incidents').show();
-      // document.getElementById("incidentsTip").title = tooltipHTML;
-      // cityincidents.data-html="true";
-      // $(document).ready(function(){
-      // $('#incidentsTip').tooltip({html: true,placement: 'bottom'});
-      //   });
-      if (typeof document !== 'undefined') {
-        const textLabel = document.getElementById('incidentsTextLabel');
-        if (textLabel && typeof textLabel.addEventListener === 'function') {
-          textLabel.addEventListener('click', fCollapseIncidents);
-        }
-        const tip = document.getElementById('incidentsTip');
-        if (tip && typeof tip.addEventListener === 'function') {
-          tip.addEventListener('mouseleave', fHideTooltips);
-        }
-
-        const incidents_tooltip = document.getElementById('incidents_tooltip');
-        if (incidents_tooltip && typeof Popover !== 'undefined') {
-          try {
-            const options = {
-              trigger: 'hover focus',
-              html: true,
-              delay: { show: 100, hide: 300 },
-            };
-            // const tooltip = new Tooltip(incidents_tooltip, options);
-            new Popover(incidents_tooltip, options);
-          } catch (_) {}
-        }
-      }
-
-      // $('#incidents_tooltip').tooltip({
-      //     content: function(){
-      //         var element = $( this );
-      //         return element.attr('title')
-      //     },
-      // 	delay: { "show": 200, "hide": 500 }
-      // });
-    } else {
-      targetIncidents.innerHTML = ``;
-      //$('.incidents').hide();
-    }
-  }
-}
-
-export function fHideTooltips() {
-  if (typeof document === 'undefined') return;
-  const incidents_tooltip = document.getElementById('incidents_tooltip');
-  if (
-    incidents_tooltip &&
-    typeof Popover !== 'undefined' &&
-    Popover.getOrCreateInstance
-  ) {
-    try {
-      const popover = Popover.getOrCreateInstance(incidents_tooltip);
-      if (popover && typeof popover.hide === 'function') {
-        popover.hide();
-      }
-    } catch (_) {}
-  }
-}
+export function fHideTooltips() {}
 
 export function fshowBattlegroundChanges() {
   showOptions.showBattlegroundChanges = !showOptions.showBattlegroundChanges;
@@ -849,10 +570,21 @@ export function fshowBattlegroundChanges() {
 
 export function fshowBattleground() {
   // console.debug(data,BattlegroundPerformance);
+  const bgWorldMatch =
+    GameOrigin ?
+      GameOrigin.match(/^https?:\/\/([a-z0-9]+)\.forgeofempires\.com/i)
+    : null;
+  const bgWorldLabel =
+    bgWorldMatch ?
+      bgWorldMatch[1].toUpperCase()
+    : (GameOrigin || 'en7')
+        .replace(/https?:\/\//i, '')
+        .replace(/\.forgeofempires\.com/i, '')
+        .toUpperCase();
   var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
-	<p id="battlegroundTextLabel" href="#battlegroundCollapse" aria-expanded="true" aria-controls="battlegroundText" data-bs-toggle="collapse">
+	<p id="battlegroundTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
 	${element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground)}
-	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p>${element.close()}`;
+	<strong>Battlegrounds: [${bgWorldLabel}]</strong></p>${element.close()}`;
 
   if (url.sheetGuildURL)
     battlegroundHTML += element.post(
@@ -867,13 +599,17 @@ export function fshowBattleground() {
     'right',
     collapse.collapseBattleground,
   );
-  battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info overflow collapse ${
+  const isChangesOnly = Boolean(showOptions.showBattlegroundChanges);
+  battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info ${
+    isChangesOnly ? 'gbg-changes-full' : 'gbg-full-roster'
+  } overflow resize collapse ${
     collapse.collapseBattleground ? '' : 'show'
   }"><div id="battlegroundText">`;
 
   battlegroundHTML += `<p class="showGBGchanges"><input type="checkbox" id="showGBGchanges"><label for="showGBGchanges">show changes only</label></p>
 	${BGtime ? '<p>Last Saved: ' + BGtime + '</p>' : ''}
-	<div><table id="gbg-table" class="gbg-table"><tr><th>Member</th><th>Negs</th><th>Fights</th><th>Attrition</th></tr>`;
+	<div><table id="gbg-table" class="gbg-table w-100"><thead><tr><th class="text-start">Member</th><th class="text-center">Negs</th><th class="text-center">Fights</th><th class="text-center">Attrition</th></tr></thead><tbody>`;
+  let renderedRows = 0;
   BattlegroundPerformance.forEach((entry) => {
     // console.debug(entry);
     var wonNegotiations = 0;
@@ -886,89 +622,122 @@ export function fshowBattleground() {
     if (entry.wonBattles) wonBattles = entry.wonBattles;
     if (entry.attrition) attrition = entry.attrition;
 
-    // console.debug(playerInfo);
-    // console.debug(entry.player.name,BattlegroundPerformance);
-
-    // console.debug(BattlegroundPerformance.indexOf(entry.player.name),entry.player.name);
-
-    // console.debug('GuildMembers',entry.player.name,BattlegroundPerformance[BattlegroundPerformance.indexOf(entry.player.name)],GuildMembers[entry.player.name],GuildMembers[entry.player.name].wonBattles);
-    // if(GuildMembers[entry.player.name]){
     var player = GuildMembers.find((id) => id.name == entry.name);
-    // console.debug(player);
-    battleDiff = wonBattles - player.wonBattles;
-    negotiationsDiff = wonNegotiations - player.wonNegotiations;
-    attritionDiff = attrition - player.attrition;
-    // }
-    // console.debug(entry.name,battleDiff,negotiationsDiff);
+    if (player) {
+      battleDiff = wonBattles - player.wonBattles;
+      negotiationsDiff = wonNegotiations - player.wonNegotiations;
+      attritionDiff = attrition - player.attrition;
+    }
     if (
       !showOptions.showBattlegroundChanges ||
       battleDiff ||
       negotiationsDiff ||
       attritionDiff
     ) {
-      battlegroundHTML += `<tr><td>${entry.name}</td><td>${wonNegotiations}`;
+      renderedRows++;
+      battlegroundHTML += `<tr><td class="text-start">${entry.name}</td><td class="text-center">${wonNegotiations}`;
       if (negotiationsDiff)
         battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
-      battlegroundHTML += `</td><td>${wonBattles}`;
+      battlegroundHTML += `</td><td class="text-center">${wonBattles}`;
       if (battleDiff)
         battlegroundHTML += ` <span class="red">+${battleDiff}</span>`;
-      battlegroundHTML += `</td><td>${attrition}`;
+      battlegroundHTML += `</td><td class="text-center">${attrition}`;
       if (attritionDiff)
         battlegroundHTML += ` <span class="red">+${attritionDiff}</span>`;
       battlegroundHTML += `</td></tr>`;
     }
   });
 
-  // GuildMembers[entry.player.name] = BattlegroundPerformance[entry.player.name];
-  // localStorage.setItem(entry.player.name,JSON.stringify({'wonNegotiations': wonNegotiations,'wonBattles': wonBattles}));
-  // storage.set(entry.player.name,BattlegroundPerformance[entry.player.name]);
-  // browser.storage.local.set(entry.player.name,{'wonNegotiations': wonNegotiations,'wonBattles': wonBattles});
-  // console.debug(entry.player.name,BattlegroundPerformance[entry.player.name],GuildMembers[entry.player.name]);
-  // console.debug(data);
-  // storage.set(GameOrigin,data);
-
-  {
-    /* donationDIV.innerHTML = battlegroundHTML + `</table></div><p class="showGBGchanges"><input type="checkbox" id="showGBGchanges" value="${showOptions.showBattlegroundChanges}"/> <label for="showGBGchanges">show changes only</label></p></div>`; */
+  if (isChangesOnly && renderedRows === 0) {
+    battlegroundHTML += `<tr><td colspan="4" class="text-center text-muted fst-italic py-2">No active changes since last save</td></tr>`;
   }
-  donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div></div>`;
-  if (url.sheetGuildURL)
-    document
-      .getElementById('battlegroundPostID')
-      .addEventListener('click', post_webstore.postGBGtoSS);
-  // else
-  document
-    .getElementById('battlegroundCopyID')
-    .addEventListener('click', copy.BattlegroundCopy);
 
-  document
-    .getElementById('battlegroundTextLabel')
-    .addEventListener('click', collapse.fCollapseBattleground);
-  document
-    .getElementById('showGBGchanges')
-    .addEventListener('click', fshowBattlegroundChanges);
-  document.getElementById('showGBGchanges').checked =
-    showOptions.showBattlegroundChanges;
+  const targetEl =
+    (typeof document !== 'undefined' &&
+      document.getElementById('battleground')) ||
+    battlegroundDIV ||
+    donationDIV;
+  if (targetEl) {
+    targetEl.innerHTML =
+      battlegroundHTML + `</tbody></table></div></div></div></div>`;
+  }
+
+  const postEl = document.getElementById('battlegroundPostID');
+  if (postEl && url.sheetGuildURL) {
+    postEl.addEventListener('click', post_webstore.postGBGtoSS);
+  }
+
+  const copyEl = document.getElementById('battlegroundCopyID');
+  if (copyEl) {
+    copyEl.addEventListener('click', copy.BattlegroundCopy);
+  }
+
+  const iconEl = document.getElementById('battlegroundicon');
+  if (iconEl) {
+    iconEl.addEventListener('click', (e) => {
+      e?.stopPropagation?.();
+      collapse.fCollapseBattleground();
+    });
+  }
+
+  const labelEl = document.getElementById('battlegroundTextLabel');
+  if (labelEl) {
+    labelEl.addEventListener('click', (e) => {
+      if (e.target?.closest?.('#battlegroundicon')) return;
+      collapse.fCollapseBattleground();
+    });
+  }
+
+  const showChangesEl = document.getElementById('showGBGchanges');
+  if (showChangesEl) {
+    showChangesEl.addEventListener('click', fshowBattlegroundChanges);
+    showChangesEl.checked = showOptions.showBattlegroundChanges;
+  }
+
   const battlegroundDiv = document.getElementById('battlegroundCollapse');
-  battlegroundDiv.addEventListener('mouseup', setHeight);
-  if (gbgResizeObserver) {
-    gbgResizeObserver.disconnect();
-  }
-  gbgResizeObserver = new ResizeObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        heightGBG = entry.contentRect.height;
+  if (battlegroundDiv) {
+    battlegroundDiv.addEventListener('mouseup', setHeight);
+    if (gbgResizeObserver) {
+      gbgResizeObserver.disconnect();
     }
-  });
-  gbgResizeObserver.observe(battlegroundDiv);
-  const battlegroundEl = document.getElementById('battlegroundCollapse');
-  if (battlegroundEl) {
-    const currentHeight = battlegroundEl.clientHeight;
-    // console.debug('battlegroundCollapse height:', currentHeight);
-    if (currentHeight > toolOptions.battlegroundsSize) {
-      battlegroundEl.style.height = `${toolOptions.battlegroundsSize}px`;
+    if (typeof ResizeObserver !== 'undefined') {
+      gbgResizeObserver = new ResizeObserver((entries) => {
+        if (
+          battlegroundDiv.classList?.contains('collapsing') ||
+          (battlegroundDiv.classList &&
+            !battlegroundDiv.classList.contains('show'))
+        ) {
+          return;
+        }
+        for (const entry of entries) {
+          if (entry.contentRect && entry.contentRect.height)
+            heightGBG = entry.contentRect.height;
+        }
+      });
+      gbgResizeObserver.observe(battlegroundDiv);
+    }
+    if (isChangesOnly) {
+      battlegroundDiv.style.height = 'auto';
+      battlegroundDiv.style.maxHeight = 'none';
+      battlegroundDiv.style.overflowY = 'visible';
+    } else {
+      const DEFAULT_RESTRICTED_GBG_HEIGHT = 400;
+      const restrictedHeight =
+        toolOptions.battlegroundsSize && toolOptions.battlegroundsSize > 250 ?
+          toolOptions.battlegroundsSize
+        : DEFAULT_RESTRICTED_GBG_HEIGHT;
+      battlegroundDiv.style.maxHeight = 'none';
+      battlegroundDiv.style.overflowY = 'auto';
+      const currentHeight = battlegroundDiv.clientHeight;
+      if (currentHeight > restrictedHeight) {
+        battlegroundDiv.style.height = `${restrictedHeight}px`;
+      }
     }
   }
-  translateContainer(donationDIV);
+
+  if (targetEl) {
+    translateContainer(targetEl);
+  }
 }
 
 export function checkGBG() {

@@ -124,17 +124,61 @@ class CastleSystemService {
       lastUpdated: this.lastUpdated,
     };
   }
+
+  /**
+   * Get estimated military boosts for a Castle System visual stage (0-7).
+   * Used for visited players where exact level is not exposed by InnoGames RPC.
+   *
+   * @param {number|string} stage Visual stage 0-7
+   * @returns {{ attackerAtt: number, attackerDef: number, defenderAtt: number, defenderDef: number }}
+   */
+  getBoostsForStage(stage) {
+    const s = parseInt(stage, 10);
+    const stageBoostMap = {
+      0: 0,
+      1: 4,
+      2: 9,
+      3: 20,
+      4: 30,
+      5: 35,
+      6: 45,
+      7: 60,
+    };
+    if (!(s in stageBoostMap)) return null;
+    const boost = stageBoostMap[s];
+    return {
+      attackerAtt: boost,
+      attackerDef: boost,
+      defenderAtt: boost,
+      defenderDef: boost,
+    };
+  }
+
+  /**
+   * Resolve Castle System boosts for an entity on a city map.
+   *
+   * @param {Object} entity CityMap entity
+   * @returns {{ attackerAtt: number, attackerDef: number, defenderAtt: number, defenderDef: number }|null}
+   */
+  getBoostsForEntity(entity) {
+    if (!entity?.cityentity_id) return null;
+    const match = entity.cityentity_id.match(/CastleSystem(\d+)/);
+    if (!match) return null;
+    const stage = parseInt(match[1], 10);
+    return this.getBoostsForStage(stage);
+  }
 }
 
 const castleSystemService = new CastleSystemService();
-if (messageDispatcher && typeof messageDispatcher.register === 'function') {
-  castleSystemService.register(messageDispatcher);
-}
 
 module.exports = {
   CastleSystemService,
   castleSystemService,
   getOverview: castleSystemService.getOverview,
   getCastleSystemPlayer: castleSystemService.getCastleSystemPlayer,
+  getBoostsForStage:
+    castleSystemService.getBoostsForStage.bind(castleSystemService),
+  getBoostsForEntity:
+    castleSystemService.getBoostsForEntity.bind(castleSystemService),
 };
 module.exports.default = castleSystemService;
