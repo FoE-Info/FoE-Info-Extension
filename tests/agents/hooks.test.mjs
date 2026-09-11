@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  evaluateGraphifyGuard,
+  isBroadSourceSearch,
+  isCodebaseSourceSearch,
+} from '../../.agents/scripts/graphify-guard.mjs';
+import {
   affectsAst,
   extractTargetFile,
 } from '../../.agents/scripts/post-tool-graphify-sync.mjs';
@@ -24,9 +29,10 @@ test('Safety Gate Hook - flags destructive commands', () => {
     'git checkout .',
     'git checkout -- .',
     'git checkout -f',
-    'git branch -D feature/test',
-    'git branch -d feature/test',
-    'git branch --delete feature/test',
+    'git branch -D development',
+    'git branch -d development',
+    'git branch --delete development',
+    'git push origin --delete development',
     'git stash drop',
     'git stash clear',
     'rm -rf src/',
@@ -54,6 +60,11 @@ test('Safety Gate Hook - permits safe read/build/test commands', () => {
     'git log -n 5',
     'git diff',
     'git checkout -b feature/new-panel',
+    'git branch -D feature/test',
+    'git branch -d feature/test',
+    'git branch --delete feature/test',
+    'git push origin --delete feature/test',
+    'git push origin :feature/test',
     'npm run build:dev',
     'git add src/js/fn/i18n.js',
     'git commit -m "feat: add i18n helper"',
@@ -234,4 +245,134 @@ test('Stop Hook - CLI execution adheres to stdout JSON contract', async () => {
   });
   const parsedIdle = JSON.parse(stdoutIdle);
   assert.equal(parsedIdle.decision, 'allow');
+});
+
+test('Graphify Guard Hook - isCodebaseSourceSearch detects application searches', () => {
+  // Broad src/ searches should trigger codebase search
+  assert.equal(
+    isCodebaseSourceSearch('grep_search', { SearchPath: '/path/to/src' }),
+    true,
+  );
+  assert.equal(
+    isCodebaseSourceSearch('grep_search', { SearchPath: '/path/to/src/js' }),
+    true,
+  );
+  assert.equal(
+    isCodebaseSourceSearch('grep_search', { SearchPath: '.' }),
+    true,
+  );
+  assert.equal(
+    isCodebaseSourceSearch('find_by_name', { SearchDirectory: '/path/to/src' }),
+    true,
+  );
+
+  // Exempt searches: tests, docs, specific files
+  assert.equal(
+    isCodebaseSourceSearch('grep_search', { SearchPath: '/path/to/tests' }),
+    false,
+  );
+  assert.equal(
+    isCodebaseSourceSearch('grep_search', {
+      SearchPath: '/path/to/src/js/state/state.js',
+    }),
+    false,
+  );
+  assert.equal(
+    isCodebaseSourceSearch('find_by_name', {
+      SearchDirectory: '/path/to/tests',
+    }),
+    false,
+  );
+  assert.equal(
+    isCodebaseSourceSearch('find_by_name', {
+      SearchDirectory: '/path/to/docs',
+    }),
+    false,
+  );
+});
+
+test('Graphify Guard Hook - evaluateGraphifyGuard enforces query-first protocol', () => {
+  // Safe command
+  const mcpGraphCall = {
+    name: 'call_mcp_tool',
+    args: { ServerName: 'graphify-foe-info', ToolName: 'query_graph' },
+  };
+  assert.equal(evaluateGraphifyGuard(mcpGraphCall).decision, 'allow');
+
+  // Targeted single-file grep is allowed
+  const singleFileGrep = {
+    name: 'grep_search',
+    args: {
+      Query: 'setTargetText',
+      SearchPath:
+        '/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/src/js/state/state.js',
+    },
+  };
+  assert.equal(evaluateGraphifyGuard(singleFileGrep).decision, 'allow');
+
+  // Test suite search is allowed
+  const testGrep = {
+    name: 'grep_search',
+    args: {
+      Query: 'setTargetText',
+      SearchPath:
+        '/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/tests/msg',
+    },
+  };
+  assert.equal(evaluateGraphifyGuard(testGrep).decision, 'allow');
+
+  // CLI graphify command allows and updates stamp
+  const cliGraphCall = {
+    name: 'run_command',
+    args: { CommandLine: 'graphify query "What is state.js?"' },
+  };
+  assert.equal(evaluateGraphifyGuard(cliGraphCall).decision, 'allow');
+});
+
+test('Antigravity hooks.json - config validates schema and matchers', async () => {
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const hooksConfig = JSON.parse(
+    fs.readFileSync(path.resolve('.agents/hooks.json'), 'utf8'),
+  );
+
+  assert.ok(hooksConfig['safety-gate']?.PreToolUse);
+  assert.equal(hooksConfig['safety-gate'].PreToolUse[0].matcher, 'run_command');
+
+  assert.ok(hooksConfig['graphify-guard']?.PreToolUse);
+  assert.match(
+    hooksConfig['graphify-guard'].PreToolUse[0].matcher,
+    /run_command/,
+  );
+
+  assert.ok(hooksConfig['monolith-guardrail']?.PreInvocation);
+  assert.ok(hooksConfig['graphify-sync']?.PostToolUse);
+  assert.ok(hooksConfig['stop-guard']?.Stop);
+});
+
+test('Graphify Guard Hook - isBroadSourceSearch flags broad source searches', () => {
+  for (const command of [
+    'rg -n Startup src/',
+    'rg --files src',
+    'grep -R Startup src',
+    'find src -name "*.js"',
+    'rg Startup',
+    'rg --files',
+    'cd src && rg Startup .',
+  ]) {
+    assert.equal(isBroadSourceSearch(command), true, command);
+  }
+});
+
+test('Graphify Guard Hook - isBroadSourceSearch permits scoped searches', () => {
+  for (const command of [
+    'rg -n Startup src/js/msg/StartupService.js',
+    'rg --files .agents',
+    'rg src docs/',
+    'git diff | rg Startup',
+    'printf "src"',
+    'rg -n src .opencode/plugins/graphify-guard.mjs',
+  ]) {
+    assert.equal(isBroadSourceSearch(command), false, command);
+  }
 });

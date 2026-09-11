@@ -40,7 +40,7 @@ npm run i18n:fix
 Whenever a new feature adds text to `panel.html` or dynamic JavaScript components:
 1. Add the key and English text to `src/i18n/en.json`.
 2. Run `npm run i18n:fix` to distribute the key to all other locales.
-3. Consult `i18n-localization-expert` subagent to provide accurate native translations for German, French, Spanish, Italian, and Greek.
+3. Consult `localization-expert` subagent to provide accurate native translations for German, French, Spanish, Italian, and Greek.
 4. Format the JSON files:
    ```bash
    npm run format

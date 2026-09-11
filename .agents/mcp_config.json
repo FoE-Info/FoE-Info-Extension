@@ -1,31 +1,143 @@
 {
   "mcpServers": {
     "chrome-devtools": {
-      "command": "/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/.agents/scripts/run-chrome-devtools-mcp.sh"
+      "command": "bash",
+      "args": [".agents/scripts/run-chrome-devtools-mcp.sh"]
     },
     "graphify-foe-info": {
-      "command": "/var/home/kronikpillow/.local/bin/graphify-mcp",
-      "args": [
-        "/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/graphify-out/foe-info/graph.json"
-      ]
+      "command": "graphify-mcp",
+      "args": ["graphify-out/foe-info/graph.json"],
+      "env": {
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_NO_TIPS": "1",
+        "NO_PROXY": "*",
+        "no_proxy": "*",
+        "GEMINI_API_KEY": "",
+        "GOOGLE_API_KEY": "",
+        "ANTHROPIC_API_KEY": "",
+        "MOONSHOT_API_KEY": "",
+        "DEEPSEEK_API_KEY": "",
+        "AZURE_OPENAI_API_KEY": "",
+        "AZURE_OPENAI_ENDPOINT": "",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": "",
+        "ALL_PROXY": "",
+        "http_proxy": "",
+        "https_proxy": "",
+        "all_proxy": ""
+      }
     },
     "graphify-forge-hammer": {
-      "command": "/var/home/kronikpillow/.local/bin/graphify-mcp",
-      "args": [
-        "/var/home/kronikpillow/Projects/Forge-Hammer/forge-hammer/graphify-out/graph.json"
-      ]
+      "command": "graphify-mcp",
+      "args": ["../forge-hammer/graphify-out/graph.json"],
+      "env": {
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_NO_TIPS": "1",
+        "NO_PROXY": "*",
+        "no_proxy": "*",
+        "GEMINI_API_KEY": "",
+        "GOOGLE_API_KEY": "",
+        "ANTHROPIC_API_KEY": "",
+        "MOONSHOT_API_KEY": "",
+        "DEEPSEEK_API_KEY": "",
+        "AZURE_OPENAI_API_KEY": "",
+        "AZURE_OPENAI_ENDPOINT": "",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": "",
+        "ALL_PROXY": "",
+        "http_proxy": "",
+        "https_proxy": "",
+        "all_proxy": ""
+      }
     },
     "graphify-foe-info-original": {
-      "command": "/var/home/kronikpillow/.local/bin/graphify-mcp",
-      "args": [
-        "/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/graphify-out/foe-info-original/graph.json"
-      ]
+      "command": "graphify-mcp",
+      "args": ["../FoE-Info-Extension-original/graphify-out/graph.json"],
+      "env": {
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_NO_TIPS": "1",
+        "NO_PROXY": "*",
+        "no_proxy": "*",
+        "GEMINI_API_KEY": "",
+        "GOOGLE_API_KEY": "",
+        "ANTHROPIC_API_KEY": "",
+        "MOONSHOT_API_KEY": "",
+        "DEEPSEEK_API_KEY": "",
+        "AZURE_OPENAI_API_KEY": "",
+        "AZURE_OPENAI_ENDPOINT": "",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": "",
+        "ALL_PROXY": "",
+        "http_proxy": "",
+        "https_proxy": "",
+        "all_proxy": ""
+      }
+    },
+    "graphify-low-tool": {
+      "command": "graphify-mcp",
+      "args": ["../LoW-Tool/graphify-out/graph.json"],
+      "env": {
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_NO_TIPS": "1",
+        "NO_PROXY": "*",
+        "no_proxy": "*",
+        "GEMINI_API_KEY": "",
+        "GOOGLE_API_KEY": "",
+        "ANTHROPIC_API_KEY": "",
+        "MOONSHOT_API_KEY": "",
+        "DEEPSEEK_API_KEY": "",
+        "AZURE_OPENAI_API_KEY": "",
+        "AZURE_OPENAI_ENDPOINT": "",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": "",
+        "ALL_PROXY": "",
+        "http_proxy": "",
+        "https_proxy": "",
+        "all_proxy": ""
+      }
     },
     "graphify-metadata-store": {
-      "command": "/var/home/kronikpillow/.local/bin/graphify-mcp",
-      "args": [
-        "/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/graphify-out/metadata/graph.json"
-      ]
+      "command": "graphify-mcp",
+      "args": ["graphify-out/metadata/graph.json"],
+      "env": {
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_NO_TIPS": "1",
+        "NO_PROXY": "*",
+        "no_proxy": "*",
+        "GEMINI_API_KEY": "",
+        "GOOGLE_API_KEY": "",
+        "ANTHROPIC_API_KEY": "",
+        "MOONSHOT_API_KEY": "",
+        "DEEPSEEK_API_KEY": "",
+        "AZURE_OPENAI_API_KEY": "",
+        "AZURE_OPENAI_ENDPOINT": "",
+        "HTTP_PROXY": "",
+        "HTTPS_PROXY": "",
+        "ALL_PROXY": "",
+        "http_proxy": "",
+        "https_proxy": "",
+        "all_proxy": ""
+      }
     }
   }
 }

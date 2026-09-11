@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: model_decision
 description: Prohibit wildcard tool permission grants and prevent redundant MCP server registrations when editing agent, MCP, or tool permission configurations.
 ---
 

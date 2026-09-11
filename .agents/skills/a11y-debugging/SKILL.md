@@ -87,3 +87,9 @@ Verify document-level accessibility settings often missed in component testing u
 If standard a11y queries fail or the `evaluate_script` snippets return unexpected results:
 
 - **Visual Inspection**: If automated scripts cannot determine contrast (e.g., text over gradient images or complex backgrounds), use `take_screenshot` to capture the element. While models cannot measure exact contrast ratios from images, they can visually assess legibility and identify obvious issues.
+
+### 9. Report & Fix Modes
+
+Accessibility workflows operate in two distinct modes:
+- **Report mode**: Audit the codebase or DOM to produce a prioritized findings report without modifying files (see [references/report-template.md](references/report-template.md)).
+- **Fix mode**: Follow an iterative baseline → edit → verify loop applying mechanical fixes and documenting deferred items (see [references/fix-recipe.md](references/fix-recipe.md)).

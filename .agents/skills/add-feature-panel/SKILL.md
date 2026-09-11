@@ -16,10 +16,13 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
 
 ## Phase 1: Service Architecture & State
 1. Implement the feature logic in a modular service:
-   - `src/js/msg/<FeatureName>Service.js` (for RPC handlers) or `src/js/fn/<featureName>.js` (for utilities).
+   - `src/js/msg/<FeatureName>Service.js` (for RPC handlers) or `src/js/utils/<featureName>.js` (for new utilities; `fn/` contains legacy helpers).
    - Never write monolithic logic directly into `src/js/index.js`.
+   - Instantiate `const logger = createLogger('<FeatureName>')` from `../utils/logger.js`.
+   - Emit `logger.debug(...)` statements during panel rendering, filter updates, and state changes.
 2. Connect state reactively with `MetadataStore.js` or `src/js/vars/state.js`.
 3. Use `bignumber.js` for all Forge Point, boost, or resource arithmetic.
+
 
 ---
 
@@ -36,7 +39,7 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
    ```html
    <span data-i18n="allies_active_count">Active Allies</span>
    ```
-2. For dynamic template strings, use `$.i18n('allies_room_count', count)`.
+2. For dynamic template strings, use `t('allies_room_count', count)` from `src/js/utils/i18n.js`.
 3. Add the primary English keys to `src/i18n/en.json`.
 4. Run the automated parity generator to propagate keys to all 7 languages:
    ```bash
@@ -56,3 +59,11 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
    foe-browser
    ```
 3. Verify panel rendering without runtime exceptions on port 9222 via CDP.
+
+---
+
+## References
+
+- [Bootstrap Component Patterns](references/bootstrap-components.md): Tested card, badge, and table markup for DevTools panels.
+- [Bootstrap JS Lifecycle & Teardown](references/bootstrap-js-api.md): Native instance management and memory leak prevention.
+- [Bootstrap Color Modes & Theming](references/bootstrap-color-modes.md): Dark theme tokens and FoE aesthetic styling.

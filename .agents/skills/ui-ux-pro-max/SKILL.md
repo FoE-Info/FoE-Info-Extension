@@ -9,16 +9,22 @@ description: UI/UX design guidelines adapted for Bootstrap 5.3 and narrow DevToo
 > **Current Mandate: Bootstrap 5.3 & Current Framework First**:
 > Active UI development and panel implementation MUST continue using the current framework: **Bootstrap 5.3** and the existing SCSS theme (`src/css/_variables.scss`, `src/css/main.scss`, collapsible card structures in `panel.html`).
 > Migration to modern UI frameworks from `ui-ux-pro-max` is planned for **later down the line**. Do NOT prematurely replace Bootstrap or introduce external UI frameworks in current tasks.
+>
+> For production-ready Bootstrap 5.3 DevTools panel patterns, consult:
+> - [Bootstrap Component Patterns](../add-feature-panel/references/bootstrap-components.md)
+> - [Bootstrap JS Lifecycle & Teardown](../add-feature-panel/references/bootstrap-js-api.md)
+> - [Bootstrap Color Modes & Theming](../add-feature-panel/references/bootstrap-color-modes.md)
+
 
 
 Comprehensive design guide for web and mobile applications. Contains 50+ styles, 97 color palettes, 57 font pairings, 99 UX guidelines, and 25 chart types across 9 technology stacks. Searchable database with priority-based recommendations.
 
 ## When to Use
 Reference these guidelines when:
-- Designing new UI components or pages
-- Choosing color palettes and typography
-- Reviewing code for UX issues
-- Building landing pages or dashboards
+- Designing new UI components, extension panels, or cards
+- Choosing color palettes and typography compatible with dark/light DevTools themes
+- Reviewing code for DevTools panel UX and responsiveness issues
+- Building extension DevTools panels, dashboards, or UI components
 - Implementing accessibility requirements
 
 ## Rule Categories by Priority
@@ -130,10 +136,10 @@ When user requests UI/UX work (design, build, create, implement, review, fix, im
 ### Step 1: Analyze User Requirements
 
 Extract key information from user request:
-- **Product type**: SaaS, e-commerce, portfolio, dashboard, landing page, etc.
-- **Style keywords**: minimal, playful, professional, elegant, dark mode, etc.
-- **Industry**: healthcare, fintech, gaming, education, etc.
-- **Stack**: React, Vue, Next.js, or default to `html-tailwind`
+- **Product type**: Extension DevTools panel, dashboard, settings view, data table, etc.
+- **Style keywords**: minimal, playful, professional, elegant, dark mode, DevTools docked, etc.
+- **Industry**: gaming, extension utilities, fintech, etc.
+- **Stack**: Bootstrap 5.3 & Vanilla JS (FoE-Info DevTools default), or external frameworks if explicitly requested
 
 ### Step 2: Generate Design System (REQUIRED)
 
@@ -172,15 +178,17 @@ python3 .agents/skills/ui-ux-pro-max/scripts/search.py "<keyword>" --domain <dom
 | Alternative fonts | `typography` | `--domain typography "elegant luxury"` |
 | Landing structure | `landing` | `--domain landing "hero social-proof"` |
 
-### Step 4: Stack Guidelines (Default: html-tailwind)
+### Step 4: Stack Guidelines (Default: Bootstrap 5.3 & Vanilla JS)
 
-Get implementation-specific best practices. If user doesn't specify a stack, **default to `html-tailwind`**.
+Get implementation-specific best practices. FoE-Info is a Chrome DevTools extension built with **Bootstrap 5.3 and Vanilla JS**.
+- Prioritize Bootstrap 5.3 patterns and SCSS theme variables (`src/css/_variables.scss`, `src/css/main.scss`).
+- When querying `search.py` for generic layout and accessibility guidelines, use `--stack html-tailwind` as an informational reference fallback:
 
 ```bash
 python3 .agents/skills/ui-ux-pro-max/scripts/search.py "<keyword>" --stack html-tailwind
 ```
 
-Available stacks: `html-tailwind`, `react`, `nextjs`, `vue`, `svelte`, `swiftui`, `react-native`, `flutter`, `shadcn`
+Available stacks in search tool: `html-tailwind` (reference fallback), `react`, `nextjs`, `vue`, `svelte`, `swiftui`, `react-native`, `flutter`, `shadcn`
 
 ---
 
@@ -205,7 +213,7 @@ Available stacks: `html-tailwind`, `react`, `nextjs`, `vue`, `svelte`, `swiftui`
 
 | Stack | Focus |
 |-------|-------|
-| `html-tailwind` | Tailwind utilities, responsive, a11y (DEFAULT) |
+| `html-tailwind` | CSS utilities, responsive, a11y (reference fallback; use Bootstrap 5.3 for FoE-Info) |
 | `react` | State, hooks, performance, patterns |
 | `nextjs` | SSR, routing, images, API routes |
 | `vue` | Composition API, Pinia, Vue Router |
@@ -214,6 +222,8 @@ Available stacks: `html-tailwind`, `react`, `nextjs`, `vue`, `svelte`, `swiftui`
 | `react-native` | Components, Navigation, Lists |
 | `flutter` | Widgets, State, Layout, Theming |
 | `shadcn` | shadcn/ui components, theming, forms, patterns |
+
+*Note: FoE-Info extension panels mandate Bootstrap 5.3 + Vanilla JS as the implementation stack.*
 
 ---
 
@@ -225,7 +235,7 @@ Available stacks: `html-tailwind`, `react`, `nextjs`, `vue`, `svelte`, `swiftui`
 - Product type: Beauty/Spa service
 - Style keywords: elegant, professional, soft
 - Industry: Beauty/Wellness
-- Stack: html-tailwind (default)
+- Stack: Bootstrap 5.3 & Vanilla JS (FoE-Info default; html-tailwind reference)
 
 ### Step 2: Generate Design System (REQUIRED)
 

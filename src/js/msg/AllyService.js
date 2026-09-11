@@ -159,9 +159,6 @@ class AllyService {
 }
 
 const allyService = new AllyService();
-if (messageDispatcher && typeof messageDispatcher.register === 'function') {
-  allyService.register(messageDispatcher);
-}
 
 module.exports = {
   AllyService,

@@ -8,6 +8,8 @@ export default [
       '**/node_modules/**',
       '**/build/**',
       '**/graphify-out/**',
+      '**/.worktrees/**',
+      '**/worktrees/**',
       'metadata-store/**',
       'package-lock.json',
       '.vscode/**',

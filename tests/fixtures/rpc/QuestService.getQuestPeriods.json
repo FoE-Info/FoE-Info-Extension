@@ -1,0 +1,42 @@
+[
+ {
+  "type": "ally",
+  "endsAt": 1789340400,
+  "questSeasons": [
+   {
+    "type": "ReplayableSeason_Allies_Milestone",
+    "count": 20,
+    "progress": 8,
+    "__class__": "QuestSeason"
+   },
+   {
+    "type": "ReplayableSeason_Allies_Fight_a",
+    "count": 20,
+    "progress": 20,
+    "__class__": "QuestSeason"
+   },
+   {
+    "type": "ReplayableSeason_Allies_Fight_b",
+    "count": 20,
+    "progress": 20,
+    "__class__": "QuestSeason"
+   },
+   {
+    "type": "ReplayableSeason_Allies_Pay_a",
+    "count": 20,
+    "__class__": "QuestSeason"
+   },
+   {
+    "type": "ReplayableSeason_Allies_Pay_b",
+    "count": 20,
+    "__class__": "QuestSeason"
+   },
+   {
+    "type": "ReplayableSeason_Allies_Negotiation_a",
+    "count": 20,
+    "__class__": "QuestSeason"
+   }
+  ],
+  "__class__": "QuestPeriod"
+ }
+]

@@ -46,12 +46,16 @@ Check for primary FoE-Info leak patterns and remediation techniques:
 2. **Detached DOM Nodes & jQuery Event Handlers**:
    - Search for `$(...).on(...)` inside functions called on every RPC message.
    - Fix: Call `$(...).off(...)` before attaching, or use delegated event handling at the document level.
+   - **Bootstrap Tooltip/Popover Disposal**: Always call `.dispose()` on component instances before removing or replacing host DOM nodes to prevent detached node accumulation. See [Bootstrap JS Lifecycle & Teardown](../add-feature-panel/references/bootstrap-js-api.md).
    - *Caution on Detached DOM*: Certain detached DOM elements may be intentional cached table templates across tab switches. Confirm if nodes are active caches before nulling references.
+
 3. **Global Window Caches & Retained Closures**:
    - Check if `window.CityEntities` or `window.Metadata` accumulates duplicate keys.
    - Fix: Store in scoped modules with explicit deduplication. Use `WeakMap` or `WeakSet` for DOM node associations so entries automatically garbage-collect when elements leave the DOM.
 4. **Active Interval Timers**:
    - Search for `setInterval` without corresponding `clearInterval`.
+
+For canonical JavaScript memory leak patterns and remediation recipes, consult [`references/common-leaks.md`](references/common-leaks.md).
 
 ---
 

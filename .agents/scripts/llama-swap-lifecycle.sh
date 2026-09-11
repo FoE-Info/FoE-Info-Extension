@@ -2,8 +2,8 @@
 set -e
 
 # Configuration
-CONFIG_PATH="${HOME}/.config/llama-swap/config.yaml"
-BASE_URL="http://127.0.0.1:8080"
+CONFIG_PATH="${HOME}/.config/llama-swap/config-vision.yaml"
+BASE_URL="http://127.0.0.1:8081"
 LOG_PATH="${HOME}/.cache/llama-swap-ephemeral.log"
 STARTED_SERVER=0
 LLAMA_SWAP_PID=""
@@ -74,8 +74,8 @@ else
     exit 1
   fi
 
-  # Launch llama-swap in background
-  "${LLAMA_SWAP_BIN}" --config "${CONFIG_PATH}" > "${LOG_PATH}" 2>&1 &
+  # Launch llama-swap in background (explicit -listen; config `listen:` is not authoritative in this build)
+  "${LLAMA_SWAP_BIN}" --config "${CONFIG_PATH}" --listen 127.0.0.1:8081 > "${LOG_PATH}" 2>&1 &
   LLAMA_SWAP_PID=$!
 
   # Wait for readiness
@@ -95,12 +95,8 @@ else
   fi
 fi
 
-# 2. Export environment variables for Graphify
-export OPENAI_API_KEY="local"
-export OPENAI_BASE_URL="${BASE_URL}/v1"
-export OPENAI_MODEL="qwen2.5-vl-7b"
-export GRAPHIFY_BACKEND="openai"
-export GRAPHIFY_OPENAI_MODEL="qwen2.5-vl-7b"
+# Shared local-only inference policy (also used by watch and MCP launchers).
+source "$(dirname "${BASH_SOURCE[0]}")/graphify-local-env.sh"
 
 # Detect if being sourced vs executed directly
 if (return 0 2>/dev/null); then

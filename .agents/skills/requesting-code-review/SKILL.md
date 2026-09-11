@@ -32,9 +32,9 @@ HEAD_SHA=$(git rev-parse HEAD)
 **2. Dispatch code reviewer subagent:**
 
 Dispatch the project's native `code-reviewer` subagent (or `self`) using `invoke_subagent`:
-- **`TypeName`**: `"code-reviewer"` (enforces FoE's 6 invariant gates: monolith containment, CSP, BigNumber, i18n, small slices, and verification)
+- **`TypeName`**: `"code-reviewer"` (enforces FoE's 8 invariant gates: monolith containment, CSP, BigNumber, modular limits, dynamic metadata, i18n, small slices, and debuggability by design)
 - **`Role`**: `"Code Reviewer"`
-- **`Prompt`**: Fill the review template at [code-reviewer.md](code-reviewer.md)
+- **`Prompt`**: Fill the review template at [code-reviewer.md](references/code-reviewer.md)
 
 **Placeholders:**
 - `{DESCRIPTION}` - Brief summary of what you built
@@ -61,7 +61,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 [Dispatch code reviewer subagent]
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
-  PLAN_OR_REQUIREMENTS: Task 2 from docs/superpowers/plans/deployment-plan.md
+  PLAN_OR_REQUIREMENTS: Task 2 from docs/plans/deployment-plan.md
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
 
@@ -96,4 +96,4 @@ You: [Fix progress indicators]
 - Show code/tests that prove it works
 - Request clarification
 
-See template at: [code-reviewer.md](code-reviewer.md)
+See template at: [code-reviewer.md](references/code-reviewer.md)

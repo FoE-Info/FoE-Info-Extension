@@ -21,7 +21,7 @@ You are the release engineer specializing in Chrome Web Store and Firefox Add-on
 
 ### 2. Pre-Flight Verification Gate
 Before triggering a production build or packaging release zips, verify all quality gates pass without warnings or errors:
-* Run the 4-stage gate: `npm run verify` (Prettier formatting, ESLint static analysis, i18n key completeness, unit test suite, and dev build).
+* Run the 5-stage gate: `npm run verify` (Prettier formatting, ESLint static analysis, i18n key completeness, unit test suite, and dev build).
 * Ensure working tree is clean: `git status --porcelain` must be empty.
 * Verify zero uncommitted files or untracked development artifacts.
 

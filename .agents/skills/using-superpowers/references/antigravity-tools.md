@@ -6,7 +6,7 @@ Skills describe abstract agent actions ("dispatch a subagent", "edit code", "run
 
 | Abstract Action | Antigravity Native Tool | Notes & Conventions |
 | :--- | :--- | :--- |
-| **Dispatch Subagent** | `invoke_subagent` | Use built-in (`self`, `research`) or the 29 repository specialists in `.agents/agents/*.md` (e.g. `code-reviewer`). |
+| **Dispatch Subagent** | `invoke_subagent` | Use built-in (`self`, `research`) or the 31 repository specialists in `.agents/agents/*.md` (e.g. `code-reviewer`). |
 | **Subagent Messaging** | `send_message` | Send follow-up tasks or queries to a subagent using its `conversationId`. Never use to message the user. |
 | **Subagent Management** | `manage_subagents` | Actions: `list` (inspect active subagents), `kill` (terminate specific subagent), `kill_all`. |
 | **Background Processes** | `manage_task` | Inspect/control background commands (`list`, `status`, `send_input`, `kill`). Not a checklist tool. |
@@ -30,6 +30,6 @@ Antigravity enforces strict artifact boundaries:
 ## Task & Plan Tracking
 
 When a skill prescribes tracking plan tasks:
-1. Maintain checkboxes (`- [ ]`, `- [x]`) in implementation plans under `docs/superpowers/plans/` or ephemeral task summaries.
+1. Maintain checkboxes (`- [ ]`, `- [x]`) in implementation plans under `docs/plans/` or ephemeral task summaries.
 2. Edit progress incrementally using `replace_file_content`.
 3. Do not confuse task tracking with `manage_task` (which is exclusively for background process control).

@@ -9,12 +9,12 @@ Automated on-demand lifecycle manager for local LLM inference via `llama-swap`. 
 
 ## Overview
 
-Running local LLMs (e.g. `qwen2.5-vl-7b` at Q8_0) requires ~11–12 GB of GPU VRAM. Leaving `llama-server` or `llama-swap` idling in the background ties up the RTX A5000 GPU and blocks other workloads.
+Running local LLMs consumes GPU VRAM according to the configured model and quantization. Leaving a model loaded in `llama-server` behind `llama-swap` can block other GPU workloads; inspect the local configuration rather than assuming a GPU model or memory footprint.
 
 This skill provides an **automated sourcing & ephemeral lifecycle pattern**:
-1. **Auto-Sourced by Graphify Scripts**: All graphify reindexing scripts (`graphify-local.sh`, `graphify-metadata-local.sh`, `graphify-forge-hammer-local.sh`) and npm commands (`npm run graph:reindex`, `npm run graph:metadata:reindex`, `npm run graph:forge-hammer:reindex`) automatically source `run-with-llama-swap.sh`.
-2. **Probe**: Checks if `http://127.0.0.1:8080/v1/models` is already responding.
-3. **On-Demand Spawn**: If inactive, spawns `llama-swap --config ~/.config/llama-swap/config.yaml` in the background and waits for HTTP readiness.
+1. **Auto-Sourced by Graphify Scripts**: `.agents/scripts/graph-foe-info-reindex.sh`, `graph-metadata-reindex.sh`, and `graph-forge-hammer-reindex.sh` source `llama-swap-lifecycle.sh`. Their npm runners are `graph:foe-info:reindex`, `graph:metadata:reindex`, and `graph:forge-hammer:reindex`.
+2. **Probe**: Checks if `http://127.0.0.1:8081/v1/models` (vision-instance `llama-swap`) is already responding.
+3. **On-Demand Spawn**: If inactive, spawns `llama-swap --config ~/.config/llama-swap/config-vision.yaml` in the background and waits for HTTP readiness.
 4. **Execute**: Runs the requested `graphify` extraction and labeling commands.
 5. **Immediate AI Teardown**: As soon as tasks needing the local AI backend complete, `stop_llama_swap` unloads the model (`POST /api/models/unload`) and stops `llama-swap` before documentation/visual export steps proceed.
 6. **Clean Exit Trap**: Guaranteed cleanup on script exit or unexpected errors via signal traps (`EXIT`, `INT`, `TERM`).
@@ -27,7 +27,7 @@ This skill provides an **automated sourcing & ephemeral lifecycle pattern**:
 
 ### Automated Usage (Zero Manual Toggling)
 You do **NOT** need to manually toggle `:auto` or wrap commands individually. Simply run standard npm scripts:
-- `npm run graph:foe-info:reindex` (or `:deep`, `:force`)
+- `npm run graph:foe-info:reindex` (append `-- --mode deep` or `-- --force` when needed)
 - `npm run graph:metadata:reindex`
 - `npm run graph:forge-hammer:reindex`
 
@@ -42,12 +42,12 @@ If running an arbitrary one-off command requiring the local LLM backend:
 | Action | Command | Notes |
 | :--- | :--- | :--- |
 | **FoE-Info Reindex** | `npm run graph:foe-info:reindex` | Auto-manages llama-swap lifecycle |
-| **FoE-Info Deep Reindex** | `npm run graph:foe-info:reindex:deep` | Aggressive INFERRED semantic extraction |
-| **FoE-Info Force Reindex** | `npm run graph:foe-info:reindex:force` | Full re-scan bypassing cached hashes |
+| **FoE-Info Deep Reindex** | `npm run graph:foe-info:reindex -- --mode deep` | Deep extraction mode |
+| **FoE-Info Force Reindex** | `npm run graph:foe-info:reindex -- --force` | Full re-scan bypassing cached hashes |
 | **Metadata Reindex** | `npm run graph:metadata:reindex` | Auto-manages llama-swap lifecycle |
 | **Forge-Hammer Reindex** | `npm run graph:forge-hammer:reindex` | Auto-manages llama-swap lifecycle |
 | **Custom Graphify Command** | `./.agents/scripts/run-with-llama-swap.sh graphify label . --backend openai --model qwen2.5-vl-7b` | Standalone CLI wrapper |
-| **Manual Model Eviction** | `curl -s -X POST http://127.0.0.1:8080/api/models/unload` | Immediate VRAM eviction |
+| **Manual Model Eviction** | `curl -s -X POST http://127.0.0.1:8081/api/models/unload` | Immediate VRAM eviction |
 
 ---
 
@@ -68,5 +68,5 @@ The executable runner lives at [`.agents/scripts/llama-swap-lifecycle.sh`](../..
 | Issue | Root Cause | Resolution |
 | :--- | :--- | :--- |
 | **Connection Refused** | `llama-swap` not running and not started through the lifecycle wrapper. | Wrap invocation with `./.agents/scripts/run-with-llama-swap.sh <command>`. |
-| **GPU VRAM Stuck** | Process killed violently (`kill -9`) bypassing unload. | Run `curl -s -X POST http://127.0.0.1:8080/api/models/unload` or `pkill -f "llama-server.*qwen2.5-vl-7b"`. |
-| **Timeout on Startup** | Port 8080 blocked or invalid config in `~/.config/llama-swap/config.yaml`. | Check `${HOME}/.cache/llama-swap-ephemeral.log` for config validation errors. |
+| **GPU VRAM Stuck** | Process killed violently (`kill -9`) bypassing unload. | Run `curl -s -X POST http://127.0.0.1:8081/api/models/unload` or `pkill -f "llama-server.*qwen2.5-vl-7b"`. |
+| **Timeout on Startup** | Port 8081 blocked or invalid config in `~/.config/llama-swap/config-vision.yaml`. | Check `${HOME}/.cache/llama-swap-ephemeral.log` for config validation errors. |

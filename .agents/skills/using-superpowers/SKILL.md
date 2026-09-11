@@ -14,14 +14,13 @@ If you were dispatched as a subagent to execute a specific task, ignore this ski
 
 **Invoke relevant or requested skills early when embarking on structured tasks.** If a skill turns out wrong for the situation, you do not have to use it.
 
-
 **Before entering plan mode:** if you haven't already brainstormed, invoke the brainstorming skill first.
 
 Then announce "Using [skill] to [purpose]" and follow the skill exactly. If it has a checklist, create a todo per item.
 
 ## Skill Priority
 
-When multiple skills apply, process skills come first — they set the approach, then implementation skills (frontend-design, etc.) carry it out. Brainstorming and systematic-debugging are the most common process skills, but the rule holds for any of them.
+When multiple skills apply, process skills come first — they set the approach, then implementation skills carry it out. Brainstorming and systematic-debugging are the most common process skills, but the rule holds for any of them.
 
 - "Let's build X" → brainstorming first, then implementation skills.
 - "Fix this bug" → systematic-debugging first, then domain skills.
@@ -45,9 +44,9 @@ These thoughts mean STOP—you're rationalizing:
 | "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
 | "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
 
-## Platform Adaptation (Google Antigravity)
+## Platform Adaptation (Google Antigravity & OpenCode)
 
-This workspace runs on Google Antigravity (`agy`). For tool mappings and subagent execution conventions, consult [references/antigravity-tools.md](references/antigravity-tools.md), as well as the `/agy-customizations` and `/antigravity-guide` skills.
+This workspace runs on Google Antigravity (`agy`) with dual-harness OpenCode support. For tool mappings, subagent execution conventions, and rules, consult [`.agents/rules/superpowers.md`](../../rules/superpowers.md) and [`references/antigravity-tools.md`](references/antigravity-tools.md).
 
 ## User Instructions
 

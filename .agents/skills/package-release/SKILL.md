@@ -10,13 +10,12 @@ Follow this skill to validate code quality and produce a production-ready extens
 ## Steps
 
 1. **Pre-flight Code Hygiene**:
-   Run format, test suite, and translation parity verification:
+   Run the full verification gate and separate typecheck:
    ```bash
-   npm run check
-   npm test
-   npm run i18n:check
+   npm run verify
+   npm run typecheck
    ```
-   *(Note: Full repository `npm run lint` is reserved for refactoring passes; staged changes are checked via lint-staged)*
+   `verify` includes ESLint; lint-staged is an additional commit-time check.
 
 2. **Sync Version Number**:
    Ensure version matches in both manifests:
