@@ -62,7 +62,7 @@ The `url` field tells you what resource to look for in the network waterfall. If
 
 Use `list_network_requests` to see when the LCP resource loaded relative to other resources:
 
-- Call `list_network_requests` filtered by `resourceTypes: ["image", "font"]` (adjust based on Step 3).
+- Call `list_network_requests` filtered by `resourceTypes: ["Image", "Font"]` (adjust based on Step 3).
 - Then use `get_network_request` with the LCP resource's request ID for full details.
 
 **Key Checks:**

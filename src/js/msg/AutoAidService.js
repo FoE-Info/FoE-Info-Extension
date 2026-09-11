@@ -96,6 +96,9 @@ class AutoAidService {
 }
 
 const autoAidService = new AutoAidService();
+if (messageDispatcher && typeof messageDispatcher.register === 'function') {
+  autoAidService.register(messageDispatcher);
+}
 
 module.exports = {
   AutoAidService,

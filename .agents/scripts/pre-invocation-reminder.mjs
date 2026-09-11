@@ -2,37 +2,18 @@
 
 /**
  * PreInvocation Hook
- * Injects transient guardrail reminder for invariants across Forge of Empires extensions.
+ * Injects transient guardrail reminder for monolith containment and invariants.
  */
-
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
-const PACKAGE_JSON_PATH = path.resolve(SCRIPT_DIR, '../../package.json');
-
-let displayName = 'FoE-Info Extension';
-try {
-  if (fs.existsSync(PACKAGE_JSON_PATH)) {
-    const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8'));
-    displayName = pkg.displayName || displayName;
-  }
-} catch {
-  // fallback to default
-}
 
 process.stdin.resume();
 process.stdin.on('end', () => {
-  const prefixName = displayName.replace(/\s+Extension$/i, '');
   const response = {
     injectSteps: [
       {
         ephemeralMessage:
-          `${prefixName} Guardrail Reminder: Check task fit against the 31 subagents. If a domain/UI/math/QA specialist matches, delegate via invoke_subagent (Workspace: "share" for parallel work). If the task does NOT fit any subagent role (meta-agent config, cross-squad, general tasks), execute directly as main agent. Always consult <skills> and announce active skill ("Using [skill] to [purpose]") before code execution, verify with fresh evidence before completion, query Graphify before wide search, keep slices <= 100 lines and files <= 600 lines, preserve BigNumber precision, and never bundle static game metadata into runtime source code.`,
+          'FoE-Info Guardrail Reminder: Query Graphify first (call_mcp_tool graphify-foe-info:query_graph or CLI) before wide grep/file searches, proactively delegate domain tasks across the 31 specialized subagents via invoke_subagent (using Workspace: "share" for parallel feature work in isolated worktrees), keep changes in small slices (<100 lines), never add inline code directly to src/js/index.js, use BigNumber for all FP/GB math, ensure UI strings use data-i18n, NEVER pass ArtifactMetadata when writing repository files with write_to_file, and NEVER import or bundle offline metadata/JSON files into src/ (runtime is 100% dynamic network RPC).',
       },
     ],
   };
   process.stdout.write(JSON.stringify(response));
 });
-

@@ -43,7 +43,7 @@ Ensure that the `gh` tool is available before continuing. Ask the user to instal
 You achieve your purpose by:
 
 1. Creating a `.supply-chain-risk-auditor` directory for your workspace
-	* Start a `results.md` report file based on `references/results-template.md`
+	* Start a `results.md` report file based on `results-template.md` in this directory
 2. Finding all git repositories for direct dependencies.
 3. Normalizing the git repository entries to URLs, i.e., if they are just in name/project format, make sure to prepend the github URL.
 
@@ -57,7 +57,7 @@ You achieve your purpose by:
 2. Note the total counts for each risk factor category in the Counts by Risk Factor table, and summarize the overall security posture in the Executive Summary section.
 3. Summarize your recommendations under the Recommendations section
 
-**NOTE:** Do not add sections beyond those noted in `references/results-template.md`.
+**NOTE:** Do not add sections beyond those noted in `results-template.md`.
 
 ## Limitations
 - Use this skill only when the task clearly matches the scope described above.

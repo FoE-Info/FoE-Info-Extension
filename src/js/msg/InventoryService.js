@@ -13,8 +13,8 @@ const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 class InventoryItem {
   constructor(raw = {}) {
     this.id = raw.id || 0;
-    this.name = raw.name || raw.itemEntity?.name || '';
-    this.description = raw.description || raw.itemEntity?.description || '';
+    this.name = raw.name || '';
+    this.description = raw.description || '';
     this.inStock = raw.inStock || 0;
     this.itemAssetName = raw.itemAssetName || '';
     this.payloadClass = raw.item?.__class__ || '';
@@ -69,11 +69,7 @@ class InventoryItem {
       return new BigNumber(0);
     }
 
-    let packGain =
-      this.item.resource_package?.gain ||
-      this.item.value ||
-      this.item.extraFp ||
-      0;
+    let packGain = this.item.resource_package?.gain || this.item.extraFp || 0;
 
     if (!packGain && typeof this.name === 'string') {
       const match = this.name.match(
@@ -130,21 +126,14 @@ class GreatBuildingInventoryEntry {
 }
 
 class InventoryService {
-  constructor(deps = {}) {
+  constructor() {
     this.items = [];
     this.greatBuildings = [];
     this.totalForgePoints = new BigNumber(0);
     this.lastUpdated = null;
-    this.state = deps.state || null;
 
     this.getItems = this.getItems.bind(this);
     this.getGreatBuildings = this.getGreatBuildings.bind(this);
-    this.setState = this.setState.bind(this);
-  }
-
-  setState(s) {
-    this.state = s;
-    return this;
   }
 
   register(dispatcher = messageDispatcher) {
@@ -175,17 +164,11 @@ class InventoryService {
     this.lastUpdated = Date.now();
 
     try {
-      const state = this.state || require('../vars/state.js');
+      const state = require('../vars/state.js');
       if (state) {
-        if (typeof state.setAvailablePacksFP === 'function') {
-          state.setAvailablePacksFP(fpSum.toNumber());
-        } else {
-          state.availablePacksFP = fpSum.toNumber();
-        }
+        state.availablePacksFP = fpSum.toNumber();
       }
-    } catch (err) {
-      console.error('[FoEInfo] Failed to set availablePacksFP state:', err);
-    }
+    } catch {}
 
     if (typeof document !== 'undefined') {
       const availableEl = document.getElementById('availableFPID');
@@ -267,6 +250,9 @@ class InventoryService {
 }
 
 const inventoryService = new InventoryService();
+if (messageDispatcher && typeof messageDispatcher.register === 'function') {
+  inventoryService.register(messageDispatcher);
+}
 
 module.exports = {
   InventoryService,

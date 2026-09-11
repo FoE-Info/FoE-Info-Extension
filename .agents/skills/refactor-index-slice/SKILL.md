@@ -20,9 +20,6 @@ This skill outlines the step-by-step procedure to safely decouple logic from the
 2. **Create New Module**:
    * Create target file in `src/js/fn/<FeatureName>.js` or `src/js/msg/<ServiceName>.js`.
    * Export discrete functions taking needed state explicitly as parameters (avoid relying on hidden globals).
-   * Instantiate `const logger = createLogger('<FeatureName>')` from `../utils/logger.js`.
-   * Instrument computation steps, cache operations, and render triggers with `logger.debug(...)`.
-
 
 3. **Import and Wire in `index.js`**:
    * Import the new module at the top of `src/js/index.js`.

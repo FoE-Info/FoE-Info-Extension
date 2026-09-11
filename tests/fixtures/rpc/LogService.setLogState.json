@@ -1,8 +1,0 @@
-{
- "connectionType": "socketServer",
- "intervalPools": {
-  "0": 300,
-  "900": 600
- },
- "__class__": "ConnectionStateLogging"
-}

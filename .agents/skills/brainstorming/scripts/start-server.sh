@@ -15,7 +15,7 @@
 #   --open                Auto-open the browser on the first screen (use only
 #                         after the user approves the visual companion).
 #   --foreground          Run server in the current terminal (no backgrounding).
-#   --background          Force background mode (overrides auto-foreground).
+#   --background          Force background mode (overrides Codex auto-foreground).
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -95,7 +95,7 @@ is_windows_like_shell() {
 }
 
 # Some environments reap detached/background processes. Auto-foreground when detected.
-if [[ -n "${CI:-}" && "$FOREGROUND" != "true" && "$FORCE_BACKGROUND" != "true" ]]; then
+if [[ -n "${CODEX_CI:-}" && "$FOREGROUND" != "true" && "$FORCE_BACKGROUND" != "true" ]]; then
   FOREGROUND="true"
 fi
 
@@ -114,7 +114,6 @@ umask 077
 SESSION_ID="$$-$(date +%s)"
 
 if [[ -n "$PROJECT_DIR" ]]; then
-  PROJECT_DIR="$(cd "$PROJECT_DIR" && pwd)"
   SESSION_DIR="${PROJECT_DIR}/.superpowers/brainstorm/${SESSION_ID}"
   # Persist the bound port and key per project so a restart reuses them and an
   # already-open browser tab reconnects to the same URL with a valid cookie.
@@ -163,7 +162,7 @@ fi
 # Passing a PID node cannot verify causes server to log owner-pid-invalid
 # and self-terminate at the 60-second lifecycle check. Clear it so the
 # watchdog is disabled and the idle timeout becomes the only shutdown trigger.
-if is_windows_like_shell || [[ "${BRAINSTORM_DISABLE_WATCHDOG:-}" == "true" ]]; then
+if is_windows_like_shell; then
   OWNER_PID=""
 fi
 

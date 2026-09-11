@@ -1,31 +1,23 @@
 ---
 trigger: always_on
-description: Query graphify knowledge graphs (MCP or CLI) for codebase architecture, module relationships, or FoE entity questions.
+description: Consult the graphify knowledge graph at graphify-out/ (via MCP query_graph or CLI) for codebase architecture, relationships, or entity topology questions.
 ---
 
 ## graphify
 
-This project integrates Graphify knowledge graphs at `graphify-out/`.
+This project has a graphify knowledge graph at graphify-out/.
 
 Rules:
 - Query-First Protocol: For codebase or architecture questions, always consult Graphify BEFORE performing wide grep searches or reading multiple source files.
-- **Mechanical Hook Enforcement**: When invoked by its host, `.agents/scripts/graphify-guard.mjs` blocks broad source searches without a shared filesystem stamp younger than 1800 seconds. Its pre-tool handler also stamps Graphify commands, including updates; this is not proof of a successful query in the current session.
-- **MCP Invocation (Lazy Loaded)**: Call via `call_mcp_tool` with `ServerName: "graphify-foe-info"` (or `graphify-metadata-store` / `graphify-forge-hammer`):
-  - `query_graph`: semantic context & broad question answering (`{"question": "<question>"}`)
-  - `get_node`: inspect symbol/class/function definition and details (`{"label": "<name>"}`)
-  - `get_neighbors`: inspect immediate callers, callees, and dependencies (`{"label": "<name>"}`)
-  - `shortest_path`: trace connection path between two modules (`{"source": "<A>", "target": "<B>"}`)
-  - `god_nodes`: identify core high-degree architectural hubs (`{"top_n": 10}`)
-  - `get_community`: inspect architectural clusters and boundaries (`{"community_id": <id>}`)
-  - `graph_stats`: inspect graph density, total nodes, and edge counts
-  - `list_prs` / `get_pr_impact` / `triage_prs`: PR impact and blast radius analysis
-- **CLI Fallbacks**: When MCP is unavailable, run `graphify query "<q>"`, `graphify explain "<concept>"`, `graphify path "<A>" "<B>"`, or `graphify stats` via `run_command` in the project root.
+- **MCP Invocation (Lazy Loaded)**: Call via `call_mcp_tool` with `ServerName: "graphify-foe-info"` (or `graphify-metadata-store` / `graphify-forge-hammer`) and `ToolName: "query_graph"` (e.g., `Arguments: {"question": "<query>"}`). Companion tools: `get_node`, `shortest_path`, `god_nodes`, `get_neighbors`.
+- **CLI Fallback**: When MCP is unavailable, run `GRAPHIFY_OUT=graphify-out/foe-info graphify query "<question>"` via `run_command`.
 - **Available Graph Datasets**:
-  - **Host Target Graph**: `graphify-foe-info` (FoE-Info AST, module dependencies, call graphs).
-  - **FoE Game Ground Truth**: `graphify-metadata-store` (5,400+ game entities, eras, resources, technologies, Great Buildings, Historical Allies).
-  - **Peer Reference Graphs**: `graphify-forge-hammer` (peer extension graph for cross-extension pattern discovery and compatibility checks).
-- **Autonomous Deep Exploration & Comparison Delegation**:
-  - Whenever the user requests host graph exploration, architectural investigation, or subsystem mapping, delegate to `graph-knowledge-explorer` (treats FoE-Info as an independent project, saving findings to `./graphify-out/foe-info/findings/`).
-  - Whenever the user requests comparison or benchmarking against Forge-Hammer, delegate to `forge-hammer-comparator` (saves comparative findings strictly to `./graphify-out/forge-hammer/findings/` without modifying Forge-Hammer).
-- After modifying code files in this session, run `npm run graph:foe-info:ast` (or the host's graph update command) to keep the AST current.
+  - `graphify-foe-info`: FoE-Info Extension codebase AST & architecture graph (`graphify-out/foe-info/graph.json`).
+  - `graphify-foe-info-original`: Original pre-agentic v1 baseline AST graph (`graphify-out/foe-info-original/graph.json`, commit 8c681d1).
+  - `graphify-forge-hammer`: Competitor browser extension codebase graph (`/var/home/kronikpillow/Projects/Forge-Hammer/forge-hammer/graphify-out/graph.json`) for diagnosing compatibility conflicts and discovering feature/implementation ideas.
+  - `graphify-metadata-store`: Forge of Empires game entity & topology graph (`graphify-out/metadata/graph.json`, 5,412 nodes, 13,877 edges) covering buildings, eras, resources, technologies, GBs, and military units.
+- If `graphify-out/foe-info/wiki/index.md` or `graphify-out/metadata/wiki/index.md` exists, navigate it instead of reading raw files
+- **Autonomous Deep Exploration Delegation**: Whenever the user requests graph exploration, architectural investigation, or subsystem mapping, automatically delegate to the `graph-knowledge-explorer` subagent via `invoke_subagent`. The subagent executes the 5-stage cognition loop (traverse, question, explain, reflect, and document persistent findings in `graphify-out/<graph>/findings/`).
+- After modifying code files in this session, run `npm run graph:foe-info:update` to keep the graph current (AST-only, no API cost)
+- Full Re-scan & Labeling Pipeline: Run `npm run graph:foe-info:reindex` to handle local OpenAI extraction, community labeling, and export generation (`wiki`, `callflow-html`, `obsidian`, `svg`, `html`, `tree`) using `qwen2.5-vl-7b` (automatically managing ephemeral `llama-swap` on-demand and freeing GPU VRAM on completion).
 - Tool Installation Invariant: Always install or upgrade graphify using `uv tool install "graphifyy[mcp,openai,watch,svg]" --force` to preserve MCP, local LLM, file watching, and visual rendering dependencies.

@@ -31,8 +31,6 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
 1. Create `src/js/msg/<ServiceName>.js`.
 2. Implement the parsing function:
    - Handle undefined properties and missing fields defensively.
-   - Instantiate `const logger = createLogger('<ServiceName>')` from `../utils/logger.js`.
-   - Add `logger.debug(...)` calls logging incoming RPC method, entity count, and state mutations.
    - Use `BigNumber` for all numeric calculations (points, rewards).
    - Use `helper.fEntityNameTrim()` or `getCityEntityDef()` for entity name lookups.
 3. Export the handler:
@@ -43,9 +41,9 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
 ---
 
 ## Phase 3: Route in Message Dispatcher
-1. Expose a service `register(dispatcher)` method using `dispatcher.register(requestClass, requestMethod, handler)`; follow an existing module such as `AllyService.js`.
-2. Import the service in `src/js/msg/registerServices.js` and invoke its registration from `registerAllServices`.
-3. Keep registration owned by that central registry; do not self-register at module import or add a new switch branch to `index.js`.
+1. In `src/js/index.js`, import the new handler.
+2. In the main message router/switch statement, route `<ServiceName>` requests to the handler.
+3. Keep the dispatch block <10 lines to respect Monolith Containment.
 
 ---
 
@@ -75,7 +73,6 @@ Audit the new service contract across every pipeline stage using the `cross-plat
    ```bash
    npm run format
    npm run check
-   npm run lint
    ```
 2. Build the extension:
    ```bash

@@ -12,7 +12,7 @@ This rule defines how agent activities and project repositories are structured w
 ## 1. Directory Scoping
 
 * **Workspace & Repository Root (`FoE-Info-Extension`)**:
-  - Primary Git repository and root for the active Forge of Empires browser extension.
+  - Primary Git repository and root for the Forge of Empires browser extension.
   - Contains application source code (`src/`), Webpack build configurations, and `package.json`.
   - Hosts agent configurations (`.agents/`), rules, skills, and knowledge graph index (`graphify-out/`).
 
@@ -21,7 +21,7 @@ This rule defines how agent activities and project repositories are structured w
 ## 2. Agent Operational Directives
 
 1. **Working Directory Scoping**:
-   - All builds, formatting, tests, git operations, and scripts execute directly from the active project root (`.` / `process.cwd()`).
+   - All builds, formatting, tests, git operations, and scripts execute directly from `FoE-Info-Extension`.
 2. **Artifact & Agent Management**:
    - `.agents/` and `AGENTS.md` are tracked in Git so all branches and worktrees natively inherit the customization ecosystem.
    - `graphify-out/` and `.worktrees/` are git-ignored in `.gitignore`. Graphify index artifacts reside directly in `graphify-out/`.
@@ -33,7 +33,7 @@ This rule defines how agent activities and project repositories are structured w
    - For parallel feature tasks or multi-agent execution, dispatch subagents with `Workspace: "share"` to isolate branch checkouts and avoid dirty working tree collisions.
    - Node module resolution walks up directory trees automatically to root `node_modules/` (no duplicate `npm install` needed).
    - Headless unit tests (`npm test`) execute independently inside worktrees. Integration and live browser testing via `foe-browser` execute on the root workspace after merging into `development`.
-   - Because `.agents/` and `AGENTS.md` are tracked in Git, newly created worktrees automatically inherit all 31 subagents, 16 rules, and 51 skills upon checkout.
+   - Because `.agents/` and `AGENTS.md` are tracked in Git, newly created worktrees automatically inherit all 31 subagents, 12 rules, and 45 skills upon checkout.
 5. **No IDE Configuration Files (`.vscode/`, `.idea/`)**:
    - Never create, generate, or restore `.vscode/`, `.idea/`, or IDE-specific configuration files (`tasks.json`, `launch.json`, `settings.json`, `mcp.json`).
-   - This workspace is strictly agentic and CLI-driven. Task execution relies exclusively on package task runners and agent tooling.
+   - This workspace is strictly agentic and CLI-driven. Task execution relies exclusively on `package.json` task runners and agent tooling.

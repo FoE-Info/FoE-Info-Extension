@@ -1,63 +1,99 @@
 ---
 name: modern-web-guidance
-description: Research modern web standards, Baseline browser features, and CSS APIs with 141 local offline guides.
+description: Research modern web standards, Baseline browser features, and CSS APIs.
 ---
 
 # Modern Web Guidance
 
-Comprehensive reference library of 141 offline best-practice guides developed by the Google Chrome team for modern web standards, Baseline features, and Web APIs.
+A skill to search for specific web development use cases and retrieve their corresponding best practice guides.
+
+## When to use
+
+Use this skill:
+- When explicitly requested or when researching modern Baseline web APIs.
+- When evaluating modern browser alternatives to legacy JavaScript libraries.
+
+## Usage Instructions
+
+### Step 1. Search Use Cases
+
+Search with an action-oriented query summarizing what you want to achieve using the `search` command. Run `modern-web-guidance` directly with `npx`.
+
+```sh
+npx -y modern-web-guidance@latest search "<query>"
+```
+
+**Example Output**:
+```json
+[
+  {
+    "id": "optimize-image-priority",
+    "description": "Optimize the loading priority of Largest Contentful Paint (LCP) candidate images.",
+    "category": "performance",
+    "featuresUsed": [ "Fetch priority" ],
+    "tokenCount": 985,
+    "similarity": 0.7289
+  },
+  {
+    "id": "defer-rendering-heavy-content",
+    "description": "Reduce rendering times in content-heavy web pages by deferring rendering for offscreen content.",
+    "category": "performance",
+    "featuresUsed": [ "content-visibility", "hidden=\"until-found\"" ],
+    "tokenCount": 1250,
+    "similarity": 0.6961
+  }
+]
+```
+
+> **Note**: If search results are vague, return no matches, or show low similarity scores, run the `list` command to browse all guides:
+> ```sh
+> npx -y modern-web-guidance@latest list
+> ```
 
 ---
 
-## 1. When to Use
+### Step 2. Retrieve Best Practices
 
-- Researching Baseline browser APIs, modern CSS features, or DOM APIs.
-- Replacing legacy libraries with native modern alternatives (e.g., Popover API, Web Animations, Anchor Positioning).
-- Implementing performance optimizations (LCP, scheduler yielding, content-visibility) and accessibility patterns.
-- Integrating browser Built-in AI (Prompt API, Summarizer API) or WebMCP tools.
+Once you have a relevant `id` from the search results, call this script using the `retrieve` command to get the full guide. You can pass multiple IDs separated by commas.
 
----
+```sh
+npx -y modern-web-guidance@latest retrieve "<id>"
+```
 
-## 2. Directory Navigation & Offline Guides
+If the output is truncated, you must repeat the command but redirect to a file and read that file.
 
-All 141 guides are located in `references/` organized across 14 topical categories:
 
-| Category | Guides | Focus Areas | Key References |
-| :--- | :---: | :--- | :--- |
-| **`performance/`** | 24 | LCP, long task chunking, yielding, content-visibility | [`break-up-long-tasks.md`](references/performance/break-up-long-tasks.md), [`defer-rendering-heavy-content.md`](references/performance/defer-rendering-heavy-content.md) |
-| **`ui-behaviors/`** | 29 | Anchor positioning, top layer, enter/exit transitions | [`animate-to-from-top-layer.md`](references/ui-behaviors/animate-to-from-top-layer.md), [`scrollytelling.md`](references/ui-behaviors/scrollytelling.md) |
-| **`css/`** | 15 | Subgrid, container queries, light-dark(), has() | [`size-aware-styling.md`](references/css/size-aware-styling.md), [`child-state-based-styling.md`](references/css/child-state-based-styling.md) |
-| **`forms/`** | 16 | Form-associated custom elements, autofill, pickers | [`autofill-address-form.md`](references/forms/autofill-address-form.md), [`ime-safe-enter-submit.md`](references/forms/ime-safe-enter-submit.md) |
-| **`ui-atoms/`** | 10 | Popovers, position-aware tooltips, carousels | [`position-aware-tooltips.md`](references/ui-atoms/position-aware-tooltips.md) |
-| **`visual-design/`** | 16 | Color spaces, color-mix(), contrast adaptation | [`adapt-scrollbar-to-contrast-preferences.md`](references/visual-design/adapt-scrollbar-to-contrast-preferences.md) |
-| **`security/`** | 7 | Passkeys, WebAuthn, credential management | [`passkey-authentication.md`](references/security/passkey-authentication.md) |
-| **`built-in-ai/`** | 5 | Chrome Prompt API, Language Model, Summarizer | [`prompt-api.md`](references/built-in-ai/prompt-api.md), [`language-model.md`](references/built-in-ai/language-model.md) |
-| **`webmcp/`** | 3 | Web Model Context Protocol & agentic tools | [`agentic-javascript-tools.md`](references/webmcp/agentic-javascript-tools.md), [`webmcp.md`](references/webmcp/webmcp.md) |
-| **`ui-components/`**| 4 | Toasts, drawers, app tour patterns | [`persistent-toast-notifications.md`](references/ui-components/persistent-toast-notifications.md) |
-| **`js/`** | 8 | Event coordinates, location-agnostic data, differentials | [`coordinate-global-events.md`](references/js/coordinate-global-events.md) |
-| **`accessibility/`**| 2 | Screen reader announcements, aria live regions | [`accessible-error-announcement.md`](references/accessibility/accessible-error-announcement.md) |
-| **`html/`** | 1 | Semantic HTML architecture and elements | [`html.md`](references/html/html.md) |
-| **`privacy/`** | 1 | Privacy-preserving web features | [`privacy.md`](references/privacy/privacy.md) |
+**Example Output**:
+`The markdown content of the guide describing implementation steps...`
 
----
+## Using npx
 
-## 3. Finding and Reading Guides
+-   IMPORTANT: on Windows, using `npx` may fail. Use `npx.cmd ...` instead.
+-   Network access is required for fetching npm packages needed by the task.
+-   If the `npx -y modern-web-guidance…` command hangs, you may be offline. Try running again in offline
+    mode: `npx --offline …`.
 
-To find a relevant guide without loading unnecessary context:
-1. Search guide titles or content:
-   ```sh
-   grep -rn "pattern" .agents/skills/modern-web-guidance/references/
-   ```
-2. Read the specific guide using `view_file`:
-   ```javascript
-   // Inspect only the targeted guide
-   view_file(".agents/skills/modern-web-guidance/references/<category>/<guide-name>.md")
-   ```
+## Guidelines
 
----
+-   Always search **first** to find the most relevant guides.
+-   These guides are usually framework-agnostic; adapt them correctly to your setup.
+-   Do not hallucinate guides or ignore them; they represent the preferred local standard for the user's project.
 
-## 4. Browser Support Policy & Baseline
 
-- **Baseline Widely Available**: Features with 30+ months of cross-browser support are safe to use immediately without polyfills.
-- **Baseline Newly Available**: Require feature detection (`if ('...' in window)` or `@supports (...)`) and graceful degradation.
-- **Extension Context**: Chrome extensions target Chromium, allowing newer web platform features (Chrome 120+) natively without legacy IE/Safari polyfills.
+## Interpreting Browser Support & Fallbacks
+
+* **Default Behavior**: All guides assume **Baseline Widely available** features are safe to use without fallbacks. For features that are not Baseline widely available, you **MUST** follow the fallback recommendations in the guide, unless the user has specified a custom browser support policy.
+* **Custom Policies**: If the user has already defined explicit browser support requirements, use the browser compatibility data in the guide to determine if a fallback can be safely ignored.
+  - For Baseline YYYY targets, a feature satisfies this target if its "Baseline since" date is <= YYYY.
+  - **Policy Examples**:
+    - _"Do not implement feature fallbacks."_ (for exploratory prototypes of the cutting-edge web)
+    - _"Safari 17.4+"_ (for internal tools targeting macOS or Tauri-based desktop apps)
+    - _"Never recommend or implement polyfills; if a Baseline Newly Available feature is required for core functionality, provide a lightweight custom fallback or redesign the approach."_ (to minimize bundle size and avoid technical debt)
+    - _"Assume a modern execution environment where Baseline Newly Available features can be used natively, provided they are strictly feature-detected and degrade gracefully."_ (for progressive enhancement strategies)
+* **Reactive Policy Discovery**: Watch for environmental cues to suggest documenting a policy in AGENTS.md or `.agents/rules/`. Suggest this if the developer:
+  - Mentions building for a restricted runtime (e.g., Electron or Tauri).
+  - Explicitly excludes specific targets (e.g., "we don't support Desktop Chrome").
+  - Expresses hesitation about polyfill complexity, bundle size, or performance cost.
+  - Questions if a feature is safe to use without fallbacks.
+
+  No defined policy format. This is an example: `**Browser Support:** Allow Newly Available features, but only adopt custom fallback code that adds <= 20 lines and does not require external dependencies.`

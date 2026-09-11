@@ -65,6 +65,9 @@ class ItemExchangeService {
 }
 
 const itemExchangeService = new ItemExchangeService();
+if (messageDispatcher && typeof messageDispatcher.register === 'function') {
+  itemExchangeService.register(messageDispatcher);
+}
 
 module.exports = {
   ItemExchangeService,

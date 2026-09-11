@@ -4,7 +4,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
-FORGE_HAMMER_DIR="${FORGE_HAMMER_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/forge-hammer}"
+FORGE_HAMMER_DIR="${FORGE_HAMMER_DIR:-${HOME}/Projects/Forge-Hammer/forge-hammer}"
 
 if [ ! -d "$FORGE_HAMMER_DIR" ]; then
   echo "Error: Forge-Hammer directory not found at $FORGE_HAMMER_DIR"

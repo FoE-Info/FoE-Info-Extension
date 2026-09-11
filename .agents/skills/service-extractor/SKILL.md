@@ -11,8 +11,12 @@ This skill outlines the step-by-step methodology for extracting an InnoGames RPC
 
 ## Prerequisite Checks
 1. Ensure the working tree is clean: `git status`.
-2. Ensure the verification gate passes: `npm run verify`.
-3. Query `graphify-foe-info` with `get_node` / `get_neighbors` for the target service. If the graph is stale, refresh it with `npm run graph:foe-info:ast` first; refreshing alone is not a query.
+2. Ensure existing tests and builds pass: `npm run check && npm run build:dev`.
+3. Check Graphify for references to the target service:
+   ```bash
+   # Query references in the knowledge graph
+   npm run graph:foe-info:update
+   ```
 
 ---
 
@@ -22,27 +26,31 @@ This skill outlines the step-by-step methodology for extracting an InnoGames RPC
 Create `src/js/msg/<ServiceName>.js`:
 ```javascript
 // Example: src/js/msg/QuantumIncursionService.js
-import { createLogger } from '../utils/logger.js';
-
-const logger = createLogger('QuantumIncursionService');
+import { helper } from '../fn/helper.js';
+import { state } from '../vars/state.js';
 
 export function handleQuantumIncursion(msg) {
   if (!msg || !msg.responseData) return;
   const data = msg.responseData;
-  logger.debug('Inbound RPC payload received', { method: msg.requestMethod, nodeCount: data.nodes?.length });
   // Process payload...
-  logger.debug('Processed payload', { nodeCount: data.nodes?.length });
 }
 ```
 
 ### 2. Export & Connect Call Site
-For a new RPC service, expose `register(dispatcher)` and connect it through `src/js/msg/registerServices.js`, following an existing service such as `AllyService.js`. Do not self-register at import time.
-
-For an existing legacy handler extraction, replace its current call site without adding a second registration. Check `src/js/protocol/legacyBridge.js` and the central registry before changing routing. Relative imports depend on the caller's directory: an import from `msg/StartupService.js` must not add another `msg/` segment.
+In `src/js/index.js` or `src/js/msg/StartupService.js`:
+1. Import the new service handler at the top of the file:
+   ```javascript
+   import { handleQuantumIncursion } from './msg/QuantumIncursionService.js';
+   ```
+2. Replace the inline code block in the message switch/router:
+   ```javascript
+   case 'QuantumIncursionService':
+     handleQuantumIncursion(request);
+     break;
+   ```
 
 ### 3. Verify Constraints
 1. **Slice Size**: Verify the diff is <100 lines: `git diff --stat`.
 2. **Build Verification**: Run `npm run build:dev`.
-3. **Debuggability Verification**: Confirm module instantiates `createLogger`, produces zero logs when debug is disabled, and emits detailed diagnostics when debug is enabled.
-4. **Runtime Test**: Run `foe-browser` and `node .agents/scripts/inspect-extension.js 3000` to confirm no runtime errors.
-5. **Knowledge Graph Sync**: Run `npm run graph:foe-info:update`.
+3. **Runtime Test**: Run `foe-browser` and `node .agents/scripts/inspect-extension.js 3000` to confirm no runtime errors.
+4. **Knowledge Graph Sync**: Run `npm run graph:foe-info:update`.

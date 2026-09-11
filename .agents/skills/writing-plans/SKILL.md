@@ -15,7 +15,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** If working in an isolated worktree, it should have been created via the `using-git-worktrees` skill at execution time.
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
 - (User preferences for plan location override this default)
 
 ## Scope Check
@@ -74,11 +74,7 @@ argues from the spec, so the spec travels with it; executors read both]
 [The spec's project-wide requirements — version floors, dependency limits,
 naming and copy rules, platform requirements — one line each, with exact
 values copied verbatim from the spec. Every task's requirements implicitly
-include this section. In FoE-Info plans, ALWAYS include:]
-- Target module size <= 250 lines (hard ceiling <= 600 lines).
-- Debuggability Invariant (Rule 16): Every new or refactored module must instantiate `createLogger('<ModuleName>')` from `src/js/utils/logger.js`, emitting `logger.debug(...)` diagnostics when debug mode is enabled, while remaining 100% silent in standard mode.
-- BigNumber precision (Rule 9) for all FP and game resource math.
-- 5-stage verification gate: `npm run verify` (formatting, lint, i18n parity, tests, development build); run `npm run typecheck` separately.
+include this section.]
 
 ---
 ```
@@ -158,7 +154,7 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 After saving the plan, offer execution choice:
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Two execution options:**
 
 **1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 

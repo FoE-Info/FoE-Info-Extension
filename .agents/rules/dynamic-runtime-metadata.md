@@ -1,5 +1,5 @@
 ---
-trigger: model_decision
+trigger: always_on
 description: Strict prohibition against introducing static metadata or entity JSON dumps into src/; extension runtime must remain 100% dynamically driven by live InnoGames network RPC payloads.
 ---
 

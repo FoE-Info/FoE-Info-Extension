@@ -19,15 +19,10 @@ const { treasuryService } = require('./TreasuryService.js');
 const { questService } = require('./QuestService.js');
 const { itemExchangeService } = require('./ItemExchangeService.js');
 const { timeService } = require('./TimeService.js');
-const resourceService = require('./ResourceService.js');
-
-const registeredDispatchers = new WeakSet();
 
 function registerAllServices(dispatcher = messageDispatcher) {
   if (!dispatcher || typeof dispatcher.register !== 'function')
     return dispatcher;
-
-  if (registeredDispatchers.has(dispatcher)) return dispatcher;
 
   // Modern domain services
   if (hiddenRewardService?.register) hiddenRewardService.register(dispatcher);
@@ -42,13 +37,11 @@ function registerAllServices(dispatcher = messageDispatcher) {
   if (questService?.register) questService.register(dispatcher);
   if (itemExchangeService?.register) itemExchangeService.register(dispatcher);
   if (timeService?.register) timeService.register(dispatcher);
-  if (resourceService?.register) resourceService.register(dispatcher);
 
-  registeredDispatchers.add(dispatcher);
   return dispatcher;
 }
 
-// Central registration owner; repeated bootstrap calls reuse this registration.
+// Auto-register on default singleton
 if (messageDispatcher && typeof messageDispatcher.register === 'function') {
   registerAllServices(messageDispatcher);
 }

@@ -13,20 +13,6 @@
       }
     ]
   },
-  "graphify-guard": {
-    "PreToolUse": [
-      {
-        "matcher": "grep_search|find_by_name|call_mcp_tool|run_command",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node ./scripts/graphify-guard.mjs",
-            "timeout": 5
-          }
-        ]
-      }
-    ]
-  },
   "monolith-guardrail": {
     "PreInvocation": [
       {

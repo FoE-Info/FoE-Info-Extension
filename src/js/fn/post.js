@@ -17,37 +17,16 @@
 // import $ from "jquery";
 // import 'bootstrap';
 // import Discord  from 'discord.js';
-let Alert;
-try {
-  const bs = require('bootstrap');
-  Alert = bs.Alert;
-} catch {}
-let alerts = null;
-let EpocTime = 0;
-let GameOrigin = '';
-let GBGdata = [];
-let MyInfo = { name: '' };
-let url = {};
-let element = null;
-try {
-  element = require('./AddElement');
-} catch {}
-if (typeof __webpack_require__ !== 'undefined') {
-  try {
-    const state = require('../vars/state.js');
-    alerts = state.alerts;
-    EpocTime = state.EpocTime;
-    GameOrigin = state.GameOrigin;
-    GBGdata = state.GBGdata;
-    MyInfo = state.MyInfo;
-    url = state.url;
-  } catch {}
-}
-let logger = null;
-try {
-  const { createLogger } = require('../utils/logger.js');
-  logger = createLogger('Post');
-} catch {}
+import { Alert, Popover, Tooltip } from 'bootstrap';
+import {
+  alerts,
+  EpocTime,
+  GameOrigin,
+  GBGdata,
+  MyInfo,
+  url,
+} from '../vars/state.js';
+import * as element from './AddElement';
 
 // Example POST method implementation:
 async function postData(targetUrl = '', data = {}) {
@@ -71,21 +50,19 @@ async function postData(targetUrl = '', data = {}) {
   return response.json();
 }
 
-function postToDiscord(text) {
-  var webHookUrl = url?.discordTargetURL;
+export function postToDiscord(text) {
+  var webHookUrl = url.discordTargetURL;
   if (!webHookUrl) {
-    logger?.debug('Discord Webhook URL is not configured in options.');
+    console.warn('Discord Webhook URL is not configured in options.');
     return;
   }
 
-  if (typeof window !== 'undefined' && window.getSelection) {
-    var selection = window.getSelection();
-    if (selection && selection.removeAllRanges) selection.removeAllRanges();
-  }
+  var selection = window.getSelection();
+  selection.removeAllRanges();
 
   var oReq = new XMLHttpRequest();
   var params = {
-    username: MyInfo?.name || 'FoE-Info',
+    username: MyInfo.name,
     avatar_url: '',
     content: text,
   };
@@ -93,99 +70,53 @@ function postToDiscord(text) {
   oReq.open('POST', webHookUrl, true);
   oReq.setRequestHeader('Content-type', 'application/json');
   oReq.onreadystatechange = function () {
-    logger?.debug('Discord post status:', oReq.readyState, oReq.responseText);
+    console.debug(oReq.readyState, oReq.responseText);
   };
   oReq.send(JSON.stringify(params));
 }
 
-function sanitizeDiscordText(html) {
-  if (!html || typeof html !== 'string') return '';
-  return html
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .join('\n');
-}
+export function postTargetsToDiscord() {
+  if (!document.getElementById('targetText')) return;
 
-function postTargetList(unlocked, locked) {
-  const parts = [];
-  const cleanUnlocked = sanitizeDiscordText(unlocked);
-  const cleanLocked = sanitizeDiscordText(locked);
-  if (cleanUnlocked) parts.push(cleanUnlocked);
-  if (cleanLocked) parts.push(cleanLocked);
-  const text = parts.join('\n');
-  if (text) {
-    postToDiscord(text);
-  }
-}
-
-function postTargetsToDiscord() {
-  const targetTextEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('targetText')
-    : null;
-  if (!targetTextEl) return;
-
-  const webHookUrl = url?.discordTargetURL;
+  var webHookUrl = url.discordTargetURL;
   if (!webHookUrl) {
-    logger?.debug('Discord Webhook URL is not configured in options.');
+    console.warn('Discord Webhook URL is not configured in options.');
     return;
   }
 
-  const clone =
-    typeof targetTextEl.cloneNode === 'function' ?
-      targetTextEl.cloneNode(true)
-    : targetTextEl;
-  const muted =
-    typeof clone.querySelectorAll === 'function' ?
-      clone.querySelectorAll('.text-muted, span')
-    : [];
-  if (Array.isArray(muted) || (muted && typeof muted.forEach === 'function')) {
-    muted.forEach((el) => {
-      if (typeof el.remove === 'function') el.remove();
-    });
-  }
+  var selection = window.getSelection();
+  selection.removeAllRanges();
 
-  const cleanText = sanitizeDiscordText(
-    clone.innerHTML || clone.innerText || '',
+  var oReq = new XMLHttpRequest();
+  var params = {
+    username: MyInfo.name,
+    avatar_url: '',
+    // 'content': document.getElementById("targetText").innerHTML.replace(/<br\s*\/?>/ig, "\n").replace(/(<([^>]+)>)/gi, "").replace(/[\w\W]+?\n+?/,"").replace(/\n.*$/, '')
+    content:
+      document
+        .getElementById('targetText')
+        .innerHTML.replace(/<br\s*\/?>/gi, '\n')
+        .replace(/(<([^>]+)>)/gi, '')
+        .replace(/\n.*$/, '') + '\n----------',
+  };
+  oReq.open('POST', webHookUrl, true);
+  // oReq.withCredentials = true;
+  oReq.setRequestHeader('Content-type', 'application/json');
+  oReq.onreadystatechange = function () {
+    console.debug(oReq.readyState, oReq.responseText);
+  };
+  oReq.send(JSON.stringify(params));
+  console.debug(
+    oReq,
+    params,
+    document
+      .getElementById('targetText')
+      .innerHTML.replace(/<br\s*\/?>/gi, '\n')
+      .replace(/(<([^>]+)>)/gi, ''),
   );
-  if (!cleanText) return;
-
-  const content = cleanText + '\n----------';
-  postToDiscord(content);
 }
 
-function postTargetGenToDiscord() {
-  const targetGenTextEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('targetGenText')
-    : null;
-  if (!targetGenTextEl) return;
-
-  const webHookUrl = url?.discordTargetURL;
-  if (!webHookUrl) {
-    logger?.debug('Discord Webhook URL is not configured in options.');
-    return;
-  }
-
-  const cleanText = sanitizeDiscordText(
-    targetGenTextEl.innerHTML || targetGenTextEl.innerText || '',
-  );
-  if (!cleanText) return;
-
-  const content = cleanText + '\n----------';
-  postToDiscord(content);
-}
-
-function postGBGtoSS() {
+export function postGBGtoSS() {
   // console.debug(data[0]);
   var googleSheetAPI = url.sheetGuildURL;
   var copytext = document.getElementById('battlegroundText');
@@ -211,12 +142,12 @@ function postGBGtoSS() {
   // console.debug(reqData,JSON.stringify(reqData));
 }
 
-function postAlerttoDsicord() {
+export function postAlerttoDsicord() {
   var copytext = document.getElementById('alertText').textContent;
   postToDiscord(copytext);
 }
 
-function logToDiscord(text) {
+export function logToDiscord(text) {
   var webHookUrl = url.discordLogURL || url.discordTargetURL;
   if (!webHookUrl) {
     console.warn('Discord Log Webhook URL is not configured.');
@@ -242,7 +173,7 @@ function logToDiscord(text) {
   oReq.send(JSON.stringify(params));
 }
 
-function postPlayerToSS(visitData) {
+export function postPlayerToSS(visitData) {
   // console.debug(visitData);
   var googleSheetAPI = url.sheetGuildURL;
 
@@ -284,23 +215,3 @@ function postPlayerToSS(visitData) {
   // oReq.send(reqData.toString);
   console.debug(reqData, JSON.stringify(reqData));
 }
-
-function setPostContext(context = {}) {
-  if (context.url !== undefined) url = context.url;
-  if (context.MyInfo !== undefined) MyInfo = context.MyInfo;
-}
-
-module.exports = {
-  postData,
-  postToDiscord,
-  sanitizeDiscordText,
-  postTargetList,
-  postTargetsToDiscord,
-  postTargetGenToDiscord,
-  postGBGtoSS,
-  postAlerttoDsicord,
-  logToDiscord,
-  postPlayerToSS,
-  setPostContext,
-};
-module.exports.default = module.exports;

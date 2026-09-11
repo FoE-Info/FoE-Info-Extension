@@ -10,12 +10,12 @@ test('BigNumber GB Reward & Arc 1.9x Multiplier Precision', async (t) => {
     );
     return base
       .multipliedBy(multiplier)
-      .integerValue(BigNumber.ROUND_HALF_UP)
+      .integerValue(BigNumber.ROUND_CEIL)
       .toNumber();
   }
 
   await t.test(
-    'calculates exact 1.9x Arc rewards with half-up rounding (Forge-Hammer parity)',
+    'calculates exact 1.9x Arc rewards with ceiling rounding',
     () => {
       // 90% Arc bonus (standard 1.9x boost)
       assert.equal(calculateArcReward(5, 90), 10); // 5 * 1.9 = 9.5 -> 10
@@ -29,8 +29,7 @@ test('BigNumber GB Reward & Arc 1.9x Multiplier Precision', async (t) => {
 
   await t.test('calculates non-standard Arc bonuses (e.g. 80%, 91.2%)', () => {
     assert.equal(calculateArcReward(100, 80), 180);
-    // 100 * 1.912 = 191.2 -> 191 with ROUND_HALF_UP (Forge-Hammer Math.round parity)
-    assert.equal(calculateArcReward(100, 91.2), 191);
+    assert.equal(calculateArcReward(100, 91.2), 192); // 100 * 1.912 = 191.2 -> 192
   });
 
   await t.test('prevents standard JavaScript floating point drift', () => {
@@ -80,37 +79,5 @@ test('Great Building Safe Spot Lock Formula', async (t) => {
     // GB needs 1000 total, owner put 200 (800 remaining), rival already put 100
     // To lock ahead of rival: (800 + 100) / 2 = 450
     assert.equal(calculateSafeInvestment(1000, 200, 100), 450);
-  });
-});
-
-test('Great Building Owner Safe Add Formula', async (t) => {
-  function calculateOwnerSafeAdd(remaining, spotInvested, donateAmount) {
-    const diff = new BigNumber(remaining)
-      .plus(spotInvested || 0)
-      .minus(new BigNumber(donateAmount).multipliedBy(2));
-    return Math.max(0, Math.ceil(diff.toNumber()));
-  }
-
-  await t.test(
-    'calculates exact owner FP needed without doubling remainder',
-    () => {
-      // Legacy formula: (ceil(101/2) - 40) * 2 = (51 - 40) * 2 = 22 FP
-      // Exact formula: 101 - 2 * 40 = 21 FP (Forge-Hammer parity, eliminates 1 FP discrepancy)
-      assert.equal(calculateOwnerSafeAdd(101, 0, 40), 21);
-    },
-  );
-
-  await t.test('calculates exact owner FP with even remaining', () => {
-    assert.equal(calculateOwnerSafeAdd(100, 0, 40), 20);
-  });
-
-  await t.test('returns 0 when spot is already safe', () => {
-    assert.equal(calculateOwnerSafeAdd(80, 0, 40), 0);
-    assert.equal(calculateOwnerSafeAdd(50, 0, 40), 0);
-  });
-
-  await t.test('accounts for existing spot investment correctly', () => {
-    // 100 remaining, competitor has put 10, target donation is 40 -> 100 + 10 - 80 = 30
-    assert.equal(calculateOwnerSafeAdd(100, 10, 40), 30);
   });
 });

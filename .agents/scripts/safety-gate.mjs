@@ -13,9 +13,7 @@ export const DANGEROUS_PATTERNS = [
   /git\s+clean\s+.*-[a-z]*f/i,
   /git\s+restore\s+.*([.]|\*|src(\/|$))/i,
   /git\s+checkout\s+.*((-f|--force)\b|(--\s+)?[.](?:\s|$))/i,
-  /git\s+branch\s+.*(-[dD]|--delete)\s+(refs\/heads\/)?development\b/i,
-  /git\s+push\s+.*--delete\s+(?:refs\/heads\/)?development\b/i,
-  /git\s+push\s+.*\s:(?:refs\/heads\/)?development\b/i,
+  /git\s+branch\s+.*(-[dD]|--delete)\b/i,
   /git\s+stash\s+(drop|clear)\b/i,
   /rm\s+(-[a-z]*r[a-z]*f[a-z]*|-[a-z]*f[a-z]*r[a-z]*|-r\s+-f|-f\s+-r)\s+.*(src|\.agents|tests|\/|\*|\.\/)/i,
 ];

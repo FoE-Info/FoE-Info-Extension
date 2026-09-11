@@ -27,7 +27,7 @@ Patterns and tools for automating changelog generation, release notes, and versi
 - Enforce commit conventions or labeling rules.
 - Configure tooling to generate and publish notes.
 - Review output for accuracy, completeness, and wording.
-- If detailed examples are required, open `references/implementation-playbook.md`.
+- If detailed examples are required, open `resources/implementation-playbook.md`.
 
 ## Safety
 
@@ -35,7 +35,7 @@ Patterns and tools for automating changelog generation, release notes, and versi
 
 ## Resources
 
-- `references/implementation-playbook.md` for detailed patterns, templates, and examples.
+- `resources/implementation-playbook.md` for detailed patterns, templates, and examples.
 
 ## Limitations
 - Use this skill only when the task clearly matches the scope described above.

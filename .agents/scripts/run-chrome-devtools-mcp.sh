@@ -7,7 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 EXTENSION_DEV="${WORKSPACE_ROOT}/build/FoE-Info-DEV"
-FORGE_HAMMER="${FORGE_HAMMER:-${WORKSPACE_ROOT}/../forge-hammer}"
+FORGE_HAMMER="${FORGE_HAMMER:-${HOME}/Projects/Forge-Hammer/forge-hammer}"
 
 
 # Common diagnostic & capability flags matching full chrome-devtools-plugin parity
@@ -59,11 +59,10 @@ if is_cdp_alive; then
 fi
 
 # Fallback: Launch standalone Chromium instance with FoE extensions
-EXT_LIST=()
-[ -d "${EXTENSION_DEV}" ] && EXT_LIST+=("${EXTENSION_DEV}")
-[ -f "${WORKSPACE_ROOT}/manifest.json" ] && [ "${WORKSPACE_ROOT}" != "${EXTENSION_DEV}" ] && EXT_LIST+=("${WORKSPACE_ROOT}")
-[ -d "${FORGE_HAMMER}" ] && [ "${WORKSPACE_ROOT}" != "${FORGE_HAMMER}" ] && EXT_LIST+=("${FORGE_HAMMER}")
-LOAD_EXT=$(IFS=,; echo "${EXT_LIST[*]}")
+LOAD_EXT="${EXTENSION_DEV}"
+if [ -d "${FORGE_HAMMER}" ]; then
+  LOAD_EXT="${EXTENSION_DEV},${FORGE_HAMMER}"
+fi
 
 STANDALONE_FLAGS=(
   "--channel=stable"

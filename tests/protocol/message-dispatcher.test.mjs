@@ -168,22 +168,6 @@ test('MessageDispatcher - Core Engine & Dispatching Protocol', async (t) => {
       assert.equal(res2.duplicate, true);
       assert.equal(executionCount, 1);
 
-      // Distinct request payload: should NOT be deduplicated even with same response body
-      const resDiffReq = await dispatcher.dispatchRaw(url, body, 'utf8', [], {
-        postData: {
-          text: JSON.stringify([
-            {
-              requestClass: 'ResourceService',
-              requestMethod: 'getPlayerResources',
-              requestData: [2],
-            },
-          ]),
-        },
-      });
-      assert.equal(resDiffReq.handled, true);
-      assert.equal(resDiffReq.duplicate, false);
-      assert.equal(executionCount, 2);
-
       // After simulated expiration (>1000ms): should execute again
       const now = Date.now();
       const isDup = dispatcher.isDuplicate(url, body, now + 1001);

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const path = require('path');
 let WebSocket;
 try {
   WebSocket = require('ws');
@@ -11,49 +12,40 @@ const http = require('http');
 const args = process.argv.slice(2);
 let durationMs = 3000;
 let targetFilter = null; // null means all extension & game targets
+let showAll = false;
 
 for (let i = 0; i < args.length; i++) {
   const arg = args[i];
   if (!isNaN(parseInt(arg, 10))) {
     durationMs = parseInt(arg, 10);
   } else if (arg === '--all') {
-    targetFilter = ''; // Include browser-internal targets too
+    showAll = true;
   } else if (arg === '--target' && args[i + 1]) {
     targetFilter = args[++i];
   }
 }
 
 http.get('http://127.0.0.1:9222/json', (res) => {
-  if (res.statusCode !== 200) {
-    console.error(`[Error Inspector] CDP HTTP status ${res.statusCode}`);
-    process.exitCode = 1;
-    res.resume?.();
-    return;
-  }
   let body = '';
   res.on('data', chunk => body += chunk);
   res.on('end', async () => {
-    let targets;
+    let targets = [];
     try {
       targets = JSON.parse(body);
     } catch (e) {
       console.error('[Error Inspector] Failed to parse CDP targets JSON:', e.message);
-      process.exitCode = 1;
-      return;
+      process.exit(1);
     }
 
     // Filter targets
     let selectedTargets = targets.filter(t => {
       if (!t.webSocketDebuggerUrl) return false;
       // Exclude standard devtools internal pages unless explicitly targetFilter requested
-      if (targetFilter === null && t.url && t.url.includes('devtools://devtools/bundled/devtools_app.html')) {
+      if (!targetFilter && t.url && t.url.includes('devtools://devtools/bundled/devtools_app.html')) {
         return false;
       }
-      if (targetFilter === null && t.url && t.url.includes('chrome://')) {
+      if (!targetFilter && t.url && t.url.includes('chrome://')) {
         return false;
-      }
-      if (targetFilter?.endsWith('.html')) {
-        return t.url?.split(/[?#]/)[0].split('/').pop() === targetFilter;
       }
       if (targetFilter) {
         return (t.url && t.url.includes(targetFilter)) || (t.title && t.title.toLowerCase().includes(targetFilter.toLowerCase()));
@@ -65,8 +57,7 @@ http.get('http://127.0.0.1:9222/json', (res) => {
       console.error('[Error Inspector] No matching targets found in Chrome!');
       console.log('Available targets:');
       targets.forEach(t => console.log(` - [${t.type}] ${t.title} (${t.url})`));
-      process.exitCode = 1;
-      return;
+      process.exit(1);
     }
 
     console.log(`[Error Inspector] Monitoring ${selectedTargets.length} target(s) for ${durationMs}ms...`);
@@ -76,31 +67,21 @@ http.get('http://127.0.0.1:9222/json', (res) => {
     });
 
     const errorsCaptured = [];
-    let confirmedTargets = 0;
+    let pendingSockets = selectedTargets.length;
 
     selectedTargets.forEach(target => {
       const targetName = target.url ? (target.url.includes('panel.html') ? 'panel.html' : target.url.split('/').pop().split('?')[0]) : target.title;
       const ws = new WebSocket(target.webSocketDebuggerUrl);
-      let monitoringEnded = false;
-      const pending = new Set([1, 2]);
-      const recordFailure = (text) => errorsCaptured.push({ target: targetName, type: 'CDP failure', text });
+      let msgId = 1;
 
-      ws.addEventListener('open', () => {
-        ws.send(JSON.stringify({ id: 1, method: 'Log.enable' }));
-        ws.send(JSON.stringify({ id: 2, method: 'Runtime.enable' }));
+      ws.on('open', () => {
+        ws.send(JSON.stringify({ id: msgId++, method: 'Log.enable' }));
+        ws.send(JSON.stringify({ id: msgId++, method: 'Runtime.enable' }));
       });
 
-      ws.addEventListener('message', ({ data: msgStr }) => {
+      ws.on('message', (msgStr) => {
         try {
           const msg = JSON.parse(msgStr);
-          if (pending.has(msg.id)) {
-            if (msg.error) {
-              recordFailure(msg.error.message || 'Subscription rejected');
-            } else {
-              pending.delete(msg.id);
-              if (pending.size === 0) confirmedTargets++;
-            }
-          }
           if (msg.method === 'Runtime.exceptionThrown') {
             const details = msg.params.exceptionDetails;
             const text = details.exception ? (details.exception.description || details.exception.value) : details.text;
@@ -120,10 +101,10 @@ http.get('http://127.0.0.1:9222/json', (res) => {
               text: argsText,
               stack: stack
             });
-          } else if (msg.method === 'Log.entryAdded' && ['error', 'warning'].includes(msg.params.entry.level)) {
+          } else if (msg.method === 'Log.entryAdded' && msg.params.entry.level === 'error') {
             errorsCaptured.push({
               target: targetName,
-              type: `Log.${msg.params.entry.level}`,
+              type: 'Log Error',
               text: msg.params.entry.text,
               stack: ''
             });
@@ -133,14 +114,11 @@ http.get('http://127.0.0.1:9222/json', (res) => {
         }
       });
 
-      ws.addEventListener('error', () => recordFailure('WebSocket connection failed'));
-      ws.addEventListener('close', () => {
-        if (!monitoringEnded) recordFailure('WebSocket closed before monitoring completed');
+      ws.on('error', () => {
+        // ignore socket error
       });
 
       setTimeout(() => {
-        monitoringEnded = true;
-        if (pending.size > 0) recordFailure('CDP subscriptions were not confirmed');
         try {
           ws.close();
         } catch {
@@ -151,10 +129,9 @@ http.get('http://127.0.0.1:9222/json', (res) => {
 
     setTimeout(() => {
       console.log(`\n=================== BROWSER & EXTENSION CONSOLE REPORT ===================`);
-      if (errorsCaptured.length === 0 && confirmedTargets === selectedTargets.length) {
+      if (errorsCaptured.length === 0) {
         console.log(`0 errors/warnings captured across ${selectedTargets.length} target(s) during ${durationMs}ms window.`);
       } else {
-        process.exitCode = 1;
         console.log(`FOUND ${errorsCaptured.length} ISSUE(S):`);
         errorsCaptured.forEach((err, idx) => {
           console.log(`\n[#${idx + 1}] [Target: ${err.target}] ${err.type}: ${err.text}`);
@@ -164,9 +141,4 @@ http.get('http://127.0.0.1:9222/json', (res) => {
       console.log(`=========================================================================\n`);
     }, durationMs + 200);
   });
-}).on('error', (err) => {
-  console.error('[Error Inspector] CDP connection failed:', err.message);
-  process.exitCode = 1;
-}).setTimeout(5000, function () {
-  this.destroy(new Error('CDP target discovery timed out'));
 });

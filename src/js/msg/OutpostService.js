@@ -24,44 +24,9 @@ if (typeof __webpack_require__ !== 'undefined') {
     helper = require('../fn/helper.js');
   } catch {}
   try {
-    const showOptMod = require('../state/showOptions.js');
+    const showOptMod = require('../vars/showOptions.js');
     if (showOptMod?.showOptions) showOptions = showOptMod.showOptions;
-  } catch {
-    try {
-      const showOptMod = require('../vars/showOptions.js');
-      if (showOptMod?.showOptions) showOptions = showOptMod.showOptions;
-    } catch {}
-  }
-}
-
-const CULTURAL_GOODS_MAP = {
-  vikings: ['axes', 'mead', 'horns', 'wool'],
-  egyptians: ['barley', 'pottery', 'flowers', 'sacrificial_offerings'],
-  japanese: ['soy', 'paintings', 'armor', 'instruments'],
-  aztecs: ['vegetables', 'headdress', 'maize', 'stone_figures'],
-  mughals: ['basmati', 'saree', 'spices', 'lotus'],
-  pirates: ['pirate_fish', 'pirate_spice', 'pirate_rum', 'pirate_cannons'],
-  polynesia: ['fresh_fish', 'coconuts', 'kava', 'catamarans'],
-};
-
-function isSettlementActive(raw = {}) {
-  if (
-    raw.isActive === true ||
-    raw.isCurrent === true ||
-    raw.active === true ||
-    raw.is_active === true
-  ) {
-    return true;
-  }
-  if (raw.startedAt && !raw.finishedAt) {
-    if (!raw.expireAt) return true;
-    const expiryMs =
-      typeof raw.expireAt === 'number' && raw.expireAt < 1e11 ?
-        raw.expireAt * 1000
-      : raw.expireAt;
-    return typeof expiryMs === 'number' ? expiryMs > Date.now() : true;
-  }
-  return false;
+  } catch {}
 }
 
 class Settlement {
@@ -71,19 +36,7 @@ class Settlement {
     this.contentName = raw.contentName || '';
     this.description = raw.description || '';
     this.minEra = raw.minEra || '';
-    this.isActive = isSettlementActive(raw);
-
-    if (!raw.goodsResourceIds) {
-      const matchKey =
-        `${this.content} ${this.name} ${this.contentName} ${raw.id || ''}`.toLowerCase();
-      for (const [culture, goods] of Object.entries(CULTURAL_GOODS_MAP)) {
-        if (matchKey.includes(culture)) {
-          raw.goodsResourceIds = goods;
-          break;
-        }
-      }
-    }
-
+    this.isActive = Boolean(raw.isActive || raw.isCurrent || raw.active);
     this.raw = raw;
   }
 }
@@ -134,7 +87,8 @@ class OutpostService {
 
     this.settlements = rawList.map((s) => new Settlement(s));
     this.activeSettlement =
-      this.settlements.find((s) => s.isActive || isSettlementActive(s.raw)) ||
+      this.settlements.find((s) => s.isActive) ||
+      this.settlements.find((s) => s.raw && s.raw.id && !s.raw.finishedAt) ||
       null;
     this.lastUpdated = Date.now();
     renderCulturalPanel(
@@ -163,81 +117,16 @@ class OutpostService {
     }));
 
     const costs = {};
-    const allResourceKeys = new Set();
     for (const adv of this.advancements) {
+      if (adv.isUnlocked) continue;
       const res = adv.requirements?.resources || {};
       for (const [key, amount] of Object.entries(res)) {
-        allResourceKeys.add(key);
-        if (!adv.isUnlocked && typeof amount === 'number' && amount > 0) {
+        if (typeof amount === 'number' && amount > 0) {
           costs[key] = (costs[key] || 0) + amount;
         }
       }
     }
     this.remainingCosts = costs;
-
-    const costKeys = Array.from(allResourceKeys);
-    if (costKeys.length > 0) {
-      const matchedCulture =
-        this.settlements.find((s) =>
-          s.raw?.goodsResourceIds?.some((g) => costKeys.includes(g)),
-        ) ||
-        this.settlements.find((s) => {
-          const matchKey =
-            `${s.content} ${s.name} ${s.contentName} ${s.raw?.id || ''}`.toLowerCase();
-          for (const [culture, goods] of Object.entries(CULTURAL_GOODS_MAP)) {
-            if (
-              matchKey.includes(culture) &&
-              goods.some((g) => costKeys.includes(g))
-            ) {
-              return true;
-            }
-          }
-          return false;
-        });
-
-      const activeHasMatchingGoods =
-        this.activeSettlement?.raw?.goodsResourceIds?.some((g) =>
-          costKeys.includes(g),
-        );
-
-      if (
-        matchedCulture &&
-        (!this.activeSettlement ||
-          !this.activeSettlement.isActive ||
-          !activeHasMatchingGoods)
-      ) {
-        this.activeSettlement = matchedCulture;
-        this.activeSettlement.isActive = true;
-      } else if (
-        !matchedCulture &&
-        (!this.activeSettlement ||
-          !this.activeSettlement.isActive ||
-          !activeHasMatchingGoods)
-      ) {
-        for (const [cultureKey, goods] of Object.entries(CULTURAL_GOODS_MAP)) {
-          if (goods.some((g) => costKeys.includes(g))) {
-            const names = {
-              vikings: 'Vikings',
-              egyptians: 'Egyptian Settlement',
-              japanese: 'Feudal Japan',
-              aztecs: 'Aztecs',
-              mughals: 'Mughal Empire',
-              pirates: 'Pirates',
-              polynesia: 'Polynesia',
-            };
-            this.activeSettlement = new Settlement({
-              id: cultureKey,
-              content: cultureKey,
-              name: names[cultureKey] || cultureKey,
-              goodsResourceIds: goods,
-              isActive: true,
-            });
-            break;
-          }
-        }
-      }
-    }
-
     this.lastUpdated = Date.now();
     renderCulturalPanel(
       this.activeSettlement,
@@ -323,26 +212,6 @@ class OutpostService {
   }
 }
 
-function getResolvedShowOptions() {
-  if (showOptions) return showOptions;
-  if (typeof __webpack_require__ !== 'undefined') {
-    try {
-      const showOptMod = require('../state/showOptions.js');
-      return showOptMod.showOptions || showOptMod;
-    } catch {
-      try {
-        const showOptMod = require('../vars/showOptions.js');
-        return showOptMod.showOptions || showOptMod;
-      } catch {}
-    }
-  }
-  return null;
-}
-
-function setShowOptions(opts) {
-  showOptions = opts;
-}
-
 function renderCulturalPanel(
   activeSettlement,
   advancements = [],
@@ -352,24 +221,10 @@ function renderCulturalPanel(
   const targetEl = document.getElementById('cultural');
   if (!targetEl) return;
 
-  const currentOpts = getResolvedShowOptions();
-  if (
-    currentOpts &&
-    (currentOpts.showSettlement === false || currentOpts.showCultural === false)
-  ) {
+  if (showOptions && showOptions.showCultural === false) {
     targetEl.innerHTML = '';
-    targetEl.style.display = 'none';
     return;
   }
-
-  const totalAdv = advancements.length;
-  if (!activeSettlement && totalAdv === 0) {
-    targetEl.innerHTML = '';
-    targetEl.style.display = 'none';
-    return;
-  }
-
-  targetEl.style.display = '';
 
   const isCollapsed =
     collapse?.collapseCultural !== undefined ?
@@ -379,12 +234,13 @@ function renderCulturalPanel(
     activeSettlement?.name ||
     activeSettlement?.contentName ||
     'Cultural Settlement';
+  const totalAdv = advancements.length;
   const unlockedAdv = advancements.filter((a) => a.isUnlocked).length;
   const pct = totalAdv > 0 ? Math.round((unlockedAdv / totalAdv) * 100) : 0;
 
   let html = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">`;
   if (element?.close) html += element.close();
-  html += `<p id="culturalTextLabel">`;
+  html += `<p id="culturalTextLabel" href="#culturalText" data-bs-toggle="collapse" role="button">`;
   if (element?.icon)
     html += element.icon('culturalicon', 'culturalText', isCollapsed);
   html += `<strong><span data-i18n="cultural">Cultural Settlement</span>:</strong>`;
@@ -399,36 +255,39 @@ function renderCulturalPanel(
   html += `</p>`;
   html += `<div id="culturalText" class="overflow-y resize collapse ${isCollapsed ? '' : 'show'}">`;
 
-  if (totalAdv > 0) {
-    html += `<div class="progress mb-2 mx-2" style="height: 16px;">`;
-    html += `<div class="progress-bar bg-success" role="progressbar" style="width: ${pct}%;" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">${pct}%</div>`;
-    html += `</div>`;
-  }
-
-  const costKeys = Object.keys(remainingCosts);
-  if (costKeys.length > 0) {
-    html += `<div class="px-2 small mb-1 fw-bold"><span data-i18n="remaining_cultural_goods">Remaining Goods Required</span>:</div>`;
-    html += `<table class="table table-sm table-striped align-middle mb-0"><thead><tr>`;
-    html += `<th class="text-start"><span data-i18n="resource">Resource</span></th>`;
-    html += `<th class="text-end"><span data-i18n="required">Required</span></th>`;
-    html += `</tr></thead><tbody>`;
-
-    for (const res of costKeys) {
-      const amount = remainingCosts[res];
-      const resLabel = helper?.escapeHTML ? helper.escapeHTML(res) : res;
-      html += `<tr><td class="text-start ps-3">${resLabel}</td><td class="text-end font-monospace">${amount.toLocaleString()}</td></tr>`;
+  if (!activeSettlement && totalAdv === 0) {
+    html += `<div class="p-2 text-muted small"><span data-i18n="no_settlement_active">No active cultural settlement advancement data available.</span></div>`;
+  } else {
+    if (totalAdv > 0) {
+      html += `<div class="progress mb-2 mx-2" style="height: 16px;">`;
+      html += `<div class="progress-bar bg-success" role="progressbar" style="width: ${pct}%;" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">${pct}%</div>`;
+      html += `</div>`;
     }
-    html += `</tbody></table>`;
+
+    const costKeys = Object.keys(remainingCosts);
+    if (costKeys.length > 0) {
+      html += `<div class="px-2 small mb-1 fw-bold"><span data-i18n="remaining_cultural_goods">Remaining Goods Required</span>:</div>`;
+      html += `<table class="table table-sm table-striped align-middle mb-0"><thead><tr>`;
+      html += `<th class="text-start"><span data-i18n="resource">Resource</span></th>`;
+      html += `<th class="text-end"><span data-i18n="required">Required</span></th>`;
+      html += `</tr></thead><tbody>`;
+
+      for (const res of costKeys) {
+        const amount = remainingCosts[res];
+        const resLabel = helper?.escapeHTML ? helper.escapeHTML(res) : res;
+        html += `<tr><td class="text-start ps-3">${resLabel}</td><td class="text-end font-monospace">${amount.toLocaleString()}</td></tr>`;
+      }
+      html += `</tbody></table>`;
+    }
   }
 
   html += `</div></div>`;
   targetEl.innerHTML = html;
 
   if (collapse?.fCollapseCultural) {
-    const culturalToggle =
-      document.getElementById('culturalicon') ||
-      document.getElementById('culturalTextLabel');
-    culturalToggle?.addEventListener('click', collapse.fCollapseCultural);
+    document
+      .getElementById('culturalTextLabel')
+      ?.addEventListener('click', collapse.fCollapseCultural);
   }
   if (helper?.translateContainer) {
     helper.translateContainer(targetEl);
@@ -436,8 +295,11 @@ function renderCulturalPanel(
 }
 
 const outpostService = new OutpostService();
+if (messageDispatcher && typeof messageDispatcher.register === 'function') {
+  outpostService.register(messageDispatcher);
+}
 
-const exportsObj = {
+module.exports = {
   OutpostService,
   Settlement,
   outpostService,
@@ -446,10 +308,5 @@ const exportsObj = {
   handleAdvancements: outpostService.handleAdvancements,
   handleUnlockAdvancement: outpostService.handleUnlockAdvancement,
   renderCulturalPanel,
-  setShowOptions,
-  isSettlementActive,
-  CULTURAL_GOODS_MAP,
 };
-exportsObj.default = exportsObj;
-
-module.exports = exportsObj;
+module.exports.default = outpostService;
