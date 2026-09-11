@@ -582,7 +582,7 @@ export function fshowBattleground() {
         .replace(/\.forgeofempires\.com/i, '')
         .toUpperCase();
   var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
-	<p id="battlegroundTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
+	<p id="battlegroundTextLabel">
 	${element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground)}
 	<strong>Battlegrounds: [${bgWorldLabel}]</strong></p>${element.close()}`;
 
@@ -602,7 +602,7 @@ export function fshowBattleground() {
   const isChangesOnly = Boolean(showOptions.showBattlegroundChanges);
   battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info ${
     isChangesOnly ? 'gbg-changes-full' : 'gbg-full-roster'
-  } overflow resize collapse ${
+  } overflow resize-both collapse ${
     collapse.collapseBattleground ? '' : 'show'
   }"><div id="battlegroundText">`;
 
@@ -674,18 +674,7 @@ export function fshowBattleground() {
 
   const iconEl = document.getElementById('battlegroundicon');
   if (iconEl) {
-    iconEl.addEventListener('click', (e) => {
-      e?.stopPropagation?.();
-      collapse.fCollapseBattleground();
-    });
-  }
-
-  const labelEl = document.getElementById('battlegroundTextLabel');
-  if (labelEl) {
-    labelEl.addEventListener('click', (e) => {
-      if (e.target?.closest?.('#battlegroundicon')) return;
-      collapse.fCollapseBattleground();
-    });
+    iconEl.addEventListener('click', collapse.fCollapseBattleground);
   }
 
   const showChangesEl = document.getElementById('showGBGchanges');
@@ -702,13 +691,6 @@ export function fshowBattleground() {
     }
     if (typeof ResizeObserver !== 'undefined') {
       gbgResizeObserver = new ResizeObserver((entries) => {
-        if (
-          battlegroundDiv.classList?.contains('collapsing') ||
-          (battlegroundDiv.classList &&
-            !battlegroundDiv.classList.contains('show'))
-        ) {
-          return;
-        }
         for (const entry of entries) {
           if (entry.contentRect && entry.contentRect.height)
             heightGBG = entry.contentRect.height;

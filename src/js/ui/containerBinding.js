@@ -44,27 +44,24 @@ function mountPanels(contentEl, containers = {}) {
     guild,
   } = containers;
 
-  // Group 3: Great Buildings
-  if (gbInfoDIV)
-    ensureContainerMounted(contentEl, gbInfoDIV, 'gbInfo', greatbuilding);
-  if (greatbuilding)
-    ensureContainerMounted(contentEl, greatbuilding, 'greatbuilding');
+  if (targets) ensureContainerMounted(contentEl, targets, 'targets');
   if (donation2DIV)
     ensureContainerMounted(contentEl, donation2DIV, 'donation2');
   if (donationDIV) ensureContainerMounted(contentEl, donationDIV, 'donation');
-  if (donationDIV2)
-    ensureContainerMounted(contentEl, donationDIV2, 'donationDIV2');
-  if (cityrewards)
-    ensureContainerMounted(contentEl, cityrewards, 'cityrewards');
-
-  // Group 4: Guild & Competitions
-  if (guild) ensureContainerMounted(contentEl, guild, 'guild');
-  if (output) ensureContainerMounted(contentEl, output, 'output');
   if (battlegroundDIV)
     ensureContainerMounted(contentEl, battlegroundDIV, 'battleground');
   if (gbgLeaderboardDIV)
     ensureContainerMounted(contentEl, gbgLeaderboardDIV, 'gbgLeaderboard');
-  if (targets) ensureContainerMounted(contentEl, targets, 'targets');
+  if (donationDIV2)
+    ensureContainerMounted(contentEl, donationDIV2, 'donationDIV2');
+  if (gbInfoDIV)
+    ensureContainerMounted(contentEl, gbInfoDIV, 'gbInfo', greatbuilding);
+  if (greatbuilding)
+    ensureContainerMounted(contentEl, greatbuilding, 'greatbuilding');
+  if (output) ensureContainerMounted(contentEl, output, 'output');
+  if (cityrewards)
+    ensureContainerMounted(contentEl, cityrewards, 'cityrewards');
+  if (guild) ensureContainerMounted(contentEl, guild, 'guild');
 }
 
 function safeguardOutputContainers(contentEl, containers = {}) {
@@ -223,67 +220,42 @@ function setupPanelContainers(
     return el;
   }
 
-  function mountOrAdopt(id, sharedEl, className = '', hidden = false) {
-    if (sharedEl) {
-      ensureContainerMounted(contentEl, sharedEl, id);
-      if (className && !sharedEl.className) sharedEl.className = className;
-      if (hidden) sharedEl.style.display = 'none';
-      return sharedEl;
-    }
-    return createPanel(id, className, hidden);
-  }
-
-  // --- Group 1: City Context & Exploration ---
   const citystats = createPanel('citystats', 'alert alert-warning');
   citystats.innerHTML =
     '<p><strong><span data-i18n="load">Load the game ...</span></strong></p>';
-  const visitstats = createPanel('visit');
-  const galaxyDIV = createPanel('galaxy', '', true);
-  const buildingsDIV = createPanel('buildings');
-  const incidents = createPanel('incidents', 'incidents');
-  const cultural = createPanel('cultural');
-  const bonusDIV = createPanel('bonus');
-  const overview = createPanel('overview');
-  const info = createPanel('info');
 
-  // --- Group 2: Military & Resources ---
+  const alerts = createPanel('alerts');
+
+  if (sharedContainers.targets) {
+    sharedContainers.targets.id = 'targets';
+    contentEl.appendChild(sharedContainers.targets);
+  }
+
+  const bonusDIV = createPanel('bonus');
+  const incidents = createPanel('incidents', 'incidents');
+  const cityinvested = createPanel('invested');
+  const galaxyDIV = createPanel('galaxy', '', true);
+  const visitstats = createPanel('visit');
+
+  if (sharedContainers.cityrewards) {
+    sharedContainers.cityrewards.id = 'cityrewards';
+    contentEl.appendChild(sharedContainers.cityrewards);
+  }
+
+  // Mount shared containers: output, gbgLeaderboardDIV, donationDIV, battlegroundDIV, donation2DIV, donationDIV2, gbInfoDIV, greatbuilding
+  mountPanels(contentEl, sharedContainers);
+
+  const overview = createPanel('overview');
+  const cultural = createPanel('cultural');
+  const info = createPanel('info');
   const armyDIV = createPanel('army');
   const goodsDIV = createPanel('goods');
-
-  // --- Group 3: Great Buildings (Active GB & Investments) ---
-  const gbInfo = mountOrAdopt('gbInfo', sharedContainers.gbInfoDIV);
-  const greatbuilding = mountOrAdopt(
-    'greatbuilding',
-    sharedContainers.greatbuilding,
-  );
-  const donation2 = mountOrAdopt('donation2', sharedContainers.donation2DIV);
-  const donation = mountOrAdopt('donation', sharedContainers.donationDIV);
-  const donationDIV2 = mountOrAdopt(
-    'donationDIV2',
-    sharedContainers.donationDIV2,
-  );
-  const cityinvested = createPanel('invested');
-  const cityrewards = mountOrAdopt('cityrewards', sharedContainers.cityrewards);
-
-  // --- Group 4: Guild & Competitions ---
-  const guild = mountOrAdopt('guild', sharedContainers.guild);
-  const output = mountOrAdopt('output', sharedContainers.output);
-  const battleground = mountOrAdopt(
-    'battleground',
-    sharedContainers.battlegroundDIV,
-  );
-  const gbgLeaderboard = mountOrAdopt(
-    'gbgLeaderboard',
-    sharedContainers.gbgLeaderboardDIV,
-  );
-  const targets = mountOrAdopt('targets', sharedContainers.targets);
+  const buildingsDIV = createPanel('buildings');
+  const guild = createPanel('guild');
+  const friendsDiv = createPanel('friends');
   const treasury = createPanel('treasury');
   const treasuryLog = createPanel('treasuryLog');
-
-  // --- Group 5: Social, System & Utilities ---
-  const friendsDiv = createPanel('friends');
   const clipboard = createPanel('clipboard', '', true);
-  const alerts = createPanel('alerts');
   const alerts_bottom = createPanel('alerts_bottom');
   const debug = createPanel('debug');
   const modal = createPanel('modal');
