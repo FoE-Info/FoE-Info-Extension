@@ -166,9 +166,6 @@ class HiddenRewardService {
 }
 
 const hiddenRewardService = new HiddenRewardService();
-if (messageDispatcher && typeof messageDispatcher.register === 'function') {
-  hiddenRewardService.register(messageDispatcher);
-}
 
 module.exports = {
   HiddenRewardService,

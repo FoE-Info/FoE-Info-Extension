@@ -14,13 +14,12 @@
 import * as storage from './storage.js';
 
 export var toolOptions = {
-  armySize: 200,
+  armySize: 185,
   goodsSize: 200,
   friendsSize: 200,
   treasurySize: 200,
-  gvgSize: 200,
   logsSize: 200,
-  battlegroundsSize: 200,
+  battlegroundsSize: 400,
   expeditionSize: 200,
   visitSize: 200,
   rewardSize: 200,
@@ -29,82 +28,56 @@ export var toolOptions = {
 };
 
 export function setToolOptions(value) {
-  toolOptions = value;
+  if (value && typeof value === 'object') {
+    toolOptions = Object.assign({}, toolOptions, value);
+  }
+}
+
+function saveSize(key, height) {
+  const min = toolOptions?.minSize ?? 50;
+  if (height > min) {
+    if (!toolOptions) toolOptions = {};
+    toolOptions[key] = Math.round(height);
+    storage.set('toolOptions', toolOptions);
+  }
 }
 
 export function setFriendsSize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.friendsSize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('friendsSize', height);
 }
 
 export function setArmySize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.armySize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('armySize', height);
 }
 
 export function setGoodsSize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.goodsSize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('goodsSize', height);
 }
 
 export function setTreasurySize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.treasurySize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
-}
-
-export function setGVGSize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.gvgSize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('treasurySize', height);
 }
 
 export function setLogsSize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.logsSize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('logsSize', height);
 }
 
 export function setBattlegroundSize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.battlegroundsSize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('battlegroundsSize', height);
 }
 
 export function setExpeditionSize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.expeditionSize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('expeditionSize', height);
 }
 
 export function setVisitSize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.visitSize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('visitSize', height);
 }
 
 export function setRewardSize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.rewardSize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('rewardSize', height);
 }
 
 export function setBuildingCostSize(height) {
-  if (height > toolOptions.minSize) {
-    toolOptions.buildingCostSize = Math.round(height);
-    storage.set('toolOptions', toolOptions);
-  }
+  saveSize('buildingCostSize', height);
 }
