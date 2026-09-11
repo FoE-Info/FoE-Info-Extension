@@ -4,39 +4,6 @@ Updated 2026-09-11 after graph pipeline extension for LoW-Tool and FoE-Info-orig
 
 ## Current session (2026-09-11)
 
-- **Army panel default calibration & collapse guard (`3b167a3` + update)**:
-  - Calibrated default Army Panel height to 185px (`#armyText`, outer card height 229px) across [`globals.js`](../src/js/fn/globals.js), [`factoryDefaults.js`](../src/js/state/factoryDefaults.js), and [`ArmyUnitManagementService.js`](../src/js/msg/ArmyUnitManagementService.js), matching desired visual geometry.
-  - Added `.collapsing` and `!show` guards to the Army `ResizeObserver` preventing intermediate transition heights during collapse from corrupting the stored user height.
-  - Wired per-world storage handling for `toolOptions` in [`storage.js`](../src/js/utils/storage.js) (`setStorage` and `getStorage`), saving via `saveWorldSettings(currentWorld, { toolOptions })` and syncing `memoryWorldCache`.
-  - Preserved `resize-both` so custom user-resized heights persist across game sessions and world reloads.
-  - Updated unit test suites verifying 185px default, custom overrides, collapse animation guards, and per-world persistence (649/649 tests passing).
-- **Battlegrounds collapse performance & transition fix**:
-  - Scoped `min-height: 250px` to `.gbg-full-roster.show` in [`custom.scss`](../src/css/custom.scss) to prevent CSS min-height from fighting Bootstrap collapse height calculation.
-  - Suppressed animations on collapsing elements (`.collapsing { min-height: 0 !important; transition: none !important; }`), eliminating frame-by-frame 350ms table reflow lag.
-  - Added observer guards in `helper.js` (`gbgResizeObserver`) so intermediate heights during collapse/hide are ignored.
-  - Added `e.stopPropagation()` to `battlegroundicon` click handler preventing event double-triggers.
-- **Lists Copy button alignment (`OtherPlayerService.js`)**:
-  - Replaced absolute offset positioning (`top: 0; right: 0; margin-top: 0.75em; margin-right: 3em;`) with clean flex row headers (`<div class="d-flex flex-row justify-content-between align-items-center mb-0">`) for Friends, Guild, and Hood lists.
-  - Aligned Copy buttons flush with the right edge without overlapping container borders.
-  - Updated `collapse.js` (`fCollapseFriends`, `fCollapseGuild`, `fCollapseHood`) to handle `display = 'inline-block'`.
-- **GE Championship & Leaderboard styling alignment (`expeditionTables.js`, `custom.scss`)**:
-  - Left-aligned Server column header and data cells (`text-start`) in GE Championship table.
-  - Styled GE Leaderboard (`#geContributionTable`) with `.goods-table table-sm table-borderless align-middle w-100 mb-0 bg-transparent`, aligning member names to the left, trial to center, and points and solved encounters centered with `tabular-nums` and formatted numbers (`toLocaleString()`).
-- **DevTools `#content` panel ordering (`containerBinding.js`)**:
-  - Organized all active panels into a clean, predictable 5-group workflow: City & Production (`#cityOverview`, `#visitinfo`, `#cityproduction`, `#bluegalaxy`, `#incidentstext`, `#bonusText`) $\to$ Military (`#army`, `#unitsText`, `#pvpArena`, `#combatBoosts`) $\to$ Great Buildings (`#greatbuilding`, `#gbInfo`, `#donation2`, `#invested`, `#stats`) $\to$ Guild Activities (`#guildoverview`, `#battleground`, `#gbgLeaderboard`, `#internationalExpedition`, `#expedition`, `#treasury`, `#guildraid`, `#contributions`) $\to$ Social & Logs (`#friends`, `#guild`, `#hood`, `#settlement`, `#goods`, `#rewardText`, `#buildingCost`, `#itemExchange`, `#logstext`).
-- **i18n table header capitalization**:
-  - Capitalized `Type` and `Amount` keys across all 7 language dictionaries (`de`, `el`, `en`, `es`, `fr`, `gr`, `it`) in `src/i18n/` for Goods Inventory and Guild Treasury consistency.
-- **Goods Inventory, Treasury & Outpost table alignment (`5608b43`)**:
-  - Removed artificial `ps-3` indentation from item cells in [`ResourceService.js`](../src/js/msg/ResourceService.js), [`panelDispatcher.js`](../src/js/ui/panelDispatcher.js), and [`OutpostService.js`](../src/js/msg/OutpostService.js).
-  - Aligned all goods, medals, and outpost resources flush left with column headers (`Type`/`Resource`) and era section titles with uniform 6px padding.
-  - Cleaned up `td.ps-3` override from [`custom.scss`](../src/css/custom.scss).
-- **Universal panel collapsibility, GB reopen lifecycle & UI fixes (`c1c8a00`, `53b89c0`, `5c2dbf1`, `fbe4b4a`, `b19c2eb`)**:
-  - Added title-click collapse, `[-]`/`[+]` icons, and close buttons across all active panels.
-  - Separated "Other Player Information" header from player name ScoreDB link, moving the link to card body line 1.
-  - Preserved player's own City Info overview as permanently visible without a close button.
-  - Formatted Chateau Frontenac (CF) bonus on its own div line under Arc bonus in City Overview.
-  - Reverted GB donation place headers to classic "1st Place", "2nd Place" (removed Arc bonus suffix).
-  - Fixed closed Great Building panels (`#greatbuilding`, `#gbInfo`, `#donation2`) failing to reappear on subsequent GB opens by preserving container mount points.
 - **Options page instant rendering & FOUC fix**:
   - Eliminated blank delay and unpopulated controls when opening `options.html`.
   - Populated the world selector and settings form immediately and synchronously from storage cache (`globals` and `getWorldSettings`) without waiting on browser tab IPC queries.

@@ -1,7 +1,7 @@
 {
   "name": "foe-info",
   "displayName": "FoE-Info Extension",
-  "version": "0.0.833",
+  "version": "0.0.834",
   "private": true,
   "description": "Essential Info browser extension for Forge of Empires players",
   "license": "AGPL-3.0-or-later",

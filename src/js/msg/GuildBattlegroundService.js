@@ -31,7 +31,6 @@ import {
   buildBuildingCostsTableHTML,
   buildingCostCopy,
   buildLeaderboardHTML,
-  copyToClipboard,
   renderBuildingCostCard,
   renderTargetGeneratorCard,
   targetCopy,
@@ -131,75 +130,18 @@ export function getPlayerLeaderboard(msg) {
 
 export function getLeaderboard(msg) {
   const leaderboard = msg.responseData;
-  const isCollapsed = Boolean(collapse?.collapseGBGLeaderboard);
-  const iconHtml =
-    element && typeof element.icon === 'function' ?
-      element.icon('gbgLeaderboardIcon', 'gbgLeaderboardCollapse', isCollapsed)
-    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="gbgLeaderboardIcon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" data-bs-target="#gbgLeaderboardCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
-  const closeBtn =
-    element && typeof element.close === 'function' ?
-      element.close()
-    : '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-  const copyBtn =
-    element && typeof element.copy === 'function' ?
-      element.copy('gbgLeaderboardCopyID', 'info', 'right', isCollapsed)
-    : `<span id="gbgLeaderboardCopyID" role="button" tabindex="0" class="badge rounded-pill bg-info float-end right-button" style="display: ${isCollapsed ? 'none' : 'block'}" data-i18n="copy">Copy</span>`;
-
-  const leaderboardHTML = buildLeaderboardHTML(leaderboard);
+  var leaderboardHTML = buildLeaderboardHTML(leaderboard);
   const targetEl =
     (typeof document !== 'undefined' &&
       document.getElementById('gbgLeaderboard')) ||
     gbgLeaderboardDIV ||
     output;
-
   if (targetEl) {
-    const tableMarkup =
-      leaderboardHTML.startsWith('<table') ? leaderboardHTML : (
-        `<table class="goods-table w-100">${leaderboardHTML}</table>`
-      );
-
-    targetEl.innerHTML = `<div id="gbgLeaderboardCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
-      ${closeBtn}
-      <p id="gbgLeaderboardTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#gbgLeaderboardCollapse" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-        ${iconHtml}
-        <strong>GBG Leaderboard:</strong>
-      </p>
-      ${copyBtn}
-      <div id="gbgLeaderboardCollapse" class="alert-info overflow resize collapse ${isCollapsed ? '' : 'show'}">
-        <div id="leaderboardText" class="mt-1">${tableMarkup}</div>
-      </div>
-    </div>`;
-
-    const labelEl = document.getElementById('gbgLeaderboardTextLabel');
-    if (labelEl) {
-      labelEl.addEventListener('click', (e) => {
-        if (e.target?.closest?.('#gbgLeaderboardIcon')) return;
-        if (typeof collapse?.fCollapseGBGLeaderboard === 'function') {
-          collapse.fCollapseGBGLeaderboard();
-        }
-      });
-    }
-
-    const iconEl = document.getElementById('gbgLeaderboardIcon');
-    if (iconEl && typeof collapse?.fCollapseGBGLeaderboard === 'function') {
-      iconEl.addEventListener('click', (e) => {
-        e?.stopPropagation?.();
-        collapse.fCollapseGBGLeaderboard();
-      });
-    }
-
-    const copyEl = document.getElementById('gbgLeaderboardCopyID');
-    if (copyEl) {
-      copyEl.addEventListener('click', () => {
-        if (typeof copyToClipboard === 'function') {
-          copyToClipboard('#leaderboardText');
-        }
-      });
-    }
-
-    if (helper && typeof helper.translateContainer === 'function') {
-      helper.translateContainer(targetEl);
-    }
+    targetEl.innerHTML =
+      `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<strong>GBG Leaderboard:</strong>
+              <p id="leaderboardText"><table>` +
+      leaderboardHTML +
+      `</table></p></div>`;
   }
 }
 
