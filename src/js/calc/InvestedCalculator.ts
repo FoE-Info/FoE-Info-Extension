@@ -1,26 +1,115 @@
 /**
- * InvestedCalculator.js
+ * InvestedCalculator.ts
  *
- * Pure calculation engine for Great Building investments.
- * Computes FP contributions, Arc multiplier boosts with half-up rounding,
- * safe position locking status, and safe vs all profit/loss aggregation,
- * with support for filtering hidden Great Buildings.
+ * Typed mirror of InvestedCalculator.js. Pure calculation engine for Great
+ * Building investments: computes FP contributions, Arc multiplier boosts with
+ * half-up rounding, safe position locking status, and safe vs all profit/loss
+ * aggregation, with support for filtering hidden Great Buildings.
+ *
+ * Zero DOM dependencies. Uses bignumber.js throughout and a lazily-resolved
+ * scoped logger, staying CommonJS/ESM dual-compatible.
  */
 
-const BigNumber = require('bignumber.js');
+import BigNumber from 'bignumber.js';
 
-let logger = null;
+let logger: { debug?: (...args: unknown[]) => void } | null = null;
 try {
   const { createLogger } = require('../utils/logger.js');
   logger = createLogger('InvestedCalc');
 } catch {}
 
+export type InvestmentNumeric = number | string | BigNumber;
+
+export interface InvestmentReward {
+  strategy_points?: number | string;
+  strategy_point_amount?: number | string;
+  blueprints?: number;
+  medals?: number;
+  [key: string]: unknown;
+}
+
+export interface InvestmentPlayer {
+  player_id?: number | string;
+  name?: string;
+}
+
+export interface InvestmentEntry {
+  player?: InvestmentPlayer;
+  player_id?: number | string;
+  city_entity_id?: string | number;
+  entity_id?: string | number;
+  name?: string;
+  level?: number;
+  rank?: number;
+  forge_points?: number | string;
+  current_progress?: number;
+  max_progress?: number;
+  reward?: InvestmentReward;
+  [key: string]: unknown;
+}
+
+export interface InvestmentContributionsPayload {
+  responseData?: InvestmentEntry[] | { contributions?: InvestmentEntry[] };
+  contributions?: InvestmentEntry[];
+}
+
+export type InvestmentSource =
+  InvestmentEntry[] | InvestmentContributionsPayload | null | undefined;
+
+export interface InvestmentOptions {
+  showHiddenGb?: boolean;
+  calculateOnlySafeProfit?: boolean;
+}
+
+export interface InvestmentResultItem {
+  key: string;
+  player: { player_id: number | string; name: string };
+  name: string;
+  city_entity_id: string | number;
+  entity_id: string | number | null;
+  level: number | null;
+  rank: number | null;
+  forge_points: number;
+  invested: BigNumber;
+  baseReward: BigNumber;
+  returnFP: BigNumber;
+  profit: BigNumber;
+  effectiveProfit: BigNumber;
+  netProfitLoss: number;
+  current_progress: number | null;
+  max_progress: number | null;
+  remaining_fp: number | null;
+  is_safe: boolean;
+  is_hidden: boolean;
+  reward: {
+    strategy_points: number;
+    base_strategy_points: number;
+    blueprints: number;
+    medals: number;
+  };
+}
+
+export interface InvestmentSummary {
+  success: true;
+  results: InvestmentResultItem[];
+  totalInvested: number;
+  totalReturn: number;
+  netProfitLoss: number;
+  totalInvestedBN: BigNumber;
+  totalReturnBN: BigNumber;
+  netProfitLossBN: BigNumber;
+  arcBonusPercent: number;
+  hiddenCount: number;
+  safeCount: number;
+  totalCount: number;
+  calculateOnlySafeProfit: boolean;
+  showHiddenGb: boolean;
+}
+
 /**
  * Generates a unique stable identifier for a Great Building contribution.
- * @param {Object} entry
- * @returns {string}
  */
-function getInvestmentKey(entry) {
+export function getInvestmentKey(entry: InvestmentEntry): string {
   const playerId = entry.player?.player_id || entry.player_id || '0';
   const entityId = entry.city_entity_id || entry.entity_id || 'unknown';
   return `${playerId}_${entityId}`;
@@ -28,14 +117,14 @@ function getInvestmentKey(entry) {
 
 /**
  * Determines whether an investment is securely locked (safe from snipes).
- * A spot is safe when the remaining FP needed to level is <= the investor's current FP.
- *
- * @param {number|BigNumber} investedFP
- * @param {number|null} currentProgress
- * @param {number|null} maxProgress
- * @returns {boolean}
+ * A spot is safe when the remaining FP needed to level is <= the investor's
+ * current FP.
  */
-function isPositionSafe(investedFP, currentProgress, maxProgress) {
+export function isPositionSafe(
+  investedFP: InvestmentNumeric,
+  currentProgress?: number | null,
+  maxProgress?: number | null,
+): boolean {
   if (!maxProgress || maxProgress <= 0) return false;
   const current = currentProgress || 0;
   const remaining = Math.max(0, maxProgress - current);
@@ -48,22 +137,14 @@ function isPositionSafe(investedFP, currentProgress, maxProgress) {
 
 /**
  * Calculates investments, Arc returns, safe status, and net totals.
- *
- * @param {Array<Object>|Object} rawContributions InnoGames RPC contributions or payload
- * @param {number} [arcBonusPercent=90] Player's Arc boost percentage (e.g. 100 for 2.0x)
- * @param {Array<string>|Set<string>} [hiddenKeys=[]] Set or Array of hidden investment keys
- * @param {Object} [options={}] Calculation options
- * @param {boolean} [options.showHiddenGb=false] Whether hidden GBs are displayed
- * @param {boolean} [options.calculateOnlySafeProfit=false] Only count profit on locked spots
- * @returns {Object} Full breakdown of contributions, totals, and counts
  */
-function calculateInvestments(
-  rawContributions,
-  arcBonusPercent = 90,
-  hiddenKeys = [],
-  options = {},
-) {
-  let list = [];
+export function calculateInvestments(
+  rawContributions: InvestmentSource,
+  arcBonusPercent: number = 90,
+  hiddenKeys: Array<string> | Set<string> = [],
+  options: InvestmentOptions = {},
+): InvestmentSummary {
+  let list: InvestmentEntry[] = [];
   if (Array.isArray(rawContributions)) {
     list = rawContributions;
   } else if (Array.isArray(rawContributions?.responseData)) {
@@ -97,7 +178,7 @@ function calculateInvestments(
   let totalReturn = new BigNumber(0);
   let hiddenCount = 0;
   let safeCount = 0;
-  const results = [];
+  const results: InvestmentResultItem[] = [];
 
   for (const entry of list) {
     if (!entry || typeof entry !== 'object') continue;
@@ -134,9 +215,10 @@ function calculateInvestments(
       safeCount++;
     }
 
-    // Determine profit to include in totals
-    // If hidden: excluded from totals
-    // If calculateOnlySafeProfit and spot is unsafe: profit counts as 0 (return counts as invested)
+    // Determine profit to include in totals:
+    // If hidden: excluded from totals.
+    // If calculateOnlySafeProfit and spot is unsafe: profit counts as 0
+    // (return counts as invested).
     let effectiveProfit = profit;
     let effectiveReturn = returnFP;
 
@@ -215,7 +297,7 @@ function calculateInvestments(
   };
 }
 
-module.exports = {
+export default {
   getInvestmentKey,
   isPositionSafe,
   calculateInvestments,

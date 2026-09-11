@@ -124,8 +124,8 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
   await t.test(
     'Battleground panel sizing adapts to showBattlegroundChanges mode',
     () => {
-      const helperSrc = fs.readFileSync(
-        path.resolve('src/js/fn/helper.js'),
+      const battlegroundSrc = fs.readFileSync(
+        path.resolve('src/js/ui/renderBattlegroundsPanel.js'),
         'utf8',
       );
       const globalsSrc = fs.readFileSync(
@@ -144,28 +144,28 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
         'toolOptions.battlegroundsSize in globals.js must default to 400',
       );
 
-      // Verify helper applies gbg-changes-full vs gbg-full-roster
+      // Verify the battleground renderer applies gbg-changes-full vs gbg-full-roster
       assert.match(
-        helperSrc,
+        battlegroundSrc,
         /isChangesOnly\s*\?\s*['"]gbg-changes-full['"]\s*:\s*['"]gbg-full-roster['"]/,
-        'helper.js must conditionally apply gbg-changes-full or gbg-full-roster',
+        'renderBattlegroundsPanel.js must conditionally apply gbg-changes-full or gbg-full-roster',
       );
 
-      // Verify helper sets auto height in changes-only mode and 400px default restricted height in full mode
+      // Verify the renderer sets auto height in changes-only mode and 400px default restricted height in full mode
       assert.match(
-        helperSrc,
+        battlegroundSrc,
         /if\s*\(\s*isChangesOnly\s*\)\s*\{[\s\S]*?battlegroundDiv\.style\.height\s*=\s*['"]auto['"]/,
-        'helper.js must set height to auto in changes-only mode',
+        'renderBattlegroundsPanel.js must set height to auto in changes-only mode',
       );
       assert.match(
-        helperSrc,
+        battlegroundSrc,
         /DEFAULT_RESTRICTED_GBG_HEIGHT\s*=\s*400/,
-        'helper.js must define DEFAULT_RESTRICTED_GBG_HEIGHT as 400',
+        'renderBattlegroundsPanel.js must define DEFAULT_RESTRICTED_GBG_HEIGHT as 400',
       );
 
       // Verify setHeight only persists when NOT in changes-only mode
       assert.match(
-        helperSrc,
+        battlegroundSrc,
         /if\s*\(\s*!showOptions\.showBattlegroundChanges\s*&&\s*heightGBG\s*\)\s*\{[\s\S]*?setBattlegroundSize\(heightGBG\)/,
         'setHeight must only persist size when viewing full guild roster',
       );

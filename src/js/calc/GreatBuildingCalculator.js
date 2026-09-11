@@ -202,13 +202,13 @@ function calculateSafeSpots(
       workingInvestments.splice(
         idx,
         0,
-        Math.min(donateCustom, remaining.toNumber()),
+        BigNumber.minimum(donateCustom, remaining).toNumber(),
       );
       remaining = remaining.minus(lockFP).minus(workingInvestments[idx]);
     }
 
     const isSafe = alreadySafe && lockFP === 0;
-    const profit = rewardFP - lockFP;
+    const profit = new BigNumber(rewardFP).minus(lockFP).toNumber();
 
     spots.push({
       place,

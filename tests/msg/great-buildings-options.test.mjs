@@ -646,10 +646,15 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
   await t.test(
     'place header in GB donation card displays clean place ordinal without Arc percentage suffix',
     () => {
-      const src = fs.readFileSync(
-        path.join(process.cwd(), 'src/js/msg/GreatBuildingsService.js'),
-        'utf8',
-      );
+      const targetPath =
+        (
+          fs.existsSync(
+            path.join(process.cwd(), 'src/js/ui/renderGbDonationPanel.js'),
+          )
+        ) ?
+          path.join(process.cwd(), 'src/js/ui/renderGbDonationPanel.js')
+        : path.join(process.cwd(), 'src/js/msg/GreatBuildingsService.js');
+      const src = fs.readFileSync(targetPath, 'utf8');
       assert.doesNotMatch(
         src,
         /\$\{placeOrdinal\}\s+Place\s*\([^)]*Arc\)/,
