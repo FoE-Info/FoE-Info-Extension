@@ -108,23 +108,9 @@ export function getLimitedBonuses(msg) {
 			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
             ${element.close()}
             <div id="bonusText" class="alert-light collapse"><p><strong>Legend:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
-      const labelEl = document.getElementById('bonusTextLabel');
-      if (labelEl) {
-        labelEl.addEventListener('click', (e) => {
-          if (
-            e?.target &&
-            typeof e.target.closest === 'function' &&
-            e.target.closest('#bonusicon')
-          ) {
-            return;
-          }
-          collapse.fCollapseBonus();
-        });
-      }
-      const iconEl = document.getElementById('bonusicon');
-      if (iconEl && iconEl !== labelEl) {
-        iconEl.addEventListener('click', collapse.fCollapseBonus);
-      }
+      document
+        .getElementById('bonusicon')
+        ?.addEventListener('click', collapse.fCollapseBonus);
     } else if (
       bonus &&
       !(Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
