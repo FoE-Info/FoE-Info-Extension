@@ -47,11 +47,6 @@ async function migrateLegacyStorage(all, local) {
   if (all.hiddenInvestments && Array.isArray(all.hiddenInvestments)) {
     migratedWorld.caches.hiddenInvestments = all.hiddenInvestments;
   }
-  for (const collapseKey of LEGACY_COLLAPSE_KEYS) {
-    if (typeof all[collapseKey] === 'boolean') {
-      migratedWorld.collapses[collapseKey] = all[collapseKey];
-    }
-  }
 
   globalSettings.knownWorlds = ['en7'];
   globalSettings.lastActiveWorld = 'en7';
@@ -68,8 +63,6 @@ async function migrateLegacyStorage(all, local) {
   return { globalSettings, migratedWorld };
 }
 
-const LEGACY_COLLAPSE_KEYS = ['collapseGBInfo', 'collapseClipboard'];
-
 const LEGACY_FLAT_KEYS = [
   'showOptions',
   'donationPercent',
@@ -81,7 +74,6 @@ const LEGACY_FLAT_KEYS = [
   'toolOptions',
   'hiddenInvestments',
   'investSettings',
-  ...LEGACY_COLLAPSE_KEYS,
 ];
 
 async function cleanLegacyFlatKeys(local) {

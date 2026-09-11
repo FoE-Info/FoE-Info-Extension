@@ -152,9 +152,7 @@ test('renderGuildPanel UI Suite', async (t) => {
 
       // 5. Event listeners bound
       assert.ok(listeners['guildCopyID']);
-      assert.ok(listeners['guildOverviewIcon']);
-      assert.match(mockGuildDiv.innerHTML, /id="guildOverviewText"/);
-      assert.match(mockGuildDiv.innerHTML, /id="guildOverviewTextLabel"/);
+      assert.ok(listeners['guildicon']);
     },
   );
 });

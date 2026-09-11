@@ -194,7 +194,7 @@ function formatGoodsHTML(
     const totalDisplay =
       total !== null ? formatStatNumber(total, { exact, comma: true }) : '';
     const text = `${totalDisplay}${boostText}`;
-    const pop = `<span id="${prefix}-goods" class="pop" role="button" tabindex="0" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily Goods" data-bs-content='${escapedTip}'>${text}</span>`;
+    const pop = `<span id="${prefix}-goods" class="pop" role="button" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily Goods" data-bs-content='${escapedTip}'>${text}</span>`;
     return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${escapedTip ? pop : text}`;
   }
   return '';
@@ -216,7 +216,7 @@ function formatClanGoodsHTML(stats = {}, playerInfo = {}, prefix = '') {
       : String(cg)
     : '';
   if (!display) return '';
-  const body = `<span id="${prefix}-clan-goods" class="pop" role="button" tabindex="0" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Guild Goods" data-bs-content='${escaped}'>${display}</span>`;
+  const body = `<span id="${prefix}-clan-goods" class="pop" role="button" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Guild Goods" data-bs-content='${escaped}'>${display}</span>`;
   return `<span data-i18n="guildgoods">Guild Goods</span>: ${escaped ? body : display}`;
 }
 
@@ -233,7 +233,7 @@ function formatFpHTML(stats = {}, playerInfo = {}, prefix = '', exact = false) {
     : '';
   const boost = formatBoostText(fp.boostPercent);
   const text = `${formatStatNumber(fp.total, { exact })}${boost}`;
-  const body = `<span id="${prefix}-fp" class="pop" role="button" tabindex="0" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily FP" data-bs-content='${escaped}'>${text}</span>`;
+  const body = `<span id="${prefix}-fp" class="pop" role="button" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily FP" data-bs-content='${escaped}'>${text}</span>`;
   return {
     fpTooltipEscaped: escaped,
     fpHTML: `<span data-i18n="stat_daily_fp">Daily FP</span>: ${escaped ? body : text}`,

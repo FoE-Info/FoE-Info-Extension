@@ -68,6 +68,7 @@ function renderGbInfoPanel(
     gbData.next_state_transition_at ??
     gbData.state?.next_state_transition_at;
 
+  const playerPrefix = playerName ? `${safeEscape(playerName)} | ` : '';
   const gbName = safeEscape(gbData.name || 'Great Building');
 
   const closeBtnHtml =

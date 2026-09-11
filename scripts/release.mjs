@@ -30,10 +30,9 @@ console.log(`=== Releasing FoE-Info ${tag} ===`);
 console.log('\n[1/5] Running verification gate...');
 run('npm run verify');
 
-// 2. Build production assets and package zip
-console.log('\n[2/5] Building and packaging production WebStore archive...');
-run('npm run build:prod');
-run('node scripts/package-extension.js --env=prod');
+// 2. Build production assets
+console.log('\n[2/5] Building production WebStore package...');
+run('npm run build');
 
 // 3. Find the generated zip
 const today = new Date().toISOString().slice(0, 10);

@@ -5,26 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.835] - 2026-09-11
-
-Context-aware view filtering, incidents extraction, 15-panel stacking sequence, and codebase audit hardening.
-
-### 🚀 Features & Architecture
-
-- **Context-Aware Dynamic View Filtering**: Automatic view context switching between GBG Map view (gated to 6 combat-essential panels: Header, Army, Rewards, Target Generator, Battlegrounds Changes, Leaderboard) and City view (hiding battleground panels). Debug mode forces all 15 panels visible with informative diagnostic stubs.
-- **Standalone Incidents Card**: Extracted Incidents into dedicated module `renderIncidentsPanel.js` targeting `#incidents`, decoupled from Harvest and instrumented with scoped logger.
-- **City Info Header & Player Score**: Consolidated Player Points, Era, Guild, Income, and full Combat + City Boosts (Arc, CF, Coins, Supplies) into `#header`. Fixed multi-variant score extraction (`rank_points ?? player_points ?? score ?? points`).
-- **15-Panel Vertical Mount Hierarchy**: Standardized `#content` stacking sequence matching canonical extension layout with full backward compatibility aliases.
-
-### 🐛 Bug Fixes & Stability
-
-- **Collapse Header Interactivity**: Bound label-click handlers on `#rewardsTextLabel` and `#bonusTextLabel`, ensuring clicking section headers toggles collapse state reliably across all panels.
-- **Accessibility Event Listeners**: Guarded against duplicate `keydown` document event listeners in `AddElement.js` via `document._foeA11yBound`.
-- **Timestamp Formatting**: Formatted raw numeric Unix epoch timestamps in `ConversationService.js` using `dateUtils.formatTime` instead of displaying raw timestamp digits.
-- **Defensive Production Parsing**: Added optional chaining in `CityProductionService.js` for `reward.state?.current_product?.product?.resources` and nullish military units, preventing unhandled `TypeError` exceptions.
-- **DOM ID Collision Prevention**: Parameterized secondary place card footers in `gbDonationTables.js` to `copyText_${place}` to eliminate duplicate `#copyText` IDs.
-- **Code Hygiene**: Cleaned up unreferenced `playerPrefix` in `renderGbInfoPanel.js`.
-
 ## [0.0.834] - 2026-09-11
 
 Comprehensive codebase audit fixes, protocol safety enhancements, and DOM reliability improvements.
