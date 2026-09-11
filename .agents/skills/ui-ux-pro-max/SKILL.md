@@ -1,6 +1,6 @@
 ---
 name: ui-ux-pro-max
-description: UI/UX design guidelines adapted for Bootstrap 5.3 and narrow DevTools docking.
+description: "UI design guidelines for Bootstrap 5.3 in DevTools panels."
 ---
 
 # UI/UX Pro Max - Design Intelligence

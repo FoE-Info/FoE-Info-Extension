@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Author, test, and structure Antigravity skills with progressive disclosure and references.
+description: "Author and test Antigravity skills with progressive disclosure."
 ---
 
 # Writing Antigravity Skills

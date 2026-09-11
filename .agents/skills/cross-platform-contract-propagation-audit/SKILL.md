@@ -1,6 +1,6 @@
 ---
 name: cross-platform-contract-propagation-audit
-description: Audit consistent field, enum, and contract propagation across services and UI.
+description: "Audit contract and enum propagation across layers."
 ---
 
 # Cross-Platform Contract Propagation Audit

@@ -19,7 +19,16 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
-const GRAPH_PATH = path.join(ROOT_DIR, 'metadata-store', 'graph.json');
+const candidatePaths = [
+  process.env.METADATA_GRAPH_PATH,
+  path.resolve(ROOT_DIR, '..', 'metadata-store', 'graphify-out', 'graph.json'),
+  path.join(ROOT_DIR, 'graphify-out', 'metadata', 'graph.json'),
+  path.resolve(ROOT_DIR, '..', 'metadata-store', 'graph.json'),
+  path.join(ROOT_DIR, 'metadata-store', 'graph.json'),
+].filter(Boolean);
+
+const GRAPH_PATH =
+  candidatePaths.find((p) => fs.existsSync(p)) || candidatePaths[0];
 
 if (!fs.existsSync(GRAPH_PATH)) {
   console.error(`[query] Error: Knowledge graph not found at ${GRAPH_PATH}`);

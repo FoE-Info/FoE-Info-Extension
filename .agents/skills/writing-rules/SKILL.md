@@ -1,6 +1,6 @@
 ---
 name: writing-rules
-description: Author and optimize workspace and directory rules in .agents/rules/ and AGENTS.md.
+description: "Author and optimize workspace rules in .agents/rules/."
 ---
 
 # Writing Antigravity Rules

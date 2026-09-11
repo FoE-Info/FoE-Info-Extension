@@ -139,6 +139,10 @@ function syncGbSelected(gbSelected, data) {
   if (data.entity_id !== undefined) gbSelected.entity_id = data.entity_id;
   if (data.cityentity_id !== undefined)
     gbSelected.cityentity_id = data.cityentity_id;
+  if (data.player !== undefined && data.player !== null)
+    gbSelected.player = data.player;
+  else if (data.player_id !== undefined && data.player_id !== null)
+    gbSelected.player = data.player_id;
   if (data.level !== undefined) gbSelected.level = Number(data.level);
   if (data.max_level !== undefined)
     gbSelected.max_level = Number(data.max_level);
@@ -271,12 +275,12 @@ function renderGbDonationPanel(
           donorArcBonus,
           standardPercent,
         );
-        remaining = BigNumber.maximum(0, remaining.minus(outcome.spotLock));
         const outcomeLabel =
           outcome.donorProfit > 0 ? '[Profitable]'
           : outcome.donorProfit === 0 ? '[Break-even]'
           : '[Loss]';
         donationHtml += `<div>P${s.place}: Lock ${outcome.spotLock}FP (Costs: ${outcome.costs}FP, Reward: ${outcome.donorReward}FP, Profit/Loss: ${outcome.donorProfit}FP) ${outcomeLabel}</div>`;
+        remaining = BigNumber.maximum(0, remaining.minus(outcome.spotLock));
       }
       donationHtml += '</div></div>';
       donation2DIV.innerHTML = donationHtml;

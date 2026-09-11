@@ -161,19 +161,23 @@ function initPopovers(container, customBs = null) {
                 clearTimeout(hideTimer);
                 hideTimer = null;
               }
-            });
-            window.addEventListener('mouseup', () => {
-              if (isSelecting) {
-                isSelecting = false;
-                const curTip = getTip();
-                if (
-                  curTip &&
-                  !curTip.matches(':hover') &&
-                  !el.matches(':hover')
-                ) {
-                  hidePopover();
-                }
-              }
+              window.addEventListener(
+                'mouseup',
+                () => {
+                  if (isSelecting) {
+                    isSelecting = false;
+                    const curTip = getTip();
+                    if (
+                      curTip &&
+                      !curTip.matches(':hover') &&
+                      !el.matches(':hover')
+                    ) {
+                      hidePopover();
+                    }
+                  }
+                },
+                { once: true },
+              );
             });
           }
         };

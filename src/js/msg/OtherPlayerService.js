@@ -111,7 +111,7 @@ function otherPlayerService(msg) {
 
   if (player.player_id && player.name) {
     try {
-      setPlayerName(player.player_id, player.name);
+      setPlayerName(player.name, player.player_id);
       updatePlayerNameCache(player.player_id, player.name);
     } catch {
       // Ignore in headless/test environments
@@ -247,53 +247,57 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
 				<div id="listsText" class="collapse ${collapse.collapseLists ? '' : 'show'} resize-both">`;
 
       if (showOptions.showFriends) {
-        friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="friendsTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#friendsText" aria-expanded="${!collapse.collapseFriends}" aria-controls="friendsText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-      ${element.icon('friendsicon', 'friendsText', collapse.collapseFriends)}
-					<strong>Friends</strong></p><div id="friendsCopy">`;
-        friendsHTML += element.copy(
-          'friendsCopyID',
-          'success',
-          'right',
-          collapse.collapseFriends,
-        );
-        friendsHTML += `</div><div id="friendsText" class="resize-both collapse ${
-          collapse.collapseFriends ? '' : 'show'
-        }"><table id="friendsText2">`;
+        friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert">
+          <div class="d-flex flex-row justify-content-between align-items-center mb-0">
+            <p id="friendsTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#friendsText" aria-expanded="${!collapse.collapseFriends}" aria-controls="friendsText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
+              ${element.icon('friendsicon', 'friendsText', collapse.collapseFriends)}
+              <strong>Friends</strong>
+            </p>
+            <span id="friendsCopyID" role="button" tabindex="0" class="badge rounded-pill bg-success cursor-pointer me-1" style="display: ${
+              collapse.collapseFriends ? 'none' : 'inline-block'
+            }" data-i18n="copy">Copy</span>
+          </div>
+          <div id="friendsText" class="resize-both collapse ${
+            collapse.collapseFriends ? '' : 'show'
+          }"><table id="friendsText2">`;
         friendsHTML += getFriendsHTML(friends);
         friendsHTML += `</table></div></div>`;
       }
       if (showOptions.showGuild) {
-        friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="guildTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildText" aria-expanded="${!collapse.collapseGuild}" aria-controls="guildText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-      ${element.icon('guildicon', 'guildText', collapse.collapseGuild)}
-					<strong>Guild</strong></p><div id="guildCopy">`;
-        friendsHTML += element.copy(
-          'guildCopyID',
-          'success',
-          'right',
-          collapse.collapseGuild,
-        );
-        friendsHTML += `</div><div id="guildText" class="resize-both collapse ${
-          collapse.collapseGuild ? '' : 'show'
-        }"><table id="guildText2">`;
+        friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert">
+          <div class="d-flex flex-row justify-content-between align-items-center mb-0">
+            <p id="guildTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildText" aria-expanded="${!collapse.collapseGuild}" aria-controls="guildText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
+              ${element.icon('guildicon', 'guildText', collapse.collapseGuild)}
+              <strong>Guild</strong>
+            </p>
+            <span id="guildCopyID" role="button" tabindex="0" class="badge rounded-pill bg-success cursor-pointer me-1" style="display: ${
+              collapse.collapseGuild ? 'none' : 'inline-block'
+            }" data-i18n="copy">Copy</span>
+          </div>
+          <div id="guildText" class="resize-both collapse ${
+            collapse.collapseGuild ? '' : 'show'
+          }"><table id="guildText2">`;
         friendsHTML += getFriendsHTML(guildMembers);
         friendsHTML += `</table></div></div>`;
       }
       if (showOptions.showHood) {
-        friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert"><p id="hoodTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#hoodText" aria-expanded="${!collapse.collapseHood}" aria-controls="hoodText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-      ${element.icon('hoodicon', 'hoodText', collapse.collapseHood)}
-					<strong>Hood</strong></p><div id="hoodCopy">`;
-        friendsHTML += element.copy(
-          'hoodCopyID',
-          'success',
-          'right',
-          collapse.collapseHood,
-        );
-        friendsHTML += `</div><div id="hoodText" class="resize-both collapse ${
-          collapse.collapseHood ? '' : 'show'
-        }"><table id="hoodText2">`;
+        friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert">
+          <div class="d-flex flex-row justify-content-between align-items-center mb-0">
+            <p id="hoodTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#hoodText" aria-expanded="${!collapse.collapseHood}" aria-controls="hoodText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
+              ${element.icon('hoodicon', 'hoodText', collapse.collapseHood)}
+              <strong>Hood</strong>
+            </p>
+            <span id="hoodCopyID" role="button" tabindex="0" class="badge rounded-pill bg-success cursor-pointer me-1" style="display: ${
+              collapse.collapseHood ? 'none' : 'inline-block'
+            }" data-i18n="copy">Copy</span>
+          </div>
+          <div id="hoodText" class="resize-both collapse ${
+            collapse.collapseHood ? '' : 'show'
+          }"><table id="hoodText2">`;
         friendsHTML += getFriendsHTML(hoodlist);
-        friendsHTML += `</table></div></div></div></div>`;
+        friendsHTML += `</table></div></div>`;
       }
+      friendsHTML += `</div></div>`;
 
       const friendsID = document.getElementById('friends');
       if (friendsID) {

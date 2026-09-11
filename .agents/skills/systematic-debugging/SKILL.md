@@ -1,6 +1,6 @@
 ---
 name: systematic-debugging
-description: Four-phase root-cause debugging protocol before attempting any fixes.
+description: "Four-phase root-cause debugging protocol."
 ---
 
 # Systematic Debugging

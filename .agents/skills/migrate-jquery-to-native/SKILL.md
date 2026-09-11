@@ -1,6 +1,6 @@
 ---
 name: migrate-jquery-to-native
-description: Step-by-step migration patterns to replace legacy jQuery with native modern Web APIs and fetch.
+description: "Replace legacy jQuery with modern Web APIs and fetch."
 ---
 
 # Migrate jQuery to Native Web APIs

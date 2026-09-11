@@ -79,9 +79,43 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     }
   }
 
+  const registerCityEntities = (entities, myId, myName) => {
+    if (!Array.isArray(entities)) return;
+    for (const entity of entities) {
+      if (
+        entity &&
+        (entity.type === 'greatbuilding' ||
+          entity.cityentity_id?.includes('Landmark'))
+      ) {
+        if (myName && !entity.player_name) {
+          entity.player_name = myName;
+        }
+        if (myId && !entity.player_id && !entity.player) {
+          entity.player_id = myId;
+          entity.player = myId;
+        }
+        gbRegistry.registerGreatBuilding(entity, 0);
+        if (myId) {
+          gbRegistry.registerGreatBuilding(entity, myId);
+        }
+      }
+    }
+  };
+
   // Startup & Player
+  dispatcher.register('StartupService', 'getData', (msg, reqData, context) => {
+    if (Array.isArray(msg?.responseData?.city_map?.entities)) {
+      const myId =
+        msg?.responseData?.user_data?.player_id || handlers?.MyInfo?.id || 0;
+      const myName =
+        msg?.responseData?.user_data?.user_name || handlers?.MyInfo?.name || '';
+      registerCityEntities(msg.responseData.city_map.entities, myId, myName);
+    }
+    if (startupService) {
+      return startupService(msg, reqData, context);
+    }
+  });
   if (startupService) {
-    dispatcher.register('StartupService', 'getData', startupService);
     dispatcher.register('StartupService', 'getOverview', startupService);
   }
   if (emissaryService) {
@@ -133,16 +167,64 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     return [];
   };
 
-  if (getConstructionRanking) {
-    dispatcher.register(
-      'GreatBuildingsService',
-      'getConstructionRanking',
-      (msg, context) => {
-        const reqData = extractRankingData(msg, context);
+  dispatcher.register(
+    'GreatBuildingsService',
+    'getConstructionRanking',
+    (msg, context) => {
+      const reqData = extractRankingData(msg, context);
+      if (getConstructionRanking) {
         return getConstructionRanking(msg, reqData, context);
-      },
-    );
-  }
+      }
+      const rankingParams = GbDonationService.extractRankingParams(
+        msg,
+        reqData,
+        context,
+      );
+      const target = handlers.GBselected || gbSelected;
+      if (target) {
+        const myId = handlers.MyInfo?.id || 0;
+        const myName = handlers.MyInfo?.name || '';
+        const isForeign =
+          rankingParams?.playerId !== undefined &&
+          rankingParams.playerId !== null &&
+          rankingParams.playerId !== 0 &&
+          rankingParams.playerId !== myId;
+        const pId = isForeign ? rankingParams.playerId : 0;
+        const eId = rankingParams?.entityId || target.id || target.entity_id;
+        let cached = gbRegistry.getGreatBuilding(pId, eId);
+        if (!cached && pId === 0 && myId) {
+          cached = gbRegistry.getGreatBuilding(myId, eId);
+        }
+        if (!cached && eId) {
+          cached = gbRegistry.getGreatBuilding(null, eId);
+        }
+        if (cached) {
+          GbDonationService.syncGbSelected(target, cached);
+          if (rankingParams?.level !== undefined) {
+            target.level = rankingParams.level;
+          }
+          const pName = cached.player_name || (pId === 0 ? myName : '') || '';
+          const finalPid = cached.player || (pId === 0 ? myId : pId) || 0;
+          if (finalPid) target.player = finalPid;
+          if (pName) target.player_name = pName;
+          if (handlers.setPlayerName && (pName || finalPid)) {
+            handlers.setPlayerName(pName, finalPid);
+          }
+        } else if (eId && eId !== target.id) {
+          target.id = eId;
+          target.entity_id = eId;
+          if (rankingParams?.level !== undefined) {
+            target.level = rankingParams.level;
+          }
+          if (pId === 0) {
+            target.player = myId;
+            target.player_name = myName;
+            if (handlers.setPlayerName) handlers.setPlayerName(myName, myId);
+          }
+        }
+      }
+    },
+  );
   if (getContributions) {
     dispatcher.register('GreatBuildingsService', 'getContributions', (msg) =>
       getContributions(msg),
@@ -278,7 +360,9 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
   // City Map Service (Own City GBs)
   dispatcher.register('CityMapService', 'getEntities', (msg) => {
     if (Array.isArray(msg?.responseData)) {
-      gbRegistry.registerGreatBuildings(msg.responseData, 0);
+      const myId = handlers?.MyInfo?.id || 0;
+      const myName = handlers?.MyInfo?.name || '';
+      registerCityEntities(msg.responseData, myId, myName);
     }
   });
   dispatcher.register('CityMapService', 'updateEntity', (msg) => {
@@ -286,7 +370,9 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
       Array.isArray(msg?.responseData) ? msg.responseData
       : msg?.responseData ? [msg.responseData]
       : [];
-    gbRegistry.registerGreatBuildings(list, 0);
+    const myId = handlers?.MyInfo?.id || 0;
+    const myName = handlers?.MyInfo?.name || '';
+    registerCityEntities(list, myId, myName);
     const target = handlers.GBselected || gbSelected;
     for (const item of list) {
       if (
@@ -312,7 +398,9 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
       Array.isArray(msg?.responseData) ? msg.responseData
       : msg?.responseData ? [msg.responseData]
       : [];
-    gbRegistry.registerGreatBuildings(list, 0);
+    const myId = handlers?.MyInfo?.id || 0;
+    const myName = handlers?.MyInfo?.name || '';
+    registerCityEntities(list, myId, myName);
     const target = handlers.GBselected || gbSelected;
     for (const item of list) {
       if (

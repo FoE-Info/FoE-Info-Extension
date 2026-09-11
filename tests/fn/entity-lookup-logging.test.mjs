@@ -15,7 +15,7 @@ function setup(t, defs, metadata = null) {
   const lookups = source
     .slice(
       source.indexOf('export function getCityEntityDef('),
-      source.indexOf('export function fLevelfromAge('),
+      source.indexOf('export function fGoodsTally('),
     )
     .replaceAll('export function ', 'function ');
   const context = {

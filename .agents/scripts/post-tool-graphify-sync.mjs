@@ -6,12 +6,14 @@
  * Performs fast AST updates when relevant source code files are edited.
  */
 
-import { execSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
+import { appendFileSync, closeSync, mkdirSync, openSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '../..');
+const logPath = path.join(projectRoot, 'graphify-out/foe-info/sync.log');
 
 export function affectsAst(targetFile) {
   if (!targetFile || typeof targetFile !== 'string') return false;
@@ -36,6 +38,36 @@ export function extractTargetFile(payload) {
   );
 }
 
+export function queueGraphifySync(targetFile) {
+  try {
+    mkdirSync(path.dirname(logPath), { recursive: true });
+    appendFileSync(logPath, `${new Date().toISOString()} queued ${targetFile}\n`);
+    const fd = openSync(logPath, 'a');
+    try {
+      const child = spawn('npm', ['run', '--silent', 'graph:foe-info:ast'], {
+        cwd: projectRoot,
+        detached: true,
+        stdio: ['ignore', fd, fd],
+      });
+      child.on('error', (err) => {
+        appendFileSync(logPath, `${new Date().toISOString()} spawn failed: ${err.message}\n`);
+      });
+      child.on('exit', (code) => {
+        appendFileSync(logPath, `${new Date().toISOString()} exit ${code}\n`);
+      });
+      child.unref();
+    } finally {
+      closeSync(fd);
+    }
+  } catch (err) {
+    if (process.env.DEBUG_HOOKS) {
+      process.stderr.write(
+        `[post-tool-graphify-sync] ${err?.message || err}\n`,
+      );
+    }
+  }
+}
+
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   let input = '';
   process.stdin.setEncoding('utf8');
@@ -54,11 +86,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
       const targetFile = extractTargetFile(payload);
 
       if (affectsAst(targetFile)) {
-        execSync('npm run graph:foe-info:ast', {
-          cwd: projectRoot,
-          stdio: 'ignore',
-          timeout: 5000,
-        });
+        queueGraphifySync(targetFile);
       }
     } catch (err) {
       if (process.env.DEBUG_HOOKS) {

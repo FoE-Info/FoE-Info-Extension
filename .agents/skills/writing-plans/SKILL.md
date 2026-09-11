@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Create structured, bite-sized implementation plans before coding.
+description: "Create structured, bite-sized implementation plans."
 ---
 
 # Writing Plans

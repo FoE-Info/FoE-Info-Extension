@@ -1,6 +1,6 @@
 ---
 name: refactor-index-slice
-description: Carve out modular domain services from monolithic src/js/index.js.
+description: "Extract modular domain services from monolithic index.js."
 ---
 
 # Workflow: Refactor Monolithic Index Slice

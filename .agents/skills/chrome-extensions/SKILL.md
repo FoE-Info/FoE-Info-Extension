@@ -1,6 +1,6 @@
 ---
 name: chrome-extensions
-description: Manifest V3 architecture, service workers, permissions, and WebStore packaging.
+description: "Manifest V3 lifecycle, service workers, and packaging."
 ---
 
 # Chrome Extensions
@@ -454,6 +454,14 @@ first-submission failures:
 For copy guidelines and common rejection reasons, see `references/webstore/store-listing.md`.
 Key rule: lead with function ("Highlights search terms on any webpage"), not feeling ("Enjoy
 searching again").
+
+### WebStore Review: User-Initiated Permissions Justifications
+
+When submitting permissions that modify user data or system state (such as `clipboardWrite`, `storage`, or `tabs`):
+- **User-Gesture Requirement**: Explicitly state in the justification that the action occurs exclusively in direct response to an explicit user interaction (e.g., clicking a "Copy" button).
+- **Exact Destination & Purpose**: Explain what data is written and where the user pastes it.
+- **Example (`clipboardWrite`)**:
+  > *"The `clipboardWrite` permission is used exclusively when the user clicks an explicit 'Copy' button in the extension panel (such as copying Great Building investment spots, Guild Battleground focus targets, or inventory tallies). It copies formatted text to the user's system clipboard so they can paste it directly into in-game chat threads or external spreadsheets. It never writes to the clipboard automatically or without user intent."*
 
 ---
 

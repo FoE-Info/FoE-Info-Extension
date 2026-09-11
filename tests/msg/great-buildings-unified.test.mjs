@@ -327,4 +327,128 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
       assert.equal(mockGBselected.current, 1500);
     },
   );
+
+  await t.test(
+    'reopening own GB after visiting another player updates GBselected and does not stay stuck on foreign GB',
+    async () => {
+      const bridgePkg = await import('../../src/js/protocol/legacyBridge.js');
+      const { registerLegacyBridge } = bridgePkg.default || bridgePkg;
+      const dispatcherPkg =
+        await import('../../src/js/protocol/MessageDispatcher.js');
+      const { MessageDispatcher } = dispatcherPkg.default || dispatcherPkg;
+      const dispatcher = new MessageDispatcher();
+
+      const mockGBselected = {
+        id: 0,
+        player: 0,
+        player_name: '',
+        name: '',
+        level: 0,
+        max_level: 0,
+        total: 0,
+        current: 0,
+        connected: false,
+      };
+
+      let currentPlayerId = 0;
+      let currentPlayerName = '';
+      const mockSetPlayerName = (name, id) => {
+        currentPlayerName = name;
+        currentPlayerId = id;
+        mockGBselected.player_name = name;
+      };
+
+      const mockMyInfo = {
+        id: 7560963,
+        name: 'Overlord Negan',
+        player_name: 'Overlord Negan',
+      };
+
+      registerLegacyBridge(dispatcher, {
+        GBselected: mockGBselected,
+        GreatBuildingRegistry: gbRegistryPkg.default || gbRegistryPkg,
+        setPlayerName: mockSetPlayerName,
+        getPlayerName: (id) =>
+          id === 7560963 ? 'Overlord Negan'
+          : id === 777777 ? 'Bomberman'
+          : '',
+        MyInfo: mockMyInfo,
+        startupService: () => {},
+      });
+
+      // 1. Startup arrives with own city entities (Château Frontenac, id: 104, level: 180)
+      await dispatcher.dispatchSingle({
+        requestClass: 'StartupService',
+        requestMethod: 'getData',
+        responseData: {
+          user_data: {
+            player_id: 7560963,
+            user_name: 'Overlord Negan',
+          },
+          city_map: {
+            entities: [
+              {
+                id: 104,
+                cityentity_id: 'X_ProgressiveEra_Landmark2',
+                type: 'greatbuilding',
+                level: 180,
+                max_level: 181,
+                connected: 1,
+                state: {
+                  invested_forge_points: 0,
+                  forge_points_for_level_up: 25000,
+                },
+              },
+            ],
+          },
+        },
+      });
+
+      // 2. Player visits Bomberman (777777)'s Horizontriss-Siphon (54321)
+      await dispatcher.dispatchSingle({
+        requestClass: 'OtherPlayerService',
+        requestMethod: 'getOtherPlayerCityMapEntity',
+        responseData: {
+          id: 54321,
+          player_id: 777777,
+          player_name: 'Bomberman',
+          cityentity_id: 'X_FutureEra_Landmark1',
+          type: 'greatbuilding',
+          level: 31,
+          max_level: 34,
+          connected: 1,
+          state: {
+            invested_forge_points: 500,
+            forge_points_for_level_up: 5000,
+          },
+        },
+      });
+
+      assert.equal(mockGBselected.id, 54321);
+      assert.equal(mockGBselected.player, 777777);
+      assert.equal(currentPlayerName, 'Bomberman');
+
+      // 3. Player reopens their own Château Frontenac (id: 104)
+      // Game client sends getConstructionRanking with requestData: [ 104 ]
+      await dispatcher.dispatchSingle({
+        requestClass: 'GreatBuildingsService',
+        requestMethod: 'getConstructionRanking',
+        requestData: [104],
+        responseData: [
+          {
+            rank: 1,
+            player: { player_id: 2002, name: 'Donor1' },
+            forge_points: 5750,
+          },
+        ],
+      });
+
+      // VERIFY: mockGBselected must be Château Frontenac, NOT Horizontriss-Siphon!
+      assert.equal(mockGBselected.id, 104);
+      assert.equal(mockGBselected.name, 'Château Frontenac');
+      assert.equal(mockGBselected.level, 180);
+      assert.equal(mockGBselected.player, 7560963);
+      assert.equal(currentPlayerName, 'Overlord Negan');
+    },
+  );
 });

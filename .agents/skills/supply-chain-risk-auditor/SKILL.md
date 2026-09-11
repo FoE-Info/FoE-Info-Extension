@@ -1,6 +1,6 @@
 ---
 name: supply-chain-risk-auditor
-description: Audit dependencies for supply-chain risks, CVEs, and maintenance anomalies.
+description: "Audit package dependencies for CVEs and anomalies."
 ---
 
 # Supply Chain Risk Auditor

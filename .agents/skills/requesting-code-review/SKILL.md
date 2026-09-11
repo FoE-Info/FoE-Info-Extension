@@ -1,6 +1,6 @@
 ---
 name: requesting-code-review
-description: Formal pre-merge code review request protocol to verify invariants.
+description: "Formal pre-merge code review request and invariant audit."
 ---
 
 # Requesting Code Review

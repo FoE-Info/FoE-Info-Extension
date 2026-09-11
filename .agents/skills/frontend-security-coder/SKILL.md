@@ -1,9 +1,6 @@
 ---
 name: frontend-security-coder
-description: Secure frontend practices for DOM XSS prevention, output sanitization, and client-side security.
-risk: critical
-source: community
-date_added: '2026-02-27'
+description: "Prevent DOM XSS, sanitize output, and enforce CSP."
 ---
 
 ## Use this skill when

@@ -27,11 +27,20 @@ for arg in "$@"; do
   fi
 done
 
+METADATA_STORE_DIR="${METADATA_STORE_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/../metadata-store}"
+
+if [ ! -d "$METADATA_STORE_DIR" ]; then
+  echo "Error: metadata-store directory not found at $METADATA_STORE_DIR"
+  exit 1
+fi
+
 echo "==> Step 1: Building Metadata Knowledge Graph from raw entities..."
+cd "${WORKSPACE_ROOT}"
+export GRAPHIFY_OUT="${METADATA_STORE_DIR}/graphify-out"
 node scripts/build-metadata-graph.mjs
 
 echo "==> Step 2: Clustering and Labeling Metadata Graph with Local LLM..."
-export GRAPHIFY_OUT="${WORKSPACE_ROOT}/graphify-out/metadata"
+cd "$METADATA_STORE_DIR"
 graphify cluster-only .
 graphify label . \
   --backend openai \
@@ -41,5 +50,11 @@ graphify label . \
 
 # Tasks needing local AI backend are complete: unload model and stop llama-swap now
 stop_llama_swap
+
+echo "==> Step 3: Exporting Visualizations and Docs..."
+graphify export wiki
+graphify export obsidian
+graphify export svg
+graphify tree
 
 echo "==> Metadata graph pipeline complete!"

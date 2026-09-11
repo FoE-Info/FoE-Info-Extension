@@ -46,11 +46,20 @@ try {
   const i18nModule = require('../fn/i18n.js');
   defaultTranslateContainer = i18nModule.translateContainer;
 } catch {}
+let defaultPanelResize = null;
+try {
+  defaultPanelResize = require('./panelResize.js');
+} catch {}
 
 let logger = null;
 try {
   const { createLogger } = require('../utils/logger.js');
   logger = createLogger('PanelDispatcher');
+} catch {}
+
+let setCurrentView = () => {};
+try {
+  ({ setCurrentView } = require('./cardVisibility.js'));
 } catch {}
 
 let renderSequence = 0;
@@ -110,10 +119,12 @@ function clearExpedition(containers = {}) {
 }
 
 function clearForBattleground(containers = {}) {
+  setCurrentView('GBG');
   clearExpedition(containers);
 }
 
 function clearForMainCity(containers = {}) {
+  setCurrentView('CITY');
   const seq = ++renderSequence;
   logger?.debug('UI clear & re-render triggered: MainCity', {
     seq,
@@ -136,6 +147,7 @@ function clearForMainCity(containers = {}) {
 }
 
 function clearStartup(containers = {}, resetState = {}) {
+  setCurrentView('CITY');
   const seq = ++renderSequence;
   logger?.debug('UI clear & re-render triggered: Startup', {
     seq,
@@ -360,7 +372,7 @@ function renderTreasuryPanel(resources, deps = {}) {
   treasuryHTML += copyHtml;
   treasuryHTML += `<div id="treasuryText" style="height: ${treasuryHeight}px" class="overflow-y resize collapse ${
     isCollapsed ? '' : 'show'
-  }"><table id="treasurytable" class="goods-table w-100"><thead><tr><th class="text-start ps-3"><span data-i18n="resource">Resource</span></th><th class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
+  }"><table id="treasurytable" class="goods-table w-100"><thead><tr><th class="text-start"><span data-i18n="type">Type</span></th><th class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
 
   if (typeof deps.initTreasury === 'function') {
     deps.initTreasury(resources);
@@ -390,7 +402,7 @@ function renderTreasuryPanel(resources, deps = {}) {
           typeof help.escapeHTML === 'function' ?
             help.escapeHTML(displayName)
           : displayName;
-        eraTreasuryText += `<tr><td class="text-start ps-3">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
+        eraTreasuryText += `<tr><td class="text-start">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
       }
     });
     if (eraTreasuryText) {
@@ -400,7 +412,7 @@ function renderTreasuryPanel(resources, deps = {}) {
 
   const medals = getResourceAmount(resources, 'medals');
   if (medals > 0) {
-    treasuryHTML += `<tr><td class="text-start ps-3">Medals</td><td class="text-end">${medals.toLocaleString()}</td></tr>`;
+    treasuryHTML += `<tr><td class="text-start">Medals</td><td class="text-end">${medals.toLocaleString()}</td></tr>`;
   }
 
   let otherTreasuryText = '';
@@ -420,7 +432,7 @@ function renderTreasuryPanel(resources, deps = {}) {
           typeof help.escapeHTML === 'function' ?
             help.escapeHTML(displayName)
           : displayName;
-        otherTreasuryText += `<tr><td class="text-start ps-3">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
+        otherTreasuryText += `<tr><td class="text-start">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
       }
     }
   }
@@ -484,22 +496,35 @@ function renderTreasuryPanel(resources, deps = {}) {
     (doc && typeof doc.getElementById === 'function' ?
       doc.getElementById('treasuryText')
     : null);
-  if (treasuryDiv && ResizeObs) {
-    try {
-      const resizeObserver = new ResizeObs((entries) => {
-        for (const entry of entries) {
-          const height = entry.contentRect?.height;
-          const isCollapsing =
-            treasuryDiv.classList?.contains('collapsing') ||
-            (treasuryDiv.classList && !treasuryDiv.classList.contains('show'));
-          if (typeof height === 'number' && height >= 80 && !isCollapsing) {
-            setTreasuryHeight(height);
-          }
-        }
+  if (treasuryDiv) {
+    const bindFn =
+      deps.bindResizableCollapse || defaultPanelResize?.bindResizableCollapse;
+    if (bindFn) {
+      bindFn({
+        element: treasuryDiv,
+        initialSize: treasuryHeight,
+        minSize: 80,
+        onResize: setTreasuryHeight,
+        ResizeObserverClass: ResizeObs,
       });
-      resizeObserver.observe(treasuryDiv);
-    } catch (err) {
-      console.error('[FoEInfo] Failed to observe treasuryDiv resize:', err);
+    } else if (ResizeObs) {
+      try {
+        const resizeObserver = new ResizeObs((entries) => {
+          for (const entry of entries) {
+            const height = entry.contentRect?.height;
+            const isCollapsing =
+              treasuryDiv.classList?.contains('collapsing') ||
+              (treasuryDiv.classList &&
+                !treasuryDiv.classList.contains('show'));
+            if (typeof height === 'number' && height >= 80 && !isCollapsing) {
+              setTreasuryHeight(height);
+            }
+          }
+        });
+        resizeObserver.observe(treasuryDiv);
+      } catch (err) {
+        console.error('[FoEInfo] Failed to observe treasuryDiv resize:', err);
+      }
     }
   }
 

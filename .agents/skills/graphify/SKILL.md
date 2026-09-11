@@ -1,6 +1,6 @@
 ---
 name: graphify
-description: Run local Graphify AST extraction, community labeling, and visual exports.
+description: "Run Graphify AST extraction, labeling, and visual exports."
 ---
 
 # Graphify Knowledge Graph

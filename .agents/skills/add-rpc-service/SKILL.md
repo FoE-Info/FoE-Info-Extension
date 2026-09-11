@@ -1,6 +1,6 @@
 ---
 name: add-rpc-service
-description: Scaffold decoupled InnoGames JSON-RPC service handlers in src/js/msg/.
+description: "Scaffold decoupled JSON-RPC service handlers in src/js/msg/."
 ---
 
 # Workflow: Add New InnoGames RPC Service
@@ -51,7 +51,7 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
 
 ## Phase 4: End-to-End Contract Propagation Audit
 Audit the new service contract across every pipeline stage using the `cross-platform-contract-propagation-audit` skill:
-1. **Wire Ingestion**: Confirm `xhr-interceptor.js` and `content-bridge.js` bridge the payload without dropping properties.
+1. **Wire Ingestion**: Confirm `xhrInterceptor.js` and `contentBridge.js` bridge the payload without dropping properties.
 2. **State & Storage**: Confirm state attributes are saved to `MetadataStore` or `src/js/vars/` with defensive defaults (`?.`, `??`).
 3. **DOM Presentation**: Confirm all user-visible text is safely inserted using `textContent` or sanitized elements (no unescaped `.html()`).
 4. **Deterministic Fixture**: Add a sample payload to `tests/protocol/` asserting envelope extraction and parsing without runtime errors.

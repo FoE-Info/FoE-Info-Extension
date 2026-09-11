@@ -1,6 +1,6 @@
 ---
 name: using-superpowers
-description: Discover, select, and orchestrate specialized skills for development tasks.
+description: "Select and orchestrate specialized skills for tasks."
 ---
 
 <SUBAGENT-STOP>

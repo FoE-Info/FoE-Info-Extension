@@ -1,6 +1,6 @@
 ---
 name: modern-web-guidance
-description: Research modern web standards, Baseline browser features, and CSS APIs with 141 local offline guides.
+description: "Research modern Web standards, APIs, and Baseline features."
 ---
 
 # Modern Web Guidance

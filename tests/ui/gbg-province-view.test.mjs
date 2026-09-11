@@ -86,10 +86,20 @@ describe('gbgProvinceView Suite', () => {
       ];
       const html = buildLeaderboardHTML(leaderboard);
       assert.ok(
-        html.includes('<tr><th>Guild</th><th>VP/hr</th><th>Total VP</th></tr>'),
+        html.includes(
+          '<tr><th class="text-start">Guild</th><th class="text-center">VP/hr</th><th class="text-center">Total VP</th></tr>',
+        ),
       );
-      assert.ok(html.includes('<td>Alpha Clan</td><td>120</td><td>5400</td>'));
-      assert.ok(html.includes('<td>Beta Clan</td><td>80</td><td>3200</td>'));
+      assert.ok(
+        html.includes(
+          '<td class="text-start">Alpha Clan</td><td class="text-center tabular-nums">120</td><td class="text-center tabular-nums">5,400</td>',
+        ),
+      );
+      assert.ok(
+        html.includes(
+          '<td class="text-start">Beta Clan</td><td class="text-center tabular-nums">80</td><td class="text-center tabular-nums">3,200</td>',
+        ),
+      );
     });
   });
 

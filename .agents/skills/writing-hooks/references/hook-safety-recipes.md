@@ -35,7 +35,7 @@ process.stdin.on('end', () => {
   const response = {
     injectSteps: [
       {
-        ephemeralMessage: 'Guardrail Reminder: Keep slices < 100 lines, modules <= 250 lines.'
+        ephemeralMessage: 'Guardrail Reminder: Keep slices <= 100 lines, files <= 600 lines.'
       }
     ]
   };

@@ -1,6 +1,6 @@
 ---
 name: subagent-driven-development
-description: Execute multi-task plans via isolated background subagents with peer reviews.
+description: "Execute multi-task plans via background subagents."
 ---
 
 # Subagent-Driven Development

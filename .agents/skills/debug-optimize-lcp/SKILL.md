@@ -1,6 +1,6 @@
 ---
 name: debug-optimize-lcp
-description: Debug and optimize Largest Contentful Paint (LCP) and render-blocking resources.
+description: "Debug and optimize Largest Contentful Paint and rendering."
 ---
 
 ## What is LCP and why it matters

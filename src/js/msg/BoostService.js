@@ -96,7 +96,7 @@ function applyBoostsToCity(msg, cityTarget = {}) {
     if (!item) continue;
     const val = Number(item.value) || 0;
     const type = item.type;
-    const feature = item.targetedFeature;
+    const feature = item.targetedFeature || item.feature || 'all';
 
     if (type === 'coin_production') {
       cityTarget.CoinBoost += val;

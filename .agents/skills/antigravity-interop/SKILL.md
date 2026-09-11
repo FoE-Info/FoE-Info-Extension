@@ -1,6 +1,6 @@
 ---
 name: antigravity-interop
-description: Dual-harness interop contract between Antigravity and OpenCode — portability, grants, handoff protocol, and caveats.
+description: "Dual-harness contract between Antigravity and OpenCode."
 ---
 
 # Antigravity ↔ OpenCode Interop
@@ -13,9 +13,9 @@ This skill documents the dual-harness contract so work hands off seamlessly betw
 
 | Artifact | Canonical Location | Host Shim |
 | :--- | :--- | :--- |
-| Subagents (31) | `.agents/agents/*.md` | `.opencode/agents/*.md` (thin shims) |
-| Rules (16) | `.agents/rules/*.md` | `opencode.json` instructions glob |
-| Skills (51+) | `.agents/skills/*/SKILL.md` | Auto-discovered via `skills.json` |
+| Subagents (36) | `.agents/agents/*.md` | `.opencode/agents/*.md` (thin shims) |
+| Rules (17) | `.agents/rules/*.md` | `opencode.json` instructions glob |
+| Skills (53) | `.agents/skills/*/SKILL.md` | Auto-discovered via `skills.json` |
 | MCP servers | `.agents/mcp_config.json` | `opencode.json` `mcp` block |
 | Hooks | `.agents/hooks.json` | `.opencode/plugins/*.mjs` |
 | Grants | `~/.gemini/config/config.json` | `opencode.json` `permission` block |
@@ -41,7 +41,7 @@ Both `.agents/mcp_config.json` and `opencode.json` use **native `env` injection*
 | :--- | :--- | :--- |
 | `graphify-foe-info` | `graphify-out/foe-info/graph.json` | In-repo (generated) |
 | `graphify-foe-info-original` | `../FoE-Info-Extension-original/graphify-out/graph.json` | Sibling repo clone (frozen baseline commit `8c681d1faa1f87930ecae3ffc3f9008ec49fe164`) |
-| `graphify-metadata-store` | `graphify-out/metadata/graph.json` | In-repo (generated) |
+| `graphify-metadata-store` | `../metadata-store/graphify-out/graph.json` | Sibling store (generated) |
 | `graphify-forge-hammer` | `../forge-hammer/graphify-out/graph.json` | Sibling repo clone (optional) |
 | `graphify-low-tool` | `../LoW-Tool/graphify-out/graph.json` | Sibling repo clone (optional; original closed-source implementation) |
 

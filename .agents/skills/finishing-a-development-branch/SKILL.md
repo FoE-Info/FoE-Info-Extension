@@ -1,6 +1,6 @@
 ---
 name: finishing-a-development-branch
-description: Verify tests, evaluate integration, and finalize branch merges cleanly.
+description: "Verify tests, review diffs, and finalize branch merges."
 ---
 
 # Finishing a Development Branch

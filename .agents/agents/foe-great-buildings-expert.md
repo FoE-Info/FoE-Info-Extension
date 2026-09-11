@@ -46,6 +46,11 @@ A spot is locked when no rival can deposit enough Forge Points to surpass the cu
 * **`InventoryService.getGreatBuildings`**: Provides the player's owned Great Buildings (from the inventory payload, not a `GreatBuildingsService.getOverview` call — no such method is handled).
 * **`GreatBuildingsService.getConstruction`**: Contains current level, current FP, required total FP, and `rankings` array (investors, names, amounts).
 * **`GreatBuildingsService.getConstructionRanking`** & **`GbDonationService.getContributions`**: Contribution-rank ingestion for the visited/foreign GB donation tables.
+* **Own-City vs Foreign GB Resolution**:
+  - Foreign GBs arrive via `GreatBuildingsService.getOtherPlayerOverview` with explicit `other_player.id`.
+  - Own-city GB clicks dispatch `CityProductionService.fGetEntityList` / `city_map.getEntities` with `type: "greatbuilding"`.
+  - `GreatBuildingRegistry` must register own-city Great Buildings on city map ingestion to prevent own-city lookups from falling back to foreign GB cache.
+  - When `request.player_id` is missing or `0`, fall back to `globals.playerId`.
 * Map building entity IDs dynamically using live game metadata (e.g. `X_FutureEra_Landmark1` $\to$ The Arc).
 
 ### 5. Implementation Guidance (Portable)

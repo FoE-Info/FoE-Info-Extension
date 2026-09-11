@@ -183,13 +183,12 @@ test('PostToolUse Graphify Sync Hook - extracts target file from various payload
   assert.equal(extractTargetFile(null), '');
 });
 
-test('Stop Hook - evaluateStopDecision blocks stop if background tasks active', () => {
+test('Stop Hook - evaluateStopDecision allows stop when model stops with background tasks for reactive wakeup', () => {
   const result = evaluateStopDecision({
     fullyIdle: false,
     terminationReason: 'model_stop',
   });
-  assert.equal(result.decision, 'continue');
-  assert.match(result.reason, /Background tasks/);
+  assert.equal(result.decision, 'allow');
 });
 
 test('Stop Hook - evaluateStopDecision allows stop when fully idle', () => {
@@ -220,7 +219,7 @@ test('Stop Hook - CLI execution adheres to stdout JSON contract', async () => {
   const path = await import('node:path');
   const scriptPath = path.resolve('.agents/scripts/stop-guard.mjs');
 
-  // When not idle, returns continue
+  // When not idle on model_stop, returns allow (to permit reactive wakeup)
   const stdoutActive = await new Promise((resolve, reject) => {
     const child = execFile('node', [scriptPath], (err, out) => {
       if (err) reject(err);
@@ -231,7 +230,7 @@ test('Stop Hook - CLI execution adheres to stdout JSON contract', async () => {
     );
   });
   const parsedActive = JSON.parse(stdoutActive);
-  assert.equal(parsedActive.decision, 'continue');
+  assert.equal(parsedActive.decision, 'allow');
 
   // When fully idle, returns allow
   const stdoutIdle = await new Promise((resolve, reject) => {
@@ -245,6 +244,21 @@ test('Stop Hook - CLI execution adheres to stdout JSON contract', async () => {
   });
   const parsedIdle = JSON.parse(stdoutIdle);
   assert.equal(parsedIdle.decision, 'allow');
+});
+
+test('Graphify Guard Hook - isGraphifyToolCall recognizes direct and MCP query tools', async () => {
+  const { isGraphifyToolCall } =
+    await import('../../.agents/scripts/graphify-guard.mjs');
+  assert.equal(isGraphifyToolCall('query_graph'), true);
+  assert.equal(isGraphifyToolCall('get_node'), true);
+  assert.equal(isGraphifyToolCall('graphify-foe-info_query_graph'), true);
+  assert.equal(isGraphifyToolCall('mcp__graphify_foe_info__query_graph'), true);
+  assert.equal(
+    isGraphifyToolCall('call_mcp_tool', { ServerName: 'graphify-foe-info' }),
+    true,
+  );
+  assert.equal(isGraphifyToolCall('grep_search'), false);
+  assert.equal(isGraphifyToolCall('run_command'), false);
 });
 
 test('Graphify Guard Hook - isCodebaseSourceSearch detects application searches', () => {
@@ -320,6 +334,13 @@ test('Graphify Guard Hook - evaluateGraphifyGuard enforces query-first protocol'
     },
   };
   assert.equal(evaluateGraphifyGuard(testGrep).decision, 'allow');
+
+  // Scoped shell command is allowed
+  const scopedShellCall = {
+    name: 'run_command',
+    args: { CommandLine: 'rg -n Startup src/js/msg/StartupService.js' },
+  };
+  assert.equal(evaluateGraphifyGuard(scopedShellCall).decision, 'allow');
 
   // CLI graphify command allows and updates stamp
   const cliGraphCall = {

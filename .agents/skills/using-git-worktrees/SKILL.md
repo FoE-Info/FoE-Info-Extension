@@ -1,6 +1,6 @@
 ---
 name: using-git-worktrees
-description: Spawn isolated Git worktrees under .worktrees/ for clean feature isolation.
+description: "Spawn isolated Git worktrees under .worktrees/."
 ---
 
 # Using Git Worktrees

@@ -1,6 +1,6 @@
 ---
 name: brooks-lint
-description: Architectural smell detection and coupling analysis grounded in software engineering.
+description: "Detect architectural smells and module coupling."
 ---
 
 # Brooks Lint

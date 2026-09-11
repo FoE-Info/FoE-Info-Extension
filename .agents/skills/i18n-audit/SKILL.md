@@ -1,6 +1,6 @@
 ---
 name: i18n-audit
-description: Audit and synchronize 7-language translation dictionaries in src/i18n/.
+description: "Audit and synchronize 7-language translation dictionaries."
 ---
 
 # i18n Translation Key Parity Audit

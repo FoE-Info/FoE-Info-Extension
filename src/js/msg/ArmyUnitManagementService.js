@@ -16,6 +16,7 @@ let element = null;
 let collapse = null;
 let globals = null;
 let helper = null;
+let panelResize = null;
 let showOptions = { showArmy: true };
 let defaultState = { armyDIV: null, MilitaryDefs: [] };
 
@@ -33,13 +34,26 @@ if (typeof __webpack_require__ !== 'undefined') {
     helper = require('../fn/helper.js');
   } catch {}
   try {
+    panelResize = require('../ui/panelResize.js');
+  } catch {}
+  try {
     const showOpt = require('../vars/showOptions.js');
     showOptions = showOpt.showOptions || showOpt;
   } catch {}
   try {
     defaultState = require('../vars/state.js');
   } catch {}
+} else {
+  try {
+    globals = require('../fn/globals.js');
+  } catch {}
+  try {
+    panelResize = require('../ui/panelResize.js');
+  } catch {}
 }
+
+const { createLogger } = require('../utils/logger.js');
+const logger = createLogger('ArmyUnitManagementService');
 
 let metadataStore = null;
 try {
@@ -236,7 +250,14 @@ function armyUnitManagementService(msg, deps = {}) {
       if (targetDiv) {
         const diff = rogues - (ArmyUnits['rogue'] ?? 0);
         const isCollapsed = collapse?.collapseArmy ?? false;
-        const armySize = globals?.toolOptions?.armySize ?? 150;
+        const rawArmySize =
+          (deps.globals || globals)?.toolOptions?.armySize ??
+          deps.toolOptions?.armySize ??
+          globals?.toolOptions?.armySize;
+        const armySize =
+          typeof rawArmySize === 'number' && rawArmySize >= 50 ?
+            rawArmySize
+          : 185;
         const closeBtn =
           element && typeof element.close === 'function' ?
             element.close()
@@ -251,14 +272,18 @@ function armyUnitManagementService(msg, deps = {}) {
         armyHTML += `<p id="armyTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#armyText" aria-expanded="${!isCollapsed}" aria-controls="armyText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
         armyHTML += iconHtml;
         armyHTML += `<strong>Army:</strong> <span id="armyUnits" class="ms-2">${
-          isCollapsed ? `Rogues: ${rogues} Units: ${allUnits}` : ''
+          isCollapsed ?
+            `Rogues: ${rogues.toLocaleString()} Units: ${allUnits.toLocaleString()}`
+          : ''
         }</span></p>`;
-        armyHTML += `<div id="armyText" style="height: ${armySize}px" class="overflow-y resize-both collapse ${
+        armyHTML += `<div id="armyText" style="height: ${armySize}px" class="overflow-y resize collapse ${
           isCollapsed ? '' : 'show'
-        }"><p class="" >`;
-        armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class=${
-          diff > 0 ? '"green">+' : '"red">'
-        }${diff !== 0 ? diff : ''}</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
+        }"><p class="">`;
+        const diffHtml =
+          diff !== 0 ?
+            ` <span class="${diff > 0 ? 'green' : 'red'}">${diff > 0 ? '+' : ''}${diff}</span>`
+          : '';
+        armyHTML += `<span id="armyUnits2">Rogues: ${rogues.toLocaleString()}</span>${diffHtml}<br><span id="armyUnits3">Units: ${allUnits.toLocaleString()}</span><br>`;
 
         const getAgeLevel = helper?.fLevelfromAge || fallbackAgeLevel;
         const armyText = unitsPerEra
@@ -298,19 +323,36 @@ function armyUnitManagementService(msg, deps = {}) {
         }
 
         const armyDiv = document.getElementById('armyText');
-        if (armyDiv && typeof ResizeObserver !== 'undefined') {
-          const resizeObserver = new ResizeObserver((entries) => {
-            for (const entry of entries) {
+        if (armyDiv) {
+          const setArmySizeFn =
+            deps.setArmySize || (deps.globals || globals)?.setArmySize;
+          const bindFn =
+            deps.bindResizableCollapse || panelResize?.bindResizableCollapse;
+          if (bindFn) {
+            bindFn({
+              element: armyDiv,
+              initialSize: armySize,
+              minSize: 50,
+              onResize: setArmySizeFn,
+              ResizeObserverClass: deps.ResizeObserver,
+            });
+          } else if (typeof ResizeObserver !== 'undefined') {
+            const resizeObserver = new ResizeObserver((entries) => {
               if (
-                entry.contentRect &&
-                entry.contentRect.height &&
-                globals?.setArmySize
+                armyDiv.classList?.contains('collapsing') ||
+                (armyDiv.classList && !armyDiv.classList.contains('show'))
               ) {
-                globals.setArmySize(entry.contentRect.height);
+                return;
               }
-            }
-          });
-          resizeObserver.observe(armyDiv);
+              for (const entry of entries) {
+                const height = entry.contentRect?.height;
+                if (height && height >= 50 && setArmySizeFn) {
+                  setArmySizeFn(height);
+                }
+              }
+            });
+            resizeObserver.observe(armyDiv);
+          }
         }
 
         if (

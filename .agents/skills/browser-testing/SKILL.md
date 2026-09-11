@@ -1,6 +1,6 @@
 ---
 name: browser-testing
-description: Live Chromium testing, DevTools panel inspection, and CDP socket diagnostics on port 9222.
+description: "Test Chromium DevTools panel and CDP sockets on port 9222."
 ---
 
 # Browser Testing & DevTools Automation Skill

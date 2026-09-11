@@ -16,7 +16,8 @@ All Git commits in this workspace must adhere strictly to the `/unslop-commit` s
   - Imperative mood only: `add`, `fix`, `update`, `remove` (never `added`, `fixing`, `fixes`).
   - Length: Aim for $\le 50$ characters; hard maximum of 72 characters.
   - No trailing period. Lowercase after colon.
-* **Body**: Only include when necessary for non-obvious "why", breaking changes, security context, or data migrations. Wrap at 72 characters.
+* **Body**: Only include when necessary for non-obvious "why", breaking changes, security context, or data migrations.
+  - **Strict Line Length**: Every line in the body (including bullet points) must be $\le 72$ characters. Husky's `commit-msg` hook will reject the commit if any line exceeds 72 characters.
 
 ---
 

@@ -114,7 +114,7 @@
     },
     "graphify-metadata-store": {
       "command": "graphify-mcp",
-      "args": ["graphify-out/metadata/graph.json"],
+      "args": ["../metadata-store/graphify-out/graph.json"],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",

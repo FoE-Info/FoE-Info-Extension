@@ -1,6 +1,6 @@
 ---
 name: codebase-modernization-planner
-description: 5-phase roadmap to decompose legacy monoliths and gradually migrate to TypeScript with zero breaking changes.
+description: "Roadmap to decompose monoliths and migrate to TypeScript."
 ---
 
 # Codebase Modernization & Migration Planner

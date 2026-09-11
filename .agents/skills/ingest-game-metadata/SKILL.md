@@ -1,6 +1,6 @@
 ---
 name: ingest-game-metadata
-description: Ingest raw InnoGames metadata, decode catalogs, and update offline graphs.
+description: "Ingest InnoGames metadata and update offline graphs."
 ---
 
 # Workflow: Ingest Game Metadata & Update Knowledge Graph
@@ -18,7 +18,7 @@ Use this skill to ingest new raw game metadata from InnoGames releases, update o
    ```bash
    npm run metadata:download
    ```
-   * Downloads startup definitions, building configurations, historical allies, castle levels, and translation catalogs into `metadata-store/`.
+   * Downloads startup definitions, building configurations, historical allies, castle levels, and translation catalogs into `../metadata-store/`.
 
 ---
 
@@ -27,7 +27,7 @@ Use this skill to ingest new raw game metadata from InnoGames releases, update o
    ```bash
    npm run graph:metadata:update
    ```
-   * Builds `graphify-out/metadata/graph.json` spanning BuildingEntity, HistoricalAlly, Technology, SelectionKit, and MilitaryUnit nodes.
+   * Builds `../metadata-store/graphify-out/graph.json` spanning BuildingEntity, HistoricalAlly, Technology, SelectionKit, and MilitaryUnit nodes.
 2. Run topological integrity audit:
    ```bash
    npm run metadata:query -- audit

@@ -80,7 +80,7 @@ To isolate logs from specific subsystems, type any of these tags into the DevToo
 ┌─────────────────────────────────────────────────────────────┐
 │                      Inspected Game Tab                     │
 │  ┌────────────────────────┐     ┌────────────────────────┐  │
-│  │   xhr-interceptor.js   │     │      (MAIN World)      │  │
+│  │   xhrInterceptor.js    │     │      (MAIN World)      │  │
 │  │      (MAIN World)      │     └────────────────────────┘  │
 │  └───────────┬────────────┘                                  │
 │              │ window.postMessage                            │
@@ -112,7 +112,7 @@ To isolate logs from specific subsystems, type any of these tags into the DevToo
 
 - Changes to `'debugEnabled'` in storage are caught by `chrome.storage.onChanged` listeners in:
   - The DevTools panel (`logger.js`, `containerBinding.js`, `state.js`, `index.js`).
-  - The content script bridge (`content-bridge.js`), which posts `FOE_INFO_DEBUG_SYNC` to the MAIN page world for `xhr-interceptor.js`.
+  - The content script bridge (`contentBridge.js`), which posts `FOE_INFO_DEBUG_SYNC` to the MAIN page world for `xhrInterceptor.js`.
   - The DevTools background bridge (`devtools.js`).
 
 ---

@@ -1,6 +1,6 @@
 ---
 name: a11y-debugging
-description: Accessibility auditing via Chrome DevTools MCP for ARIA, keyboard navigation, and contrast.
+description: "Audit ARIA, keyboard navigation, and contrast via CDP."
 ---
 
 ## Core Concepts

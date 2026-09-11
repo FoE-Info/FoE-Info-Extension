@@ -1,6 +1,6 @@
 ---
 name: ephemeral-llama-swap
-description: Manage on-demand local LLM lifecycle with automatic VRAM eviction and server shutdown.
+description: "Manage local LLM lifecycle with automatic VRAM eviction."
 ---
 
 # Ephemeral Llama-Swap Lifecycle Manager

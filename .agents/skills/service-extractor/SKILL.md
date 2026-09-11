@@ -1,6 +1,6 @@
 ---
 name: service-extractor
-description: Safely extract InnoGames RPC handlers out of monoliths into src/js/msg/.
+description: "Extract JSON-RPC handlers from monoliths into src/js/msg/."
 ---
 
 # Service Extractor Runbook

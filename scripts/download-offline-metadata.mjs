@@ -19,7 +19,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
-const STORE_DIR = path.join(ROOT_DIR, 'metadata-store');
+const STORE_DIR =
+  process.env.METADATA_STORE_DIR ||
+  [
+    path.resolve(ROOT_DIR, '..', 'metadata-store'),
+    path.join(ROOT_DIR, 'metadata-store'),
+  ].find((p) => fs.existsSync(p)) ||
+  path.resolve(ROOT_DIR, '..', 'metadata-store');
 const ENTITIES_DIR = path.join(STORE_DIR, 'entities');
 const MANIFEST_PATH = path.join(STORE_DIR, 'manifest.json');
 

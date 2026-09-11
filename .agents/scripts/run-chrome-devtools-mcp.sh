@@ -37,45 +37,16 @@ is_cdp_alive() {
   curl -s -m 1 http://127.0.0.1:9222/json/version >/dev/null 2>&1
 }
 
-# If not alive, attempt to start the isolated foe-browser service
+# Strict Invariant: NEVER auto-spawn browser or steal control without explicit user command.
+# If port 9222 is not already active, do not launch foe-browser or fallback Chromium.
 if ! is_cdp_alive; then
-  if command -v foe-browser >/dev/null 2>&1; then
-    foe-browser >/dev/null 2>&1 || true
-    for _ in {1..15}; do
-      if is_cdp_alive; then
-        break
-      fi
-      sleep 0.2
-    done
-  fi
+  echo "[chrome-devtools-mcp] CDP port 9222 is not active. MCP will not auto-launch browser without explicit user command." >&2
+  exit 0
 fi
 
-# If port 9222 is active, connect to the running browser
-if is_cdp_alive; then
-  exec ${MCP_BIN} \
-    --browserUrl="http://127.0.0.1:9222" \
-    "${COMMON_FLAGS[@]}" \
-    "$@"
-fi
-
-# Fallback: Launch standalone Chromium instance with FoE extensions
-EXT_LIST=()
-[ -d "${EXTENSION_DEV}" ] && EXT_LIST+=("${EXTENSION_DEV}")
-[ -f "${WORKSPACE_ROOT}/manifest.json" ] && [ "${WORKSPACE_ROOT}" != "${EXTENSION_DEV}" ] && EXT_LIST+=("${WORKSPACE_ROOT}")
-[ -d "${FORGE_HAMMER}" ] && [ "${WORKSPACE_ROOT}" != "${FORGE_HAMMER}" ] && EXT_LIST+=("${FORGE_HAMMER}")
-LOAD_EXT=$(IFS=,; echo "${EXT_LIST[*]}")
-
-STANDALONE_FLAGS=(
-  "--channel=stable"
-  "--viewport=1920x1080"
-  "--user-data-dir=${HOME}/.config/foe-info-chrome-profile"
-  "--ignore-default-chrome-arg=--disable-extensions"
-  "--chrome-arg=--load-extension=${LOAD_EXT}"
-  "--chrome-arg=--no-sandbox"
-  "--chrome-arg=--disable-setuid-sandbox"
-)
-
+# Only connect when an existing browser instance was explicitly launched on port 9222
 exec ${MCP_BIN} \
-  "${STANDALONE_FLAGS[@]}" \
+  --browserUrl="http://127.0.0.1:9222" \
   "${COMMON_FLAGS[@]}" \
   "$@"
+

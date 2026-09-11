@@ -1,6 +1,6 @@
 ---
 name: writing-agents
-description: Design, configure, and verify custom Antigravity subagents in .agents/agents/.
+description: "Design and verify custom subagents in .agents/agents/."
 ---
 
 # Writing Antigravity Subagents

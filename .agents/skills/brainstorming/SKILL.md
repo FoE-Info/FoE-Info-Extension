@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: Explore requirements, user intent, and architecture options collaboratively.
+description: "Explore requirements, user intent, and architecture options."
 ---
 
 # Brainstorming Ideas Into Designs

@@ -1,6 +1,6 @@
 ---
 name: package-release
-description: Pre-flight checks, manifest version sync, and production WebStore zip packaging.
+description: "Manifest version sync and production WebStore zip packaging."
 ---
 
 # Workflow: Package WebStore Release
@@ -22,12 +22,27 @@ Follow this skill to validate code quality and produce a production-ready extens
    * `package.json`
    * `src/chrome/manifest.json`
 
-3. **Build Production Assets**:
-   Compile optimized bundles:
+3. **Build Production Assets & WebStore Zip**:
+   Compile optimized production bundles:
    ```bash
    npm run build
    ```
-   Outputs will be generated in `build/FoE-Info_WEBSTORE/`.
+   Outputs:
+   - Unpacked directory: `build/FoE-Info_WEBSTORE/`
+   - Packaged distribution zip: `build/FoE-Info_WEBSTORE_<version>_<YYYY-MM-DD>.zip` (generated automatically via `ZipPlugin` in `webpack.prod.js`).
 
-4. **Verify Distribution Bundle**:
-   Verify that `build/FoE-Info_WEBSTORE/manifest.json` exists and that all required icons and bundles are present.
+4. **Automated Release Pipeline (`npm run release`)**:
+   For official releases, use the automated release runner [`scripts/release.mjs`](../../../scripts/release.mjs):
+   ```bash
+   npm run release
+   ```
+   This orchestrates:
+   - Verification of version parity between `package.json` and `manifest.json`.
+   - Full 5-stage verification gate (`npm run verify`).
+   - Production bundle compilation & WebStore zip creation (`npm run build`).
+   - Verification of the generated `build/FoE-Info_WEBSTORE_<version>_<date>.zip` artifact.
+   - Git annotated tag creation (`v<version>`) and tag push to `origin`.
+   - GitHub Release creation via `gh release create` attaching the zip artifact and release notes from `CHANGELOG.md`.
+
+5. **Verify Distribution Bundle**:
+   Confirm that `build/FoE-Info_WEBSTORE/manifest.json` exists, that all required icons and bundles are present, and that the zip file is ready for Chrome Web Store Developer Dashboard upload.

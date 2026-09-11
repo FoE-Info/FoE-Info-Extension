@@ -1,6 +1,6 @@
 ---
 name: chrome-devtools-troubleshooting
-description: Troubleshoot Chrome DevTools MCP server connection, port binding, and target attachment issues.
+description: "Troubleshoot DevTools MCP port binding and attachment."
 ---
 
 ## Troubleshooting Wizard

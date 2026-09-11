@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: Execute structured implementation plans sequentially in the main session.
+description: "Execute structured implementation plans sequentially."
 ---
 
 # Executing Plans

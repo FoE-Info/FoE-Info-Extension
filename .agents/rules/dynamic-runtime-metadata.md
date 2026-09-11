@@ -12,7 +12,7 @@ Forge of Empires continuously updates its game entity schemas, eras, units, and 
 ## 1. Core Invariants
 
 1. **Strict Offline Boundary (`metadata-store/`)**:
-   - `metadata-store/` is strictly an **offline analysis lab, reverse-engineering sandbox, and Graphify index**.
+   - `metadata-store/` (located in sibling directory `../metadata-store/`) is strictly an **offline analysis lab, reverse-engineering sandbox, and Graphify index**.
    - Code inside `src/` must **NEVER** import, require, or depend on files in `metadata-store/`.
 2. **Zero Preseeded Game JSON in `src/`**:
    - Never commit, bundle, or preseed entity `.json` dumps (such as `defaultUnits.json`, `city_entities.json`, `items.json`) into `src/`.

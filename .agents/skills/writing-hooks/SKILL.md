@@ -1,6 +1,6 @@
 ---
 name: writing-hooks
-description: Author, test, and configure Antigravity lifecycle hooks in hooks.json.
+description: "Author and configure Antigravity hooks in hooks.json."
 ---
 
 # Writing Antigravity Lifecycle Hooks

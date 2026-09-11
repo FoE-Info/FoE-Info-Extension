@@ -1,6 +1,6 @@
 ---
 name: git-hooks-automation
-description: Configure, audit, and troubleshoot Git hooks with Husky and lint-staged.
+description: "Configure and audit Husky and lint-staged git hooks."
 ---
 
 # Git Hooks Automation

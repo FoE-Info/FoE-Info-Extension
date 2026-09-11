@@ -36,7 +36,7 @@ function getInvestmentKey(entry) {
  * @returns {boolean}
  */
 function isPositionSafe(investedFP, currentProgress, maxProgress) {
-  if (!maxProgress || maxProgress <= 0) return true;
+  if (!maxProgress || maxProgress <= 0) return false;
   const current = currentProgress || 0;
   const remaining = Math.max(0, maxProgress - current);
   const investedNum =

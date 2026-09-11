@@ -1,6 +1,6 @@
 ---
 name: receiving-code-review
-description: Review feedback with technical rigor before implementing changes.
+description: "Evaluate code review feedback with technical rigor."
 ---
 
 # Code Review Reception

@@ -1,6 +1,6 @@
 ---
 name: cookie-debugging
-description: Inspect, debug, and test cookies, session state, auth headers, SameSite, and consent compliance via CDP.
+description: "Inspect and debug cookies, auth headers, and session state."
 ---
 
 ## Core Concepts

@@ -12,6 +12,7 @@ let globals = null;
 let helper = null;
 let i18n = null;
 let storage = null;
+let panelResize = null;
 let showOptions = { showGoods: false };
 let defaultState = {
   availablePacksFP: 0,
@@ -46,7 +47,17 @@ if (typeof __webpack_require__ !== 'undefined') {
   try {
     defaultState = require('../vars/state.js');
   } catch {}
+  try {
+    panelResize = require('../ui/panelResize.js');
+  } catch {}
+} else {
+  try {
+    panelResize = require('../ui/panelResize.js');
+  } catch {}
 }
+
+const { createLogger } = require('../utils/logger.js');
+const logger = createLogger('ResourceService');
 
 const ResourceDefs = defaultState?.ResourceDefs || [];
 const ResourceNames = defaultState?.ResourceNames || {};
@@ -255,7 +266,7 @@ function renderGoodsPanel(
             typeof helper.fGVGagesname === 'function' ?
               helper.fGVGagesname(good.era)
             : good.era;
-          eraGoodsText += `<tr><td class="text-start ps-3">${good.name}</td><td class="text-end">${currentResources[good.id].toLocaleString()}</td></tr>`;
+          eraGoodsText += `<tr><td class="text-start">${good.name}</td><td class="text-end">${currentResources[good.id].toLocaleString()}</td></tr>`;
         }
       });
       if (eraGoodsText) {
@@ -275,7 +286,7 @@ function renderGoodsPanel(
             good.type === 'special_resource') &&
           !NON_GOODS.includes(good.id)
         ) {
-          specialGoodsRows += `<tr><td class="text-start ps-3">${good.name}</td><td class="text-end">${currentResources[good.id].toLocaleString()}</td></tr>`;
+          specialGoodsRows += `<tr><td class="text-start">${good.name}</td><td class="text-end">${currentResources[good.id].toLocaleString()}</td></tr>`;
         }
       });
     }
@@ -284,9 +295,9 @@ function renderGoodsPanel(
       if (NON_GOODS.includes(goodId) || !qty || qty <= 0) return;
       const name = ResourceNames[goodId] || goodId;
       if (SPECIAL_GOODS.includes(goodId)) {
-        specialGoodsRows += `<tr><td class="text-start ps-3">${name}</td><td class="text-end">${qty.toLocaleString()}</td></tr>`;
+        specialGoodsRows += `<tr><td class="text-start">${name}</td><td class="text-end">${qty.toLocaleString()}</td></tr>`;
       } else {
-        standardGoodsText += `<tr><td class="text-start ps-3">${name}</td><td class="text-end">${qty.toLocaleString()}</td></tr>`;
+        standardGoodsText += `<tr><td class="text-start">${name}</td><td class="text-end">${qty.toLocaleString()}</td></tr>`;
       }
     });
   }
@@ -338,7 +349,7 @@ function renderGoodsPanel(
     goodsHTML += copyMarkup;
     goodsHTML += `<div id="goodsText" style="height: ${goodsSize}px" class="overflow-y resize collapse ${
       isCollapsed ? '' : 'show'
-    }"><table id="goodstable" class="goods-table w-100"><thead><tr><th class="text-start">Type</th><th class="text-end">Qty</th></tr></thead><tbody>`;
+    }"><table id="goodstable" class="goods-table w-100"><thead><tr><th class="text-start"><span data-i18n="type">Type</span></th><th class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
     if (targetDiv) {
       targetDiv.style.display = '';
       targetDiv.innerHTML =
@@ -364,26 +375,35 @@ function renderGoodsPanel(
       }
     }
     const goodsDiv = document.getElementById('goodsText');
-    if (
-      goodsDiv &&
-      typeof ResizeObserver !== 'undefined' &&
-      globals?.setGoodsSize
-    ) {
-      try {
-        const resizeObserver = new ResizeObserver((entries) => {
-          for (const entry of entries) {
-            const height = entry.contentRect?.height;
-            const isCollapsing =
-              goodsDiv.classList?.contains('collapsing') ||
-              (goodsDiv.classList && !goodsDiv.classList.contains('show'));
-            if (typeof height === 'number' && height >= 80 && !isCollapsing) {
-              globals.setGoodsSize(height);
-            }
-          }
+    if (goodsDiv) {
+      const bindFn = panelResize?.bindResizableCollapse;
+      if (bindFn) {
+        bindFn({
+          element: goodsDiv,
+          initialSize: goodsSize,
+          minSize: 80,
+          onResize: (height) => globals?.setGoodsSize?.(height),
         });
-        resizeObserver.observe(goodsDiv);
-      } catch (err) {
-        console.error('[FoEInfo] Failed to observe goodsDiv resize:', err);
+      } else if (
+        typeof ResizeObserver !== 'undefined' &&
+        globals?.setGoodsSize
+      ) {
+        try {
+          const resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+              const height = entry.contentRect?.height;
+              const isCollapsing =
+                goodsDiv.classList?.contains('collapsing') ||
+                (goodsDiv.classList && !goodsDiv.classList.contains('show'));
+              if (typeof height === 'number' && height >= 80 && !isCollapsing) {
+                globals.setGoodsSize(height);
+              }
+            }
+          });
+          resizeObserver.observe(goodsDiv);
+        } catch (err) {
+          console.error('[FoEInfo] Failed to observe goodsDiv resize:', err);
+        }
       }
     }
     if (document.body && i18n?.translateContainer) {

@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-description: Write failing unit tests before writing any implementation code.
+description: "Write failing unit tests before implementation code."
 ---
 
 # Test-Driven Development (TDD)

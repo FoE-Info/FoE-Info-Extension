@@ -5,7 +5,7 @@ The canonical skills, role descriptions, rules, scripts, and Antigravity registr
 ## Start here
 
 1. Read `docs/README.md` (coordination hub), `AGENTS.md`, and `docs/STATUS.md` (live work/todos), then inspect `git status` and current source before executing an old plan; `docs/HANDOFF.md` holds verified state and resume-safely notes.
-2. Read `.agents/rules/` entries marked `always_on` and the scoped rules applicable to the task. Antigravity frontmatter is not automatic rule activation in opencode; all 16 rules are injected as instructions (`opencode.json` `instructions` glob, `.agents/rules/*.md`) and the agent decides applicability per task.
+2. Read `.agents/rules/` entries marked `always_on` and the scoped rules applicable to the task. Antigravity frontmatter is not automatic rule activation in opencode; all 17 rules are injected as instructions (`opencode.json` `instructions` glob, `.agents/rules/*.md`) and the agent decides applicability per task.
 3. Use the workspace skill path from the available-skills catalog. Several global/plugin skills have identical names; prefer the repository runbook for repository work.
 4. Query the host graph before broad source searches. The `graphify-guard` plugin enforces this mechanically (see Hooks below).
 5. Run `npm run verify` and `npm run typecheck` before claiming an implementation verified. A passing unit suite is not a browser behavior test.
@@ -17,7 +17,7 @@ The canonical skills, role descriptions, rules, scripts, and Antigravity registr
 | `run_command` / `CommandLine`                        | `bash` tool, permissions configured in `opencode.json`                                                                                      |
 | `grep_search`, `find_by_name`                        | `grep` / `glob` tools, after graph consultation                                                                                             |
 | `view_file`, `replace_file_content`, `write_to_file` | `read`, `edit`, `write` tools                                                                                                               |
-| `invoke_subagent` with a named specialist            | `task` tool with `subagent_type: <name>`; the 31 specialists are thin shims in `.opencode/agents/` (pointing at `.agents/agents/<name>.md`) |
+| `invoke_subagent` with a named specialist            | `task` tool with `subagent_type: <name>`; the 36 specialists are thin shims in `.opencode/agents/` (pointing at `.agents/agents/<name>.md`) |
 | `Workspace: "share"`                                 | Worktrees under `.worktrees/<branch>`; assign each cooperating agent its own branch-checkout cwd                                            |
 | `call_mcp_tool` / `ServerName`                       | MCP servers declared in `opencode.json`; tool names follow the `_server_tool_` sanitized convention                                         |
 | `<appDataDir>/brain/` artifacts                      | Do not invent an Antigravity brain path. Keep implementation plans in `docs/plans/` and disposable analysis under ignored `graphify-out/`   |
@@ -30,8 +30,8 @@ Antigravity sessions need no migration for opencode coexistence. The following d
 
 | Difference                                                              | Working procedure in opencode                                                                                                                         | Additional automation needed for parity                               |
 | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| Rule frontmatter (`always_on`/`model_decision`) is not read by opencode | All 16 rules are injected as instructions; applicability is decided by the agent per task                                                             | None (single always-on injection bucket)                              |
-| Named specialist registration is not auto-imported                      | `.opencode/agents/<name>.md` shims add `subagent_type` for each of the 31 specialists                                                                 | None                                                                  |
+| Rule frontmatter (`always_on`/`model_decision`) is not read by opencode | All 17 rules are injected as instructions; applicability is decided by the agent per task                                                             | None (single always-on injection bucket)                              |
+| Named specialist registration is not auto-imported                      | `.opencode/agents/<name>.md` shims add `subagent_type` for each of the 36 specialists                                                                 | None                                                                  |
 | `Workspace: "share"` does not create an isolated checkout               | Create explicit worktrees and assign each writer its cwd                                                                                              | A worktree-aware dispatch wrapper                                     |
 | Graph-query tool names differ                                           | The `graphify-guard` plugin blocks broad bash source searches without a shared 1800-second stamp; supported Graphify MCP queries renew it             | Extend coverage only for additional concrete search tools when needed |
 | AST synchronization is best-effort                                      | The `graphify-sync` plugin spawns detached `npm run graph:foe-info:ast` on AST-affected writes; log at `graphify-out/foe-info/opencode-sync.log`      | No freshness certification for unsupported write tools                |
@@ -46,9 +46,9 @@ These procedures permit development today. Automatic enforcement parity is unfin
 `opencode.json` at the workspace root declares:
 
 - **model**: `opencode/big-pickle` (cloud fallback for this repo until the local `llama-swap` model is preferred).
-- **instructions**: `.agents/rules/*.md` (all 16 rules) plus `.opencode/instructions/*.md` (guardrail reminder).
+- **instructions**: `.agents/rules/*.md` (all 17 rules) plus `.opencode/instructions/*.md` (guardrail reminder).
 - **plugins**: the four hook plugins in `.opencode/plugins/` (registered explicitly because `.mjs` is not auto-discovered).
-- **mcp**: the same five servers as `.agents/mcp_config.json` — Chrome DevTools via `.agents/scripts/run-chrome-devtools-mcp.sh` and the four Graphify graphs via `.agents/scripts/run-graphify-local.sh --mcp <graph.json>`. Paths match this machine's Antigravity setup; on relocation update them after locating the executables.
+- **mcp**: the same six servers as `.agents/mcp_config.json` — Chrome DevTools via `.agents/scripts/run-chrome-devtools-mcp.sh` and the five Graphify graphs via native `graphify-mcp` with relative paths and local env blocks. Paths match this machine's Antigravity setup; on relocation update them after locating the executables.
 - **permission**: read/edit/glob/grep/list/task/skill allowed; bash uses a first-match-wins list where `*` asks by default and only the documented `git*`/`npm*` read/build/test patterns are auto-allowed. No wildcard tool grants.
 
 Global ~/.config/opencode adds the `llama-swap` provider (models from `~/.config/llama-swap/config.yaml`). The user picks the active model; project `opencode.json` can override `model`.
@@ -76,3 +76,9 @@ Not wired: Antigravity's `force_ask` semantics (opencode permission system asks/
 Use Node.js 24 or later with the installed dependencies. The `node_modules` under `.opencode/` only provides local type-checking of the hook plugin API (`@opencode-ai/plugin`, `@opencode-ai/sdk`); the plugins run inside opencode's own runtime. Live hook behavior must be confirmed with `opencode run` against a running model, not just a Node import harness.
 
 Formatting excludes existing `docs/antigravity_prompt_*.md` conversation artifacts and worktrees. ESLint excludes worktrees too. Translation parity only checks keys, and TypeScript has `checkJs: false`; neither is a full semantic correctness guarantee.
+
+## Active Dual-Harness Tasks
+
+- **[COMPLETED] Town Hall / Beta Debug Panel Height & Scroll Refactor**: See [`docs/plans/2026-09-11-town-hall-beta-debug-panel.md`](plans/2026-09-11-town-hall-beta-debug-panel.md). Completed by OpenCode, verified, and committed.
+- **[COMPLETED] Era Mapping Extraction from helper.js**: See [`docs/plans/2026-09-11-era-mapping-extraction.md`](plans/2026-09-11-era-mapping-extraction.md). Completed by OpenCode, verified, and committed.
+- **[PENDING] Next Task Assignment**: Status board idle; awaiting next architectural task assignment from Antigravity/user.

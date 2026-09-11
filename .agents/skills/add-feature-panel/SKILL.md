@@ -1,6 +1,6 @@
 ---
 name: add-feature-panel
-description: Scaffold accessible, localized UI panels and collapsible cards in panel.html.
+description: "Scaffold accessible, localized UI panels in panel.html."
 ---
 
 # Workflow: Add Feature UI Panel
@@ -31,6 +31,13 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
    - Use standard accordion / collapse elements: `data-bs-toggle="collapse"` and `aria-expanded`.
    - Ensure color contrast complies with WCAG 2.2 AA (minimum 4.5:1 for normal text).
 2. Wire up state persistence in `src/js/fn/collapse.js` so user collapsed/expanded preferences persist across sessions.
+3. If the panel card or content container is resizable (`resize: vertical` or `resize: both`):
+   - **Never use `max-height: max-content !important;` in CSS**: This overrides inline height styling and causes collapsed panels to expand to 100% full content height.
+   - **Bind with `bindResizableCollapse`**: Import and call `bindResizableCollapse(containerEl, storageKey, options)` from `src/js/ui/panelResize.js`.
+   - **Lifecycle Clamping**:
+     - During `show.bs.collapse`, clamp `maxHeight` to target height to prevent layout jumps.
+     - During `shown.bs.collapse`, re-apply target inline `height = targetHeight + 'px'`.
+     - Guard `ResizeObserver` callbacks against `.collapsing` and `!show` classes to avoid saving transition heights.
 
 ---
 

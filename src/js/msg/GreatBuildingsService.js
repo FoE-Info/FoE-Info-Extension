@@ -46,6 +46,7 @@ import {
   GameOrigin,
   gbInfoDIV,
   GBselected,
+  getPlayerName,
   greatbuilding,
   MyInfo,
   overview,
@@ -89,14 +90,27 @@ function syncRankingPayload(msg, rankingParams, extractedLevel) {
     GBselected.level = extractedLevel;
   }
 
+  const myId = MyInfo?.id || 0;
+  const myName = MyInfo?.name || MyInfo?.player_name || '';
+  const isForeign =
+    rankingParams?.playerId !== undefined &&
+    rankingParams.playerId !== null &&
+    rankingParams.playerId !== 0 &&
+    rankingParams.playerId !== myId;
+
+  const pId = isForeign ? rankingParams.playerId : 0;
+  const eId = rankingParams?.entityId || GBselected.id || GBselected.entity_id;
+
   if (
     msg?.responseData &&
     typeof msg.responseData === 'object' &&
     !Array.isArray(msg.responseData)
   ) {
     GbDonationService.syncGbSelected(GBselected, msg.responseData);
-    const pId = rankingParams?.playerId || PlayerID;
     GreatBuildingRegistry.registerGreatBuilding(msg.responseData, pId);
+    if (pId === 0 && myId) {
+      GreatBuildingRegistry.registerGreatBuilding(msg.responseData, myId);
+    }
   }
 
   if (Array.isArray(msg?.responseData?.rankings)) {
@@ -109,9 +123,10 @@ function syncRankingPayload(msg, rankingParams, extractedLevel) {
     rankings = [];
   }
 
-  const pId = rankingParams?.playerId || PlayerID;
-  const eId = rankingParams?.entityId || GBselected.id || GBselected.entity_id;
   let cached = GreatBuildingRegistry.getGreatBuilding(pId, eId);
+  if (!cached && pId === 0 && myId) {
+    cached = GreatBuildingRegistry.getGreatBuilding(myId, eId);
+  }
   if (!cached && eId) {
     cached = GreatBuildingRegistry.getGreatBuilding(null, eId);
   }
@@ -120,12 +135,34 @@ function syncRankingPayload(msg, rankingParams, extractedLevel) {
   }
 
   if (cached) {
+    if (pId === 0) {
+      if (!cached.player && myId) cached.player = myId;
+      if (!cached.player_name && myName) cached.player_name = myName;
+    }
     GbDonationService.syncGbSelected(GBselected, cached);
     if (extractedLevel !== undefined && !Number.isNaN(extractedLevel)) {
       GBselected.level = extractedLevel;
     }
-    if (cached.player_name && cached.player) {
-      setPlayerName(cached.player_name, cached.player);
+    const resolvedName = cached.player_name || (pId === 0 ? myName : '') || '';
+    const resolvedId = cached.player || (pId === 0 ? myId : pId) || 0;
+    if (resolvedName || resolvedId) {
+      setPlayerName(resolvedName, resolvedId);
+    }
+  } else if (eId && eId !== GBselected.id) {
+    GBselected.id = eId;
+    GBselected.entity_id = eId;
+    if (extractedLevel !== undefined && !Number.isNaN(extractedLevel)) {
+      GBselected.level = extractedLevel;
+    }
+    if (pId === 0) {
+      GBselected.player = myId;
+      GBselected.player_name = myName;
+      setPlayerName(myName, myId);
+    } else {
+      GBselected.player = pId;
+      const foreignName = getPlayerName(pId) || '';
+      GBselected.player_name = foreignName;
+      setPlayerName(foreignName, pId);
     }
   }
 
@@ -263,7 +300,7 @@ export function showGreatBuldingDonation() {
   const isGbLocked = Boolean(
     GBselected.max_level > 0 && GBselected.level >= GBselected.max_level,
   );
-  if (GBselected.connected == null) {
+  if (GBselected.connected === false) {
     olddonationHTML += '<p class="red">*** DISCONNECTED ***</p>';
   }
   if (isGbLocked) {
@@ -306,16 +343,15 @@ export function showGreatBuldingDonation() {
     getSafe(p);
     const placeIdx = p - 1;
 
-    if (Donation.isLessThan(BigNumber(remaining))) {
+    if (Donation.isLessThanOrEqualTo(BigNumber(remaining))) {
       foundPlace = true;
       const placeOrdinal =
         p === 1 ? '1st'
         : p === 2 ? '2nd'
         : p === 3 ? '3rd'
         : `${p}th`;
-      const donorArcPercent = 100 + (City?.ArcBonus ?? 90);
       if (Profit > 0) {
-        olddonationHTML += `<p class="invest-good">${placeOrdinal} Place (${donorArcPercent}% Arc)<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
+        olddonationHTML += `<p class="invest-good">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
         newdonationHTML += gbTabSafe(
           p,
           currentPercent,
@@ -350,7 +386,7 @@ export function showGreatBuldingDonation() {
           outcomeClass = 'invest-neutral';
           outcomeValue = 0;
         }
-        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place (${donorArcPercent}% Arc)<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="${outcomeKey}">${outcomeLabel}</span>: ${outcomeValue}<br>`;
+        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="${outcomeKey}">${outcomeLabel}</span>: ${outcomeValue}<br>`;
         newdonationHTML += gbTabNotSafe(
           p,
           currentPercent,
@@ -462,9 +498,21 @@ export function getConstructionRanking(msg, data, context) {
     rankings = msg.responseData.rankings;
   }
 
-  const pId = rankingParams?.playerId || PlayerID;
+  const myId = MyInfo?.id || 0;
+  const myName = MyInfo?.name || MyInfo?.player_name || '';
+  const isForeign =
+    rankingParams?.playerId !== undefined &&
+    rankingParams.playerId !== null &&
+    rankingParams.playerId !== 0 &&
+    rankingParams.playerId !== myId;
+
+  const pId = isForeign ? rankingParams.playerId : 0;
   const eId = rankingParams?.entityId || GBselected.id || GBselected.entity_id;
+
   let cached = GreatBuildingRegistry.getGreatBuilding(pId, eId);
+  if (!cached && pId === 0 && myId) {
+    cached = GreatBuildingRegistry.getGreatBuilding(myId, eId);
+  }
   if (!cached && eId) {
     cached = GreatBuildingRegistry.getGreatBuilding(null, eId);
   }
@@ -473,12 +521,34 @@ export function getConstructionRanking(msg, data, context) {
   }
 
   if (cached) {
+    if (pId === 0) {
+      if (!cached.player && myId) cached.player = myId;
+      if (!cached.player_name && myName) cached.player_name = myName;
+    }
     GbDonationService.syncGbSelected(GBselected, cached);
     if (extractedLevel !== undefined && !Number.isNaN(extractedLevel)) {
       GBselected.level = extractedLevel;
     }
-    if (cached.player_name && cached.player) {
-      setPlayerName(cached.player_name, cached.player);
+    const resolvedName = cached.player_name || (pId === 0 ? myName : '') || '';
+    const resolvedId = cached.player || (pId === 0 ? myId : pId) || 0;
+    if (resolvedName || resolvedId) {
+      setPlayerName(resolvedName, resolvedId);
+    }
+  } else if (eId && eId !== GBselected.id) {
+    GBselected.id = eId;
+    GBselected.entity_id = eId;
+    if (extractedLevel !== undefined && !Number.isNaN(extractedLevel)) {
+      GBselected.level = extractedLevel;
+    }
+    if (pId === 0) {
+      GBselected.player = myId;
+      GBselected.player_name = myName;
+      setPlayerName(myName, myId);
+    } else {
+      GBselected.player = pId;
+      const foreignName = getPlayerName(pId) || '';
+      GBselected.player_name = foreignName;
+      setPlayerName(foreignName, pId);
     }
   }
 
@@ -518,25 +588,12 @@ export function handleNewReward(msg) {
 export function fCheckOutput() {
   const contentEl =
     typeof document !== 'undefined' ? document.getElementById('content') : null;
-  if (gbInfoDIV) {
-    gbInfoDIV.id = 'gbInfo';
-    if (contentEl && !contentEl.contains(gbInfoDIV)) {
-      if (greatbuilding && contentEl.contains(greatbuilding)) {
-        contentEl.insertBefore(gbInfoDIV, greatbuilding);
-      } else {
-        contentEl.appendChild(gbInfoDIV);
-      }
-    }
-    if (
-      showOptions?.showGBInfo !== false &&
-      gbInfoDIV.style.display === 'none'
-    ) {
-      gbInfoDIV.style.display = '';
-    }
-  }
+  if (!contentEl) return;
+
+  // Invariant order: 1. GB Donation panel, 2. GB Info, 3. GB contributors
   if (greatbuilding) {
     greatbuilding.id = 'greatbuilding';
-    if (contentEl && !contentEl.contains(greatbuilding)) {
+    if (!contentEl.contains(greatbuilding)) {
       contentEl.appendChild(greatbuilding);
     }
     if (
@@ -546,21 +603,31 @@ export function fCheckOutput() {
       greatbuilding.style.display = '';
     }
   }
-  if (donationDIV) {
-    donationDIV.id = 'donation';
-    if (contentEl && !contentEl.contains(donationDIV)) {
-      contentEl.appendChild(donationDIV);
+
+  if (gbInfoDIV) {
+    gbInfoDIV.id = 'gbInfo';
+    if (greatbuilding && contentEl.contains(greatbuilding)) {
+      contentEl.insertBefore(gbInfoDIV, greatbuilding);
+    } else if (!contentEl.contains(gbInfoDIV)) {
+      contentEl.appendChild(gbInfoDIV);
     }
     if (
-      showOptions?.showDonation !== false &&
-      donationDIV.style.display === 'none'
+      showOptions?.showGBInfo !== false &&
+      gbInfoDIV.style.display === 'none'
     ) {
-      donationDIV.style.display = '';
+      gbInfoDIV.style.display = '';
     }
   }
+
+  const gbAnchor =
+    (gbInfoDIV && contentEl.contains(gbInfoDIV) ? gbInfoDIV : null) ||
+    (greatbuilding && contentEl.contains(greatbuilding) ? greatbuilding : null);
+
   if (donation2DIV) {
     donation2DIV.id = 'donation2';
-    if (contentEl && !contentEl.contains(donation2DIV)) {
+    if (gbAnchor && gbAnchor !== donation2DIV) {
+      contentEl.insertBefore(donation2DIV, gbAnchor);
+    } else if (!contentEl.contains(donation2DIV)) {
       contentEl.appendChild(donation2DIV);
     }
     if (
@@ -570,9 +637,25 @@ export function fCheckOutput() {
       donation2DIV.style.display = '';
     }
   }
+
+  if (donationDIV) {
+    donationDIV.id = 'donation';
+    if (gbAnchor && gbAnchor !== donationDIV) {
+      contentEl.insertBefore(donationDIV, gbAnchor);
+    } else if (!contentEl.contains(donationDIV)) {
+      contentEl.appendChild(donationDIV);
+    }
+    if (
+      showOptions?.showDonation !== false &&
+      donationDIV.style.display === 'none'
+    ) {
+      donationDIV.style.display = '';
+    }
+  }
+
   if (cityrewards) {
     cityrewards.id = 'cityrewards';
-    if (contentEl && !contentEl.contains(cityrewards)) {
+    if (!contentEl.contains(cityrewards)) {
       contentEl.appendChild(cityrewards);
     }
   }

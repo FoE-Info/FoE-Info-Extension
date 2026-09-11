@@ -20,13 +20,15 @@ export function evaluateStopDecision(payload) {
     return { decision: 'allow' };
   }
 
-  // If background tasks or processes are not fully idle when the model attempts to stop
+  // When the model stops naturally, allow stop to enable Antigravity's
+  // reactive wakeup mechanism when background tasks complete.
   if (fullyIdle === false && terminationReason === 'model_stop') {
-    return {
-      decision: 'continue',
-      reason:
-        'Background tasks (e.g. build, tests, or Graphify reindexing) are still actively executing. Please wait for completion before exiting.',
-    };
+    if (process.env.DEBUG_HOOKS) {
+      process.stderr.write(
+        '[stop-guard] Background tasks active; permitting stop for reactive wakeup.\n',
+      );
+    }
+    return { decision: 'allow' };
   }
 
   return { decision: 'allow' };

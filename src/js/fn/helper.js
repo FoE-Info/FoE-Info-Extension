@@ -47,6 +47,14 @@ export {
   renderIncidentsPanel,
 } from '../ui/incidentsPanel.js';
 
+export {
+  numAges,
+  fLevelfromAge,
+  fAgefromLevel,
+  fGVGagesname,
+  fEraAbbreviation,
+} from '../calc/eraMapping.js';
+
 var heightGBG = toolOptions.battlegroundsSize;
 let gbgResizeObserver = null;
 export var MyGuildPermissions = 0;
@@ -355,180 +363,6 @@ export function fGBname(city_entity, reportLookup = true) {
   return GB_name;
 }
 
-export function fLevelfromAge(age) {
-  if (age == 'BronzeAge') {
-    return 1;
-  } else if (age == 'IronAge') {
-    return 2;
-  } else if (age == 'EarlyMiddleAge') {
-    return 3;
-  } else if (age == 'HighMiddleAge') {
-    return 4;
-  } else if (age == 'LateMiddleAge') {
-    return 5;
-  } else if (age == 'ColonialAge') {
-    return 6;
-  } else if (age == 'IndustrialAge') {
-    return 7;
-  } else if (age == 'ProgressiveEra') {
-    return 8;
-  } else if (age == 'ModernEra') {
-    return 9;
-  } else if (age == 'PostModernEra') {
-    return 10;
-  } else if (age == 'ContemporaryEra') {
-    return 11;
-  } else if (age == 'TomorrowEra') {
-    return 12;
-  } else if (age == 'FutureEra') {
-    return 13;
-  } else if (age == 'ArcticFuture') {
-    return 14;
-  } else if (age == 'OceanicFuture') {
-    return 15;
-  } else if (age == 'VirtualFuture') {
-    return 16;
-  } else if (age == 'SpaceAgeMars') {
-    return 17;
-  } else if (age == 'SpaceAgeAsteroidBelt') {
-    return 18;
-  } else if (age == 'SpaceAgeVenus') {
-    return 19;
-  } else if (age == 'SpaceAgeJupiterMoon') {
-    return 20;
-  } else if (age == 'SpaceAgeTitan') {
-    return 21;
-  } else if (age == 'SpaceAgeSpaceHub') {
-    return 22;
-  } else if (age == 'StellarAgeDiscovery' || age == 'SpaceAgeDiscovery') {
-    return 23;
-  }
-  // else if (age =="AllAge")
-  // {
-  // 	name = "AA";
-  // }
-  return -1;
-}
-
-// number of numAges
-// added SAV - 19 ages
-// added SAJM - 20 ages
-// added SAT - 21 ages
-// added SASH - 22 ages
-// added SAD - 23 ages
-export const numAges = 23;
-
-export function fAgefromLevel(level) {
-  if (level == 1) {
-    return 'BronzeAge';
-  } else if (level == 2) {
-    return 'IronAge';
-  } else if (level == 3) {
-    return 'EarlyMiddleAge';
-  } else if (level == 4) {
-    return 'HighMiddleAge';
-  } else if (level == 5) {
-    return 'LateMiddleAge';
-  } else if (level == 6) {
-    return 'ColonialAge';
-  } else if (level == 7) {
-    return 'IndustrialAge';
-  } else if (level == 8) {
-    return 'ProgressiveEra';
-  } else if (level == 9) {
-    return 'ModernEra';
-  } else if (level == 10) {
-    return 'PostModernEra';
-  } else if (level == 11) {
-    return 'ContemporaryEra';
-  } else if (level == 12) {
-    return 'TomorrowEra';
-  } else if (level == 13) {
-    return 'FutureEra';
-  } else if (level == 14) {
-    return 'ArcticFuture';
-  } else if (level == 15) {
-    return 'OceanicFuture';
-  } else if (level == 16) {
-    return 'VirtualFuture';
-  } else if (level == 17) {
-    return 'SpaceAgeMars';
-  } else if (level == 18) {
-    return 'SpaceAgeAsteroidBelt';
-  } else if (level == 19) {
-    return 'SpaceAgeVenus';
-  } else if (level == 20) {
-    return 'SpaceAgeJupiterMoon';
-  } else if (level == 21) {
-    return 'SpaceAgeTitan';
-  } else if (level == 22) {
-    return 'SpaceAgeSpaceHub';
-  } else if (level == 23) {
-    return 'StellarAgeDiscovery';
-  }
-  // else if (age =="AllAge")
-  // {
-  // 	name = "AA";
-  // }
-  return -1;
-}
-
-export function fEraAbbreviation(age) {
-  var name = age;
-
-  if (age == 'BronzeAge') {
-    name = 'BA';
-  } else if (age == 'IronAge') {
-    name = 'IA';
-  } else if (age == 'EarlyMiddleAge') {
-    name = 'EMA';
-  } else if (age == 'HighMiddleAge') {
-    name = 'HMA';
-  } else if (age == 'LateMiddleAge') {
-    name = 'LMA';
-  } else if (age == 'ColonialAge') {
-    name = 'CA';
-  } else if (age == 'IndustrialAge') {
-    name = 'InA';
-  } else if (age == 'ProgressiveEra') {
-    name = 'PE';
-  } else if (age == 'ModernEra') {
-    name = 'ME';
-  } else if (age == 'PostModernEra') {
-    name = 'PME';
-  } else if (age == 'ContemporaryEra') {
-    name = 'CE';
-  } else if (age == 'TomorrowEra') {
-    name = 'TE';
-  } else if (age == 'FutureEra') {
-    name = 'FE';
-  } else if (age == 'ArcticFuture') {
-    name = 'AF';
-  } else if (age == 'OceanicFuture') {
-    name = 'OF';
-  } else if (age == 'VirtualFuture') {
-    name = 'VF';
-  } else if (age == 'SpaceAgeMars') {
-    name = 'SAM';
-  } else if (age == 'SpaceAgeAsteroidBelt') {
-    name = 'SAAB';
-  } else if (age == 'SpaceAgeVenus') {
-    name = 'SAV';
-  } else if (age == 'SpaceAgeJupiterMoon') {
-    name = 'SAJM';
-  } else if (age === 'SpaceAgeTitan') {
-    name = 'SAT';
-  } else if (age === 'SpaceAgeSpaceHub') {
-    name = 'SASH';
-  } else if (age === 'StellarAgeDiscovery' || age === 'SpaceAgeDiscovery') {
-    name = 'SAD';
-  } else if (age == 'AllAge') {
-    name = 'AA';
-  }
-  return name;
-}
-export const fGVGagesname = fEraAbbreviation;
-
 export function fGoodsTally(age, good) {
   // console.debug(age,good);
   if (age == 'BronzeAge') Goods.ba += good;
@@ -582,7 +416,7 @@ export function fshowBattleground() {
         .replace(/\.forgeofempires\.com/i, '')
         .toUpperCase();
   var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
-	<p id="battlegroundTextLabel">
+	<p id="battlegroundTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
 	${element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground)}
 	<strong>Battlegrounds: [${bgWorldLabel}]</strong></p>${element.close()}`;
 
@@ -602,7 +436,7 @@ export function fshowBattleground() {
   const isChangesOnly = Boolean(showOptions.showBattlegroundChanges);
   battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info ${
     isChangesOnly ? 'gbg-changes-full' : 'gbg-full-roster'
-  } overflow resize-both collapse ${
+  } overflow resize collapse ${
     collapse.collapseBattleground ? '' : 'show'
   }"><div id="battlegroundText">`;
 
@@ -674,7 +508,18 @@ export function fshowBattleground() {
 
   const iconEl = document.getElementById('battlegroundicon');
   if (iconEl) {
-    iconEl.addEventListener('click', collapse.fCollapseBattleground);
+    iconEl.addEventListener('click', (e) => {
+      e?.stopPropagation?.();
+      collapse.fCollapseBattleground();
+    });
+  }
+
+  const labelEl = document.getElementById('battlegroundTextLabel');
+  if (labelEl) {
+    labelEl.addEventListener('click', (e) => {
+      if (e.target?.closest?.('#battlegroundicon')) return;
+      collapse.fCollapseBattleground();
+    });
   }
 
   const showChangesEl = document.getElementById('showGBGchanges');
@@ -691,6 +536,13 @@ export function fshowBattleground() {
     }
     if (typeof ResizeObserver !== 'undefined') {
       gbgResizeObserver = new ResizeObserver((entries) => {
+        if (
+          battlegroundDiv.classList?.contains('collapsing') ||
+          (battlegroundDiv.classList &&
+            !battlegroundDiv.classList.contains('show'))
+        ) {
+          return;
+        }
         for (const entry of entries) {
           if (entry.contentRect && entry.contentRect.height)
             heightGBG = entry.contentRect.height;

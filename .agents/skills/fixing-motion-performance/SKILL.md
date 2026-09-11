@@ -1,6 +1,6 @@
 ---
 name: fixing-motion-performance
-description: Audit and eliminate CSS/JS animation jank, layout thrashing, and composite issues.
+description: "Audit and eliminate animation jank and layout thrashing."
 ---
 
 # fixing-motion-performance

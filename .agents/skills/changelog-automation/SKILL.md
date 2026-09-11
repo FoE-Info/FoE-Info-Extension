@@ -1,6 +1,6 @@
 ---
 name: changelog-automation
-description: Automate Keep-a-Changelog release notes from conventional commits and PRs.
+description: "Generate release notes from commits and pull requests."
 ---
 
 # Changelog Automation

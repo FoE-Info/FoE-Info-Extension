@@ -1,6 +1,6 @@
 ---
 name: audit-memory-leaks
-description: Isolate and eliminate detached DOM nodes and panel memory leaks via CDP.
+description: "Isolate detached DOM nodes and panel memory leaks via CDP."
 ---
 
 # Workflow: Audit Memory Leaks & Panel Performance

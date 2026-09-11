@@ -1,6 +1,6 @@
 ---
 name: unslop-commit
-description: Write concise, human Conventional Commits with subjects under 72 characters.
+description: "Write concise Conventional Commits under 72 characters."
 ---
 
 # Unslop Commit

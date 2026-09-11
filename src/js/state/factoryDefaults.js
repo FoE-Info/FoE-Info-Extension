@@ -54,6 +54,16 @@ const FACTORY_WORLD_SETTINGS = Object.freeze({
     sheetGuildURL: '',
   }),
   toolOptions: Object.freeze({
+    armySize: 185,
+    goodsSize: 200,
+    friendsSize: 200,
+    treasurySize: 200,
+    logsSize: 200,
+    battlegroundsSize: 400,
+    expeditionSize: 200,
+    visitSize: 200,
+    rewardSize: 200,
+    buildingCostSize: 200,
     minSize: 50,
   }),
   caches: Object.freeze({

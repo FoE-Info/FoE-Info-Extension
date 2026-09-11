@@ -41,7 +41,8 @@ function processEntityUnits({ entity, meta, prodResources, accum }) {
 }
 
 function extractSpecialBonuses({ entity, meta, level }) {
-  const entityId = entity.cityentity_id;
+  const entityId = entity?.cityentity_id || entity?.city_entity_id;
+  if (!entityId) return {};
   const res = {};
 
   if (entityId === 'X_FutureEra_Landmark1') {

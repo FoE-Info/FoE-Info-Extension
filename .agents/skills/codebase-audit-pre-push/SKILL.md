@@ -1,10 +1,6 @@
 ---
 name: codebase-audit-pre-push
-description: Pre-push audit checking for dead code, temporary logs, and security issues before git push.
-category: development
-risk: safe
-source: community
-date_added: "2026-03-05"
+description: "Pre-push audit for dead code, logs, and security issues."
 ---
 
 # Pre-Push Codebase Audit

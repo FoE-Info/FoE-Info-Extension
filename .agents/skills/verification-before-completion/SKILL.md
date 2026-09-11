@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Run terminal verification commands and confirm output before claiming success.
+description: "Execute verification commands before claiming success."
 ---
 
 # Verification Before Completion

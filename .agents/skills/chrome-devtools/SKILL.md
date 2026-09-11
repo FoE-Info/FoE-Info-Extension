@@ -1,6 +1,6 @@
 ---
 name: chrome-devtools
-description: Chrome DevTools MCP debugging, DOM inspection, and browser automation.
+description: "Chrome DevTools MCP debugging, DOM inspection, and CDP commands."
 ---
 
 ## Core Concepts

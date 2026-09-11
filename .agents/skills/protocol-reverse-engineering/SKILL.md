@@ -1,9 +1,6 @@
 ---
 name: protocol-reverse-engineering
-description: Techniques for capturing, analyzing, and documenting network protocols and RPC payloads.
-risk: safe
-source: community
-date_added: "2026-02-27"
+description: "Analyze and document InnoGames JSON-RPC network payloads."
 ---
 
 # Protocol Reverse Engineering

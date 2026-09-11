@@ -1,6 +1,6 @@
 ---
 name: complexity-cuts
-description: Lower algorithmic Big-O complexity via incremental verify-revert-stop.
+description: "Lower algorithmic complexity via verify-revert-stop cycles."
 ---
 
 # complexity-cuts — Lower Big-O on Existing Code

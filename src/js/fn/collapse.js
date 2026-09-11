@@ -43,6 +43,7 @@ export var collapseRewards = false;
 export var collapseBonus = true;
 export var collapseCultural = true;
 export var collapseClipboard = true;
+export var collapseGBGLeaderboard = false;
 
 // export default class set {
 // 	constructor(name, state) {
@@ -161,8 +162,11 @@ export function fCollapseGBInfo() {
 
 export function fCollapseFriends() {
   collapseFriends = !collapseFriends;
-  document.getElementById('friendsCopyID').style.display =
-    collapseFriends ? 'none' : 'block';
+  const copyEl =
+    typeof document !== 'undefined' && document.getElementById('friendsCopyID');
+  if (copyEl) {
+    copyEl.style.display = collapseFriends ? 'none' : 'inline-block';
+  }
   // console.debug('collapseFriends',collapseFriends);
   element.updateIcon('friendsicon', 'friendsText', collapseFriends);
 }
@@ -174,8 +178,11 @@ export function fCollapseLists() {
 
 export function fCollapseHood() {
   collapseHood = !collapseHood;
-  document.getElementById('hoodCopyID').style.display =
-    collapseHood ? 'none' : 'block';
+  const copyEl =
+    typeof document !== 'undefined' && document.getElementById('hoodCopyID');
+  if (copyEl) {
+    copyEl.style.display = collapseHood ? 'none' : 'inline-block';
+  }
   // console.debug('collapseHood',collapseHood);
   element.updateIcon('hoodicon', 'hoodText', collapseHood);
 }
@@ -188,8 +195,11 @@ export function fCollapseGalaxy() {
 
 export function fCollapseGuild() {
   collapseGuild = !collapseGuild;
-  document.getElementById('guildCopyID').style.display =
-    collapseGuild ? 'none' : 'block';
+  const copyEl =
+    typeof document !== 'undefined' && document.getElementById('guildCopyID');
+  if (copyEl) {
+    copyEl.style.display = collapseGuild ? 'none' : 'inline-block';
+  }
   // console.debug('collapseGuild',collapseGuild);
   element.updateIcon('guildicon', 'guildText', collapseGuild);
 }
@@ -350,15 +360,40 @@ export function fCollapseBuildings() {
 
 export function fCollapseExpedition() {
   collapseExpedition = !collapseExpedition;
-  document.getElementById('expeditionCopyID').style.display =
-    collapseExpedition ? 'none' : 'block';
+  if (typeof document !== 'undefined') {
+    const copyIds = [
+      'expeditionCopyID',
+      'geChampionshipCopyID',
+      'geContributionCopyID',
+    ];
+    for (const id of copyIds) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.display = collapseExpedition ? 'none' : 'block';
+      }
+    }
+  }
   element.updateIcon('expeditionicon', 'expeditionText', collapseExpedition);
+  element.updateIcon(
+    'geChampionshipIcon',
+    'geChampionshipText',
+    collapseExpedition,
+  );
+  element.updateIcon(
+    'geContributionIcon',
+    'geContributionText',
+    collapseExpedition,
+  );
 }
 
 export function fCollapseTreasury() {
   collapseTreasury = !collapseTreasury;
-  document.getElementById('treasuryCopyID').style.display =
-    collapseTreasury ? 'none' : 'block';
+  if (typeof document !== 'undefined') {
+    const copyEl = document.getElementById('treasuryCopyID');
+    if (copyEl) {
+      copyEl.style.display = collapseTreasury ? 'none' : 'block';
+    }
+  }
   element.updateIcon('treasuryicon', 'treasuryText', collapseTreasury);
 }
 
@@ -369,8 +404,12 @@ export function fCollapseTreasuryLog() {
 
 export function fCollapseTarget() {
   collapseTarget = !collapseTarget;
-  document.getElementById('targetPostID').style.display =
-    collapseTarget ? 'none' : 'block';
+  if (typeof document !== 'undefined') {
+    const postEl = document.getElementById('targetPostID');
+    if (postEl) {
+      postEl.style.display = collapseTarget ? 'none' : 'block';
+    }
+  }
   element.updateIcon('targeticon', 'targetText', collapseTarget);
 }
 
@@ -392,9 +431,28 @@ export function fCollapseCultural() {
 export function fCollapseClipboard() {
   collapseClipboard = !collapseClipboard;
   storage.set('collapseClipboard', collapseClipboard);
-  document.getElementById('clipboardCopyID').style.display =
-    collapseClipboard ? 'none' : 'block';
+  if (typeof document !== 'undefined') {
+    const copyEl = document.getElementById('clipboardCopyID');
+    if (copyEl) {
+      copyEl.style.display = collapseClipboard ? 'none' : 'block';
+    }
+  }
   element.updateIcon('clipboardicon', 'clipboardText', collapseClipboard);
+}
+
+export function fCollapseGBGLeaderboard() {
+  collapseGBGLeaderboard = !collapseGBGLeaderboard;
+  if (typeof document !== 'undefined') {
+    const copyEl = document.getElementById('gbgLeaderboardCopyID');
+    if (copyEl) {
+      copyEl.style.display = collapseGBGLeaderboard ? 'none' : 'block';
+    }
+  }
+  element.updateIcon(
+    'gbgLeaderboardIcon',
+    'gbgLeaderboardCollapse',
+    collapseGBGLeaderboard,
+  );
 }
 
 function fHideAllTooltips() {

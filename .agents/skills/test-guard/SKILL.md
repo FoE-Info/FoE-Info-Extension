@@ -1,6 +1,6 @@
 ---
 name: test-guard
-description: Audit test code against testing rules and assertion hygiene.
+description: "Audit test assertions, mocks, and test hygiene."
 ---
 
 

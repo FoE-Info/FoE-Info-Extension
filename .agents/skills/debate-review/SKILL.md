@@ -1,6 +1,6 @@
 ---
 name: debate-review
-description: Two-model adversarial debate of plans, decisions, diffs, and review findings.
+description: "Two-model adversarial debate on plans, PRs, and designs."
 ---
 
 # Debate Review & Adversarial Stress-Testing
