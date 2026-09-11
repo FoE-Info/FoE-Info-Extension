@@ -2,9 +2,13 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
   escapeHTML,
+  fAgestring,
+  fFormatNumber,
+  fNumber,
   formatEntityId,
   fResourceShortName,
   fRewardShortName,
+  fRound,
 } from '../../src/js/utils/formatters.js';
 
 describe('Formatters Utility Suite', () => {
@@ -86,6 +90,21 @@ describe('Formatters Utility Suite', () => {
     it('returns raw key if not found in lookup', () => {
       assert.equal(fResourceShortName('unknown_token', {}), 'unknown_token');
     });
+
+    it('resolves one-argument lookups via globalThis.ResourceNames', (t) => {
+      const hadOwn = Object.prototype.hasOwnProperty.call(
+        globalThis,
+        'ResourceNames',
+      );
+      const previous = globalThis.ResourceNames;
+      t.after(() => {
+        if (hadOwn) globalThis.ResourceNames = previous;
+        else delete globalThis.ResourceNames;
+      });
+
+      globalThis.ResourceNames = { raw_iron: 'Iron' };
+      assert.equal(fResourceShortName('raw_iron'), 'Iron');
+    });
   });
 
   describe('fRewardShortName', () => {
@@ -132,6 +151,114 @@ describe('Formatters Utility Suite', () => {
     it('handles falsy input safely', () => {
       assert.equal(fRewardShortName(null), '');
       assert.equal(fRewardShortName(''), '');
+    });
+  });
+
+  describe('fRound', () => {
+    it('rounds to two decimals by default', () => {
+      assert.equal(fRound(3.14159), 3.14);
+      assert.equal(fRound(1.25, 1), 1.3);
+      assert.equal(fRound(1.24, 1), 1.2);
+    });
+
+    it('honours an explicit decimal count', () => {
+      assert.equal(fRound(3.14159, 3), 3.142);
+      assert.equal(fRound(3.14159, 0), 3);
+      assert.equal(fRound(2.5, 0), 3);
+    });
+
+    it('clamps negative decimal counts to integers', () => {
+      assert.equal(fRound(5.7, -3), 6);
+    });
+
+    it('coerces numeric strings', () => {
+      assert.equal(fRound('3.14159', 2), 3.14);
+    });
+
+    it('returns 0 for nullish, non-finite, and non-numeric input', () => {
+      assert.equal(fRound(null), 0);
+      assert.equal(fRound(undefined), 0);
+      assert.equal(fRound(NaN), 0);
+      assert.equal(fRound(Infinity), 0);
+      assert.equal(fRound('not-a-number'), 0);
+    });
+  });
+
+  describe('fNumber', () => {
+    it('passes finite numbers through unchanged', () => {
+      assert.equal(fNumber(42), 42);
+      assert.equal(fNumber(3.5), 3.5);
+      assert.equal(fNumber(0), 0);
+    });
+
+    it('parses numeric strings with separators and whitespace', () => {
+      assert.equal(fNumber('42'), 42);
+      assert.equal(fNumber('1,234.5'), 1234.5);
+      assert.equal(fNumber(' 1 234 '), 1234);
+    });
+
+    it('returns the fallback for invalid input', () => {
+      assert.equal(fNumber(null), 0);
+      assert.equal(fNumber(undefined), 0);
+      assert.equal(fNumber(''), 0);
+      assert.equal(fNumber('abc'), 0);
+      assert.equal(fNumber(NaN), 0);
+      assert.equal(fNumber(Infinity), 0);
+      assert.equal(fNumber('abc', -1), -1);
+    });
+  });
+
+  describe('fFormatNumber', () => {
+    it('groups thousands with locale separators', () => {
+      assert.equal(fFormatNumber(1234567), '1,234,567');
+      assert.equal(fFormatNumber(1234567, 'en-US'), '1,234,567');
+      assert.equal(fFormatNumber(1234567.891), '1,234,567.891');
+    });
+
+    it('formats negatives and zero', () => {
+      assert.equal(fFormatNumber(-1234), '-1,234');
+      assert.equal(fFormatNumber(0), '0');
+    });
+
+    it('parses numeric strings', () => {
+      assert.equal(fFormatNumber('10000'), '10,000');
+    });
+
+    it('returns "0" for nullish and invalid input', () => {
+      assert.equal(fFormatNumber(null), '0');
+      assert.equal(fFormatNumber(undefined), '0');
+      assert.equal(fFormatNumber(''), '0');
+      assert.equal(fFormatNumber('abc'), '0');
+      assert.equal(fFormatNumber(Infinity), '0');
+    });
+  });
+
+  describe('fAgestring', () => {
+    it('splits camel-cased era keys into spaced labels', () => {
+      assert.equal(fAgestring('BronzeAge'), 'Bronze Age');
+      assert.equal(fAgestring('EarlyMiddleAge'), 'Early Middle Age');
+      assert.equal(fAgestring('SpaceAgeMars'), 'Space Age Mars');
+      assert.equal(
+        fAgestring('SpaceAgeAsteroidBelt'),
+        'Space Age Asteroid Belt',
+      );
+      assert.equal(fAgestring('StellarAgeDiscovery'), 'Stellar Age Discovery');
+      assert.equal(fAgestring('NoAge'), 'No Age');
+    });
+
+    it('returns already-spaced values unchanged', () => {
+      assert.equal(fAgestring('Colonial Age'), 'Colonial Age');
+    });
+
+    it('handles nullish and empty input', () => {
+      assert.equal(fAgestring(null), '');
+      assert.equal(fAgestring(undefined), '');
+      assert.equal(fAgestring(''), '');
+      assert.equal(fAgestring('   '), '');
+    });
+
+    it('passes unknown non-camel keys through untouched', () => {
+      assert.equal(fAgestring('AA'), 'AA');
     });
   });
 });

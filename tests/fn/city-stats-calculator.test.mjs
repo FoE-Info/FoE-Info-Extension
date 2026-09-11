@@ -65,7 +65,8 @@ test('CityStatsCalculator - 15 Metrics Full Engine Test', async (t) => {
               targetedFeature: 'guild_raids',
               value: 50,
             },
-            { type: 'guild_raids_coin_boost', value: 12 },
+            { type: 'guild_raids_coins_production', value: 12 },
+            { type: 'guild_raids_supplies_production', value: 18 },
           ],
         },
       },
@@ -201,6 +202,7 @@ test('CityStatsCalculator - 15 Metrics Full Engine Test', async (t) => {
       assert.equal(stats.special.goodsPerQuest.toNumber(), 30);
       assert.equal(stats.special.aoCriticalStrike.toNumber(), 31.8);
       assert.equal(stats.special.qiBoosts.coins.toNumber(), 12);
+      assert.equal(stats.special.qiBoosts.supplies.toNumber(), 18);
     },
   );
 });

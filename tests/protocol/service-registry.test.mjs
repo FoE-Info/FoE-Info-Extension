@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import registryPkg from '../../src/js/msg/registerServices.js';
+import { registerLegacyBridge } from '../../src/js/protocol/legacyBridge.js';
 import { MessageDispatcher } from '../../src/js/protocol/MessageDispatcher.js';
 
 const { registerAllServices } = registryPkg;
@@ -81,4 +82,51 @@ test('Service Registry - dispatches multi-domain batch without errors', async ()
   assert.equal(result.total, 3);
   assert.equal(result.succeeded, 3);
   assert.equal(result.failed, 0);
+});
+
+test('Service Registry - legacy bridge adds no duplicate handlers for shared RPC keys', async () => {
+  const dispatcher = new MessageDispatcher();
+  registerAllServices(dispatcher);
+
+  const sharedKeys = [
+    'EmissaryService.getOverview',
+    'EmissaryService.getAssigned',
+    'BoostService.getAllBoosts',
+    'OutpostService.getAll',
+  ];
+  const modernHandlers = new Map(
+    sharedKeys.map((key) => [key, dispatcher.handlers.get(key)]),
+  );
+  for (const key of sharedKeys) {
+    assert.equal(
+      typeof modernHandlers.get(key),
+      'function',
+      `Modern service must own ${key}`,
+    );
+  }
+
+  const legacyCalls = [];
+  registerLegacyBridge(dispatcher, {
+    emissaryService: () => legacyCalls.push('emissary'),
+    boostServiceAllBoosts: () => legacyCalls.push('boost'),
+    getOutposts: () => legacyCalls.push('outpost'),
+    outpostService: { getAll: () => legacyCalls.push('outpostService') },
+  });
+
+  for (const key of sharedKeys) {
+    assert.strictEqual(
+      dispatcher.handlers.get(key),
+      modernHandlers.get(key),
+      `${key} must keep the modern handler reference`,
+    );
+  }
+
+  await dispatcher.dispatchBatch(
+    sharedKeys.map((key) => {
+      const [requestClass, requestMethod] = key.split('.');
+      return { requestClass, requestMethod, responseData: [] };
+    }),
+  );
+
+  assert.deepEqual(legacyCalls, []);
 });

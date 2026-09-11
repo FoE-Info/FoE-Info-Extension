@@ -82,9 +82,13 @@ const FEATURE_PROPERTY_MAP = {
  * @param {Object} [cityTarget={}] Target city object to mutate
  * @returns {Object} mutated cityTarget
  */
+function addBoost(cityTarget, key, val) {
+  cityTarget[key] = cityTarget[key].plus(val);
+}
+
 function applyBoostsToCity(msg, cityTarget = {}) {
   for (const key of CITY_BOOST_KEYS) {
-    cityTarget[key] = 0;
+    cityTarget[key] = new BigNumber(0);
   }
 
   const list =
@@ -94,46 +98,50 @@ function applyBoostsToCity(msg, cityTarget = {}) {
 
   for (const item of list) {
     if (!item) continue;
-    const val = Number(item.value) || 0;
+    const val = new BigNumber(item.value || 0);
     const type = item.type;
     const feature = item.targetedFeature || item.feature || 'all';
 
     if (type === 'coin_production') {
-      cityTarget.CoinBoost += val;
+      addBoost(cityTarget, 'CoinBoost', val);
     } else if (type === 'supply_production' || type === 'supplies_production') {
-      cityTarget.SupplyBoost += val;
+      addBoost(cityTarget, 'SupplyBoost', val);
     } else if (
       type === 'forge_points_production' ||
       type === 'fp_production_boost'
     ) {
-      cityTarget.fpProductionBoost += val;
+      addBoost(cityTarget, 'fpProductionBoost', val);
     } else if (type === 'guild_goods_production') {
-      cityTarget.guildGoodsProductionBoost += val;
+      addBoost(cityTarget, 'guildGoodsProductionBoost', val);
     } else if (type === 'goods_production') {
-      cityTarget.goodsProductionBoost += val;
+      addBoost(cityTarget, 'goodsProductionBoost', val);
     } else if (feature && FEATURE_PROPERTY_MAP[feature]) {
       const map = FEATURE_PROPERTY_MAP[feature];
       if (type === 'att_boost_attacker') {
-        cityTarget[map.attAtt] += val;
+        addBoost(cityTarget, map.attAtt, val);
       } else if (type === 'att_boost_defender') {
-        cityTarget[map.attDef] += val;
+        addBoost(cityTarget, map.attDef, val);
       } else if (type === 'def_boost_attacker') {
-        cityTarget[map.defAtt] += val;
+        addBoost(cityTarget, map.defAtt, val);
       } else if (type === 'def_boost_defender') {
-        cityTarget[map.defDef] += val;
+        addBoost(cityTarget, map.defDef, val);
       } else if (type === 'att_def_boost_attacker') {
-        cityTarget[map.attAtt] += val;
-        cityTarget[map.defAtt] += val;
+        addBoost(cityTarget, map.attAtt, val);
+        addBoost(cityTarget, map.defAtt, val);
       } else if (type === 'att_def_boost_defender') {
-        cityTarget[map.attDef] += val;
-        cityTarget[map.defDef] += val;
+        addBoost(cityTarget, map.attDef, val);
+        addBoost(cityTarget, map.defDef, val);
       } else if (type === 'att_def_boost_attacker_defender') {
-        cityTarget[map.attAtt] += val;
-        cityTarget[map.defAtt] += val;
-        cityTarget[map.attDef] += val;
-        cityTarget[map.defDef] += val;
+        addBoost(cityTarget, map.attAtt, val);
+        addBoost(cityTarget, map.defAtt, val);
+        addBoost(cityTarget, map.attDef, val);
+        addBoost(cityTarget, map.defDef, val);
       }
     }
+  }
+
+  for (const key of CITY_BOOST_KEYS) {
+    cityTarget[key] = cityTarget[key].toNumber();
   }
 
   return cityTarget;
@@ -195,6 +203,7 @@ class BoostService {
     this.reset();
 
     for (const item of list) {
+      if (!item) continue;
       const val = new BigNumber(item.value || 0);
       const feature = item.targetedFeature || 'all';
 

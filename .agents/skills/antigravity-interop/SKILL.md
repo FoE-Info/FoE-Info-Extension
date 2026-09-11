@@ -14,7 +14,7 @@ This skill documents the dual-harness contract so work hands off seamlessly betw
 | Artifact | Canonical Location | Host Shim |
 | :--- | :--- | :--- |
 | Subagents (36) | `.agents/agents/*.md` | `.opencode/agents/*.md` (thin shims) |
-| Rules (16) | `.agents/rules/*.md` | `opencode.json` instructions glob |
+| Rules (17) | `.agents/rules/*.md` | `opencode.json` instructions glob |
 | Skills (53) | `.agents/skills/*/SKILL.md` | Auto-discovered via `skills.json` |
 | MCP servers | `.agents/mcp_config.json` | `opencode.json` `mcp` block |
 | Hooks | `.agents/hooks.json` | `.opencode/plugins/*.mjs` |

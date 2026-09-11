@@ -173,6 +173,35 @@ test('networkListener - handleRawNetworkEntry Origin and World Detection', async
 
     assert.equal(updatedVersion, '1.285');
   });
+
+  await t.test(
+    'escapes HTML entities when writing game version to citystats element',
+    () => {
+      const mockCityStats = { innerHTML: '' };
+      setGameVersion('0.0');
+
+      handleRawNetworkEntry(
+        'https://en1.forgeofempires.com/game/json',
+        [{ name: 'client-identification', value: 'version=1.28<script>' }],
+        '[{}]',
+        '',
+        null,
+        {
+          citystats: mockCityStats,
+          extName: '<b>FoE-Info</b>',
+          toolVersion: '"1.0"',
+          messageDispatcher: { dispatchRaw: async () => {} },
+        },
+      );
+
+      assert.ok(mockCityStats.innerHTML.includes('1.28&lt;'));
+      assert.ok(!mockCityStats.innerHTML.includes('1.28<'));
+      assert.ok(
+        mockCityStats.innerHTML.includes('&lt;b&gt;FoE-Info&lt;/b&gt;'),
+      );
+      assert.ok(mockCityStats.innerHTML.includes('&quot;1.0&quot;'));
+    },
+  );
 });
 
 test('networkListener - safeProcessContent Handling', async (t) => {
