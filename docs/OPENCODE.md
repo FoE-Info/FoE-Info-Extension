@@ -79,7 +79,14 @@ Formatting excludes existing `docs/antigravity_prompt_*.md` conversation artifac
 
 ## Active Dual-Harness Tasks
 
-- **[COMPLETED] Town Hall / Beta Debug Panel Height & Scroll Refactor**: See [`docs/plans/2026-09-11-town-hall-beta-debug-panel.md`](plans/2026-09-11-town-hall-beta-debug-panel.md).
+- **[IN PROGRESS] Curated Git History Reconstruction (from `8c681d1` to `HEAD`)**:
+  - Plan: [`docs/plans/2026-09-12-curated-history-reconstruction.md`](plans/2026-09-12-curated-history-reconstruction.md).
+  - Target Branch: `curated-history` -> `development`.
+  - Reconstruct clean, structured 13-commit milestone progression from baseline `8c681d1` to `HEAD`.
+  - Mandate: 0 final code diff against `backup/full-history-2026-09-12`, identical release trees at `v0.0.833` and `v0.0.834`, and 849/849 tests passing.
+- **[COMPLETED] OpenCode Heavy Lifting Implementation (Tracks 1, 2, 3)**:
+  - Plan: [`docs/plans/2026-09-12-opencode-heavy-lifting-plan.md`](plans/2026-09-12-opencode-heavy-lifting-plan.md). All 3 tracks merged cleanly into `development` (`abf9e2a`).
+
 - **[COMPLETED] Era Mapping Extraction from helper.js**: See [`docs/plans/2026-09-11-era-mapping-extraction.md`](plans/2026-09-11-era-mapping-extraction.md).
 - **[COMPLETED] GBG Target Generator Card Extraction**: See [`docs/plans/2026-09-11-gbg-and-helper-decomposition.md`](plans/2026-09-11-gbg-and-helper-decomposition.md).
 - **[COMPLETED] Slices 1, 2 & 3 Heavy Lifter (F5, F6, F18, F19, F21, F23)**:

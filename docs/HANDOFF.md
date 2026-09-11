@@ -4,7 +4,24 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
 
 ## Current session (2026-09-12)
 
-- **Quad-Graph Exploration & Comparative Analysis Suite (`development` @ `06dc680`)**:
+- **OpenCode Heavy Lifting Milestone — All 3 Tracks Complete & Merged (`development`)**:
+  - **Track 1 (P0 Safety & Correctness - `feat/opencode-safety-fixes`)**:
+    - Fixed D1: `fResourceShortName` now falls back to `globalThis.ResourceNames` / `state.js` dictionary when called with 1 argument (resolving resource names for all 8 callers across city production, rewards, and province views).
+    - Fixed D2: Removed duplicate RPC registrations from `src/js/protocol/legacyBridge.js` (`EmissaryService`, `BoostService`, `OutpostService`); modern domain services now exclusively own these handlers.
+    - Cleaned up D4/D5: Removed orphaned `src/js/protocol/webRequestFilter.js`; added `"typecheck"` to the `"verify"` script in `package.json`.
+  - **Track 2 (P1 Monolith Decomposition & Purity - `feat/opencode-monolith-decomp`)**:
+    - Decomposed `src/js/calc/CityMapEntityProcessor.js`: dropped from **657 -> 254 lines** by extracting harvest readiness, collection times, and special goods into pure leaf calculator `src/js/calc/entities/CityEntityHarvestCalculator.js` (556 lines).
+    - Decomposed `src/js/protocol/legacyBridge.js`: dropped from **831 -> 60 lines** by extracting four domain route tables into `src/js/protocol/routes/` (`combatRoutes.js` 317L, `cityRoutes.js` 264L, `socialRoutes.js` 193L, `buildingRoutes.js` 159L).
+    - Fixed D3: Decoupled `VisitedCityStatsCalculator.js` from `CastleSystemService.js` via injected `CastleBoostCalculator.js`.
+  - **Track 3 (P1/P2 Feature Parity & Polish - `feat/opencode-feature-parity`)**:
+    - Implemented Blue Galaxy economic valuation ranking in `src/js/calc/BlueGalaxyCalculator.ts` and `.js` (combining FP and weighted Goods with BigNumber precision).
+    - Unified date/time formatting engine in `src/js/utils/date.js` with native `Intl` tokens (`MMM`, `MMMM`, `ddd`) and `formatRelativeTime()`; migrated residual call sites in `ConversationService.js`, `renderGbInfoPanel.js`, and `GuildBattlegroundService.js`.
+  - **Verification Gate**:
+    - **849/849 unit tests pass** across 87 suites (0 failures; expanded from 826 tests).
+    - Full 5-stage verification gate (`npm run verify`) passed exit 0 (lint, typecheck, tests, dev build).
+    - Knowledge Graph AST refreshed cleanly (`npm run graph:foe-info:ast`).
+    - Every functional module in `src/js/` satisfies the $\le 600$-line ceiling.
+
   - **Four parallel specialist streams** executed against the DeepSeek-reindexed graphs: `graph-knowledge-explorer` (host topology), `foe-info-original-comparator` (v1 baseline `8c681d1`), `forge-hammer-comparator` (peer architecture), and `low-tool-comparator` (closed-source fork lineage). All dossiers saved under the respective `graphify-out/*/findings/` directories (plus plan-designated sibling copies for the two peers). No source code was modified.
   - **Consensus**: the modernization is **architecturally ahead of all measured peers**; `src/js/calc/` is 100% DOM-free and the network pipeline (passive `xhrInterceptor` → `MessageDispatcher` → services → calc → UI) is sound. Risk is concentrated in residual seams, not the design.
   - **Confirmed defects (Targeted Surgical input)**: (D1) `fResourceShortName` no longer reads the runtime `ResourceNames` map, so generic resources render as raw IDs (all 8 call sites omit the lookup; uncovered by tests); (D2) duplicate RPC ownership (`EmissaryService.getOverview/getAssigned`, `BoostService.getAllBoosts`, `OutpostService.getAll`) silently combined by `MessageDispatcher.register`, risking double side effects; (D3) calc dependency impurity — `VisitedCityStatsCalculator` imports `../msg/CastleSystemService.js` and `gbNaming.js` reads `globalThis`; (D4) `webRequestFilter.js` is orphaned and the `webRequest` permission was dropped while panel-context CDN fetches persist; (D5) `npm run verify` excludes `typecheck` while 10 `.js`/`.ts` mirrors can drift.
