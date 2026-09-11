@@ -423,17 +423,17 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
   await t.test(
     'verifies authentic Guild Goods for Radika (32,440), II-IIyPer-79 (32,740), and robinmagister (23,380)',
     () => {
-      const radikaHarPath = path.resolve(
+      const radikaFixturePath = path.resolve(
         __dirname,
-        '../../docs/har/visit-Radika.har',
+        '../fixtures/visits/visit-Radika.json',
       );
-      const iiyperHarPath = path.resolve(
+      const iiyperFixturePath = path.resolve(
         __dirname,
-        '../../docs/har/visit-ii-iiyper-79.har',
+        '../fixtures/visits/visit-ii-iiyper-79.json',
       );
-      const robinHarPath = path.resolve(
+      const robinFixturePath = path.resolve(
         __dirname,
-        '../../docs/har/visit-robinmagister.har',
+        '../fixtures/visits/visit-robinmagister.json',
       );
       const entitiesDir =
         [
@@ -442,28 +442,9 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
         ].find((p) => fs.existsSync(p)) ||
         path.resolve(__dirname, '../../../metadata-store/entities');
 
-      function extractVisitData(harPath) {
-        if (!fs.existsSync(harPath)) return null;
-        const har = JSON.parse(fs.readFileSync(harPath, 'utf8'));
-        for (const entry of har.log?.entries || []) {
-          const postText = entry.request?.postData?.text || '';
-          if (
-            postText.includes('OtherPlayerService') &&
-            postText.includes('visitPlayer')
-          ) {
-            const respText = entry.response?.content?.text;
-            if (respText) {
-              const rpcList = JSON.parse(respText);
-              const visitRpc = rpcList.find(
-                (r) =>
-                  r.requestClass === 'OtherPlayerService' &&
-                  r.requestMethod === 'visitPlayer',
-              );
-              if (visitRpc?.responseData) return visitRpc.responseData;
-            }
-          }
-        }
-        return null;
+      function loadVisitData(fixturePath) {
+        if (!fs.existsSync(fixturePath)) return null;
+        return JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
       }
 
       function createPopulatedStore(entities) {
@@ -489,7 +470,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
       }
 
       // Radika verification (Target: 32,440)
-      const radikaData = extractVisitData(radikaHarPath);
+      const radikaData = loadVisitData(radikaFixturePath);
       if (radikaData?.city_map?.entities) {
         const store = createPopulatedStore(radikaData.city_map.entities);
         const calc = new VisitedCityStatsCalculator(store);
@@ -501,7 +482,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
       }
 
       // II-IIyPer-79 verification (Target: 32,740)
-      const iiyperData = extractVisitData(iiyperHarPath);
+      const iiyperData = loadVisitData(iiyperFixturePath);
       if (iiyperData?.city_map?.entities) {
         const store = createPopulatedStore(iiyperData.city_map.entities);
         const calc = new VisitedCityStatsCalculator(store);
@@ -513,7 +494,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
       }
 
       // robinmagister verification (Target: Treasury 23,380, FP 51,471, Units 3,306, SASH ~4,822-4,830)
-      const robinData = extractVisitData(robinHarPath);
+      const robinData = loadVisitData(robinFixturePath);
       if (robinData?.city_map?.entities) {
         const store = createPopulatedStore(robinData.city_map.entities);
         const calc = new VisitedCityStatsCalculator(store);
