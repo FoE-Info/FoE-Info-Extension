@@ -391,7 +391,7 @@ function renderLiveCityStats(ctx = {}) {
           isOwnCity: true,
           name: user?.user_name || MyInfo?.name || 'My City',
           era: currentEra,
-          score: user?.score,
+          score: user?.score ?? MyInfo?.score,
           guild: user?.clan_name || MyInfo?.clan || '',
           totalGoods: totalGoodsAmount,
           goodsBoostPercent: goodsBoostPercent,

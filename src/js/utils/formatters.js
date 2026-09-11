@@ -46,8 +46,11 @@ function fResourceShortName(name, lookup = null) {
   if (name === 'something else') {
     return 'something';
   }
-  if (lookup && lookup[name]) {
-    return lookup[name];
+  const dict =
+    lookup ||
+    (typeof globalThis !== 'undefined' ? globalThis.ResourceNames : null);
+  if (dict && dict[name]) {
+    return dict[name];
   }
   return name;
 }
@@ -104,9 +107,92 @@ function fRewardShortName(reward) {
   return cleaned;
 }
 
+/**
+ * Rounds a numeric value to a fixed number of decimal places.
+ * Nullish, non-finite, or non-numeric inputs resolve to 0.
+ *
+ * @param {*} val - Value to round.
+ * @param {number} [decimals=2] - Number of decimal places (clamped to >= 0).
+ * @returns {number} Rounded number, or 0 for invalid input.
+ */
+function fRound(val, decimals = 2) {
+  const num = Number(val);
+  if (val === null || val === undefined || !Number.isFinite(num)) {
+    return 0;
+  }
+  const places =
+    Number.isFinite(Number(decimals)) ?
+      Math.max(0, Math.trunc(Number(decimals)))
+    : 2;
+  const factor = 10 ** places;
+  return Math.round(num * factor) / factor;
+}
+
+/**
+ * Coerces a value to a finite number, tolerating numeric strings with
+ * grouping separators or whitespace. Returns the fallback otherwise.
+ *
+ * @param {*} val - Value to coerce.
+ * @param {number} [fallback=0] - Value returned when coercion fails.
+ * @returns {number} Finite number or fallback.
+ */
+function fNumber(val, fallback = 0) {
+  if (val === null || val === undefined || val === '') return fallback;
+  if (typeof val === 'number') {
+    return Number.isFinite(val) ? val : fallback;
+  }
+  if (typeof val === 'string') {
+    const parsed = Number(val.replace(/[\s,]/g, ''));
+    return Number.isFinite(parsed) ? parsed : fallback;
+  }
+  const parsed = Number(val);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+/**
+ * Formats a numeric value with locale-aware thousands separators.
+ * Invalid input resolves to '0'.
+ *
+ * @param {*} num - Value to format.
+ * @param {string} [locale='en-US'] - BCP 47 locale used for grouping.
+ * @returns {string} Grouped number string.
+ */
+function fFormatNumber(num, locale = 'en-US') {
+  const parsed = typeof num === 'number' ? num : Number(num);
+  if (
+    num === null ||
+    num === undefined ||
+    num === '' ||
+    !Number.isFinite(parsed)
+  ) {
+    return '0';
+  }
+  return parsed.toLocaleString(locale);
+}
+
+/**
+ * Converts a camel-cased era key (e.g. 'SpaceAgeMars') into a spaced
+ * display label (e.g. 'Space Age Mars'). Already-spaced values are
+ * returned unchanged and nullish input resolves to an empty string.
+ *
+ * @param {*} ageKey - Era identifier.
+ * @returns {string} Human-readable era label, or '' for nullish input.
+ */
+function fAgestring(ageKey) {
+  if (ageKey === null || ageKey === undefined) return '';
+  const raw = String(ageKey).trim();
+  if (!raw) return '';
+  if (raw.includes(' ')) return raw;
+  return raw.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
+}
+
 module.exports = {
   escapeHTML,
   formatEntityId,
   fResourceShortName,
   fRewardShortName,
+  fRound,
+  fNumber,
+  fFormatNumber,
+  fAgestring,
 };

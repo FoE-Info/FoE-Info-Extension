@@ -2,9 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const WebpackExtensionManifestPlugin = require('webpack-extension-manifest-plugin');
-const baseManifest = require('./src/chrome/manifest.json');
-const pkg = require('./package.json');
 
 module.exports = {
   entry: {
@@ -89,12 +86,14 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js',
-          to: './',
+          from: require.resolve('webextension-polyfill/dist/browser-polyfill.js'),
+          to: 'browser-polyfill.js',
         },
         {
-          from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js.map',
-          to: './',
+          from: require
+            .resolve('webextension-polyfill/dist/browser-polyfill.js')
+            .replace(/\.js$/, '.js.map'),
+          to: 'browser-polyfill.js.map',
           noErrorOnMissing: true,
         },
         { from: './src/i18n', to: 'i18n' },

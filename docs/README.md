@@ -35,5 +35,5 @@ Ground-truth layout:
 - **State**: when a thread changes status or a todo completes, update
   `docs/STATUS.md` in the same change, not after the fact.
 - `docs/superpowers/` was consolidated into `docs/plans/` + `docs/specs/` on
-  2026-09-10. The `.superpowers/` directory at the repository root is the
-  Superpowers runtime workspace (git-ignored), unrelated to these docs.
+  2026-09-10, and legacy runtime directories (`.superpowers/`) were removed.
+  All active plans and specifications reside exclusively in `docs/plans/` and `docs/specs/`.
