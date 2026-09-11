@@ -1,50 +1,5 @@
-# Dependencies
-node_modules/
-
-# Build & Distribution Artifacts
-build/
-dist/
-*.zip
-*.crx
-*.tar.gz
-*.tgz
-*.map
-
-# IDE & Editor Files
-.idea/
-.vscode/
-*.code-workspace
-.DS_Store
-Thumbs.db
-
-# Logs, Coverage & Temporary Files
-*.log
-tmp/
-temp/
-coverage/
-stuff/
-*note.html
-__pycache__/
-*.py[cod]
-
-# Offline Metadata Dumps (not for extension bundle)
-/metadata-store/
-/offline-metadata/
-
-# Graphify Outputs (git-ignored per workspace rules)
-graphify-out/
-
-# Git Worktrees & Subagent Artifacts
-.worktrees/
-worktrees/
-.superpowers/
-
-# CDP Heap Snapshots
-*.heapsnapshot
-docs/heap-snapshot/
-
-# Environment & Secrets
-.env
-.env.*
-*.pem
-*.key
+node_modules
+build
+package-lock.json
+.idea
+stuff
