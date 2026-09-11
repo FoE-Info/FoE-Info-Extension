@@ -12,37 +12,32 @@
  * ________________________________________________________________
  */
 import BigNumber from 'bignumber.js';
-import { t, translateContainer } from './fn/i18n.js';
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import browser from 'webextension-polyfill';
 import * as element from './fn/AddElement';
 import collapseOptions, * as collapse from './fn/collapse.js';
 import * as copy from './fn/copy.js';
 import { setToolOptions, setTreasurySize, toolOptions } from './fn/globals.js';
 import * as helper from './fn/helper.js';
+import { t, translateContainer } from './fn/i18n.js';
 import { rewardObserve, showReward, showRewards } from './fn/RewardRenderer.js';
 import * as storage from './fn/storage.js';
 import { armyUnitManagementService } from './msg/ArmyUnitManagementService.js';
 import { getBonuses, getLimitedBonuses } from './msg/BonusService.js';
 import { pickupProduction } from './msg/CityProductionService.js';
 import {
-  deploySiegeArmy,
-  getContinent,
-  getProvinceDetailed,
-  grantIndependence,
-  gvgAges,
-  gvgSummary,
-} from './msg/ClanBattleService.js';
-import {
   conversationService,
   getConversation,
+  getNewMessage,
 } from './msg/ConversationService.js';
 import {
   contributeForgePoints,
   getConstruction,
   getConstructionRanking,
   getContributions,
+  handleNewReward,
   setCurrentPercent,
+  showGreatBuldingDonation,
 } from './msg/GreatBuildingsService.js';
 import {
   clearBattleground,
@@ -51,8 +46,10 @@ import {
   getLeaderboard,
   getPlayerLeaderboard,
   getState,
+  getUpdatedProvinces,
   removeSignal,
   setSignal,
+  updateSignal,
 } from './msg/GuildBattlegroundService.js';
 import { guildExpeditionService } from './msg/GuildExpeditionService.js';
 import * as metadataService from './msg/MetadataService.js';
@@ -74,19 +71,66 @@ import {
   boostServiceAllBoosts,
   City,
   emissaryService,
+  renderLiveCityStats,
+  lastStartupMsg as serviceLastStartupMsg,
   startupService,
   updateIgnoreListUI,
 } from './msg/StartupService.js';
 import { registerLegacyBridge } from './protocol/legacyBridge.js';
 import { messageDispatcher } from './protocol/MessageDispatcher.js';
+import {
+  handleRawNetworkEntry,
+  handleRequestFinished,
+  initNetworkListeners,
+} from './protocol/networkListener.js';
+import {
+  handleReceiveStorage,
+  handleStorageChange,
+  initStorageListeners,
+} from './state/storageListener.js';
+import { applyCardVisibility } from './ui/cardVisibility.js';
+import {
+  setupPanelContainers,
+  setupPanelHeader,
+} from './ui/containerBinding.js';
+import {
+  clearCultural as clearCulturalHelper,
+  clearExpedition as clearExpeditionHelper,
+  clearForBattleground as clearForBattlegroundHelper,
+  clearForMainCity as clearForMainCityHelper,
+  clearStartup as clearStartupHelper,
+  clearVisitPlayer as clearVisitPlayerHelper,
+  renderTreasuryPanel,
+} from './ui/panelDispatcher.js';
+import {
+  createLogger,
+  isDebugEnabled,
+  toggleDebug as loggerToggleDebug,
+  onDebugToggle,
+} from './utils/logger.js';
 import setOptions, { showOptions } from './vars/showOptions.js';
 import '../css/main.scss';
 import {
   AllyDefs,
+  battlegroundDIV,
   BuildingEntityLookup,
+  cityrewards,
   clearRewardsState,
+  donation2DIV,
+  donationDIV,
+  donationDIV2,
   GameOrigin,
+  gbgLeaderboardDIV,
+  gbInfoDIV,
+  GBselected,
+  getPlayerName,
+  greatbuilding,
+  ignoredPlayers,
   MilitaryDefs,
+  MyInfo,
+  output,
+  PlayerID,
+  PlayerName,
   playerNameCache,
   ResearchDefs,
   rewardsGE,
@@ -95,8 +139,35 @@ import {
   setIgnoredPlayers,
   setMyGuildPosition,
   setPlayerName,
+  setTargetsTopic,
+  setTargetText,
   setUrl,
+  targets,
+  targetsTopic,
+  targetText,
 } from './vars/state.js';
+
+const rpcLogger = createLogger('RPC');
+const indexLogger = createLogger('Index');
+
+indexLogger.info(
+  `[TIMING:P1] index.js top-level execution | t = ${performance.now().toFixed(2)}ms`,
+);
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      indexLogger.info(
+        `[TIMING:P1] panel.html DOMContentLoaded fired | t = ${performance.now().toFixed(2)}ms`,
+      );
+    });
+  } else {
+    indexLogger.info(
+      `[TIMING:P1] panel.html DOMContentLoaded already complete | t = ${performance.now().toFixed(2)}ms`,
+    );
+  }
+}
+
+if (typeof window !== 'undefined') window.bootstrap = bootstrap;
 
 export { rewardObserve, showReward, showRewards };
 
@@ -105,7 +176,10 @@ export * from './vars/state.js';
 console.debug(toolOptions);
 
 let contentTypes = {};
-export var debugEnabled = false;
+export var debugEnabled = isDebugEnabled();
+onDebugToggle((enabled) => {
+  debugEnabled = enabled;
+});
 export var availablePacksFP = 0;
 export var rpcLog = [];
 if (typeof window !== 'undefined') {
@@ -114,13 +188,31 @@ if (typeof window !== 'undefined') {
 
 registerAllServices(messageDispatcher);
 
+const dispatcherLogger = createLogger('DispatcherErrors');
+messageDispatcher.onError((error, msg, context) => {
+  dispatcherLogger.debug(
+    `[DispatcherErrors] RPC handler exception: ${String(error?.message || error)}`,
+    {
+      requestClass: msg?.requestClass,
+      requestMethod: msg?.requestMethod,
+      isDirectMetadata: msg?.isDirectMetadata === true,
+      reqUrl: context?.reqUrl,
+    },
+  );
+});
+
 registerLegacyBridge(messageDispatcher, {
-  startupService,
+  startupService: (msg, reqData, context) => {
+    lastStartupMsg = msg;
+    return startupService(msg, reqData, context);
+  },
   emissaryService,
   getConstruction,
   contributeForgePoints,
   getConstructionRanking,
   getContributions,
+  handleNewReward,
+  showGreatBuldingDonation,
   otherPlayerService,
   otherPlayerServiceUpdateActions,
   clearVisitPlayer,
@@ -131,22 +223,30 @@ registerLegacyBridge(messageDispatcher, {
   getState,
   getBattleground,
   getBuildings,
+  getUpdatedProvinces,
   setSignal,
   removeSignal,
+  updateSignal,
   guildExpeditionService,
   armyUnitManagementService,
   pickupProduction,
   conversationService,
   getConversation,
+  getNewMessage,
   getBonuses,
   getLimitedBonuses,
   updateIgnoreListUI,
+  boostService,
+  boostServiceAllBoosts,
   processMetadataEntry: metadataService.processMetadataEntry,
   processMetadataData: metadataService.processMetadataData,
-  boostServiceAllBoosts,
   showOptions,
   GBselected,
   helper,
+  setPlayerName,
+  getPlayerName,
+  playerNameCache,
+  MyInfo,
 });
 
 export function logRpcMessage(msg, isHandled) {
@@ -187,49 +287,22 @@ export function logRpcMessage(msg, isHandled) {
     console.debug('Full Message:', msg);
     console.debug('Response Data:', entry.responseData);
     console.groupEnd();
+    rpcLogger.debug(`${tag} ${reqClass}.${reqMethod}`, {
+      requestClass: reqClass,
+      requestMethod: reqMethod,
+      requestId: entry.requestId,
+      responseData: entry.responseData,
+    });
   } else {
     console.debug(`[FoE-RPC] ${tag} ${reqClass}.${reqMethod}`, msg);
   }
 }
 
-export var PlayerName = '';
-export var PlayerID = 0;
 export var worlds = [];
-
-export var MyInfo = {
-  name: '',
-  era: '',
-  id: 0,
-  guild: '',
-  guildID: 0,
-  guildPosition: 0,
-  createdAt: 0,
-};
-
-export var ignoredPlayers = {
-  ignoredByPlayerIds: {},
-  ignoredPlayerIds: {},
-};
-
-export var GBselected = {
-  player: 0,
-  player_name: '',
-  id: 0,
-  level: 0,
-  name: '',
-  era: '',
-  connected: false,
-  max_level: 0,
-  current: 0,
-  total: 0,
-};
 // var GBinfo = [];
 // var GBrequest = [];
 var GuildDonations = [];
 var GuildTreasury = [];
-// var GuildTreasuryAnalysis = [];
-export var targetsTopic = 'targets';
-export var targetText = '';
 var GuildsGoods = [];
 // var GBdefs = [];
 export var CityEntityDefs = {};
@@ -249,8 +322,17 @@ export var hiddenRewards = [];
 var pendingStartupMsg = null;
 var lastStartupMsg = null;
 var saveCityEntityDefsTimer = null;
+let cityEntityDefsDirty = false;
 const fetchedMetadataUrls = new Set();
 var startupRerunTimer = null;
+
+export function markCityEntityDefsDirty() {
+  cityEntityDefsDirty = true;
+}
+
+export function isCityEntityDefsDirty() {
+  return cityEntityDefsDirty;
+}
 
 function scheduleStartupRerun(msg) {
   if (!msg) return;
@@ -266,31 +348,21 @@ export function flushCityEntityDefs() {
     clearTimeout(saveCityEntityDefsTimer);
     saveCityEntityDefsTimer = null;
   }
+  if (!cityEntityDefsDirty) return;
+  cityEntityDefsDirty = false;
   if (CityEntityDefs && Object.keys(CityEntityDefs).length > 0) {
     storage.set('CityEntityDefs', CityEntityDefs);
-  }
-  if (BuildingEntityLookup && Object.keys(BuildingEntityLookup).length > 0) {
-    storage.set('BuildingEntityLookup', BuildingEntityLookup);
-  }
-  if (MetaIds && Object.keys(MetaIds).length > 0) {
-    storage.set('MetaIds', MetaIds);
-  }
-  if (AllyDefs && Object.keys(AllyDefs).length > 0) {
-    storage.set('AllyDefs', AllyDefs);
-  }
-  if (ResearchDefs && Object.keys(ResearchDefs).length > 0) {
-    storage.set('ResearchDefs', ResearchDefs);
-  }
-  if (MilitaryDefs && Object.keys(MilitaryDefs).length > 0) {
-    storage.set('MilitaryDefs', MilitaryDefs);
   }
 }
 
 export async function resolveMissingCityEntities(ids) {
   return metadataService.resolveMissingCityEntities(ids, () => {
     saveCityEntityDefsDebounced();
-    if (lastStartupMsg) {
-      scheduleStartupRerun(lastStartupMsg);
+    const targetMsg = lastStartupMsg || serviceLastStartupMsg;
+    if (targetMsg) {
+      scheduleStartupRerun(targetMsg);
+    } else {
+      renderLiveCityStats();
     }
   });
 }
@@ -307,11 +379,14 @@ export function resolveMissingCityEntitiesFromMap(mapEntities) {
 
 if (typeof window !== 'undefined' && window.addEventListener) {
   window.addEventListener('beforeunload', () => {
-    flushCityEntityDefs();
+    if (cityEntityDefsDirty || saveCityEntityDefsTimer) {
+      flushCityEntityDefs();
+    }
   });
 }
 
 function saveCityEntityDefsDebounced() {
+  cityEntityDefsDirty = true;
   if (saveCityEntityDefsTimer) clearTimeout(saveCityEntityDefsTimer);
   saveCityEntityDefsTimer = setTimeout(() => {
     flushCityEntityDefs();
@@ -387,188 +462,61 @@ export var darkMode = browser.devtools.panels.themeName;
 // 		// darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 // }
 console.info('themeName', browser.devtools.panels.themeName);
-var title = document.createElement('div');
-document.body.appendChild(title);
-title.id = 'title';
-title.className = 'd-flex flex-row justify-content-between';
-
-// TODO fix dark theme
-if (darkMode == 'dark') {
-  title.className =
-    'd-flex flex-row justify-content-between text-light bg-dark';
-  // --color-background = 'bg-dark';
-}
-
-// <div class="p-2"><img src="${./src/icons/Icon24.png}" /></div>
-{
-  /* <svg id="go-to-options" viewBox="0 0 16 16" width="16px" height="16px"><use xlink:href="${bootstrap-icons/icons/tools.svg#tools}"/></svg> */
-}
-// title.innerHTML =  `<div class="d-flex flex-row justify-content-between">
-// <div class="p-2"><img src="${./src/icons/Icon24.png}" /></div>
-// <div class="p-8">
-// 	<h6>EXT_NAME-dev</h6>
-// </div>
-// <div class="p-2">
-// </div>
-// </div>`;
-
-var newelement = document.body;
-// TODO fix dark theme
-if (darkMode == 'dark') {
-  // 	newelement.classList.toggle("nord-styles");
-  // 	newelement.classList.toggle("dark-mode");
-  newelement.classList.toggle('bg-dark');
-}
-// else
-newelement.classList.toggle('bootstrap-styles');
-newelement = document.createElement('div');
-newelement.className = 'p-2';
-title.appendChild(newelement);
-var child = document.createElement('img');
-child.src = '/icons/Icon48.png';
-child.width = '24';
-child.height = '24';
-child.id = 'logo';
-// if (DEV)
-child.addEventListener('click', toggleDebug);
-newelement.appendChild(child);
-newelement = document.createElement('div');
-newelement.className = 'p-8 title';
-title.appendChild(newelement);
-child = document.createElement('h6');
-// TODO fix dark theme
-if (darkMode == 'dark') child.className = 'title text-light bg-dark';
-else child.className = 'title';
-// child.innerHTML = pkg.name;
-child.textContent = EXT_NAME;
-newelement.appendChild(child);
-newelement = document.createElement('button');
-newelement.type = 'button';
-newelement.setAttribute('aria-label', 'Open Settings');
-newelement.className = 'btn btn-link p-2 text-decoration-none border-0';
-newelement.innerHTML = `<span class="material-icons-outlined md-18 options-icon">settings</span>`;
-newelement.id = 'go-to-options';
-
-title.appendChild(newelement);
+export var title = setupPanelHeader({
+  darkMode,
+  extName: EXT_NAME,
+  onToggleDebug: toggleDebug,
+});
 
 // city info
 export var content = document.createElement('div');
 document.body.appendChild(content);
 content.id = 'content';
 if (darkMode == 'dark') content.className = 'text-light bg-dark';
-export var citystats = document.createElement('div');
-content.appendChild(citystats);
-citystats.className = 'alert alert-warning';
-citystats.id = 'citystats';
-citystats.innerHTML = `<p><strong><span data-i18n="load">Load the game ...</span></strong></p>`;
 
-export var alerts = document.createElement('div');
-alerts.id = 'alerts';
-content.appendChild(alerts);
+const containers = setupPanelContainers(content, {
+  targets,
+  cityrewards,
+  output,
+  gbgLeaderboardDIV,
+  donationDIV,
+  battlegroundDIV,
+  donation2DIV,
+  donationDIV2,
+  gbInfoDIV,
+  greatbuilding,
+});
 
-export var targets = document.createElement('div');
-targets.id = 'targets';
-content.appendChild(targets);
+export var citystats = containers.citystats;
+export var alerts = containers.alerts;
+export var bonusDIV = containers.bonusDIV;
+export var incidents = containers.incidents;
+export var cityinvested = containers.cityinvested;
+export var galaxyDIV = containers.galaxyDIV;
+export var visitstats = containers.visitstats;
+export var overview = containers.overview;
+export var cultural = containers.cultural;
+export var info = containers.info;
+export var armyDIV = containers.armyDIV;
+export var goodsDIV = containers.goodsDIV;
+var buildingsDIV = containers.buildingsDIV;
+export var guild = containers.guild;
+export var friendsDiv = containers.friendsDiv;
+export var treasury = containers.treasury;
+export var treasuryLog = containers.treasuryLog;
+export var clipboard = containers.clipboard;
+export var alerts_bottom = containers.alerts_bottom;
+export var debug = containers.debug;
+export var modal = containers.modal;
 
-export var bonusDIV = document.createElement('div');
-bonusDIV.id = 'bonus';
-content.appendChild(bonusDIV);
-
-export var incidents = document.createElement('div');
-incidents.className = 'incidents';
-incidents.id = 'incidents';
-content.appendChild(incidents);
-export var cityinvested = document.createElement('div');
-content.appendChild(cityinvested);
-cityinvested.id = 'invested';
-
-export var galaxyDIV = document.createElement('div');
-galaxyDIV.id = 'galaxy';
-// galaxyDIV.className="hidden";
-galaxyDIV.style.display = 'none';
-content.appendChild(galaxyDIV);
-
-export var visitstats = document.createElement('div');
-content.appendChild(visitstats);
-visitstats.id = 'visit';
-export var cityrewards = document.createElement('div');
-content.appendChild(cityrewards);
-cityrewards.id = 'rewards';
-
-export var output = document.createElement('div');
-content.appendChild(output);
-output.id = 'output';
-export var donationDIV = document.createElement('div');
-content.appendChild(donationDIV);
-donationDIV.id = 'donation';
-export var donation2DIV = document.createElement('div');
-content.appendChild(donation2DIV);
-donation2DIV.id = 'donation2';
-export var donationDIV2 = document.createElement('div');
-content.appendChild(donationDIV2);
-donationDIV2.id = 'donationDIV2';
-export var greatbuilding = document.createElement('div');
-content.appendChild(greatbuilding);
-greatbuilding.id = 'greatbuilding';
-
-export var overview = document.createElement('div');
-content.appendChild(overview);
-overview.id = 'overview';
-export var cultural = document.createElement('div');
-content.appendChild(cultural);
-cultural.id = 'cultural';
-export var info = document.createElement('div');
-content.appendChild(info);
-info.id = 'info';
-
-export var armyDIV = document.createElement('div');
-content.appendChild(armyDIV);
-armyDIV.id = 'army';
-
-export var goodsDIV = document.createElement('div');
-content.appendChild(goodsDIV);
-goodsDIV.id = 'goods';
-
-export var gvg = document.createElement('div');
-content.appendChild(gvg);
-gvg.id = 'gvg';
-gvg.style.display = 'none';
-
-var buildingsDIV = document.createElement('div');
-buildingsDIV.id = 'buildings';
-content.appendChild(buildingsDIV);
-
-export var guild = document.createElement('div');
-content.appendChild(guild);
-guild.id = 'guild';
-export var friendsDiv = document.createElement('div');
-content.appendChild(friendsDiv);
-friendsDiv.id = 'friends';
-export var treasury = document.createElement('div');
-content.appendChild(treasury);
-treasury.id = 'treasury';
-export var treasuryLog = document.createElement('div');
-content.appendChild(treasuryLog);
-treasuryLog.id = 'treasuryLog';
-export var clipboard = document.createElement('div');
-content.appendChild(clipboard);
-clipboard.id = 'clipboard';
-clipboard.style.display = 'none';
-export var alerts_bottom = document.createElement('div');
-alerts_bottom.id = 'alerts_bottom';
-content.appendChild(alerts_bottom);
-export var debug = document.createElement('div');
-content.appendChild(debug);
-debug.id = 'debug';
-export var modal = document.createElement('div');
-content.appendChild(modal);
-modal.id = 'modal';
-
-var newelement = document.createElement('div');
-newelement.className = 'modal-dialog modal-sm';
-newelement.id = 'testModal';
-// newelement.innerHTML = '<div class="modal-dialog modal-sm">...</div>';
-modal.appendChild(newelement);
+export {
+  battlegroundDIV,
+  donationDIV,
+  gbgLeaderboardDIV,
+  gbInfoDIV,
+  greatbuilding,
+  output,
+};
 
 console.debug('clipboard', clipboard.innerHTML);
 if (showOptions.clipboard) {
@@ -582,7 +530,7 @@ if (showOptions.clipboard) {
   // 	content.appendChild(clipboard);
   //  }
 
-  var clipboardHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="clipboardTextLabel" href="#buildingsText" data-bs-toggle="collapse">
+  var clipboardHTML = `<div class="alert alert-success alert-dismissible show collapsed"><p id="clipboardTextLabel">
 	${element.icon('clipboardicon', 'clipboardText', collapse.collapseClipboard)}
 	<strong><span data-i18n="clipboard">Clipboard</span>:</strong></p>`;
   clipboardHTML += element.close();
@@ -627,25 +575,11 @@ const formatBytes = (size) => {
 };
 
 document.querySelector('#go-to-options').addEventListener('click', function () {
-  // console.debug('options');
-
-  browser.permissions
-    .request({
-      permissions: ['storage'],
-    })
-    .then((granted) => {
-      // The callback argument will be true if the user granted the permissions.
-      if (granted) {
-        //   doSomething();
-        if (browser.runtime.openOptionsPage) {
-          browser.runtime.openOptionsPage();
-        } else {
-          window.open(browser.runtime.getURL('options.html'));
-        }
-      } else {
-        //   doSomethingElse();
-      }
-    });
+  if (browser.runtime && browser.runtime.openOptionsPage) {
+    browser.runtime.openOptionsPage();
+  } else {
+    window.open(browser.runtime.getURL('options.html'));
+  }
 });
 
 export var language =
@@ -820,242 +754,135 @@ if (
 }
 
 window.handleRequestFinished = handleRequestFinished;
-
 window.handleRawNetworkEntry = handleRawNetworkEntry;
 
+let inspectedWorldId = null;
 try {
-  browser.runtime.onMessage.addListener((msg) => {
-    if (msg && msg.type === 'FOE_INFO_NET_DATA' && msg.url && msg.body) {
-      handleRawNetworkEntry(msg.url, [], msg.body, '');
-    }
-  });
+  if (
+    browser.devtools &&
+    browser.devtools.inspectedWindow &&
+    browser.devtools.inspectedWindow.eval
+  ) {
+    browser.devtools.inspectedWindow.eval(
+      'window.location.hostname',
+      (hostname) => {
+        if (hostname && typeof hostname === 'string') {
+          const match = hostname.match(/([a-z0-9]+)\.forgeofempires\.com/i);
+          if (match && match[1]) {
+            inspectedWorldId = match[1].toLowerCase();
+            storage.setWorld(inspectedWorldId);
+            setGameOrigin(`https://${hostname}`);
+            storage.registerKnownWorld(inspectedWorldId);
+            storage.getWorldSettings(inspectedWorldId).then((worldSettings) => {
+              if (worldSettings && worldSettings.showOptions) {
+                setOptions('showOptions', worldSettings.showOptions);
+                applyCardVisibility();
+              }
+            });
+          }
+        }
+      },
+    );
+  }
 } catch (e) {}
 
-function handleRawNetworkEntry(reqUrl, headers, body, encoding) {
-  if (!reqUrl) return;
-  if (
-    reqUrl.includes('/game/json') ||
-    reqUrl.includes('metadata?id=') ||
-    reqUrl.includes('/metadata') ||
-    reqUrl.includes('/start/metadata')
-  ) {
-    const contentTypeHeader = (headers || []).find(
-      (h) => h && h.name && h.name.toLowerCase() === 'client-identification',
-    );
-    if (
-      contentTypeHeader &&
-      contentTypeHeader.value &&
-      GameVersion != contentTypeHeader.value.substr(8, 5)
-    ) {
-      GameVersion = contentTypeHeader.value.substr(8, 5);
+try {
+  if (browser?.devtools?.network?.onNavigated) {
+    browser.devtools.network.onNavigated.addListener((url) => {
+      if (url && typeof url === 'string') {
+        const match = url.match(
+          /https?:\/\/([a-z]+[1-9][0-9]*)\.forgeofempires\.com/i,
+        );
+        if (
+          match &&
+          match[1] &&
+          typeof storage.isPlayableWorld === 'function' &&
+          storage.isPlayableWorld(match[1])
+        ) {
+          const world = match[1].toLowerCase();
+          inspectedWorldId = world;
+          storage.setWorld(world);
+          setGameOrigin(`https://${match[1]}.forgeofempires.com`);
+          storage.registerKnownWorld(world);
+        }
+      }
+    });
+  }
+} catch (e) {}
+
+initNetworkListeners({
+  storage,
+  setGameOrigin,
+  setOptions,
+  applyCardVisibility,
+  messageDispatcher,
+  logRpcMessage,
+  browser,
+  getInspectedWorldId: () => inspectedWorldId,
+  setInspectedWorldId: (w) => {
+    inspectedWorldId = w;
+  },
+  onGameVersionChange: (newVersion) => {
+    GameVersion = newVersion;
+    if (citystats) {
       citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${GameVersion}<br>${EXT_NAME}: ${tool.version}</div>`;
     }
-    processContentDirect(reqUrl, body, encoding || '', headers || []);
-  }
-}
+  },
+  getGameVersion: () => GameVersion,
+  setGameVersion: (v) => {
+    GameVersion = v;
+  },
+});
 
-// When a network request has finished this function will be called.
-// browser.devtools.network.onRequestFinished.addListener().then(request => {
-function handleRequestFinished(request) {
-  if (!request) return;
-  const response = request.response || {};
-  const responseHeaders = response.headers || [];
-  const requestHeaders = (request.request && request.request.headers) || [];
+const storageDeps = {
+  storage,
+  setOptions,
+  applyCardVisibility,
+  setTargetsTopic: (val) => setTargetsTopic(val),
+  setTargetText: (val) => setTargetText(val),
+  setCurrentPercent,
+  setUrl,
+  setToolOptions,
+  setResourceDefs,
+  collapseOptions,
+  processMetadataData,
+  resolveMissingCityEntitiesFromMap,
+  renderLiveCityStats,
+  startupService,
+  setDonationPercent: (val) => {
+    donationPercent = val;
+  },
+  setDonationSuffix: (val) => {
+    donationSuffix = val;
+  },
+  setLanguage: (val) => {
+    language = val;
+  },
+  setMetadataLoaded: (val) => {
+    metadataLoaded = val;
+  },
+  getLastStartupMsg: () => lastStartupMsg,
+  setLastStartupMsg: (msg) => {
+    lastStartupMsg = msg;
+  },
+  getServiceLastStartupMsg: () => serviceLastStartupMsg,
+  getPendingStartupMsg: () => pendingStartupMsg,
+  setPendingStartupMsg: (msg) => {
+    pendingStartupMsg = msg;
+  },
+  BuildingEntityLookup,
+  AllyDefs,
+  ResearchDefs,
+  MilitaryDefs,
+  MetaIds,
+  playerNameCache,
+  browser,
+};
 
-  var contentType = '';
-  var contentHeader = responseHeaders.find(
-    (header) =>
-      header && header.name && header.name.toLowerCase() === 'content-type',
-  );
-
-  if (contentHeader) {
-    contentType = getType(contentHeader.value);
-  }
-
-  const reqUrl =
-    request.request && request.request.url ? request.request.url : '';
-  if (
-    reqUrl.includes('/game/json') ||
-    reqUrl.includes('metadata?id=') ||
-    reqUrl.includes('/metadata') ||
-    reqUrl.includes('/start/metadata')
-  ) {
-    const clientIdentHeader = requestHeaders.find(
-      (header) =>
-        header &&
-        header.name &&
-        header.name.toLowerCase() === 'client-identification',
-    );
-
-    if (
-      clientIdentHeader &&
-      clientIdentHeader.value &&
-      GameVersion != clientIdentHeader.value.substr(8, 5)
-    ) {
-      GameVersion = clientIdentHeader.value.substr(8, 5);
-    }
-
-    const processContent = (body, encoding) =>
-      processContentDirect(
-        reqUrl,
-        body,
-        encoding,
-        request.request ? request.request.headers : [],
-        request,
-      );
-    safeProcessContent(request, processContent);
-  }
-}
-
-const processedPayloadCache = new Map();
-
-function isDuplicatePayload(reqUrl, textBody) {
-  if (!reqUrl || !textBody) return false;
-  const sample = typeof textBody === 'string' ? textBody.slice(0, 100) : '';
-  const len = typeof textBody === 'string' ? textBody.length : 0;
-  const key = `${reqUrl}:${len}:${sample}`;
-  const now = Date.now();
-  if (processedPayloadCache.has(key)) {
-    const lastTime = processedPayloadCache.get(key);
-    if (now - lastTime < 3000) {
-      return true;
-    }
-  }
-  processedPayloadCache.set(key, now);
-  if (processedPayloadCache.size > 300) {
-    const firstKey = processedPayloadCache.keys().next().value;
-    processedPayloadCache.delete(firstKey);
-  }
-  return false;
-}
-
-async function processContentDirect(
-  reqUrl,
-  body,
-  encoding,
-  headers = [],
-  request = null,
-) {
-  if (!body) return;
-  try {
-    const res = await messageDispatcher.dispatchRaw(
-      reqUrl,
-      body,
-      encoding,
-      headers,
-      request,
-    );
-    if (res && res.batchResult && Array.isArray(res.batchResult.results)) {
-      for (const item of res.batchResult.results) {
-        logRpcMessage(item.message, !item.result?.unhandled && item.success);
-      }
-    }
-  } catch (err) {
-    console.error('Error in processContentDirect dispatch:', err);
-  }
-}
-
-function safeProcessContent(request, processContent) {
-  try {
-    let called = false;
-    const safeProcess = (content, encoding) => {
-      if (called) return;
-      if (!content) {
-        setTimeout(() => {
-          if (called) return;
-          try {
-            let p;
-            try {
-              p = request.getContent();
-            } catch (e) {
-              request.getContent((retryContent, retryEncoding) => {
-                if (retryContent) {
-                  called = true;
-                  processContent(retryContent, retryEncoding);
-                }
-              });
-              return;
-            }
-            if (p && typeof p.then === 'function') {
-              p.then((res) => {
-                const [retryContent, retryEncoding] =
-                  Array.isArray(res) ? res : [res, ''];
-                if (retryContent) {
-                  called = true;
-                  processContent(retryContent, retryEncoding);
-                }
-              }).catch(() => {});
-            }
-          } catch (e) {}
-        }, 150);
-        return;
-      }
-      called = true;
-      processContent(content, encoding);
-    };
-
-    let res;
-    try {
-      res = request.getContent();
-    } catch (err) {
-      res = request.getContent((content, encoding) => {
-        safeProcess(content, encoding);
-      });
-    }
-
-    if (res && typeof res.then === 'function') {
-      res
-        .then((args) => {
-          if (Array.isArray(args)) safeProcess(args[0], args[1]);
-          else safeProcess(args, '');
-        })
-        .catch((err) => console.error('getContent promise error', err));
-    }
-  } catch (e) {
-    console.error('Error in safeProcessContent', e);
-  }
-}
-
-browser.storage.onChanged.addListener(storageChange);
+initStorageListeners(storageDeps);
 
 function storageChange(changes, namespace) {
-  for (var key in changes) {
-    var storageChange = changes[key];
-    //   console.debug('Storage key "%s" in namespace "%s" changed. ' +
-    // 			  'Old value was "%s", new value is "%s".',
-    // 			  key,
-    // 			  namespace,
-    // 			  storageChange.oldValue,
-    // 			  storageChange.newValue);
-    if (key == 'showOptions') setOptions('showOptions', storageChange.newValue);
-    // showOptions = storageChange.newValue;
-    // console.debug(changes);
-    else if (key == 'tool') {
-      language = storageChange.newValue.language;
-      console.debug(language);
-    } else if (key == 'targets') {
-      // console.debug(storageChange.newValue,targetsTopic);
-      targetsTopic = storageChange.newValue;
-    } else if (key == 'targetText') {
-      // console.debug(storageChange.newValue,targetText);
-      targetText = storageChange.newValue;
-    } else if (key == 'toolOptions') {
-      setToolOptions(storageChange.newValue);
-      // console.debug(toolOptions);
-    } else if (key == 'donationPercent') {
-      donationPercent = storageChange.newValue;
-      setCurrentPercent(storageChange.newValue);
-      // console.debug(storageChange.newValue);
-    } else if (key == 'donationSuffix') {
-      donationSuffix = storageChange.newValue;
-      // console.debug(storageChange.newValue);
-    } else if (key == 'url') {
-      setUrl(storageChange.newValue);
-      // console.debug(url);
-    }
-  }
-  // console.debug('onChanged',changes);
-  // console.debug('showOptions',showOptions);
+  handleStorageChange(changes, namespace, storageDeps);
 }
 
 export function setMyInfo(name, id, clan, clan_id, createdAt, era) {
@@ -1075,373 +902,91 @@ export function setMyID(id) {
   MyInfo.id = id;
 }
 
-function fCleardForGVG() {
-  cityinvested.innerHTML = ``;
-  output.innerHTML = ``;
-  overview.innerHTML = ``;
-  alerts.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = '';
-  cultural.innerHTML = ``;
-  cultural.className = '';
-  friendsDiv.innerHTML = '';
-  treasury.innerHTML = '';
-  treasuryLog.innerHTML = '';
+function getPanelContainers() {
+  return {
+    cityinvested,
+    output,
+    overview,
+    alerts,
+    cityrewards,
+    donationDIV,
+    incidents,
+    donation2DIV,
+    donationDIV2,
+    greatbuilding,
+    gbInfoDIV,
+    targets,
+    guild,
+    debug,
+    info,
+    citystats,
+    visitstats,
+    cultural,
+    friendsDiv,
+    armyDIV,
+    treasury,
+    treasuryLog,
+  };
 }
 
 function clearVisitPlayer() {
-  cityinvested.innerHTML = ``;
-  output.innerHTML = ``;
-  overview.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  cultural.innerHTML = ``;
-  cultural.className = '';
-  friendsDiv.innerHTML = '';
-  treasury.innerHTML = '';
-  treasuryLog.innerHTML = '';
+  clearVisitPlayerHelper(getPanelContainers());
 }
 
 function clearExpedition() {
-  cityinvested.innerHTML = ``;
-  // output.innerHTML = ``;
-  overview.innerHTML = ``;
-  alerts.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = '';
-  cultural.innerHTML = ``;
-  cultural.className = '';
-  friendsDiv.innerHTML = '';
-  gvg.innerHTML = ``;
-  gvg.className = '';
-  // armyDIV.innerHTML = ``;
-  treasury.innerHTML = '';
-  treasuryLog.innerHTML = '';
-  if (gvgSummary) gvgSummary.innerHTML = '';
-  if (gvgAges) gvgAges.innerHTML = '';
+  clearExpeditionHelper(getPanelContainers());
 }
 
 function clearForBattleground() {
-  cityinvested.innerHTML = ``;
-  // output.innerHTML = ``;
-  overview.innerHTML = ``;
-  alerts.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = '';
-  cultural.innerHTML = ``;
-  cultural.className = '';
-  friendsDiv.innerHTML = '';
-  gvg.innerHTML = ``;
-  gvg.className = '';
-  // armyDIV.innerHTML = ``;
-  treasury.innerHTML = '';
-  treasuryLog.innerHTML = '';
-  if (gvgSummary) gvgSummary.innerHTML = '';
-  if (gvgAges) gvgAges.innerHTML = '';
+  clearForBattlegroundHelper(getPanelContainers());
 }
 
 function clearForMainCity() {
-  // output.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  targets.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = '';
-  cultural.innerHTML = ``;
-  cultural.className = '';
-  gvg.innerHTML = ``;
-  gvg.className = '';
-  // armyDIV.innerHTML = ``;
-  treasury.innerHTML = '';
-  treasuryLog.innerHTML = '';
-  if (gvgSummary) gvgSummary.innerHTML = '';
-  if (gvgAges) gvgAges.innerHTML = '';
+  clearForMainCityHelper(getPanelContainers());
 }
 
 function clearStartup() {
-  cityinvested.innerHTML = ``;
-  output.innerHTML = ``;
-  overview.innerHTML = ``;
-  alerts.innerHTML = ``;
-  cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  citystats.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = '';
-  cultural.innerHTML = ``;
-  cultural.className = '';
-  friendsDiv.innerHTML = '';
-  gvg.innerHTML = ``;
-  gvg.className = '';
-  armyDIV.innerHTML = ``;
-  treasury.innerHTML = '';
-  treasuryLog.innerHTML = '';
-  if (gvgSummary) gvgSummary.innerHTML = '';
-  if (gvgAges) gvgAges.innerHTML = '';
-  GuildDonations = [];
-  GuildTreasury = [];
-  //  ResourceDefs = [];
-  //  PowerSoH = [];
-  // PowerHoF = [];
-  GuildsGoods = [];
-  Bonus = {
-    aid: 0,
-    spoils: 0,
-    diplomatic: 0,
-    strike: 0,
-  };
-  clearRewardsState();
-}
-
-function clearCultural() {
-  cityinvested.innerHTML = ``;
-  // output.innerHTML = ``;
-  overview.innerHTML = ``;
-  // cityrewards.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = '';
-  friendsDiv.innerHTML = '';
-  gvg.innerHTML = ``;
-  gvg.className = '';
-  armyDIV.innerHTML = ``;
-  treasury.innerHTML = '';
-  treasuryLog.innerHTML = '';
-  if (gvgSummary) gvgSummary.innerHTML = '';
-  if (gvgAges) gvgAges.innerHTML = '';
-}
-
-function receiveStorage(result) {
-  console.debug('result', result);
-  storage.updateCache(result);
-
-  Object.entries(result).forEach((element) => {
-    const [key, value] = element;
-    if (key.substring(0, 8) == 'collapse') {
-      collapseOptions(key, value);
-    } else if (key == 'showOptions') setOptions('showOptions', value);
-    else if (key == 'ResourceDefs') {
-      setResourceDefs(value);
-    } else if (key == 'CityEntityDefs') {
-      if (value && typeof value === 'object') {
-        processMetadataData(value);
-      }
-      metadataLoaded = true;
-      console.debug('CityEntityDefs loaded from storage:', key, value);
-      if (lastStartupMsg?.responseData?.city_map?.entities) {
-        resolveMissingCityEntitiesFromMap(
-          lastStartupMsg.responseData.city_map.entities,
-        );
-      }
-      if (pendingStartupMsg) {
-        startupService(pendingStartupMsg);
-        pendingStartupMsg = null;
-      }
-    } else if (key == 'BuildingEntityLookup') {
-      if (value) Object.assign(BuildingEntityLookup, value);
-      console.debug(
-        'BuildingEntityLookup loaded from storage:',
-        Object.keys(BuildingEntityLookup).length,
-      );
-      if (lastStartupMsg?.responseData?.city_map?.entities) {
-        resolveMissingCityEntitiesFromMap(
-          lastStartupMsg.responseData.city_map.entities,
-        );
-      }
-    } else if (key == 'AllyDefs') {
-      if (value && typeof value === 'object') Object.assign(AllyDefs, value);
-    } else if (key == 'ResearchDefs') {
-      if (value && typeof value === 'object')
-        Object.assign(ResearchDefs, value);
-    } else if (key == 'MilitaryDefs') {
-      if (value && typeof value === 'object')
-        Object.assign(MilitaryDefs, value);
-    } else if (key == 'MetaIds') {
-      if (value && typeof value === 'object') Object.assign(MetaIds, value);
-    } else if (key == 'tool') {
-      if (value.language != 'auto') {
-        language = value.language;
-        console.debug(language);
-      }
-    } else if (key == 'targets') {
-      targetsTopic = value;
-      // console.debug(targetsTopic);
-    } else if (key == 'targetText') {
-      targetText = value;
-      // console.debug(targetText);
-    } else if (key == 'toolOptions') {
-      setToolOptions(value);
-      // console.debug(toolOptions);
-    } else if (key == 'donationPercent') {
-      donationPercent = value;
-      setCurrentPercent(value);
-      // console.debug(value);
-    } else if (key == 'donationSuffix') {
-      donationSuffix = value;
-      // console.debug(value);
-    } else if (key == 'url') {
-      setUrl(value);
-      // console.debug(value);
-    } else if (key == 'playerNameCache') {
-      if (value) Object.assign(playerNameCache, value);
-    } else console.debug(key, value);
+  clearStartupHelper(getPanelContainers(), {
+    reset: () => {
+      GuildDonations = [];
+      GuildTreasury = [];
+      GuildsGoods = [];
+      Bonus = {
+        aid: 0,
+        spoils: 0,
+        diplomatic: 0,
+        strike: 0,
+      };
+      clearRewardsState();
+    },
   });
 }
 
+function clearCultural() {
+  clearCulturalHelper(getPanelContainers());
+}
+
+function receiveStorage(result) {
+  handleReceiveStorage(result, storageDeps);
+}
+
 export function processTreasuryData(resources) {
-  if (!resources) return;
-  cityinvested.innerHTML = ``;
-  output.innerHTML = ``;
-  overview.innerHTML = ``;
-  alerts.innerHTML = ``;
-  donationDIV.innerHTML = ``;
-  incidents.innerHTML = ``;
-  donation2DIV.innerHTML = ``;
-  donationDIV2.innerHTML = ``;
-  greatbuilding.innerHTML = ``;
-  guild.innerHTML = ``;
-  debug.innerHTML = ``;
-  info.innerHTML = ``;
-  visitstats.innerHTML = ``;
-  visitstats.className = '';
-  cultural.innerHTML = ``;
-  cultural.className = '';
-  friendsDiv.innerHTML = '';
-  gvg.innerHTML = ``;
-  gvg.className = '';
-  if (gvgSummary) gvgSummary.innerHTML = '';
-  if (gvgAges) gvgAges.innerHTML = '';
-
-  if (showOptions.showTreasury) {
-    var treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-	${element.close()}<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse">`;
-    treasuryHTML += element.icon(
-      'treasuryicon',
-      'treasuryText',
-      collapse.collapseTreasury,
-    );
-    treasuryHTML += `<strong>Guild Treasury:</strong></p>`;
-    treasuryHTML += element.copy(
-      'treasuryCopyID',
-      'success',
-      'right',
-      collapse.collapseTreasury,
-    );
-    treasuryHTML += `<div id="treasuryText" style="height: ${
-      toolOptions.treasurySize
-    }px" class="overflow-y resize collapse ${
-      collapse.collapseTreasury ? '' : 'show'
-    }"><table id="treasurytable" class="goods-table w-100"><thead><tr><th class="text-start">Resource</th><th class="text-end">Amount</th></tr></thead><tbody>`;
-
-    initTreasury(resources);
-
-    for (var i = 0; i < helper.numAges; i++) {
-      var eraTreasuryText = '';
-      var currentEraName = '';
-      ResourceDefs.forEach((rssDef) => {
-        if (
-          helper.fLevelfromAge(rssDef.era) == helper.numAges - i &&
-          resources[rssDef.id] !== undefined &&
-          resources[rssDef.id] > 0
-        ) {
-          currentEraName = helper.fGVGagesname(rssDef.era);
-          eraTreasuryText += `<tr><td class="text-start ps-3">${
-            rssDef.name
-          }</td><td class="text-end">${resources[
-            rssDef.id
-          ].toLocaleString()}</td></tr>`;
-        }
-      });
-      if (eraTreasuryText) {
-        treasuryHTML += `<tr><td colspan="2" class="goods-era-header">${currentEraName}</td></tr>${eraTreasuryText}`;
-      }
-    }
-    if (resources['medals'] !== undefined && resources['medals'] > 0) {
-      treasuryHTML += `<tr><td class="text-start">Medals</td><td class="text-end">${resources[
-        'medals'
-      ].toLocaleString()}</td></tr>`;
-    }
-
-    treasury.innerHTML = treasuryHTML + `</tbody></table></div>`;
-    document
-      .getElementById('treasuryCopyID')
-      .addEventListener('click', copy.TreasuryCopy);
-    console.debug('GuildTreasury', GuildTreasury);
-    document
-      .getElementById('treasuryTextLabel')
-      .addEventListener('click', collapse.fCollapseTreasury);
-    const treasuryDiv = document.getElementById('treasuryText');
-    if (treasuryDiv) {
-      const resizeObserver = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          if (entry.contentRect && entry.contentRect.height)
-            setTreasurySize(entry.contentRect.height);
-        }
-      });
-      resizeObserver.observe(treasuryDiv);
-    }
-    translateContainer(document.body);
-  }
+  renderTreasuryPanel(resources, {
+    containers: getPanelContainers(),
+    showOptions,
+    toolOptions,
+    collapse,
+    element,
+    helper,
+    ResourceDefs,
+    copy,
+    initTreasury,
+    setTreasurySize,
+    translateContainer,
+    document,
+    ResizeObserver:
+      typeof ResizeObserver !== 'undefined' ? ResizeObserver : null,
+  });
 }
 
 export function initTreasury(resources) {
@@ -1528,17 +1073,10 @@ function handleInstalled(details) {
 }
 
 function toggleDebug() {
-  debugEnabled = !debugEnabled;
-  var logo = document.getElementById('logo');
-  if (debugEnabled == true) {
-    // logo.src = bug;
-    logo.outerHTML = `<span class="material-icons-outlined" id="logo">bug_report</span>`;
-  } else {
-    logo.outerHTML = `<img src="/icons/Icon48.png" width="24" height="24" id="logo">`;
-    // logo.src = "/icons/Icon48.png";
-  }
-  document.getElementById('logo').addEventListener('click', toggleDebug);
+  const next = loggerToggleDebug();
+  debugEnabled = next;
   console.debug('toggleDebug', debugEnabled);
+  return next;
 }
 
 browser.runtime.onUpdateAvailable.addListener(handleUpdateAvailable);
