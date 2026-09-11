@@ -13,13 +13,7 @@
  */
 import { Alert, Popover, Tooltip } from 'bootstrap';
 import browser from 'webextension-polyfill';
-import {
-  calculateProvinceAttrition,
-  formatCampsText,
-  formatSectorName,
-  formatTargetToken,
-  getAttritionReduction,
-} from '../calc/GbgCalculator.js';
+import { getAttritionReduction } from '../calc/GbgCalculator.js';
 import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
@@ -33,9 +27,9 @@ import {
   buildLeaderboardHTML,
   copyToClipboard,
   renderBuildingCostCard,
-  renderTargetGeneratorCard,
-  targetCopy,
 } from '../ui/gbgProvinceView.js';
+import { renderBattlegroundResultCard } from '../ui/renderBattlegroundResultCard.js';
+import { renderTargetGeneratorPanel } from '../ui/renderTargetGeneratorCard.js';
 import { formatDateTime } from '../utils/date.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
@@ -59,6 +53,12 @@ import {
   VolcanoProvinceDefs,
   WaterfallProvinceDefs,
 } from '../vars/state.js';
+import {
+  applySignalToList,
+  removeSignalFromList,
+  resolveSignalData,
+  resolveSignalTarget,
+} from './GbgSignalPayloadHandler.js';
 
 const logger = createLogger('GBG');
 
@@ -73,21 +73,23 @@ var currentParticipantId = 0;
 export function getPlayerLeaderboard(msg) {
   BattlegroundPerformance.length = 0;
   GBGdata.length = 0;
+  const entries = Array.isArray(msg?.responseData) ? msg.responseData : [];
   // GuildMembers = BattlegroundPerformance;		// save old values
-  msg.responseData.forEach((entry) => {
+  entries.forEach((entry) => {
     // console.debug(entry);
     var wonNegotiations = 0;
     var wonBattles = 0;
     var attrition = 0;
-    if (entry.negotiationsWon) wonNegotiations = entry.negotiationsWon;
-    if (entry.battlesWon) wonBattles = entry.battlesWon;
-    if (entry.attrition) attrition = entry.attrition;
+    if (entry?.negotiationsWon) wonNegotiations = entry.negotiationsWon;
+    if (entry?.battlesWon) wonBattles = entry.battlesWon;
+    if (entry?.attrition) attrition = entry.attrition;
+    const playerName = entry?.player?.name || 'Unknown';
     GBGdata.push({
-      name: entry.player.name,
+      name: playerName,
       total: wonNegotiations * 2 + wonBattles,
     });
     BattlegroundPerformance.push({
-      name: entry.player.name,
+      name: playerName,
       wonNegotiations: wonNegotiations,
       wonBattles: wonBattles,
       attrition: attrition,
@@ -205,103 +207,55 @@ export function getLeaderboard(msg) {
 
 export function getState(msg) {
   // console.debug('getState:', msg);
-  if (msg.responseData.stateId == 'subscribed') {
+  if (msg?.responseData?.stateId == 'subscribed') {
     console.debug('msg:', msg);
     storage.remove(GameOrigin + 'BGtime');
     storage.remove(GameOrigin);
     BattlegroundPerformance.length = 0;
     GBGdata.length = 0;
-    var totalFights = 0;
-    var totalNegs = 0;
-    var battlegroundHTML = `<div id="battlegroundResultCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
-        ${element.close()}
-        <p id="battlegroundResultTextLabel" class="cursor-pointer" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundTextCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundTextCollapse" style="cursor: pointer; user-select: none;">
-      ${element.icon('battlegroundicon', 'battlegroundTextCollapse', collapse.collapseBattleground)}
-        <strong>Battleground Result:</strong></p>`;
-    // if (url.sheetGuildURL)
-    //   battlegroundHTML += element.post(
-    //     "battlegroundPostID",
-    //     "info",
-    //     "mid",
-    //     collapse.collapseBattleground
-    //   );
-    battlegroundHTML += element.copy(
-      'battlegroundCopyID',
-      'info',
-      'right',
-      collapse.collapseBattleground,
-    );
-    battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive resize-both collapse ${
-      collapse.collapseBattleground ? '' : 'show'
-    }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table w-100"><thead><tr><th class="text-center">Rank</th><th class="text-start">Member</th><th class="text-center">Negs</th><th class="text-center">Fights</th><th class="text-center">Attrition</th></tr></thead><tbody>`;
-    msg.responseData.playerLeaderboardEntries.forEach((entry) => {
-      var wonNegotiations = 0;
-      var wonBattles = 0;
-      var attrition = 0;
-      if (entry.negotiationsWon) wonNegotiations = entry.negotiationsWon;
-      if (entry.battlesWon) wonBattles = entry.battlesWon;
-      if (entry.attrition) attrition = entry.attrition;
-      BattlegroundPerformance.push([
-        entry.rank,
-        entry.player.name,
-        wonNegotiations,
-        wonBattles,
-        attrition,
-      ]);
-      const safePlayerName = helper.escapeHTML(entry.player.name);
-      battlegroundHTML += `<tr><td class="text-center">${entry.rank}</td><td class="text-start">${safePlayerName}</td><td class="text-center">${wonNegotiations}</td><td class="text-center">${wonBattles}</td><td class="text-center">${attrition}</td></tr>`;
-      // console.debug(entry.rank,entry.name,wonNegotiations,wonBattles);
-      totalFights += wonBattles;
-      totalNegs += wonNegotiations;
-    });
-    battlegroundHTML += `</tbody><tfoot><tr><th></th><th class="text-start">Guild Total</th><th class="text-center">${totalNegs}</th><th class="text-center">${totalFights}</th><th></th></tr></tfoot>`;
 
     const targetEl =
       (typeof document !== 'undefined' &&
         document.getElementById('battleground')) ||
       battlegroundDIV ||
       donationDIV;
-    if (targetEl) {
-      targetEl.innerHTML = battlegroundHTML + `</table></div></div></div>`;
-    }
-    const postEl = document.getElementById('battlegroundPostID');
-    if (postEl && url.sheetGuildURL) {
-      postEl.addEventListener('click', post_webstore.postGBGtoSS);
-    } else {
-      const copyEl = document.getElementById('battlegroundCopyID');
-      if (copyEl) copyEl.addEventListener('click', copy.BattlegroundCopy);
-    }
-    const labelEl = document.getElementById('battlegroundResultTextLabel');
-    if (labelEl) {
-      labelEl.addEventListener('click', (e) => {
-        if (
-          e?.target &&
-          typeof e.target.closest === 'function' &&
-          e.target.closest('#battlegroundicon')
-        ) {
-          return;
-        }
-        collapse.fCollapseBattleground();
-      });
-    }
-    const iconEl = document.getElementById('battlegroundicon');
-    if (iconEl && iconEl !== labelEl) {
-      iconEl.addEventListener('click', () => {
-        collapse.fCollapseBattleground();
-      });
-    }
-    msg.responseData.playerLeaderboardEntries.forEach((entry) => {
+
+    renderBattlegroundResultCard(msg.responseData, {
+      targetEl,
+      collapseState: collapse.collapseBattleground,
+      helper,
+      element,
+      collapse,
+      copy,
+      url,
+      post_webstore,
+      onRow: (row) => {
+        BattlegroundPerformance.push([
+          row.rank,
+          row.name,
+          row.negotiations,
+          row.fights,
+          row.attrition,
+        ]);
+      },
+    });
+
+    const playerLeaderboardEntries =
+      Array.isArray(msg?.responseData?.playerLeaderboardEntries) ?
+        msg.responseData.playerLeaderboardEntries
+      : [];
+    playerLeaderboardEntries.forEach((entry) => {
       // console.debug(entry);
       var wonNegotiations = 0;
       var wonBattles = 0;
-      if (entry.wonNegotiations) wonNegotiations = entry.wonNegotiations;
-      if (entry.wonBattles) wonBattles = entry.wonBattles;
+      if (entry?.wonNegotiations) wonNegotiations = entry.wonNegotiations;
+      if (entry?.wonBattles) wonBattles = entry.wonBattles;
       // GBGdata[i] = {'name':entry.player.name,
       // 'wonNegotiations': wonNegotiations,
       // 'wonBattles': wonBattles,
       // 'total':wonNegotiations*2+wonBattles};
       GBGdata.push({
-        name: entry.player.name,
+        name: entry?.player?.name || 'Unknown',
         total: wonNegotiations * 2 + wonBattles,
       });
     });
@@ -310,14 +264,16 @@ export function getState(msg) {
 }
 
 export function getBattleground(msg) {
-  mapName = msg.responseData.map.id.split('_')[0];
+  mapName = msg?.responseData?.map?.id?.split('_')?.[0] || 'default';
   console.debug(mapName, msg);
   if (mapName == 'volcano') ProvinceDefs = VolcanoProvinceDefs;
   else if (mapName == 'waterfall') ProvinceDefs = WaterfallProvinceDefs;
 
   var oldMap = map;
-  currentParticipantId = msg.responseData.currentParticipantId;
-  map = msg.responseData.map.provinces;
+  currentParticipantId = msg?.responseData?.currentParticipantId;
+  map = msg?.responseData?.map?.provinces || [];
+  if (!Array.isArray(map)) map = [];
+  map = map.filter((province) => province);
   // console.debug(oldMap,map);
   map.forEach((province, i) => {
     if (!province.id) province.id = 0;
@@ -339,11 +295,12 @@ export function getBattleground(msg) {
   // console.debug(map);
   // console.debug(map);
 
-  battlegroundParticipants = msg.responseData.battlegroundParticipants || [];
+  battlegroundParticipants = msg?.responseData?.battlegroundParticipants || [];
   const myClan =
     Array.isArray(battlegroundParticipants) ?
       battlegroundParticipants.find(
-        (clan) => clan.participantId == msg.responseData.currentParticipantId,
+        (clan) =>
+          clan?.participantId == msg?.responseData?.currentParticipantId,
       )
     : null;
   signals = myClan?.signals ? [...myClan.signals] : [];
@@ -430,313 +387,46 @@ export function getUpdatedProvinces(msg) {
 }
 
 export function updateSignal(msg, payload, context) {
-  const data = msg?.responseData || payload || msg?.requestData || msg;
-  const candidateObj =
-    typeof data === 'object' && !Array.isArray(data) ? data
-    : Array.isArray(data) && data.length > 0 && typeof data[0] === 'object' ?
-      data[0]
-    : null;
+  const data = resolveSignalData(msg, payload, context, 'updateSignal');
+  const { provinceId, signalType } = resolveSignalTarget(msg, payload, data);
 
-  let provinceId =
-    candidateObj ? (candidateObj.provinceId ?? candidateObj.id)
-    : Array.isArray(data) ? data[0]
-    : null;
-  let signalType =
-    candidateObj ? (candidateObj.type ?? candidateObj.signal)
-    : Array.isArray(data) ? data[1]
-    : null;
-
-  if (
-    provinceId !== undefined &&
-    provinceId !== null &&
-    !isNaN(Number(provinceId))
-  ) {
-    provinceId = Number(provinceId);
-  }
-
-  logger?.debug('updateSignal data resolved:', {
-    provinceId,
-    signalType,
-    signalsCount: signals.length,
-  });
-
-  if (provinceId === undefined || provinceId === null || isNaN(provinceId)) {
+  if (provinceId === undefined || provinceId === null) {
     logger?.debug('updateSignal returned early - provinceId is null/undefined');
     return;
   }
 
   if (!signalType || signalType === 'none' || signalType === 'clear') {
-    removeSignal(msg, [provinceId], context);
+    signals = removeSignalFromList(signals, provinceId);
   } else {
-    setSignal(msg, [provinceId, signalType], context);
-  }
-}
-
-export function setSignal(msg, payload, context) {
-  let data =
-    Array.isArray(payload) && payload.length > 0 ? payload
-    : Array.isArray(msg?.requestData) && msg.requestData.length > 0 ?
-      msg.requestData
-    : Array.isArray(msg?.responseData) && msg.responseData.length > 0 ?
-      msg.responseData
-    : Array.isArray(msg) && msg.length > 0 ? msg
-    : [];
-
-  if (data.length === 0 && context) {
-    const reqPayloadItems =
-      Array.isArray(context.requestPayload) ? context.requestPayload
-      : context.requestPayload && typeof context.requestPayload === 'object' ?
-        [context.requestPayload]
-      : [];
-    if (reqPayloadItems.length > 0) {
-      const match =
-        (msg?.requestId !== undefined ?
-          reqPayloadItems.find((r) => r && r.requestId === msg.requestId)
-        : null) ||
-        reqPayloadItems.find(
-          (r) =>
-            r &&
-            (r.requestMethod === 'setSignal' ||
-              r.requestClass?.includes('GuildBattleground')),
-        ) ||
-        reqPayloadItems[0];
-      if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
-        data = match.requestData;
-      }
-    }
-
-    if (data.length === 0) {
-      const postText =
-        context?.request?.request?.postData?.text ||
-        context?.request?.postData?.text ||
-        context?.postData?.text ||
-        (typeof context?.postData === 'string' ? context.postData : null) ||
-        (typeof context?.request?.postData === 'string' ?
-          context.request.postData
-        : typeof context?.request?.request?.postData === 'string' ?
-          context.request.request.postData
-        : null);
-      if (postText) {
-        try {
-          const parsed =
-            typeof postText === 'string' ? JSON.parse(postText) : postText;
-          const reqItems = Array.isArray(parsed) ? parsed : [parsed];
-          const match = reqItems.find(
-            (r) =>
-              r &&
-              (r.requestMethod === 'setSignal' ||
-                r.requestClass?.includes('GuildBattleground')),
-          );
-          if (
-            Array.isArray(match?.requestData) &&
-            match.requestData.length > 0
-          ) {
-            data = match.requestData;
-          }
-        } catch {}
-      }
-    }
-  }
-
-  let provinceId = data[0];
-  let signalType = data[1];
-
-  if (provinceId === undefined || provinceId === null) {
-    const candidateObj =
-      (payload && typeof payload === 'object' && !Array.isArray(payload) ?
-        payload
-      : null) ||
-      ((
-        msg?.responseData &&
-        typeof msg.responseData === 'object' &&
-        !Array.isArray(msg.responseData)
-      ) ?
-        msg.responseData
-      : null) ||
-      ((
-        msg?.requestData &&
-        typeof msg.requestData === 'object' &&
-        !Array.isArray(msg.requestData)
-      ) ?
-        msg.requestData
-      : null) ||
-      (msg && typeof msg === 'object' && !Array.isArray(msg) ? msg : null);
-
-    if (candidateObj) {
-      provinceId = candidateObj.provinceId ?? candidateObj.id;
-      signalType = candidateObj.type ?? candidateObj.signal ?? signalType;
-    }
-  }
-
-  if (
-    provinceId !== undefined &&
-    provinceId !== null &&
-    !isNaN(Number(provinceId))
-  ) {
-    provinceId = Number(provinceId);
-  }
-
-  logger?.debug('setSignal data resolved:', {
-    data,
-    provinceId,
-    signalType,
-    signalsCount: signals.length,
-  });
-  if (provinceId === undefined || provinceId === null) {
-    logger?.debug('setSignal returned early - provinceId is null/undefined');
-    return;
-  }
-
-  if (!Array.isArray(signals)) {
-    signals = [];
-  }
-
-  if (signalType === 'ignore') {
-    signals = signals.filter(
-      (p) => Number(p.id !== undefined ? p.id : p.provinceId) !== provinceId,
-    );
-  } else if (signalType === 'focus') {
-    const existing = signals.find(
-      (p) => Number(p.id !== undefined ? p.id : p.provinceId) === provinceId,
-    );
-    if (existing) {
-      existing.id = provinceId;
-      existing.provinceId = provinceId;
-      existing.type = signalType;
-      existing.signal = signalType;
-    } else {
-      signals.push({
-        id: provinceId,
-        provinceId: provinceId,
-        type: signalType,
-        signal: signalType,
-      });
-    }
+    signals = applySignalToList(signals, provinceId, signalType);
   }
 
   checkProvinces();
 }
 
-export function removeSignal(msg, payload, context) {
-  let data =
-    Array.isArray(payload) && payload.length > 0 ? payload
-    : Array.isArray(msg?.requestData) && msg.requestData.length > 0 ?
-      msg.requestData
-    : Array.isArray(msg?.responseData) && msg.responseData.length > 0 ?
-      msg.responseData
-    : Array.isArray(msg) && msg.length > 0 ? msg
-    : [];
-
-  if (data.length === 0 && context) {
-    const reqPayloadItems =
-      Array.isArray(context.requestPayload) ? context.requestPayload
-      : context.requestPayload && typeof context.requestPayload === 'object' ?
-        [context.requestPayload]
-      : [];
-    if (reqPayloadItems.length > 0) {
-      const match =
-        (msg?.requestId !== undefined ?
-          reqPayloadItems.find((r) => r && r.requestId === msg.requestId)
-        : null) ||
-        reqPayloadItems.find(
-          (r) =>
-            r &&
-            (r.requestMethod === 'removeSignal' ||
-              r.requestClass?.includes('GuildBattleground')),
-        ) ||
-        reqPayloadItems[0];
-      if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
-        data = match.requestData;
-      }
-    }
-
-    if (data.length === 0) {
-      const postText =
-        context?.request?.request?.postData?.text ||
-        context?.request?.postData?.text ||
-        context?.postData?.text ||
-        (typeof context?.postData === 'string' ? context.postData : null) ||
-        (typeof context?.request?.postData === 'string' ?
-          context.request.postData
-        : typeof context?.request?.request?.postData === 'string' ?
-          context.request.request.postData
-        : null);
-      if (postText) {
-        try {
-          const parsed =
-            typeof postText === 'string' ? JSON.parse(postText) : postText;
-          const reqItems = Array.isArray(parsed) ? parsed : [parsed];
-          const match = reqItems.find(
-            (r) =>
-              r &&
-              (r.requestMethod === 'removeSignal' ||
-                r.requestClass?.includes('GuildBattleground')),
-          );
-          if (
-            Array.isArray(match?.requestData) &&
-            match.requestData.length > 0
-          ) {
-            data = match.requestData;
-          }
-        } catch {}
-      }
-    }
-  }
-
-  let provinceId = data[0];
+export function setSignal(msg, payload, context) {
+  const data = resolveSignalData(msg, payload, context, 'setSignal');
+  const { provinceId, signalType } = resolveSignalTarget(msg, payload, data);
 
   if (provinceId === undefined || provinceId === null) {
-    const candidateObj =
-      (payload && typeof payload === 'object' && !Array.isArray(payload) ?
-        payload
-      : null) ||
-      ((
-        msg?.responseData &&
-        typeof msg.responseData === 'object' &&
-        !Array.isArray(msg.responseData)
-      ) ?
-        msg.responseData
-      : null) ||
-      ((
-        msg?.requestData &&
-        typeof msg.requestData === 'object' &&
-        !Array.isArray(msg.requestData)
-      ) ?
-        msg.requestData
-      : null) ||
-      (msg && typeof msg === 'object' && !Array.isArray(msg) ? msg : null);
-
-    if (candidateObj) {
-      provinceId = candidateObj.provinceId ?? candidateObj.id;
-    }
+    logger?.debug('setSignal returned early - provinceId is null/undefined');
+    return;
   }
 
-  if (
-    provinceId !== undefined &&
-    provinceId !== null &&
-    !isNaN(Number(provinceId))
-  ) {
-    provinceId = Number(provinceId);
-  }
+  signals = applySignalToList(signals, provinceId, signalType);
+  checkProvinces();
+}
 
-  logger?.debug('removeSignal data resolved:', {
-    data,
-    provinceId,
-    signalsCount: signals.length,
-  });
+export function removeSignal(msg, payload, context) {
+  const data = resolveSignalData(msg, payload, context, 'removeSignal');
+  const { provinceId } = resolveSignalTarget(msg, payload, data);
+
   if (provinceId === undefined || provinceId === null) {
     logger?.debug('removeSignal returned early - provinceId is null/undefined');
     return;
   }
 
-  if (!Array.isArray(signals)) {
-    signals = [];
-  }
-
-  signals = signals.filter(
-    (p) => Number(p.id !== undefined ? p.id : p.provinceId) !== provinceId,
-  );
-
+  signals = removeSignalFromList(signals, provinceId);
   checkProvinces();
 }
 
@@ -852,152 +542,27 @@ function attritionReduction(building) {
 }
 
 function checkProvinces() {
-  var textProvinceUnlocked = '';
-  var textProvinceLocked = '';
-  var targetGenerator = document.createElement('div');
-  var targetsHTML;
-  if (document.getElementById('targetsGBG')) {
-    targetGenerator = document.getElementById('targetsGBG');
-  } else {
-    targetGenerator.id = 'targetsGBG';
-    targets.appendChild(targetGenerator);
-  }
-  var timerId = Math.random().toString(36).substr(2, 5);
-  var targetsHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="alert">`;
-  targetsHTML += element.close();
-  if (
-    url?.discordTargetURL &&
-    ((typeof helper?.checkGBG === 'function' && helper.checkGBG()) ||
-      Boolean(helper?.MyGuildPermissions & 64))
-  ) {
-    targetsHTML += element.post(
-      'targetGenPostID',
-      'primary',
-      'right',
-      collapse.collapseTargetGen,
-    );
-  }
-  targetsHTML += element.copy(
-    'targetCopyID',
-    'primary',
-    'right',
-    collapse.collapseBattleground,
-  );
-  targetsHTML += `<p id="targetGenLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#targetGenCollapse" aria-expanded="${!collapse.collapseTargetGen}" aria-controls="targetGenCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-      ${element.icon('targetGenicon', 'targetGenCollapse', collapse.collapseTargetGen)}
-        <strong>GBG Target Generator:</strong></p>`;
-
-  var mapSorted = Array.from(map);
-  mapSorted.sort(function (a, b) {
-    if (!a.lockedUntil) return 1;
-    else if (!b.lockedUntil) return -1;
-    else
-      return (
-        a.lockedUntil > b.lockedUntil ? 1
-        : b.lockedUntil > a.lockedUntil ? -1
-        : 0
-      );
-  });
-
-  mapSorted.forEach((province) => {
-    //check all signals - could be focus or ignore
-    // console.debug(province);
-    signals.forEach((clan) => {
-      // console.debug(province,clan);
-      // var signalId = clan.provinceId ? clan.provinceId : 0;
-
-      const activeDefs =
-        ProvinceDefs && ProvinceDefs.length > 0 ? ProvinceDefs
-        : VolcanoProvinceDefs && VolcanoProvinceDefs.length > 0 ?
-          VolcanoProvinceDefs
-        : WaterfallProvinceDefs && WaterfallProvinceDefs.length > 0 ?
-          WaterfallProvinceDefs
-        : [];
-      var thisdef = activeDefs.find(
-        (def) =>
-          (def.id !== undefined ? def.id : 0) ==
-          (province.id !== undefined ? province.id : 0),
-      );
-      const clanProvId =
-        clan.provinceId !== undefined ? clan.provinceId : clan.id;
-      const clanSignal = clan.signal !== undefined ? clan.signal : clan.type;
-      if (thisdef && province.id == clanProvId && clanSignal == 'focus') {
-        if (
-          province.ownerId !== undefined &&
-          currentParticipantId &&
-          province.ownerId == currentParticipantId
-        ) {
-          return;
-        }
-        const connectedProvinces = (thisdef.connections || [])
-          .map((connId) => mapSorted.find((p) => p.id == connId))
-          .filter(Boolean);
-
-        const currentEpoc =
-          typeof EpocTime === 'number' && EpocTime > 1000000000 ?
-            EpocTime
-          : Math.floor(Date.now() / 1000);
-
-        const { campsReady, campsNotReady } = calculateProvinceAttrition({
-          connectedProvinces,
-          currentParticipantId,
-          currentEpoc,
-          gainAttritionChance: province.gainAttritionChance,
-        });
-
-        const sectorTag = formatSectorName(thisdef.name, mapName);
-        const campsText =
-          showOptions.GBGshowSC && (campsReady || campsNotReady) ?
-            formatCampsText(campsReady, campsNotReady, true)
-          : '';
-
-        let timeText = '';
-        if (province.lockedUntil && showOptions.GBGprovinceTime) {
-          const time = new Date(province.lockedUntil * 1000);
-          timeText = timeGBG(
-            time,
-            typeof GameOrigin !== 'undefined' ? GameOrigin : '',
-            showOptions,
-          );
-        }
-
-        const text = formatTargetToken({
-          sectorTag,
-          targetText:
-            targetText && targetText.trim() ? targetText.trim() : undefined,
-          campsText: campsText || undefined,
-          timeText: timeText || undefined,
-        });
-
-        if (province.lockedUntil && showOptions.GBGprovinceTime) {
-          if (textProvinceLocked != '') {
-            textProvinceLocked += '<br>';
-          }
-          textProvinceLocked += text;
-        } else {
-          if (textProvinceUnlocked != '') textProvinceUnlocked += '<br>';
-          textProvinceUnlocked += text;
-        }
-      }
-    });
-  });
-  logger?.debug('renderTargetGeneratorCard summary:', {
-    textProvinceUnlocked,
-    textProvinceLocked,
-    signalsCount: signals.length,
-  });
-  renderTargetGeneratorCard({
-    targetGenerator,
-    targetsHTML,
-    textProvinceUnlocked,
-    textProvinceLocked,
+  renderTargetGeneratorPanel({
+    targetsContainer: targets,
+    map,
+    signals,
+    provinceDefs: ProvinceDefs,
+    volcanoProvinceDefs: VolcanoProvinceDefs,
+    waterfallProvinceDefs: WaterfallProvinceDefs,
+    currentParticipantId,
+    mapName,
+    epocTime: EpocTime,
+    showOptions,
+    gameOrigin: typeof GameOrigin !== 'undefined' ? GameOrigin : '',
+    targetText,
+    element,
     collapse,
-    targetCopy,
-    targetPost: post_webstore.postTargetGenToDiscord,
-    Tooltip,
     helper,
     url,
     post_webstore,
+    targetPost: post_webstore.postTargetGenToDiscord,
+    Tooltip,
+    formatTime: timeGBG,
   });
 }
 

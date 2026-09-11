@@ -50,7 +50,7 @@ function buildOwnCityCard({
   const playerEra = playerInfo.era || '';
   const playerScore =
     playerInfo.score !== undefined && playerInfo.score !== null ?
-      formatStatNumber(playerInfo.score, { exact })
+      formatStatNumber(playerInfo.score, { exact, comma: true })
     : '';
   const userTooltip = (
     playerInfo.userTooltipHTML ||
@@ -67,7 +67,18 @@ function buildOwnCityCard({
     spec.chatBonus && !spec.chatBonus.isZero() ?
       `<div>CF <span data-i18n="bonus">Bonus</span>: ${formatPercent(spec.chatBonus)} (${formatStatNumber(spec.goodsPerQuest)} <span data-i18n="goods">Goods</span>)</div>`
     : '';
-  const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}`;
+  const coinBoostVal = coins?.boostPercent ? Number(coins.boostPercent) : 0;
+  const supplyBoostVal =
+    supplies?.boostPercent ? Number(supplies.boostPercent) : 0;
+  const coinBonusHTML =
+    coinBoostVal > 0 ?
+      `<div><span data-i18n="stat_coins">Coins</span> <span data-i18n="bonus">Bonus</span>: ${formatPercent(coins.boostPercent)}</div>`
+    : '';
+  const supplyBonusHTML =
+    supplyBoostVal > 0 ?
+      `<div><span data-i18n="stat_supplies">Supplies</span> <span data-i18n="bonus">Bonus</span>: ${formatPercent(supplies.boostPercent)}</div>`
+    : '';
+  const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}${coinBonusHTML}${supplyBonusHTML}`;
 
   return `
 <div id="${prefix}-panel" class="foe-original-card">
