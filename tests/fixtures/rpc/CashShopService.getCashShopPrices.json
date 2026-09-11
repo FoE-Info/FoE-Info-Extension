@@ -1,0 +1,452 @@
+[
+ {
+  "pricePointId": 99,
+  "price": "0,99 €",
+  "priceInCents": 99,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 15,
+   "id": "resource#premium#15",
+   "name": "15 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 100,
+  "price": "1,99 €",
+  "priceInCents": 199,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 30,
+   "id": "resource#premium#30",
+   "name": "30 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 101,
+  "price": "2,99 €",
+  "priceInCents": 299,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 40,
+   "id": "resource#premium#40",
+   "name": "40 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 1,
+  "price": "3,99 €",
+  "priceInCents": 399,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 40,
+   "id": "resource#premium#40",
+   "name": "40 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 2,
+  "price": "4,99 €",
+  "priceInCents": 499,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 80,
+   "id": "resource#premium#80",
+   "name": "80 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 102,
+  "price": "5,99 €",
+  "priceInCents": 599,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 80,
+   "id": "resource#premium#80",
+   "name": "80 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 103,
+  "price": "6,99 €",
+  "priceInCents": 699,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 80,
+   "id": "resource#premium#80",
+   "name": "80 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 104,
+  "price": "7,99 €",
+  "priceInCents": 799,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 70,
+   "id": "resource#premium#70",
+   "name": "70 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 3,
+  "price": "9,99 €",
+  "priceInCents": 999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 150,
+   "id": "resource#premium#150",
+   "name": "150 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 113,
+  "price": "12,99 €",
+  "priceInCents": 1299,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 200,
+   "id": "resource#premium#200",
+   "name": "200 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 115,
+  "price": "14,99 €",
+  "priceInCents": 1499,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 250,
+   "id": "resource#premium#250",
+   "name": "250 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 117,
+  "price": "16,99 €",
+  "priceInCents": 1699,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 300,
+   "id": "resource#premium#300",
+   "name": "300 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 4,
+  "price": "19,99 €",
+  "priceInCents": 1999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 400,
+   "id": "resource#premium#400",
+   "name": "400 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 125,
+  "price": "24,99 €",
+  "priceInCents": 2499,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 500,
+   "id": "resource#premium#500",
+   "name": "500 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 130,
+  "price": "29,99 €",
+  "priceInCents": 2999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 650,
+   "id": "resource#premium#650",
+   "name": "650 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 135,
+  "price": "34,99 €",
+  "priceInCents": 3499,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 750,
+   "id": "resource#premium#750",
+   "name": "750 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 140,
+  "price": "39,99 €",
+  "priceInCents": 3999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 900,
+   "id": "resource#premium#900",
+   "name": "900 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 5,
+  "price": "49,99 €",
+  "priceInCents": 4999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 1150,
+   "id": "resource#premium#1150",
+   "name": "1,150 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 6,
+  "price": "79,99 €",
+  "priceInCents": 7999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 1500,
+   "id": "resource#premium#1500",
+   "name": "1,500 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 7,
+  "price": "99,99 €",
+  "priceInCents": 9999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 2300,
+   "id": "resource#premium#2300",
+   "name": "2,300 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 1150,
+  "price": "149,99 €",
+  "priceInCents": 14999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 3500,
+   "id": "resource#premium#3500",
+   "name": "3,500 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 1160,
+  "price": "159,99 €",
+  "priceInCents": 15999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 3550,
+   "id": "resource#premium#3550",
+   "name": "3,550 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 1200,
+  "price": "199,99 €",
+  "priceInCents": 19999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 4500,
+   "id": "resource#premium#4500",
+   "name": "4,500 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 1250,
+  "price": "249,99 €",
+  "priceInCents": 24999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 5000,
+   "id": "resource#premium#5000",
+   "name": "5,000 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ },
+ {
+  "pricePointId": 1400,
+  "price": "399,99 €",
+  "priceInCents": 39999,
+  "igPaymentBonus": {
+   "type": "resource",
+   "subType": "premium",
+   "amount": 8000,
+   "id": "resource#premium#8000",
+   "name": "8,000 Diamonds",
+   "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+   "iconAssetName": "diamond",
+   "isHighlighted": true,
+   "flags": [],
+   "__class__": "GenericReward"
+  },
+  "__class__": "CashShopPricePoint"
+ }
+]

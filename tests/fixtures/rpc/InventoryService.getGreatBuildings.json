@@ -1,0 +1,4755 @@
+[
+ {
+  "cityentity_id": "X_SpaceAgeJupiterMoon_Landmark1",
+  "name": "A.I. Core",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeJupiterMoon_Landmark1",
+    "piece_number": 8,
+    "amount": 754,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeJupiterMoon_Landmark1",
+    "piece_number": 5,
+    "amount": 733,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeJupiterMoon_Landmark1",
+    "amount": 784,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeJupiterMoon_Landmark1",
+    "piece_number": 7,
+    "amount": 794,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeJupiterMoon_Landmark1",
+    "piece_number": 3,
+    "amount": 738,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeJupiterMoon_Landmark1",
+    "piece_number": 4,
+    "amount": 812,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeJupiterMoon_Landmark1",
+    "piece_number": 6,
+    "amount": 770,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeJupiterMoon_Landmark1",
+    "piece_number": 1,
+    "amount": 749,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeJupiterMoon_Landmark1",
+    "piece_number": 2,
+    "amount": 807,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ProgressiveEra_Landmark1",
+  "name": "Alcatraz",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ProgressiveEra_Landmark1",
+    "piece_number": 4,
+    "amount": 3527,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark1",
+    "piece_number": 8,
+    "amount": 3551,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark1",
+    "piece_number": 2,
+    "amount": 3492,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark1",
+    "amount": 3516,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark1",
+    "piece_number": 5,
+    "amount": 3578,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark1",
+    "piece_number": 3,
+    "amount": 3646,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark1",
+    "piece_number": 6,
+    "amount": 3545,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark1",
+    "piece_number": 7,
+    "amount": 3461,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark1",
+    "piece_number": 1,
+    "amount": 3507,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ArcticFuture_Landmark2",
+  "name": "Arctic Orangery",
+  "max_level": 401,
+  "blueprints": [
+   {
+    "building_id": "X_ArcticFuture_Landmark2",
+    "piece_number": 1,
+    "amount": 4525,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark2",
+    "piece_number": 6,
+    "amount": 4569,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark2",
+    "piece_number": 5,
+    "amount": 4541,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark2",
+    "piece_number": 8,
+    "amount": 4625,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark2",
+    "piece_number": 4,
+    "amount": 4520,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark2",
+    "piece_number": 3,
+    "amount": 4506,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark2",
+    "amount": 4485,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark2",
+    "piece_number": 7,
+    "amount": 4484,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark2",
+    "piece_number": 2,
+    "amount": 4540,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_OceanicFuture_Landmark1",
+  "name": "Atlantis Museum",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_OceanicFuture_Landmark1",
+    "piece_number": 7,
+    "amount": 290,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark1",
+    "piece_number": 3,
+    "amount": 286,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark1",
+    "piece_number": 2,
+    "amount": 258,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark1",
+    "piece_number": 5,
+    "amount": 273,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark1",
+    "piece_number": 4,
+    "amount": 270,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark1",
+    "piece_number": 1,
+    "amount": 278,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark1",
+    "piece_number": 6,
+    "amount": 278,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark1",
+    "piece_number": 8,
+    "amount": 298,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark1",
+    "amount": 252,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ModernEra_Landmark2",
+  "name": "Atomium",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ModernEra_Landmark2",
+    "piece_number": 4,
+    "amount": 270,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark2",
+    "piece_number": 2,
+    "amount": 270,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark2",
+    "piece_number": 8,
+    "amount": 254,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark2",
+    "piece_number": 7,
+    "amount": 253,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark2",
+    "amount": 261,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark2",
+    "piece_number": 5,
+    "amount": 251,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark2",
+    "piece_number": 1,
+    "amount": 236,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark2",
+    "piece_number": 3,
+    "amount": 241,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark2",
+    "piece_number": 6,
+    "amount": 232,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_PostModernEra_Landmark1",
+  "name": "Cape Canaveral",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_PostModernEra_Landmark1",
+    "piece_number": 2,
+    "amount": 3157,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark1",
+    "piece_number": 1,
+    "amount": 3093,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark1",
+    "amount": 3110,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark1",
+    "piece_number": 7,
+    "amount": 3038,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark1",
+    "piece_number": 6,
+    "amount": 3029,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark1",
+    "piece_number": 5,
+    "amount": 3030,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark1",
+    "piece_number": 4,
+    "amount": 3117,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark1",
+    "piece_number": 3,
+    "amount": 3090,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark1",
+    "piece_number": 8,
+    "amount": 3136,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_IndustrialAge_Landmark2",
+  "name": "Capitol",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_IndustrialAge_Landmark2",
+    "piece_number": 7,
+    "amount": 224,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark2",
+    "piece_number": 5,
+    "amount": 243,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark2",
+    "piece_number": 6,
+    "amount": 266,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark2",
+    "piece_number": 2,
+    "amount": 259,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark2",
+    "amount": 219,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark2",
+    "piece_number": 8,
+    "amount": 213,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark2",
+    "piece_number": 1,
+    "amount": 237,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark2",
+    "piece_number": 3,
+    "amount": 229,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark2",
+    "piece_number": 4,
+    "amount": 261,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_LateMiddleAge_Landmark3",
+  "name": "Castel del Monte",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_LateMiddleAge_Landmark3",
+    "piece_number": 1,
+    "amount": 4820,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark3",
+    "piece_number": 6,
+    "amount": 4981,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark3",
+    "piece_number": 7,
+    "amount": 4901,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark3",
+    "amount": 4802,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark3",
+    "piece_number": 3,
+    "amount": 4899,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark3",
+    "piece_number": 2,
+    "amount": 4776,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark3",
+    "piece_number": 5,
+    "amount": 4718,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark3",
+    "piece_number": 4,
+    "amount": 4827,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark3",
+    "piece_number": 8,
+    "amount": 4816,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_EarlyMiddleAge_Landmark2",
+  "name": "Cathedral of Aachen",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark2",
+    "piece_number": 8,
+    "amount": 3432,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark2",
+    "piece_number": 2,
+    "amount": 3469,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark2",
+    "amount": 3444,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark2",
+    "piece_number": 3,
+    "amount": 3419,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark2",
+    "piece_number": 6,
+    "amount": 3401,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark2",
+    "piece_number": 5,
+    "amount": 3430,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark2",
+    "piece_number": 4,
+    "amount": 3454,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark2",
+    "piece_number": 1,
+    "amount": 3447,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark2",
+    "piece_number": 7,
+    "amount": 3364,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ProgressiveEra_Landmark2",
+  "name": "Château Frontenac",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ProgressiveEra_Landmark2",
+    "piece_number": 3,
+    "amount": 3805,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark2",
+    "piece_number": 7,
+    "amount": 3702,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark2",
+    "amount": 3688,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark2",
+    "piece_number": 1,
+    "amount": 3753,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark2",
+    "piece_number": 4,
+    "amount": 3733,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark2",
+    "piece_number": 8,
+    "amount": 3807,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark2",
+    "piece_number": 6,
+    "amount": 3647,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark2",
+    "piece_number": 5,
+    "amount": 3644,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ProgressiveEra_Landmark2",
+    "piece_number": 2,
+    "amount": 3790,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_IronAge_Landmark1",
+  "name": "Colosseum",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_IronAge_Landmark1",
+    "piece_number": 6,
+    "amount": 213,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark1",
+    "amount": 222,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark1",
+    "piece_number": 7,
+    "amount": 224,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark1",
+    "piece_number": 2,
+    "amount": 221,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark1",
+    "piece_number": 1,
+    "amount": 237,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark1",
+    "piece_number": 3,
+    "amount": 215,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark1",
+    "piece_number": 8,
+    "amount": 209,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark1",
+    "piece_number": 5,
+    "amount": 226,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark1",
+    "piece_number": 4,
+    "amount": 212,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_SpaceAgeSpaceHub_Landmark2",
+  "name": "Cosmic Catalyst",
+  "max_level": 70,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark2",
+    "piece_number": 7,
+    "amount": 401,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark2",
+    "piece_number": 6,
+    "amount": 402,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark2",
+    "piece_number": 5,
+    "amount": 415,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark2",
+    "piece_number": 2,
+    "amount": 393,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark2",
+    "piece_number": 3,
+    "amount": 428,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark2",
+    "amount": 425,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark2",
+    "piece_number": 1,
+    "amount": 390,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark2",
+    "piece_number": 8,
+    "amount": 413,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark2",
+    "piece_number": 4,
+    "amount": 429,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ColonialAge_Landmark2",
+  "name": "Deal Castle",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ColonialAge_Landmark2",
+    "amount": 458,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark2",
+    "piece_number": 6,
+    "amount": 493,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark2",
+    "piece_number": 2,
+    "amount": 486,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark2",
+    "piece_number": 4,
+    "amount": 505,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark2",
+    "piece_number": 5,
+    "amount": 417,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark2",
+    "piece_number": 8,
+    "amount": 485,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark2",
+    "piece_number": 3,
+    "amount": 466,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark2",
+    "piece_number": 7,
+    "amount": 470,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark2",
+    "piece_number": 1,
+    "amount": 452,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_SpaceAgeVenus_Landmark1",
+  "name": "Flying Island",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeVenus_Landmark1",
+    "piece_number": 6,
+    "amount": 563,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeVenus_Landmark1",
+    "piece_number": 7,
+    "amount": 562,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeVenus_Landmark1",
+    "piece_number": 5,
+    "amount": 539,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeVenus_Landmark1",
+    "piece_number": 4,
+    "amount": 535,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeVenus_Landmark1",
+    "amount": 552,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeVenus_Landmark1",
+    "piece_number": 2,
+    "amount": 545,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeVenus_Landmark1",
+    "piece_number": 3,
+    "amount": 559,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeVenus_Landmark1",
+    "piece_number": 8,
+    "amount": 559,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeVenus_Landmark1",
+    "piece_number": 1,
+    "amount": 535,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ColonialAge_Landmark1",
+  "name": "Frauenkirche of Dresden",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ColonialAge_Landmark1",
+    "amount": 351,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark1",
+    "piece_number": 5,
+    "amount": 336,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark1",
+    "piece_number": 4,
+    "amount": 376,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark1",
+    "piece_number": 6,
+    "amount": 362,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark1",
+    "piece_number": 8,
+    "amount": 340,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark1",
+    "piece_number": 7,
+    "amount": 305,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark1",
+    "piece_number": 3,
+    "amount": 332,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark1",
+    "piece_number": 2,
+    "amount": 333,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ColonialAge_Landmark1",
+    "piece_number": 1,
+    "amount": 339,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ArcticFuture_Landmark1",
+  "name": "Gaea Statue",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ArcticFuture_Landmark1",
+    "amount": 215,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark1",
+    "piece_number": 8,
+    "amount": 212,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark1",
+    "piece_number": 5,
+    "amount": 219,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark1",
+    "piece_number": 2,
+    "amount": 228,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark1",
+    "piece_number": 1,
+    "amount": 234,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark1",
+    "piece_number": 6,
+    "amount": 217,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark1",
+    "piece_number": 3,
+    "amount": 255,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark1",
+    "piece_number": 4,
+    "amount": 257,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark1",
+    "piece_number": 7,
+    "amount": 206,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_EarlyMiddleAge_Landmark3",
+  "name": "Galata Tower",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark3",
+    "piece_number": 2,
+    "amount": 921,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark3",
+    "piece_number": 5,
+    "amount": 826,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark3",
+    "piece_number": 3,
+    "amount": 898,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark3",
+    "piece_number": 1,
+    "amount": 903,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark3",
+    "amount": 900,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark3",
+    "piece_number": 4,
+    "amount": 854,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark3",
+    "piece_number": 6,
+    "amount": 857,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark3",
+    "piece_number": 7,
+    "amount": 866,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark3",
+    "piece_number": 8,
+    "amount": 828,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_EarlyMiddleAge_Landmark1",
+  "name": "Hagia Sophia",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark1",
+    "piece_number": 6,
+    "amount": 1576,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark1",
+    "piece_number": 4,
+    "amount": 1535,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark1",
+    "piece_number": 8,
+    "amount": 1620,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark1",
+    "amount": 1631,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark1",
+    "piece_number": 2,
+    "amount": 1563,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark1",
+    "piece_number": 3,
+    "amount": 1615,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark1",
+    "piece_number": 7,
+    "amount": 1576,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark1",
+    "piece_number": 1,
+    "amount": 1534,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_EarlyMiddleAge_Landmark1",
+    "piece_number": 5,
+    "amount": 1593,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_VirtualFuture_Landmark2",
+  "name": "Himeji Castle",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_VirtualFuture_Landmark2",
+    "piece_number": 7,
+    "amount": 2239,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark2",
+    "piece_number": 4,
+    "amount": 2295,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark2",
+    "piece_number": 1,
+    "amount": 2266,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark2",
+    "piece_number": 8,
+    "amount": 2199,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark2",
+    "piece_number": 5,
+    "amount": 2327,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark2",
+    "piece_number": 2,
+    "amount": 2302,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark2",
+    "piece_number": 3,
+    "amount": 2184,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark2",
+    "piece_number": 6,
+    "amount": 2250,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark2",
+    "amount": 2320,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ContemporaryEra_Landmark2",
+  "name": "Innovation Tower",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ContemporaryEra_Landmark2",
+    "piece_number": 1,
+    "amount": 1745,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark2",
+    "piece_number": 6,
+    "amount": 1703,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark2",
+    "piece_number": 7,
+    "amount": 1797,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark2",
+    "piece_number": 4,
+    "amount": 1741,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark2",
+    "piece_number": 8,
+    "amount": 1709,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark2",
+    "piece_number": 5,
+    "amount": 1756,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark2",
+    "amount": 1755,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark2",
+    "piece_number": 3,
+    "amount": 1670,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark2",
+    "piece_number": 2,
+    "amount": 1704,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_IronAge_Landmark2",
+  "name": "Lighthouse of Alexandria",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_IronAge_Landmark2",
+    "piece_number": 7,
+    "amount": 1012,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark2",
+    "piece_number": 1,
+    "amount": 1056,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark2",
+    "piece_number": 2,
+    "amount": 1056,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark2",
+    "amount": 1084,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark2",
+    "piece_number": 4,
+    "amount": 988,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark2",
+    "piece_number": 5,
+    "amount": 1069,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark2",
+    "piece_number": 3,
+    "amount": 1087,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark2",
+    "piece_number": 8,
+    "amount": 1058,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IronAge_Landmark2",
+    "piece_number": 6,
+    "amount": 1030,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ContemporaryEra_Landmark1",
+  "name": "Lotus Temple",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ContemporaryEra_Landmark1",
+    "piece_number": 4,
+    "amount": 273,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark1",
+    "piece_number": 6,
+    "amount": 290,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark1",
+    "piece_number": 5,
+    "amount": 264,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark1",
+    "piece_number": 1,
+    "amount": 250,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark1",
+    "piece_number": 7,
+    "amount": 243,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark1",
+    "amount": 286,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark1",
+    "piece_number": 8,
+    "amount": 299,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark1",
+    "piece_number": 2,
+    "amount": 254,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ContemporaryEra_Landmark1",
+    "piece_number": 3,
+    "amount": 316,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_HighMiddleAge_Landmark3",
+  "name": "Notre Dame",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_HighMiddleAge_Landmark3",
+    "piece_number": 6,
+    "amount": 244,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark3",
+    "piece_number": 4,
+    "amount": 229,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark3",
+    "piece_number": 3,
+    "amount": 262,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark3",
+    "piece_number": 5,
+    "amount": 207,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark3",
+    "piece_number": 2,
+    "amount": 242,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark3",
+    "piece_number": 8,
+    "amount": 260,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark3",
+    "amount": 235,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark3",
+    "piece_number": 1,
+    "amount": 230,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark3",
+    "piece_number": 7,
+    "amount": 242,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_AllAge_EasterBonus4",
+  "name": "Observatory",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_AllAge_EasterBonus4",
+    "amount": 2448,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_EasterBonus4",
+    "piece_number": 4,
+    "amount": 2502,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_EasterBonus4",
+    "piece_number": 3,
+    "amount": 2568,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_EasterBonus4",
+    "piece_number": 6,
+    "amount": 2444,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_EasterBonus4",
+    "piece_number": 5,
+    "amount": 2453,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_EasterBonus4",
+    "piece_number": 7,
+    "amount": 2465,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_EasterBonus4",
+    "piece_number": 8,
+    "amount": 2509,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_EasterBonus4",
+    "piece_number": 1,
+    "amount": 2500,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_EasterBonus4",
+    "piece_number": 2,
+    "amount": 2449,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_AllAge_Oracle",
+  "name": "Oracle of Delphi",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_AllAge_Oracle",
+    "piece_number": 3,
+    "amount": 11,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Oracle",
+    "piece_number": 5,
+    "amount": 8,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Oracle",
+    "piece_number": 7,
+    "amount": 13,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Oracle",
+    "piece_number": 2,
+    "amount": 11,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Oracle",
+    "piece_number": 8,
+    "amount": 15,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Oracle",
+    "piece_number": 6,
+    "amount": 14,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Oracle",
+    "piece_number": 4,
+    "amount": 11,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Oracle",
+    "amount": 13,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Oracle",
+    "piece_number": 1,
+    "amount": 12,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_FutureEra_Landmark2",
+  "name": "Rain Forest Project",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_FutureEra_Landmark2",
+    "amount": 677,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark2",
+    "piece_number": 4,
+    "amount": 686,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark2",
+    "piece_number": 3,
+    "amount": 657,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark2",
+    "piece_number": 1,
+    "amount": 654,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark2",
+    "piece_number": 7,
+    "amount": 683,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark2",
+    "piece_number": 6,
+    "amount": 691,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark2",
+    "piece_number": 5,
+    "amount": 701,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark2",
+    "piece_number": 2,
+    "amount": 743,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark2",
+    "piece_number": 8,
+    "amount": 730,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_IndustrialAge_Landmark1",
+  "name": "Royal Albert Hall",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_IndustrialAge_Landmark1",
+    "piece_number": 7,
+    "amount": 347,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark1",
+    "piece_number": 5,
+    "amount": 397,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark1",
+    "piece_number": 4,
+    "amount": 374,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark1",
+    "piece_number": 3,
+    "amount": 415,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark1",
+    "piece_number": 2,
+    "amount": 362,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark1",
+    "piece_number": 6,
+    "amount": 363,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark1",
+    "piece_number": 8,
+    "amount": 371,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark1",
+    "amount": 389,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_IndustrialAge_Landmark1",
+    "piece_number": 1,
+    "amount": 392,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_LateMiddleAge_Landmark1",
+  "name": "Saint Basil's Cathedral",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_LateMiddleAge_Landmark1",
+    "piece_number": 4,
+    "amount": 684,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark1",
+    "amount": 679,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark1",
+    "piece_number": 6,
+    "amount": 709,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark1",
+    "piece_number": 7,
+    "amount": 705,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark1",
+    "piece_number": 5,
+    "amount": 707,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark1",
+    "piece_number": 3,
+    "amount": 718,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark1",
+    "piece_number": 8,
+    "amount": 739,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark1",
+    "piece_number": 2,
+    "amount": 740,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_LateMiddleAge_Landmark1",
+    "piece_number": 1,
+    "amount": 730,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_SpaceAgeTitan_Landmark1",
+  "name": "Saturn VI Gate CENTAURUS",
+  "max_level": 84,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark1",
+    "piece_number": 4,
+    "amount": 647,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark1",
+    "piece_number": 6,
+    "amount": 642,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark1",
+    "piece_number": 5,
+    "amount": 637,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark1",
+    "piece_number": 7,
+    "amount": 667,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark1",
+    "piece_number": 2,
+    "amount": 636,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark1",
+    "piece_number": 1,
+    "amount": 664,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark1",
+    "piece_number": 3,
+    "amount": 662,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark1",
+    "amount": 635,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark1",
+    "piece_number": 8,
+    "amount": 644,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_SpaceAgeTitan_Landmark3",
+  "name": "Saturn VI Gate HYDRA",
+  "max_level": 80,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark3",
+    "piece_number": 1,
+    "amount": 658,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark3",
+    "piece_number": 4,
+    "amount": 673,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark3",
+    "amount": 639,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark3",
+    "piece_number": 7,
+    "amount": 716,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark3",
+    "piece_number": 2,
+    "amount": 688,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark3",
+    "piece_number": 5,
+    "amount": 676,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark3",
+    "piece_number": 6,
+    "amount": 688,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark3",
+    "piece_number": 3,
+    "amount": 729,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark3",
+    "piece_number": 8,
+    "amount": 723,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_SpaceAgeTitan_Landmark2",
+  "name": "Saturn VI Gate PEGASUS",
+  "max_level": 70,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark2",
+    "piece_number": 1,
+    "amount": 741,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark2",
+    "piece_number": 8,
+    "amount": 726,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark2",
+    "amount": 689,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark2",
+    "piece_number": 7,
+    "amount": 709,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark2",
+    "piece_number": 2,
+    "amount": 785,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark2",
+    "piece_number": 3,
+    "amount": 738,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark2",
+    "piece_number": 6,
+    "amount": 734,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark2",
+    "piece_number": 5,
+    "amount": 778,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeTitan_Landmark2",
+    "piece_number": 4,
+    "amount": 718,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ArcticFuture_Landmark3",
+  "name": "Seed Vault",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ArcticFuture_Landmark3",
+    "piece_number": 7,
+    "amount": 985,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark3",
+    "piece_number": 5,
+    "amount": 965,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark3",
+    "piece_number": 4,
+    "amount": 946,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark3",
+    "piece_number": 6,
+    "amount": 955,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark3",
+    "piece_number": 3,
+    "amount": 938,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark3",
+    "piece_number": 2,
+    "amount": 988,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark3",
+    "piece_number": 8,
+    "amount": 997,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark3",
+    "amount": 955,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ArcticFuture_Landmark3",
+    "piece_number": 1,
+    "amount": 1041,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_StellarAgeDiscovery_Landmark1",
+  "name": "Shattered Horizon Siphon",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_StellarAgeDiscovery_Landmark1",
+    "piece_number": 1,
+    "amount": 4,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_StellarAgeDiscovery_Landmark1",
+    "piece_number": 5,
+    "amount": 8,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_StellarAgeDiscovery_Landmark1",
+    "piece_number": 2,
+    "amount": 3,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_StellarAgeDiscovery_Landmark1",
+    "piece_number": 3,
+    "amount": 6,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_StellarAgeDiscovery_Landmark1",
+    "piece_number": 7,
+    "amount": 4,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_StellarAgeDiscovery_Landmark1",
+    "piece_number": 8,
+    "amount": 4,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_StellarAgeDiscovery_Landmark1",
+    "piece_number": 6,
+    "amount": 2,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_StellarAgeDiscovery_Landmark1",
+    "amount": 3,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_StellarAgeDiscovery_Landmark1",
+    "piece_number": 4,
+    "amount": 6,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+  "name": "Space Carrier",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+    "piece_number": 3,
+    "amount": 1150,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+    "piece_number": 2,
+    "amount": 1166,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+    "piece_number": 5,
+    "amount": 1253,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+    "amount": 1174,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+    "piece_number": 4,
+    "amount": 1149,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+    "piece_number": 8,
+    "amount": 1148,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+    "piece_number": 7,
+    "amount": 1186,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+    "piece_number": 1,
+    "amount": 1134,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeAsteroidBelt_Landmark1",
+    "piece_number": 6,
+    "amount": 1109,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_ModernEra_Landmark1",
+  "name": "Space Needle",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_ModernEra_Landmark1",
+    "piece_number": 1,
+    "amount": 229,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark1",
+    "amount": 227,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark1",
+    "piece_number": 8,
+    "amount": 211,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark1",
+    "piece_number": 5,
+    "amount": 198,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark1",
+    "piece_number": 3,
+    "amount": 232,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark1",
+    "piece_number": 7,
+    "amount": 196,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark1",
+    "piece_number": 4,
+    "amount": 218,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark1",
+    "piece_number": 2,
+    "amount": 226,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_ModernEra_Landmark1",
+    "piece_number": 6,
+    "amount": 236,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_HighMiddleAge_Landmark1",
+  "name": "St. Mark's Basilica",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_HighMiddleAge_Landmark1",
+    "piece_number": 7,
+    "amount": 643,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark1",
+    "piece_number": 1,
+    "amount": 666,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark1",
+    "piece_number": 4,
+    "amount": 645,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark1",
+    "piece_number": 6,
+    "amount": 679,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark1",
+    "amount": 645,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark1",
+    "piece_number": 5,
+    "amount": 650,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark1",
+    "piece_number": 8,
+    "amount": 696,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark1",
+    "piece_number": 3,
+    "amount": 682,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_HighMiddleAge_Landmark1",
+    "piece_number": 2,
+    "amount": 673,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_SpaceAgeMars_Landmark1",
+  "name": "Star Gazer",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeMars_Landmark1",
+    "piece_number": 3,
+    "amount": 578,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark1",
+    "piece_number": 2,
+    "amount": 545,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark1",
+    "piece_number": 4,
+    "amount": 557,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark1",
+    "amount": 572,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark1",
+    "piece_number": 6,
+    "amount": 591,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark1",
+    "piece_number": 8,
+    "amount": 621,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark1",
+    "piece_number": 7,
+    "amount": 541,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark1",
+    "piece_number": 1,
+    "amount": 543,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark1",
+    "piece_number": 5,
+    "amount": 566,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_BronzeAge_Landmark2",
+  "name": "Statue of Zeus",
+  "max_level": 400,
+  "blueprints": [
+   {
+    "building_id": "X_BronzeAge_Landmark2",
+    "piece_number": 7,
+    "amount": 4310,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark2",
+    "piece_number": 1,
+    "amount": 4407,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark2",
+    "piece_number": 2,
+    "amount": 4397,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark2",
+    "amount": 4383,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark2",
+    "piece_number": 6,
+    "amount": 4402,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark2",
+    "piece_number": 4,
+    "amount": 4633,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark2",
+    "piece_number": 3,
+    "amount": 4296,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark2",
+    "piece_number": 8,
+    "amount": 4374,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark2",
+    "piece_number": 5,
+    "amount": 4408,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_SpaceAgeSpaceHub_Landmark1",
+  "name": "Stellar Warship",
+  "max_level": 70,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+    "piece_number": 7,
+    "amount": 499,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+    "piece_number": 1,
+    "amount": 493,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+    "piece_number": 8,
+    "amount": 504,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+    "piece_number": 4,
+    "amount": 531,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+    "piece_number": 3,
+    "amount": 520,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+    "amount": 517,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+    "piece_number": 2,
+    "amount": 543,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+    "piece_number": 6,
+    "amount": 476,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+    "piece_number": 5,
+    "amount": 524,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_AllAge_Expedition",
+  "name": "Temple of Relics",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_AllAge_Expedition",
+    "piece_number": 3,
+    "amount": 2474,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Expedition",
+    "piece_number": 7,
+    "amount": 2548,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Expedition",
+    "piece_number": 5,
+    "amount": 2405,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Expedition",
+    "piece_number": 1,
+    "amount": 2511,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Expedition",
+    "piece_number": 2,
+    "amount": 2464,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Expedition",
+    "piece_number": 8,
+    "amount": 2487,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Expedition",
+    "amount": 2526,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Expedition",
+    "piece_number": 4,
+    "amount": 2393,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_AllAge_Expedition",
+    "piece_number": 6,
+    "amount": 2426,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_VirtualFuture_Landmark1",
+  "name": "Terracotta Army",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_VirtualFuture_Landmark1",
+    "piece_number": 3,
+    "amount": 3140,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark1",
+    "amount": 3046,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark1",
+    "piece_number": 7,
+    "amount": 3050,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark1",
+    "piece_number": 6,
+    "amount": 3066,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark1",
+    "piece_number": 5,
+    "amount": 3051,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark1",
+    "piece_number": 8,
+    "amount": 3129,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark1",
+    "piece_number": 2,
+    "amount": 3169,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark1",
+    "piece_number": 1,
+    "amount": 3136,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_VirtualFuture_Landmark1",
+    "piece_number": 4,
+    "amount": 3070,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_FutureEra_Landmark1",
+  "name": "The Arc",
+  "max_level": 400,
+  "blueprints": [
+   {
+    "building_id": "X_FutureEra_Landmark1",
+    "piece_number": 2,
+    "amount": 8360,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark1",
+    "piece_number": 8,
+    "amount": 8598,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark1",
+    "piece_number": 1,
+    "amount": 8394,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark1",
+    "piece_number": 5,
+    "amount": 8360,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark1",
+    "amount": 8371,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark1",
+    "piece_number": 7,
+    "amount": 8437,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark1",
+    "piece_number": 4,
+    "amount": 8368,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark1",
+    "piece_number": 6,
+    "amount": 8432,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_FutureEra_Landmark1",
+    "piece_number": 3,
+    "amount": 8631,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_OceanicFuture_Landmark3",
+  "name": "The Blue Galaxy",
+  "max_level": 400,
+  "blueprints": [
+   {
+    "building_id": "X_OceanicFuture_Landmark3",
+    "piece_number": 8,
+    "amount": 1571,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark3",
+    "piece_number": 4,
+    "amount": 1478,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark3",
+    "piece_number": 2,
+    "amount": 1455,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark3",
+    "amount": 1520,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark3",
+    "piece_number": 5,
+    "amount": 1471,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark3",
+    "piece_number": 7,
+    "amount": 1496,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark3",
+    "piece_number": 3,
+    "amount": 1505,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark3",
+    "piece_number": 1,
+    "amount": 1489,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark3",
+    "piece_number": 6,
+    "amount": 1586,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_PostModernEra_Landmark2",
+  "name": "The Habitat",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_PostModernEra_Landmark2",
+    "piece_number": 8,
+    "amount": 220,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark2",
+    "piece_number": 6,
+    "amount": 232,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark2",
+    "piece_number": 7,
+    "amount": 235,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark2",
+    "piece_number": 4,
+    "amount": 250,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark2",
+    "amount": 223,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark2",
+    "piece_number": 5,
+    "amount": 260,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark2",
+    "piece_number": 1,
+    "amount": 260,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark2",
+    "piece_number": 2,
+    "amount": 237,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_PostModernEra_Landmark2",
+    "piece_number": 3,
+    "amount": 225,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_OceanicFuture_Landmark2",
+  "name": "The Kraken",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_OceanicFuture_Landmark2",
+    "piece_number": 1,
+    "amount": 2313,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark2",
+    "piece_number": 8,
+    "amount": 2237,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark2",
+    "amount": 2306,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark2",
+    "piece_number": 5,
+    "amount": 2328,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark2",
+    "piece_number": 2,
+    "amount": 2334,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark2",
+    "piece_number": 4,
+    "amount": 2331,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark2",
+    "piece_number": 3,
+    "amount": 2257,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark2",
+    "piece_number": 7,
+    "amount": 2363,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_OceanicFuture_Landmark2",
+    "piece_number": 6,
+    "amount": 2210,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_SpaceAgeMars_Landmark2",
+  "name": "The Virgo Project",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_SpaceAgeMars_Landmark2",
+    "piece_number": 7,
+    "amount": 556,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark2",
+    "piece_number": 4,
+    "amount": 558,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark2",
+    "amount": 576,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark2",
+    "piece_number": 5,
+    "amount": 534,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark2",
+    "piece_number": 2,
+    "amount": 526,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark2",
+    "piece_number": 3,
+    "amount": 547,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark2",
+    "piece_number": 8,
+    "amount": 586,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark2",
+    "piece_number": 6,
+    "amount": 562,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_SpaceAgeMars_Landmark2",
+    "piece_number": 1,
+    "amount": 538,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_BronzeAge_Landmark1",
+  "name": "Tower of Babel",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_BronzeAge_Landmark1",
+    "piece_number": 3,
+    "amount": 416,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark1",
+    "piece_number": 8,
+    "amount": 406,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark1",
+    "amount": 426,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark1",
+    "piece_number": 7,
+    "amount": 433,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark1",
+    "piece_number": 4,
+    "amount": 428,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark1",
+    "piece_number": 6,
+    "amount": 387,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark1",
+    "piece_number": 5,
+    "amount": 453,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark1",
+    "piece_number": 2,
+    "amount": 405,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_BronzeAge_Landmark1",
+    "piece_number": 1,
+    "amount": 424,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_TomorrowEra_Landmark2",
+  "name": "Truce Tower",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_TomorrowEra_Landmark2",
+    "piece_number": 7,
+    "amount": 877,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark2",
+    "piece_number": 6,
+    "amount": 893,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark2",
+    "piece_number": 5,
+    "amount": 904,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark2",
+    "piece_number": 2,
+    "amount": 897,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark2",
+    "piece_number": 8,
+    "amount": 885,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark2",
+    "amount": 893,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark2",
+    "piece_number": 3,
+    "amount": 921,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark2",
+    "piece_number": 4,
+    "amount": 854,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark2",
+    "piece_number": 1,
+    "amount": 916,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ },
+ {
+  "cityentity_id": "X_TomorrowEra_Landmark1",
+  "name": "Voyager V1",
+  "max_level": 10,
+  "blueprints": [
+   {
+    "building_id": "X_TomorrowEra_Landmark1",
+    "piece_number": 3,
+    "amount": 208,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark1",
+    "piece_number": 6,
+    "amount": 215,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark1",
+    "amount": 221,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark1",
+    "piece_number": 5,
+    "amount": 212,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark1",
+    "piece_number": 4,
+    "amount": 214,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark1",
+    "piece_number": 1,
+    "amount": 224,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark1",
+    "piece_number": 7,
+    "amount": 202,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark1",
+    "piece_number": 2,
+    "amount": 218,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   },
+   {
+    "building_id": "X_TomorrowEra_Landmark1",
+    "piece_number": 8,
+    "amount": 236,
+    "tier": {
+     "__enum__": "GreatBuildingTier",
+     "value": "copper"
+    },
+    "__class__": "GreatBuildingBlueprint"
+   }
+  ],
+  "__class__": "InventoryGreatBuilding"
+ }
+]

@@ -1,0 +1,65 @@
+[env]
+NODE_ENV = "development"
+
+[env._]
+path = ["/home/linuxbrew/.linuxbrew/bin", "./node_modules/.bin", "./.agents/scripts"]
+
+[tasks.check]
+description = "Check project code formatting with Prettier"
+run = "npm run check"
+
+[tasks.format]
+description = "Format project code with Prettier"
+run = "npm run format"
+
+[tasks.dev]
+description = "Start Webpack development build watcher"
+run = "npm run dev"
+
+[tasks.build]
+description = "Build development extension bundle"
+run = "npm run build:dev"
+
+[tasks.build-prod]
+description = "Build optimized production extension bundle"
+run = "npm run build"
+
+[tasks.clean]
+description = "Remove build output"
+run = "npm run clean"
+
+[tasks.test]
+description = "Run unit tests (node:test)"
+run = "npm test"
+
+[tasks.verify]
+description = "Run full verification gate (check + lint + i18n + test + build)"
+run = "npm run verify"
+
+[tasks.lint]
+description = "Lint source with ESLint"
+run = "npm run lint"
+
+[tasks.typecheck]
+description = "Type-check sources with tsc"
+run = "npm run typecheck"
+
+[tasks.i18n-check]
+description = "Check i18n key parity across locales"
+run = "npm run i18n:check"
+
+[tasks.graph-ast]
+description = "Fast AST graph refresh"
+run = "npm run graph:foe-info:ast"
+
+[tasks.graph-update]
+description = "Update AST knowledge graph plus export"
+run = "npm run graph:foe-info:update"
+
+[tasks.metadata-download]
+description = "Ingest offline metadata datasets"
+run = "npm run metadata:download"
+
+[tasks.metadata-query]
+description = "Query the offline metadata store"
+run = "npm run metadata:query"

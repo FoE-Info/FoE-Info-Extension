@@ -1,0 +1,46 @@
+{
+ "sales": [
+  {
+   "id": "crm_modular_1459_v11886__0",
+   "validTo": 1789036086,
+   "callToAction": {
+    "type": "cashShopTab",
+    "value": "special_offers",
+    "__class__": "CallToAction"
+   },
+   "__class__": "SaleInfo"
+  },
+  {
+   "id": "373178539",
+   "validTo": 1789038872,
+   "callToAction": {
+    "type": "cashShop",
+    "value": "",
+    "__class__": "CallToAction"
+   },
+   "__class__": "SaleInfo"
+  },
+  {
+   "id": "fall_golden_event_pass",
+   "validTo": 1789979400,
+   "callToAction": {
+    "type": "cashShopTab",
+    "value": "event_passes",
+    "__class__": "CallToAction"
+   },
+   "__class__": "SaleInfo"
+  },
+  {
+   "id": "guild_raids_2_golden_raid_pass",
+   "validTo": 1795420800,
+   "callToAction": {
+    "type": "cashShopTab",
+    "value": "quantum_incursions",
+    "__class__": "CallToAction"
+   },
+   "__class__": "SaleInfo"
+  }
+ ],
+ "seamlessSales": [],
+ "__class__": "SaleInfoOverview"
+}

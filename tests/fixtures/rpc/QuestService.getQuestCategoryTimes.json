@@ -1,0 +1,11 @@
+{
+ "nextUpdateTime": 1789887600,
+ "activeQuestCategoryTimes": [
+  {
+   "questCategory": "miniChallenge",
+   "questCategoryEndTime": 1789887600,
+   "__class__": "QuestCategoryTime"
+  }
+ ],
+ "__class__": "QuestCategoryTimes"
+}

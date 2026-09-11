@@ -1,0 +1,12 @@
+{
+ "level": 15,
+ "nextCastlePoints": {
+  "castlePointsItemShopTradeCoinsDivisor": 300,
+  "castlePointsItemShopGemstonesDivisor": 2,
+  "castlePointsItemAuctionWinBidding": 30,
+  "castlePointsWinBattle": 30,
+  "castlePointsWinNegotation": 30,
+  "castlePointsWinGexLastOfSection": 15
+ },
+ "__class__": "CastleSystemPlayer"
+}

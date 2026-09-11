@@ -11,89 +11,53 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { Popover } from 'bootstrap';
+import browser from 'webextension-polyfill';
+import { metadataStore } from '../state/MetadataStore.js';
+import * as element from '../ui/AddElement.js';
+import { showOptions } from '../vars/showOptions.js';
 import {
+  battlegroundDIV,
+  BattlegroundPerformance,
+  BGtime,
+  BuildingEntityLookup,
   CityEntityDefs,
   donationDIV,
   GameOrigin,
   Goods,
-  hiddenRewards,
-  incidents,
-  url,
-} from '../index.js';
-import {
-  BattlegroundPerformance,
-  BGtime,
   GuildMembers,
-} from '../msg/GuildBattlegroundService.js';
-import { ResourceNames } from '../msg/ResourceService.js';
-import { showOptions } from '../vars/showOptions.js';
+  url,
+} from '../vars/state.js';
 import * as collapse from './collapse.js';
-import { fCollapseIncidents } from './collapse.js';
 import * as copy from './copy.js';
 import { setBattlegroundSize, toolOptions } from './globals.js';
+import { translateContainer as nativeTranslateContainer } from './i18n.js';
 import * as post_webstore from './post.js';
 import * as storage from './storage.js';
-import * as element from './AddElement';
-import browser from 'webextension-polyfill';
+
+export {
+  escapeHTML,
+  formatEntityId,
+  fResourceShortName,
+  fRewardShortName,
+} from '../utils/formatters.js';
+
+export {
+  fIncidentName,
+  fShowIncidents,
+  renderIncidentsPanel,
+} from '../ui/incidentsPanel.js';
 
 var heightGBG = toolOptions.battlegroundsSize;
+let gbgResizeObserver = null;
 export var MyGuildPermissions = 0;
 
+export function translateContainer(container = document.body) {
+  nativeTranslateContainer(container);
+}
+
 function setHeight() {
-  console.debug('mouseup', heightGBG);
+  // console.debug('mouseup', heightGBG);
   setBattlegroundSize(heightGBG);
-}
-
-export function fResourceShortName(name) {
-  if (name == 'sacrificial_offerings') {
-    return 'Offerings';
-  } else if (name == 'something else') {
-    return 'something';
-  } else if (ResourceNames[name]) {
-    return ResourceNames[name];
-  } else return name;
-}
-
-export function fRewardShortName(reward) {
-  if (reward == 'Fragment of Statue Of Honor Selection Kit') {
-    return 'SoH Fragment';
-  } else if (reward == 'Statue Of Honor Selection Kit') {
-    return 'SoH Kit';
-  } else if (reward == 'Fragment of The Great Elephant Selection Kit') {
-    return 'Elephant Fragment';
-  } else if (reward.split(' ')[0] == '1' || reward.split(' ')[0] == '5') {
-    return reward.slice(2);
-  } else if (reward.split(' ')[0] == '5x' || reward.split(' ')[0] == '10') {
-    return reward.slice(3);
-  } else if (!isNaN(reward.split(' ')[0])) {
-    return reward.slice(reward.indexOf(' ') + 1);
-  } else if (reward.includes('Coins')) {
-    return 'Coins';
-  } else if (reward.includes('Goods')) {
-    return 'Goods';
-  } else if (reward.includes('Supplies')) {
-    return 'Supplies';
-  } else if (reward.includes('Rogue')) {
-    return 'Rogues';
-  } else if (reward.includes('Medals')) {
-    return 'Medals';
-  }
-
-  // else if (reward =="something else")
-  // {
-  // 	return "something";
-  // }
-  else if (reward.includes('Forge Points')) {
-    return 'Forge Points';
-  }
-  // else if (reward =="something else")
-  // {
-  // 	return "something";
-  // }
-  else {
-    return reward;
-  }
 }
 
 export function fGBsname(city_entity) {
@@ -179,32 +143,138 @@ export function fGBsname(city_entity) {
     return 'CC';
   }
 
-  console.debug(city_entity);
   return city_entity.slice(0, 10);
 }
 
-export function fEntityNameTrim(name) {
-  if (!CityEntityDefs[name]) return name;
-  var trimName = CityEntityDefs[name].name;
-  if (trimName.includes(' - Lv.'))
-    return trimName.substring(0, trimName.indexOf(' - Lv.'));
-  else if (trimName.includes('Lv. 2 - '))
-    return trimName.replace('Lv. 2 - ', '');
-  else if (trimName.includes('Lv. 1 - '))
-    return trimName.replace('Lv. 1 - ', '');
-  else return trimName;
+export function getCityEntityDef(id) {
+  if (!id) return null;
+  let rawId = id;
+  if (typeof id === 'object') {
+    rawId = id.value || id.id || id.identifier || String(id);
+  }
+  if (!rawId) return null;
+
+  const strId = String(rawId);
+  const cleanId = strId
+    .replace(/^building_entity_/, '')
+    .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
+    .replace(/^(MultiAge_|AllAge_)/, '');
+
+  const candidates = [
+    strId,
+    `building_entity_${strId}`,
+    cleanId,
+    `building_entity_${cleanId}`,
+    `W_MultiAge_${cleanId}`,
+    `building_entity_W_MultiAge_${cleanId}`,
+    `R_MultiAge_${cleanId}`,
+    `L_MultiAge_${cleanId}`,
+    `X_MultiAge_${cleanId}`,
+    `M_MultiAge_${cleanId}`,
+    `M_AllAge_${cleanId}`,
+  ];
+
+  for (const key of candidates) {
+    const def = CityEntityDefs[key];
+    if (def) {
+      const entityName = def.name || def.Name || def.title;
+      if (entityName) {
+        metadataStore.reportEntityLookup(strId, def);
+        return { ...def, name: entityName };
+      }
+    }
+  }
+
+  if (metadataStore && typeof metadataStore.getEntity === 'function') {
+    for (const key of candidates) {
+      const meta = metadataStore.peekEntity(key);
+      if (meta) {
+        const entityName = meta.name || meta.Name || meta.title;
+        if (entityName) {
+          metadataStore.reportEntityLookup(strId, meta);
+          return { ...meta, name: entityName };
+        }
+      }
+    }
+  }
+
+  const gbName = fGBname(strId, false) || fGBname(cleanId, false);
+  if (gbName && gbName !== strId && gbName !== cleanId) {
+    metadataStore.reportEntityLookup(strId, true);
+    return { id: strId, name: gbName };
+  }
+
+  metadataStore.reportEntityLookup(strId, false);
+  return null;
 }
 
-export function fGBname(city_entity) {
-  var GB_name = city_entity;
+export function fEntityNameTrim(name) {
+  if (!name) return '';
+  var raw = String(name);
+  if (typeof name === 'object') {
+    raw = name.value || name.id || name.identifier || String(name);
+  }
 
-  // if(CityEntityDefs[city_entity] &&  CityEntityDefs[city_entity].name == "Galata Tower")
-  // 	console.debug(CityEntityDefs[city_entity]);
+  const def = getCityEntityDef(raw);
+  if (def && def.name) {
+    var trimName = def.name;
+    if (trimName.includes(' - Lv.'))
+      return trimName.substring(0, trimName.indexOf(' - Lv.'));
+    else if (trimName.includes('Lv. 2 - '))
+      return trimName.replace('Lv. 2 - ', '');
+    else if (trimName.includes('Lv. 1 - '))
+      return trimName.replace('Lv. 1 - ', '');
+    else return trimName;
+  }
 
-  // return GBdefs[city_entity];
-  if (CityEntityDefs[city_entity]) {
-    // console.debug(CityEntityDefs[city_entity].name,CityEntityDefs);
-    return CityEntityDefs[city_entity].name;
+  const gbName = fGBname(raw);
+  if (gbName && gbName !== raw) {
+    return gbName;
+  }
+
+  const metadata = metadataStore?.getEntity?.(raw);
+  const metadataName = metadata?.name || metadata?.Name || metadata?.title;
+  if (metadataName) {
+    if (metadataName.includes(' - Lv.'))
+      return metadataName.substring(0, metadataName.indexOf(' - Lv.'));
+    else if (metadataName.includes('Lv. 2 - '))
+      return metadataName.replace('Lv. 2 - ', '');
+    else if (metadataName.includes('Lv. 1 - '))
+      return metadataName.replace('Lv. 1 - ', '');
+    return metadataName;
+  }
+
+  return raw;
+}
+
+export function fGBname(city_entity, reportLookup = true) {
+  if (!city_entity) return '';
+  var GB_name = String(city_entity);
+  const cleanId = GB_name.replace(/^building_entity_/, '').replace(
+    /^[WXRLM]_(MultiAge|AllAge|[A-Za-z0-9]+)_/,
+    '',
+  );
+
+  const candidates = [
+    GB_name,
+    cleanId,
+    `X_AllAge_${cleanId}`,
+    `X_MultiAge_${cleanId}`,
+    `W_MultiAge_${cleanId}`,
+    `R_MultiAge_${cleanId}`,
+    `M_AllAge_${cleanId}`,
+    `M_MultiAge_${cleanId}`,
+  ];
+  for (const key of candidates) {
+    const def = CityEntityDefs[key];
+    if (def) {
+      const name = def.name || def.Name || def.title;
+      if (name) {
+        if (reportLookup)
+          metadataStore.reportEntityLookup(String(city_entity), def);
+        return name;
+      }
+    }
   }
   // console.debug(city_entity,CityEntityDefs);
 
@@ -271,126 +341,17 @@ export function fGBname(city_entity) {
     GB_name = 'Stellar Warship';
   else if (GB_name == 'X_SpaceAgeSpaceHub_Landmark2')
     GB_name = 'Cosmic Catalyst';
+  else if (GB_name == 'X_SpaceAgeDiscovery_Landmark1')
+    GB_name = 'Space Age Discovery Landmark 1';
+  else if (GB_name == 'X_SpaceAgeDiscovery_Landmark2')
+    GB_name = 'Space Age Discovery Landmark 2';
   // console.debug(city_entity,CityEntityDefs);
+  if (reportLookup)
+    metadataStore.reportEntityLookup(
+      String(city_entity),
+      GB_name !== String(city_entity),
+    );
   return GB_name;
-}
-
-export function fIncidentName(incidentName) {
-  var incident = {};
-
-  if (incidentName == 'incident_fallen_tree_1x1') {
-    incident.type = 'r';
-    incident.text = 'Fallen Tree';
-  } else if (incidentName == 'incident_fallen_tree_2x2') {
-    incident.type = '<strong>R</strong>';
-    incident.text = 'Fallen Tree 2x2';
-  } else if (incidentName == 'incident_pothole_1x1') {
-    incident.type = 'r';
-    incident.text = 'Pothole';
-  } else if (incidentName == 'incident_pothole_2x2') {
-    incident.type = '<strong>R</strong>';
-    incident.text = 'Pothole';
-  } else if (incidentName == 'incident_blocked_road_1x1') {
-    incident.type = 'r';
-    incident.text = 'Road';
-  } else if (incidentName == 'incident_blocked_road_2x2') {
-    incident.type = '<strong>R</strong>';
-    incident.text = 'Blocked Road';
-  } else if (incidentName == 'incident_dinosaur_bones') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Dinosaur Bones';
-  } else if (incidentName == 'incident_statue') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Statue';
-  } else if (incidentName == 'incident_fruit_vendor') {
-    incident.type = 'n';
-    incident.text = 'Fruit Vendor';
-  } else if (incidentName == 'incident_treasure_chest') {
-    incident.type = 'n';
-    incident.text = 'Treasure Chest';
-  } else if (incidentName == 'incident_overgrowth') {
-    incident.type = 'n';
-    incident.text = 'Overgrowth';
-  } else if (incidentName == 'incident_clothesline') {
-    incident.type = 'n';
-    incident.text = 'Clothesline';
-  } else if (incidentName == 'incident_beehive') {
-    incident.type = 'n';
-    incident.text = 'Beehive';
-  } else if (incidentName == 'incident_broken_cart') {
-    incident.type = 'n';
-    incident.text = 'Broken Cart';
-  } else if (incidentName == 'incident_musician') {
-    incident.type = 'n';
-    incident.text = 'Musician';
-  } else if (incidentName == 'incident_kite') {
-    incident.type = 'n';
-    incident.text = 'Kite';
-  } else if (incidentName == 'incident_sculptor') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Sculptor';
-  } else if (incidentName == 'incident_stick_hut') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Stick Hut';
-  } else if (incidentName == 'incident_wine_cask') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Wine Cask';
-  } else if (incidentName == 'incident_mammoth_bones') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Mammoth Bones';
-  } else if (incidentName == 'incident_crates') {
-    incident.type = 'n';
-    incident.text = 'Crates';
-  } else if (incidentName == 'incident_flotsam') {
-    incident.type = 's';
-    incident.text = 'Flotsam';
-  } else if (incidentName == 'incident_shipwreck') {
-    incident.type = '<strong>S</strong>';
-    incident.text = 'Shipwreck';
-  } else if (incidentName == 'incident_sos') {
-    incident.type = 's';
-    incident.text = 'SOS';
-  } else if (incidentName == 'incident_fisherman') {
-    incident.type = 'w';
-    incident.text = 'Fisherman';
-  } else if (incidentName == 'incident_castaway') {
-    incident.type = 'w';
-    incident.text = 'Castaway';
-  } else if (incidentName == 'incident_rhino') {
-    incident.type = '<strong>W</strong>';
-    incident.text = 'Rhino';
-  } else if (incidentName == 'spring_cherry_tree') {
-    incident.type = `<span class='green'>E</span>`;
-    incident.text = 'Cherry Tree';
-  } else if (incidentName.includes('ages_birthday_gift')) {
-    incident.type = `<span class='green'>E</span>`;
-    incident.text = 'Paper Money';
-  } else if (incidentName == 'incident_car_accident') {
-    incident.type = '<strong>R</strong>';
-    incident.text = 'Car Accident';
-  } else if (incidentName == 'fall_apple_tree') {
-    incident.type = `<span class='green'>E</span>`;
-    incident.text = 'Apple Tree';
-  } else if (incidentName == 'incident_quicksand') {
-    incident.type = 'n';
-    incident.text = 'Quicksand';
-  } else if (incidentName == 'incident_beach_gear') {
-    incident.type = 's';
-    incident.text = 'Beach Gear';
-  } else if (incidentName == 'incident_floating_chest') {
-    incident.type = 'w';
-    incident.text = 'Floating Chest';
-  } else if (incidentName == 'incident_chest') {
-    incident.type = '<strong>N</strong>';
-    incident.text = 'Chest';
-  } else if (incidentName == 'incident_hero') {
-    incident.type = '<strong>E</strong>';
-    incident.text = 'Travel Rations';
-  } else {
-    incident.type = '?';
-    incident.text = incidentName;
-  }
-  return incident;
 }
 
 export function fLevelfromAge(age) {
@@ -438,6 +399,8 @@ export function fLevelfromAge(age) {
     return 21;
   } else if (age == 'SpaceAgeSpaceHub') {
     return 22;
+  } else if (age == 'StellarAgeDiscovery' || age == 'SpaceAgeDiscovery') {
+    return 23;
   }
   // else if (age =="AllAge")
   // {
@@ -451,7 +414,8 @@ export function fLevelfromAge(age) {
 // added SAJM - 20 ages
 // added SAT - 21 ages
 // added SASH - 22 ages
-export const numAges = 22;
+// added SAD - 23 ages
+export const numAges = 23;
 
 export function fAgefromLevel(level) {
   if (level == 1) {
@@ -498,6 +462,8 @@ export function fAgefromLevel(level) {
     return 'SpaceAgeTitan';
   } else if (level == 22) {
     return 'SpaceAgeSpaceHub';
+  } else if (level == 23) {
+    return 'StellarAgeDiscovery';
   }
   // else if (age =="AllAge")
   // {
@@ -506,7 +472,7 @@ export function fAgefromLevel(level) {
   return -1;
 }
 
-export function fGVGagesname(age) {
+export function fEraAbbreviation(age) {
   var name = age;
 
   if (age == 'BronzeAge') {
@@ -553,11 +519,14 @@ export function fGVGagesname(age) {
     name = 'SAT';
   } else if (age === 'SpaceAgeSpaceHub') {
     name = 'SASH';
+  } else if (age === 'StellarAgeDiscovery' || age === 'SpaceAgeDiscovery') {
+    name = 'SAD';
   } else if (age == 'AllAge') {
     name = 'AA';
   }
   return name;
 }
+export const fGVGagesname = fEraAbbreviation;
 
 export function fGoodsTally(age, good) {
   // console.debug(age,good);
@@ -583,125 +552,12 @@ export function fGoodsTally(age, good) {
   else if (age == 'SpaceAgeJupiterMoon') Goods.sajm += good;
   else if (age == 'SpaceAgeTitan') Goods.sat += good;
   else if (age == 'SpaceAgeSpaceHub') Goods.sash += good;
+  else if (age == 'StellarAgeDiscovery') Goods.sad += good;
   else if (age == 'NoAge') Goods.noage += good;
-  else console.debug(age, good);
+  // else console.debug(age, good);
 }
 
-export function fShowIncidents() {
-  var rewards = 0;
-  var type = '';
-  var textCurrent = '';
-  var textComing = '';
-  var tooltipHTML = '';
-  if (showOptions && showOptions.showIncidents && hiddenRewards.length) {
-    fHideTooltips();
-    for (var j = 0; j < hiddenRewards.length; j++) {
-      const incident = hiddenRewards[j];
-      if (incident.position.context == 'guildExpedition') continue;
-      const incidentName = fIncidentName(incident.type);
-      if (incidentName.type == '?') console.debug(incident);
-      // console.debug(incidentName.text,incidentName,incident);
-      var start = new Date(incident.startTime);
-      var finish = new Date(incident.expireTime);
-      var diffText = '';
-      start -= Date.now() / 1000;
-      finish -= Date.now() / 1000;
-      if (start < 0) var diff = Math.abs(start);
-      else var diff = Math.abs(finish);
-      // console.debug(start,finish,diff,Date.now()/1000);
-      // get hours
-      var hours = Math.floor(diff / 3600) % 24;
-      // document.write("<br>Difference (Hours): "+hours);
-      diffText += `${hours}:`;
-
-      // get minutes
-      var minutes = Math.floor(diff / 60) % 60;
-      // document.write("<br>Difference (Minutes): "+minutes);
-      diffText += `${minutes}:`;
-
-      // get seconds
-      var seconds = Math.floor(diff) % 60;
-      // document.write("<br>Difference (Seconds): "+seconds);
-      diffText += `${seconds}`;
-
-      if (start < 0) {
-        rewards++;
-        // textCurrent += `Reward ${j+1}: ${msg.responseData.hiddenRewards[j].type} ${timer.toUTCString()}<br>`;
-
-        type += incidentName.type;
-        if (incident.rarity != 'common')
-          textCurrent += `<span class='green'>${incidentName.text}</span>`;
-        else textCurrent += incidentName.text;
-        textCurrent += ` for ` + diffText + `<br>`;
-      } else {
-        textComing += incidentName.text + ` in ` + diffText + `<br>`;
-      }
-    }
-    // var timer = new Date(Date.now());
-    // output.innerHTML += `<div>Now: ${timer.toUTCString()}</div>`;
-    // console.debug(rewards,type,textCurrent,textComing);
-    // data-bs-placement="bottom"
-    if (rewards) {
-      tooltipHTML = `<div><p>${textCurrent}</p>${
-        textComing != '' ?
-          '<p><strong>Coming Soon:</strong><br>' + textComing + '</p>'
-        : ''
-      }`;
-      tooltipHTML +=
-        '<p><strong>Legend:</strong><br>n/N - Nature<br>s/S - Shore<br>w/W - Water<br>r/R - Road<br> E - Event<br>Capitals = Uncommon/Rare Reward</p></div>';
-      incidents.innerHTML = `<div id="incidentsTip" class="alert alert-light alert-dismissible show collapsed" role="alert">
-            <p id="incidentsTextLabel" href="#incidentsText" data-bs-toggle="collapse">
-			${element.icon('incidentsicon', 'incidentsText', collapse.collapseIncidents)}
-			<span id="incidents_tooltip" class="pop" data-bs-container="#incidents_tooltip" data-bs-toggle="popover" data-bs-placement="bottom" title="Incidents" data-bs-content="${tooltipHTML}"><strong><span data-i18n="incident">Incidents</span>:</strong></span> ${type}</p>
-            ${element.close()}
-            <div id="incidentsText" class="collapse ${collapse.collapseIncidents ? '' : 'show'} alert-light">
-            ${tooltipHTML}</div></div>`;
-      // outputHTML += '<div id="incidentsText" class="collapse show">';
-      //$('.incidents').show();
-      // document.getElementById("incidentsTip").title = tooltipHTML;
-      // cityincidents.data-html="true";
-      // $(document).ready(function(){
-      // $('#incidentsTip').tooltip({html: true,placement: 'bottom'});
-      //   });
-      document
-        .getElementById('incidentsTextLabel')
-        .addEventListener('click', fCollapseIncidents);
-      document
-        .getElementById('incidentsTip')
-        .addEventListener('onmouseleave', fHideTooltips);
-
-      const incidents_tooltip = document.getElementById('incidents_tooltip');
-      if (incidents_tooltip) {
-        const options = {
-          trigger: 'hover focus',
-          html: true,
-          delay: { show: 100, hide: 300 },
-        };
-        // const tooltip = new Tooltip(incidents_tooltip, options);
-        const popover = new Popover(incidents_tooltip, options);
-      }
-
-      // $('#incidents_tooltip').tooltip({
-      //     content: function(){
-      //         var element = $( this );
-      //         return element.attr('title')
-      //     },
-      // 	delay: { "show": 200, "hide": 500 }
-      // });
-    } else {
-      incidents.innerHTML = ``;
-      //$('.incidents').hide();
-    }
-  }
-}
-
-export function fHideTooltips() {
-  const incidents_tooltip = document.getElementById('incidents_tooltip');
-  if (incidents_tooltip) {
-    const popover = Popover.getOrCreateInstance(incidents_tooltip);
-    popover.hide();
-  }
-}
+export function fHideTooltips() {}
 
 export function fshowBattlegroundChanges() {
   showOptions.showBattlegroundChanges = !showOptions.showBattlegroundChanges;
@@ -713,10 +569,21 @@ export function fshowBattlegroundChanges() {
 
 export function fshowBattleground() {
   // console.debug(data,BattlegroundPerformance);
+  const bgWorldMatch =
+    GameOrigin ?
+      GameOrigin.match(/^https?:\/\/([a-z0-9]+)\.forgeofempires\.com/i)
+    : null;
+  const bgWorldLabel =
+    bgWorldMatch ?
+      bgWorldMatch[1].toUpperCase()
+    : (GameOrigin || 'en7')
+        .replace(/https?:\/\//i, '')
+        .replace(/\.forgeofempires\.com/i, '')
+        .toUpperCase();
   var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
-	<p id="battlegroundTextLabel" href="#battlegroundCollapse" aria-expanded="true" aria-controls="battlegroundText" data-bs-toggle="collapse">
+	<p id="battlegroundTextLabel">
 	${element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground)}
-	<strong>Battlegrounds: ${GameOrigin.toUpperCase()}</strong></p>${element.close()}`;
+	<strong>Battlegrounds: [${bgWorldLabel}]</strong></p>${element.close()}`;
 
   if (url.sheetGuildURL)
     battlegroundHTML += element.post(
@@ -731,7 +598,7 @@ export function fshowBattleground() {
     'right',
     collapse.collapseBattleground,
   );
-  battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info overflow collapse ${
+  battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info overflow resize-both collapse ${
     collapse.collapseBattleground ? '' : 'show'
   }"><div id="battlegroundText">`;
 
@@ -794,38 +661,60 @@ export function fshowBattleground() {
   {
     /* donationDIV.innerHTML = battlegroundHTML + `</table></div><p class="showGBGchanges"><input type="checkbox" id="showGBGchanges" value="${showOptions.showBattlegroundChanges}"/> <label for="showGBGchanges">show changes only</label></p></div>`; */
   }
-  donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div></div>`;
-  if (url.sheetGuildURL)
-    document
-      .getElementById('battlegroundPostID')
-      .addEventListener('click', post_webstore.postGBGtoSS);
-  // else
-  document
-    .getElementById('battlegroundCopyID')
-    .addEventListener('click', copy.BattlegroundCopy);
-
-  document
-    .getElementById('battlegroundTextLabel')
-    .addEventListener('click', collapse.fCollapseBattleground);
-  document
-    .getElementById('showGBGchanges')
-    .addEventListener('click', fshowBattlegroundChanges);
-  document.getElementById('showGBGchanges').checked =
-    showOptions.showBattlegroundChanges;
-  const battlegroundDiv = document.getElementById('battlegroundCollapse');
-  battlegroundDiv.addEventListener('mouseup', setHeight);
-  const resizeObserver = new ResizeObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        heightGBG = entry.contentRect.height;
-    }
-  });
-  resizeObserver.observe(battlegroundDiv);
-  console.debug($('#battlegroundCollapse').height());
-  if ($('#battlegroundCollapse').height() > toolOptions.battlegroundsSize) {
-    $('#battlegroundCollapse').height(toolOptions.battlegroundsSize);
+  const targetEl =
+    (typeof document !== 'undefined' &&
+      document.getElementById('battleground')) ||
+    battlegroundDIV ||
+    donationDIV;
+  if (targetEl) {
+    targetEl.innerHTML = battlegroundHTML + `</table></div></div></div></div>`;
   }
-  $('body').i18n();
+
+  const postEl = document.getElementById('battlegroundPostID');
+  if (postEl && url.sheetGuildURL) {
+    postEl.addEventListener('click', post_webstore.postGBGtoSS);
+  }
+
+  const copyEl = document.getElementById('battlegroundCopyID');
+  if (copyEl) {
+    copyEl.addEventListener('click', copy.BattlegroundCopy);
+  }
+
+  const iconEl = document.getElementById('battlegroundicon');
+  if (iconEl) {
+    iconEl.addEventListener('click', collapse.fCollapseBattleground);
+  }
+
+  const showChangesEl = document.getElementById('showGBGchanges');
+  if (showChangesEl) {
+    showChangesEl.addEventListener('click', fshowBattlegroundChanges);
+    showChangesEl.checked = showOptions.showBattlegroundChanges;
+  }
+
+  const battlegroundDiv = document.getElementById('battlegroundCollapse');
+  if (battlegroundDiv) {
+    battlegroundDiv.addEventListener('mouseup', setHeight);
+    if (gbgResizeObserver) {
+      gbgResizeObserver.disconnect();
+    }
+    if (typeof ResizeObserver !== 'undefined') {
+      gbgResizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.contentRect && entry.contentRect.height)
+            heightGBG = entry.contentRect.height;
+        }
+      });
+      gbgResizeObserver.observe(battlegroundDiv);
+    }
+    const currentHeight = battlegroundDiv.clientHeight;
+    if (currentHeight > toolOptions.battlegroundsSize) {
+      battlegroundDiv.style.height = `${toolOptions.battlegroundsSize}px`;
+    }
+  }
+
+  if (targetEl) {
+    translateContainer(targetEl);
+  }
 }
 
 export function checkGBG() {

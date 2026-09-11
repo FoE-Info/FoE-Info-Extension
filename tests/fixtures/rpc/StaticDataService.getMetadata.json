@@ -1,0 +1,202 @@
+[
+ {
+  "identifier": "allies",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=allies-56a8e4fedf1ca1bf686304ed2fcb6f25d6d44d6b",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "ally_rarities",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=ally_rarities-5edd00085cc61c485a62c24e569284aa46666f9d",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "ally_types",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=ally_types-5f9f494963014fd7bace65a37a95be5c705e09f1",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "battleground_buildings",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=battleground_buildings-2a1a7bb8b03734fb822272ef1bd3223cbc773f9c",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "battleground_colour",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=battleground_colour-62a403b78f5ceab4ba6cbb9950879e580304fbca",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "battleground_leagues",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=battleground_leagues-d4526ba45882b1d5a0628fc9ad0c460d11297b2d",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "battleground_trials",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=battleground_trials-c80496ef97885ea255a2993518f26926026cee0d",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "boost_metadata",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=boost_metadata-b0a199aae1a2804203057d4fc1b27f98bc2c71fe",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "buff_bar_groups",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=buff_bar_groups-b56f0540908f0f53be22c9203ee7e3fbcce0faae",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "building_categories",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=building_categories-8298a3b9a7c584a88ee13225eb11491f6d9f86f2",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "building_chains",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=building_chains-f52bcd987904b7a8ad2154e0a11b9876b4ce7458",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "building_entity_lookup",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=building_entity_lookup-9b71a7f8b9a34f76ddc34cda7a3dadd5a3e833d6",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "building_families",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=building_families-80cc7c87a37d9c218982321b7588a3146e46bd1d",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "building_sets",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=building_sets-cdec72ae84aa3f7b07bc229566f675b4bd38c178",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "building_upgrades",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=building_upgrades-712bbc8f3d5e4eca9f4257c2e12290257bc49b3d",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "castle_system_levels",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=castle_system_levels-8a3d14c0b8dab51eb48cc7ba59966b3c511f81da",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "cop_cost_factors",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=cop_cost_factors-2cc29efadaa512a7b7231efe758b391e3d7aa9e8",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "cop_tint_color",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=cop_tint_color-4135231bed4d1102116efc8704836cb48ef157c4",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "forge_plus",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=forge_plus-ef6b762adc1fa73d0c2df8d4a3c834722c12a368",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "generic_building_states",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=generic_building_states-928937c74c9104ad3c8358b4bbbd3a458e4e4137",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "great_building_tiers",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=great_building_tiers-97d170e1550eee4afc0af065b78cda302a97674c",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "grid",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=grid-7fa7c19ca53bc3d61a48201bae9f34e59b345acf",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "guild_battleground_maps",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=guild_battleground_maps-a1b2dd721160387c4439213af4b6a3c7335da1b0",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "idle_game",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=idle_game-3745f3a2aed67d1f408c8d33c1443a4057fccc5d",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "info_screens",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=info_screens-05ab9eef7b9b3b249c4b4fbcc1855d5b3022022d",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "life_support",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=life_support-7bff304ba80003f1ffa08f658e677707e34d3d3f",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "limited_buildings",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=limited_buildings-4cf4642c7e1d3c6f3ccb474f1f2da788cc9ceceb",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "mission_depths",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=mission_depths-d0495d8f3c4b7f808a4fb15f298804f4f3d5deac",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "mission_rarities",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=mission_rarities-37aa5385492b9607040e9bd77628a43186b446ed",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "product_visualisations",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=product_visualisations-91405a05d48e86223d6e51abf0ad0827e7a09b74",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "province_rewards_lookup",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=province_rewards_lookup-94e32cdb6aed7ea416fade463fadbb937af2aa47",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "pvp_arena_leagues",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=pvp_arena_leagues-6e93335d3461476c11585710b5f1fefe4f0c3442",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "pvp_arena_rewards",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=pvp_arena_rewards-416abc27097664987a1cf75f61835384185615d4",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "quest_tabs",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=quest_tabs-40f2cf5b55c986503bde15eb539b33b2b2598b6a",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "research",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=research-fdf4ae9e358742fa2507a79cb9c15a11dcce9ac2",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "research_eras",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=research_eras-506823d3474a49b15730c4cba00b420eab6f589e",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "selection_kits",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=selection_kits-b1f7941f0d2fd3ea30a3cec62a2ae2506db45b38",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "translations",
+  "url": "https://foeen.innogamescdn.com/lang/en_US/client_lang-d27611b50392702e336b0148a8b8db53.mo",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "unit_types",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=unit_types-5879419cad2c245ca7042de7f023ae5ce70f4371",
+  "__class__": "StaticData"
+ },
+ {
+  "identifier": "unl_feature_teaser",
+  "url": "https://foeen.innogamescdn.com/start/metadata?id=unl_feature_teaser-46738f1036157741ee693a6d9fdab276135ca9f8",
+  "__class__": "StaticData"
+ }
+]
