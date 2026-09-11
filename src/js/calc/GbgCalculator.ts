@@ -7,12 +7,6 @@
  * Zero DOM dependencies (no window, document, or jQuery).
  */
 
-let logger: { debug?: (...args: unknown[]) => void } | null = null;
-try {
-  const { createLogger } = require('../utils/logger.js');
-  logger = createLogger('GBG');
-} catch {}
-
 export interface PlacedBuilding {
   id: string;
   readyAt: number;
@@ -151,13 +145,6 @@ export function calculateProvinceAttrition(
     20,
     Math.min(100, 100 - (campsReady + campsNotReady)),
   );
-
-  logger?.debug('GBG province attrition calculated:', {
-    campsReady,
-    campsNotReady,
-    attritionChance,
-    underConstructionChance,
-  });
 
   return {
     campsReady,

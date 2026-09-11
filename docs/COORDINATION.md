@@ -11,7 +11,7 @@ something here goes stale rather than letting it drift.
 ## Roster and roles
 
 - **Antigravity** — the MAIN agent. Owns and canonicalizes `.agents/` (36 subagent
-  personas, 17 rules, 53 skills, 5 lifecycle hooks). User has an Ultra package that
+  personas, 16 rules, 53 skills, 5 lifecycle hooks). User has an Ultra package that
   refreshes roughly every 2 days.
 - **opencode** — the primary CLI agent, running against a local LLM via
   `llama-swap` (see `.agents/scripts/llama-swap-lifecycle.sh` and the llama-swap

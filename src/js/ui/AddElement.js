@@ -47,8 +47,7 @@ function fCloseButton() {
   return '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
 }
 
-if (typeof document !== 'undefined' && !document._foeA11yBound) {
-  document._foeA11yBound = true;
+if (typeof document !== 'undefined') {
   document.addEventListener('keydown', (e) => {
     if (
       (e.key === 'Enter' || e.key === ' ') &&

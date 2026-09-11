@@ -6,8 +6,8 @@ import test from 'node:test';
 const ROOT_DIR = process.cwd();
 
 test('DevTools Teardown & Entity Flush Invariants', async (t) => {
-  const entityDefsCacheSource = fs.readFileSync(
-    path.join(ROOT_DIR, 'src/js/state/entityDefsCache.js'),
+  const indexSource = fs.readFileSync(
+    path.join(ROOT_DIR, 'src/js/index.js'),
     'utf8',
   );
   const devtoolsSource = fs.readFileSync(
@@ -16,11 +16,11 @@ test('DevTools Teardown & Entity Flush Invariants', async (t) => {
   );
 
   await t.test(
-    'src/js/state/entityDefsCache.js does not save massive metadata definitions (AllyDefs, BuildingEntityLookup) in flushCityEntityDefs',
+    'src/js/index.js does not save massive metadata definitions (AllyDefs, BuildingEntityLookup) in flushCityEntityDefs',
     () => {
       // Find the body of flushCityEntityDefs
-      const match = entityDefsCacheSource.match(
-        /function\s+flushCityEntityDefs\s*\([\s\S]*?\)\s*\{([\s\S]*?)\n\}/,
+      const match = indexSource.match(
+        /export\s+function\s+flushCityEntityDefs\s*\(\)\s*\{([\s\S]*?)\n\}/,
       );
       assert.ok(match, 'flushCityEntityDefs function must exist');
       const body = match[1];
@@ -54,28 +54,28 @@ test('DevTools Teardown & Entity Flush Invariants', async (t) => {
   );
 
   await t.test(
-    'src/js/state/entityDefsCache.js guards flushCityEntityDefs with dirty state check',
+    'src/js/index.js guards flushCityEntityDefs with dirty state check',
     () => {
-      const match = entityDefsCacheSource.match(
-        /function\s+flushCityEntityDefs\s*\([\s\S]*?\)\s*\{([\s\S]*?)\n\}/,
+      const match = indexSource.match(
+        /export\s+function\s+flushCityEntityDefs\s*\(\)\s*\{([\s\S]*?)\n\}/,
       );
       assert.ok(match, 'flushCityEntityDefs function must exist');
       const body = match[1];
 
       assert.match(
         body,
-        /if\s*\(\s*!isDirty\s*\)\s*return/,
+        /if\s*\(\s*!cityEntityDefsDirty\s*\)\s*return/,
         'flushCityEntityDefs must return early when not dirty',
       );
     },
   );
 
   await t.test(
-    'src/js/state/entityDefsCache.js guards beforeunload to skip flush when clean',
+    'src/js/index.js guards beforeunload to skip flush when clean',
     () => {
       assert.match(
-        entityDefsCacheSource,
-        /windowObj\.addEventListener\(\s*['"]beforeunload['"][\s\S]*?isDirty/,
+        indexSource,
+        /window\.addEventListener\(\s*['"]beforeunload['"][\s\S]*?cityEntityDefsDirty/,
         'beforeunload must check dirty flag before calling flushCityEntityDefs',
       );
     },

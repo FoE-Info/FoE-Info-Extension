@@ -31,7 +31,7 @@ test('Reactive Metadata Updates & Building Collection Times Suite', async (t) =>
   );
 
   await t.test(
-    '2. StartupService defines renderBuildingCollectionTimes and delegates metadata subscription',
+    '2. StartupService defines renderBuildingCollectionTimes and subscribes to metadataStore',
     () => {
       const startupPath = path.resolve('src/js/msg/StartupService.js');
       const content = fs.readFileSync(startupPath, 'utf8');
@@ -41,28 +41,12 @@ test('Reactive Metadata Updates & Building Collection Times Suite', async (t) =>
         'StartupService must export renderBuildingCollectionTimes',
       );
       assert.ok(
-        content.includes('subscribeMetadataRenders('),
-        'StartupService must delegate the metadataStore subscription',
+        content.includes('metadataStore.subscribe'),
+        'StartupService must subscribe to metadataStore updates',
       );
       assert.ok(
-        content.includes(
-          'onRenderBuildingCollectionTimes: renderBuildingCollectionTimes',
-        ),
-        'metadata listener must re-render collection times',
-      );
-
-      const orchestratorPath = path.resolve(
-        'src/js/msg/StartupRenderOrchestrator.js',
-      );
-      const orchestrator = fs.readFileSync(orchestratorPath, 'utf8');
-
-      assert.ok(
-        orchestrator.includes('metadataStore.subscribe'),
-        'StartupRenderOrchestrator must subscribe to metadataStore updates',
-      );
-      assert.ok(
-        orchestrator.includes('onRenderBuildingCollectionTimes()'),
-        'orchestrator listener must re-render collection times',
+        content.includes('renderBuildingCollectionTimes()'),
+        'metadataStore listener must re-render collection times',
       );
     },
   );

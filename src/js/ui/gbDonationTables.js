@@ -310,8 +310,7 @@ function buildCardFooter(cfg) {
       ) ?
         `#${myInfo.guildPosition} `
       : '';
-    const copyId = place === 1 ? 'copyText' : `copyText_${place}`;
-    footer += `<div id='${copyId}'>${guildPos}${playerShortName || playerName} ${helper.fGBsname(gbData?.name)} ${txt}</div>`;
+    footer += `<div id='copyText'>${guildPos}${playerShortName || playerName} ${helper.fGBsname(gbData?.name)} ${txt}</div>`;
   }
   footer += `<p>Remaining <strong>${(gbData?.total || 0) - (gbData?.current || 0)}</strong> FPs</p></div>`;
   return footer;

@@ -18,13 +18,9 @@ const {
   set: setStorage,
   get: getStorage,
   getSync,
-  setCollapse,
-  getCollapse,
   remove: removeStorage,
   _clearMemoryCacheForTesting,
 } = pkg;
-
-const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 function createMockBrowserStorage() {
   const store = Object.create(null);
@@ -58,8 +54,7 @@ function createMockBrowserStorage() {
           changeListeners.forEach((fn) => fn(changes, 'local'));
         },
         async remove(key) {
-          const keys = Array.isArray(key) ? key : [key];
-          for (const k of keys) delete store[k];
+          delete store[key];
         },
       },
       onChanged: {
@@ -312,118 +307,4 @@ test('Per-World Storage Subsystem', async (t) => {
     await saveWorldSettings('en7', { donation: { percent: 192 } });
     assert.strictEqual(notified, null);
   });
-});
-
-test('F26: collapse state is persisted per-world, not as flat global keys', async (t) => {
-  let mock;
-
-  t.beforeEach(() => {
-    mock = createMockBrowserStorage();
-    globalThis.browser = mock;
-    _clearMemoryCacheForTesting();
-  });
-
-  t.afterEach(() => {
-    delete globalThis.browser;
-    _clearMemoryCacheForTesting();
-  });
-
-  await t.test(
-    'setCollapse isolates collapse flags between worlds',
-    async () => {
-      setWorld('en7');
-      await getWorldSettings('en7');
-      setCollapse('collapseGBInfo', true);
-      await flush();
-
-      assert.strictEqual(getCollapse('collapseGBInfo'), true);
-      assert.strictEqual(
-        mock.store['world:en7'].collapses.collapseGBInfo,
-        true,
-      );
-      // No flat global key is written.
-      assert.strictEqual(mock.store['collapseGBInfo'], undefined);
-
-      setWorld('de1');
-      await getWorldSettings('de1');
-      // Fresh world must not inherit en7's collapse state.
-      assert.strictEqual(getCollapse('collapseGBInfo'), null);
-
-      setCollapse('collapseClipboard', false);
-      await flush();
-      assert.strictEqual(getCollapse('collapseClipboard'), false);
-
-      // Return to en7: its own state is preserved, de1's is not visible.
-      setWorld('en7');
-      assert.strictEqual(getCollapse('collapseGBInfo'), true);
-      assert.strictEqual(getCollapse('collapseClipboard'), null);
-    },
-  );
-
-  await t.test('legacy flat collapse keys migrate to world:en7', async () => {
-    mock.store['collapseGBInfo'] = false;
-    mock.store['collapseClipboard'] = true;
-
-    await initStorage();
-
-    const en7 = mock.store['world:en7'];
-    assert.ok(en7);
-    assert.strictEqual(en7.collapses.collapseGBInfo, false);
-    assert.strictEqual(en7.collapses.collapseClipboard, true);
-    // Legacy flat keys are cleaned up.
-    assert.strictEqual(mock.store['collapseGBInfo'], undefined);
-    assert.strictEqual(mock.store['collapseClipboard'], undefined);
-  });
-});
-
-test('F27: toolOptions no longer races via flat global keys', async (t) => {
-  let mock;
-
-  t.beforeEach(() => {
-    mock = createMockBrowserStorage();
-    globalThis.browser = mock;
-    _clearMemoryCacheForTesting();
-  });
-
-  t.afterEach(() => {
-    delete globalThis.browser;
-    _clearMemoryCacheForTesting();
-  });
-
-  await t.test('toolOptions writes are world-scoped only', async () => {
-    setWorld('en7');
-    await getWorldSettings('en7');
-    setStorage('toolOptions', { armySize: 300 });
-    await flush();
-
-    assert.strictEqual(mock.store['toolOptions'], undefined);
-    assert.strictEqual(getSync('toolOptions').armySize, 300);
-    assert.strictEqual((await getStorage('toolOptions')).armySize, 300);
-
-    setWorld('de1');
-    await getWorldSettings('de1');
-    setStorage('toolOptions', { armySize: 120 });
-    await flush();
-
-    assert.strictEqual(getSync('toolOptions').armySize, 120);
-
-    setWorld('en7');
-    assert.strictEqual(getSync('toolOptions').armySize, 300);
-  });
-
-  await t.test(
-    'stale flat toolOptions cannot override world settings',
-    async () => {
-      setWorld('en7');
-      await getWorldSettings('en7');
-      setStorage('toolOptions', { armySize: 300 });
-      await flush();
-
-      // Simulate a stale flat value left behind by older extension versions.
-      mock.store['toolOptions'] = { armySize: 999 };
-
-      assert.strictEqual(getSync('toolOptions').armySize, 300);
-      assert.strictEqual((await getStorage('toolOptions')).armySize, 300);
-    },
-  );
 });

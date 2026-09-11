@@ -57,11 +57,6 @@ try {
   logger = createLogger('PanelDispatcher');
 } catch {}
 
-let setCurrentView = () => {};
-try {
-  ({ setCurrentView } = require('./cardVisibility.js'));
-} catch {}
-
 let renderSequence = 0;
 
 function clearElement(el, resetClass = false) {
@@ -119,12 +114,10 @@ function clearExpedition(containers = {}) {
 }
 
 function clearForBattleground(containers = {}) {
-  setCurrentView('GBG');
   clearExpedition(containers);
 }
 
 function clearForMainCity(containers = {}) {
-  setCurrentView('CITY');
   const seq = ++renderSequence;
   logger?.debug('UI clear & re-render triggered: MainCity', {
     seq,
@@ -147,7 +140,6 @@ function clearForMainCity(containers = {}) {
 }
 
 function clearStartup(containers = {}, resetState = {}) {
-  setCurrentView('CITY');
   const seq = ++renderSequence;
   logger?.debug('UI clear & re-render triggered: Startup', {
     seq,
