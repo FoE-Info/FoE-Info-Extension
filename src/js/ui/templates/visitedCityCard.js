@@ -45,7 +45,7 @@ function buildVisitedCityCard({
     </div>
     <button type="button" class="btn-close btn-close-white flex-shrink-0" id="${prefix}-close-btn" aria-label="Close" title="Close" data-i18n-title="close" data-i18n-aria-label="close"></button>
   </div>
-  <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'} mt-1 small" style="line-height: 1.45;">
+  <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'} mt-1 foe-panel-body">
     <div class="d-flex align-items-center gap-1 text-truncate mb-1">
       <strong class="text-primary text-decoration-underline text-truncate">${safePlayerName}</strong>
       ${safeGuild ? `<span class="text-secondary">(${safeGuild})</span>` : ''}

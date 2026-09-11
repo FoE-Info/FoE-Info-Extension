@@ -310,7 +310,8 @@ function buildCardFooter(cfg) {
       ) ?
         `#${myInfo.guildPosition} `
       : '';
-    footer += `<div id='copyText'>${guildPos}${playerShortName || playerName} ${helper.fGBsname(gbData?.name)} ${txt}</div>`;
+    const copyId = place === 1 ? 'copyText' : `copyText_${place}`;
+    footer += `<div id='${copyId}'>${guildPos}${playerShortName || playerName} ${helper.fGBsname(gbData?.name)} ${txt}</div>`;
   }
   footer += `<p>Remaining <strong>${(gbData?.total || 0) - (gbData?.current || 0)}</strong> FPs</p></div>`;
   return footer;
@@ -457,7 +458,7 @@ function gbTabEmpty(...args) {
     </div>
     <div id="donationText" class="collapse ${isDonationCollapsed ? '' : 'show'}">
       <div class="card-body alert-danger p-2">
-        <h6 class="card-title mb-0""> <span id="GBselected">${cfg.gbData?.name} [${nextLevel}]</span></h6>
+        <h6 class="card-title mb-0"> <span id="GBselected">${cfg.gbData?.name} [${nextLevel}]</span></h6>
         <table class="table mb-1">
         <thead><tr>
         <th class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
@@ -467,7 +468,7 @@ function gbTabEmpty(...args) {
         </tr></thead>
         <tbody><tr>
         <td><strong>-</strong></td>
-        <td>-</strong></td>
+        <td>-</td>
         <td>-</td>
         <td>-</td>
         </tr></tbody>

@@ -50,7 +50,7 @@ function buildOwnCityCard({
   const playerEra = playerInfo.era || '';
   const playerScore =
     playerInfo.score !== undefined && playerInfo.score !== null ?
-      formatStatNumber(playerInfo.score, { exact })
+      formatStatNumber(playerInfo.score, { exact, comma: true })
     : '';
   const userTooltip = (
     playerInfo.userTooltipHTML ||
@@ -58,39 +58,6 @@ function buildOwnCityCard({
     ''
   ).replace(/"/g, '&quot;');
   const userTitle = escapeHtml(playerInfo.userTitle || 'Player Information');
-  const availableFPDisplay =
-    stats.availableFP !== undefined && stats.availableFP !== null ?
-      formatStatNumber(stats.availableFP, { exact })
-    : playerInfo.availableFP !== undefined ?
-      formatStatNumber(playerInfo.availableFP, { exact })
-    : '0';
-  const coinBoostText =
-    (
-      coins.boostPercent &&
-      (BigNumber.isBigNumber(coins.boostPercent) ?
-        !coins.boostPercent.isZero()
-      : coins.boostPercent > 0)
-    ) ?
-      ` (+${coins.boostPercent.toString()}%)`
-    : '';
-  const coinsHTML =
-    coins.total && !coins.total.isZero() ?
-      `<div><span data-i18n="coins">Coins</span>: ${formatStatNumber(coins.total)}${coinBoostText}</div>`
-    : '';
-
-  const supplyBoostText =
-    (
-      supplies.boostPercent &&
-      (BigNumber.isBigNumber(supplies.boostPercent) ?
-        !supplies.boostPercent.isZero()
-      : supplies.boostPercent > 0)
-    ) ?
-      ` (+${supplies.boostPercent.toString()}%)`
-    : '';
-  const suppliesHTML =
-    supplies.total && !supplies.total.isZero() ?
-      `<div><span data-i18n="supplies">Supplies</span>: ${formatStatNumber(supplies.total)}${supplyBoostText}</div>`
-    : '';
 
   const arcBonusHTML =
     spec.arcPercent && !spec.arcPercent.isZero() ?
@@ -100,7 +67,18 @@ function buildOwnCityCard({
     spec.chatBonus && !spec.chatBonus.isZero() ?
       `<div>CF <span data-i18n="bonus">Bonus</span>: ${formatPercent(spec.chatBonus)} (${formatStatNumber(spec.goodsPerQuest)} <span data-i18n="goods">Goods</span>)</div>`
     : '';
-  const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}`;
+  const coinBoostVal = coins?.boostPercent ? Number(coins.boostPercent) : 0;
+  const supplyBoostVal =
+    supplies?.boostPercent ? Number(supplies.boostPercent) : 0;
+  const coinBonusHTML =
+    coinBoostVal > 0 ?
+      `<div><span data-i18n="stat_coins">Coins</span> <span data-i18n="bonus">Bonus</span>: ${formatPercent(coins.boostPercent)}</div>`
+    : '';
+  const supplyBonusHTML =
+    supplyBoostVal > 0 ?
+      `<div><span data-i18n="stat_supplies">Supplies</span> <span data-i18n="bonus">Bonus</span>: ${formatPercent(supplies.boostPercent)}</div>`
+    : '';
+  const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}${coinBonusHTML}${supplyBonusHTML}`;
 
   return `
 <div id="${prefix}-panel" class="foe-original-card">
@@ -117,18 +95,15 @@ function buildOwnCityCard({
     <div class="d-flex align-items-center gap-1 flex-shrink-0">
       <span id="${prefix}-copy-btn" role="button" tabindex="0" class="badge rounded-pill bg-success foe-copy-btn flex-shrink-0"
         style="cursor: pointer;" data-i18n="copy" title="Copy Stats" data-i18n-title="copy_stats">Copy</span>
-      <button type="button" class="btn-close flex-shrink-0" id="${prefix}-close-btn" aria-label="Close" title="Close" data-i18n-title="close" data-i18n-aria-label="close"></button>
     </div>
   </div>
   <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'}">
-    <div class="small" style="line-height: 1.45;">
+    <div class="foe-panel-body">
       ${safeGuild ? `<div><span data-i18n="guild">Guild</span>: ${safeGuild}</div>` : ''}
       ${playerEra ? `<div><span data-i18n="age">Age</span>: ${formatEraName(playerEra)}</div>` : ''}
       ${playerScore ? `<div><span data-i18n="score">Score</span>: ${playerScore}</div>` : ''}
       ${specBonusesHTML}
       <div>${fpHTML}</div>
-      ${/* coinsHTML */ ''}
-      ${/* suppliesHTML */ ''}
       ${goodsHTML ? `<div>${goodsHTML}</div>` : `<div><span data-i18n="stat_daily_goods">Daily Goods</span>: ${goodsDisplay || '0'}${goodsBoostText}</div>`}
       ${clanGoodsHTML ? `<div>${clanGoodsHTML}</div>` : ''}
       <div><span data-i18n="stat_daily_units">Daily Units</span>: ${formatStatNumber(units.daily || units.traz, { exact })}</div>

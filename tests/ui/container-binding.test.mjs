@@ -10,7 +10,6 @@ const ROOT_DIR = path.resolve(__dirname, '../../');
 
 const containerBindingPkg = await import('../../src/js/ui/containerBinding.js');
 const {
-  ensureContainerMounted,
   mountPanels,
   safeguardOutputContainers,
   setupPanelHeader,
@@ -50,6 +49,26 @@ function createMockDOM() {
         this.listeners[event].push(fn);
       },
       removeEventListener: () => {},
+      insertBefore(newNode, referenceNode) {
+        if (!newNode) return newNode;
+        if (newNode.parentNode && newNode.parentNode.removeChild) {
+          newNode.parentNode.removeChild(newNode);
+        }
+        newNode.parentNode = this;
+        const refIdx =
+          referenceNode ? this.children.indexOf(referenceNode) : -1;
+        if (refIdx !== -1) {
+          this.children.splice(refIdx, 0, newNode);
+          this.childNodes.splice(refIdx, 0, newNode);
+        } else {
+          this.children.push(newNode);
+          this.childNodes.push(newNode);
+        }
+        if (newNode.id) {
+          elementsById.set(newNode.id, newNode);
+        }
+        return newNode;
+      },
       appendChild(child) {
         if (!child) return child;
         if (child.parentNode && child.parentNode.removeChild) {
@@ -383,6 +402,84 @@ test('Container Binding & DOM Lifecycle Suite', async (t) => {
       assert.equal(content.contains(sharedTargets), true);
       assert.equal(content.contains(sharedDonation2), true);
       assert.equal(content.contains(containers.modal), true);
+
+      // Verify 15-Panel exact vertical order
+      const expected15Panels = [
+        'header',
+        'incidents',
+        'army',
+        'rewards',
+        'gbDonation',
+        'gbInfo',
+        'gbContributors',
+        'gbgTargetGenerator',
+        'battlegrounds',
+        'gbgLeaderboard',
+        'geChampionship',
+        'geContributions',
+        'goodsInventory',
+        'guildOverview',
+        'treasury',
+      ];
+
+      const directChildrenIds = content.children.slice(0, 15).map((c) => c.id);
+      assert.deepEqual(
+        directChildrenIds,
+        expected15Panels,
+        'First 15 children of #content must match the 15-panel vertical sequence',
+      );
+
+      // Verify GB suite sequence within the hierarchy: gbDonation -> gbInfo -> gbContributors
+      const gbDonationIdx = content.children.indexOf(containers.gbDonation);
+      const gbInfoIdx = content.children.indexOf(containers.gbInfo);
+      const gbContributorsIdx = content.children.indexOf(
+        containers.gbContributors,
+      );
+      assert.ok(
+        gbDonationIdx !== -1 && gbInfoIdx !== -1 && gbContributorsIdx !== -1,
+        'GB panels must be direct children of #content',
+      );
+      assert.ok(
+        gbDonationIdx < gbInfoIdx,
+        `GB Donation (${gbDonationIdx}) must precede GB Info (${gbInfoIdx})`,
+      );
+      assert.ok(
+        gbInfoIdx < gbContributorsIdx,
+        `GB Info (${gbInfoIdx}) must precede GB contributors (${gbContributorsIdx})`,
+      );
+
+      // Verify GBG suite sequence within the hierarchy: targets -> battlegrounds -> leaderboard
+      const targetsIdx = content.children.indexOf(
+        containers.gbgTargetGenerator,
+      );
+      const battlegroundIdx = content.children.indexOf(
+        containers.battlegrounds,
+      );
+      const gbgLeaderboardIdx = content.children.indexOf(
+        containers.gbgLeaderboard,
+      );
+      const guildOverviewIdx = content.children.indexOf(
+        containers.guildOverview,
+      );
+      assert.ok(
+        targetsIdx !== -1 &&
+          battlegroundIdx !== -1 &&
+          gbgLeaderboardIdx !== -1 &&
+          guildOverviewIdx !== -1,
+        'GBG and guild panels must be direct children of #content',
+      );
+      assert.ok(
+        targetsIdx < battlegroundIdx,
+        `Target generator (${targetsIdx}) must precede Battlegrounds Changes (${battlegroundIdx})`,
+      );
+      assert.ok(
+        battlegroundIdx < gbgLeaderboardIdx,
+        `Battlegrounds Changes (${battlegroundIdx}) must precede Leaderboard (${gbgLeaderboardIdx})`,
+      );
+      assert.ok(
+        gbgLeaderboardIdx < guildOverviewIdx,
+        `Leaderboard (${gbgLeaderboardIdx}) must precede Guild Overview (${guildOverviewIdx})`,
+      );
     },
   );
 });

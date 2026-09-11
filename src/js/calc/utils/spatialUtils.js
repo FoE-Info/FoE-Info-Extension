@@ -81,8 +81,16 @@ function computeSetAdjacencies(entities = [], store = null) {
     if (!e || !e.cityentity_id) continue;
     const setId = resolveSetId(e);
     if (setId) {
+      const meta =
+        typeof store?.getEntity === 'function' ?
+          store.getEntity(e.cityentity_id)
+        : null;
       setBuildings.push({
-        entity: e,
+        entity: {
+          ...e,
+          width: e.width ?? meta?.width ?? 1,
+          length: e.length ?? meta?.length ?? 1,
+        },
         setId,
         baseId: cleanBaseEntityId(e.cityentity_id),
       });
@@ -151,7 +159,20 @@ function computeChainLinkAdjacencies(entities = [], store = null) {
     }
 
     if (chainId) {
-      chainBuildings.push({ entity: e, chainId, isStart, isLink });
+      const meta =
+        typeof store?.getEntity === 'function' ?
+          store.getEntity(e.cityentity_id)
+        : null;
+      chainBuildings.push({
+        entity: {
+          ...e,
+          width: e.width ?? meta?.width ?? 1,
+          length: e.length ?? meta?.length ?? 1,
+        },
+        chainId,
+        isStart,
+        isLink,
+      });
     }
   }
 
