@@ -84,7 +84,7 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
   - Added `tests/msg/guild-battleground-guards.test.mjs` (5 tests) using an in-process `registerHooks` ESM loader plus `bootstrap`/`webextension-polyfill` stubs to exercise null/empty/partial payloads across all three handlers.
   - Verification: targeted `node --test` 5/5, full `npm test` 768/768, `npm run check` clean, `npx eslint` 0 errors (6 pre-existing warnings).
 - **End-to-End Codebase Review & Adversarial Debate (OpenCode + Antigravity)**:
-  - OpenCode completed Phase 1 comprehensive audit across 5 squads, generating 27 findings (F1–F27) in `docs/reviews/2026-09-11-codebase-audit-findings.md` under schema `debate-review.findings.v1`.
+  - OpenCode completed Phase 1 comprehensive audit across 5 squads, generating 27 findings (F1–F27) in `docs/archive/reviews/2026-09-11-codebase-audit-findings.md` under schema `debate-review.findings.v1`.
   - Antigravity completed Phase 2 Adversarial Debate under schema `debate-review.debate.v1`:
     - Evaluated all 27 findings against source code.
     - Confirmed 5 true blockers: GBG RPC payload guards (`F14`, `F15`, `F16`), QI boost type mapping (`F17`, `F20`), and duplicate DOM ID collision (`F24`).
@@ -248,7 +248,7 @@ The previous handoff at `cec0ded:docs/HANDOFF.md` is retained in Git history for
 - Painted-frame verification confirmed the old Daily Units 147-to-3299 flash. The shared resolver barrier removed that post-spinner intermediate value in the fixed capture.
 - Graphify uses the shared local launcher; routine AST output is logged. See [local Graphify execution](graphify-local.md).
 - Graphify graph synchronization and query-first enforcement have live evidence. See [opencode coexistence](OPENCODE.md) for the current host behavior.
-- The ecosystem accuracy audit is a separate, uncommitted documentation pass; see [its change ledger](agent-ecosystem-audit.md). Do not commit it without the user's review.
+- The ecosystem accuracy audit is archived; see [its change ledger](archive/agent-ecosystem-audit.md).
 
 ## Takeover changes and subsequent corrections
 
@@ -338,9 +338,9 @@ The old statement that DevTools panels cannot be inspected through CDP was too b
 
 Relevant historical plans:
 
-- [UI/RPC/metadata punch-list](plans/2026-09-08-ui-rpc-and-metadata-fixes.md)
-- [Modernization Briefs 12–14](plans/2026-09-08-modernization-briefs-12-14.md)
-- [Decomposition and debuggability roadmap](plans/2026-09-08-monolith-decomposition-and-debuggability-roadmap.md)
+- [UI/RPC/metadata punch-list](archive/plans/2026-09-08-ui-rpc-and-metadata-fixes.md)
+- [Modernization Briefs 12–14](archive/plans/2026-09-08-modernization-briefs-12-14.md)
+- [Decomposition and debuggability roadmap](archive/plans/2026-09-08-monolith-decomposition-and-debuggability-roadmap.md)
 
 Plans/specs live in `docs/plans/` and `docs/specs/`; the coordination hub is
 `docs/README.md` and the live work/todo board is `docs/STATUS.md`.
