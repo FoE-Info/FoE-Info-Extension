@@ -9,6 +9,8 @@
  * dual-compatible and uses a lazily-resolved scoped logger.
  */
 
+import BigNumber from 'bignumber.js';
+
 let logger: { debug?: (...args: unknown[]) => void } | null = null;
 try {
   const { createLogger } = require('../utils/logger.js');
@@ -76,11 +78,26 @@ export interface GalaxyCandidate {
   cityentity_id?: string;
   name: string;
   fp: number;
+  goods?: number;
+  olderGoods?: number;
   state: string;
   transition: number;
 }
 
 export type GalaxyRankedCandidate = GalaxyCandidate & { isReady?: boolean };
+
+export interface GalaxyEconomicWeights {
+  fpWeight?: number;
+  goodsWeight?: number;
+  olderGoodsWeight?: number;
+}
+
+export const DEFAULT_ECONOMIC_WEIGHTS: Required<GalaxyEconomicWeights> =
+  Object.freeze({
+    fpWeight: 1,
+    goodsWeight: 0.2,
+    olderGoodsWeight: 0.1,
+  });
 
 export interface GalaxyOptions {
   charges?: number;
@@ -183,11 +200,50 @@ export function createGalaxyCandidate(
   };
 }
 
+function resolveEconomicWeights(
+  economicWeights?: GalaxyEconomicWeights | null,
+): Required<GalaxyEconomicWeights> | null {
+  if (!economicWeights || typeof economicWeights !== 'object') return null;
+  return {
+    fpWeight: economicWeights.fpWeight ?? DEFAULT_ECONOMIC_WEIGHTS.fpWeight,
+    goodsWeight:
+      economicWeights.goodsWeight ?? DEFAULT_ECONOMIC_WEIGHTS.goodsWeight,
+    olderGoodsWeight:
+      economicWeights.olderGoodsWeight ??
+      DEFAULT_ECONOMIC_WEIGHTS.olderGoodsWeight,
+  };
+}
+
+export function computeEconomicScore(
+  candidate:
+    Pick<GalaxyCandidate, 'fp' | 'goods' | 'olderGoods'> | null | undefined,
+  economicWeights?: GalaxyEconomicWeights | null,
+): BigNumber {
+  const weights =
+    resolveEconomicWeights(economicWeights) || DEFAULT_ECONOMIC_WEIGHTS;
+  const fp = new BigNumber(candidate?.fp ?? 0);
+  const goods = new BigNumber(candidate?.goods ?? 0);
+  const olderGoods = new BigNumber(candidate?.olderGoods ?? 0);
+  return fp
+    .times(weights.fpWeight)
+    .plus(goods.times(weights.goodsWeight))
+    .plus(olderGoods.times(weights.olderGoodsWeight));
+}
+
 export function filterAndSortGalaxyCandidates(
   candidates: GalaxyCandidate[] | null | undefined,
+  economicWeights?: GalaxyEconomicWeights | null,
 ): GalaxyCandidate[] {
   if (!Array.isArray(candidates)) return [];
-  return [...candidates].sort((a, b) => (b.fp || 0) - (a.fp || 0));
+  const weights = resolveEconomicWeights(economicWeights);
+  if (!weights) {
+    return [...candidates].sort((a, b) => (b.fp || 0) - (a.fp || 0));
+  }
+  return [...candidates].sort((a, b) =>
+    computeEconomicScore(b, weights).comparedTo(
+      computeEconomicScore(a, weights),
+    ),
+  );
 }
 
 export function isCandidateReady(
@@ -211,9 +267,10 @@ export function getTopReadyGalaxyBuildings(
   charges?: number,
   currentEpoch?: number,
   isDebug: boolean = false,
+  economicWeights?: GalaxyEconomicWeights | null,
 ): GalaxyRankedCandidate[] {
   if (!Array.isArray(candidates)) return [];
-  const sorted = filterAndSortGalaxyCandidates(candidates);
+  const sorted = filterAndSortGalaxyCandidates(candidates, economicWeights);
 
   logger?.debug('Evaluating Blue Galaxy candidates', {
     totalCandidates: candidates.length,
@@ -258,6 +315,8 @@ export function updateCandidateState(
 }
 
 export default {
+  DEFAULT_ECONOMIC_WEIGHTS,
+  computeEconomicScore,
   extractEntityFp,
   createGalaxyCandidate,
   filterAndSortGalaxyCandidates,

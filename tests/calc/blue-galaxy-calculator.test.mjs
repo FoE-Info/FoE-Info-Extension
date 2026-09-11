@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
+  computeEconomicScore,
   createGalaxyCandidate,
   extractEntityFp,
   filterAndSortGalaxyCandidates,
@@ -235,5 +236,69 @@ describe('BlueGalaxyCalculator Suite', () => {
 
     const fp = extractEntityFp(building, mockStore);
     assert.equal(fp, 42);
+  });
+
+  describe('economic ranking', () => {
+    const weights = {
+      fpWeight: 1,
+      goodsWeight: 0.2,
+      olderGoodsWeight: 0.1,
+    };
+
+    it('ranks a 50-goods building above a 2 FP building when weights active', () => {
+      const candidates = [
+        { id: 1, fp: 2, goods: 0, olderGoods: 0, name: 'Small FP' },
+        { id: 2, fp: 0, goods: 50, olderGoods: 0, name: 'Goods' },
+      ];
+      const sorted = filterAndSortGalaxyCandidates(candidates, weights);
+      assert.equal(sorted[0].id, 2);
+      assert.equal(computeEconomicScore(sorted[0], weights).toString(), '10');
+    });
+
+    it('keeps FP ordering as default when no weights provided', () => {
+      const candidates = [
+        { id: 1, fp: 2, goods: 50, name: 'Goods' },
+        { id: 2, fp: 10, goods: 0, name: 'FP' },
+      ];
+      const sorted = filterAndSortGalaxyCandidates(candidates);
+      assert.equal(sorted[0].id, 2);
+    });
+
+    it('applies older goods weight when computing score', () => {
+      const score = computeEconomicScore(
+        { fp: 1, goods: 10, olderGoods: 20 },
+        weights,
+      );
+      assert.equal(score.toString(), '5');
+    });
+
+    it('honours weights in getTopReadyGalaxyBuildings ranking', () => {
+      const currentEpoch = 1700000000;
+      const candidates = [
+        {
+          id: 1,
+          fp: 2,
+          goods: 0,
+          state: 'ProductionFinishedState',
+          transition: 2147483647,
+        },
+        {
+          id: 2,
+          fp: 0,
+          goods: 50,
+          state: 'ProductionFinishedState',
+          transition: 2147483647,
+        },
+      ];
+      const top = getTopReadyGalaxyBuildings(
+        candidates,
+        1,
+        currentEpoch,
+        false,
+        weights,
+      );
+      assert.equal(top.length, 1);
+      assert.equal(top[0].id, 2);
+    });
   });
 });

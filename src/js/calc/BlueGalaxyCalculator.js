@@ -7,6 +7,13 @@
  */
 
 const { extractEntityProduction } = require('./prod/ProductionCalculator.js');
+const { toBigNumber } = require('./utils/bignumberUtils.js');
+
+const DEFAULT_ECONOMIC_WEIGHTS = Object.freeze({
+  fpWeight: 1,
+  goodsWeight: 0.2,
+  olderGoodsWeight: 0.1,
+});
 
 let logger = null;
 try {
@@ -91,9 +98,38 @@ function createGalaxyCandidate(
   };
 }
 
-function filterAndSortGalaxyCandidates(candidates) {
+function resolveEconomicWeights(economicWeights) {
+  if (!economicWeights || typeof economicWeights !== 'object') return null;
+  return {
+    fpWeight: economicWeights.fpWeight ?? DEFAULT_ECONOMIC_WEIGHTS.fpWeight,
+    goodsWeight:
+      economicWeights.goodsWeight ?? DEFAULT_ECONOMIC_WEIGHTS.goodsWeight,
+    olderGoodsWeight:
+      economicWeights.olderGoodsWeight ??
+      DEFAULT_ECONOMIC_WEIGHTS.olderGoodsWeight,
+  };
+}
+
+function computeEconomicScore(candidate, economicWeights) {
+  const weights =
+    resolveEconomicWeights(economicWeights) || DEFAULT_ECONOMIC_WEIGHTS;
+  return toBigNumber(candidate?.fp)
+    .times(weights.fpWeight)
+    .plus(toBigNumber(candidate?.goods).times(weights.goodsWeight))
+    .plus(toBigNumber(candidate?.olderGoods).times(weights.olderGoodsWeight));
+}
+
+function filterAndSortGalaxyCandidates(candidates, economicWeights) {
   if (!Array.isArray(candidates)) return [];
-  return [...candidates].sort((a, b) => (b.fp || 0) - (a.fp || 0));
+  const weights = resolveEconomicWeights(economicWeights);
+  if (!weights) {
+    return [...candidates].sort((a, b) => (b.fp || 0) - (a.fp || 0));
+  }
+  return [...candidates].sort((a, b) =>
+    computeEconomicScore(b, weights).comparedTo(
+      computeEconomicScore(a, weights),
+    ),
+  );
 }
 
 function isCandidateReady(candidate, currentEpoch) {
@@ -114,9 +150,10 @@ function getTopReadyGalaxyBuildings(
   charges,
   currentEpoch,
   isDebug = false,
+  economicWeights,
 ) {
   if (!Array.isArray(candidates)) return [];
-  const sorted = filterAndSortGalaxyCandidates(candidates);
+  const sorted = filterAndSortGalaxyCandidates(candidates, economicWeights);
 
   logger?.debug('Evaluating Blue Galaxy candidates', {
     totalCandidates: candidates.length,
@@ -158,6 +195,8 @@ function updateCandidateState(candidates, updatedEntity) {
 }
 
 module.exports = {
+  DEFAULT_ECONOMIC_WEIGHTS,
+  computeEconomicScore,
   extractEntityFp,
   createGalaxyCandidate,
   filterAndSortGalaxyCandidates,

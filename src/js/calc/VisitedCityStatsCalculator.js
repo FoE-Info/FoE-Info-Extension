@@ -18,9 +18,7 @@ const {
   computeSetAdjacencies,
   computeChainLinkAdjacencies,
 } = require('./utils/spatialUtils.js');
-const {
-  getCastleBoostsForEntity,
-} = require('./boosts/CastleBoostCalculator.js');
+const { castleSystemService } = require('../msg/CastleSystemService.js');
 const {
   createRawBoosts,
   createQiBoosts,
@@ -48,19 +46,16 @@ const {
 const defaultMetadataStore = metadataStorePkg.metadataStore;
 
 class VisitedCityStatsCalculator {
-  constructor(store = defaultMetadataStore, castleBoostResolver = null) {
+  constructor(store = defaultMetadataStore) {
     this.metadataStore = store;
-    this.castleBoostResolver = castleBoostResolver || getCastleBoostsForEntity;
   }
 
   calculateVisitedCityStats({
     entities = [],
     playerEra = 'SpaceAgeTitan',
     metadataStore = this.metadataStore,
-    castleBoostResolver = this.castleBoostResolver,
   } = {}) {
     const store = metadataStore || defaultMetadataStore;
-    const resolveCastleBoosts = castleBoostResolver || getCastleBoostsForEntity;
     const prevEra = getPreviousEra(playerEra);
     const nextEra = getNextEra(playerEra);
 
@@ -119,7 +114,7 @@ class VisitedCityStatsCalculator {
 
       // Castle System visual stage estimation
       if (entityId.startsWith('V_AllAge_CastleSystem')) {
-        const castleBoosts = resolveCastleBoosts(entity);
+        const castleBoosts = castleSystemService.getBoostsForEntity(entity);
         if (castleBoosts) {
           rawBoosts.att_attacker_all = rawBoosts.att_attacker_all.plus(
             castleBoosts.attackerAtt,

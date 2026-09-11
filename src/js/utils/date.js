@@ -26,6 +26,7 @@ let activeConfig = {
   timeFormat: DEFAULT_TIME_FORMAT,
   dateTimeFormat: DEFAULT_DATETIME_FORMAT,
   customPattern: '',
+  locale: '',
 };
 
 function setTimeFormattingConfig(config) {
@@ -35,6 +36,7 @@ function setTimeFormattingConfig(config) {
       timeFormat: DEFAULT_TIME_FORMAT,
       dateTimeFormat: DEFAULT_DATETIME_FORMAT,
       customPattern: '',
+      locale: '',
     };
     return;
   }
@@ -43,6 +45,7 @@ function setTimeFormattingConfig(config) {
     timeFormat: config.timeFormat || DEFAULT_TIME_FORMAT,
     dateTimeFormat: config.dateTimeFormat || DEFAULT_DATETIME_FORMAT,
     customPattern: config.customPattern || '',
+    locale: config.locale || '',
   };
 }
 
@@ -103,12 +106,35 @@ function resolveDate(input) {
  * - ss: 2-digit second (00-59)
  * - A: Upper AM/PM
  * - a: Lower am/pm
+ * - MMM: Localized short month name (e.g. Sep)
+ * - MMMM: Localized long month name (e.g. September)
+ * - ddd: Localized short weekday name (e.g. Mon)
+ * - dddd: Localized long weekday name (e.g. Monday)
  *
  * @param {Date} date Valid Date object
  * @param {string} pattern Format string pattern
+ * @param {string} [locale] Optional BCP-47 locale for localized tokens
  * @returns {string} Formatted string
  */
-function formatPattern(date, pattern = DEFAULT_DATETIME_FORMAT) {
+function resolveLocalizedTokens(date, pattern, locale) {
+  if (!/(MMMM|MMM|dddd|ddd)/.test(pattern)) return {};
+  const resolvedLocale = locale || activeConfig.locale || undefined;
+  const format = (options) => {
+    try {
+      return new Intl.DateTimeFormat(resolvedLocale, options).format(date);
+    } catch {
+      return '';
+    }
+  };
+  const tokens = {};
+  if (pattern.includes('MMMM')) tokens.MMMM = format({ month: 'long' });
+  if (pattern.includes('MMM')) tokens.MMM = format({ month: 'short' });
+  if (pattern.includes('dddd')) tokens.dddd = format({ weekday: 'long' });
+  if (pattern.includes('ddd')) tokens.ddd = format({ weekday: 'short' });
+  return tokens;
+}
+
+function formatPattern(date, pattern = DEFAULT_DATETIME_FORMAT, locale) {
   if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
     return '';
   }
@@ -143,10 +169,11 @@ function formatPattern(date, pattern = DEFAULT_DATETIME_FORMAT) {
     ss: pad(s),
     A: isPM ? 'PM' : 'AM',
     a: isPM ? 'pm' : 'am',
+    ...resolveLocalizedTokens(date, pattern, locale),
   };
 
   let formatted = withPlaceholders.replace(
-    /\b(YYYY|YY|MM|DD|HH|hh|mm|ss)\b|(?<![a-zA-Z])([Aa])(?![a-zA-Z])/g,
+    /\b(YYYY|YY|MMMM|MMM|MM|DD|dddd|ddd|HH|hh|mm|ss)\b|(?<![a-zA-Z])([Aa])(?![a-zA-Z])/g,
     (match) => tokens[match] || match,
   );
 
@@ -195,6 +222,80 @@ function formatDateTime(input, pattern) {
   return d ? formatPattern(d, pattern || getEffectiveFormat('dateTime')) : '';
 }
 
+/**
+ * Formats a timestamp relative to a base time using native Intl.RelativeTimeFormat.
+ *
+ * @param {Date|number|string} input Target timestamp
+ * @param {Date|number|string} [baseInput] Reference timestamp (defaults to now)
+ * @param {string} [locale] Optional BCP-47 locale
+ * @returns {string} Localized relative time string, or '' if invalid
+ */
+function formatRelativeTime(input, baseInput, locale) {
+  const date = resolveDate(input);
+  if (!date) return '';
+
+  const base = resolveDate(baseInput) || new Date();
+  const diffSeconds = Math.round((date.getTime() - base.getTime()) / 1000);
+
+  let formatter;
+  try {
+    formatter = new Intl.RelativeTimeFormat(
+      locale || activeConfig.locale || undefined,
+      { numeric: 'auto' },
+    );
+  } catch {
+    return '';
+  }
+
+  const units = [
+    ['year', 31536000],
+    ['month', 2592000],
+    ['week', 604800],
+    ['day', 86400],
+    ['hour', 3600],
+    ['minute', 60],
+    ['second', 1],
+  ];
+
+  for (const [unit, secondsPerUnit] of units) {
+    if (Math.abs(diffSeconds) >= secondsPerUnit || unit === 'second') {
+      return formatter.format(Math.round(diffSeconds / secondsPerUnit), unit);
+    }
+  }
+
+  return '';
+}
+
+/**
+ * Formats a timestamp as HH:mm in a specific IANA time zone using native Intl.
+ *
+ * @param {Date|number|string} input Timestamp or Date
+ * @param {object} [options] Formatting options
+ * @param {string} [options.locale] BCP-47 locale
+ * @param {string} [options.timeZone] IANA time zone
+ * @param {boolean} [options.hour12] Use a 12-hour clock
+ * @returns {string} Localized time string, or '' if invalid
+ */
+function formatInTimeZone(input, options = {}) {
+  const date = resolveDate(input);
+  if (!date) return '';
+  try {
+    return new Intl.DateTimeFormat(
+      options.locale || activeConfig.locale || undefined,
+      {
+        timeZone: options.timeZone,
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: options.hour12 ?? false,
+      },
+    )
+      .format(date)
+      .replace(/\u202f/g, ' ');
+  } catch {
+    return '';
+  }
+}
+
 module.exports = {
   DATE_PRESETS,
   DEFAULT_DATE_FORMAT,
@@ -208,4 +309,6 @@ module.exports = {
   formatDate,
   formatTime,
   formatDateTime,
+  formatRelativeTime,
+  formatInTimeZone,
 };

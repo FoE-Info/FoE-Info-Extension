@@ -4,7 +4,9 @@ import {
   DATE_PRESETS,
   formatDate,
   formatDateTime,
+  formatInTimeZone,
   formatPattern,
+  formatRelativeTime,
   formatTime,
   setTimeFormattingConfig,
 } from '../../src/js/utils/date.js';
@@ -170,6 +172,72 @@ describe('Date & Time Formatting Engine', () => {
       assert.equal(formatDateTime(fixedDate), '07/09/2026 at 15:05:09');
 
       setTimeFormattingConfig(null);
+    });
+  });
+
+  describe('localized tokens via Intl.DateTimeFormat', () => {
+    it('formats short and long month names', () => {
+      assert.equal(formatPattern(fixedDate, 'MMM', 'en-US'), 'Sep');
+      assert.equal(formatPattern(fixedDate, 'MMMM', 'en-US'), 'September');
+    });
+
+    it('formats short and long weekday names', () => {
+      assert.equal(formatPattern(fixedDate, 'ddd', 'en-US'), 'Mon');
+      assert.equal(formatPattern(fixedDate, 'dddd', 'en-US'), 'Monday');
+    });
+
+    it('supports localized tokens inside larger patterns', () => {
+      assert.equal(
+        formatPattern(fixedDate, 'ddd, DD MMM YYYY', 'en-US'),
+        'Mon, 07 Sep 2026',
+      );
+    });
+
+    it('localizes month and weekday names for other locales', () => {
+      assert.equal(formatPattern(fixedDate, 'MMMM', 'de-DE'), 'September');
+      assert.equal(formatPattern(fixedDate, 'ddd', 'de-DE'), 'Mo');
+    });
+  });
+
+  describe('formatRelativeTime via Intl.RelativeTimeFormat', () => {
+    const base = new Date(2026, 8, 7, 15, 0, 0);
+
+    it('formats future times', () => {
+      const future = new Date(base.getTime() + 2 * 3600 * 1000);
+      assert.equal(formatRelativeTime(future, base, 'en'), 'in 2 hours');
+    });
+
+    it('formats past times', () => {
+      const past = new Date(base.getTime() - 3 * 86400 * 1000);
+      assert.equal(formatRelativeTime(past, base, 'en'), '3 days ago');
+    });
+
+    it('formats sub-minute differences', () => {
+      const soon = new Date(base.getTime() + 30 * 1000);
+      assert.equal(formatRelativeTime(soon, base, 'en'), 'in 30 seconds');
+    });
+
+    it('returns empty string for invalid or falsy input', () => {
+      assert.equal(formatRelativeTime(null, base, 'en'), '');
+      assert.equal(formatRelativeTime(0, base, 'en'), '');
+    });
+  });
+
+  describe('formatInTimeZone via Intl.DateTimeFormat', () => {
+    it('formats time in an explicit IANA time zone', () => {
+      const utc = new Date(Date.UTC(2026, 8, 7, 13, 5, 0));
+      assert.equal(
+        formatInTimeZone(utc, {
+          locale: 'de-DE',
+          timeZone: 'Europe/Berlin',
+          hour12: false,
+        }),
+        '15:05',
+      );
+    });
+
+    it('returns empty string for invalid input', () => {
+      assert.equal(formatInTimeZone(null, { timeZone: 'Europe/Berlin' }), '');
     });
   });
 });
