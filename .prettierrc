@@ -13,5 +13,10 @@
   "arrowParens": "always",
   "proseWrap": "preserve",
   "endOfLine": "lf",
-  "embeddedLanguageFormatting": "auto"
+  "embeddedLanguageFormatting": "auto",
+  "plugins": [
+    "prettier-plugin-packagejson",
+    "@ianvs/prettier-plugin-sort-imports"
+  ],
+  "importOrder": ["<THIRD_PARTY_MODULES>", "^[./]"]
 }

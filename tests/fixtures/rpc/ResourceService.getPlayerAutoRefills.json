@@ -1,0 +1,12 @@
+{
+ "resources": {
+  "strategy_points": 1789009162,
+  "history_tickets": 1789009169,
+  "fall_tickets": 1789009169,
+  "pvp_arena_attempt": 1789009169,
+  "wildlife_tickets": 1789009169,
+  "guild_raids_action_points": 1789009169,
+  "guild_expedition_attempt": 1789009169
+ },
+ "__class__": "ResourceAutoRefill"
+}

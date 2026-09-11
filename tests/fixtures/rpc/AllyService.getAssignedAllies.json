@@ -1,0 +1,285 @@
+[
+ {
+  "id": 68088,
+  "allyId": "morgan_le_fay",
+  "rarity": {
+   "__enum__": "AllyRarity",
+   "value": "epic"
+  },
+  "mapEntityId": 35422,
+  "level": 100,
+  "currentLevel": {
+   "level": 100,
+   "experience": 15554,
+   "boosts": [
+    {
+     "type": "att_boost_attacker",
+     "value": 105,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "def_boost_attacker",
+     "value": 110,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_def_boost_attacker",
+     "value": 115,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    }
+   ],
+   "__class__": "AllyLevel"
+  },
+  "nextLevel": {
+   "level": 101,
+   "experience": 15774,
+   "boosts": [
+    {
+     "type": "att_boost_attacker",
+     "value": 106,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "def_boost_attacker",
+     "value": 111,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_def_boost_attacker",
+     "value": 116,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    }
+   ],
+   "__class__": "AllyLevel"
+  },
+  "__class__": "Ally"
+ },
+ {
+  "id": 47422,
+  "allyId": "spartan_soldier",
+  "rarity": {
+   "__enum__": "AllyRarity",
+   "value": "epic"
+  },
+  "mapEntityId": 37758,
+  "level": 100,
+  "experience": 15554,
+  "currentLevel": {
+   "level": 100,
+   "experience": 15554,
+   "boosts": [
+    {
+     "type": "att_boost_attacker",
+     "value": 135,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_def_boost_attacker",
+     "value": 135,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "def_boost_attacker",
+     "value": 135,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_boost_attacker",
+     "value": 135,
+     "targetedFeature": "guild_expedition",
+     "__class__": "BoostHint"
+    }
+   ],
+   "__class__": "AllyLevel"
+  },
+  "nextLevel": {
+   "level": 101,
+   "experience": 15774,
+   "boosts": [
+    {
+     "type": "att_boost_attacker",
+     "value": 136,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_def_boost_attacker",
+     "value": 136,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "def_boost_attacker",
+     "value": 136,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_boost_attacker",
+     "value": 136,
+     "targetedFeature": "guild_expedition",
+     "__class__": "BoostHint"
+    }
+   ],
+   "__class__": "AllyLevel"
+  },
+  "__class__": "Ally"
+ },
+ {
+  "id": 53707,
+  "allyId": "spartan_soldier",
+  "rarity": {
+   "__enum__": "AllyRarity",
+   "value": "epic"
+  },
+  "mapEntityId": 37701,
+  "level": 100,
+  "experience": 15554,
+  "currentLevel": {
+   "level": 100,
+   "experience": 15554,
+   "boosts": [
+    {
+     "type": "att_boost_attacker",
+     "value": 135,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_def_boost_attacker",
+     "value": 135,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "def_boost_attacker",
+     "value": 135,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_boost_attacker",
+     "value": 135,
+     "targetedFeature": "guild_expedition",
+     "__class__": "BoostHint"
+    }
+   ],
+   "__class__": "AllyLevel"
+  },
+  "nextLevel": {
+   "level": 101,
+   "experience": 15774,
+   "boosts": [
+    {
+     "type": "att_boost_attacker",
+     "value": 136,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_def_boost_attacker",
+     "value": 136,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "def_boost_attacker",
+     "value": 136,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_boost_attacker",
+     "value": 136,
+     "targetedFeature": "guild_expedition",
+     "__class__": "BoostHint"
+    }
+   ],
+   "__class__": "AllyLevel"
+  },
+  "__class__": "Ally"
+ },
+ {
+  "id": 37725,
+  "allyId": "spartan_soldier",
+  "rarity": {
+   "__enum__": "AllyRarity",
+   "value": "epic"
+  },
+  "mapEntityId": 31372,
+  "level": 100,
+  "experience": 15554,
+  "currentLevel": {
+   "level": 100,
+   "experience": 15554,
+   "boosts": [
+    {
+     "type": "att_boost_attacker",
+     "value": 135,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_def_boost_attacker",
+     "value": 135,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "def_boost_attacker",
+     "value": 135,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_boost_attacker",
+     "value": 135,
+     "targetedFeature": "guild_expedition",
+     "__class__": "BoostHint"
+    }
+   ],
+   "__class__": "AllyLevel"
+  },
+  "nextLevel": {
+   "level": 101,
+   "experience": 15774,
+   "boosts": [
+    {
+     "type": "att_boost_attacker",
+     "value": 136,
+     "targetedFeature": "all",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_def_boost_attacker",
+     "value": 136,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "def_boost_attacker",
+     "value": 136,
+     "targetedFeature": "battleground",
+     "__class__": "BoostHint"
+    },
+    {
+     "type": "att_boost_attacker",
+     "value": 136,
+     "targetedFeature": "guild_expedition",
+     "__class__": "BoostHint"
+    }
+   ],
+   "__class__": "AllyLevel"
+  },
+  "__class__": "Ally"
+ }
+]

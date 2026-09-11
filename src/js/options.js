@@ -13,332 +13,240 @@
  */
 import browser from 'webextension-polyfill';
 import '../css/options.scss';
-// import "bootstrap/scss/bootstrap";
+import {
+  populateForm,
+  readGlobalSettingsFromForm,
+  readWorldSettingsFromForm,
+} from './ui/optionsForm.js';
+import {
+  getGlobalSettings,
+  getWorldSettings,
+  initStorage,
+  registerKnownWorld,
+  resetWorldSettings,
+  sanitizeWorldId,
+  saveWorldSettings,
+  setWorld,
+} from './utils/storage.js';
 
-const showOptions = {
-  showFriends: true,
-  showGuild: true,
-  showHood: true,
-  showBonus: true,
-  showIncidents: true,
-  showGVG: true,
-  showStats: true,
-  showGBInfo: true,
-  showGBRewards: true,
-  showGBDonors: true,
-  showInvested: true,
-  showDonation: true,
-  showBattleground: true,
-  showBattlegroundChanges: false,
-  showExpedition: true,
-  showTreasury: true,
-  showVisit: true,
-  showSettlement: true,
-  showArmy: true,
-  showGoods: false,
-  showLeaderboard: false,
-  showGBGrewards: true,
-  GBGprovinceTime: true,
-  GBGshowSC: true,
-  showGErewards: true,
-  showRewards: true,
-  showLogs: true,
-  showContributions: true,
-  showGuildPosition: false,
-  hideUnsafe: true,
-  buildingCosts: false,
-  collectionTimes: false,
-};
+let activeWorld = 'en7';
+let autoSaveTimer = null;
+let toastTimer = null;
 
-// Saves options to browser.storage
-function save_options() {
-  var showOptions = [];
-  var tool = [];
-  var toolOptions = [];
-  var url = [];
-  showOptions.showBonus = document.getElementById('bonus').checked;
-  showOptions.showIncidents = document.getElementById('Incidents').checked;
-  showOptions.showGVG = document.getElementById('GvG').checked;
-  showOptions.showStats = document.getElementById('Stats').checked;
-  showOptions.showGBInfo = document.getElementById('GBInfo').checked;
-  showOptions.showGBRewards = document.getElementById('GBRewards').checked;
-  showOptions.showGBDonors = document.getElementById('GBDonors').checked;
-  showOptions.showInvested = document.getElementById('Invested').checked;
-  showOptions.showDonation = document.getElementById('Donation').checked;
-  showOptions.showFriends = document.getElementById('Friends').checked;
-  showOptions.showGuild = document.getElementById('Guild').checked;
-  showOptions.showHood = document.getElementById('Hood').checked;
-  showOptions.showBattleground =
-    document.getElementById('Battleground').checked;
-  showOptions.showExpedition = document.getElementById('Expedition').checked;
-  showOptions.showTreasury = document.getElementById('Treasury').checked;
-  showOptions.showVisit = document.getElementById('visit').checked;
-  showOptions.showSettlement = document.getElementById('settlement').checked;
-  showOptions.showArmy = document.getElementById('army').checked;
-  showOptions.showGoods = document.getElementById('goods').checked;
-  showOptions.showLeaderboard = document.getElementById('leaderboard').checked;
-  showOptions.showGBGrewards = document.getElementById('GBGrewards').checked;
-  showOptions.GBGprovinceTime =
-    document.getElementById('GBGprovinceTime').checked;
-  showOptions.GBGshowSC = document.getElementById('GBGshowSC').checked;
-  showOptions.showGErewards = document.getElementById('GErewards').checked;
-  showOptions.showRewards = document.getElementById('rewards').checked;
-  showOptions.showLogs = document.getElementById('logs').checked;
-  showOptions.showContributions =
-    document.getElementById('contributions').checked;
-  showOptions.showGuildPosition = document.getElementById(
-    'donationGuildPosition',
-  ).checked;
-  showOptions.hideUnsafe = document.getElementById('hideUnsafe').checked;
-  showOptions.buildingCosts = document.getElementById('buildingCosts').checked;
-  showOptions.collectionTimes =
-    document.getElementById('collectionTimes').checked;
-  //  showOptions.show = document.getElementById('').checked;
-  //  showOptions.show = document.getElementById('').checked;
-  //  showOptions.show = document.getElementById('').checked;
+export async function detectActiveGameTab() {
+  const foeRegex = /^https?:\/\/([a-z]+[1-9][0-9]*)\.forgeofempires\.com/i;
+  try {
+    if (browser.tabs?.query) {
+      const activeTabs = await browser.tabs.query({
+        active: true,
+        lastFocusedWindow: true,
+      });
+      if (activeTabs?.[0]?.url) {
+        const match = activeTabs[0].url.match(foeRegex);
+        if (match?.[1]) return sanitizeWorldId(match[1]);
+      }
+      const anyActive = await browser.tabs.query({
+        active: true,
+        url: '*://*.forgeofempires.com/*',
+      });
+      if (anyActive?.[0]?.url) {
+        const match = anyActive[0].url.match(foeRegex);
+        if (match?.[1]) return sanitizeWorldId(match[1]);
+      }
+    }
+  } catch (err) {
+    console.warn('Unable to query browser tabs:', err);
+  }
+  return null;
+}
 
-  tool.language = document.getElementById('language').value;
-  var targets = document.getElementById('targets').value;
-  var targetText = document.getElementById('targetText').value;
-  var donationPercent = document.getElementById('donationPercent').value;
-  if (donationPercent > 200) donationPercent = 200;
-  var donationSuffix = document.getElementById('donationSuffix').value;
-  toolOptions.minSize = document.getElementById('minSize').value;
-  //  console.debug(localOptions);
-  // var defaultArcBonus = document.getElementById('defaultArcBonus').value;
+export async function discoverOpenGameWorlds() {
+  const foeRegex = /^https?:\/\/([a-z]+[1-9][0-9]*)\.forgeofempires\.com/i;
+  const worlds = [];
+  try {
+    if (browser.tabs?.query) {
+      const tabs = await browser.tabs.query({
+        url: '*://*.forgeofempires.com/*',
+      });
+      for (const tab of tabs || []) {
+        if (tab.url) {
+          const match = tab.url.match(foeRegex);
+          if (match?.[1]) {
+            const w = sanitizeWorldId(match[1]);
+            if (!worlds.includes(w)) worlds.push(w);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Unable to query game tabs:', err);
+  }
+  return worlds;
+}
 
-  // Discord Webhooks
-  url.discordTargetURL = document.getElementById('discordTargetURL').value;
+export async function detectActiveWorld(globals) {
+  const detected = await detectActiveGameTab();
+  if (detected && !detected.endsWith('0')) return detected;
+  if (globals?.lastActiveWorld && !globals.lastActiveWorld.endsWith('0')) {
+    return sanitizeWorldId(globals.lastActiveWorld);
+  }
+  const validKnown = globals?.knownWorlds?.filter((w) => !w.endsWith('0'));
+  if (validKnown?.length) {
+    return sanitizeWorldId(validKnown[0]);
+  }
+  return 'en7';
+}
 
-  // Google Sheets
-  url.sheetGuildURL = document.getElementById('sheetGuildURL').value;
-  // url.sheetCityURL = document.getElementById('sheetCityURL').value;
-  // url.sheetGameURL = document.getElementById('sheetGameURL').value;
+function renderWorldSelector(knownWorlds, currentWorld) {
+  const select = document.getElementById('worldSelector');
+  if (!select) return;
+  select.innerHTML = '';
+  const filtered = [...knownWorlds, currentWorld].filter(
+    (w) => w && !w.endsWith('0'),
+  );
+  const worlds = Array.from(new Set(filtered));
+  for (const w of worlds) {
+    const opt = document.createElement('option');
+    opt.value = w;
+    opt.textContent = w.toUpperCase();
+    if (w === currentWorld) opt.selected = true;
+    select.appendChild(opt);
+  }
+  select.value = currentWorld;
+}
 
-  setStorage(showOptions);
+function showSaveToast(message = 'Settings saved automatically.') {
+  const toast = document.getElementById('saveToast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.style.display = 'none';
+  }, 2500);
+}
 
-  browser.storage.local
-    .set({
-      tool: {
-        language: tool.language,
-      },
-      targets: targets,
-      targetText: targetText,
-      toolOptions: {
-        minSize: toolOptions.minSize,
-      },
-      donationPercent: donationPercent,
-      donationSuffix: donationSuffix,
-      url: {
-        discordTargetURL: url.discordTargetURL,
-        sheetGuildURL: url.sheetGuildURL,
-        // sheetCityURL: url.sheetCityURL,
-        // sheetGameURL: url.sheetGameURL
-      },
-    })
-    .then(() => {
-      // console.debug(`Value is set to`, value);
+async function saveCurrentSettings() {
+  const worldSettings = readWorldSettingsFromForm();
+  await saveWorldSettings(activeWorld, worldSettings);
+  const globalForm = readGlobalSettingsFromForm();
+  const globals = await getGlobalSettings();
+  const updatedGlobals = {
+    ...globals,
+    language: globalForm.language,
+    timeFormatting: globalForm.timeFormatting,
+    lastActiveWorld: activeWorld,
+  };
+  await browser.storage.local.set({ 'global:settings': updatedGlobals });
+  try {
+    const { setTimeFormattingConfig } = require('./utils/date.js');
+    setTimeFormattingConfig(globalForm.timeFormatting);
+  } catch {}
+}
+
+function onFormInput(e) {
+  if (
+    e.target &&
+    (e.target.id === 'worldSelector' ||
+      e.target.id === 'resetWorldBtn' ||
+      e.target.id === 'save')
+  ) {
+    return;
+  }
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(async () => {
+    await saveCurrentSettings();
+    showSaveToast();
+  }, 300);
+}
+
+async function onWorldChange(e) {
+  const nextWorld = sanitizeWorldId(e.target.value);
+  if (nextWorld === activeWorld) return;
+  clearTimeout(autoSaveTimer);
+  await saveCurrentSettings();
+
+  activeWorld = nextWorld;
+  setWorld(activeWorld);
+
+  const globals = await getGlobalSettings();
+  await browser.storage.local.set({
+    'global:settings': { ...globals, lastActiveWorld: activeWorld },
+  });
+
+  const newSettings = await getWorldSettings(activeWorld);
+  populateForm(newSettings, globals);
+}
+
+async function onResetWorld() {
+  const confirmed = confirm(
+    `Reset settings for world "${activeWorld.toUpperCase()}" to fresh install defaults?`,
+  );
+  if (!confirmed) return;
+  clearTimeout(autoSaveTimer);
+  const fresh = await resetWorldSettings(activeWorld);
+  const globals = await getGlobalSettings();
+  populateForm(fresh, globals);
+  showSaveToast(`World "${activeWorld.toUpperCase()}" reset to defaults.`);
+}
+
+async function onExplicitSave() {
+  clearTimeout(autoSaveTimer);
+  await saveCurrentSettings();
+  showSaveToast('Settings saved.');
+}
+
+async function initOptions() {
+  await initStorage();
+  const globals = await getGlobalSettings();
+
+  const discovered = await discoverOpenGameWorlds();
+  for (const w of discovered) {
+    if (!w.endsWith('0')) {
+      await registerKnownWorld(w);
+    }
+  }
+
+  const detected = await detectActiveGameTab();
+  const activeDetected = detected && !detected.endsWith('0') ? detected : null;
+  const initialWorld = sanitizeWorldId(
+    activeDetected ||
+      (globals.lastActiveWorld && !globals.lastActiveWorld.endsWith('0') ?
+        globals.lastActiveWorld
+      : globals.knownWorlds?.find((w) => !w.endsWith('0')) || 'en7'),
+  );
+  activeWorld = initialWorld;
+  setWorld(activeWorld);
+
+  const refreshedGlobals = await getGlobalSettings();
+  const validKnown = refreshedGlobals.knownWorlds?.filter(
+    (w) => !w.endsWith('0'),
+  ) || [initialWorld];
+  renderWorldSelector(validKnown, activeWorld);
+
+  const worldSettings = await getWorldSettings(activeWorld);
+  populateForm(worldSettings, refreshedGlobals);
+
+  document
+    .getElementById('worldSelector')
+    ?.addEventListener('change', onWorldChange);
+  document
+    .getElementById('resetWorldBtn')
+    ?.addEventListener('click', onResetWorld);
+  document.getElementById('save')?.addEventListener('click', onExplicitSave);
+
+  const dateTimeFormatEl = document.getElementById('dateTimeFormat');
+  const customPatternDiv = document.getElementById('customPatternDiv');
+  if (dateTimeFormatEl && customPatternDiv) {
+    dateTimeFormatEl.addEventListener('change', () => {
+      customPatternDiv.style.display =
+        dateTimeFormatEl.value === 'custom' ? '' : 'none';
     });
+  }
+
+  const container = document.querySelector('.container') || document.body;
+  container.addEventListener('input', onFormInput);
+  container.addEventListener('change', onFormInput);
 }
 
-// Restores select box and checkbox state using the preferences
-// stored in browser.storage.
-function restore_options() {
-  // Use default value color = 'red' and likesColor = true.
-
-  // if(DEV) document.getElementById('urlDiv').style.display = "none";
-
-  browser.storage.local
-    .get([
-      'showOptions',
-      'tool',
-      'url',
-      'targets',
-      'targetText',
-      'toolOptions',
-      'donationPercent',
-      'donationSuffix',
-    ])
-    .then((items) => {
-      if (items.showOptions) {
-        const showOptions = items.showOptions;
-        fnShowOptions(showOptions);
-      } else {
-        setStorage(showOptions);
-        fnShowOptions(showOptions);
-      }
-      if (items.tool) {
-        document.getElementById('language').value = items.tool.language;
-        console.debug(items.tool);
-      }
-      if (items.targets != null) {
-        document.getElementById('targets').value = items.targets;
-        console.debug(items.targets);
-      }
-      if (items.targetText != null) {
-        document.getElementById('targetText').value = items.targetText;
-        console.debug(items.targetText);
-      }
-      if (items.toolOptions) {
-        document.getElementById('minSize').value = items.toolOptions.minSize;
-        console.debug(items.toolOptions);
-      }
-      if (items.donationPercent) {
-        document.getElementById('donationPercent').value =
-          items.donationPercent;
-        console.debug(items.donationPercent);
-      }
-      if (items.donationSuffix) {
-        document.getElementById('donationSuffix').value = items.donationSuffix;
-        console.debug(items.donationSuffix);
-      }
-      if (items.url) {
-        const url = items.url;
-        if (url.discordTargetURL)
-          document.getElementById('discordTargetURL').value =
-            url.discordTargetURL;
-        if (url.sheetGuildURL)
-          document.getElementById('sheetGuildURL').value = url.sheetGuildURL;
-        // if(url.sheetCityURL)
-        //    document.getElementById('sheetCityURL').value = url.sheetCityURL;
-        // if(url.sheetGameURL)
-        //    document.getElementById('sheetGameURL').value = url.sheetGameURL;
-      }
-    });
-}
-
-function fnShowOptions(showOptions) {
-  document.getElementById('bonus').checked = showOptions.showBonus;
-  document.getElementById('Incidents').checked = showOptions.showIncidents;
-  document.getElementById('GvG').checked = showOptions.showGVG;
-  document.getElementById('Stats').checked = showOptions.showStats;
-  document.getElementById('GBInfo').checked = showOptions.showGBInfo;
-  document.getElementById('GBRewards').checked = showOptions.showGBRewards;
-  document.getElementById('GBDonors').checked = showOptions.showGBDonors;
-  document.getElementById('Invested').checked = showOptions.showInvested;
-  document.getElementById('Donation').checked = showOptions.showDonation;
-  document.getElementById('Friends').checked = showOptions.showFriends;
-  document.getElementById('Guild').checked = showOptions.showGuild;
-  document.getElementById('Hood').checked = showOptions.showHood;
-  document.getElementById('Battleground').checked =
-    showOptions.showBattleground;
-  document.getElementById('Expedition').checked = showOptions.showExpedition;
-  document.getElementById('Treasury').checked = showOptions.showTreasury;
-  document.getElementById('visit').checked = showOptions.showVisit;
-  document.getElementById('settlement').checked = showOptions.showSettlement;
-  document.getElementById('army').checked = showOptions.showArmy;
-  document.getElementById('goods').checked = showOptions.showGoods;
-  document.getElementById('leaderboard').checked = showOptions.showLeaderboard;
-  document.getElementById('GBGrewards').checked = showOptions.showGBGrewards;
-  document.getElementById('GBGprovinceTime').checked =
-    showOptions.GBGprovinceTime;
-  document.getElementById('GBGshowSC').checked = showOptions.GBGshowSC;
-  document.getElementById('GErewards').checked = showOptions.showGErewards;
-  document.getElementById('rewards').checked = showOptions.showRewards;
-  document.getElementById('logs').checked = showOptions.showLogs;
-  document.getElementById('contributions').checked =
-    showOptions.showContributions;
-  document.getElementById('donationGuildPosition').checked =
-    showOptions.showGuildPosition;
-  document.getElementById('hideUnsafe').checked = showOptions.hideUnsafe;
-  document.getElementById('buildingCosts').checked = showOptions.buildingCosts;
-  document.getElementById('collectionTimes').checked =
-    showOptions.collectionTimes;
-}
-
-// function setStorage(value){
-//   // console.debug(value);
-//     browser.storage.local.set({
-//       showOptions: {
-//         'showIncidents': value.showIncidents,
-//         'showGVG': value.showGVG,
-//         'showGBInfo': value.showGBInfo,
-//         'showGBRewards': value.showGBRewards,
-//         'showGBDonors': value.showGBDonors,
-//         'showInvested': value.showInvested,
-//         'showDonation': value.showDonation,
-//         'showFriends': value.showFriends,
-//         'showGuild': value.showGuild,
-//         'showHood': value.showHood,
-//         'showStats': value.showStats,
-//         'showBattleground' : value.showBattleground,
-//         'showExpedition' : value.showExpedition,
-//         'showTreasury' : value.showTreasury,
-//         'showVisit': value.showVisit,
-//         'showSettlement': value.showSettlement,
-//         'showArmy': value.showArmy,
-//         'showLeaderboard': value.showLeaderboard,
-//         'showGBGrewards': value.showGBGrewards,
-//         'showGErewards': value.showGErewards,
-//         'showRewards': value.showRewards,
-//         'showLogs': value.showLogs
-//                    }
-//     }, function() {
-//     // console.debug(`Value is set to`, value);
-//     });
-
-//   // browser.storage.local.get(null, function(items) {
-//     // console.debug(items);
-//   // });
-// }
-
-function setStorage(value) {
-  // console.debug(value);
-  browser.permissions
-    .request({
-      permissions: ['storage'],
-    })
-    .then((granted) => {
-      if (granted) {
-        // The extension has the permissions.
-        browser.storage.local
-          .set({
-            showOptions: {
-              showBonus: value.showBonus,
-              showIncidents: value.showIncidents,
-              showGVG: value.showGVG,
-              showGBInfo: value.showGBInfo,
-              showGBRewards: value.showGBRewards,
-              showGBDonors: value.showGBDonors,
-              showInvested: value.showInvested,
-              showDonation: value.showDonation,
-              showFriends: value.showFriends,
-              showGuild: value.showGuild,
-              showHood: value.showHood,
-              showStats: value.showStats,
-              showBattleground: value.showBattleground,
-              showExpedition: value.showExpedition,
-              showTreasury: value.showTreasury,
-              showVisit: value.showVisit,
-              showSettlement: value.showSettlement,
-              showArmy: value.showArmy,
-              showGoods: value.showGoods,
-              showLeaderboard: value.showLeaderboard,
-              showGBGrewards: value.showGBGrewards,
-              GBGprovinceTime: value.GBGprovinceTime,
-              GBGshowSC: value.GBGshowSC,
-              showGErewards: value.showGErewards,
-              showRewards: value.showRewards,
-              showLogs: value.showLogs,
-              showContributions: value.showContributions,
-              showGuildPosition: value.showGuildPosition,
-              hideUnsafe: value.hideUnsafe,
-              buildingCosts: value.buildingCosts,
-              collectionTimes: value.collectionTimes,
-            },
-          })
-          .then(() => {
-            // console.debug(`Value is set to`, value);
-          });
-      } else {
-        // The extension doesn't have the permissions.
-      }
-    });
-
-  // browser.storage.local.get(null, function(items) {
-  // console.debug(items);
-  // });
-}
-
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click', save_options);
+document.addEventListener('DOMContentLoaded', initOptions);

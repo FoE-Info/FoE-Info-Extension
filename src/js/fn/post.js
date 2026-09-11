@@ -17,253 +17,175 @@
 // import $ from "jquery";
 // import 'bootstrap';
 // import Discord  from 'discord.js';
-import { alerts, EpocTime, MyInfo, GameOrigin, url } from '../index.js';
-import * as element from './AddElement';
-import * as helper from './helper.js';
-import { Tooltip, Alert, Popover } from 'bootstrap';
-import { GBGdata } from '../msg/GuildBattlegroundService.js';
+let Alert;
+try {
+  const bs = require('bootstrap');
+  Alert = bs.Alert;
+} catch {}
+let alerts = null;
+let EpocTime = 0;
+let GameOrigin = '';
+let GBGdata = [];
+let MyInfo = { name: '' };
+let url = {};
+let element = null;
+try {
+  element = require('./AddElement');
+} catch {}
+if (typeof __webpack_require__ !== 'undefined') {
+  try {
+    const state = require('../vars/state.js');
+    alerts = state.alerts;
+    EpocTime = state.EpocTime;
+    GameOrigin = state.GameOrigin;
+    GBGdata = state.GBGdata;
+    MyInfo = state.MyInfo;
+    url = state.url;
+  } catch {}
+}
+let logger = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('Post');
+} catch {}
 
 // Example POST method implementation:
-async function postData(url = '', data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'include', // include, *same-origin, omit
+async function postData(targetUrl = '', data = {}) {
+  const response = await fetch(targetUrl, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'include',
     headers: {
       'content-type': 'application/json',
-      // "Access-Control-Allow-Origin": "*",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'strict-origin-when-cross-origin', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
-  }).then((response) => {
-    console.debug(response); // JSON data parsed by `data.json()` call
-    for (var item of response.headers.entries()) {
-      console.debug(item);
-    }
+    redirect: 'follow',
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    body: JSON.stringify(data),
   });
 
-  console.debug(response);
-  return response.json(); // parses JSON response into native JavaScript objects
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
 }
 
-export function postToDiscord(text) {
-  // test-test channel
-  var webHookUrl =
-    'https://discordapp.com/api/webhooks/976173827514060911/_ddYCMhIl7_MlZbGbLgsnHHLXIbAR4Fx_XywtjYToylqrWVva8L1-k89bZje20J5moij';
+function postToDiscord(text) {
+  var webHookUrl = url?.discordTargetURL;
+  if (!webHookUrl) {
+    logger?.debug('Discord Webhook URL is not configured in options.');
+    return;
+  }
 
-  const hook = getKey(webHookUrl);
-
-  console.log(hook);
-
-  /*
-   * Create a new webhook
-   * The Webhooks ID and token can be found in the URL, when you request that URL, or in the response body.
-   * https://discord.com/api/webhooks/12345678910/T0kEn0fw3Bh00K
-   *                                  ^^^^^^^^^^  ^^^^^^^^^^^^
-   *                                  Webhook ID  Webhook Token
-   */
-  // const hook = new Discord.WebhookClient('687279023335800877', 'rtsthZ8GIxsD9LYhlluZHyqOQGQtZmOkaiNLKcAHRshWLPoUZqO1_XTuOObFeJqL4zyQ');
-  // const client  = new Discord.Client();
-  var selection = window.getSelection();
-  selection.removeAllRanges();
+  if (typeof window !== 'undefined' && window.getSelection) {
+    var selection = window.getSelection();
+    if (selection && selection.removeAllRanges) selection.removeAllRanges();
+  }
 
   var oReq = new XMLHttpRequest();
   var params = {
-    username: MyInfo.name,
+    username: MyInfo?.name || 'FoE-Info',
     avatar_url: '',
     content: text,
-    // "embeds": [
-    // 	{
-    // 	  "author": {
-    // 		"name": MyInfo.name,
-    // 		// "url": "https://www.reddit.com/r/cats/",
-    // 		// "icon_url": "https://i.imgur.com/R66g1Pe.jpg"
-    // 	  },
-    // 		}
-    // 	  ],
-    // 	  "footer": {
-    // 		"text": "Woah! So cool! :smirk:",
-    // 		"icon_url": "https://i.imgur.com/fKL31aD.jpg"
-    // 	  }
-    // 	}
-    //   ]
   };
-  // console.debug(params);
-  //register method called after data has been sent method is executed
-  // oReq.addEventListener("load", reqListener);
+
   oReq.open('POST', webHookUrl, true);
-  // oReq.withCredentials = true;
-  // oReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  // oReq.setRequestHeader("Access-Control-Allow-Origin", "*");
   oReq.setRequestHeader('Content-type', 'application/json');
-  // oReq.send(JSON.stringify(myJSONStr));
   oReq.onreadystatechange = function () {
-    // if (oReq.readyState == XMLHttpRequest.DONE) {
-    // alert(oReq.responseText);
-    console.debug(oReq.readyState, oReq.responseText);
-    // }
-    // $('#testModal').modal('show');
+    logger?.debug('Discord post status:', oReq.readyState, oReq.responseText);
   };
   oReq.send(JSON.stringify(params));
-  // oReq.send('I am now alive!');
-
-  // const msg = new webhook.MessageBuilder()
-  // .setName(MyInfo.name)
-  // .setColor("#aabbcc")
-  // .setText(text);
-
-  // Send a slack message
-  // webhook.sendSlackMessage({
-  // 	'username': 'Wumpus',
-  // 	'attachments': [{
-  // 	'pretext': 'this looks pretty cool',
-  // 	'color': '#F0F',
-  // 	'footer_icon': 'http://snek.s3.amazonaws.com/topSnek.png',
-  // 	'footer': 'Powered by sneks',
-  // 	'ts': Date.now() / 1000
-  // 	}]
-  // }).catch(console.error);
-
-  // hook.send('I am now alive!');
-  // hook.send(JSON.stringify(params));
-
-  // const embed = new Discord.MessageEmbed()
-  // .setTitle('Some Title')
-  // .setColor('#0099ff');
-
-  // hook.send('Webhook test', {
-  // username: 'some-username',
-  // avatarURL: 'https://i.imgur.com/wSTFkRM.png',
-  // embeds: [embed],
-  // });
-
-  // const data = { username: 'example' };
-
-  // fetch('https://discordapp.com/api/webhooks/687279023335800877/rtsthZ8GIxsD9LYhlluZHyqOQGQtZmOkaiNLKcAHRshWLPoUZqO1_XTuOObFeJqL4zyQ', {
-  //   method: 'POST', // or 'PUT'
-  //   headers: {
-  // 	'Content-Type': 'application/json',
-  // 	"Access-Control-Allow-Origin": "*"
-  //   },
-  //   body: JSON.stringify(data),
-  // })
-  // .then(response => response.json())
-  // .then(data => {
-  //   console.debug('Success:', data);
-  // })
-  // .catch((error) => {
-  //   console.error('Error:', error);
-  // });
-
-  var reqText = {
-    content:
-      "Welcome to <:discohook:735474274458140705>Discohook, a free message and embed builder for Discord!\nThere's additional info in the embeds below, or you can use the *Clear all* button in the editor to start making embeds.\nHave questions? Discohook has a support server at <https://discohook.org/discord>.",
-    embeds: [
-      {
-        title: "What's all this?",
-        description:
-          'Discohook is a free tool that allows you to build Discord messages and embeds for use in your server.\n\nDiscohook sends messages using *webhooks*, an API feature that allows third-party services to *blindly* send messages into text channels. While webhooks can send messages, they cannot respond to user interactions such as messages.',
-        color: 7506394,
-      },
-      {
-        title: 'Text formatting how-tos',
-        description:
-          'There are a few basic styles you can take advantage of:\n*Italics*, by surrounding text in asterisks (\\*);\n**Bold**, by surrounding text in double asterisks (\\*\\*);\n__Underline__, by using double underscores (\\_\\_);\n~~Strikethrough~~, by using double tildes (\\~\\~);\n`Code`, by using backticks (\\`).',
-        color: 4437377,
-        fields: [
-          {
-            name: 'Advanced formatting',
-            value:
-              'Beyond these basic styles, you can also start a blockquote with a right-pointing angle bracket (>):\n> Hello.\nOr mark sensitive content behind a spoiler using two vertical bars (\\||):\n||This is hidden until clicked||',
-          },
-          {
-            name: 'Using server emoji',
-            value:
-              'While default emoji work like you would expect them to, server emotes are a bit more complicated.\n\nTo send a server emoji with a webhook, you must use a specific formatting code to do so. To find it, send that emoji in your server, but put a backslash (\\\\) in front of it.\n\nFor example: sending `\\:my_emoji:` would send `<:my_emoji:12345>` into chat. If you copy the output into Discohook, the emoji will show up properly.',
-          },
-          {
-            name: 'Pinging users and roles, linking to channels',
-            value:
-              "First of all, you must have enabled developer mode in Discord's settings. To do so, open Discord settings and navigate to Appearance. There will be a Developer Mode toggle under the Advanced section, which you must enable.\n\nHaving developer mode enabled, you can now right-click your target to copy their ID. Keep in mind that for users, you must right click their *avatar*, not the message.\n\nTo mention them, you have to use Discord's mention syntax:\n`<@!user_id>`, `<@&role_id>`, or `<#channel_id>`. If done correctly, they will appear as <@!143419667677970434> in the preview.",
-          },
-        ],
-      },
-      {
-        title: 'Additional magic',
-        color: 16426522,
-        fields: [
-          {
-            name: 'Image galleries',
-            value:
-              'With some special magic, you can have up to 4 images in a single embed. This feature is exclusive to webhooks, so don\'t expect to make it work on a traditional bot.\n\nAll you need is to give your embed a URL and click on the "Edit images" button inside any embed to get started.',
-          },
-          {
-            name: 'Backups',
-            value:
-              "Not only can Discohook send messages, but Discohook can also save them for later use. For when your message wasn't quite right.\nFor convenience, backups also contain the webhook URL.\n\nBackups will not be sent to the Discohook, and will always be stored offline. If you clear your browsing data, your backups will be lost *forever*!\n\nIf you want to keep your backups somewhere else, you can export backups to get a saved copy. Do keep in mind that they also include the stored webhook URL, so don't share it with anyone you don't trust.",
-          },
-        ],
-      },
-      {
-        title: 'Legal things',
-        description:
-          'To make Discohook as helpful as it can be, we use some assets derived from Discord\'s application. Discohook has no affiliation with Discord in any way, shape, or form.\n\nThe source code to this app is [available on GitHub](https://github.com/discohook/discohook) licensed under the GNU Affero General Public License v3.0.\nIf you need to contact me, you can join the [support server](https://discohook.org/discord), or send an email to "hello" at discohook.org.',
-        color: 15746887,
-      },
-    ],
-  };
-
-  // postData(webHookUrl, reqText)
-  // .then(data => {
-  //   console.debug(data); // JSON data parsed by `data.json()` call
-  // });
 }
 
-export function postTargetsToDiscord() {
-  if (!document.getElementById('targetText')) return;
+function sanitizeDiscordText(html) {
+  if (!html || typeof html !== 'string') return '';
+  return html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join('\n');
+}
 
-  var webHookUrl = url.discordTargetURL;
+function postTargetList(unlocked, locked) {
+  const parts = [];
+  const cleanUnlocked = sanitizeDiscordText(unlocked);
+  const cleanLocked = sanitizeDiscordText(locked);
+  if (cleanUnlocked) parts.push(cleanUnlocked);
+  if (cleanLocked) parts.push(cleanLocked);
+  const text = parts.join('\n');
+  if (text) {
+    postToDiscord(text);
+  }
+}
 
-  // if (DEV && webHookUrl == "")
-  // 	webHookUrl = "";
+function postTargetsToDiscord() {
+  const targetTextEl =
+    typeof document !== 'undefined' ?
+      document.getElementById('targetText')
+    : null;
+  if (!targetTextEl) return;
 
-  var selection = window.getSelection();
-  selection.removeAllRanges();
+  const webHookUrl = url?.discordTargetURL;
+  if (!webHookUrl) {
+    logger?.debug('Discord Webhook URL is not configured in options.');
+    return;
+  }
 
-  var oReq = new XMLHttpRequest();
-  var params = {
-    username: MyInfo.name,
-    avatar_url: '',
-    // 'content': document.getElementById("targetText").innerHTML.replace(/<br\s*\/?>/ig, "\n").replace(/(<([^>]+)>)/gi, "").replace(/[\w\W]+?\n+?/,"").replace(/\n.*$/, '')
-    content:
-      document
-        .getElementById('targetText')
-        .innerHTML.replace(/<br\s*\/?>/gi, '\n')
-        .replace(/(<([^>]+)>)/gi, '')
-        .replace(/\n.*$/, '') + '\n----------',
-  };
-  oReq.open('POST', webHookUrl, true);
-  // oReq.withCredentials = true;
-  oReq.setRequestHeader('Content-type', 'application/json');
-  oReq.onreadystatechange = function () {
-    console.debug(oReq.readyState, oReq.responseText);
-  };
-  oReq.send(JSON.stringify(params));
-  console.debug(
-    oReq,
-    params,
-    document
-      .getElementById('targetText')
-      .innerHTML.replace(/<br\s*\/?>/gi, '\n')
-      .replace(/(<([^>]+)>)/gi, ''),
+  const clone =
+    typeof targetTextEl.cloneNode === 'function' ?
+      targetTextEl.cloneNode(true)
+    : targetTextEl;
+  const muted =
+    typeof clone.querySelectorAll === 'function' ?
+      clone.querySelectorAll('.text-muted, span')
+    : [];
+  if (Array.isArray(muted) || (muted && typeof muted.forEach === 'function')) {
+    muted.forEach((el) => {
+      if (typeof el.remove === 'function') el.remove();
+    });
+  }
+
+  const cleanText = sanitizeDiscordText(
+    clone.innerHTML || clone.innerText || '',
   );
+  if (!cleanText) return;
+
+  const content = cleanText + '\n----------';
+  postToDiscord(content);
 }
 
-export function postGBGtoSS() {
+function postTargetGenToDiscord() {
+  const targetGenTextEl =
+    typeof document !== 'undefined' ?
+      document.getElementById('targetGenText')
+    : null;
+  if (!targetGenTextEl) return;
+
+  const webHookUrl = url?.discordTargetURL;
+  if (!webHookUrl) {
+    logger?.debug('Discord Webhook URL is not configured in options.');
+    return;
+  }
+
+  const cleanText = sanitizeDiscordText(
+    targetGenTextEl.innerHTML || targetGenTextEl.innerText || '',
+  );
+  if (!cleanText) return;
+
+  const content = cleanText + '\n----------';
+  postToDiscord(content);
+}
+
+function postGBGtoSS() {
   // console.debug(data[0]);
   var googleSheetAPI = url.sheetGuildURL;
   var copytext = document.getElementById('battlegroundText');
@@ -289,15 +211,17 @@ export function postGBGtoSS() {
   // console.debug(reqData,JSON.stringify(reqData));
 }
 
-export function postAlerttoDsicord() {
+function postAlerttoDsicord() {
   var copytext = document.getElementById('alertText').textContent;
   postToDiscord(copytext);
 }
 
-export function logToDiscord(text) {
-  var webHookUrl =
-    'https://discordapp.com/api/webhooks/690589445145231410/XQehmPTFdg82ijxxXMXMeYDuIkCuKokSDOVLztN737J60NCJ6nN3qzBlMjIxMJG0N-jq';
-  // log channel
+function logToDiscord(text) {
+  var webHookUrl = url.discordLogURL || url.discordTargetURL;
+  if (!webHookUrl) {
+    console.warn('Discord Log Webhook URL is not configured.');
+    return;
+  }
 
   var selection = window.getSelection();
   selection.removeAllRanges();
@@ -318,7 +242,7 @@ export function logToDiscord(text) {
   oReq.send(JSON.stringify(params));
 }
 
-export function postPlayerToSS(visitData) {
+function postPlayerToSS(visitData) {
   // console.debug(visitData);
   var googleSheetAPI = url.sheetGuildURL;
 
@@ -360,3 +284,23 @@ export function postPlayerToSS(visitData) {
   // oReq.send(reqData.toString);
   console.debug(reqData, JSON.stringify(reqData));
 }
+
+function setPostContext(context = {}) {
+  if (context.url !== undefined) url = context.url;
+  if (context.MyInfo !== undefined) MyInfo = context.MyInfo;
+}
+
+module.exports = {
+  postData,
+  postToDiscord,
+  sanitizeDiscordText,
+  postTargetList,
+  postTargetsToDiscord,
+  postTargetGenToDiscord,
+  postGBGtoSS,
+  postAlerttoDsicord,
+  logToDiscord,
+  postPlayerToSS,
+  setPostContext,
+};
+module.exports.default = module.exports;

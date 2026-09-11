@@ -1,6 +1,8 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= htmlWebpackPlugin.options.title %> Options</title>
     <script type="module" src="browser-polyfill.js"></script>
   </head>
@@ -8,30 +10,78 @@
   <body>
     <div class="container">
       <div class="button-info" id="status">
-        <button type="button" class="btn btn-primary" id="save">Save</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="save"
+          aria-label="Save Settings"
+        >
+          Save
+        </button>
+      </div>
+      <div class="card bg-light mb-3" id="world-card">
+        <div class="card-body py-2">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <label for="worldSelector" class="fw-bold mb-0 text-nowrap"
+              >Active Server / World:</label
+            >
+            <select
+              id="worldSelector"
+              class="form-select form-select-sm"
+              style="width: auto"
+            ></select>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-danger ms-auto"
+              id="resetWorldBtn"
+              title="Reset this world's settings to fresh install defaults"
+            >
+              Reset World
+            </button>
+          </div>
+          <div
+            id="saveToast"
+            class="small text-success mt-1"
+            style="display: none"
+          >
+            Settings saved automatically.
+          </div>
+        </div>
       </div>
       <div class="card bg-light">
         <h6 class="card-header">City Info</h6>
         <div class="card-body">
-          <label>
+          <label for="Stats">
             Show Your City Stats
             <input type="checkbox" id="Stats" />
           </label>
-          <label>
+          <label for="bonus">
             Show Current Bonus/Boosts
             <input type="checkbox" id="bonus" />
           </label>
-          <label>
+          <label for="Incidents">
             Show City Incidents
             <input type="checkbox" id="Incidents" />
           </label>
-          <label>
+          <label for="collectionTimes">
             Show Building Collection Times
             <input type="checkbox" id="collectionTimes" />
           </label>
-          <label>
+          <label for="showGalaxy">
+            Show Blue Galaxy Helper
+            <input type="checkbox" id="showGalaxy" />
+          </label>
+          <label for="army">
+            Show Daily Units
+            <input type="checkbox" id="army" />
+          </label>
+          <label for="visit">
             Show Other Player Stats
             <input type="checkbox" id="visit" />
+          </label>
+          <label for="showGuildOverview">
+            Show Guild Overview
+            <input type="checkbox" id="showGuildOverview" />
           </label>
         </div>
       </div>
@@ -39,15 +89,15 @@
         <h6 class="card-header">GB Info</h6>
         <div class="card-body">
           <div class="card-text">
-            <label>
+            <label for="Donation">
               Show GB Donation Helper
               <input type="checkbox" id="Donation" />
             </label>
-            <label>
+            <label for="donationGuildPosition">
               Prefix with Guild #
               <input type="checkbox" id="donationGuildPosition" />
             </label>
-            <label>
+            <label for="donationSuffix">
               Suffix with this text
               <input
                 type="text"
@@ -57,11 +107,11 @@
                 size="20"
               />
             </label>
-            <label>
+            <label for="hideUnsafe">
               Hide Unsafe Spots
               <input type="checkbox" id="hideUnsafe" />
             </label>
-            <label>
+            <label for="donationPercent">
               Donation %
               <input
                 class="form-control"
@@ -72,19 +122,19 @@
                 max="200"
               />
             </label>
-            <label>
+            <label for="GBRewards">
               Show GB Rewards
               <input type="checkbox" id="GBRewards" />
             </label>
-            <label>
+            <label for="GBDonors">
               Show Current Donors
               <input type="checkbox" id="GBDonors" />
             </label>
-            <label>
+            <label for="Invested">
               Show Total FP Invested
               <input type="checkbox" id="Invested" />
             </label>
-            <label>
+            <label for="GBInfo">
               Show Current Level
               <input type="checkbox" id="GBInfo" />
             </label>
@@ -92,46 +142,40 @@
         </div>
       </div>
       <div class="card bg-light">
-        <h6 class="card-header">GvG</h6>
-        <div class="card-body">
-          <label>
-            Show GvG Age Status
-            <input type="checkbox" id="GvG" />
-          </label>
-          <label>
-            Show Army Stats
-            <input type="checkbox" id="army" />
-          </label>
-        </div>
-      </div>
-      <div class="card bg-light">
         <h6 class="card-header">Guild Battlegrounds</h6>
         <div class="card-body">
-          <label>
+          <label for="Battleground">
             Show Member Activity
             <input type="checkbox" id="Battleground" />
           </label>
-          <label>
+          <label for="leaderboard">
             Show Leaderboard
             <input type="checkbox" id="leaderboard" />
           </label>
-          <label>
+          <label for="buildingCosts">
             Show Building Costs
             <input type="checkbox" id="buildingCosts" />
           </label>
-          <label>
+          <label for="GBGrewards">
             Show Rewards
             <input type="checkbox" id="GBGrewards" />
           </label>
-          <label>
+          <label for="GBGshowSC">
             Show # Siege Camps
             <input type="checkbox" id="GBGshowSC" />
           </label>
-          <label>
+          <label for="GBGprovinceTime">
             Show Province Opening Time
             <input type="checkbox" id="GBGprovinceTime" />
           </label>
-          <label>
+          <label for="GBGtimeMode">
+            Target Generator Time Mode
+            <select class="form-control" id="GBGtimeMode">
+              <option value="server">Server Time</option>
+              <option value="local">Local Time</option>
+            </select>
+          </label>
+          <label for="targetText">
             Add text to target generator
             <input
               type="text"
@@ -141,7 +185,7 @@
               size="40"
             />
           </label>
-          <label>
+          <label for="targets">
             Search message topics for targets
             <input
               type="text"
@@ -156,11 +200,15 @@
       <div class="card bg-light">
         <h6 class="card-header">Guild Expedition</h6>
         <div class="card-body">
-          <label>
-            Show Member Contribution
+          <label for="InternationalExpedition">
+            Show GE Championship
+            <input type="checkbox" id="InternationalExpedition" />
+          </label>
+          <label for="Expedition">
+            Show GE Leaderboard
             <input type="checkbox" id="Expedition" />
           </label>
-          <label>
+          <label for="GErewards">
             Show Rewards
             <input type="checkbox" id="GErewards" />
           </label>
@@ -169,15 +217,15 @@
       <div class="card bg-light">
         <h6 class="card-header">Other Info:</h6>
         <div class="card-body">
-          <label>
+          <label for="settlement">
             Show Cultural Settlement
             <input type="checkbox" id="settlement" />
           </label>
-          <label>
+          <label for="rewards">
             Show Rewards
             <input type="checkbox" id="rewards" />
           </label>
-          <label>
+          <label for="goods">
             Show Goods Inventory
             <input type="checkbox" id="goods" />
           </label>
@@ -186,15 +234,15 @@
       <div class="card bg-light">
         <h6 class="card-header">List of players when game launches</h6>
         <div class="card-body">
-          <label>
+          <label for="Friends">
             Show Friends
             <input type="checkbox" id="Friends" />
           </label>
-          <label>
+          <label for="Guild">
             Show Guild
             <input type="checkbox" id="Guild" />
           </label>
-          <label>
+          <label for="Hood">
             Show Hood
             <input type="checkbox" id="Hood" />
           </label>
@@ -203,35 +251,35 @@
       <div class="card bg-light">
         <h6 class="card-header">Guild Admin</h6>
         <div class="card-body">
-          <label>
+          <label for="Treasury">
             Show Treasury
             <input type="checkbox" id="Treasury" />
           </label>
-          <label>
+          <label for="contributions">
             Show Treasury Contributions
             <input type="checkbox" id="contributions" />
           </label>
-          <label>
+          <label for="logs">
             Show Treasury Logs
             <input type="checkbox" id="logs" />
           </label>
         </div>
       </div>
       <div class="card bg-light" id="urlDiv">
-        <h6 class="card-header">Post to Guild Discord/Sheets</h6>
+        <h6 class="card-header">Post to Guild Discord</h6>
         <div class="card-body">
-          <label>
+          <label for="discordTargetURL">
             Discord Webhook URL - GBG Targets
             <input
-              type="url"
+              type="password"
               class="form-control"
               id="discordTargetURL"
               value=""
               size="40"
-              pattern="https?://.+"
+              autocomplete="off"
             />
           </label>
-          <label>
+          <label for="sheetGuildURL" style="display: none">
             Google Sheet URL - Guild Info
             <input
               type="url"
@@ -260,10 +308,43 @@
       <div class="card bg-light">
         <h6 class="card-header">Other settings</h6>
         <div class="card-body">
-          <label>
+          <label for="minSize">
             Minimum panel height
             <input class="form-control" type="number" id="minSize" value="50" />
           </label>
+        </div>
+      </div>
+      <div class="card bg-light">
+        <h6 class="card-header">Date &amp; Time formatting</h6>
+        <div class="card-body">
+          <label for="dateTimeFormat">Date &amp; Time Format</label>
+          <select
+            class="form-control"
+            id="dateTimeFormat"
+            name="dateTimeFormat"
+          >
+            <option value="DD.MM.YYYY HH:mm:ss">
+              EU 24h (07.09.2026 15:05:00)
+            </option>
+            <option value="DD/MM/YYYY HH:mm:ss">
+              UK 24h (07/09/2026 15:05:00)
+            </option>
+            <option value="MM/DD/YYYY hh:mm:ss A">
+              US 12h (09/07/2026 03:05:00 PM)
+            </option>
+            <option value="custom">Custom Format...</option>
+          </select>
+          <div id="customPatternDiv" class="mt-2" style="display: none">
+            <label for="customDateTimePattern"
+              >Custom Pattern (tokens: YYYY, MM, DD, HH, hh, mm, ss, A)</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="customDateTimePattern"
+              placeholder="DD.MM.YYYY HH:mm:ss"
+            />
+          </div>
         </div>
       </div>
       <div class="card bg-light">

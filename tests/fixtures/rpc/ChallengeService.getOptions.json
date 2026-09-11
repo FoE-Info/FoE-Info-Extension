@@ -1,0 +1,20 @@
+{
+ "options": [],
+ "selectableOptions": [],
+ "fixedRewards": [
+  {
+   "type": "resource",
+   "subType": "castle_points",
+   "amount": 100,
+   "id": "resource#castle_points#100",
+   "name": "100 Castle Points",
+   "description": "Castle Points are required to level up in the Castle System.",
+   "iconAssetName": "castle_points",
+   "flags": [],
+   "boostValue": 1,
+   "__class__": "GenericReward"
+  }
+ ],
+ "expiresAt": 1789023600,
+ "__class__": "ChallengeOptions"
+}

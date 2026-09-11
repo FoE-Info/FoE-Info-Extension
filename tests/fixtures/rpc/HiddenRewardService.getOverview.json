@@ -1,0 +1,284 @@
+{
+ "hiddenRewards": [
+  {
+   "hiddenRewardId": 330643915,
+   "type": "incident_overgrowth",
+   "startTime": 1788977736,
+   "expireTime": 1789064136,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330643917,
+   "type": "incident_fruit_vendor",
+   "startTime": 1788986310,
+   "expireTime": 1789072710,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "animated": true,
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330643922,
+   "type": "incident_flotsam",
+   "startTime": 1788965384,
+   "expireTime": 1789051784,
+   "position": {
+    "context": "shore",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330643924,
+   "type": "incident_sos",
+   "startTime": 1788969800,
+   "expireTime": 1789056200,
+   "position": {
+    "context": "shore",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719272,
+   "type": "incident_fallen_tree_1x1",
+   "startTime": 1789038866,
+   "expireTime": 1789125266,
+   "position": {
+    "context": "cityRoadSmall",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719273,
+   "type": "incident_stick_hut",
+   "startTime": 1789024614,
+   "expireTime": 1789111014,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "uncommon",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719274,
+   "type": "incident_sos",
+   "startTime": 1789049354,
+   "expireTime": 1789135754,
+   "position": {
+    "context": "shore",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719275,
+   "type": "incident_sos",
+   "startTime": 1789072698,
+   "expireTime": 1789159098,
+   "position": {
+    "context": "shore",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719276,
+   "type": "incident_clothesline",
+   "startTime": 1789061251,
+   "expireTime": 1789147651,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "animated": true,
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719277,
+   "type": "incident_pothole_1x1",
+   "startTime": 1789091458,
+   "expireTime": 1789177858,
+   "position": {
+    "context": "cityRoadSmall",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719278,
+   "type": "incident_castaway",
+   "startTime": 1789043109,
+   "expireTime": 1789129509,
+   "position": {
+    "context": "water",
+    "__class__": "HiddenRewardPosition"
+   },
+   "animated": true,
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719279,
+   "type": "incident_sculptor",
+   "startTime": 1789010603,
+   "expireTime": 1789097003,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "uncommon",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719280,
+   "type": "incident_fisherman",
+   "startTime": 1789036993,
+   "expireTime": 1789123393,
+   "position": {
+    "context": "water",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719281,
+   "type": "incident_pothole_1x1",
+   "startTime": 1789010466,
+   "expireTime": 1789096866,
+   "position": {
+    "context": "cityRoadSmall",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719282,
+   "type": "incident_fisherman",
+   "startTime": 1789050054,
+   "expireTime": 1789136454,
+   "position": {
+    "context": "water",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719283,
+   "type": "incident_overgrowth",
+   "startTime": 1789037581,
+   "expireTime": 1789123981,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719284,
+   "type": "incident_fallen_tree_1x1",
+   "startTime": 1789009068,
+   "expireTime": 1789095468,
+   "position": {
+    "context": "cityRoadSmall",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719285,
+   "type": "incident_fisherman",
+   "startTime": 1789023976,
+   "expireTime": 1789110376,
+   "position": {
+    "context": "water",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719286,
+   "type": "incident_beehive",
+   "startTime": 1789013680,
+   "expireTime": 1789100080,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "common",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719287,
+   "type": "incident_chest",
+   "startTime": 1789005875,
+   "expireTime": 1789081200,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "rare",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719288,
+   "type": "incident_chest",
+   "startTime": 1789005875,
+   "expireTime": 1789081200,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "rare",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719289,
+   "type": "incident_chest",
+   "startTime": 1789005875,
+   "expireTime": 1789081200,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "rare",
+   "__class__": "HiddenReward"
+  },
+  {
+   "hiddenRewardId": 330719290,
+   "type": "incident_chest",
+   "startTime": 1789005875,
+   "expireTime": 1789081200,
+   "position": {
+    "context": "nature",
+    "__class__": "HiddenRewardPosition"
+   },
+   "rarity": "rare",
+   "__class__": "HiddenReward"
+  }
+ ],
+ "__class__": "HiddenRewardOverview"
+}
