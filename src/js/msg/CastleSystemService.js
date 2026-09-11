@@ -7,9 +7,6 @@
  */
 
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
-const {
-  getCastleBoostsForStage,
-} = require('../calc/boosts/CastleBoostCalculator.js');
 
 let logger = null;
 try {
@@ -162,16 +159,28 @@ class CastleSystemService {
    */
   getBoostsForStage(stage) {
     const s = parseInt(stage, 10);
-    const boosts = getCastleBoostsForStage(s);
-    if (!boosts) {
+    const stageBoostMap = {
+      0: 0,
+      1: 4,
+      2: 9,
+      3: 20,
+      4: 30,
+      5: 35,
+      6: 45,
+      7: 60,
+    };
+    if (!(s in stageBoostMap)) {
       logger.debug('getBoostsForStage unknown stage', { stage });
       return null;
     }
-    logger.debug('getBoostsForStage resolved', {
-      stage: s,
-      boost: boosts.attackerAtt,
-    });
-    return boosts;
+    const boost = stageBoostMap[s];
+    logger.debug('getBoostsForStage resolved', { stage: s, boost });
+    return {
+      attackerAtt: boost,
+      attackerDef: boost,
+      defenderAtt: boost,
+      defenderDef: boost,
+    };
   }
 
   /**
@@ -184,7 +193,8 @@ class CastleSystemService {
     if (!entity?.cityentity_id) return null;
     const match = entity.cityentity_id.match(/CastleSystem(\d+)/);
     if (!match) return null;
-    return getCastleBoostsForStage(parseInt(match[1], 10));
+    const stage = parseInt(match[1], 10);
+    return this.getBoostsForStage(stage);
   }
 }
 

@@ -99,7 +99,7 @@ function renderGbInfoPanel(
     const formattedReady =
       typeof dateUtils.formatDateTime === 'function' ?
         dateUtils.formatDateTime(readyAt)
-      : new Date(readyAt * 1000).toLocaleString();
+      : '';
     if (formattedReady) {
       html += `<div>Ready: ${formattedReady}</div>`;
     }

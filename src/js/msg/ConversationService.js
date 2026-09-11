@@ -167,7 +167,7 @@ function renderTargetMessage(message) {
     formattedDate =
       typeof dateUtils.formatTime === 'function' ? dateUtils.formatTime(rawDate)
       : dayjs ? dayjs(rawDate * 1000).format('HH:mm:ss')
-      : new Date(rawDate * 1000).toLocaleTimeString();
+      : '';
   } else if (rawDate) {
     formattedDate = String(rawDate);
   } else {

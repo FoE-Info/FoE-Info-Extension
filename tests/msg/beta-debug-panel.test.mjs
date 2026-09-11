@@ -116,10 +116,7 @@ test('debug beta panel collapses, closes, and accumulates inner text', () => {
 
 test('startup beta branches tag unresolved names and render resolved names', () => {
   const source = fs.readFileSync(
-    new URL(
-      '../../src/js/calc/entities/CityEntityHarvestCalculator.js',
-      import.meta.url,
-    ),
+    new URL('../../src/js/calc/CityMapEntityProcessor.js', import.meta.url),
     'utf8',
   );
   assert.equal(

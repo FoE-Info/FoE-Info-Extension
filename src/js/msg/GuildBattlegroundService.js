@@ -30,7 +30,7 @@ import {
 } from '../ui/gbgProvinceView.js';
 import { renderBattlegroundResultCard } from '../ui/renderBattlegroundResultCard.js';
 import { renderTargetGeneratorPanel } from '../ui/renderTargetGeneratorCard.js';
-import { formatDateTime } from '../utils/date.js';
+import { formatDateTime, formatInTimeZone } from '../utils/date.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
 import {
@@ -525,14 +525,11 @@ export function timeGBG(
     hour12: false,
   };
 
-  const formatted = d
-    .toLocaleTimeString(config.locale, {
-      timeZone: config.timeZone,
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: config.hour12,
-    })
-    .replace(/\u202f/g, ' ');
+  const formatted = formatInTimeZone(d, {
+    locale: config.locale,
+    timeZone: config.timeZone,
+    hour12: config.hour12,
+  });
 
   return `@ ${formatted}`;
 }
