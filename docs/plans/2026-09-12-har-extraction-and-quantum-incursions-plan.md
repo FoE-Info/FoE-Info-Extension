@@ -1,115 +1,175 @@
-# Plan: HAR Metadata Extraction & Quantum Incursions (QI) Feature Architecture
+# Plan: Comprehensive Live HAR Ingestion, Multi-Domain Verification & QI Architecture
 
 **Date**: 2026-09-12  
 **Harness**: OpenCode Execution Task  
-**Delegation Target**: OpenCode Agent (Domain & Metadata Specialist)  
-**Safety Invariant**: `docs/har/*.har` must **NEVER** be tracked or committed to Git (`.gitignore` enforced).
+**Delegation Target**: OpenCode Multi-Domain Squad  
+**Safety Invariant**: `docs/har/*.har` must **NEVER** be committed to Git (`.gitignore` strictly enforced).
 
 ---
 
-## 1. Context & Objective
+## 1. Executive Summary & The 39 Live Network Captures
 
-The user captured 39 live network `.har` files (2.0 GB total) in `docs/har/` with descriptive filenames covering core gameplay actions:
+The user captured **39 authentic live network `.har` files (2.0 GB total)** in `docs/har/`, recording real player interactions across the entire FoE game lifecycle.
 
-- **Quantum Incursions (QI)**: map entry, settlement harvest, rankings, member contributions, scoreboard, node focus/stop signals.
-- **Guild Battlegrounds (GBG)**: building creation/destruction, diamond camp rush, sector targeting, stop signs.
-- **Guild & Treasury**: guild overview, member lists, treasury bags, 10 pages of treasury donation history.
-- **Player Visits & City Maps**: 13 high-era player cities.
-- **Login & Social**: startup sequence, marketplace trades, conversation categories.
+Rather than being limited to Quantum Incursions, this capture dataset provides real-world ground truth for every major subsystem we have modernized, along with the unreleased QI mode:
 
-### Goals for OpenCode:
-
-1. **Extract Network Traffic to Offline Metadata**:
-   - Ingest all 39 HAR files into `../metadata-store/` (`raw_rpc_capture.json`, `rpc/`, `entities/`).
-   - Extract targeted QI RPC contracts into `tests/fixtures/rpc/` for offline mock testing.
-2. **Reverse Engineer the QI Domain Model**:
-   - Document InnoGames `GuildRaids*` RPC request/response schemas.
-3. **Architect the Quantum Incursions Extension Support**:
-   - Design the protocol routing, state caching, calculation engines, and UI panels.
-
----
-
-## 2. InnoGames QI Protocol Mapping (from Captures)
-
-Reverse-engineered from the captured HAR network logs:
-
-| InnoGames Service              | Method                      | Payload Contents & Domain Role                                                                               |
-| :----------------------------- | :-------------------------- | :----------------------------------------------------------------------------------------------------------- |
-| **`GuildRaidsService`**        | `getState`                  | Current season ID, raid difficulty (1–10), action point balance & cap, quantum shard bank, raid status.      |
-| **`GuildRaidsService`**        | `getMemberActivityOverview` | Guild member leaderboard: player names, total actions spent, node progress points, contribution score.       |
-| **`GuildRaidsMapService`**     | `getOverview`               | Active incursion map topology: node IDs, node types (combat, negotiation, donation, boss), clearance status. |
-| **`GuildRaidsMapService`**     | `getNodeExtendedInfo`       | Specific node trial details: enemy army composition, negotiation good requirements, reward bundles.          |
-| **`GuildRaidsMapService`**     | `setNodeTarget`             | Focus signals: low focus, medium focus, high focus, stop sign (`targetType`, `nodeId`, `guildId`).           |
-| **`GuildRaidsOutpostService`** | `getOutpost`                | Quantum Settlement city map: buildings, production state, shard costs, expansion grid.                       |
-
----
-
-## 3. Execution Phase 1: Automated HAR Ingestion & Metadata Store Update
-
-OpenCode should create a dedicated script `scripts/ingest-hars-to-metadata.mjs` to parse all `.har` files:
-
-```bash
-node scripts/ingest-hars-to-metadata.mjs
+```text
+docs/har/ (39 files, 2.0 GB)
+├── [Core Login & City Map]
+│   └── en7 login.har (183 MB: full startup, player VO, active boosts, inventory, city entities)
+├── [13 Visited Player Cities]
+│   ├── visit bootnreboot.har, Visit Crispy Frisbee.har, visit EllieMayhem.har
+│   ├── visit Eucilid the Fair.har, visit gat168.har, visit JonSunset.har
+│   ├── visit Monster Jack.har, visit Phil knows best.har, Visit Plaristocrates.har
+│   ├── visit -Queenie-.har, visit realblackrod.har, visit Zeno the Red 170.har
+│   └── scroll top of hood, visit Leon the baggings har.har
+├── [Guild Battlegrounds (GBG) Actions]
+│   ├── open GBG.har
+│   ├── check GBG Leaderboard and Member activity.har
+│   ├── opened a empty sector with no buildings in it.har
+│   ├── built 2 buildings in empty sector.har (building construction RPCs)
+│   ├── destroyed 2 GBG Buildings.har (destruction & refunds)
+│   ├── camps rushed with diamonds by me (not sure if this is logged in network).har
+│   ├── placed multiple markers on the GBG Map.har (low, medium, high focus)
+│   ├── placed stop signs on multiple sectors.har (signal set)
+│   ├── removed markers from the GBG Map.har (signal clear)
+│   └── removed stop signs from multiple sectors.har (signal clear)
+├── [Guild Overview & Treasury Behavior]
+│   ├── open Guild Overview.har
+│   ├── open Guild Overview - then members.har
+│   ├── open Guild Overview - then members - then treasury.har (treasury resource bags)
+│   └── open Guild Overview - ... - then 10 pages of guild contributions to treasury.har (paginated logs)
+├── [Economy & Social Center]
+│   ├── open inventory.har (item storage, selection kits, fragments)
+│   ├── open marketplace.har (TradeService.getTradeOffers)
+│   ├── open guild message centre.har (ConversationService threads)
+│   └── open social message centre.har
+└── [Quantum Incursions (QI) — New Territory]
+    ├── entered quantum incursions map.har (GuildRaidsMapService)
+    ├── entered Quantum Settlement.har (GuildRaidsOutpostService)
+    ├── collected coins production in quantum settlement.har
+    ├── opened quantum rankings.har (GuildRaidsService.getState & rankings)
+    ├── opened quantum ranking then member contributions.har (GuildRaidsService.getMemberActivityOverview)
+    ├── opened quantum settlement scoreboard.har
+    └── placed low focus, medium focus, high focus, stop sign in QI map on blue then red.har
 ```
 
-### Extraction Specifications:
+---
 
-1. **`../metadata-store/rpc/`**:
-   - For every RPC in `har.log.entries` matching `/game/json`:
-     - Save response payload to `../metadata-store/rpc/<requestClass>.<requestMethod>.json`.
-     - Specifically capture all `GuildRaidsService.*`, `GuildRaidsMapService.*`, and `GuildRaidsOutpostService.*`.
-2. **`../metadata-store/entities/`**:
-   - Extract building entities from `CityMapService.getCityMap` and `CityMapService.getEntities` across all visited cities.
-   - Index missing buildings into `../metadata-store/manifest.json`.
-3. **`tests/fixtures/rpc/`**:
-   - Save clean, anonymized test fixtures for QI services:
-     - `tests/fixtures/rpc/GuildRaidsService.getState.json`
-     - `tests/fixtures/rpc/GuildRaidsMapService.getOverview.json`
-     - `tests/fixtures/rpc/GuildRaidsService.getMemberActivityOverview.json`
-     - `tests/fixtures/rpc/GuildRaidsOutpostService.getOutpost.json`
-4. **Re-index Metadata Graph**:
+## 2. Phase 1: Automated Multi-Domain HAR Ingestion into `metadata-store`
+
+OpenCode must implement an ingestion runner `scripts/ingest-hars-to-metadata.mjs` that streams through all 39 `.har` files without loading 2 GB into memory at once:
+
+### Ingestion Requirements:
+
+1. **`../metadata-store/raw_rpc_capture.json`**:
+   - Merge all unique JSON-RPC request/response pairs from all 39 files into the master capture ledger.
+2. **`../metadata-store/rpc/<requestClass>.<requestMethod>.json`**:
+   - Save or update authoritative response schemas for:
+     - `GuildBattleground*` (buildings, destroy, signals, leaderboards, state)
+     - `ClanService` (`getTreasuryBag`, paginated treasury contributions)
+     - `TradeService` (`getTradeOffers`)
+     - `GuildRaids*` (`GuildRaidsService`, `GuildRaidsMapService`, `GuildRaidsOutpostService`)
+     - `OtherPlayerService` (`visitPlayer`, `getOtherPlayerVO`)
+3. **`../metadata-store/entities/<entity_id>.json`**:
+   - Extract any newly discovered building entity definitions across the 13 visited cities and update `../metadata-store/manifest.json`.
+4. **`tests/fixtures/visits/*.json`**:
+   - Replace or expand the visit fixtures with clean, sanitized JSON representations of the 13 visited cities for regression testing against `VisitedCityStatsCalculator`.
+5. **Re-index the Knowledge Graph**:
    ```bash
    npm run graph:metadata:update
    ```
 
 ---
 
-## 4. Execution Phase 2: Quantum Incursions (QI) Feature Architecture
+## 3. Phase 2: Feature-by-Feature Ground-Truth Hardening
 
-To support QI cleanly under our **Modular Architecture** ($\le 600$ lines/file, pure calc, decoupled UI):
+Using the extracted JSON payloads, OpenCode will audit and verify our existing features against the user's recorded actions:
 
-```text
-src/js/
-├── msg/
-│   ├── GuildRaidsService.js          # Inbound RPC handler for getState & getMemberActivityOverview (<= 350 lines)
-│   ├── GuildRaidsMapService.js       # Map overview, node state & target generator signals (<= 350 lines)
-│   └── GuildRaidsOutpostService.js   # Settlement city grid & production tracking (<= 250 lines)
-├── calc/
-│   ├── QuantumIncursionsCalculator.js# Pure math: Action point regen time, shard economics, member rankings
-│   └── QuantumSettlementCalculator.js# Production density per tile, quantum goods balance
-├── protocol/routes/
-│   └── guildRaidsRoutes.js           # Route table registered in legacyBridge / MessageDispatcher
-├── state/
-│   └── quantumState.js               # Reactive in-memory state for active QI season
-└── ui/
-    ├── renderQuantumOverviewPanel.js # Panel 1: Season status, AP timer countdown, Shard counter
-    ├── renderQuantumTargetPanel.js   # Panel 2: Priority target nodes, stop signs, boss clearance
-    └── renderQuantumLeaderboardPanel.js # Panel 3: Guild member contribution table (sortable by progress)
-```
+### Track 2.1: GBG Building Construction, Destruction & Rushed Camps
+
+- **Capture Evidence**: `built 2 buildings...`, `destroyed 2 GBG Buildings...`, `camps rushed with diamonds...`.
+- **Action**: Verify that `GuildBattlegroundBuildingService` and `GuildBattlegroundService.js` parse the construction costs, active camp build timers, and immediate updates without UI desync or requiring manual panel refresh.
+
+### Track 2.2: GBG Signals (Focus Markers & Stop Signs)
+
+- **Capture Evidence**: `placed multiple markers...`, `placed stop signs...`, `removed markers...`, `removed stop signs...`.
+- **Action**: Check `GbgSignalPayloadHandler.js` and `renderTargetGeneratorCard.js` against the exact payload format emitted when markers and stop signs are placed or removed across multiple sectors.
+
+### Track 2.3: Guild Treasury Bags & 10 Pages of Member Donations
+
+- **Capture Evidence**: `open Guild Overview - then members - then treasury - then 10 pages...`.
+- **Action**: Verify `ClanService.getTreasuryBag` in `ResourceService.js` and test paginated donation logging against `renderGuildPanel.js` table virtualization/sorting.
+
+### Track 2.4: Visited Player City Stats Calculator
+
+- **Capture Evidence**: 13 visited player cities covering diverse eras and military bonus setups.
+- **Action**: Run `tests/fn/VisitedCityStatsCalculator.test.mjs` against the newly ingested city fixtures to verify calculation accuracy across era borders, Arc boosts, and historical ally rooms.
+
+### Track 2.5: Marketplace & Inventory Inspection
+
+- **Capture Evidence**: `open marketplace.har`, `open inventory.har`.
+- **Action**: Check `TradeService.getTradeOffers` parsing for fair trade ratios and inventory item aggregation.
 
 ---
 
-## 5. Verification Gate & Invariants for OpenCode
+## 4. Phase 3: Quantum Incursions (QI) Architecture & Panel Roadmap
 
-1. **Zero HAR Git Pollution**:
-   - Run `git status` and verify `docs/har/` remains untracked.
-   - Never run `git add -f` on any `.har` file.
-2. **Purity & Line Caps**:
-   - All newly created modules in `src/js/msg/`, `calc/`, `ui/` must be $\le 600$ lines.
-   - Pure math in `src/js/calc/` must have zero DOM or jQuery references.
-3. **Test-Driven Verification**:
-   - Add unit tests for `GuildRaidsService`, `GuildRaidsMapService`, and `QuantumIncursionsCalculator` under `tests/msg/` and `tests/calc/` reading from `tests/fixtures/rpc/`.
-   - Run full 5-stage gate:
-     ```bash
-     npm run verify
-     ```
+With 7 rich QI captures covering every aspect of Quantum Incursions, OpenCode will architect the first comprehensive QI suite in FoE-Info:
+
+### A. InnoGames QI Protocol Specifications
+
+```mermaid
+flowchart TD
+  subgraph InnoGames QI Protocol
+    GRS["GuildRaidsService<br/>getState / memberActivity"]
+    GRMS["GuildRaidsMapService<br/>getOverview / nodeInfo / setTarget"]
+    GROS["GuildRaidsOutpostService<br/>getOutpost (Settlement)"]
+  end
+
+  subgraph FoE-Info Handlers
+    H1["src/js/msg/GuildRaidsService.js"]
+    H2["src/js/msg/GuildRaidsMapService.js"]
+    H3["src/js/msg/GuildRaidsOutpostService.js"]
+  end
+
+  subgraph State & Pure Calc
+    State["src/js/state/quantumState.js"]
+    Calc["src/js/calc/QuantumIncursionsCalculator.js"]
+  end
+
+  subgraph UI Panels
+    P1["renderQuantumOverviewPanel.js<br/>(AP Countdown, Shards, Season)"]
+    P2["renderQuantumTargetPanel.js<br/>(Node Focus, Stop Signs, Bosses)"]
+    P3["renderQuantumLeaderboardPanel.js<br/>(Member Actions, Progress)"]
+  end
+
+  GRS --> H1 --> State --> Calc --> P1
+  GRMS --> H2 --> State --> Calc --> P2
+  GROS --> H3 --> State --> Calc --> P3
+```
+
+### B. Modular Slices for Implementation:
+
+1. **Slice 1: Route Dispatch & Mock Fixtures**:
+   - Add `guildRaidsRoutes.js` under `src/js/protocol/routes/`.
+   - Wire into `MessageDispatcher.js` and `legacyBridge.js`.
+2. **Slice 2: Pure Calculation Engine (`QuantumIncursionsCalculator.js`)**:
+   - Action Point regeneration curves (AP cap, time to full recharge).
+   - Quantum Shard economy balances and settlement production yields.
+3. **Slice 3: Modular Panel Renderers in `src/js/ui/`**:
+   - `#quantumOverview`: Live countdown timer for Action Points, difficulty level, shard bank.
+   - `#quantumTargets`: Focused target nodes, stop sign indicators, boss status.
+   - `#quantumLeaderboard`: Guild member contribution rankings.
+
+---
+
+## 5. Verification Gate & Invariants
+
+1. **Zero HAR Git Pollution**: Verify `git status` after all ingestion scripts run. No `.har` files may ever appear in Git staging.
+2. **Line Caps**: All new files in `src/js/msg/`, `calc/`, `ui/` must remain $\le 600$ lines.
+3. **BigNumber Math**: All shard and score aggregations must preserve exact precision.
+4. **Full 5-Stage Gate**:
+   ```bash
+   npm run verify
+   ```
