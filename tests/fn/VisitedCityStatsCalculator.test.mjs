@@ -190,6 +190,53 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
   });
 
   await t.test(
+    'accepts an injected castle boost resolver without importing msg layer',
+    () => {
+      const calls = [];
+      const calc = new VisitedCityStatsCalculator();
+      const stats = calc.calculateVisitedCityStats({
+        entities: [{ id: 1, cityentity_id: 'V_AllAge_CastleSystem4' }],
+        castleBoostResolver: (entity) => {
+          calls.push(entity.cityentity_id);
+          return {
+            attackerAtt: 100,
+            attackerDef: 100,
+            defenderAtt: 100,
+            defenderDef: 100,
+          };
+        },
+      });
+      assert.deepEqual(calls, ['V_AllAge_CastleSystem4']);
+      assert.equal(stats.military.red.base.att.toNumber(), 100);
+
+      const ctorCalls = [];
+      const ctorCalc = new VisitedCityStatsCalculator(undefined, (entity) => {
+        ctorCalls.push(entity.cityentity_id);
+        return {
+          attackerAtt: 22,
+          attackerDef: 22,
+          defenderAtt: 22,
+          defenderDef: 22,
+        };
+      });
+      const ctorStats = ctorCalc.calculateVisitedCityStats({
+        entities: [{ id: 2, cityentity_id: 'V_AllAge_CastleSystem7' }],
+      });
+      assert.deepEqual(ctorCalls, ['V_AllAge_CastleSystem7']);
+      assert.equal(ctorStats.military.red.base.att.toNumber(), 22);
+
+      const source = fs.readFileSync(
+        new URL(
+          '../../src/js/calc/VisitedCityStatsCalculator.js',
+          import.meta.url,
+        ),
+        'utf8',
+      );
+      assert.equal(source.includes("require('../msg/"), false);
+    },
+  );
+
+  await t.test(
     'skips entities with UnconnectedState (unconnected buildings)',
     () => {
       const store = new MetadataStore();
