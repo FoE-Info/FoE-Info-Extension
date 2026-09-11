@@ -1,6 +1,6 @@
 ---
-trigger: model_decision
-description: Directory organization, workspace scoping, worktrees, and artifact boundaries.
+trigger: always_on
+description: Directory organization, workspace scoping, and artifact management rules for FoE-Info-Extension.
 ---
 
 # Rule: Workspace & Repository Organization

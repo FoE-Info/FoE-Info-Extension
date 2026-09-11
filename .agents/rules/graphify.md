@@ -1,14 +1,32 @@
 ---
 trigger: always_on
-description: Query graphify knowledge graphs before source search and maintain AST freshness.
+description: Query graphify knowledge graphs (MCP or CLI) for codebase architecture, module relationships, or FoE entity questions.
 ---
 
-# Rule: Knowledge Graph Integration (Graphify)
+## graphify
 
-1. **Query-First Protocol**: Always query Graphify before wide text searches or reading multiple source files for architecture, module relationships, or game data.
-2. **Mechanical Hook Enforcement**: `.agents/scripts/graphify-guard.mjs` blocks broad source searches without a shared filesystem query stamp (<1800s).
-3. **Lazy-Loaded MCP Invocation**: Call `call_mcp_tool` on `graphify-foe-info`, `graphify-metadata-store`, `graphify-forge-hammer`, `graphify-low-tool`, or `graphify-foe-info-original` (`query_graph`, `get_node`, `get_neighbors`, `shortest_path`, `god_nodes`).
-4. **Autonomous Deep Exploration**: Delegate architectural or comparative mapping to `graph-knowledge-explorer` or peer comparators (`forge-hammer-comparator`, `low-tool-comparator`, `foe-info-original-comparator`).
-5. **AST Freshness**: After modifying code files, run `npm run graph:foe-info:ast` to update the graph AST.
+This project integrates Graphify knowledge graphs at `graphify-out/`.
 
-*(See the `graphify` skill for CLI fallback commands, exports, and tool reference).*
+Rules:
+- Query-First Protocol: For codebase or architecture questions, always consult Graphify BEFORE performing wide grep searches or reading multiple source files.
+- **Mechanical Hook Enforcement**: When invoked by its host, `.agents/scripts/graphify-guard.mjs` blocks broad source searches without a shared filesystem stamp younger than 1800 seconds. Its pre-tool handler also stamps Graphify commands, including updates; this is not proof of a successful query in the current session.
+- **MCP Invocation (Lazy Loaded)**: Call via `call_mcp_tool` with `ServerName: "graphify-foe-info"` (or `graphify-metadata-store` / `graphify-forge-hammer` / `graphify-low-tool` / `graphify-foe-info-original`):
+  - `query_graph`: semantic context & broad question answering (`{"question": "<question>"}`)
+  - `get_node`: inspect symbol/class/function definition and details (`{"label": "<name>"}`)
+  - `get_neighbors`: inspect immediate callers, callees, and dependencies (`{"label": "<name>"}`)
+  - `shortest_path`: trace connection path between two modules (`{"source": "<A>", "target": "<B>"}`)
+  - `god_nodes`: identify core high-degree architectural hubs (`{"top_n": 10}`)
+  - `get_community`: inspect architectural clusters and boundaries (`{"community_id": <id>}`)
+  - `graph_stats`: inspect graph density, total nodes, and edge counts
+  - `list_prs` / `get_pr_impact` / `triage_prs`: PR impact and blast radius analysis
+- **CLI Fallbacks**: When MCP is unavailable, run `graphify query "<q>"`, `graphify explain "<concept>"`, `graphify path "<A>" "<B>"`, or `graphify stats` via `run_command` in the project root.
+- **Available Graph Datasets**:
+  - **Host Target Graph**: `graphify-foe-info` (FoE-Info AST, module dependencies, call graphs).
+  - **FoE Game Ground Truth**: `graphify-metadata-store` (5,400+ game entities, eras, resources, technologies, Great Buildings, Historical Allies).
+  - **Peer Reference Graphs**: `graphify-forge-hammer` (peer extension graph for cross-extension pattern discovery and compatibility checks), `graphify-low-tool` (original closed-source implementation graph; source of removed FoE-Info features), `graphify-foe-info-original` (frozen pre-agentic v1 baseline graph).
+- **Autonomous Deep Exploration & Comparison Delegation**:
+  - Whenever the user requests host graph exploration, architectural investigation, or subsystem mapping, delegate to `graph-knowledge-explorer` (treats FoE-Info as an independent project, saving findings to `./graphify-out/foe-info/findings/`).
+  - Whenever the user requests comparison or benchmarking against Forge-Hammer, LoW-Tool, or the v1 baseline, delegate to `forge-hammer-comparator` / `low-tool-comparator` / `foe-info-original-comparator` (saves comparative findings strictly to `./graphify-out/forge-hammer/findings/`, `./graphify-out/low-tool/findings/`, and `./graphify-out/foe-info-original/findings/` respectively, without modifying the peer repos).
+  - Whenever the user requests exploration of a peer graph as its own project, delegate to `forge-hammer-kg-explorer` / `low-tool-kg-explorer` / `foe-info-original-kg-explorer` (no cross-extension comparison; findings saved to the matching `./graphify-out/<peer>/findings/`).
+- After modifying code files in this session, run `npm run graph:foe-info:ast` (or the host's graph update command) to keep the AST current.
+- Tool Installation Invariant: Always install or upgrade graphify using `uv tool install "graphifyy[mcp,openai,watch,svg]" --force` to preserve MCP, local LLM, file watching, and visual rendering dependencies.

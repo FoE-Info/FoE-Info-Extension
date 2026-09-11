@@ -796,19 +796,15 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         !indexSource.includes("export var targetsTopic = 'targets';"),
         'index.js must not shadow targetsTopic declaration',
       );
-      const bindingsSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/ui/indexUiBindings.js'),
-        'utf8',
+      assert.match(
+        indexSource,
+        /setTargetText\(/,
+        'index.js must call setTargetText on storage updates',
       );
       assert.match(
-        bindingsSource,
-        /setTargetText:\s*\(val\)\s*=>\s*state\?\.setTargetText\?\.\(val\)/,
-        'indexUiBindings.js must call setTargetText on storage updates',
-      );
-      assert.match(
-        bindingsSource,
-        /setTargetsTopic:\s*\(val\)\s*=>\s*state\?\.setTargetsTopic\?\.\(val\)/,
-        'indexUiBindings.js must call setTargetsTopic on storage updates',
+        indexSource,
+        /setTargetsTopic\(/,
+        'index.js must call setTargetsTopic on storage updates',
       );
     },
   );
@@ -816,39 +812,35 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
   await t.test(
     'fshowBattleground and getLeaderboard render to dedicated containers with null guards',
     () => {
-      const rendererSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/ui/renderBattlegroundsPanel.js'),
+      const helperSource = fs.readFileSync(
+        path.join(ROOT_DIR, 'src/js/fn/helper.js'),
         'utf8',
       );
       const gbgServiceSource = fs.readFileSync(
         path.join(ROOT_DIR, 'src/js/msg/GuildBattlegroundService.js'),
         'utf8',
       );
-      const resultCardSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/ui/renderBattlegroundResultCard.js'),
-        'utf8',
-      );
 
-      // Verify the battleground renderer imports battlegroundDIV and renders to it
+      // Verify helper.js imports battlegroundDIV and renders to it
       assert.match(
-        rendererSource,
+        helperSource,
         /battlegroundDIV/,
-        'renderBattlegroundsPanel.js must import battlegroundDIV from state',
+        'helper.js must import battlegroundDIV from state',
       );
       assert.match(
-        rendererSource,
+        helperSource,
         /document\.getElementById\(['"]battleground['"]\)[\s\S]*?battlegroundDIV/,
-        'renderBattlegroundsPanel.js fshowBattleground must target dedicated battleground container',
+        'helper.js fshowBattleground must target dedicated battleground container',
       );
       assert.match(
-        rendererSource,
+        helperSource,
         /const\s+copyEl\s*=\s*document\.getElementById\(['"]battlegroundCopyID['"]\);[\s\S]*?if\s*\(\s*copyEl\s*\)/,
-        'renderBattlegroundsPanel.js fshowBattleground must null-guard battlegroundCopyID click listener',
+        'helper.js fshowBattleground must null-guard battlegroundCopyID click listener',
       );
       assert.match(
-        rendererSource,
+        helperSource,
         /const\s+iconEl\s*=\s*document\.getElementById\(['"]battlegroundicon['"]\);[\s\S]*?if\s*\(\s*iconEl\s*\)/,
-        'renderBattlegroundsPanel.js fshowBattleground must null-guard battlegroundicon click listener',
+        'helper.js fshowBattleground must null-guard battlegroundicon click listener',
       );
 
       // Verify GuildBattlegroundService.js imports and renders to dedicated containers
@@ -873,37 +865,37 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         'GuildBattlegroundService.js getState must target dedicated battleground container',
       );
       assert.match(
-        resultCardSource,
-        /document\.getElementById\(['"]battlegroundCopyID['"]\)[\s\S]*?BattlegroundCopy/,
-        'renderBattlegroundResultCard must null-guard and wire battlegroundCopyID listener',
+        gbgServiceSource,
+        /const\s+copyEl\s*=\s*document\.getElementById\(['"]battlegroundCopyID['"]\);\s*if\s*\(\s*copyEl\s*\)/,
+        'GuildBattlegroundService.js getState must null-guard battlegroundCopyID listener',
       );
     },
   );
 
   await t.test(
-    'renderBattlegroundResultCard renders GBG table with centered rank, member start, centered negs/fights/attrition, and clickable title',
+    'getState renders GBG table with centered rank, member start, centered negs/fights/attrition, and clickable title',
     () => {
-      const resultCardSource = fs.readFileSync(
-        path.resolve('src/js/ui/renderBattlegroundResultCard.js'),
+      const gbgServiceSource = fs.readFileSync(
+        path.resolve('src/js/msg/GuildBattlegroundService.js'),
         'utf8',
       );
       assert.match(
-        resultCardSource,
+        gbgServiceSource,
         /<th class="text-center">Rank<\/th><th class="text-start">Member<\/th><th class="text-center">Negs<\/th><th class="text-center">Fights<\/th><th class="text-center">Attrition<\/th>/,
         'GBG table must render centered headers with capitalized Attrition',
       );
       assert.match(
-        resultCardSource,
-        /<td class="text-center">\$\{row\.rank\}<\/td><td class="text-start">\$\{safePlayerName\}<\/td><td class="text-center">\$\{row\.negotiations\}<\/td><td class="text-center">\$\{row\.fights\}<\/td><td class="text-center">\$\{row\.attrition\}<\/td>/,
+        gbgServiceSource,
+        /<td class="text-center">\$\{entry\.rank\}<\/td><td class="text-start">\$\{safePlayerName\}<\/td><td class="text-center">\$\{wonNegotiations\}<\/td><td class="text-center">\$\{wonBattles\}<\/td><td class="text-center">\$\{attrition\}<\/td>/,
         'GBG table rows must have centered rank, negotiations, battles, attrition, and left-aligned name',
       );
       assert.match(
-        resultCardSource,
+        gbgServiceSource,
         /id="battlegroundResultTextLabel"\s+class="cursor-pointer"/,
         'GBG result text label must have cursor-pointer class',
       );
       assert.match(
-        resultCardSource,
+        gbgServiceSource,
         /document\.getElementById\(['"]battlegroundResultTextLabel['"]\)/,
         'GBG result text label must have collapse event listener bound',
       );

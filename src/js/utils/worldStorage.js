@@ -220,7 +220,6 @@ async function saveWorldSettings(worldId, partialSettings = {}) {
       ...(partialSettings.toolOptions || {}),
     },
     caches: { ...current.caches, ...(partialSettings.caches || {}) },
-    collapses: { ...current.collapses, ...(partialSettings.collapses || {}) },
   };
 
   const key = getWorldKey(wid);

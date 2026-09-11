@@ -5,17 +5,14 @@ import { parse } from 'acorn';
 import { simple } from 'acorn-walk';
 
 test('startup entity loop does not emit per-item diagnostics or evaluate their arguments', () => {
-  const source = fs.readFileSync(
-    'src/js/calc/CityMapEntityProcessor.js',
-    'utf8',
-  );
+  const source = fs.readFileSync('src/js/msg/StartupService.js', 'utf8');
   const ast = parse(source, { ecmaVersion: 'latest', sourceType: 'module' });
   let entityLoop;
   simple(ast, {
     ForStatement(node) {
       if (
         source.slice(node.test.start, node.test.end) ===
-        'id < mapEntities.length'
+        'id < map_entities.length'
       )
         entityLoop = node;
     },

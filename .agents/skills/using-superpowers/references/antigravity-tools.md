@@ -6,7 +6,7 @@ Skills describe abstract agent actions ("dispatch a subagent", "edit code", "run
 
 | Abstract Action | Antigravity Native Tool | Notes & Conventions |
 | :--- | :--- | :--- |
-| **Dispatch Subagent** | `invoke_subagent` | Use built-in (`self`, `research`), define repository specialists from `.agents/agents/*.md` via `define_subagent`, or dispatch `self` with specialist role/prompt. |
+| **Dispatch Subagent** | `invoke_subagent` | Use built-in (`self`, `research`) or the 31 repository specialists in `.agents/agents/*.md` (e.g. `code-reviewer`). |
 | **Subagent Messaging** | `send_message` | Send follow-up tasks or queries to a subagent using its `conversationId`. Never use to message the user. |
 | **Subagent Management** | `manage_subagents` | Actions: `list` (inspect active subagents), `kill` (terminate specific subagent), `kill_all`. |
 | **Background Processes** | `manage_task` | Inspect/control background commands (`list`, `status`, `send_input`, `kill`). Not a checklist tool. |

@@ -19,7 +19,6 @@ const { treasuryService } = require('./TreasuryService.js');
 const { questService } = require('./QuestService.js');
 const { itemExchangeService } = require('./ItemExchangeService.js');
 const { timeService } = require('./TimeService.js');
-const { emissaryServiceInstance } = require('./EmissaryService.js');
 const resourceService = require('./ResourceService.js');
 
 const registeredDispatchers = new WeakSet();
@@ -43,8 +42,6 @@ function registerAllServices(dispatcher = messageDispatcher) {
   if (questService?.register) questService.register(dispatcher);
   if (itemExchangeService?.register) itemExchangeService.register(dispatcher);
   if (timeService?.register) timeService.register(dispatcher);
-  if (emissaryServiceInstance?.register)
-    emissaryServiceInstance.register(dispatcher);
   if (resourceService?.register) resourceService.register(dispatcher);
 
   registeredDispatchers.add(dispatcher);

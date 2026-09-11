@@ -4,7 +4,7 @@ import test from 'node:test';
 
 function createElement(id = '') {
   const listeners = new Map();
-  const classes = new Set(['show']);
+  const classes = new Set();
   return {
     id,
     innerHTML: '',
@@ -23,14 +23,10 @@ function createElement(id = '') {
     },
     style: {},
     addEventListener(type, listener) {
-      if (!listeners.has(type)) listeners.set(type, []);
-      listeners.get(type).push(listener);
-    },
-    trigger(type) {
-      (listeners.get(type) || []).forEach((listener) => listener({ type }));
+      listeners.set(type, listener);
     },
     click() {
-      (listeners.get('click') || []).forEach((listener) => listener());
+      listeners.get('click')?.();
     },
     setAttribute() {},
   };
@@ -80,20 +76,10 @@ test('debug beta panel collapses, closes, and accumulates inner text', () => {
   assert.match(beta.innerHTML, /id="betaText"/);
   assert.match(beta.innerHTML, /data-bs-dismiss="alert"/);
 
-  // Bootstrap owns the collapse show class; no manual click toggle may
-  // fight it. Icon state is synced from the Bootstrap collapse events.
-  assert.equal(betaText.classList.contains('show'), true);
   betaIcon.click();
-  assert.equal(
-    betaText.classList.contains('show'),
-    true,
-    'manual icon click must not toggle the collapse class',
-  );
-
-  betaText.trigger('hidden.bs.collapse');
-  assert.equal(betaIcon.textContent, '[+]');
-  betaText.trigger('shown.bs.collapse');
-  assert.equal(betaIcon.textContent, '[-]');
+  assert.equal(betaText.classList.contains('show'), false);
+  betaIcon.click();
+  assert.equal(betaText.classList.contains('show'), true);
 
   appendBetaText('<br>#1: 5FP');
   appendBetaText('<br>#2: 7FP');
@@ -116,13 +102,13 @@ test('debug beta panel collapses, closes, and accumulates inner text', () => {
 
 test('startup beta branches tag unresolved names and render resolved names', () => {
   const source = fs.readFileSync(
-    new URL('../../src/js/calc/CityMapEntityProcessor.js', import.meta.url),
+    new URL('../../src/js/msg/StartupService.js', import.meta.url),
     'utf8',
   );
   assert.equal(
     (
       source.match(
-        /trimmedName\s*&&\s*trimmedName\s*!==\s*(?:cid|mapID\.cityentity_id)/g,
+        /trimmedName\s*&&\s*trimmedName\s*!==\s*mapID\.cityentity_id/g,
       ) || []
     ).length,
     2,
@@ -130,7 +116,7 @@ test('startup beta branches tag unresolved names and render resolved names', () 
   assert.match(source, /<strong>\$\{trimmedName\}<\/strong>/);
   assert.match(
     source,
-    /class="pending-name" data-id="\$\{(?:cid|mapID\.cityentity_id)\}"/,
+    /class="pending-name" data-id="\$\{mapID\.cityentity_id\}"/,
   );
 });
 

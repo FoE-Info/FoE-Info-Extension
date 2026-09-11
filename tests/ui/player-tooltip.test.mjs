@@ -8,7 +8,6 @@ const {
   getUserTooltipHTML,
   pendingScoreDBFetches,
   updateIgnoreListUI,
-  normalizeIgnoreListData,
   playerNameCache,
   setIgnoredPlayers,
   updatePlayerNameCache,
@@ -125,38 +124,6 @@ test('Player Tooltip & Ignore List UI Suite', async (t) => {
 
       assert.ok(contentAttr);
       assert.match(contentAttr, /TargetPlayer/);
-    },
-  );
-
-  await t.test(
-    'normalizeIgnoreListData cleanly extracts data from RPC envelopes and DTOs',
-    () => {
-      assert.equal(normalizeIgnoreListData(null), null);
-      assert.equal(normalizeIgnoreListData({}), null);
-
-      // Raw RPC responseData format
-      const rpcEnvelope = {
-        responseData: {
-          ignored_by_player_ids: { 0: 101 },
-          ignored_player_ids: { 0: 202 },
-        },
-      };
-      const normRpc = normalizeIgnoreListData(rpcEnvelope);
-      assert.deepEqual(normRpc, {
-        ignoredByPlayerIds: { 0: 101 },
-        ignoredPlayerIds: { 0: 202 },
-      });
-
-      // CamelCase DTO format
-      const dto = {
-        ignoredByPlayerIds: { 0: 303 },
-        ignoredPlayerIds: { 0: 404 },
-      };
-      const normDto = normalizeIgnoreListData(dto);
-      assert.deepEqual(normDto, {
-        ignoredByPlayerIds: { 0: 303 },
-        ignoredPlayerIds: { 0: 404 },
-      });
     },
   );
 });

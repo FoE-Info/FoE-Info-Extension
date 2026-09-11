@@ -132,59 +132,9 @@ function scheduleStartupRender({
   }
 }
 
-function subscribeMetadataRenders({
-  metadataStore,
-  isDebugEnabled,
-  logger,
-  getTimingRun,
-  onRenderBuildingCollectionTimes,
-  onRenderGalaxy,
-  onRenderLiveCityStats,
-}) {
-  if (
-    !metadataStore ||
-    typeof metadataStore.subscribe !== 'function' ||
-    typeof onRenderLiveCityStats !== 'function'
-  ) {
-    return null;
-  }
-
-  let metadataRenderTimer = null;
-  return metadataStore.subscribe(() => {
-    if (metadataRenderTimer) return;
-    metadataRenderTimer = setTimeout(() => {
-      metadataRenderTimer = null;
-      if (typeof isDebugEnabled === 'function' && isDebugEnabled()) {
-        logger?.info(
-          `[TIMING:P6s] metadata subscription render timer fired | t = ${performance.now().toFixed(2)}ms | run = ${getTimingRun?.()}`,
-        );
-      }
-      try {
-        onRenderBuildingCollectionTimes();
-      } catch (err) {
-        console.error(
-          '[FoEInfo] Failed to re-render building collection times:',
-          err,
-        );
-      }
-      try {
-        onRenderGalaxy();
-      } catch (err) {
-        console.error('[FoEInfo] Failed to re-render galaxy:', err);
-      }
-      try {
-        onRenderLiveCityStats();
-      } catch (err) {
-        console.error('[FoEInfo] Failed to re-render city stats:', err);
-      }
-    }, 50);
-  });
-}
-
 module.exports = {
   detectMissingCityEntities,
   scheduleStartupRender,
   renderWhenStartupReady,
-  subscribeMetadataRenders,
 };
 module.exports.default = module.exports;

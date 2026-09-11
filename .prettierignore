@@ -16,4 +16,3 @@ docs/heap-snapshots/
 worktrees/
 # Existing local agent conversation prompts; preserve their original contents.
 docs/antigravity_prompt_*.md
-docs/OPENCODE_TASK_BRIEF.md

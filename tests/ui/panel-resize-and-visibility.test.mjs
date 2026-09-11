@@ -109,14 +109,14 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
         'OtherPlayerService must contain resize-both on #hoodText',
       );
 
-      const gbgResultCardSrc = fs.readFileSync(
-        path.resolve('src/js/ui/renderBattlegroundResultCard.js'),
+      const gbgSrc = fs.readFileSync(
+        path.resolve('src/js/msg/GuildBattlegroundService.js'),
         'utf8',
       );
       assert.match(
-        gbgResultCardSrc,
+        gbgSrc,
         /id="battlegroundTextCollapse"[^>]*resize-both/,
-        'renderBattlegroundResultCard must contain resize-both on #battlegroundTextCollapse',
+        'GuildBattlegroundService must contain resize-both on #battlegroundTextCollapse',
       );
     },
   );
@@ -124,8 +124,8 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
   await t.test(
     'Battleground panel sizing adapts to showBattlegroundChanges mode',
     () => {
-      const battlegroundSrc = fs.readFileSync(
-        path.resolve('src/js/ui/renderBattlegroundsPanel.js'),
+      const helperSrc = fs.readFileSync(
+        path.resolve('src/js/fn/helper.js'),
         'utf8',
       );
       const globalsSrc = fs.readFileSync(
@@ -144,28 +144,28 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
         'toolOptions.battlegroundsSize in globals.js must default to 400',
       );
 
-      // Verify the battleground renderer applies gbg-changes-full vs gbg-full-roster
+      // Verify helper applies gbg-changes-full vs gbg-full-roster
       assert.match(
-        battlegroundSrc,
+        helperSrc,
         /isChangesOnly\s*\?\s*['"]gbg-changes-full['"]\s*:\s*['"]gbg-full-roster['"]/,
-        'renderBattlegroundsPanel.js must conditionally apply gbg-changes-full or gbg-full-roster',
+        'helper.js must conditionally apply gbg-changes-full or gbg-full-roster',
       );
 
-      // Verify the renderer sets auto height in changes-only mode and 400px default restricted height in full mode
+      // Verify helper sets auto height in changes-only mode and 400px default restricted height in full mode
       assert.match(
-        battlegroundSrc,
+        helperSrc,
         /if\s*\(\s*isChangesOnly\s*\)\s*\{[\s\S]*?battlegroundDiv\.style\.height\s*=\s*['"]auto['"]/,
-        'renderBattlegroundsPanel.js must set height to auto in changes-only mode',
+        'helper.js must set height to auto in changes-only mode',
       );
       assert.match(
-        battlegroundSrc,
+        helperSrc,
         /DEFAULT_RESTRICTED_GBG_HEIGHT\s*=\s*400/,
-        'renderBattlegroundsPanel.js must define DEFAULT_RESTRICTED_GBG_HEIGHT as 400',
+        'helper.js must define DEFAULT_RESTRICTED_GBG_HEIGHT as 400',
       );
 
       // Verify setHeight only persists when NOT in changes-only mode
       assert.match(
-        battlegroundSrc,
+        helperSrc,
         /if\s*\(\s*!showOptions\.showBattlegroundChanges\s*&&\s*heightGBG\s*\)\s*\{[\s\S]*?setBattlegroundSize\(heightGBG\)/,
         'setHeight must only persist size when viewing full guild roster',
       );

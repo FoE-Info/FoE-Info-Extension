@@ -1,5 +1,5 @@
 ---
-trigger: model_decision
+trigger: always_on
 description: Mandate that all features, calculators, RPC services, network interceptors, storage routines, and UI renderers implement debug-mode debuggability via logger.js.
 ---
 

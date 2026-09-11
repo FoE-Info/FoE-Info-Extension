@@ -222,21 +222,6 @@ export function touchQueryStamp() {
   }
 }
 
-export const DIRECT_GRAPHIFY_TOOL_REGEX =
-  /^(?:mcp__)?graphify[-_]|^(?:query_graph|get_node|get_neighbors|shortest_path|god_nodes|get_community|graph_stats)$/i;
-
-export function isGraphifyToolCall(toolName, args = {}) {
-  if (!toolName || typeof toolName !== 'string') return false;
-  if (
-    toolName === 'call_mcp_tool' &&
-    typeof args.ServerName === 'string' &&
-    args.ServerName.startsWith('graphify')
-  ) {
-    return true;
-  }
-  return DIRECT_GRAPHIFY_TOOL_REGEX.test(toolName);
-}
-
 export function evaluateGraphifyGuard(toolCall) {
   if (!toolCall || typeof toolCall !== 'object') {
     return { decision: 'allow' };
@@ -246,21 +231,14 @@ export function evaluateGraphifyGuard(toolCall) {
   const args = toolCall.args || {};
 
   // If the agent is querying Graphify via MCP or CLI, touch the stamp and allow
-  if (isGraphifyToolCall(toolName, args)) {
+  if (
+    toolName === 'call_mcp_tool' &&
+    typeof args.ServerName === 'string' &&
+    args.ServerName.startsWith('graphify')
+  ) {
     touchQueryStamp();
     return { decision: 'allow' };
   }
-
-  const MANDATORY_GRAPHIFY_REASON =
-    'MANDATORY: Graphify knowledge graph exists at graphify-out/foe-info/graph.json. You must consult Graphify first before performing broad codebase searches. Use call_mcp_tool on "graphify-foe-info" (or "graphify-metadata-store" / "graphify-forge-hammer" / "graphify-low-tool" / "graphify-foe-info-original") with one of the native MCP tools:\n' +
-    '  - query_graph ({"question": "..."}) for broad questions and semantic context\n' +
-    '  - get_node ({"label": "..."}) for inspecting a specific symbol, class, or function\n' +
-    '  - get_neighbors ({"label": "..."}) for immediate callers, callees, or module imports\n' +
-    '  - shortest_path ({"source": "...", "target": "..."}) to trace relationships between symbols\n' +
-    '  - god_nodes ({"top_n": 10}) to inspect high-centrality hub modules\n' +
-    '  - get_community ({"community_id": ...}) to inspect architectural clusters\n' +
-    '  - graph_stats to inspect overall graph metrics\n' +
-    'Or CLI fallback: `graphify query "..."`, `graphify explain "..."`, `graphify path "..."`. Only use grep_search or find_by_name after Graphify has oriented you or when targeting specific files/tests.';
 
   if (toolName === 'run_command') {
     const cmd = String(args.CommandLine || '');
@@ -273,16 +251,6 @@ export function evaluateGraphifyGuard(toolCall) {
       cmd.includes('graph:foe-info-original')
     ) {
       touchQueryStamp();
-      return { decision: 'allow' };
-    }
-
-    if (isBroadSourceSearch(cmd, args.Cwd || projectRoot)) {
-      if (!isQueryStampFresh()) {
-        return {
-          decision: 'deny',
-          reason: MANDATORY_GRAPHIFY_REASON,
-        };
-      }
     }
     return { decision: 'allow' };
   }
@@ -292,7 +260,16 @@ export function evaluateGraphifyGuard(toolCall) {
     if (!isQueryStampFresh()) {
       return {
         decision: 'deny',
-        reason: MANDATORY_GRAPHIFY_REASON,
+        reason:
+          'MANDATORY: Graphify knowledge graph exists at graphify-out/foe-info/graph.json. You must consult Graphify first before performing broad codebase searches. Use call_mcp_tool on "graphify-foe-info" (or "graphify-metadata-store" / "graphify-forge-hammer" / "graphify-low-tool" / "graphify-foe-info-original") with one of the native MCP tools:\n' +
+          '  - query_graph ({"question": "..."}) for broad questions and semantic context\n' +
+          '  - get_node ({"label": "..."}) for inspecting a specific symbol, class, or function\n' +
+          '  - get_neighbors ({"label": "..."}) for immediate callers, callees, or module imports\n' +
+          '  - shortest_path ({"source": "...", "target": "..."}) to trace relationships between symbols\n' +
+          '  - god_nodes ({"top_n": 10}) to inspect high-centrality hub modules\n' +
+          '  - get_community ({"community_id": ...}) to inspect architectural clusters\n' +
+          '  - graph_stats to inspect overall graph metrics\n' +
+          'Or CLI fallback: `graphify query "..."`, `graphify explain "..."`, `graphify path "..."`. Only use grep_search or find_by_name after Graphify has oriented you or when targeting specific files/tests.',
       };
     }
   }

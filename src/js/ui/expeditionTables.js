@@ -16,7 +16,7 @@ function escapeHtml(str) {
 }
 
 function wrapChampionshipCard(tableHtml, collapse = false, size = 200) {
-  return `<div id="geChampionshipCard" class="alert alert-info alert-dismissible show collapsed mb-2" role="status" aria-live="polite">
+  return `<div id="geChampionshipCard" class="alert alert-info alert-dismissible show collapsed mb-2" role="alert">
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 <p id="geChampionshipLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#geChampionshipText" aria-expanded="${!collapse}" aria-controls="geChampionshipText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
 <span class="header-icon collapse-toggle fw-bold font-monospace" id="geChampionshipIcon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!collapse}" aria-controls="geChampionshipText" data-bs-target="#geChampionshipText" data-bs-toggle="collapse">${collapse ? '[+]' : '[-]'}</span>
@@ -28,7 +28,7 @@ ${tableHtml}
 }
 
 function wrapContributionCard(tableHtml, collapse = false, size = 200) {
-  return `<div id="geContributionCard" class="alert alert-info alert-dismissible show collapsed mb-2" role="status" aria-live="polite">
+  return `<div id="geContributionCard" class="alert alert-info alert-dismissible show collapsed mb-2" role="alert">
 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 <p id="geContributionLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#geContributionText" aria-expanded="${!collapse}" aria-controls="geContributionText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
 <span class="header-icon collapse-toggle fw-bold font-monospace" id="geContributionIcon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!collapse}" aria-controls="geContributionText" data-bs-target="#geContributionText" data-bs-toggle="collapse">${collapse ? '[+]' : '[-]'}</span>

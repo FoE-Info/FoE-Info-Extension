@@ -43,7 +43,6 @@ export var MyInfo = {
   guildID: 0,
   guildPosition: 0,
   createdAt: 0,
-  score: 0,
 };
 
 export var MyGuildPermissions = {};
@@ -257,24 +256,13 @@ export function setEpocTime(time) {
   }
 }
 
-export function setMyInfo(name, id, clan, clan_id, createdAt, era, score = 0) {
+export function setMyInfo(name, id, clan, clan_id, createdAt, era) {
   MyInfo.name = name;
   MyInfo.id = id;
   MyInfo.guild = clan;
   MyInfo.guildID = clan_id;
   MyInfo.createdAt = createdAt;
   MyInfo.era = era;
-  if (score !== undefined && score !== null) {
-    const num = Number(score);
-    MyInfo.score = Number.isFinite(num) ? num : 0;
-  }
-}
-
-export function setMyScore(score) {
-  if (score !== undefined && score !== null) {
-    const num = Number(score);
-    MyInfo.score = Number.isFinite(num) ? num : 0;
-  }
 }
 
 export function setMyName(name) {
