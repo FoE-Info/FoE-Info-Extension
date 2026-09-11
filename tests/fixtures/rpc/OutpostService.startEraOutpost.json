@@ -1,0 +1,185 @@
+[
+ {
+  "id": 386826,
+  "content": "space_hub",
+  "name": "Space Hub Colony",
+  "contentName": "Space Hub",
+  "description": "Space Hub Colony",
+  "minEra": "SpaceAgeSpaceHub",
+  "gridId": "era_outpost",
+  "populationResourceId": "colonists",
+  "primaryResourceId": "credits",
+  "explorationSites": [
+   {
+    "id": "sash_1",
+    "content": "space_hub",
+    "costs": {
+     "resources": {
+      "credits": 400
+     },
+     "__class__": "Resources"
+    },
+    "reward": {
+     "resources": {
+      "dark_matter": 3
+     },
+     "__class__": "Resources"
+    },
+    "rewardResourceId": "dark_matter",
+    "level": "easy",
+    "duration": 3600,
+    "startedAt": 1788432946,
+    "__class__": "ExplorationSite"
+   },
+   {
+    "id": "sash_2",
+    "content": "space_hub",
+    "costs": {
+     "resources": {
+      "credits": 1500
+     },
+     "__class__": "Resources"
+    },
+    "reward": {
+     "resources": {
+      "dark_matter": 9
+     },
+     "__class__": "Resources"
+    },
+    "rewardResourceId": "dark_matter",
+    "level": "easy",
+    "duration": 14400,
+    "startedAt": 1788422147,
+    "__class__": "ExplorationSite"
+   },
+   {
+    "id": "sash_3",
+    "content": "space_hub",
+    "costs": {
+     "resources": {
+      "credits": 1900
+     },
+     "__class__": "Resources"
+    },
+    "reward": {
+     "resources": {
+      "dark_matter": 9
+     },
+     "__class__": "Resources"
+    },
+    "rewardResourceId": "dark_matter",
+    "level": "normal",
+    "duration": 14400,
+    "startedAt": 1788422139,
+    "__class__": "ExplorationSite"
+   },
+   {
+    "id": "sash_4",
+    "content": "space_hub",
+    "costs": {
+     "resources": {
+      "credits": 3700
+     },
+     "__class__": "Resources"
+    },
+    "reward": {
+     "resources": {
+      "dark_matter": 20
+     },
+     "__class__": "Resources"
+    },
+    "rewardResourceId": "dark_matter",
+    "level": "normal",
+    "duration": 28800,
+    "startedAt": 1788426049,
+    "__class__": "ExplorationSite"
+   },
+   {
+    "id": "sash_5",
+    "content": "space_hub",
+    "costs": {
+     "resources": {
+      "credits": 5300
+     },
+     "__class__": "Resources"
+    },
+    "reward": {
+     "resources": {
+      "dark_matter": 26
+     },
+     "__class__": "Resources"
+    },
+    "rewardResourceId": "dark_matter",
+    "level": "normal",
+    "duration": 28800,
+    "startedAt": 1788422133,
+    "__class__": "ExplorationSite"
+   },
+   {
+    "id": "sash_6",
+    "content": "space_hub",
+    "costs": {
+     "resources": {
+      "credits": 20900
+     },
+     "__class__": "Resources"
+    },
+    "reward": {
+     "resources": {
+      "dark_matter": 96
+     },
+     "__class__": "Resources"
+    },
+    "rewardResourceId": "dark_matter",
+    "level": "hard",
+    "duration": 86400,
+    "startedAt": 1788396987,
+    "__class__": "ExplorationSite"
+   },
+   {
+    "id": "sash_7",
+    "content": "space_hub",
+    "costs": {
+     "resources": {
+      "credits": 22600
+     },
+     "__class__": "Resources"
+    },
+    "reward": {
+     "resources": {
+      "dark_matter": 138
+     },
+     "__class__": "Resources"
+    },
+    "rewardResourceId": "dark_matter",
+    "level": "hard",
+    "duration": 86400,
+    "startedAt": 1788396983,
+    "__class__": "ExplorationSite"
+   },
+   {
+    "id": "sash_8",
+    "content": "space_hub",
+    "costs": {
+     "resources": {
+      "credits": 26100
+     },
+     "__class__": "Resources"
+    },
+    "reward": {
+     "resources": {
+      "dark_matter": 151
+     },
+     "__class__": "Resources"
+    },
+    "rewardResourceId": "dark_matter",
+    "level": "hard",
+    "duration": 86400,
+    "startedAt": 1788396982,
+    "__class__": "ExplorationSite"
+   }
+  ],
+  "terraformingTechIds": [],
+  "__class__": "EraOutpost"
+ }
+]

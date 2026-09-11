@@ -11,44 +11,67 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import { Tooltip, Alert, Popover } from 'bootstrap';
+import { Alert, Popover, Tooltip } from 'bootstrap';
 import browser from 'webextension-polyfill';
-import { showOptions } from '../vars/showOptions.js';
-import * as helper from '../fn/helper.js';
+import {
+  calculateProvinceAttrition,
+  formatCampsText,
+  formatSectorName,
+  formatTargetToken,
+  getAttritionReduction,
+} from '../calc/GbgCalculator.js';
+import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
-import * as element from '../fn/AddElement';
-import * as storage from '../fn/storage.js';
+import { setBuildingCostSize, toolOptions } from '../fn/globals.js';
+import * as helper from '../fn/helper.js';
 import * as post_webstore from '../fn/post.js';
+import * as storage from '../fn/storage.js';
 import {
+  buildBuildingCostsTableHTML,
+  buildingCostCopy,
+  buildLeaderboardHTML,
+  renderBuildingCostCard,
+  renderTargetGeneratorCard,
+  targetCopy,
+} from '../ui/gbgProvinceView.js';
+import { formatDateTime } from '../utils/date.js';
+import { createLogger } from '../utils/logger.js';
+import { showOptions } from '../vars/showOptions.js';
+import {
+  battlegroundDIV,
+  BattlegroundPerformance,
+  BGtime,
   BuildingDefs,
+  content,
+  donationDIV,
+  EpocTime,
+  GameOrigin,
+  GBGdata,
+  gbgLeaderboardDIV,
+  GuildMembers,
+  output,
+  setBGtime,
+  targets,
+  targetText,
+  url,
   VolcanoProvinceDefs,
   WaterfallProvinceDefs,
-  targets,
-  donationDIV,
-  GameOrigin,
-  EpocTime,
-  url,
-  targetText,
-} from '../index.js';
-import { toolOptions, setBuildingCostSize } from '../fn/globals.js';
+} from '../vars/state.js';
 
-export var BattlegroundPerformance = [];
-export var GuildMembers = [];
-export var BGtime = '';
-var map = {};
-var signals = {};
-var battlegroundParticipants = {};
+const logger = createLogger('GBG');
+
+var map = [];
+var signals = [];
+var battlegroundParticipants = [];
 var mapName = '';
 var ProvinceDefs = [];
 
 var currentParticipantId = 0;
 
-export var GBGdata = [];
-
 export function getPlayerLeaderboard(msg) {
-  BattlegroundPerformance = [];
-  GBGdata = [];
+  BattlegroundPerformance.length = 0;
+  GBGdata.length = 0;
   // GuildMembers = BattlegroundPerformance;		// save old values
   msg.responseData.forEach((entry) => {
     // console.debug(entry);
@@ -78,14 +101,15 @@ export function getPlayerLeaderboard(msg) {
       .get([GameOrigin, GameOrigin + 'BGtime'])
       .then((items) => {
         console.debug('items', items);
-        if (items[GameOrigin]) GuildMembers = items[GameOrigin];
+        if (items[GameOrigin] && Array.isArray(items[GameOrigin])) {
+          GuildMembers.length = 0;
+          GuildMembers.push(...items[GameOrigin]);
+        }
         // console.debug('GuildMembers',GuildMembers);
         storage.set(GameOrigin + 'BGtime', EpocTime);
         if (items[GameOrigin + 'BGtime'])
-          BGtime = new Date(
-            items[GameOrigin + 'BGtime'] * 1000,
-          ).toLocaleString();
-        else BGtime = 'not set';
+          setBGtime(formatDateTime(items[GameOrigin + 'BGtime']));
+        else setBGtime('not set');
 
         BattlegroundPerformance.forEach((entry) => {
           // console.debug('entry',entry);
@@ -100,27 +124,25 @@ export function getPlayerLeaderboard(msg) {
         storage.set(GameOrigin, BattlegroundPerformance);
         helper.fshowBattleground();
       });
-    // console.debug('BattlegroundPerformance',GBGdata);
-    $('body').i18n();
+    if (donationDIV) helper.translateContainer(donationDIV);
   }
 }
 
 export function getLeaderboard(msg) {
-  //console.debug('cityentity_id:', msg.responseData.cityentity_id);
-  // console.debug('getLeaderboard:', msg.responseData);
   const leaderboard = msg.responseData;
-  var leaderboardHTML = `<tr><th>Guild</th><th>VP/hr</th><th>Total VP</th></tr>`;
-  leaderboard.forEach((guild) => {
-    // console.debug(guild.clan.name,guild.victoryPointsHourly,guild.victoryPointsTotal)
-    leaderboardHTML += `<tr><td>${guild.clan.name}</td><td>${
-      guild.victoryPointsHourly ? guild.victoryPointsHourly : 0
-    }</td><td>${guild.victoryPointsTotal ? guild.victoryPointsTotal : 0}</td></tr>`;
-  });
-  output.innerHTML =
-    `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<strong>GBG Leaderboard:</strong>
-            <p id="leaderboardText"><table>` +
-    leaderboardHTML +
-    `</table></p></div>`;
+  var leaderboardHTML = buildLeaderboardHTML(leaderboard);
+  const targetEl =
+    (typeof document !== 'undefined' &&
+      document.getElementById('gbgLeaderboard')) ||
+    gbgLeaderboardDIV ||
+    output;
+  if (targetEl) {
+    targetEl.innerHTML =
+      `<div class="alert alert-info alert-dismissible show" role="alert">${element.close()}<strong>GBG Leaderboard:</strong>
+              <p id="leaderboardText"><table>` +
+      leaderboardHTML +
+      `</table></p></div>`;
+  }
 }
 
 export function getState(msg) {
@@ -129,13 +151,13 @@ export function getState(msg) {
     console.debug('msg:', msg);
     storage.remove(GameOrigin + 'BGtime');
     storage.remove(GameOrigin);
-    BattlegroundPerformance = [];
-    var GBGdata = [];
+    BattlegroundPerformance.length = 0;
+    GBGdata.length = 0;
     var totalFights = 0;
     var totalNegs = 0;
-    var battlegroundHTML = `<div id="battlegroundResultTextLabel" class="alert alert-info alert-dismissible show collapsed" role="alert">
+    var battlegroundHTML = `<div id="battlegroundResultCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
         ${element.close()}
-        <p id="battlegroundResultTextLabel" href="#battlegroundTextCollapse" data-bs-toggle="collapse">
+        <p id="battlegroundResultTextLabel" class="cursor-pointer" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundTextCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundTextCollapse" style="cursor: pointer; user-select: none;">
       ${element.icon('battlegroundicon', 'battlegroundTextCollapse', collapse.collapseBattleground)}
         <strong>Battleground Result:</strong></p>`;
     // if (url.sheetGuildURL)
@@ -151,9 +173,9 @@ export function getState(msg) {
       'right',
       collapse.collapseBattleground,
     );
-    battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive collapse ${
+    battlegroundHTML += `<div id="battlegroundTextCollapse" class="table-responsive resize-both collapse ${
       collapse.collapseBattleground ? '' : 'show'
-    }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table"><tr><th>Rank</th><th>Member</th><th>Negs</th><th>Fights</th><th>attrition</th></tr>`;
+    }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table w-100"><thead><tr><th class="text-center">Rank</th><th class="text-start">Member</th><th class="text-center">Negs</th><th class="text-center">Fights</th><th class="text-center">Attrition</th></tr></thead><tbody>`;
     msg.responseData.playerLeaderboardEntries.forEach((entry) => {
       var wonNegotiations = 0;
       var wonBattles = 0;
@@ -168,29 +190,48 @@ export function getState(msg) {
         wonBattles,
         attrition,
       ]);
-      battlegroundHTML += `<tr><td>${entry.rank}</td><td>${entry.player.name}</td><td>${wonNegotiations}</td><td>${wonBattles}</td><td>${attrition}</td></tr>`;
+      const safePlayerName = helper.escapeHTML(entry.player.name);
+      battlegroundHTML += `<tr><td class="text-center">${entry.rank}</td><td class="text-start">${safePlayerName}</td><td class="text-center">${wonNegotiations}</td><td class="text-center">${wonBattles}</td><td class="text-center">${attrition}</td></tr>`;
       // console.debug(entry.rank,entry.name,wonNegotiations,wonBattles);
       totalFights += wonBattles;
       totalNegs += wonNegotiations;
     });
-    battlegroundHTML += `<tr><th></th><th>Guild Total</th><th>${totalNegs}</th><th>${totalFights}</th></tr>`;
+    battlegroundHTML += `</tbody><tfoot><tr><th></th><th class="text-start">Guild Total</th><th class="text-center">${totalNegs}</th><th class="text-center">${totalFights}</th><th></th></tr></tfoot>`;
 
-    // console.debug(BattlegroundPerformance);
-    donationDIV.innerHTML = battlegroundHTML + `</table></div></div></div>`;
-    if (url.sheetGuildURL)
-      document
-        .getElementById('battlegroundPostID')
-        .addEventListener('click', post_webstore.postGBGtoSS);
-    // else
-    document
-      .getElementById('battlegroundCopyID')
-      .addEventListener('click', copy.BattlegroundCopy);
-    document
-      .getElementById('battlegroundicon')
-      .addEventListener('click', collapse.fCollapseBattleground);
-    document
-      .getElementById('battlegroundResultTextLabel')
-      .addEventListener('click', collapse.fCollapseBattleground);
+    const targetEl =
+      (typeof document !== 'undefined' &&
+        document.getElementById('battleground')) ||
+      battlegroundDIV ||
+      donationDIV;
+    if (targetEl) {
+      targetEl.innerHTML = battlegroundHTML + `</table></div></div></div>`;
+    }
+    const postEl = document.getElementById('battlegroundPostID');
+    if (postEl && url.sheetGuildURL) {
+      postEl.addEventListener('click', post_webstore.postGBGtoSS);
+    } else {
+      const copyEl = document.getElementById('battlegroundCopyID');
+      if (copyEl) copyEl.addEventListener('click', copy.BattlegroundCopy);
+    }
+    const labelEl = document.getElementById('battlegroundResultTextLabel');
+    if (labelEl) {
+      labelEl.addEventListener('click', (e) => {
+        if (
+          e?.target &&
+          typeof e.target.closest === 'function' &&
+          e.target.closest('#battlegroundicon')
+        ) {
+          return;
+        }
+        collapse.fCollapseBattleground();
+      });
+    }
+    const iconEl = document.getElementById('battlegroundicon');
+    if (iconEl && iconEl !== labelEl) {
+      iconEl.addEventListener('click', () => {
+        collapse.fCollapseBattleground();
+      });
+    }
     msg.responseData.playerLeaderboardEntries.forEach((entry) => {
       // console.debug(entry);
       var wonNegotiations = 0;
@@ -225,24 +266,41 @@ export function getBattleground(msg) {
     // if(oldMap[i] && oldMap[i].placedBuildings){
     //     province.placedBuildings = oldMap[i].placedBuildings;
     // }
-    if (Object.keys(oldMap).length) {
-      province.placedBuildings = oldMap.find(
+    if (Array.isArray(oldMap) && oldMap.length > 0) {
+      const oldProv = oldMap.find(
         (oldProvince) => oldProvince.id == province.id,
-      ).placedBuildings;
-      province.availableBuildings = oldMap.find(
-        (oldProvince) => oldProvince.id == province.id,
-      ).availableBuildings;
+      );
+      if (oldProv) {
+        if (oldProv.placedBuildings)
+          province.placedBuildings = oldProv.placedBuildings;
+        if (oldProv.availableBuildings)
+          province.availableBuildings = oldProv.availableBuildings;
+      }
     }
   });
   // console.debug(map);
   // console.debug(map);
 
-  battlegroundParticipants = msg.responseData.battlegroundParticipants;
-  signals = battlegroundParticipants.find(
-    (clan) => clan.participantId == msg.responseData.currentParticipantId,
-  ).signals;
-  if (signals.find((clan) => !clan.provinceId))
-    signals.find((clan) => !clan.provinceId).provinceId = 0;
+  battlegroundParticipants = msg.responseData.battlegroundParticipants || [];
+  const myClan =
+    Array.isArray(battlegroundParticipants) ?
+      battlegroundParticipants.find(
+        (clan) => clan.participantId == msg.responseData.currentParticipantId,
+      )
+    : null;
+  signals = myClan?.signals ? [...myClan.signals] : [];
+  if (Array.isArray(signals)) {
+    signals.forEach((clan) => {
+      if (clan.provinceId === undefined && clan.id !== undefined)
+        clan.provinceId = clan.id;
+      if (clan.provinceId === undefined) clan.provinceId = 0;
+      if (clan.id === undefined) clan.id = clan.provinceId;
+      if (clan.signal === undefined && clan.type !== undefined)
+        clan.signal = clan.type;
+      if (clan.type === undefined && clan.signal !== undefined)
+        clan.type = clan.signal;
+    });
+  }
   console.debug(map, signals, battlegroundParticipants);
 
   // console.debug(message.lastMessage.text);
@@ -252,190 +310,487 @@ export function getBattleground(msg) {
 
 export function getBuildings(msg) {
   var provinceId = 0;
-  if (msg.responseData.provinceId) provinceId = msg.responseData.provinceId;
-  map.find((province) => province.id == provinceId).placedBuildings =
-    msg.responseData.placedBuildings;
-  map.find((province) => province.id == provinceId).availableBuildings =
-    msg.responseData.availableBuildings;
+  if (msg?.responseData?.provinceId) provinceId = msg.responseData.provinceId;
+  const prov =
+    Array.isArray(map) ?
+      map.find((province) => province.id == provinceId)
+    : null;
+  if (prov) {
+    prov.placedBuildings = msg.responseData.placedBuildings;
+    prov.availableBuildings = msg.responseData.availableBuildings;
+  }
   checkProvinces();
-  if (showOptions.buildingCosts && msg.responseData.availableBuildings)
+  if (showOptions.buildingCosts && msg?.responseData?.availableBuildings)
     showBuildingCost(msg.responseData);
   // console.debug('getBuildings',msg.responseData,map);
 }
 
-export function setSignal(msg, payload) {
-  //console.debug('setSignal', msg, signals);
-  if (payload[1] == 'ignore') {
-    signals = signals.filter((p) => p.provinceId != payload[0]);
-  }
-  if (payload[1] == 'focus') {
-    signals.push({ provinceId: payload[0], signal: 'focus' });
+export function getUpdatedProvinces(msg) {
+  if (!Array.isArray(map)) return;
+  const updatedProvinces =
+    Array.isArray(msg?.responseData) ? msg.responseData
+    : Array.isArray(msg) ? msg
+    : [];
+  for (const updated of updatedProvinces) {
+    if (!updated || updated.id === undefined) continue;
+    const existing = map.find((p) => p.id == updated.id);
+
+    const wasConquered = Boolean(
+      (updated.ownerId !== undefined &&
+        currentParticipantId &&
+        updated.ownerId == currentParticipantId) ||
+      (existing &&
+        existing.ownerId !== undefined &&
+        updated.ownerId !== undefined &&
+        existing.ownerId !== updated.ownerId) ||
+      (updated.lockedUntil &&
+        (!existing?.lockedUntil || updated.lockedUntil > existing.lockedUntil)),
+    );
+
+    if (existing) {
+      if (existing.placedBuildings && !updated.placedBuildings) {
+        updated.placedBuildings = existing.placedBuildings;
+      }
+      if (existing.availableBuildings && !updated.availableBuildings) {
+        updated.availableBuildings = existing.availableBuildings;
+      }
+      Object.assign(existing, updated);
+    } else {
+      map.push(updated);
+    }
+    if (wasConquered) {
+      if (Array.isArray(signals)) {
+        signals = signals.filter(
+          (p) =>
+            Number(p.id !== undefined ? p.id : p.provinceId) !==
+            Number(updated.id),
+        );
+      }
+    }
   }
   checkProvinces();
 }
-export function removeSignal(msg, payload) {
-  //console.debug('removeSignal', msg, signals);
-  signals = signals.filter((p) => p.provinceId != payload[0]);
-  //console.debug(payload,signals);
+
+export function updateSignal(msg, payload, context) {
+  const data = msg?.responseData || payload || msg?.requestData || msg;
+  const candidateObj =
+    typeof data === 'object' && !Array.isArray(data) ? data
+    : Array.isArray(data) && data.length > 0 && typeof data[0] === 'object' ?
+      data[0]
+    : null;
+
+  let provinceId =
+    candidateObj ? (candidateObj.provinceId ?? candidateObj.id)
+    : Array.isArray(data) ? data[0]
+    : null;
+  let signalType =
+    candidateObj ? (candidateObj.type ?? candidateObj.signal)
+    : Array.isArray(data) ? data[1]
+    : null;
+
+  if (
+    provinceId !== undefined &&
+    provinceId !== null &&
+    !isNaN(Number(provinceId))
+  ) {
+    provinceId = Number(provinceId);
+  }
+
+  logger?.debug('updateSignal data resolved:', {
+    provinceId,
+    signalType,
+    signalsCount: signals.length,
+  });
+
+  if (provinceId === undefined || provinceId === null || isNaN(provinceId)) {
+    logger?.debug('updateSignal returned early - provinceId is null/undefined');
+    return;
+  }
+
+  if (!signalType || signalType === 'none' || signalType === 'clear') {
+    removeSignal(msg, [provinceId], context);
+  } else {
+    setSignal(msg, [provinceId, signalType], context);
+  }
+}
+
+export function setSignal(msg, payload, context) {
+  let data =
+    Array.isArray(payload) && payload.length > 0 ? payload
+    : Array.isArray(msg?.requestData) && msg.requestData.length > 0 ?
+      msg.requestData
+    : Array.isArray(msg?.responseData) && msg.responseData.length > 0 ?
+      msg.responseData
+    : Array.isArray(msg) && msg.length > 0 ? msg
+    : [];
+
+  if (data.length === 0 && context) {
+    const reqPayloadItems =
+      Array.isArray(context.requestPayload) ? context.requestPayload
+      : context.requestPayload && typeof context.requestPayload === 'object' ?
+        [context.requestPayload]
+      : [];
+    if (reqPayloadItems.length > 0) {
+      const match =
+        (msg?.requestId !== undefined ?
+          reqPayloadItems.find((r) => r && r.requestId === msg.requestId)
+        : null) ||
+        reqPayloadItems.find(
+          (r) =>
+            r &&
+            (r.requestMethod === 'setSignal' ||
+              r.requestClass?.includes('GuildBattleground')),
+        ) ||
+        reqPayloadItems[0];
+      if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
+        data = match.requestData;
+      }
+    }
+
+    if (data.length === 0) {
+      const postText =
+        context?.request?.request?.postData?.text ||
+        context?.request?.postData?.text ||
+        context?.postData?.text ||
+        (typeof context?.postData === 'string' ? context.postData : null) ||
+        (typeof context?.request?.postData === 'string' ?
+          context.request.postData
+        : typeof context?.request?.request?.postData === 'string' ?
+          context.request.request.postData
+        : null);
+      if (postText) {
+        try {
+          const parsed =
+            typeof postText === 'string' ? JSON.parse(postText) : postText;
+          const reqItems = Array.isArray(parsed) ? parsed : [parsed];
+          const match = reqItems.find(
+            (r) =>
+              r &&
+              (r.requestMethod === 'setSignal' ||
+                r.requestClass?.includes('GuildBattleground')),
+          );
+          if (
+            Array.isArray(match?.requestData) &&
+            match.requestData.length > 0
+          ) {
+            data = match.requestData;
+          }
+        } catch {}
+      }
+    }
+  }
+
+  let provinceId = data[0];
+  let signalType = data[1];
+
+  if (provinceId === undefined || provinceId === null) {
+    const candidateObj =
+      (payload && typeof payload === 'object' && !Array.isArray(payload) ?
+        payload
+      : null) ||
+      ((
+        msg?.responseData &&
+        typeof msg.responseData === 'object' &&
+        !Array.isArray(msg.responseData)
+      ) ?
+        msg.responseData
+      : null) ||
+      ((
+        msg?.requestData &&
+        typeof msg.requestData === 'object' &&
+        !Array.isArray(msg.requestData)
+      ) ?
+        msg.requestData
+      : null) ||
+      (msg && typeof msg === 'object' && !Array.isArray(msg) ? msg : null);
+
+    if (candidateObj) {
+      provinceId = candidateObj.provinceId ?? candidateObj.id;
+      signalType = candidateObj.type ?? candidateObj.signal ?? signalType;
+    }
+  }
+
+  if (
+    provinceId !== undefined &&
+    provinceId !== null &&
+    !isNaN(Number(provinceId))
+  ) {
+    provinceId = Number(provinceId);
+  }
+
+  logger?.debug('setSignal data resolved:', {
+    data,
+    provinceId,
+    signalType,
+    signalsCount: signals.length,
+  });
+  if (provinceId === undefined || provinceId === null) {
+    logger?.debug('setSignal returned early - provinceId is null/undefined');
+    return;
+  }
+
+  if (!Array.isArray(signals)) {
+    signals = [];
+  }
+
+  if (signalType === 'ignore') {
+    signals = signals.filter(
+      (p) => Number(p.id !== undefined ? p.id : p.provinceId) !== provinceId,
+    );
+  } else if (signalType === 'focus') {
+    const existing = signals.find(
+      (p) => Number(p.id !== undefined ? p.id : p.provinceId) === provinceId,
+    );
+    if (existing) {
+      existing.id = provinceId;
+      existing.provinceId = provinceId;
+      existing.type = signalType;
+      existing.signal = signalType;
+    } else {
+      signals.push({
+        id: provinceId,
+        provinceId: provinceId,
+        type: signalType,
+        signal: signalType,
+      });
+    }
+  }
+
+  checkProvinces();
+}
+
+export function removeSignal(msg, payload, context) {
+  let data =
+    Array.isArray(payload) && payload.length > 0 ? payload
+    : Array.isArray(msg?.requestData) && msg.requestData.length > 0 ?
+      msg.requestData
+    : Array.isArray(msg?.responseData) && msg.responseData.length > 0 ?
+      msg.responseData
+    : Array.isArray(msg) && msg.length > 0 ? msg
+    : [];
+
+  if (data.length === 0 && context) {
+    const reqPayloadItems =
+      Array.isArray(context.requestPayload) ? context.requestPayload
+      : context.requestPayload && typeof context.requestPayload === 'object' ?
+        [context.requestPayload]
+      : [];
+    if (reqPayloadItems.length > 0) {
+      const match =
+        (msg?.requestId !== undefined ?
+          reqPayloadItems.find((r) => r && r.requestId === msg.requestId)
+        : null) ||
+        reqPayloadItems.find(
+          (r) =>
+            r &&
+            (r.requestMethod === 'removeSignal' ||
+              r.requestClass?.includes('GuildBattleground')),
+        ) ||
+        reqPayloadItems[0];
+      if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
+        data = match.requestData;
+      }
+    }
+
+    if (data.length === 0) {
+      const postText =
+        context?.request?.request?.postData?.text ||
+        context?.request?.postData?.text ||
+        context?.postData?.text ||
+        (typeof context?.postData === 'string' ? context.postData : null) ||
+        (typeof context?.request?.postData === 'string' ?
+          context.request.postData
+        : typeof context?.request?.request?.postData === 'string' ?
+          context.request.request.postData
+        : null);
+      if (postText) {
+        try {
+          const parsed =
+            typeof postText === 'string' ? JSON.parse(postText) : postText;
+          const reqItems = Array.isArray(parsed) ? parsed : [parsed];
+          const match = reqItems.find(
+            (r) =>
+              r &&
+              (r.requestMethod === 'removeSignal' ||
+                r.requestClass?.includes('GuildBattleground')),
+          );
+          if (
+            Array.isArray(match?.requestData) &&
+            match.requestData.length > 0
+          ) {
+            data = match.requestData;
+          }
+        } catch {}
+      }
+    }
+  }
+
+  let provinceId = data[0];
+
+  if (provinceId === undefined || provinceId === null) {
+    const candidateObj =
+      (payload && typeof payload === 'object' && !Array.isArray(payload) ?
+        payload
+      : null) ||
+      ((
+        msg?.responseData &&
+        typeof msg.responseData === 'object' &&
+        !Array.isArray(msg.responseData)
+      ) ?
+        msg.responseData
+      : null) ||
+      ((
+        msg?.requestData &&
+        typeof msg.requestData === 'object' &&
+        !Array.isArray(msg.requestData)
+      ) ?
+        msg.requestData
+      : null) ||
+      (msg && typeof msg === 'object' && !Array.isArray(msg) ? msg : null);
+
+    if (candidateObj) {
+      provinceId = candidateObj.provinceId ?? candidateObj.id;
+    }
+  }
+
+  if (
+    provinceId !== undefined &&
+    provinceId !== null &&
+    !isNaN(Number(provinceId))
+  ) {
+    provinceId = Number(provinceId);
+  }
+
+  logger?.debug('removeSignal data resolved:', {
+    data,
+    provinceId,
+    signalsCount: signals.length,
+  });
+  if (provinceId === undefined || provinceId === null) {
+    logger?.debug('removeSignal returned early - provinceId is null/undefined');
+    return;
+  }
+
+  if (!Array.isArray(signals)) {
+    signals = [];
+  }
+
+  signals = signals.filter(
+    (p) => Number(p.id !== undefined ? p.id : p.provinceId) !== provinceId,
+  );
+
   checkProvinces();
 }
 
 export function clearBattleground() {
-  BattlegroundPerformance = [];
-  GuildMembers = [];
+  BattlegroundPerformance.length = 0;
+  GuildMembers.length = 0;
   map = {};
   if (document.getElementById('costs'))
     document.getElementById('costs').innerHTML = '';
 }
 
-function buildingCostCopy() {
-  var selection = window.getSelection();
-  selection.removeAllRanges();
-  var range = document.createRange();
-  var copytext = document.getElementById('buildingCostText');
-  range.selectNode(copytext);
-  selection.addRange(range);
-  document.execCommand('copy');
-  // copyToClipboard('p#buildingCostText');
+export function getServerMarket(origin) {
+  if (!origin || typeof origin !== 'string') return 'en';
+  const clean = origin.trim().toLowerCase();
+  if (clean.includes('zz') || clean.includes('beta')) return 'zz';
+  const hostMatch = clean.match(
+    /(?:https?:\/\/)?([a-z]{2,3})\d*\.forgeofempires\.com/i,
+  );
+  if (hostMatch && hostMatch[1]) {
+    return hostMatch[1];
+  }
+  const prefixMatch = clean.match(/^(?:https?:\/\/)?([a-z]{2,3})\d*/i);
+  if (prefixMatch && prefixMatch[1]) {
+    return prefixMatch[1];
+  }
+  return 'en';
 }
 
-function targetCopy() {
-  // var selection = window.getSelection();
-  // selection.removeAllRanges();
-  // var range = document.createRange();
-  // var copytext = document.getElementById("targetGenText");
-  // range.selectNode(copytext);
-  // selection.addRange(range);
-  // document.execCommand("copy");
+const SERVER_TIMEZONES = {
+  en: { timeZone: 'Europe/London', locale: 'en-GB', hour12: false },
+  zz: { timeZone: 'Europe/London', locale: 'en-GB', hour12: false },
+  us: { timeZone: 'America/New_York', locale: 'en-US', hour12: true },
+  de: { timeZone: 'Europe/Berlin', locale: 'de-DE', hour12: false },
+  fr: { timeZone: 'Europe/Paris', locale: 'fr-FR', hour12: false },
+  gr: { timeZone: 'Europe/Athens', locale: 'el-GR', hour12: false },
+  fi: { timeZone: 'Europe/Helsinki', locale: 'fi-FI', hour12: false },
+  ru: { timeZone: 'Europe/Moscow', locale: 'ru-RU', hour12: false },
+  es: { timeZone: 'Europe/Madrid', locale: 'es-ES', hour12: false },
+  it: { timeZone: 'Europe/Rome', locale: 'it-IT', hour12: false },
+  nl: { timeZone: 'Europe/Amsterdam', locale: 'nl-NL', hour12: false },
+  pl: { timeZone: 'Europe/Warsaw', locale: 'pl-PL', hour12: false },
+  br: { timeZone: 'America/Sao_Paulo', locale: 'pt-BR', hour12: false },
+};
 
-  copyToClipboard('#targetGenText');
-  console.debug(document.getElementById('targetGenText').innerHTML);
+export function timeGBG(
+  date,
+  origin = typeof GameOrigin !== 'undefined' ? GameOrigin : '',
+  options = {},
+) {
+  if (!date) return '';
+  if (typeof origin === 'object' && origin !== null) {
+    options = origin;
+    origin = typeof GameOrigin !== 'undefined' ? GameOrigin : '';
+  }
+  let d;
+  if (date instanceof Date) {
+    d = date;
+  } else if (typeof date === 'number') {
+    d = date < 1e11 ? new Date(date * 1000) : new Date(date);
+  } else {
+    d = new Date(date);
+  }
+  if (isNaN(d.getTime())) return '';
 
-  // var $temp = $("<textarea>");
-  // $("body").append($temp);
-  // var html = $('p#targetGenText').html();
-  // console.debug(html);
-  // // var html = $(element).text();
-  // html = html.replace(/<br>/g, "\r\n"); // or \r\n
-  // console.debug(html);
-  // $temp.val(html).select();
-  // document.execCommand("copy");
-  // $temp.remove();
-}
+  const timeMode =
+    options?.GBGtimeMode ||
+    (typeof showOptions !== 'undefined' && showOptions?.GBGtimeMode) ||
+    'server';
 
-function copyToClipboard(element) {
-  var $temp = $('<textarea>');
-  $('body').append($temp);
-  var html = $(element).html();
-  console.debug(html);
-  // var html = $(element).text();
-  html = $('<div />')
-    .html(html)
-    .find('span')
-    .contents()
-    .unwrap()
-    .end()
-    .end()
-    .html();
-  html = html.replace(/<\/?p[^>]*>/g, '').replace(/<br>/g, '\r\n'); // or \r\n
-  console.debug(html);
-  $temp.val(html).select();
-  document.execCommand('copy');
-  $temp.remove();
-}
+  if (timeMode === 'local') {
+    let is12Hour = false;
+    try {
+      const { getTimeFormattingConfig } = require('../utils/date.js');
+      const cfg = getTimeFormattingConfig();
+      is12Hour = /\bhh\b|[Aa]/.test(
+        cfg.customPattern || cfg.timeFormat || cfg.dateTimeFormat,
+      );
+    } catch {}
+    if (is12Hour) {
+      const h24 = d.getHours();
+      const h12 = h24 % 12 || 12;
+      const hours = String(h12).padStart(2, '0');
+      const minutes = String(d.getMinutes()).padStart(2, '0');
+      const ampm = h24 >= 12 ? 'PM' : 'AM';
+      return `@ ${hours}:${minutes} ${ampm}`;
+    }
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    return `@ ${hours}:${minutes}`;
+  }
 
-function timeGBG(time) {
-  if (!time) return '';
-  console.debug(time);
-  var timeText =
-    '@ ' +
-    time.toLocaleTimeString([], {
-      timeZone: 'Europe/Amsterdam',
+  const market = getServerMarket(origin);
+  const config = SERVER_TIMEZONES[market] || {
+    timeZone: 'Europe/Berlin',
+    locale: 'de-DE',
+    hour12: false,
+  };
+
+  const formatted = d
+    .toLocaleTimeString(config.locale, {
+      timeZone: config.timeZone,
       hour: '2-digit',
       minute: '2-digit',
-    });
+      hour12: config.hour12,
+    })
+    .replace(/\u202f/g, ' ');
 
-  if (GameOrigin.substr(0, 2) == 'en' || GameOrigin.substr(0, 2) == 'zz')
-    timeText =
-      '@ ' +
-      time.toLocaleTimeString('en-GB', {
-        timeZone: 'Europe/London',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-  if (GameOrigin.substr(0, 2) == 'us')
-    timeText =
-      '@ ' +
-      time.toLocaleTimeString('en-US', {
-        timeZone: 'US/Eastern',
-        hour12: true,
-      });
-  else if (GameOrigin.substr(0, 2) == 'de')
-    timeText =
-      '@ ' +
-      time.toLocaleTimeString([], {
-        timeZone: 'Europe/Berlin',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-  else if (GameOrigin.substr(0, 2) == 'fr')
-    timeText =
-      '@ ' +
-      time.toLocaleTimeString([], {
-        timeZone: 'Europe/Paris',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-  else if (GameOrigin.substr(0, 2) == 'gr')
-    timeText =
-      '@ ' +
-      time.toLocaleTimeString([], {
-        timeZone: 'Europe/Athens',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-  else if (GameOrigin.substr(0, 2) == 'fi')
-    timeText =
-      '@ ' +
-      time.toLocaleTimeString([], {
-        timeZone: 'Europe/Helsinki',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-  else if (GameOrigin.substr(0, 2) == 'ru')
-    timeText =
-      '@ ' +
-      time.toLocaleTimeString([], {
-        timeZone: 'Europe/Moscow',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-
-  // if(GameOrigin.substr(0,2) == 'en')
-
-  return timeText;
+  return `@ ${formatted}`;
 }
 
 function attritionReduction(building) {
-  if (building == 'watchtower') return 8;
-  else if (building == 'guild_command_post_improvised') return 20;
-  else if (building == 'guild_command_post_forward') return 40;
-  else if (building == 'guild_command_post_fortified') return 60;
-  else if (building == 'barracks_improvised') return 20;
-  else if (building == 'barracks') return 40;
-  else if (building == 'barracks_reinforced') return 60;
-  else if (building == 'guild_fieldcamp_small') return 26;
-  else if (building == 'guild_fieldcamp') return 52;
-  else if (building == 'guild_fieldcamp_fortified') return 80;
-  else if (building.includes('basic_field_outpost_')) return 20;
-  else if (building.includes('regular_field_outpost_')) return 40;
-  else if (building.includes('advanced_field_outpost_')) return 60;
-  else if (building.includes('basic_guild_fortress_')) return 26;
-  else if (building.includes('regular_guild_fortress_')) return 52;
-  else if (building.includes('advanced_guild_fortress_')) return 80;
-  else {
-    return 0;
-  }
+  return getAttritionReduction(building);
 }
 
 function checkProvinces() {
@@ -452,16 +807,25 @@ function checkProvinces() {
   var timerId = Math.random().toString(36).substr(2, 5);
   var targetsHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="alert">`;
   targetsHTML += element.close();
-  // if(url.sheetGuildURL)
-  //     targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID"><span data-i18n="post">Post</span></button>`;
-  // else
+  if (
+    url?.discordTargetURL &&
+    ((typeof helper?.checkGBG === 'function' && helper.checkGBG()) ||
+      Boolean(helper?.MyGuildPermissions & 64))
+  ) {
+    targetsHTML += element.post(
+      'targetGenPostID',
+      'primary',
+      'right',
+      collapse.collapseTargetGen,
+    );
+  }
   targetsHTML += element.copy(
     'targetCopyID',
     'primary',
     'right',
     collapse.collapseBattleground,
   );
-  targetsHTML += `<p id="targetGenLabel" href="#targetGenCollapse" aria-expanded="true" data-bs-toggle="collapse">
+  targetsHTML += `<p id="targetGenLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#targetGenCollapse" aria-expanded="${!collapse.collapseTargetGen}" aria-controls="targetGenCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${element.icon('targetGenicon', 'targetGenCollapse', collapse.collapseTargetGen)}
         <strong>GBG Target Generator:</strong></p>`;
 
@@ -484,134 +848,102 @@ function checkProvinces() {
       // console.debug(province,clan);
       // var signalId = clan.provinceId ? clan.provinceId : 0;
 
-      //check all provinces with focus
-      var thisdef = ProvinceDefs.find((def) => def.id == province.id);
-      if (thisdef && province.id == clan.provinceId && clan.signal == 'focus') {
-        // if(thisdef && province.id == clan.provinceId){
-        var campsReady = 0;
-        var campsNotReady = 0;
-        var name = thisdef.name.split(' ');
-        console.debug(thisdef.name, name, thisdef);
-        // if(name[0].charAt(1) == '1')
-        //     name[1] = '';
-        // else
-        if (mapName == 'waterfall') {
-          name[1] = '';
-          name[0] = name[0].substr(0, 3);
-        } else {
-          name[1] = name[1].charAt(0);
-          name[0] = name[0].substr(0, 2);
+      const activeDefs =
+        ProvinceDefs && ProvinceDefs.length > 0 ? ProvinceDefs
+        : VolcanoProvinceDefs && VolcanoProvinceDefs.length > 0 ?
+          VolcanoProvinceDefs
+        : WaterfallProvinceDefs && WaterfallProvinceDefs.length > 0 ?
+          WaterfallProvinceDefs
+        : [];
+      var thisdef = activeDefs.find(
+        (def) =>
+          (def.id !== undefined ? def.id : 0) ==
+          (province.id !== undefined ? province.id : 0),
+      );
+      const clanProvId =
+        clan.provinceId !== undefined ? clan.provinceId : clan.id;
+      const clanSignal = clan.signal !== undefined ? clan.signal : clan.type;
+      if (thisdef && province.id == clanProvId && clanSignal == 'focus') {
+        if (
+          province.ownerId !== undefined &&
+          currentParticipantId &&
+          province.ownerId == currentParticipantId
+        ) {
+          return;
         }
-        // console.debug(thisdef);
-        // waterfall_archipelago
-        //check connected provinces for siege camps
-        if (thisdef && thisdef.connections) {
-          thisdef.connections.forEach((connection) => {
-            const provinceData = mapSorted.find(
-              (province) => province.id == connection,
-            );
-            // console.debug(connection,provinceData);
-            if (
-              provinceData.placedBuildings &&
-              currentParticipantId == provinceData.ownerId
-            ) {
-              provinceData.placedBuildings.forEach((building) => {
-                let att = attritionReduction(building.id);
-                if (building.readyAt < EpocTime) {
-                  campsReady += att;
-                } else {
-                  campsNotReady += att;
-                }
+        const connectedProvinces = (thisdef.connections || [])
+          .map((connId) => mapSorted.find((p) => p.id == connId))
+          .filter(Boolean);
 
-                /*if (building.id == "siege_camp" || building.id == "guild_command_post_fortified") {
-                  if (building.readyAt < EpocTime) {
-                    console.debug("siege camp");
-                    campsReady++;
-                  } else {
-                    var time = new Date(building.readyAt);
-                    campsNotReady++;
-                    console.debug(building.readyAt, time);
-                    console.debug("siege camp ready " + timeGBG(time));
-                  }
-                }*/
-              });
-            }
-          });
-        }
-        if (campsReady > 80) campsReady = 80;
-        if (campsNotReady > 0)
-          campsNotReady = Math.min(80 - campsReady, campsNotReady);
-        var text = name[0] + name[1];
-        var campsText = '';
-        if (showOptions.GBGshowSC && (campsReady || campsNotReady)) {
-          campsText = ' ';
-          if (campsReady && !campsNotReady)
-            campsText += '(' + (100 - campsReady) + '%)';
-          else if (campsNotReady && !campsReady)
-            campsText += '[' + (100 - campsNotReady) + '% UC]';
-          else if (campsReady && campsNotReady)
-            campsText +=
-              '(' +
-              (100 - campsReady) +
-              '%) [' +
-              (100 - campsNotReady - campsReady) +
-              '% UC]';
-          else campsText += '(! SC)';
-        }
-        if (targetText) text += ' ' + targetText;
-        // check if province is locked
+        const currentEpoc =
+          typeof EpocTime === 'number' && EpocTime > 1000000000 ?
+            EpocTime
+          : Math.floor(Date.now() / 1000);
+
+        const { campsReady, campsNotReady } = calculateProvinceAttrition({
+          connectedProvinces,
+          currentParticipantId,
+          currentEpoc,
+          gainAttritionChance: province.gainAttritionChance,
+        });
+
+        const sectorTag = formatSectorName(thisdef.name, mapName);
+        const campsText =
+          showOptions.GBGshowSC && (campsReady || campsNotReady) ?
+            formatCampsText(campsReady, campsNotReady, true)
+          : '';
+
+        let timeText = '';
         if (province.lockedUntil && showOptions.GBGprovinceTime) {
-          var time = new Date(province.lockedUntil * 1000);
-          text += ` ${timeGBG(time)}`;
+          const time = new Date(province.lockedUntil * 1000);
+          timeText = timeGBG(
+            time,
+            typeof GameOrigin !== 'undefined' ? GameOrigin : '',
+            showOptions,
+          );
+        }
+
+        const text = formatTargetToken({
+          sectorTag,
+          targetText:
+            targetText && targetText.trim() ? targetText.trim() : undefined,
+          campsText: campsText || undefined,
+          timeText: timeText || undefined,
+        });
+
+        if (province.lockedUntil && showOptions.GBGprovinceTime) {
           if (textProvinceLocked != '') {
             textProvinceLocked += '<br>';
           }
-          textProvinceLocked += text + campsText;
-          // console.debug(province.lockedUntil,time);
+          textProvinceLocked += text;
         } else {
           if (textProvinceUnlocked != '') textProvinceUnlocked += '<br>';
-          textProvinceUnlocked += text + campsText;
+          textProvinceUnlocked += text;
         }
-        // console.debug(text);
       }
     });
   });
-  if (
-    (textProvinceUnlocked || textProvinceLocked) &&
-    (helper.checkGBG || helper.MyGuildPermissions & 64)
-  ) {
-    // targetsHTML += `<button type="button" class="badge rounded-pill bg-primary right-button" id="targetPostID">Post</button>`;
-
-    targetGenerator.innerHTML =
-      targetsHTML +
-      `<div id="targetGenCollapse" class="collapse
-            ${collapse.collapseTargetGen == false ? 'show' : ''}"><p id="targetGenText">` +
-      textProvinceUnlocked +
-      (textProvinceUnlocked != '' ? '<br>' : '') +
-      textProvinceLocked +
-      `</p></div>`;
-
-    document
-      .getElementById('targetCopyID')
-      .addEventListener('click', targetCopy);
-    document
-      .getElementById('targetGenLabel')
-      .addEventListener('click', collapse.fCollapseTargetGen);
-    const siegecamp_tooltip = document.getElementById('siegecamp_tooltip');
-    if (siegecamp_tooltip) {
-      const options = {
-        html: true,
-        delay: { show: 200, hide: 500 },
-      };
-      const tooltip = new Tooltip(siegecamp_tooltip, options);
-    }
-  }
+  logger?.debug('renderTargetGeneratorCard summary:', {
+    textProvinceUnlocked,
+    textProvinceLocked,
+    signalsCount: signals.length,
+  });
+  renderTargetGeneratorCard({
+    targetGenerator,
+    targetsHTML,
+    textProvinceUnlocked,
+    textProvinceLocked,
+    collapse,
+    targetCopy,
+    targetPost: post_webstore.postTargetGenToDiscord,
+    Tooltip,
+    helper,
+    url,
+    post_webstore,
+  });
 }
 
 function showBuildingCost(msg) {
-  var provinceId = 0;
-  if (msg.provinceId) provinceId = msg.provinceId;
-  var costsHTML = '';
   var costsDiv = document.createElement('div');
   if (document.getElementById('costs')) {
     costsDiv = document.getElementById('costs');
@@ -619,89 +951,23 @@ function showBuildingCost(msg) {
     costsDiv.id = 'costs';
     content.appendChild(costsDiv);
   }
-  // var province = ProvinceDefs.find(def => def.id == provinceId);
-  map
-    .filter((p) => p.availableBuildings != null)
-    .forEach((province) => {
-      console.debug(province);
-      const costs = province.availableBuildings;
-      const slots = province.totalBuildingSlots;
-      var name = ProvinceDefs.find((def) => def.id == province.id).name.split(
-        ' ',
-      );
-      // var slots = ProvinceDefs.find(def => def.id == province.id).totalBuildingSlots;
-      // console.debug(name,costsHTML);
-
-      // if(name[0].charAt(1) == '1')
-      //     name[1] = '';
-      // else
-      //     name[1] = name[1].charAt(0);
-      // name[0] = name[0].substr(0,2);
-
-      if (mapName == 'waterfall') {
-        name[1] = '';
-        name[0] = name[0].substr(0, 3);
-      } else {
-        name[1] = name[1].charAt(0);
-        name[0] = name[0].substr(0, 2);
-      }
-
-      // costsHTML += `<tr><td class="fw-bold col-auto">${name[0] + name[1]}</td></tr>`;
-      costsHTML += `<tr><th>${name[0] + name[1]}${
-        slots ? ' [' + slots + ']' : ''
-      }</th><th>Resource 1</th><th>Qty</th><th>Resource 2</th><th>Qty</th><th>Resource 3</th><th>Qty</th></tr>`;
-      costs.forEach((building) => {
-        // console.debug(guild.clan.name,guild.victoryPointsHourly,guild.victoryPointsTotal)
-        costsHTML += `<tr><td>${BuildingDefs[building.buildingId].name}</td>`;
-        Object.keys(building.costs.resources).forEach((resource) => {
-          // Goods[entry] = entry;
-          // console.debug(entry,rss[`${entry}`]);
-
-          costsHTML += `<td>${helper.fResourceShortName(resource)}</td><td>${building.costs.resources[resource]}</td>`;
-        });
-
-        // <td>${building.costs.resources.length >= 1 ? building.costs.resources[0] : ''}</td>
-        // <td>${building.costs.resources.length >= 2 ? building.costs.resources[1] : ''}</td>
-        // <td>${building.costs.resources.length >= 3 ? building.costs.resources[2] : ''}</td>
-        costsHTML += `</tr>`;
-      });
-    });
-  // let htmlText = `<div class="card bg-light alert show collapsed p-0" >
-  // <div class="card-header fw-bold"><span data-i18
-
-  costsDiv.innerHTML =
-    `<div class="alert alert-info alert-dismissible  show collapsed" role="alert">
-    ${element.close()}
-    <p id="buildingCostTextLabel" href="#buildingCostText" aria-expanded="true" aria-controls="buildingCostText" data-bs-toggle="collapse">
-      ${element.icon('buildingCosticon', 'buildingCostText', collapse.collapseBuildingCost)}
-    <strong>GBG Building Costs:</strong></p>` +
-    element.copy(
-      'buildingCostID',
-      'primary',
-      'right',
-      collapse.collapseBuildingCost,
-    ) +
-    `<table style="height: ${toolOptions.buildingCostSize}px"  id="buildingCostText" class="overflow-y table collapse ${
-      collapse.collapseBuildingCost == false ? 'show' : ''
-    }">` +
-    costsHTML +
-    `</table></div>`;
-  document
-    .getElementById('buildingCostID')
-    .addEventListener('click', buildingCostCopy);
-  document
-    .getElementById('buildingCostTextLabel')
-    .addEventListener('click', collapse.fCollapseBuildingCost);
-  const costsTextDiv = document.getElementById('buildingCostText');
-  const resizeObserver = new ResizeObserver((entries) => {
-    // console.debug(entries);
-    for (const entry of entries) {
-      if (entry.contentRect && entry.contentRect.height)
-        setBuildingCostSize(entry.contentRect.height);
-    }
+  const costsHTML = buildBuildingCostsTableHTML({
+    map,
+    ProvinceDefs,
+    mapName,
+    BuildingDefs,
+    helper,
   });
-  resizeObserver.observe(costsDiv);
-  $('body').i18n();
-  // console.debug(toolOptions);
-  console.debug('collapseBuildingCost', collapse);
+  renderBuildingCostCard({
+    costsDiv,
+    costsHTML,
+    collapse,
+    buildingCostCopy,
+    toolOptions,
+    setBuildingCostSize,
+    helper,
+    element,
+    ResizeObserverClass:
+      typeof ResizeObserver !== 'undefined' ? ResizeObserver : null,
+  });
 }

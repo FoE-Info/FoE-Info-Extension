@@ -12,158 +12,293 @@
  * ________________________________________________________________
  */
 
-import { Tooltip, Alert, Popover } from 'bootstrap';
-import dayjs from 'dayjs';
-import { targets, targetsTopic } from '../index.js';
-import * as collapse from '../fn/collapse.js';
-import * as helper from '../fn/helper.js';
-import * as post_webstore from '../fn/post.js';
-import * as element from '../fn/AddElement';
-import { setCurrentPercent } from './GreatBuildingsService.js';
+let Alert;
+try {
+  const bs = require('bootstrap');
+  Alert = bs.Alert;
+} catch {}
+let dayjs;
+try {
+  dayjs = require('dayjs');
+} catch {}
+let element = { close: () => '', post: () => '', icon: () => '' };
+try {
+  element = require('../ui/AddElement.js');
+} catch {
+  try {
+    element = require('../fn/AddElement');
+  } catch {}
+}
+let collapse = {};
+try {
+  collapse = require('../fn/collapse.js');
+} catch {}
+let helper = {};
+try {
+  helper = require('../fn/helper.js');
+} catch {}
+let post_webstore = {};
+try {
+  post_webstore = require('../fn/post.js');
+} catch {}
+let extractRateFromTitle = () => 0;
+try {
+  const rp = require('../fn/rateParser.js');
+  extractRateFromTitle = rp.extractRateFromTitle;
+} catch {}
+let targets = null;
+let targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
+if (typeof __webpack_require__ !== 'undefined') {
+  try {
+    const state = require('../vars/state.js');
+    targets = state.targets;
+    targetsTopic = state.targetsTopic;
+  } catch {}
+}
 
-// targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
+function setTargetsTopic(topic) {
+  targetsTopic = topic;
+}
 
-export function conversationService(msg) {
-  // console.debug(msg);
-  var messages = null;
-  // if(msg.responseData.category.type == 'guild'){
-  if (msg.requestMethod == 'getOverviewForCategory')
+function getTargetsTopic() {
+  if (typeof __webpack_require__ !== 'undefined') {
+    try {
+      const state = require('../vars/state.js');
+      if (state?.targetsTopic) return state.targetsTopic;
+    } catch {}
+  }
+  return targetsTopic || 'targets';
+}
+
+function isTargetsTopic(title) {
+  if (!title || typeof title !== 'string') return false;
+  const activeTopic = getTargetsTopic();
+  const lower = title.toLowerCase();
+  if (activeTopic && lower.includes(activeTopic.toLowerCase())) {
+    return true;
+  }
+  return lower.includes('targets') || title.includes('🎯');
+}
+let setCurrentPercent = () => {};
+try {
+  const gb = require('./GreatBuildingsService.js');
+  setCurrentPercent = gb.setCurrentPercent;
+} catch {}
+let logger = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('ConversationService');
+} catch {}
+
+let targetsTimer = null;
+let lastTargetsConversationId = null;
+
+function renderTargetMessage(message) {
+  if (!message) return;
+  const targetsGBG =
+    document.getElementById('targetsGBG') ||
+    (() => {
+      const el = document.createElement('div');
+      el.id = 'targetsGBG';
+      targets?.appendChild?.(el);
+      return el;
+    })();
+
+  const timerId = Math.random().toString(36).substr(2, 5);
+  let targetsHTML = `<div id="alert-${timerId}" class="alert alert-info alert-dismissible show" role="alert">`;
+  if (typeof element?.close === 'function') {
+    targetsHTML += element.close();
+  }
+
+  const canPost =
+    (typeof helper?.checkGBG === 'function' && helper.checkGBG()) ||
+    Boolean(helper?.MyGuildPermissions & 64);
+  if (canPost && typeof element?.post === 'function') {
+    targetsHTML += element.post(
+      'targetPostID',
+      'primary',
+      'right',
+      collapse.collapseTarget,
+    );
+  }
+
+  const rawText = message?.lastMessage?.text || message?.text || '';
+  const safeText = (
+    typeof helper?.escapeHTML === 'function' ?
+      helper.escapeHTML(rawText)
+    : String(rawText).replace(
+        /[&<>"']/g,
+        (m) =>
+          ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+          })[m],
+      )).replace(/(?:\r\n|\r|\n)/g, '<br>');
+
+  const rawSender =
+    message?.lastMessage?.sender?.name ||
+    message?.sender?.name ||
+    (typeof message?.sender === 'string' ? message.sender : '');
+  const safeSender =
+    typeof helper?.escapeHTML === 'function' ?
+      helper.escapeHTML(rawSender)
+    : String(rawSender).replace(
+        /[&<>"']/g,
+        (m) =>
+          ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+          })[m],
+      );
+
+  const rawDate =
+    message?.lastMessage?.date ||
+    message?.date ||
+    (dayjs ? dayjs().format('HH:mm:ss') : '');
+  const safeDate =
+    typeof helper?.escapeHTML === 'function' ?
+      helper.escapeHTML(rawDate)
+    : String(rawDate).replace(
+        /[&<>"']/g,
+        (m) =>
+          ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+          })[m],
+      );
+
+  const iconHTML =
+    typeof element?.icon === 'function' ?
+      element.icon('targeticon', 'targetText', collapse.collapseTarget)
+    : '';
+
+  targetsGBG.innerHTML =
+    targetsHTML +
+    `<p id="targetLabel" href="#targetText" aria-expanded="true" data-bs-toggle="collapse">
+  ${iconHTML}
+            <strong>GBG Targets</strong> ${safeDate}</p><p id="targetText" class="collapse ${
+              collapse.collapseTarget ? '' : 'show'
+            }">${safeText}<br><span class="text-muted">by ${safeSender}. alert @ ${
+              dayjs ? dayjs().format('HH:mm:ss') : ''
+            }</span></p></div>`;
+
+  if (targetsTimer) clearTimeout(targetsTimer);
+  targetsTimer = setTimeout(function () {
+    if (targetsGBG) targetsGBG.innerHTML = '';
+    targetsTimer = null;
+  }, 600000);
+  if (targetsTimer && typeof targetsTimer.unref === 'function') {
+    targetsTimer.unref();
+  }
+
+  document
+    .getElementById('targetLabel')
+    ?.addEventListener('click', collapse.fCollapseTarget);
+  if (canPost) {
+    document
+      .getElementById('targetPostID')
+      ?.addEventListener('click', post_webstore.postTargetsToDiscord);
+  }
+}
+
+function conversationService(msg) {
+  let messages = [];
+  if (
+    msg?.requestMethod === 'getOverviewForCategory' &&
+    msg?.responseData?.category?.teasers
+  ) {
     messages = msg.responseData.category.teasers;
-  else messages = msg.responseData.teasers;
-  // console.debug(targetsTopic);
-  // if(!targetsTopic) targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
-  messages.forEach(function (message) {
-    // console.debug(message.title ,targetsTopic,message.title.toLowerCase().includes(targetsTopic.toLowerCase()));
-    // if(message.title == targetsTopic){
-    if (
-      targetsTopic &&
-      message.title.toLowerCase().includes(targetsTopic.toLowerCase())
-    ) {
-      var targetsGBG = document.createElement('div');
-      var targetsHTML;
-      if (document.getElementById('targetsGBG')) {
-        targetsGBG = document.getElementById('targetsGBG');
-      } else {
-        targetsGBG.id = 'targetsGBG';
-        targets.appendChild(targetsGBG);
+  } else if (Array.isArray(msg?.responseData?.teasers)) {
+    messages = msg.responseData.teasers;
+  } else if (Array.isArray(msg?.responseData?.categories)) {
+    for (const cat of msg.responseData.categories) {
+      if (Array.isArray(cat?.teasers)) {
+        messages.push(...cat.teasers);
       }
-      // console.debug(message.lastMessage.text);
+    }
+  } else if (Array.isArray(msg?.responseData)) {
+    messages = msg.responseData;
+  }
 
-      var timerId = Math.random().toString(36).substr(2, 5);
-      targetsHTML = `<div id="alert-${timerId}" class="alert alert-info alert-dismissible show" role="alert">`;
-      targetsHTML += element.close();
-      if (helper.checkGBG())
-        targetsHTML += element.post(
-          'targetPostID',
-          'primary',
-          'right',
-          collapse.collapseTarget,
-        );
-
-      targetsGBG.innerHTML =
-        targetsHTML +
-        `<p id="targetLabel" href="#targetText" aria-expanded="true" data-bs-toggle="collapse">
-      ${element.icon('targeticon', 'targetText', collapse.collapseTarget)}
-                <strong>GBG Targets</strong> ${message.lastMessage.date}</p><p id="targetText" class="collapse ${
-                  collapse.collapseTarget ? '' : 'show'
-                }">${message.lastMessage.text.replace(/(?:\r\n|\r|\n)/g, '<br>')}<br><span class="text-muted">by ${
-                  message.lastMessage.sender.name
-                }. alert @ ${dayjs().format('HH:mm:ss')}</span></p></div>`;
-      setTimeout(function () {
-        targetsGBG.innerHTML = '';
-      }, 600000);
-      document
-        .getElementById('targetLabel')
-        .addEventListener('click', collapse.fCollapseTarget);
-      if (helper.checkGBG())
-        document
-          .getElementById('targetPostID')
-          .addEventListener('click', post_webstore.postTargetsToDiscord);
-
-      // create alarms for sectors when they open
-      // const target = Alert.getOrCreateInstance(`target-list`);
-      // target.show();
+  messages.forEach(function (message) {
+    if (isTargetsTopic(message?.title)) {
+      if (message.id) lastTargetsConversationId = message.id;
+      renderTargetMessage(message);
     }
   });
 
   setCurrentPercent(0); // reset to custom %
 }
 
-export function getConversation(msg) {
-  // console.debug(msg);
-  if (msg.hasOwnProperty('responseData') && msg.hasOwnProperty('adminIds')) {
-  }
+function getConversation(msg) {
+  const resp = msg?.responseData || msg;
+  if (!resp) return;
 
-  // if title includes donation %, setCurrentPercent for dontation helper
-  getPercent(msg.responseData.title);
+  // if title includes donation %, setCurrentPercent for donation helper
+  getPercent(resp.title);
+
+  if (isTargetsTopic(resp.title)) {
+    if (resp.id) lastTargetsConversationId = resp.id;
+    const firstMsg =
+      Array.isArray(resp.messages) && resp.messages.length > 0 ?
+        resp.messages[0]
+      : null;
+    if (firstMsg) {
+      renderTargetMessage({
+        title: resp.title,
+        conversationId: resp.id,
+        text: firstMsg.text,
+        sender: firstMsg.sender,
+        date: firstMsg.date,
+      });
+    }
+  }
+}
+
+function getNewMessage(msg) {
+  const data = msg?.responseData || msg;
+  if (!data) return;
+  if (
+    lastTargetsConversationId &&
+    data.conversationId === lastTargetsConversationId
+  ) {
+    renderTargetMessage({
+      title: targetsTopic,
+      conversationId: data.conversationId,
+      text: data.text,
+      sender: data.sender,
+      date: data.date,
+    });
+  }
 }
 
 function getPercent(title) {
   try {
-    console.debug('title', title);
-    if (!title || title == '') return;
-    else if (title.includes('%')) {
-      var text = title.split('%')[0];
-      if (parseInt(text) > 100) {
-        setCurrentPercent(parseInt(text));
-        return;
-      }
-      if (text.includes(' ')) {
-        text = text.split(' ')[1];
-        if (parseInt(text) > 100) {
-          setCurrentPercent(parseInt(text));
-          return;
-        } else {
-          console.debug('in else 1');
-          const arrtitletext = title.split(' ');
-          arrtitletext.forEach(getIntValue);
-        }
-      }
-    }
-    if (title.includes('1.85')) setCurrentPercent(185);
-    else if (title.includes('1.8')) setCurrentPercent(180);
-    else if (title.includes('1.91')) setCurrentPercent(191);
-    else if (title.includes('1.92')) setCurrentPercent(192);
-    else if (title.includes('1.93')) setCurrentPercent(193);
-    else if (title.includes('1.94')) setCurrentPercent(194);
-    else if (title.includes('1.95')) setCurrentPercent(195);
-    else if (title.includes('1.96')) setCurrentPercent(196);
-    else if (title.includes('1.97')) setCurrentPercent(197);
-    else if (title.includes('1.98')) setCurrentPercent(198);
-    else if (title.includes('1.99')) setCurrentPercent(199);
-    else if (title.includes('2.0')) setCurrentPercent(200);
-    else if (title.includes('2.00')) setCurrentPercent(200);
-    else if (title.includes('190%')) setCurrentPercent(190);
-    else if (title.includes('191%')) setCurrentPercent(191);
-    else if (title.includes('192%')) setCurrentPercent(192);
-    else if (title.includes('193%')) setCurrentPercent(193);
-    else if (title.includes('194%')) setCurrentPercent(194);
-    else if (title.includes('195%')) setCurrentPercent(195);
-    else if (title.includes('196%')) setCurrentPercent(196);
-    else if (title.includes('197%')) setCurrentPercent(197);
-    else if (title.includes('198%')) setCurrentPercent(198);
-    else if (title.includes('199%')) setCurrentPercent(199);
-    else if (title.includes('200%')) setCurrentPercent(200);
-    else if (title.includes('1.9') || title.includes('1,9'))
-      setCurrentPercent(190);
-    else {
-      console.debug('in else 2');
-      setCurrentPercent(190);
-      const arrtitletext = title.split(' ');
-      arrtitletext.forEach(getIntValue);
-    }
+    if (!title || title === '') return;
+    const rate = extractRateFromTitle(title);
+    setCurrentPercent(rate);
   } catch (error) {
     console.log(error);
   }
 }
 
-function getIntValue(item, index) {
-  console.debug('getIntValue 1', item, ' ', index);
-  if (item.includes('Hr')) return;
-  item = item.replace('%', '');
-  console.debug('getIntValue 2', item, ' ', index);
-  if (parseInt(item) > 0) {
-    setCurrentPercent(parseInt(item));
-    console.debug('setCurrentPercent getIntValue', parseInt(item), ' ', index);
-  }
-}
+module.exports = {
+  conversationService,
+  getConversation,
+  getNewMessage,
+  renderTargetMessage,
+  extractRateFromTitle,
+  setTargetsTopic,
+  getTargetsTopic,
+  isTargetsTopic,
+};
+module.exports.default = module.exports;

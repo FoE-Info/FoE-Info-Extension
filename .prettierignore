@@ -3,3 +3,16 @@ build
 package-lock.json
 .idea
 src/js/fn/constants.js
+.agents/
+tests/fixtures/
+src/fonts/
+src/icons/
+src/images/
+scratch/
+scripts/scratch-*.mjs
+docs/har/
+docs/heap-snapshots/
+.worktrees/
+worktrees/
+# Existing local agent conversation prompts; preserve their original contents.
+docs/antigravity_prompt_*.md
