@@ -6,14 +6,6 @@
  * direct CDN metadata URL routing, and per-message failure isolation.
  */
 
-let logger = null;
-try {
-  const { createLogger } = require('../utils/logger.js');
-  logger = createLogger('Dispatcher');
-} catch {}
-
-const combinedHandlerMembers = new WeakMap();
-
 class MessageDispatcher {
   /**
    * @param {Object} [options]
@@ -51,15 +43,11 @@ class MessageDispatcher {
     if (!existing) {
       this.handlers.set(key, handlerFn);
     } else {
-      const members =
-        combinedHandlerMembers.get(existing) || new Set([existing]);
-      if (members.has(handlerFn)) return this;
       const combined = async (msg, ctx) => {
         const res1 = await existing(msg, ctx);
         const res2 = await handlerFn(msg, ctx);
         return res2 !== undefined ? res2 : res1;
       };
-      combinedHandlerMembers.set(combined, new Set([...members, handlerFn]));
       this.handlers.set(key, combined);
     }
     return this;
@@ -221,16 +209,11 @@ class MessageDispatcher {
    * Determine if the payload is an identical duplicate within dedup window.
    * @param {string} reqUrl
    * @param {string} textBody
-   * @param {Object|string|number} [requestPayload=null]
    * @param {number} [now=Date.now()]
    * @returns {boolean}
    */
-  isDuplicate(reqUrl, textBody, requestPayload = null, now = Date.now()) {
+  isDuplicate(reqUrl, textBody, now = Date.now()) {
     if (!reqUrl || !textBody) return false;
-    if (typeof requestPayload === 'number') {
-      now = requestPayload;
-      requestPayload = null;
-    }
     const len = typeof textBody === 'string' ? textBody.length : 0;
     const sample =
       typeof textBody === 'string' ?
@@ -238,11 +221,7 @@ class MessageDispatcher {
           `${textBody.slice(0, 100)}:${textBody.slice(-100)}`
         : textBody
       : '';
-    const reqSample =
-      typeof requestPayload === 'string' ? requestPayload.slice(0, 120)
-      : requestPayload ? JSON.stringify(requestPayload).slice(0, 120)
-      : '';
-    const key = `${reqUrl}:${len}:${sample}:${reqSample}`;
+    const key = `${reqUrl}:${len}:${sample}`;
 
     if (this._dedupCache.has(key)) {
       const lastTime = this._dedupCache.get(key);
@@ -315,22 +294,18 @@ class MessageDispatcher {
 
     const handler = this.handlers.get(key);
     if (handler) {
-      logger?.debug(`Routing RPC: ${key}`, { requestId: msg.requestId });
       return await handler(msg, context);
     }
 
     const classFallback = this.classFallbacks.get(requestClass);
     if (classFallback) {
-      logger?.debug(`Routing RPC fallback for class: ${requestClass}`);
       return await classFallback(msg, context);
     }
 
     if (this.globalFallback) {
-      logger?.debug(`Routing RPC to global fallback: ${key}`);
       return await this.globalFallback(msg, context);
     }
 
-    logger?.debug(`Unhandled RPC service method: ${key}`);
     return { unhandled: true, requestClass, requestMethod };
   }
 
@@ -399,71 +374,7 @@ class MessageDispatcher {
       return { handled: false, error: 'decode_error', details: err };
     }
 
-    // Parse request payload if available to attach requestData and differentiate duplicate requests
-    let requestPayload = null;
-    try {
-      if (Array.isArray(request)) {
-        requestPayload = request;
-      } else if (typeof request === 'string') {
-        try {
-          requestPayload = JSON.parse(request);
-        } catch {
-          requestPayload = null;
-        }
-      } else if (request && typeof request === 'object') {
-        const postText =
-          request.request?.postData?.text ||
-          request.postData?.text ||
-          (typeof request.request?.postData === 'string' ?
-            request.request.postData
-          : typeof request.postData === 'string' ? request.postData
-          : null);
-        if (typeof postText === 'string') {
-          try {
-            requestPayload = JSON.parse(postText);
-            if (
-              requestPayload &&
-              typeof requestPayload === 'object' &&
-              !Array.isArray(requestPayload) &&
-              Object.keys(requestPayload).length === 0
-            ) {
-              requestPayload = null;
-            }
-          } catch {
-            requestPayload = null;
-          }
-        } else if (typeof postText === 'object' && postText !== null) {
-          requestPayload =
-            Object.keys(postText).length > 0 || Array.isArray(postText) ?
-              postText
-            : null;
-        }
-
-        if (!requestPayload) {
-          if (Array.isArray(request.request?.postData)) {
-            requestPayload = request.request.postData;
-          } else if (
-            typeof request.request?.postData === 'object' &&
-            request.request.postData !== null
-          ) {
-            requestPayload = request.request.postData;
-          } else if (Array.isArray(request.postData)) {
-            requestPayload = request.postData;
-          } else if (
-            typeof request.postData === 'object' &&
-            request.postData !== null
-          ) {
-            requestPayload = request.postData;
-          } else if (Array.isArray(request.requestPayload)) {
-            requestPayload = request.requestPayload;
-          }
-        }
-      }
-    } catch (e) {
-      // Ignore parse failure on request payload
-    }
-
-    if (this.isDuplicate(reqUrl, textBody, requestPayload)) {
+    if (this.isDuplicate(reqUrl, textBody)) {
       return { handled: false, duplicate: true };
     }
 
@@ -475,55 +386,7 @@ class MessageDispatcher {
       return { handled: false, error: 'json_parse_error', details: err };
     }
 
-    if (requestPayload) {
-      const reqItems =
-        Array.isArray(requestPayload) ? requestPayload : [requestPayload];
-      const parsedItems = Array.isArray(parsed) ? parsed : [parsed];
-
-      for (let i = 0; i < parsedItems.length; i++) {
-        const msg = parsedItems[i];
-        if (msg && typeof msg === 'object') {
-          let match = null;
-          if (msg.requestId !== undefined) {
-            match = reqItems.find((r) => r && r.requestId === msg.requestId);
-          }
-          if (
-            !match &&
-            reqItems[i] &&
-            (reqItems[i].requestClass === msg.requestClass || !msg.requestClass)
-          ) {
-            match = reqItems[i];
-          }
-          if (!match) {
-            match = reqItems.find(
-              (r) =>
-                r &&
-                r.requestClass === msg.requestClass &&
-                r.requestMethod === msg.requestMethod,
-            );
-          }
-          if (!match && reqItems.length === 1) {
-            match = reqItems[0];
-          }
-          if (match) {
-            if (!msg.requestClass && match.requestClass) {
-              msg.requestClass = match.requestClass;
-            }
-            if (!msg.requestMethod && match.requestMethod) {
-              msg.requestMethod = match.requestMethod;
-            }
-            if (
-              match.requestData !== undefined &&
-              (msg.requestData === undefined || msg.requestData === null)
-            ) {
-              msg.requestData = match.requestData;
-            }
-          }
-        }
-      }
-    }
-
-    const context = { reqUrl, headers, request, requestPayload };
+    const context = { reqUrl, headers, request };
 
     // Direct CDN metadata routing
     if (this.isDirectMetadataUrl(reqUrl)) {

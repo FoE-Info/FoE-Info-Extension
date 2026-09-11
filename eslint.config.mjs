@@ -7,8 +7,6 @@ export default [
     ignores: [
       '**/node_modules/**',
       '**/build/**',
-      '**/.worktrees/**',
-      '**/worktrees/**',
       'metadata-store/**',
       'package-lock.json',
       '.vscode/**',

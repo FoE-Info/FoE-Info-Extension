@@ -131,7 +131,7 @@ function fallbackGVGagesname(age) {
   return age || 'NoAge';
 }
 
-function armyUnitManagementService(msg, deps = {}) {
+function armyUnitManagementService(msg) {
   let army = null;
   if (Array.isArray(msg?.responseData?.counts)) {
     army = msg.responseData.counts;
@@ -155,7 +155,7 @@ function armyUnitManagementService(msg, deps = {}) {
   }
 
   lastArmyMsg = msg;
-  const MilitaryDefs = deps.MilitaryDefs || defaultState?.MilitaryDefs || {};
+  const MilitaryDefs = defaultState?.MilitaryDefs || {};
   const unitsPerEra = [];
   let allUnits = 0;
   let rogues = 0;
@@ -185,7 +185,6 @@ function armyUnitManagementService(msg, deps = {}) {
           .join(' ');
       }
     }
-    unitName = unitName.replace(/^FGX-\d+\s*/i, '');
     const getAgeName = helper?.fGVGagesname || fallbackGVGagesname;
     const eraText = getAgeName(eraId);
 
@@ -248,12 +247,12 @@ function armyUnitManagementService(msg, deps = {}) {
 
         let armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">`;
         armyHTML += closeBtn;
-        armyHTML += `<p id="armyTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#armyText" aria-expanded="${!isCollapsed}" aria-controls="armyText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
+        armyHTML += `<p id="armyTextLabel" href="#armyText" data-bs-toggle="collapse">`;
         armyHTML += iconHtml;
-        armyHTML += `<strong>Army:</strong> <span id="armyUnits" class="ms-2">${
+        armyHTML += `<strong>Army:</strong><span id="armyUnits">${
           isCollapsed ? `Rogues: ${rogues} Units: ${allUnits}` : ''
         }</span></p>`;
-        armyHTML += `<div id="armyText" style="height: ${armySize}px" class="overflow-y resize-both collapse ${
+        armyHTML += `<div id="armyText" style="height: ${armySize}px" class="overflow-y collapse ${
           isCollapsed ? '' : 'show'
         }"><p class="" >`;
         armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class=${
@@ -274,27 +273,7 @@ function armyUnitManagementService(msg, deps = {}) {
           collapse &&
           typeof collapse.fCollapseArmy === 'function'
         ) {
-          labelEl.addEventListener('click', (e) => {
-            if (
-              e?.target &&
-              typeof e.target.closest === 'function' &&
-              e.target.closest('#armyicon')
-            ) {
-              return;
-            }
-            collapse.fCollapseArmy();
-          });
-        }
-        const iconEl = document.getElementById('armyicon');
-        if (
-          iconEl &&
-          iconEl !== labelEl &&
-          collapse &&
-          typeof collapse.fCollapseArmy === 'function'
-        ) {
-          iconEl.addEventListener('click', () => {
-            collapse.fCollapseArmy();
-          });
+          labelEl.addEventListener('click', collapse.fCollapseArmy);
         }
 
         const armyDiv = document.getElementById('armyText');

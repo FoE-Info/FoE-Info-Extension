@@ -14,7 +14,6 @@
 
 import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
-import { renderBetaPanel } from '../ui/betaDebugPanel.js';
 import { showOptions } from '../vars/showOptions.js';
 import { Bonus, checkDebug } from '../vars/state.js';
 import { City, Galaxy, showGalaxy } from './StartupService.js';
@@ -37,7 +36,10 @@ export function getBonuses(msg) {
       msg.responseData[2]?.value
     ) {
       City.ForgePoints = (City.ForgePoints || 0) + msg.responseData[2].value;
-      renderBetaPanel(beta, msg.responseData[2].value, City.ForgePoints);
+      beta.innerHTML = `${element.close()}<p><strong>Town Hall</strong> ${msg.responseData[2].value}FP Total: ${
+        City.ForgePoints
+      }FP</p>`;
+      beta.className = 'alert alert-dismissible alert-success';
     }
   }
 }
@@ -96,14 +98,17 @@ export function getLimitedBonuses(msg) {
       (Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
     ) {
       bonus.innerHTML = `<div id="bonusTip" class="alert alert-light alert-dismissible" role="alert">
-            <p id="bonusTextLabel">
+            <p id="bonusTextLabel" href="#bonusText" data-bs-toggle="collapse">
       ${element.icon('bonusicon', 'bonusText', collapse.collapseBonus)}
 			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
             ${element.close()}
             <div id="bonusText" class="alert-light collapse"><p><strong>Legend:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
       document
         .getElementById('bonusicon')
-        ?.addEventListener('click', collapse.fCollapseBonus);
+        .addEventListener('click', collapse.fCollapseBonus);
+      document
+        .getElementById('bonusTextLabel')
+        .addEventListener('click', collapse.fCollapseBonus);
     } else if (!(
       Bonus.aid ||
       Bonus.spoils ||
