@@ -1,0 +1,609 @@
+{
+  "title": "Login, visit 10 players in hood, guild, and friend list using the navigation buttons, and skipping me - Overlord Negan",
+  "steps": [
+    {
+      "type": "setViewport",
+      "width": 1529,
+      "height": 930,
+      "deviceScaleFactor": 1,
+      "isMobile": false,
+      "hasTouch": false,
+      "isLandscape": false
+    },
+    {
+      "type": "navigate",
+      "url": "https://en0.forgeofempires.com/page/",
+      "assertedEvents": [
+        {
+          "type": "navigation",
+          "url": "https://en0.forgeofempires.com/page/",
+          "title": "Free to play strategy game online - Forge of Empires"
+        }
+      ]
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["aria/Play"],
+        ["#play_now_button"],
+        ["xpath///*[@id=\"play_now_button\"]"],
+        ["pierce/#play_now_button"]
+      ],
+      "offsetY": 49,
+      "offsetX": 110.5
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["aria/Greifental"],
+        ["#world_selection_content > div:nth-of-type(1) li:nth-of-type(1) > a"],
+        ["xpath///*[@id=\"world_selection_list\"]/li[1]/a"],
+        [
+          "pierce/#world_selection_content > div:nth-of-type(1) li:nth-of-type(1) > a"
+        ],
+        ["text/Greifental"]
+      ],
+      "offsetY": 24,
+      "offsetX": 99.5,
+      "assertedEvents": [
+        {
+          "type": "navigation",
+          "url": "https://en7.forgeofempires.com/game/index?",
+          "title": ""
+        }
+      ]
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 779,
+      "offsetX": 774
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 895,
+      "offsetX": 243
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 886,
+      "offsetX": 295
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 866,
+      "offsetX": 417
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 861,
+      "offsetX": 538
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 864,
+      "offsetX": 658
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 867,
+      "offsetX": 763
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 868,
+      "offsetX": 957
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 857,
+      "offsetX": 294
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 866,
+      "offsetX": 420
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 866,
+      "offsetX": 528
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 864,
+      "offsetX": 647
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 865,
+      "offsetX": 751
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 787,
+      "offsetX": 835
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 901,
+      "offsetX": 247
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 885,
+      "offsetX": 311
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 876,
+      "offsetX": 433
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 868,
+      "offsetX": 538
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 869,
+      "offsetX": 644
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 872,
+      "offsetX": 752
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 867,
+      "offsetX": 952
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 858,
+      "offsetX": 315
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 860,
+      "offsetX": 411
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 867,
+      "offsetX": 533
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 873,
+      "offsetX": 655
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 874,
+      "offsetX": 768
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 781,
+      "offsetX": 903
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 892,
+      "offsetX": 243
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 875,
+      "offsetX": 299
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 868,
+      "offsetX": 417
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 874,
+      "offsetX": 545
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 870,
+      "offsetX": 640
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 866,
+      "offsetX": 949
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 868,
+      "offsetX": 312
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 858,
+      "offsetX": 432
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 860,
+      "offsetX": 542
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 863,
+      "offsetX": 653
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 866,
+      "offsetX": 752
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 863,
+      "offsetX": 157
+    },
+    {
+      "type": "doubleClick",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 830,
+      "offsetX": 248
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 830,
+      "offsetX": 248
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 830,
+      "offsetX": 248
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 832,
+      "offsetX": 244
+    },
+    {
+      "type": "doubleClick",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 834,
+      "offsetX": 961
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 834,
+      "offsetX": 961
+    },
+    {
+      "type": "doubleClick",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 833,
+      "offsetX": 961
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 859,
+      "offsetX": 244
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 871,
+      "offsetX": 959
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 895,
+      "offsetX": 250
+    },
+    {
+      "type": "click",
+      "target": "main",
+      "selectors": [
+        ["canvas"],
+        ["xpath///*[@id=\"openfl-content\"]/canvas"],
+        ["pierce/canvas"]
+      ],
+      "offsetY": 904,
+      "offsetX": 948
+    }
+  ]
+}

@@ -118,14 +118,13 @@ p,
 }
 
 .info-icon {
-  // padding-left: 0.25em;
-  //margin-right: 0.5em;
-  /* margin-left: -1em; */
-  margin-top: -15px;
-  /* fill: currentColor; */
-  // color: red;
-  // stroke: green;
-  // fill: blue;
+  margin-top: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .gvg-warn {
@@ -386,9 +385,18 @@ hr {
 }
 
 .popover {
-  overflow: auto;
-  // resize: vertical;
-  max-height: 20em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 24em;
+  user-select: text;
+  -webkit-user-select: text;
+  pointer-events: auto !important;
+
+  .popover-body {
+    user-select: text;
+    -webkit-user-select: text;
+    pointer-events: auto;
+  }
 }
 
 .nopadding {
