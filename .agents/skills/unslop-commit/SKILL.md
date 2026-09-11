@@ -28,11 +28,16 @@ Generate or rewrite commit messages so they read like a real engineer wrote them
 - No trailing period.
 - Lowercase after `:` unless the project capitalizes.
 
-### Body (only when subject can't carry it)
+### Body (required for non-trivial commits)
 
-- Add for: non-obvious "why", breaking changes, migrations, security context, data integrity.
-- Wrap at 72 chars. Bullets `-` for two or more independent points. Single paragraph for one thought.
-- End with refs: `Closes #42`, `Refs #17`. No `BREAKING CHANGE:` unless truly breaking — and then write it.
+- Required for all `feat`, `refactor`, multi-file `fix`, or documentation commits.
+- Omit only for single-line trivial tweaks (e.g. typo fix, single test update).
+- Format: 2 to 4 concise bullet points (`-`) detailing what was changed and the technical rationale.
+- Wrap strictly at 72 chars (aim $\le 65$ chars). Husky rejects any line exceeding 72 chars.
+- End with refs if applicable: `Closes #42`, `Refs #17`.
+- CLI syntax: use multiple `-m` flags:
+  `git commit -m "<type>(<scope>): <summary>" -m "- first change detail" -m "- second change detail"`
+
 
 ### Never include
 

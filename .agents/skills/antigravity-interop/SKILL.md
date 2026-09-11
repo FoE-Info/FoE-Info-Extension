@@ -93,6 +93,21 @@ When Antigravity runs out (context/token exhaustion), OpenCode continues. When A
 1. OpenCode writes its progress to the same handoff file.
 2. Antigravity reads the file on next session start and resumes.
 
+### 4.1 Worktree Orchestration Pattern (Antigravity Tech Lead ↔ OpenCode Lifter)
+
+When delegating heavy lifting or parallel tasks to OpenCode:
+1. **Provision Worktree**: Create isolated worktrees under `.worktrees/` (e.g. `.worktrees/opencode-<track>`) branching off `development`.
+2. **Fast-Forward Sync**: If an earlier track merges into `development` while other worktrees are active, update them with `git -C .worktrees/<dir> merge development` before execution starts.
+3. **Turnkey Prompts**: Provide fully self-contained prompts containing the exact CWD, branch name, line counts, invariant rules, and commands.
+4. **Integration Gate**: Once OpenCode reports done, Antigravity reviews the diff, runs `npm test`, merges with `git merge --no-ff`, verifies the 5-stage gate (`npm run verify`), updates the AST (`npm run graph:foe-info:ast`), and cleans up the worktree.
+
+### 4.2 Turnkey Prompt Formatting Invariant
+
+When generating prompts for OpenCode sessions or subagents:
+- **Never render prompts as naked markdown**: Do not let markdown headers, checkboxes, or codeblocks render into the chat prose.
+- **Wrap in Raw Code Blocks**: Always enclose the complete prompt in a raw, unnested block using four backticks (````text ... ````) so the user can copy the entire prompt with a single click without formatting corruption.
+
+
 ---
 
 ## 5. Version Context
