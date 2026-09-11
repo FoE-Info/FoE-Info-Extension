@@ -130,11 +130,5 @@
   "tries_remaining": "Tries Remaining:",
   "special_goods": "Ειδικά Αγαθά",
   "loading-metadata": "Φόρτωση μεταδεδομένων...",
-  "other_player_information": "Other Player Information",
-  "type": "Τύπος",
-  "amount": "Ποσότητα",
-  "name": "Όνομα",
-  "title": "Τίτλος",
-  "era": "Εποχή",
-  "battles": "Μάχες"
+  "other_player_information": "Other Player Information"
 }

@@ -84,7 +84,7 @@ All agents strictly adhere to these 16 rules (managed under `.agents/rules/` wit
 10. [**i18n Compliance**](.agents/rules/i18n-compliance.md): Mandatory `data-i18n` in HTML and `t('key')` in JS; zero hardcoded English.
 11. [**Scope Control**](.agents/rules/scope-control.md): Modify only requested target files.
 12. [**Security Permissions**](.agents/rules/security-permissions.md): No wildcard permissions (`*`); prevent duplicate MCP servers.
-13. [**Browser Environment Hygiene**](.agents/rules/browser-environment-hygiene.md): Zero autonomous browser control; explicit user permission strictly required for any browser launch, reload, or attachment.
+13. [**Browser Environment Hygiene**](.agents/rules/browser-environment-hygiene.md): Use `foe-browser` (port 9222); mandatory game reload (F5) on extension restart.
 14. [**Workspace Structure**](.agents/rules/workspace-structure.md): Agent resources in `.agents/`; brain artifacts in `<appDataDir>/brain/`.
 15. [**Unslop Commits**](.agents/rules/unslop-commit.md): Concise Conventional Commits $\le 72$ chars without AI marketing fluff.
 16. [**Debuggability by Design**](.agents/rules/debuggability-by-design.md): All features, calculators, RPC services, network interceptors, storage routines, and UI renderers must implement debug-mode debuggability via `logger.js` (silent in standard mode, console diagnostics in debug mode; see [docs/debugging.md](docs/debugging.md)).

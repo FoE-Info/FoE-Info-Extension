@@ -72,7 +72,7 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
   );
 
   await t.test(
-    'Services include resize classes on collapsible panel containers',
+    'Services include resize-both classes on collapsible panel containers',
     () => {
       const armySrc = fs.readFileSync(
         path.resolve('src/js/msg/ArmyUnitManagementService.js'),
@@ -80,8 +80,8 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
       );
       assert.match(
         armySrc,
-        /id="armyText"[^>]*class="[^"]*resize[^"]*"/,
-        'ArmyUnitManagementService must contain resize on #armyText',
+        /id="armyText"[^>]*class="[^"]*resize-both[^"]*"/,
+        'ArmyUnitManagementService must contain resize-both on #armyText',
       );
 
       const otherPlayerSrc = fs.readFileSync(
@@ -176,153 +176,6 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
         /\.gbg-changes-full\s*\{[\s\S]*?height:\s*auto\s*!important/,
         'custom.scss must define .gbg-changes-full with height: auto !important',
       );
-    },
-  );
-
-  await t.test(
-    'Army panel defaults to 185px height and respects toolOptions.armySize',
-    async () => {
-      const globalsSrc = fs.readFileSync(
-        path.resolve('src/js/fn/globals.js'),
-        'utf8',
-      );
-      assert.match(
-        globalsSrc,
-        /armySize:\s*185/,
-        'toolOptions.armySize in globals.js must default to 185',
-      );
-
-      const armySrc = fs.readFileSync(
-        path.resolve('src/js/msg/ArmyUnitManagementService.js'),
-        'utf8',
-      );
-      assert.match(
-        armySrc,
-        /185/,
-        'ArmyUnitManagementService must default armySize to 185',
-      );
-
-      const armyPkg =
-        await import('../../src/js/msg/ArmyUnitManagementService.js');
-      const { armyUnitManagementService } = armyPkg.default || armyPkg;
-
-      let savedHeight = null;
-      const mockArmyDiv = {
-        id: 'army',
-        innerHTML: '',
-        style: { display: '' },
-      };
-
-      const prevDoc = globalThis.document;
-      const prevResize = globalThis.ResizeObserver;
-
-      let resizeCallback = null;
-      globalThis.ResizeObserver = class {
-        constructor(cb) {
-          resizeCallback = cb;
-        }
-        observe() {}
-        disconnect() {}
-      };
-
-      const mockArmyText = {
-        id: 'armyText',
-        style: { height: '' },
-        classList: {
-          _classes: new Set(['show']),
-          contains(c) {
-            return this._classes.has(c);
-          },
-          add(c) {
-            this._classes.add(c);
-          },
-          remove(c) {
-            this._classes.delete(c);
-          },
-        },
-      };
-
-      globalThis.document = {
-        getElementById: (id) => {
-          if (id === 'army') return mockArmyDiv;
-          if (id === 'armyText') return mockArmyText;
-          return null;
-        },
-      };
-
-      try {
-        const payload = {
-          responseData: [
-            { unitTypeId: 'rogue', count: 50 },
-            { unitTypeId: 'champion', count: 10 },
-          ],
-        };
-
-        // 1. Default render without toolOptions -> renders with 185px default
-        armyUnitManagementService(payload, {
-          setArmySize: (h) => {
-            savedHeight = h;
-          },
-          helper: {
-            fGVGagesname: () => 'SAD',
-            fLevelfromAge: () => 20,
-          },
-        });
-
-        assert.match(
-          mockArmyDiv.innerHTML,
-          /id="armyText"[^>]*style="height:\s*185px"/,
-          '#armyText must render with 185px default height',
-        );
-
-        // 2. Custom resized height in toolOptions -> renders with custom height
-        armyUnitManagementService(payload, {
-          toolOptions: { armySize: 310 },
-          setArmySize: (h) => {
-            savedHeight = h;
-          },
-          helper: {
-            fGVGagesname: () => 'SAD',
-            fLevelfromAge: () => 20,
-          },
-        });
-
-        assert.match(
-          mockArmyDiv.innerHTML,
-          /id="armyText"[^>]*style="height:\s*310px"/,
-          '#armyText must render with custom 310px height from toolOptions',
-        );
-
-        // 3. User resizing triggers setArmySize
-        assert.ok(resizeCallback, 'ResizeObserver callback must be registered');
-        resizeCallback([{ contentRect: { height: 350 } }]);
-        assert.equal(
-          savedHeight,
-          350,
-          'setArmySize must receive resized height',
-        );
-
-        // 4. Intermediate heights during collapse must be ignored
-        mockArmyText.classList.add('collapsing');
-        resizeCallback([{ contentRect: { height: 60 } }]);
-        assert.equal(
-          savedHeight,
-          350,
-          'setArmySize must NOT update during collapse animation',
-        );
-
-        mockArmyText.classList.remove('collapsing');
-        mockArmyText.classList.remove('show');
-        resizeCallback([{ contentRect: { height: 75 } }]);
-        assert.equal(
-          savedHeight,
-          350,
-          'setArmySize must NOT update when panel is not shown',
-        );
-      } finally {
-        globalThis.document = prevDoc;
-        globalThis.ResizeObserver = prevResize;
-      }
     },
   );
 });

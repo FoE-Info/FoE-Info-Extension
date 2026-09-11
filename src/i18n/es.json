@@ -130,11 +130,5 @@
   "tries_remaining": "Tries Remaining:",
   "special_goods": "Bienes Especiales",
   "loading-metadata": "Cargando metadatos...",
-  "other_player_information": "Other Player Information",
-  "type": "Tipo",
-  "amount": "Cantidad",
-  "name": "Nombre",
-  "title": "Título",
-  "era": "Era",
-  "battles": "Batallas"
+  "other_player_information": "Other Player Information"
 }

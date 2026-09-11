@@ -117,10 +117,11 @@ function buildOwnCityCard({
     <div class="d-flex align-items-center gap-1 flex-shrink-0">
       <span id="${prefix}-copy-btn" role="button" tabindex="0" class="badge rounded-pill bg-success foe-copy-btn flex-shrink-0"
         style="cursor: pointer;" data-i18n="copy" title="Copy Stats" data-i18n-title="copy_stats">Copy</span>
+      <button type="button" class="btn-close flex-shrink-0" id="${prefix}-close-btn" aria-label="Close" title="Close" data-i18n-title="close" data-i18n-aria-label="close"></button>
     </div>
   </div>
   <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'}">
-    <div class="foe-panel-body">
+    <div class="small" style="line-height: 1.45;">
       ${safeGuild ? `<div><span data-i18n="guild">Guild</span>: ${safeGuild}</div>` : ''}
       ${playerEra ? `<div><span data-i18n="age">Age</span>: ${formatEraName(playerEra)}</div>` : ''}
       ${playerScore ? `<div><span data-i18n="score">Score</span>: ${playerScore}</div>` : ''}
