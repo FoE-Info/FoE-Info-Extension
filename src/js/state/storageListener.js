@@ -59,13 +59,6 @@ function handleStorageChange(changes, namespace, deps = {}) {
         if (newWorld.toolOptions) {
           resolved.setToolOptions?.(newWorld.toolOptions);
         }
-        if (newWorld.collapses) {
-          for (const [collapseKey, collapseValue] of Object.entries(
-            newWorld.collapses,
-          )) {
-            resolved.collapseOptions?.(collapseKey, collapseValue);
-          }
-        }
       }
     } else if (key === 'tool') {
       if (newValue?.language) {
@@ -166,20 +159,15 @@ function handleReceiveStorage(result, deps = {}) {
     if (curWorldData.toolOptions) {
       resolved.setToolOptions?.(curWorldData.toolOptions);
     }
-    if (curWorldData.collapses) {
-      for (const [collapseKey, collapseValue] of Object.entries(
-        curWorldData.collapses,
-      )) {
-        resolved.collapseOptions?.(collapseKey, collapseValue);
-      }
-    }
   }
 
   // Pass 1: Process lookups, definitions, and settings first
   for (const [key, value] of Object.entries(result)) {
     if (key === 'CityEntityDefs') continue;
 
-    if (key === 'showOptions') {
+    if (key.startsWith('collapse')) {
+      resolved.collapseOptions?.(key, value);
+    } else if (key === 'showOptions') {
       if (!curWorldData) {
         resolved.setOptions?.('showOptions', value);
         resolved.applyCardVisibility?.();

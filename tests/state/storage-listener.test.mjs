@@ -44,7 +44,6 @@ test('handleStorageChange applies world-scoped options for current world', () =>
     setTargetText: (val) => calls.push(['setTargetText', val]),
     setUrl: (val) => calls.push(['setUrl', val]),
     setToolOptions: (val) => calls.push(['setToolOptions', val]),
-    collapseOptions: (k, v) => calls.push(['collapseOptions', k, v]),
   };
 
   const changes = {
@@ -59,7 +58,6 @@ test('handleStorageChange applies world-scoped options for current world', () =>
         },
         webhooks: { discord: 'https://discord.test' },
         toolOptions: { minSize: 100 },
-        collapses: { collapseGBInfo: true },
       },
     },
   };
@@ -76,7 +74,6 @@ test('handleStorageChange applies world-scoped options for current world', () =>
     ['setTargetText', 'p1 target'],
     ['setUrl', { discord: 'https://discord.test' }],
     ['setToolOptions', { minSize: 100 }],
-    ['collapseOptions', 'collapseGBInfo', true],
   ]);
 });
 
@@ -284,9 +281,7 @@ test('handleReceiveStorage populates lookup caches and collapse options', () => 
   };
 
   const result = {
-    'world:en1': {
-      collapses: { collapse_card1: true },
-    },
+    collapse_card1: true,
     BuildingEntityLookup: { B_1: 'Barracks' },
     AllyDefs: { A_1: 'Alexander' },
     ResearchDefs: { R_1: 'Wheel' },

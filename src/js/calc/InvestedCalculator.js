@@ -2,7 +2,7 @@
  * InvestedCalculator.js
  *
  * Pure calculation engine for Great Building investments.
- * Computes FP contributions, Arc multiplier boosts with half-up rounding,
+ * Computes FP contributions, Arc multiplier boosts with ceiling rounding,
  * safe position locking status, and safe vs all profit/loss aggregation,
  * with support for filtering hidden Great Buildings.
  */

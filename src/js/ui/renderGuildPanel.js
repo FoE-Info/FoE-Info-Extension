@@ -64,7 +64,7 @@ function renderGuildPanel(clanData, deps = {}) {
     : '';
   const iconHtml =
     typeof depElement.icon === 'function' ?
-      depElement.icon('guildOverviewIcon', 'guildOverviewText', isCollapsed)
+      depElement.icon('guildicon', 'guildText', isCollapsed)
     : '';
 
   let rowsHtml = '';
@@ -89,13 +89,13 @@ function renderGuildPanel(clanData, deps = {}) {
 
   const html = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
     ${closeBtn}
-    <p id="guildOverviewTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildOverviewText" aria-expanded="${!isCollapsed}" aria-controls="guildOverviewText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
+    <p id="guildTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildText" aria-expanded="${!isCollapsed}" aria-controls="guildText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconHtml}
       <strong><span data-i18n="guild">Guild</span>: ${escapeFn(clanName)}</strong>
       <span class="small text-muted">(${rawMembers.length} <span data-i18n="members">members</span>)</span>
     </p>
     ${copyBtn}
-    <div id="guildOverviewText" class="overflow-y resize collapse ${isCollapsed ? '' : 'show'}">
+    <div id="guildText" class="overflow-y resize collapse ${isCollapsed ? '' : 'show'}">
       <table id="guildMemberTable" class="goods-table w-100">
         <thead>
           <tr>
@@ -157,14 +157,14 @@ function renderGuildPanel(clanData, deps = {}) {
   }
 
   const labelEl =
-    targetContainer.querySelector?.('#guildOverviewTextLabel') ||
-    doc?.getElementById?.('guildOverviewTextLabel');
+    targetContainer.querySelector?.('#guildTextLabel') ||
+    doc?.getElementById?.('guildTextLabel');
   if (labelEl && typeof depCollapse.fCollapseGuild === 'function') {
     labelEl.addEventListener('click', (e) => {
       if (
         e?.target &&
         typeof e.target.closest === 'function' &&
-        e.target.closest('#guildOverviewIcon')
+        e.target.closest('#guildicon')
       ) {
         return;
       }
@@ -172,8 +172,8 @@ function renderGuildPanel(clanData, deps = {}) {
     });
   }
   const iconEl =
-    targetContainer.querySelector?.('#guildOverviewIcon') ||
-    doc?.getElementById?.('guildOverviewIcon');
+    targetContainer.querySelector?.('#guildicon') ||
+    doc?.getElementById?.('guildicon');
   if (
     iconEl &&
     iconEl !== labelEl &&

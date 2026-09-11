@@ -12,31 +12,34 @@
  * ________________________________________________________________
  */
 import browser from 'webextension-polyfill';
-import { fGBname } from '../calc/gbNaming.js';
 import { metadataStore } from '../state/MetadataStore.js';
+import * as element from '../ui/AddElement.js';
+import { showOptions } from '../vars/showOptions.js';
 import {
+  battlegroundDIV,
+  BattlegroundPerformance,
+  BGtime,
   BuildingEntityLookup,
   CityEntityDefs,
+  donationDIV,
+  GameOrigin,
   Goods,
+  GuildMembers,
   url,
 } from '../vars/state.js';
+import * as collapse from './collapse.js';
+import * as copy from './copy.js';
+import { setBattlegroundSize, toolOptions } from './globals.js';
 import { translateContainer as nativeTranslateContainer } from './i18n.js';
+import * as post_webstore from './post.js';
+import * as storage from './storage.js';
 
 export {
   escapeHTML,
   formatEntityId,
   fResourceShortName,
   fRewardShortName,
-  fRound,
-  fNumber,
-  fFormatNumber,
-  fAgestring,
 } from '../utils/formatters.js';
-
-export {
-  fshowBattleground,
-  fshowBattlegroundChanges,
-} from '../ui/renderBattlegroundsPanel.js';
 
 export {
   fIncidentName,
@@ -44,20 +47,104 @@ export {
   renderIncidentsPanel,
 } from '../ui/incidentsPanel.js';
 
-export {
-  numAges,
-  fLevelfromAge,
-  fAgefromLevel,
-  fGVGagesname,
-  fEraAbbreviation,
-} from '../calc/eraMapping.js';
-
-export { fGBsname, fGBname, fCFname, fArcname } from '../calc/gbNaming.js';
-
+var heightGBG = toolOptions.battlegroundsSize;
+let gbgResizeObserver = null;
 export var MyGuildPermissions = 0;
 
 export function translateContainer(container = document.body) {
   nativeTranslateContainer(container);
+}
+
+function setHeight() {
+  if (!showOptions.showBattlegroundChanges && heightGBG) {
+    setBattlegroundSize(heightGBG);
+  }
+}
+
+export function fGBsname(city_entity) {
+  if (city_entity == 'Castel del Monte') {
+    return 'CdM';
+  } else if (city_entity == 'Innovation Tower') {
+    return 'Inno';
+  } else if (city_entity == 'Alcatraz') {
+    return 'Traz';
+  } else if (city_entity == 'Ch\u00e2teau Frontenac') {
+    return 'CF';
+  } else if (city_entity == 'The Arc') {
+    return 'Arc';
+  } else if (city_entity == 'Cape Canaveral') {
+    return 'Cape';
+  } else if (city_entity == 'Hagia Sophia') {
+    return 'Hagia';
+  } else if (city_entity == 'Arctic Orangery') {
+    return 'AO';
+  } else if (city_entity == 'The Kraken') {
+    return 'Kraken';
+  } else if (city_entity == 'Statue of Zeus') {
+    return 'Zeus';
+  } else if (city_entity == 'Cathedral of Aachen') {
+    return 'CoA';
+  } else if (city_entity == "St. Mark's Basilica") {
+    return 'SMB';
+  } else if (city_entity == 'Temple of Relics') {
+    return 'ToR';
+  } else if (city_entity == 'The Blue Galaxy') {
+    return 'Galaxy';
+  } else if (city_entity == 'Terracotta Army') {
+    return 'Army';
+  } else if (city_entity == 'Observatory') {
+    return 'Obs';
+  } else if (city_entity == 'Rain Forest Project') {
+    return 'RF';
+  } else if (city_entity == 'Royal Albert Hall') {
+    return 'RAH';
+  } else if (city_entity == 'Lighthouse of Alexandria') {
+    return 'LoA';
+  } else if (city_entity == 'Truce Tower') {
+    return 'Truce';
+  } else if (city_entity == 'Frauenkirche of Dresden') {
+    return 'FoD';
+  } else if (city_entity == "Saint Basil's Cathedral") {
+    return 'Basils';
+  } else if (city_entity == 'Atlantis Museum') {
+    return 'Atlantis';
+  } else if (city_entity == 'Tower of Babel') {
+    return 'Babel';
+  } else if (city_entity == 'Deal Castle') {
+    return 'Deal';
+  } else if (city_entity == 'Himeji Castle') {
+    return 'Himeji';
+  } else if (city_entity == 'Star Gazer') {
+    return 'Gazer';
+  } else if (city_entity == 'The Virgo Project') {
+    return 'Virgo';
+  } else if (city_entity == 'Seed Vault') {
+    return 'Seed';
+  } else if (city_entity == 'Space Carrier') {
+    return 'SC';
+  } else if (city_entity == 'The Habitat') {
+    return 'Hab';
+  } else if (city_entity == 'Gaea Statue') {
+    return 'Gaea';
+  } else if (city_entity == 'Galata Tower') {
+    return 'Galata';
+  } else if (city_entity == 'Flying Island') {
+    return 'Flying';
+  } else if (city_entity == 'A.I Core') {
+    return 'AI';
+  } else if (city_entity == 'Saturn VI Gate CENTAURUS') {
+    return 'Centaurus';
+  } else if (city_entity == 'Saturn VI Gate PEGASUS') {
+    return 'Pegasus';
+  } else if (city_entity == 'Saturn VI Gate HYDRA') {
+    return 'Hydra';
+  } else if (city_entity == 'Stellar Warship') {
+    return 'SW';
+  } else if (city_entity == 'Cosmic Catalyst') {
+    return 'CC';
+  }
+
+  return city_entity.slice(0, 10);
 }
 
 export function getCityEntityDef(id) {
@@ -161,6 +248,287 @@ export function fEntityNameTrim(name) {
   return raw;
 }
 
+export function fGBname(city_entity, reportLookup = true) {
+  if (!city_entity) return '';
+  var GB_name = String(city_entity);
+  const cleanId = GB_name.replace(/^building_entity_/, '').replace(
+    /^[WXRLM]_(MultiAge|AllAge|[A-Za-z0-9]+)_/,
+    '',
+  );
+
+  const candidates = [
+    GB_name,
+    cleanId,
+    `X_AllAge_${cleanId}`,
+    `X_MultiAge_${cleanId}`,
+    `W_MultiAge_${cleanId}`,
+    `R_MultiAge_${cleanId}`,
+    `M_AllAge_${cleanId}`,
+    `M_MultiAge_${cleanId}`,
+  ];
+  for (const key of candidates) {
+    const def = CityEntityDefs[key];
+    if (def) {
+      const name = def.name || def.Name || def.title;
+      if (name) {
+        if (reportLookup)
+          metadataStore.reportEntityLookup(String(city_entity), def);
+        return name;
+      }
+    }
+  }
+  // console.debug(city_entity,CityEntityDefs);
+
+  if (GB_name == 'X_AllAge_EasterBonus4') GB_name = 'Observatory';
+  else if (GB_name == 'X_AllAge_Expedition') GB_name = 'Temple of Relics';
+  else if (GB_name == 'X_AllAge_Oracle') GB_name = 'Oracle of Delphi';
+  else if (GB_name == 'X_AllAge_Galata') GB_name = 'Galata Tower';
+  else if (GB_name == 'X_BronzeAge_Landmark1') GB_name = 'Tower of Babel';
+  else if (GB_name == 'X_BronzeAge_Landmark2') GB_name = 'Statue of Zeus';
+  else if (GB_name == 'X_IronAge_Landmark1') GB_name = 'Colosseum';
+  else if (GB_name == 'X_IronAge_Landmark2')
+    GB_name = 'Lighthouse of Alexandria';
+  else if (GB_name == 'X_EarlyMiddleAge_Landmark1') GB_name = 'Hagia Sophia';
+  else if (GB_name == 'X_EarlyMiddleAge_Landmark2')
+    GB_name = 'Cathedral of Aachen';
+  else if (GB_name == 'X_EarlyMiddleAge_Landmark3') GB_name = 'Galata Tower';
+  else if (GB_name == 'X_HighMiddleAge_Landmark1')
+    GB_name = "St. Mark's Basilica";
+  else if (GB_name == 'X_HighMiddleAge_Landmark3') GB_name = 'Notre Dame';
+  else if (GB_name == 'X_LateMiddleAge_Landmark1')
+    GB_name = "St. Basil's Cathedral";
+  else if (GB_name == 'X_LateMiddleAge_Landmark3') GB_name = 'Castel del Monte';
+  else if (GB_name == 'X_ColonialAge_Landmark1')
+    GB_name = 'Frauenkirche of Dresden';
+  else if (GB_name == 'X_ColonialAge_Landmark2') GB_name = 'Deal Castle';
+  else if (GB_name == 'X_IndustrialAge_Landmark1')
+    GB_name = 'Royal Albert Hall';
+  else if (GB_name == 'X_IndustrialAge_Landmark2') GB_name = 'Capitol';
+  else if (GB_name == 'X_ProgressiveEra_Landmark1') GB_name = 'Alcatraz';
+  else if (GB_name == 'X_ProgressiveEra_Landmark2')
+    GB_name = 'Ch\u00e2teau Frontenac';
+  else if (GB_name == 'X_ModernEra_Landmark1') GB_name = 'Space Needle';
+  else if (GB_name == 'X_ModernEra_Landmark2') GB_name = 'Atomium';
+  else if (GB_name == 'X_PostModernEra_Landmark1') GB_name = 'Cape Canaveral';
+  else if (GB_name == 'X_PostModernEra_Landmark2') GB_name = 'The Habitat';
+  else if (GB_name == 'X_ContemporaryEra_Landmark1') GB_name = 'Lotus Temple';
+  else if (GB_name == 'X_ContemporaryEra_Landmark2')
+    GB_name = 'Innovation Tower';
+  else if (GB_name == 'X_TomorrowEra_Landmark1') GB_name = 'Voyager V1';
+  else if (GB_name == 'X_TomorrowEra_Landmark2') GB_name = 'Truce Tower';
+  else if (GB_name == 'X_FutureEra_Landmark1') GB_name = 'The Arc';
+  else if (GB_name == 'X_FutureEra_Landmark2') GB_name = 'Rain Forest Project';
+  else if (GB_name == 'X_ArcticFuture_Landmark1') GB_name = 'Gaea Statue';
+  else if (GB_name == 'X_ArcticFuture_Landmark2') GB_name = 'Arctic Orangery';
+  else if (GB_name == 'X_ArcticFuture_Landmark3') GB_name = 'Seed Vault';
+  else if (GB_name == 'X_OceanicFuture_Landmark1') GB_name = 'Atlantis Museum';
+  else if (GB_name == 'X_OceanicFuture_Landmark2') GB_name = 'The Kraken';
+  else if (GB_name == 'X_OceanicFuture_Landmark3') GB_name = 'The Blue Galaxy';
+  else if (GB_name == 'X_VirtualFuture_Landmark1') GB_name = 'Terracotta Army';
+  else if (GB_name == 'X_VirtualFuture_Landmark2') GB_name = 'Himeji Castle';
+  else if (GB_name == 'X_SpaceAgeMars_Landmark1') GB_name = 'Star Gazer';
+  else if (GB_name == 'X_SpaceAgeMars_Landmark2') GB_name = 'The Virgo Project';
+  else if (GB_name == 'X_SpaceAgeAsteroidBelt_Landmark1')
+    GB_name = 'Space Carrier';
+  else if (GB_name == 'X_SpaceAgeVenus_Landmark1') GB_name = 'Flying Island';
+  else if (GB_name == 'X_SpaceAgeJupiterMoon_Landmark1') GB_name = 'A.I. Core';
+  else if (GB_name == 'X_SpaceAgeTitan_Landmark1')
+    GB_name = 'Saturn VI Gate CENTAURUS';
+  else if (GB_name == 'X_SpaceAgeTitan_Landmark2')
+    GB_name = 'Saturn VI Gate PEGASUS';
+  else if (GB_name == 'X_SpaceAgeTitan_Landmark3')
+    GB_name = 'Saturn VI Gate HYDRA';
+  else if (GB_name == 'X_SpaceAgeSpaceHub_Landmark1')
+    GB_name = 'Stellar Warship';
+  else if (GB_name == 'X_SpaceAgeSpaceHub_Landmark2')
+    GB_name = 'Cosmic Catalyst';
+  else if (GB_name == 'X_SpaceAgeDiscovery_Landmark1')
+    GB_name = 'Space Age Discovery Landmark 1';
+  else if (GB_name == 'X_SpaceAgeDiscovery_Landmark2')
+    GB_name = 'Space Age Discovery Landmark 2';
+  // console.debug(city_entity,CityEntityDefs);
+  if (reportLookup)
+    metadataStore.reportEntityLookup(
+      String(city_entity),
+      GB_name !== String(city_entity),
+    );
+  return GB_name;
+}
+
+export function fLevelfromAge(age) {
+  if (age == 'BronzeAge') {
+    return 1;
+  } else if (age == 'IronAge') {
+    return 2;
+  } else if (age == 'EarlyMiddleAge') {
+    return 3;
+  } else if (age == 'HighMiddleAge') {
+    return 4;
+  } else if (age == 'LateMiddleAge') {
+    return 5;
+  } else if (age == 'ColonialAge') {
+    return 6;
+  } else if (age == 'IndustrialAge') {
+    return 7;
+  } else if (age == 'ProgressiveEra') {
+    return 8;
+  } else if (age == 'ModernEra') {
+    return 9;
+  } else if (age == 'PostModernEra') {
+    return 10;
+  } else if (age == 'ContemporaryEra') {
+    return 11;
+  } else if (age == 'TomorrowEra') {
+    return 12;
+  } else if (age == 'FutureEra') {
+    return 13;
+  } else if (age == 'ArcticFuture') {
+    return 14;
+  } else if (age == 'OceanicFuture') {
+    return 15;
+  } else if (age == 'VirtualFuture') {
+    return 16;
+  } else if (age == 'SpaceAgeMars') {
+    return 17;
+  } else if (age == 'SpaceAgeAsteroidBelt') {
+    return 18;
+  } else if (age == 'SpaceAgeVenus') {
+    return 19;
+  } else if (age == 'SpaceAgeJupiterMoon') {
+    return 20;
+  } else if (age == 'SpaceAgeTitan') {
+    return 21;
+  } else if (age == 'SpaceAgeSpaceHub') {
+    return 22;
+  } else if (age == 'StellarAgeDiscovery' || age == 'SpaceAgeDiscovery') {
+    return 23;
+  }
+  // else if (age =="AllAge")
+  // {
+  // 	name = "AA";
+  // }
+  return -1;
+}
+
+// number of numAges
+// added SAV - 19 ages
+// added SAJM - 20 ages
+// added SAT - 21 ages
+// added SASH - 22 ages
+// added SAD - 23 ages
+export const numAges = 23;
+
+export function fAgefromLevel(level) {
+  if (level == 1) {
+    return 'BronzeAge';
+  } else if (level == 2) {
+    return 'IronAge';
+  } else if (level == 3) {
+    return 'EarlyMiddleAge';
+  } else if (level == 4) {
+    return 'HighMiddleAge';
+  } else if (level == 5) {
+    return 'LateMiddleAge';
+  } else if (level == 6) {
+    return 'ColonialAge';
+  } else if (level == 7) {
+    return 'IndustrialAge';
+  } else if (level == 8) {
+    return 'ProgressiveEra';
+  } else if (level == 9) {
+    return 'ModernEra';
+  } else if (level == 10) {
+    return 'PostModernEra';
+  } else if (level == 11) {
+    return 'ContemporaryEra';
+  } else if (level == 12) {
+    return 'TomorrowEra';
+  } else if (level == 13) {
+    return 'FutureEra';
+  } else if (level == 14) {
+    return 'ArcticFuture';
+  } else if (level == 15) {
+    return 'OceanicFuture';
+  } else if (level == 16) {
+    return 'VirtualFuture';
+  } else if (level == 17) {
+    return 'SpaceAgeMars';
+  } else if (level == 18) {
+    return 'SpaceAgeAsteroidBelt';
+  } else if (level == 19) {
+    return 'SpaceAgeVenus';
+  } else if (level == 20) {
+    return 'SpaceAgeJupiterMoon';
+  } else if (level == 21) {
+    return 'SpaceAgeTitan';
+  } else if (level == 22) {
+    return 'SpaceAgeSpaceHub';
+  } else if (level == 23) {
+    return 'StellarAgeDiscovery';
+  }
+  // else if (age =="AllAge")
+  // {
+  // 	name = "AA";
+  // }
+  return -1;
+}
+
+export function fEraAbbreviation(age) {
+  var name = age;
+
+  if (age == 'BronzeAge') {
+    name = 'BA';
+  } else if (age == 'IronAge') {
+    name = 'IA';
+  } else if (age == 'EarlyMiddleAge') {
+    name = 'EMA';
+  } else if (age == 'HighMiddleAge') {
+    name = 'HMA';
+  } else if (age == 'LateMiddleAge') {
+    name = 'LMA';
+  } else if (age == 'ColonialAge') {
+    name = 'CA';
+  } else if (age == 'IndustrialAge') {
+    name = 'InA';
+  } else if (age == 'ProgressiveEra') {
+    name = 'PE';
+  } else if (age == 'ModernEra') {
+    name = 'ME';
+  } else if (age == 'PostModernEra') {
+    name = 'PME';
+  } else if (age == 'ContemporaryEra') {
+    name = 'CE';
+  } else if (age == 'TomorrowEra') {
+    name = 'TE';
+  } else if (age == 'FutureEra') {
+    name = 'FE';
+  } else if (age == 'ArcticFuture') {
+    name = 'AF';
+  } else if (age == 'OceanicFuture') {
+    name = 'OF';
+  } else if (age == 'VirtualFuture') {
+    name = 'VF';
+  } else if (age == 'SpaceAgeMars') {
+    name = 'SAM';
+  } else if (age == 'SpaceAgeAsteroidBelt') {
+    name = 'SAAB';
+  } else if (age == 'SpaceAgeVenus') {
+    name = 'SAV';
+  } else if (age == 'SpaceAgeJupiterMoon') {
+    name = 'SAJM';
+  } else if (age === 'SpaceAgeTitan') {
+    name = 'SAT';
+  } else if (age === 'SpaceAgeSpaceHub') {
+    name = 'SASH';
+  } else if (age === 'StellarAgeDiscovery' || age === 'SpaceAgeDiscovery') {
+    name = 'SAD';
+  } else if (age == 'AllAge') {
+    name = 'AA';
+  }
+  return name;
+}
+export const fGVGagesname = fEraAbbreviation;
+
 export function fGoodsTally(age, good) {
   // console.debug(age,good);
   if (age == 'BronzeAge') Goods.ba += good;
@@ -191,6 +559,186 @@ export function fGoodsTally(age, good) {
 }
 
 export function fHideTooltips() {}
+
+export function fshowBattlegroundChanges() {
+  showOptions.showBattlegroundChanges = !showOptions.showBattlegroundChanges;
+  storage.set('showOptions', showOptions);
+  // console.debug(BattlegroundPerformance);
+  fshowBattleground();
+  // console.debug('fshowBattlegroundChanges',showOptions.showBattlegroundChanges);
+}
+
+export function fshowBattleground() {
+  // console.debug(data,BattlegroundPerformance);
+  const bgWorldMatch =
+    GameOrigin ?
+      GameOrigin.match(/^https?:\/\/([a-z0-9]+)\.forgeofempires\.com/i)
+    : null;
+  const bgWorldLabel =
+    bgWorldMatch ?
+      bgWorldMatch[1].toUpperCase()
+    : (GameOrigin || 'en7')
+        .replace(/https?:\/\//i, '')
+        .replace(/\.forgeofempires\.com/i, '')
+        .toUpperCase();
+  var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
+	<p id="battlegroundTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
+	${element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground)}
+	<strong>Battlegrounds: [${bgWorldLabel}]</strong></p>${element.close()}`;
+
+  if (url.sheetGuildURL)
+    battlegroundHTML += element.post(
+      'battlegroundPostID',
+      'info',
+      'mid',
+      collapse.collapseBattleground,
+    );
+  battlegroundHTML += element.copy(
+    'battlegroundCopyID',
+    'info',
+    'right',
+    collapse.collapseBattleground,
+  );
+  const isChangesOnly = Boolean(showOptions.showBattlegroundChanges);
+  battlegroundHTML += `<div id="battlegroundCollapse" class="alert-info ${
+    isChangesOnly ? 'gbg-changes-full' : 'gbg-full-roster'
+  } overflow resize collapse ${
+    collapse.collapseBattleground ? '' : 'show'
+  }"><div id="battlegroundText">`;
+
+  battlegroundHTML += `<p class="showGBGchanges"><input type="checkbox" id="showGBGchanges"><label for="showGBGchanges">show changes only</label></p>
+	${BGtime ? '<p>Last Saved: ' + BGtime + '</p>' : ''}
+	<div><table id="gbg-table" class="gbg-table w-100"><thead><tr><th class="text-start">Member</th><th class="text-center">Negs</th><th class="text-center">Fights</th><th class="text-center">Attrition</th></tr></thead><tbody>`;
+  let renderedRows = 0;
+  BattlegroundPerformance.forEach((entry) => {
+    // console.debug(entry);
+    var wonNegotiations = 0;
+    var wonBattles = 0;
+    var battleDiff = 0;
+    var negotiationsDiff = 0;
+    var attrition = 0;
+    var attritionDiff = 0;
+    if (entry.wonNegotiations) wonNegotiations = entry.wonNegotiations;
+    if (entry.wonBattles) wonBattles = entry.wonBattles;
+    if (entry.attrition) attrition = entry.attrition;
+
+    var player = GuildMembers.find((id) => id.name == entry.name);
+    if (player) {
+      battleDiff = wonBattles - player.wonBattles;
+      negotiationsDiff = wonNegotiations - player.wonNegotiations;
+      attritionDiff = attrition - player.attrition;
+    }
+    if (
+      !showOptions.showBattlegroundChanges ||
+      battleDiff ||
+      negotiationsDiff ||
+      attritionDiff
+    ) {
+      renderedRows++;
+      battlegroundHTML += `<tr><td class="text-start">${entry.name}</td><td class="text-center">${wonNegotiations}`;
+      if (negotiationsDiff)
+        battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
+      battlegroundHTML += `</td><td class="text-center">${wonBattles}`;
+      if (battleDiff)
+        battlegroundHTML += ` <span class="red">+${battleDiff}</span>`;
+      battlegroundHTML += `</td><td class="text-center">${attrition}`;
+      if (attritionDiff)
+        battlegroundHTML += ` <span class="red">+${attritionDiff}</span>`;
+      battlegroundHTML += `</td></tr>`;
+    }
+  });
+
+  if (isChangesOnly && renderedRows === 0) {
+    battlegroundHTML += `<tr><td colspan="4" class="text-center text-muted fst-italic py-2">No active changes since last save</td></tr>`;
+  }
+
+  const targetEl =
+    (typeof document !== 'undefined' &&
+      document.getElementById('battleground')) ||
+    battlegroundDIV ||
+    donationDIV;
+  if (targetEl) {
+    targetEl.innerHTML =
+      battlegroundHTML + `</tbody></table></div></div></div></div>`;
+  }
+
+  const postEl = document.getElementById('battlegroundPostID');
+  if (postEl && url.sheetGuildURL) {
+    postEl.addEventListener('click', post_webstore.postGBGtoSS);
+  }
+
+  const copyEl = document.getElementById('battlegroundCopyID');
+  if (copyEl) {
+    copyEl.addEventListener('click', copy.BattlegroundCopy);
+  }
+
+  const iconEl = document.getElementById('battlegroundicon');
+  if (iconEl) {
+    iconEl.addEventListener('click', (e) => {
+      e?.stopPropagation?.();
+      collapse.fCollapseBattleground();
+    });
+  }
+
+  const labelEl = document.getElementById('battlegroundTextLabel');
+  if (labelEl) {
+    labelEl.addEventListener('click', (e) => {
+      if (e.target?.closest?.('#battlegroundicon')) return;
+      collapse.fCollapseBattleground();
+    });
+  }
+
+  const showChangesEl = document.getElementById('showGBGchanges');
+  if (showChangesEl) {
+    showChangesEl.addEventListener('click', fshowBattlegroundChanges);
+    showChangesEl.checked = showOptions.showBattlegroundChanges;
+  }
+
+  const battlegroundDiv = document.getElementById('battlegroundCollapse');
+  if (battlegroundDiv) {
+    battlegroundDiv.addEventListener('mouseup', setHeight);
+    if (gbgResizeObserver) {
+      gbgResizeObserver.disconnect();
+    }
+    if (typeof ResizeObserver !== 'undefined') {
+      gbgResizeObserver = new ResizeObserver((entries) => {
+        if (
+          battlegroundDiv.classList?.contains('collapsing') ||
+          (battlegroundDiv.classList &&
+            !battlegroundDiv.classList.contains('show'))
+        ) {
+          return;
+        }
+        for (const entry of entries) {
+          if (entry.contentRect && entry.contentRect.height)
+            heightGBG = entry.contentRect.height;
+        }
+      });
+      gbgResizeObserver.observe(battlegroundDiv);
+    }
+    if (isChangesOnly) {
+      battlegroundDiv.style.height = 'auto';
+      battlegroundDiv.style.maxHeight = 'none';
+      battlegroundDiv.style.overflowY = 'visible';
+    } else {
+      const DEFAULT_RESTRICTED_GBG_HEIGHT = 400;
+      const restrictedHeight =
+        toolOptions.battlegroundsSize && toolOptions.battlegroundsSize > 250 ?
+          toolOptions.battlegroundsSize
+        : DEFAULT_RESTRICTED_GBG_HEIGHT;
+      battlegroundDiv.style.maxHeight = 'none';
+      battlegroundDiv.style.overflowY = 'auto';
+      const currentHeight = battlegroundDiv.clientHeight;
+      if (currentHeight > restrictedHeight) {
+        battlegroundDiv.style.height = `${restrictedHeight}px`;
+      }
+    }
+  }
+
+  if (targetEl) {
+    translateContainer(targetEl);
+  }
+}
 
 export function checkGBG() {
   if (MyGuildPermissions & 64 && url.discordTargetURL) return true;
