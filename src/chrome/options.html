@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= htmlWebpackPlugin.options.title %> Options</title>
-    <script type="module" src="browser-polyfill.js"></script>
+    <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
 
   <body>
@@ -18,6 +17,35 @@
         >
           Save
         </button>
+      </div>
+      <div class="card bg-light mb-3" id="world-card">
+        <div class="card-body py-2">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <label for="worldSelector" class="fw-bold mb-0 text-nowrap"
+              >Active Server / World:</label
+            >
+            <select
+              id="worldSelector"
+              class="form-select form-select-sm"
+              style="width: auto"
+            ></select>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-danger ms-auto"
+              id="resetWorldBtn"
+              title="Reset this world's settings to fresh install defaults"
+            >
+              Reset World
+            </button>
+          </div>
+          <div
+            id="saveToast"
+            class="small text-success mt-1"
+            style="display: none"
+          >
+            Settings saved automatically.
+          </div>
+        </div>
       </div>
       <div class="card bg-light">
         <h6 class="card-header">City Info</h6>
@@ -38,9 +66,21 @@
             Show Building Collection Times
             <input type="checkbox" id="collectionTimes" />
           </label>
+          <label for="showGalaxy">
+            Show Blue Galaxy Helper
+            <input type="checkbox" id="showGalaxy" />
+          </label>
+          <label for="army">
+            Show Daily Units
+            <input type="checkbox" id="army" />
+          </label>
           <label for="visit">
             Show Other Player Stats
             <input type="checkbox" id="visit" />
+          </label>
+          <label for="showGuildOverview">
+            Show Guild Overview
+            <input type="checkbox" id="showGuildOverview" />
           </label>
         </div>
       </div>
@@ -101,19 +141,6 @@
         </div>
       </div>
       <div class="card bg-light">
-        <h6 class="card-header">GvG</h6>
-        <div class="card-body">
-          <label for="GvG">
-            Show GvG Age Status
-            <input type="checkbox" id="GvG" />
-          </label>
-          <label for="army">
-            Show Army Stats
-            <input type="checkbox" id="army" />
-          </label>
-        </div>
-      </div>
-      <div class="card bg-light">
         <h6 class="card-header">Guild Battlegrounds</h6>
         <div class="card-body">
           <label for="Battleground">
@@ -140,6 +167,13 @@
             Show Province Opening Time
             <input type="checkbox" id="GBGprovinceTime" />
           </label>
+          <label for="GBGtimeMode">
+            Target Generator Time Mode
+            <select class="form-control" id="GBGtimeMode">
+              <option value="server">Server Time</option>
+              <option value="local">Local Time</option>
+            </select>
+          </label>
           <label for="targetText">
             Add text to target generator
             <input
@@ -165,8 +199,12 @@
       <div class="card bg-light">
         <h6 class="card-header">Guild Expedition</h6>
         <div class="card-body">
+          <label for="InternationalExpedition">
+            Show GE Championship
+            <input type="checkbox" id="InternationalExpedition" />
+          </label>
           <label for="Expedition">
-            Show Member Contribution
+            Show GE Leaderboard
             <input type="checkbox" id="Expedition" />
           </label>
           <label for="GErewards">
@@ -227,7 +265,7 @@
         </div>
       </div>
       <div class="card bg-light" id="urlDiv">
-        <h6 class="card-header">Post to Guild Discord/Sheets</h6>
+        <h6 class="card-header">Post to Guild Discord</h6>
         <div class="card-body">
           <label for="discordTargetURL">
             Discord Webhook URL - GBG Targets
@@ -240,7 +278,7 @@
               autocomplete="off"
             />
           </label>
-          <label for="sheetGuildURL">
+          <label for="sheetGuildURL" style="display: none">
             Google Sheet URL - Guild Info
             <input
               type="url"
@@ -273,6 +311,39 @@
             Minimum panel height
             <input class="form-control" type="number" id="minSize" value="50" />
           </label>
+        </div>
+      </div>
+      <div class="card bg-light">
+        <h6 class="card-header">Date &amp; Time formatting</h6>
+        <div class="card-body">
+          <label for="dateTimeFormat">Date &amp; Time Format</label>
+          <select
+            class="form-control"
+            id="dateTimeFormat"
+            name="dateTimeFormat"
+          >
+            <option value="DD.MM.YYYY HH:mm:ss">
+              EU 24h (07.09.2026 15:05:00)
+            </option>
+            <option value="DD/MM/YYYY HH:mm:ss">
+              UK 24h (07/09/2026 15:05:00)
+            </option>
+            <option value="MM/DD/YYYY hh:mm:ss A">
+              US 12h (09/07/2026 03:05:00 PM)
+            </option>
+            <option value="custom">Custom Format...</option>
+          </select>
+          <div id="customPatternDiv" class="mt-2" style="display: none">
+            <label for="customDateTimePattern"
+              >Custom Pattern (tokens: YYYY, MM, DD, HH, hh, mm, ss, A)</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="customDateTimePattern"
+              placeholder="DD.MM.YYYY HH:mm:ss"
+            />
+          </div>
         </div>
       </div>
       <div class="card bg-light">

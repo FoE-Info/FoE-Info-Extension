@@ -4,8 +4,20 @@
  * Bridge connecting legacy FoE-Info service handlers to MessageDispatcher.
  */
 
+const defaultGbRegistry = require('../state/GreatBuildingRegistry.js');
+const GbDonationService = require('../msg/GbDonationService.js');
+
 function registerLegacyBridge(dispatcher, handlers = {}) {
   if (!dispatcher || typeof dispatcher.register !== 'function') return;
+
+  const gbRegistry = handlers.GreatBuildingRegistry || defaultGbRegistry;
+  let gbSelected = handlers.GBselected;
+  if (!gbSelected) {
+    try {
+      const statePkg = require('../state/state.js');
+      gbSelected = statePkg.GBselected;
+    } catch {}
+  }
 
   const {
     startupService,
@@ -14,6 +26,7 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     contributeForgePoints,
     getConstructionRanking,
     getContributions,
+    handleNewReward,
     otherPlayerService,
     otherPlayerServiceUpdateActions,
     clearVisitPlayer,
@@ -25,8 +38,10 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     getState,
     getBattleground,
     getBuildings,
+    getUpdatedProvinces,
     setSignal,
     removeSignal,
+    updateSignal,
     guildExpeditionService,
     armyUnitManagementService,
     pickupProduction,
@@ -37,6 +52,7 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     updateIgnoreListUI,
     processMetadataEntry,
     processMetadataData,
+    getTreasury,
     getTreasuryBag,
     getTreasuryLogs,
     treasuryService,
@@ -81,29 +97,68 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     dispatcher.register(
       'GreatBuildingsService',
       'getConstruction',
-      getConstruction,
+      (msg, context) => {
+        const reqData = extractRankingData(msg, context);
+        return getConstruction(msg, reqData, context);
+      },
     );
   }
   if (contributeForgePoints) {
     dispatcher.register(
       'GreatBuildingsService',
       'contributeForgePoints',
-      contributeForgePoints,
+      (msg, context) => {
+        const reqData = extractRankingData(msg, context);
+        return contributeForgePoints(msg, reqData, context);
+      },
     );
   }
+  const extractRankingData = (msg, context) => {
+    if (Array.isArray(msg?.requestData)) return msg.requestData;
+    if (Array.isArray(context)) return context;
+    if (Array.isArray(context?.requestData)) return context.requestData;
+    if (Array.isArray(context?.request?.requestData)) {
+      return context.request.requestData;
+    }
+    if (context?.request?.postData) {
+      let post = context.request.postData;
+      if (typeof post === 'string') {
+        try {
+          post = JSON.parse(post);
+        } catch {}
+      }
+      if (Array.isArray(post)) return post;
+      if (Array.isArray(post?.requestData)) return post.requestData;
+    }
+    return [];
+  };
+
   if (getConstructionRanking) {
     dispatcher.register(
       'GreatBuildingsService',
       'getConstructionRanking',
-      getConstructionRanking,
+      (msg, context) => {
+        const reqData = extractRankingData(msg, context);
+        return getConstructionRanking(msg, reqData, context);
+      },
     );
   }
   if (getContributions) {
-    dispatcher.register(
-      'GreatBuildingsService',
-      'getContributions',
-      getContributions,
+    dispatcher.register('GreatBuildingsService', 'getContributions', (msg) =>
+      getContributions(msg),
     );
+  }
+  const rewardHandler = handleNewReward || GbDonationService.handleNewReward;
+  if (rewardHandler) {
+    dispatcher.register('BlueprintService', 'newReward', (msg) => {
+      const targetContainer =
+        handlers.cityrewards ||
+        (typeof document !== 'undefined' ?
+          document.getElementById('cityrewards') ||
+          document.getElementById('rewards')
+        : null);
+      return rewardHandler(msg, showOptions, targetContainer);
+    });
   }
 
   // Other Players & Social
@@ -113,7 +168,12 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
       'getEventsList',
       otherPlayerService,
     );
-    dispatcher.register('OtherPlayerService', 'visitPlayer', (msg) => {
+    dispatcher.register('OtherPlayerService', 'visitPlayer', (msg, context) => {
+      const gbs = msg?.responseData?.city_map?.entities || [];
+      const pid =
+        msg?.responseData?.other_player?.player_id ||
+        (Array.isArray(context?.requestData) ? context.requestData[0] : null);
+      gbRegistry.registerGreatBuildings(gbs, pid);
       if (showOptions.showVisit) {
         if (typeof clearVisitPlayer === 'function') clearVisitPlayer();
         otherPlayerService(msg);
@@ -126,40 +186,145 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
       'updatePlayerActions',
       otherPlayerServiceUpdateActions,
     );
-    dispatcher.register('OtherPlayerService', 'getSocialList', (msg) => {
-      otherPlayerServiceUpdateActions(msg.responseData);
-    });
-  }
-  if (updateIgnoreListUI) {
-    dispatcher.register(
-      'IgnorePlayerService',
-      'getIgnoreList',
-      updateIgnoreListUI,
-    );
-  }
-  if (handlers.GBselected) {
+    for (const method of [
+      'getSocialList',
+      'getFriendsList',
+      'getClanMemberList',
+      'getNeighbourList',
+    ]) {
+      dispatcher.register('OtherPlayerService', method, (msg) => {
+        otherPlayerServiceUpdateActions(msg.responseData);
+      });
+    }
     dispatcher.register(
       'OtherPlayerService',
-      'getOtherPlayerCityMapEntity',
+      'getOtherPlayerOverview',
       (msg) => {
-        const selected = msg.responseData;
-        if (selected) {
-          handlers.GBselected.id = selected.id;
-          if (typeof handlers.helper?.fGBname === 'function') {
-            handlers.GBselected.name = handlers.helper.fGBname(
-              selected.cityentity_id,
-            );
-          }
-          handlers.GBselected.level = selected.level;
-          handlers.GBselected.max_level = selected.max_level;
-          handlers.GBselected.connected = selected.connected;
-          handlers.GBselected.total = selected.state?.forge_points_for_level_up;
-          handlers.GBselected.current =
-            selected.state?.invested_forge_points || 0;
+        otherPlayerServiceUpdateActions(msg.responseData);
+      },
+    );
+    const renderGuildHandler =
+      handlers.renderGuildPanel ||
+      (() => {
+        try {
+          return require('../ui/renderGuildPanel.js').renderGuildPanel;
+        } catch {
+          return null;
         }
+      })();
+
+    const guildHandler = (msg) => {
+      const data = msg?.responseData || msg;
+      if (typeof renderGuildHandler === 'function') {
+        renderGuildHandler(data);
+      }
+      if (typeof otherPlayerServiceUpdateActions === 'function') {
+        otherPlayerServiceUpdateActions(data, { autoExpandGuild: true });
+      }
+    };
+
+    dispatcher.register('ClanMemberService', 'getMemberList', guildHandler);
+    dispatcher.register('ClanService', 'getMembers', guildHandler);
+    dispatcher.register('ClanService', 'getOverview', guildHandler);
+    dispatcher.register('ClanService', 'getOwnClanData', guildHandler);
+    dispatcher.register('ClanService', 'getClanData', guildHandler);
+    dispatcher.register(
+      'GreatBuildingsService',
+      'getOtherPlayerOverview',
+      (msg) => {
+        if (Array.isArray(msg?.responseData)) {
+          for (const item of msg.responseData) {
+            const pId = item.player?.player_id || item.player_id;
+            gbRegistry.registerGreatBuilding(item, pId);
+          }
+        }
+        otherPlayerServiceUpdateActions(msg.responseData);
       },
     );
   }
+  if (updateIgnoreListUI) {
+    dispatcher.register('IgnorePlayerService', 'getIgnoreList', (msg) => {
+      updateIgnoreListUI(msg);
+    });
+  }
+  dispatcher.register(
+    'OtherPlayerService',
+    'getOtherPlayerCityMapEntity',
+    (msg) => {
+      const selected = msg?.responseData;
+      if (selected) {
+        const pId = selected.player_id || selected.player?.player_id || 0;
+        const pName =
+          (handlers.playerNameCache && handlers.playerNameCache[pId]) ||
+          (handlers.getPlayerName ? handlers.getPlayerName(pId) : '') ||
+          selected.player_name ||
+          selected.player?.name ||
+          '';
+        if (pId && handlers.setPlayerName) {
+          handlers.setPlayerName(pName, pId);
+        }
+
+        const gb = gbRegistry.registerGreatBuilding(selected, pId);
+        const target = handlers.GBselected || gbSelected;
+        if (target) {
+          GbDonationService.syncGbSelected(target, gb || selected);
+          if (pId) target.player = pId;
+          if (pName) target.player_name = pName;
+        }
+      }
+    },
+  );
+
+  // City Map Service (Own City GBs)
+  dispatcher.register('CityMapService', 'getEntities', (msg) => {
+    if (Array.isArray(msg?.responseData)) {
+      gbRegistry.registerGreatBuildings(msg.responseData, 0);
+    }
+  });
+  dispatcher.register('CityMapService', 'updateEntity', (msg) => {
+    const list =
+      Array.isArray(msg?.responseData) ? msg.responseData
+      : msg?.responseData ? [msg.responseData]
+      : [];
+    gbRegistry.registerGreatBuildings(list, 0);
+    const target = handlers.GBselected || gbSelected;
+    for (const item of list) {
+      if (
+        item &&
+        item.type === 'greatbuilding' &&
+        target &&
+        (item.id === target.id || item.cityentity_id === target.cityentity_id)
+      ) {
+        GbDonationService.syncGbSelected(target, item);
+        if (handlers.MyInfo?.id && item.player_id === handlers.MyInfo.id) {
+          if (handlers.setPlayerName) {
+            handlers.setPlayerName(handlers.MyInfo.name, handlers.MyInfo.id);
+          }
+        }
+        if (typeof handlers.showGreatBuldingDonation === 'function') {
+          handlers.showGreatBuldingDonation();
+        }
+      }
+    }
+  });
+  dispatcher.register('CityMapService', 'reset', (msg) => {
+    const list =
+      Array.isArray(msg?.responseData) ? msg.responseData
+      : msg?.responseData ? [msg.responseData]
+      : [];
+    gbRegistry.registerGreatBuildings(list, 0);
+    const target = handlers.GBselected || gbSelected;
+    for (const item of list) {
+      if (
+        item &&
+        item.type === 'greatbuilding' &&
+        target &&
+        (item.id === target.id || item.cityentity_id === target.cityentity_id)
+      ) {
+        GbDonationService.syncGbSelected(target, item);
+      }
+    }
+  });
 
   // Resources
   if (getResourceDefinitions) {
@@ -191,9 +356,28 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     );
   }
 
+  // Trade Service / Market Triggers for Goods Inventory
+  const renderGoodsHandler =
+    handlers.renderGoodsPanel ||
+    (handlers.getPlayerResources ? () => handlers.getPlayerResources() : null);
+
+  if (renderGoodsHandler) {
+    for (const method of [
+      'getTradeList',
+      'getOpenOffers',
+      'getTradeOffers',
+      'getYourOffers',
+    ]) {
+      dispatcher.register('TradeService', method, (msg) =>
+        renderGoodsHandler(msg),
+      );
+    }
+  }
+
   // Guild Treasury
   const treasuryBagHandler = getTreasuryBag || treasuryService?.getTreasuryBag;
   if (treasuryBagHandler) {
+    dispatcher.register('ClanService', 'getTreasuryBag', treasuryBagHandler);
     dispatcher.register(
       'ResourceService',
       'getTreasuryBag',
@@ -204,6 +388,10 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     getTreasuryLogs || treasuryService?.getTreasuryLogs;
   if (treasuryLogsHandler) {
     dispatcher.register('ClanService', 'getTreasuryLogs', treasuryLogsHandler);
+  }
+  const treasuryHandler = getTreasury || treasuryService?.getTreasury;
+  if (treasuryHandler) {
+    dispatcher.register('ClanService', 'getTreasury', treasuryHandler);
   }
 
   // Cultural Settlements & Outposts
@@ -262,28 +450,200 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
       getBuildings,
     );
   }
+  if (getUpdatedProvinces) {
+    dispatcher.register(
+      'GuildBattlegroundService',
+      'getUpdatedProvinces',
+      getUpdatedProvinces,
+    );
+    dispatcher.register(
+      'GuildBattlegroundService',
+      'getProvinces',
+      getUpdatedProvinces,
+    );
+  }
+  const extractSignalData = (msg, context) => {
+    if (Array.isArray(msg) && msg.length > 0) return msg;
+    if (Array.isArray(msg?.requestData) && msg.requestData.length > 0) {
+      return msg.requestData;
+    }
+    if (Array.isArray(context?.requestData) && context.requestData.length > 0) {
+      return context.requestData;
+    }
+    if (
+      Array.isArray(context?.request?.requestData) &&
+      context.request.requestData.length > 0
+    ) {
+      return context.request.requestData;
+    }
+
+    const reqPayloadItems =
+      Array.isArray(context?.requestPayload) ? context.requestPayload
+      : context?.requestPayload && typeof context.requestPayload === 'object' ?
+        [context.requestPayload]
+      : [];
+    if (reqPayloadItems.length > 0) {
+      const match =
+        (msg?.requestId !== undefined ?
+          reqPayloadItems.find((r) => r && r.requestId === msg.requestId)
+        : null) ||
+        reqPayloadItems.find(
+          (r) =>
+            r &&
+            (r.requestMethod === 'setSignal' ||
+              r.requestMethod === 'removeSignal' ||
+              r.requestClass?.includes('GuildBattleground')),
+        ) ||
+        reqPayloadItems[0];
+      if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
+        return match.requestData;
+      }
+    }
+
+    const postText =
+      context?.request?.request?.postData?.text ||
+      context?.request?.postData?.text ||
+      context?.postData?.text ||
+      (typeof context?.postData === 'string' ? context.postData : null) ||
+      (typeof context?.request?.postData === 'string' ? context.request.postData
+      : typeof context?.request?.request?.postData === 'string' ?
+        context.request.request.postData
+      : null);
+    if (postText) {
+      try {
+        const parsed =
+          typeof postText === 'string' ? JSON.parse(postText) : postText;
+        const reqItems = Array.isArray(parsed) ? parsed : [parsed];
+        const match =
+          (msg?.requestId !== undefined ?
+            reqItems.find((r) => r && r.requestId === msg.requestId)
+          : null) ||
+          reqItems.find(
+            (r) =>
+              r &&
+              (r.requestMethod === 'setSignal' ||
+                r.requestMethod === 'removeSignal' ||
+                r.requestClass?.includes('GuildBattleground')),
+          ) ||
+          reqItems[0];
+        if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
+          return match.requestData;
+        }
+      } catch (e) {}
+    }
+
+    if (Array.isArray(msg?.responseData) && msg.responseData.length > 0) {
+      return msg.responseData;
+    }
+    if (Array.isArray(context) && context.length > 0) return context;
+    if (Array.isArray(msg?.requestData) && msg.requestData.length > 0) {
+      return msg.requestData;
+    }
+    if (Array.isArray(context?.requestData) && context.requestData.length > 0) {
+      return context.requestData;
+    }
+
+    const candidateObj =
+      ((
+        msg &&
+        typeof msg === 'object' &&
+        !Array.isArray(msg) &&
+        (msg.provinceId !== undefined || msg.id !== undefined)
+      ) ?
+        msg
+      : null) ||
+      ((
+        msg?.responseData &&
+        typeof msg.responseData === 'object' &&
+        !Array.isArray(msg.responseData) &&
+        (msg.responseData.provinceId !== undefined ||
+          msg.responseData.id !== undefined)
+      ) ?
+        msg.responseData
+      : null);
+    if (candidateObj) {
+      const pid = candidateObj.provinceId ?? candidateObj.id;
+      const stype = candidateObj.type ?? candidateObj.signal;
+      return [pid, stype];
+    }
+
+    return [];
+  };
+
+  const handleSetSignal = (msg, context) => {
+    const payload = extractSignalData(msg, context);
+    return setSignal(msg, payload, context);
+  };
+
+  const handleRemoveSignal = (msg, context) => {
+    const payload = extractSignalData(msg, context);
+    return removeSignal(msg, payload, context);
+  };
+
   if (setSignal) {
-    dispatcher.register('GuildBattlegroundService', 'setSignal', setSignal);
+    dispatcher.register(
+      'GuildBattlegroundService',
+      'setSignal',
+      handleSetSignal,
+    );
     dispatcher.register(
       'GuildBattlegroundSignalsService',
       'setSignal',
-      setSignal,
+      handleSetSignal,
     );
   }
   if (removeSignal) {
     dispatcher.register(
       'GuildBattlegroundService',
       'removeSignal',
-      removeSignal,
+      handleRemoveSignal,
     );
     dispatcher.register(
       'GuildBattlegroundSignalsService',
       'removeSignal',
-      removeSignal,
+      handleRemoveSignal,
+    );
+    dispatcher.register(
+      'GuildBattlegroundService',
+      'getAction',
+      (msg, context) => {
+        if (msg?.responseData?.action === 'province_conquered') {
+          return handleRemoveSignal(msg, context);
+        }
+      },
     );
   }
 
-  // Guild Expedition
+  const handleUpdateSignal = (msg, context) => {
+    const payload = extractSignalData(msg, context);
+    if (typeof updateSignal === 'function') {
+      return updateSignal(msg, payload, context);
+    }
+    const signalType =
+      payload?.[1] ?? msg?.responseData?.type ?? msg?.responseData?.signal;
+    if (signalType && signalType !== 'none' && signalType !== 'clear') {
+      return handleSetSignal(msg, context);
+    } else {
+      return handleRemoveSignal(msg, context);
+    }
+  };
+
+  dispatcher.register(
+    'GuildBattlegroundSignalsService',
+    'updateSignal',
+    handleUpdateSignal,
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'updateSignal',
+    handleUpdateSignal,
+  );
+
+  // Guild Expedition & International Guild Expedition
+  const geHandler = handlers.championshipService || guildExpeditionService;
+  if (geHandler) {
+    dispatcher.register('ChampionshipService', 'getOverview', geHandler);
+  }
   if (guildExpeditionService) {
     dispatcher.register(
       'GuildExpeditionService',
@@ -293,6 +653,11 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     dispatcher.register(
       'GuildExpeditionService',
       'getChestOverview',
+      guildExpeditionService,
+    );
+    dispatcher.register(
+      'GuildExpeditionService',
+      'getContributionList',
       guildExpeditionService,
     );
   }
@@ -341,6 +706,16 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
       'ConversationService',
       'getOverviewForCategory',
       conversationService,
+    );
+    dispatcher.register(
+      'ConversationService',
+      'getOverview',
+      conversationService,
+    );
+    dispatcher.register(
+      'ConversationService',
+      'getNewMessage',
+      handlers.getNewMessage || conversationService,
     );
   }
   if (getConversation) {

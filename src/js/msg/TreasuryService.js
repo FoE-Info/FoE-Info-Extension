@@ -8,6 +8,7 @@
 
 const BigNumber = require('bignumber.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
+const { renderTreasuryPanel } = require('../ui/panelDispatcher.js');
 
 let element = null;
 let collapse = null;
@@ -73,15 +74,18 @@ class TreasuryService {
 
     this.getTreasuryLogs = this.getTreasuryLogs.bind(this);
     this.getTreasuryBag = this.getTreasuryBag.bind(this);
+    this.getTreasury = this.getTreasury.bind(this);
   }
 
   register(dispatcher = messageDispatcher) {
     if (dispatcher && typeof dispatcher.register === 'function') {
+      dispatcher.register('ClanService', 'getTreasury', this.getTreasury);
       dispatcher.register(
         'ClanService',
         'getTreasuryLogs',
         this.getTreasuryLogs,
       );
+      dispatcher.register('ClanService', 'getTreasuryBag', this.getTreasuryBag);
       dispatcher.register(
         'ResourceService',
         'getTreasuryBag',
@@ -89,6 +93,25 @@ class TreasuryService {
       );
     }
     return this;
+  }
+
+  getTreasury(msg) {
+    const data = msg?.responseData || {};
+    const resources = data.resources || data;
+
+    if (resources && typeof resources === 'object') {
+      for (const [key, val] of Object.entries(resources)) {
+        this.reserves.set(key, new BigNumber(val || 0));
+      }
+      this.lastUpdated = Date.now();
+      renderTreasuryPanel(this.reserves);
+    }
+
+    return {
+      success: true,
+      totalReserves: this.reserves.size,
+      reserves: this.reserves,
+    };
   }
 
   getTreasuryBag(msg) {
@@ -221,57 +244,6 @@ class TreasuryService {
   }
 }
 
-function renderTreasuryPanel(reserves) {
-  if (typeof document === 'undefined') return;
-  const targetEl = document.getElementById('treasury');
-  if (!targetEl) return;
-
-  if (showOptions && showOptions.showTreasury === false) {
-    targetEl.innerHTML = '';
-    return;
-  }
-
-  const isCollapsed =
-    collapse?.collapseTreasury !== undefined ?
-      !!collapse.collapseTreasury
-    : true;
-  let html = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">`;
-  if (element?.close) html += element.close();
-  if (element?.copy)
-    html += element.copy('treasuryCopyID', 'success', 'right', isCollapsed);
-  html += `<p id="treasuryTextLabel" href="#treasuryText" data-bs-toggle="collapse" role="button">`;
-  if (element?.icon)
-    html += element.icon('treasuryicon', 'treasuryText', isCollapsed);
-  html += `<strong><span data-i18n="treasury">Guild Treasury</span>:</strong>`;
-  html += ` <span class="ms-1 small">(${reserves.size} <span data-i18n="resources">Resources</span>)</span></p>`;
-  html += `<div id="treasuryText" class="overflow-y resize collapse ${isCollapsed ? '' : 'show'}">`;
-  html += `<table id="treasurytable" class="goods-table w-100 table table-sm table-striped"><thead><tr><th class="text-start"><span data-i18n="resource">Resource</span></th><th class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
-
-  for (const [resId, amountBN] of reserves.entries()) {
-    if (amountBN.isZero()) continue;
-    const name = helper?.escapeHTML ? helper.escapeHTML(resId) : resId;
-    const amountStr = amountBN.toNumber().toLocaleString();
-    html += `<tr><td class="text-start ps-3">${name}</td><td class="text-end font-monospace">${amountStr}</td></tr>`;
-  }
-
-  html += `</tbody></table></div></div>`;
-  targetEl.innerHTML = html;
-
-  if (copy?.TreasuryCopy) {
-    document
-      .getElementById('treasuryCopyID')
-      ?.addEventListener('click', copy.TreasuryCopy);
-  }
-  if (collapse?.fCollapseTreasury) {
-    document
-      .getElementById('treasuryTextLabel')
-      ?.addEventListener('click', collapse.fCollapseTreasury);
-  }
-  if (helper?.translateContainer) {
-    helper.translateContainer(targetEl);
-  }
-}
-
 function renderTreasuryLogPanel(
   logs,
   totalGoodsDonated,
@@ -286,6 +258,7 @@ function renderTreasuryLogPanel(
     targetEl.innerHTML = '';
     return;
   }
+  targetEl.style.display = '';
 
   const isCollapsed =
     collapse?.collapseTreasuryLog !== undefined ?
@@ -351,14 +324,12 @@ function renderTreasuryLogPanel(
 }
 
 const treasuryService = new TreasuryService();
-if (messageDispatcher && typeof messageDispatcher.register === 'function') {
-  treasuryService.register(messageDispatcher);
-}
 
 module.exports = {
   TreasuryService,
   TreasuryLogEntry,
   treasuryService,
+  renderTreasuryPanel,
   getTreasuryLogs: treasuryService.getTreasuryLogs,
   getTreasuryBag: treasuryService.getTreasuryBag,
 };

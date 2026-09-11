@@ -1,12 +1,24 @@
 @import 'bootstrap/scss/bootstrap';
 // @import "custom.scss";
 
+body {
+  min-width: 480px;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 10px 15px;
+}
+
+.container {
+  padding: 0;
+  max-width: 100%;
+}
+
 label {
   display: block;
 }
 
 div.card {
-  margin: 15px auto 20px auto;
+  margin: 12px auto 16px auto;
 }
 
 button#save {

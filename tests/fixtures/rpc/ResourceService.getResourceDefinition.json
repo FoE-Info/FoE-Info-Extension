@@ -1,0 +1,55 @@
+{
+ "id": "strategy_points",
+ "name": "Forge Points",
+ "nameSingular": "Forge Point",
+ "namePlural": "Forge Points",
+ "era": "NoAge",
+ "abilities": {
+  "autoRefill": {
+   "type": "autoRefill",
+   "interval": 3600,
+   "refillAmount": 1,
+   "maxAmount": 10,
+   "affectedBagTypes": [
+    {
+     "__enum__": "ResourceBagType",
+     "value": "PlayerMain"
+    }
+   ],
+   "__class__": "ResourceAutoRefillAbility"
+  },
+  "collectingRestricted": {
+   "type": "collectingRestricted",
+   "maxAmount": 99,
+   "overflowAllowed": true,
+   "overflowErrorMessageTitle": "",
+   "overflowErrorMessage": "",
+   "affectedBagTypes": [
+    {
+     "__enum__": "ResourceBagType",
+     "value": "PlayerMain"
+    }
+   ],
+   "__class__": "CollectingRestrictedAbility"
+  },
+  "resourceShopContext": {
+   "type": "resourceShopContext",
+   "contextId": "forgePoints",
+   "__class__": "ResourceShopContextAbility"
+  },
+  "premiumPurchase": {
+   "type": "premiumPurchase",
+   "price": 50,
+   "__class__": "ResourcePremiumPurchaseAbility"
+  },
+  "reward": {
+   "type": "reward",
+   "icons": [
+    "forgepoints"
+   ],
+   "description": "Use Forge Points to research technologies or contribute them to Great Buildings.",
+   "__class__": "ResourceRewardAbility"
+  }
+ },
+ "__class__": "ResourceDefinition"
+}

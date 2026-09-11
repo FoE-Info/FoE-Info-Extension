@@ -12,8 +12,10 @@ import tavernPkg from '../../src/js/msg/FriendsTavernService.js';
 import hiddenPkg from '../../src/js/msg/HiddenRewardService.js';
 import inventoryPkg from '../../src/js/msg/InventoryService.js';
 import exchangePkg from '../../src/js/msg/ItemExchangeService.js';
+import metadataPkg from '../../src/js/msg/MetadataService.js';
 import outpostPkg from '../../src/js/msg/OutpostService.js';
 import questPkg from '../../src/js/msg/QuestService.js';
+import registryPkg from '../../src/js/msg/registerServices.js';
 import resourcePkg from '../../src/js/msg/ResourceService.js';
 import timePkg from '../../src/js/msg/TimeService.js';
 import treasuryPkg from '../../src/js/msg/TreasuryService.js';
@@ -40,7 +42,7 @@ const { TimeService, timeService } = timePkg;
 
 function loadFixture(filename) {
   const filePath = new URL(
-    `../../metadata-store/rpc/${filename}`,
+    `../../tests/fixtures/rpc/${filename}`,
     import.meta.url,
   );
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -68,36 +70,54 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
         res.total >= 10,
         `Expected at least 10 incidents, got ${res.total}`,
       );
-      assert.equal(service.incidents.length, 15);
+      assert.equal(service.incidents.length, fixture.hiddenRewards.length);
 
       const first = service.incidents[0];
-      assert.equal(first.hiddenRewardId, 330345162);
-      assert.equal(first.type, 'incident_pothole_1x1');
-      assert.equal(first.rarity, 'common');
-      assert.equal(first.formattedRarity, 'Common');
-      assert.equal(first.positionContext, 'cityRoadSmall');
-      assert.equal(first.startTime, 1788513585);
-      assert.equal(first.expireTime, 1788599985);
-      assert.equal(first.durationSeconds, 86400);
+      const rawFirst = fixture.hiddenRewards[0];
+      assert.equal(first.hiddenRewardId, rawFirst.hiddenRewardId);
+      assert.equal(first.type, rawFirst.type);
+      assert.equal(first.rarity, rawFirst.rarity);
+      assert.equal(
+        first.formattedRarity,
+        rawFirst.rarity[0].toUpperCase() + rawFirst.rarity.slice(1),
+      );
+      assert.equal(first.positionContext, rawFirst.position?.context || '');
+      assert.equal(first.startTime, rawFirst.startTime);
+      assert.equal(first.expireTime, rawFirst.expireTime);
+      assert.equal(
+        first.durationSeconds,
+        rawFirst.expireTime - rawFirst.startTime,
+      );
 
       // Assert expiration calculations
-      const nowBeforeExpire = 1788520000;
+      const nowBeforeExpire = first.startTime - 1;
       assert.equal(first.isExpired(nowBeforeExpire), false);
       assert.equal(
         first.remainingSeconds(nowBeforeExpire),
-        1788599985 - 1788520000,
+        first.expireTime - nowBeforeExpire,
       );
 
-      const nowAfterExpire = 1788600000;
+      const nowAfterExpire = first.expireTime + 1;
       assert.equal(first.isExpired(nowAfterExpire), true);
       assert.equal(first.remainingSeconds(nowAfterExpire), 0);
 
-      // Breakdown assertions
+      // Breakdown assertions (derived from fixture rarities)
       const rarities = service.getRarityBreakdown();
-      assert.ok(rarities.common > 0);
-      assert.ok(rarities.uncommon > 0);
-      assert.ok(rarities.rare > 0);
-      assert.equal(rarities.common + rarities.uncommon + rarities.rare, 15);
+      const expectedRarities = {};
+      for (const inc of fixture.hiddenRewards) {
+        expectedRarities[inc.rarity] = (expectedRarities[inc.rarity] || 0) + 1;
+      }
+      for (const [key, count] of Object.entries(expectedRarities)) {
+        assert.equal(rarities[key], count);
+      }
+      const totalRarityCount = Object.values(expectedRarities).reduce(
+        (a, b) => a + b,
+        0,
+      );
+      assert.equal(
+        Object.values(rarities).reduce((a, b) => a + b, 0),
+        totalRarityCount,
+      );
 
       // State & Incident rendering integration
       const mockState = {
@@ -118,12 +138,15 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
       service.setHelper(mockHelper);
       service.onOverview((rewards, incidents) => {
         callbackTriggered = true;
-        assert.equal(rewards.length, 15);
-        assert.equal(incidents.length, 15);
+        assert.equal(rewards.length, fixture.hiddenRewards.length);
+        assert.equal(incidents.length, fixture.hiddenRewards.length);
       });
 
       service.getOverview(msg);
-      assert.equal(mockState.hiddenRewards.length, 15);
+      assert.equal(
+        mockState.hiddenRewards.length,
+        fixture.hiddenRewards.length,
+      );
       assert.equal(renderedIncidents, true);
       assert.equal(callbackTriggered, true);
 
@@ -173,16 +196,68 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const overviewRes = service.getOverview(overviewMsg);
       assert.equal(overviewRes.success, true);
-      assert.equal(service.dailyPointsCollectionAvailableAt, 1788562800);
-      assert.equal(service.dailyBonusPointsCollectionAvailableAt, 1788476400);
-      assert.equal(service.dailyRewardCollectionAvailableAt, 1788562800);
+      assert.equal(
+        service.dailyPointsCollectionAvailableAt,
+        overviewFixture.dailyPointsCollectionAvailableAt,
+      );
+      assert.equal(
+        service.dailyBonusPointsCollectionAvailableAt,
+        overviewFixture.dailyBonusPointsCollectionAvailableAt,
+      );
+      assert.equal(
+        service.dailyRewardCollectionAvailableAt,
+        overviewFixture.dailyRewardCollectionAvailableAt,
+      );
 
       // Timestamps and availability helpers
-      const pastTime = 1788400000;
-      const futureTime = 1788600000;
+      const pastTime = overviewFixture.dailyRewardCollectionAvailableAt - 1;
+      const futureTime = overviewFixture.dailyRewardCollectionAvailableAt + 1;
       assert.equal(service.isDailyRewardAvailable(pastTime), false);
       assert.equal(service.isDailyRewardAvailable(futureTime), true);
-      assert.equal(service.isDailyBonusPointsAvailable(1788476500), true);
+      assert.equal(
+        service.isDailyBonusPointsAvailable(
+          overviewFixture.dailyBonusPointsCollectionAvailableAt + 1,
+        ),
+        true,
+      );
+
+      // Visual stage combat boost mapping
+      assert.deepEqual(service.getBoostsForStage(0), {
+        attackerAtt: 0,
+        attackerDef: 0,
+        defenderAtt: 0,
+        defenderDef: 0,
+      });
+      assert.deepEqual(service.getBoostsForStage(4), {
+        attackerAtt: 30,
+        attackerDef: 30,
+        defenderAtt: 30,
+        defenderDef: 30,
+      });
+      assert.deepEqual(service.getBoostsForStage(7), {
+        attackerAtt: 60,
+        attackerDef: 60,
+        defenderAtt: 60,
+        defenderDef: 60,
+      });
+      assert.equal(service.getBoostsForStage(99), null);
+
+      assert.deepEqual(
+        service.getBoostsForEntity({
+          cityentity_id: 'V_AllAge_CastleSystem4',
+        }),
+        { attackerAtt: 30, attackerDef: 30, defenderAtt: 30, defenderDef: 30 },
+      );
+      assert.deepEqual(
+        service.getBoostsForEntity({
+          cityentity_id: 'V_AllAge_CastleSystem6',
+        }),
+        { attackerAtt: 45, attackerDef: 45, defenderAtt: 45, defenderDef: 45 },
+      );
+      assert.equal(
+        service.getBoostsForEntity({ cityentity_id: 'W_MultiAge_Tower1' }),
+        null,
+      );
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
@@ -211,36 +286,36 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const res = service.getAllBoosts(msg);
       assert.equal(res.success, true);
-      assert.equal(res.totalEntries, 1013);
+      assert.equal(res.totalEntries, allBoostsFixture.length);
 
       // Aggregated feature matrices
       const stats = service.getAggregatedBoosts();
 
       // Universal 'all' boosts
       assert.ok(BigNumber.isBigNumber(stats.all.attackingAttack));
-      assert.equal(stats.all.attackingAttack.toString(), '22580');
-      assert.equal(stats.all.attackingDefense.toString(), '22210');
-      assert.equal(stats.all.defendingAttack.toString(), '22040');
-      assert.equal(stats.all.defendingDefense.toString(), '23127');
+      assert.equal(stats.all.attackingAttack.toString(), '22485');
+      assert.equal(stats.all.attackingDefense.toString(), '22115');
+      assert.equal(stats.all.defendingAttack.toString(), '21945');
+      assert.equal(stats.all.defendingDefense.toString(), '23032');
 
       // Feature-specific addon boosts
-      assert.equal(stats.battleground.attackingAttack.toString(), '16415');
-      assert.equal(stats.battleground.attackingDefense.toString(), '16679');
+      assert.equal(stats.battleground.attackingAttack.toString(), '16265');
+      assert.equal(stats.battleground.attackingDefense.toString(), '16529');
       assert.equal(stats.guild_expedition.attackingAttack.toString(), '9528');
       assert.equal(stats.guild_expedition.attackingDefense.toString(), '11936');
-      assert.equal(stats.guild_raids.attackingAttack.toString(), '923');
-      assert.equal(stats.guild_raids.attackingDefense.toString(), '687');
+      assert.equal(stats.guild_raids.attackingAttack.toString(), '773');
+      assert.equal(stats.guild_raids.attackingDefense.toString(), '537');
 
       // Total combined boosts (all + feature)
       const gbgTotal = service.getTotalBoost('battleground', 'attackingAttack');
       assert.ok(BigNumber.isBigNumber(gbgTotal));
-      assert.equal(gbgTotal.toString(), '38995'); // 22580 + 16415
+      assert.equal(gbgTotal.toString(), '38750'); // 22485 + 16265
 
       const geDefTotal = service.getTotalBoost(
         'guild_expedition',
         'attackingDefense',
       );
-      assert.equal(geDefTotal.toString(), '34146'); // 22210 + 11936
+      assert.equal(geDefTotal.toString(), '34051'); // 22115 + 11936
 
       // Production boost aggregations
       assert.equal(stats.production.coin.toString(), '100');
@@ -348,9 +423,9 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const itemsRes = service.getItems(itemsMsg);
       assert.equal(itemsRes.success, true);
-      assert.equal(itemsRes.total, 365);
+      assert.equal(itemsRes.total, itemsFixture.length);
       assert.ok(BigNumber.isBigNumber(itemsRes.totalForgePoints));
-      assert.equal(itemsRes.totalForgePoints.toString(), '291980');
+      assert.equal(itemsRes.totalForgePoints.toString(), '340560');
 
       const kits = service.getKits();
       assert.ok(kits.length > 0);
@@ -361,7 +436,7 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const gbRes = service.getGreatBuildings(gbMsg);
       assert.equal(gbRes.success, true);
-      assert.equal(gbRes.total, 49);
+      assert.equal(gbRes.total, gbFixture.length);
 
       const aiCore = service.getGreatBuildingById(
         'X_SpaceAgeJupiterMoon_Landmark1',
@@ -484,23 +559,33 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const res = service.getStates(msg);
       assert.equal(res.success, true);
-      assert.equal(res.total, 3);
-      assert.equal(res.totalAvailable, 76 + 73 + 126);
+      assert.equal(res.total, fixture.length);
+      assert.equal(
+        res.totalAvailable,
+        fixture.reduce((acc, s) => acc + s.availablePeers, 0),
+      );
 
       const neighbor = service.getState('neighbor');
       assert.ok(neighbor);
-      assert.equal(neighbor.availablePeers, 76);
-      assert.equal(neighbor.totalPeers, 76);
+      const neighborRaw = fixture.find((s) => s.id === 'neighbor');
+      assert.equal(neighbor.availablePeers, neighborRaw.availablePeers);
+      assert.equal(neighbor.totalPeers, neighborRaw.totalPeers);
       assert.equal(neighbor.isIdle(), true);
       assert.equal(service.canAid('neighbor'), true);
 
       const guild = service.getState('guild');
       assert.ok(guild);
-      assert.equal(guild.availablePeers, 73);
+      assert.equal(
+        guild.availablePeers,
+        fixture.find((s) => s.id === 'guild').availablePeers,
+      );
 
       const friend = service.getState('friend');
       assert.ok(friend);
-      assert.equal(friend.availablePeers, 126);
+      assert.equal(
+        friend.availablePeers,
+        fixture.find((s) => s.id === 'friend').availablePeers,
+      );
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
@@ -538,16 +623,16 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const statesRes = service.getOtherTavernStates(statesMsg);
       assert.equal(statesRes.success, true);
-      assert.equal(statesRes.total, 126);
+      assert.equal(statesRes.total, statesFixture.length);
 
       const breakdown = service.getStateBreakdown();
       assert.ok(Object.keys(breakdown).length > 0);
 
       const countRes = service.getSittingPlayersCount(countMsg);
       assert.equal(countRes.success, true);
-      assert.equal(countRes.count, 3);
-      assert.equal(service.getSittingCount(), 3);
-      assert.deepEqual(service.getSittingPlayers(), [7560963, 16, 16]);
+      assert.equal(countRes.count, countFixture.length);
+      assert.equal(service.getSittingCount(), countFixture.length);
+      assert.deepEqual(service.getSittingPlayers(), countFixture);
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
@@ -625,11 +710,29 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
       assert.equal(arthur.medalsDonated.toString(), '5000');
       assert.equal(arthur.medalsSpent.toString(), '2000');
 
+      // ClanService.getTreasury test
+      const getTreasuryMsg = {
+        __class__: 'ServerRequest',
+        requestClass: 'ClanService',
+        requestMethod: 'getTreasury',
+        responseData: {
+          resources: { iron: 18000, cloth: 22000, medals: 600000 },
+        },
+      };
+      const getRes = service.getTreasury(getTreasuryMsg);
+      assert.equal(getRes.success, true);
+      assert.equal(getRes.totalReserves, 3);
+      assert.equal(service.getReserve('iron').toString(), '18000');
+
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
       service.register(dispatcher);
-      const dispatchRes = await dispatcher.dispatchBatch([bagMsg, logsMsg]);
-      assert.equal(dispatchRes.succeeded, 2);
+      const dispatchRes = await dispatcher.dispatchBatch([
+        bagMsg,
+        logsMsg,
+        getTreasuryMsg,
+      ]);
+      assert.equal(dispatchRes.succeeded, 3);
     },
   );
 
@@ -667,7 +770,7 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const updatesRes = service.getUpdates(updatesMsg);
       assert.equal(updatesRes.success, true);
-      assert.equal(updatesRes.total, 14);
+      assert.equal(updatesRes.total, updatesFixture.length);
       assert.ok(service.getActiveQuests().length > 0);
 
       const storyQuest = service.getQuestById(17600);
@@ -678,11 +781,14 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const periodsRes = service.getQuestPeriods(periodsMsg);
       assert.equal(periodsRes.success, true);
-      assert.equal(periodsRes.total, 1);
+      assert.equal(periodsRes.total, periodsFixture.length);
 
       const categoryRes = service.getQuestCategoryTimes(categoryMsg);
       assert.equal(categoryRes.success, true);
-      assert.equal(categoryRes.categoryTimes.nextUpdateTime, 1789887600);
+      assert.equal(
+        categoryRes.categoryTimes.nextUpdateTime,
+        categoryFixture.nextUpdateTime,
+      );
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
@@ -759,13 +865,13 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const updateRes = service.updateTime(updateMsg);
       assert.equal(updateRes.success, true);
-      assert.equal(service.getServerTime(), 1788561576);
+      assert.equal(service.getServerTime(), fixture.time);
       assert.ok(typeof service.getTimeDelta() === 'number');
 
-      const mockClientNowMs = 1788561500000;
+      const mockClientNowMs = fixture.time * 1000 - 60000;
       assert.equal(
         service.getSyncedServerTime(mockClientNowMs),
-        1788561500 + service.getTimeDelta(),
+        Math.floor(mockClientNowMs / 1000) + service.getTimeDelta(),
       );
       assert.ok(service.formatServerTime().includes('T'));
 
@@ -787,11 +893,11 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
       service.setHelper(mockHelper);
       service.onUpdateTime((time) => {
         timeCallbackTriggered = true;
-        assert.equal(time, 1788561576);
+        assert.equal(time, fixture.time);
       });
 
       service.updateTime(updateMsg);
-      assert.equal(mockState.EpocTime, 1788561576);
+      assert.equal(mockState.EpocTime, fixture.time);
       assert.equal(renderedFromTime, true);
       assert.equal(timeCallbackTriggered, true);
 
@@ -803,7 +909,7 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
     },
   );
 
-  // Test 13: Global singletons auto-registered with default messageDispatcher
+  // Test 13: Global singletons registered by the central registry
   await t.test(
     'Singletons are instantiated and registered on messageDispatcher',
     async () => {
@@ -821,6 +927,7 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
       assert.ok(timeService instanceof TimeService);
 
       // Test routing via default messageDispatcher singleton across services
+      registryPkg.registerAllServices(messageDispatcher);
       const hiddenFixture = loadFixture('HiddenRewardService.getOverview.json');
       const timeFixture = loadFixture('TimeService.updateTime.json');
       const batchRes = await messageDispatcher.dispatchBatch([
@@ -838,6 +945,10 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
         },
       ]);
       assert.equal(batchRes.succeeded, 2);
+      assert.deepEqual(
+        batchRes.results.map(({ result }) => result.success),
+        [true, true],
+      );
     },
   );
 
@@ -857,29 +968,44 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
 
       const res = getPlayerResourceBag(msg);
       assert.ok(res);
-      assert.equal(res.strategy_points, 1524);
+      assert.equal(res.strategy_points, 37732);
       assert.equal(res.advanced_dna_data, 49993);
-      assert.equal(res.asteroid_ice, 27227);
-      assert.equal(res.mars_ore, 23231);
-      assert.equal(res.promethium, 70506);
-      assert.equal(res.orichalcum, 67762);
-      assert.equal(res.money, 52323151472);
-      assert.equal(res.supplies, 22010949234);
+      assert.equal(res.asteroid_ice, 27237);
+      assert.equal(res.mars_ore, 23241);
+      assert.equal(res.promethium, 70576);
+      assert.equal(res.orichalcum, 67845);
+      assert.equal(res.money, 52493792449);
+      assert.equal(res.supplies, 22037079714);
 
       // Assert Resources export and availableFP updated
-      assert.equal(resourcePkg.Resources.strategy_points, 1524);
-      assert.equal(resourcePkg.availableFP, 1524);
+      assert.equal(resourcePkg.Resources.strategy_points, 37732);
+      assert.equal(resourcePkg.availableFP, 37732);
 
       // Test direct payload format
       const directRes = getPlayerResources(fixture);
-      assert.equal(directRes.strategy_points, 1524);
-      assert.equal(directRes.mars_ore, 23231);
+      assert.equal(directRes.strategy_points, 37732);
+      assert.equal(directRes.mars_ore, 23241);
 
-      // Dispatcher integration via legacy bridge
+      // Dispatcher integration via legacy bridge and ResourceService.register
       const dispatcher = new MessageDispatcher();
       registerLegacyBridge(dispatcher, { getPlayerResources });
-      const dispatchRes = await dispatcher.dispatchBatch([msg]);
-      assert.equal(dispatchRes.succeeded, 1);
+      if (resourcePkg.register) resourcePkg.register(dispatcher);
+      const dispatchRes = await dispatcher.dispatchBatch([
+        msg,
+        {
+          __class__: 'ServerRequest',
+          requestClass: 'TradeService',
+          requestMethod: 'getTradeOffers',
+          responseData: [],
+        },
+        {
+          __class__: 'ServerRequest',
+          requestClass: 'InventoryService',
+          requestMethod: 'getItems',
+          responseData: [],
+        },
+      ]);
+      assert.equal(dispatchRes.succeeded, 3);
     },
   );
 
@@ -966,10 +1092,8 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
       assert.ok(sadRes);
       assert.equal(sadRes.allUnits, 500 + 141799 + 674);
       assert.ok(
-        sadRes.unitsPerEra.some((u) =>
-          u.text.startsWith('SAD: FGX-102 Anvil 500'),
-        ),
-        'Expected SAD unit FGX-102 Anvil with SAD prefix',
+        sadRes.unitsPerEra.some((u) => u.text.startsWith('SAD: Anvil 500')),
+        'Expected SAD unit Anvil with SAD prefix',
       );
       assert.ok(
         sadRes.unitsPerEra.some((u) =>
@@ -993,9 +1117,141 @@ test('Domain Services Protocol & Parsing Suite', async (t) => {
       assert.equal(extractRateFromTitle('1.92 fast level'), 192);
       assert.equal(extractRateFromTitle('1,94 boost'), 194);
       assert.equal(extractRateFromTitle('2.0 level up'), 200);
+      assert.equal(extractRateFromTitle('[secure @ 1.92]'), 192);
       assert.equal(extractRateFromTitle('190% donation'), 190);
       assert.equal(extractRateFromTitle('195% group'), 195);
-      assert.equal(extractRateFromTitle('Just general chat'), 190);
+      assert.equal(extractRateFromTitle('⚔️ GBG Leadership Team ⚔️'), 0);
+      assert.equal(extractRateFromTitle('Just general chat'), 0);
+      assert.equal(extractRateFromTitle('🛡️SSF & RE 1.9 thread 🛡️'), 190);
+      assert.equal(extractRateFromTitle('Free 1.9 group'), 190);
+      assert.equal(extractRateFromTitle('⚔️GbG Commanders⚔️ 59:25'), 0);
+      assert.equal(
+        extractRateFromTitle('======*1.94 The Original*======'),
+        194,
+      );
+      assert.equal(extractRateFromTitle('😎lv100 Arc Thread 1.92😎'), 192);
+      assert.equal(extractRateFromTitle('lvl 80 arc thread'), 0);
+      assert.equal(extractRateFromTitle('lvl 180 arc thread'), 0);
+      assert.equal(extractRateFromTitle('Arc Lv.180'), 0);
+      assert.equal(extractRateFromTitle('Lv180 Arc Owners'), 0);
+      assert.equal(extractRateFromTitle('Arc 90% lvl 80'), 0);
+      assert.equal(extractRateFromTitle('lv180 1.92 secure'), 192);
+      assert.equal(extractRateFromTitle('Arc lvl180 200%'), 200);
+    },
+  );
+
+  // Test 17: BoostService.getAllBoosts Legacy Bridge Registration
+  await t.test(
+    'legacyBridge: registers and dispatches BoostService.getAllBoosts to boostServiceAllBoosts',
+    async () => {
+      const dispatcher = new MessageDispatcher();
+      let captured = null;
+      const boostServiceAllBoosts = (msg) => {
+        captured = msg;
+        return { success: true };
+      };
+
+      registerLegacyBridge(dispatcher, { boostServiceAllBoosts });
+
+      const msg = {
+        __class__: 'ServerRequest',
+        requestClass: 'BoostService',
+        requestMethod: 'getAllBoosts',
+        responseData: [
+          {
+            type: 'att_boost_attacker',
+            targetedFeature: 'battleground',
+            value: 55,
+          },
+          {
+            type: 'att_boost_attacker',
+            targetedFeature: 'guild_expedition',
+            value: 40,
+          },
+          {
+            type: 'att_boost_attacker',
+            targetedFeature: 'guild_raids',
+            value: 30,
+          },
+          { type: 'att_boost_attacker', targetedFeature: 'all', value: 25 },
+        ],
+      };
+
+      const res = await dispatcher.dispatchBatch([msg]);
+      assert.equal(res.succeeded, 1);
+      assert.ok(captured);
+      assert.equal(captured.responseData.length, 4);
+      assert.equal(captured.responseData[0].value, 55);
+    },
+  );
+
+  await t.test(
+    'MetadataService: ResearchTechnology & AllyMetadata route to store without throwing',
+    async () => {
+      metadataStore.reset();
+      const dispatcher = new MessageDispatcher();
+      registerLegacyBridge(dispatcher, {});
+      const processEntry = metadataPkg.processMetadataEntry;
+
+      processEntry({
+        __class__: 'ResearchTechnology',
+        id: 'tech_arc_extended',
+        name: 'Extended Tests of the Arc',
+        era: 'ProgressiveEra',
+      });
+      processEntry({
+        __class__: 'AllyMetadata',
+        id: 'ally_greek_warrior',
+        name: 'Greek Warrior',
+        era: 'IronAge',
+      });
+
+      assert.equal(metadataStore.technologies.size, 1);
+      assert.equal(
+        metadataStore.technologies.get('tech_arc_extended').name,
+        'Extended Tests of the Arc',
+      );
+      assert.equal(metadataStore.allies.size, 1);
+      assert.equal(
+        metadataStore.allies.get('ally_greek_warrior').name,
+        'Greek Warrior',
+      );
+    },
+  );
+
+  await t.test(
+    'ResourceService: singular getResourceDefinition merges without wiping catalogue',
+    async () => {
+      resourcePkg.getResourceDefinitions({
+        responseData: [
+          { id: 'strategy_points', name: 'Forge Points', era: 'NoAge' },
+          { id: 'goods_0', name: 'Current Era Goods', era: 'ContemporaryEra' },
+        ],
+      });
+      const before = resourcePkg.ResourceDefs.length;
+
+      resourcePkg.getResourceDefinition({
+        responseData: { id: 'guild_power', name: 'Guild Power', era: 'NoAge' },
+      });
+      assert.equal(resourcePkg.ResourceDefs.length, before + 1);
+      assert.equal(resourcePkg.ResourceNames.guild_power, 'Guild Power');
+
+      resourcePkg.getResourceDefinition({
+        responseData: {
+          id: 'strategy_points',
+          name: 'Forge Points (updated)',
+          era: 'NoAge',
+        },
+      });
+      assert.equal(
+        resourcePkg.ResourceDefs.length,
+        before + 1,
+        'updated entry must not duplicate',
+      );
+      assert.equal(
+        resourcePkg.ResourceNames.strategy_points,
+        'Forge Points (updated)',
+      );
     },
   );
 });

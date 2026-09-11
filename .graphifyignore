@@ -2,7 +2,6 @@
 .agents/
 AGENTS.md
 .gemini/
-.claude/
 .superpowers/
 tests/agents/
 

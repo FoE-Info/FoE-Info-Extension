@@ -31,6 +31,18 @@ p,
   margin-bottom: 0.33em;
 }
 
+.alert {
+  padding: 0.5em 0.75em;
+}
+
+.foe-panel-body {
+  line-height: 1.4;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
 .title {
   margin-left: 0.625em;
   margin-bottom: 0em;
@@ -38,8 +50,96 @@ p,
   /* color: white; */
 }
 
-.gbg-table td {
-  padding-right: 0.625em;
+.gbg-table {
+  width: 100%;
+
+  th,
+  td {
+    padding: 0.25em 0.5em;
+  }
+
+  // Prevent numbers and diffs (+13, +7) from wrapping awkwardly
+  td:not(:first-child),
+  th:not(:first-child) {
+    white-space: nowrap;
+    text-align: center;
+  }
+}
+
+.gbg-changes-full {
+  height: auto !important;
+  max-height: none !important;
+  overflow-y: visible !important;
+  min-width: 280px;
+}
+
+.gbg-full-roster.show {
+  min-height: 250px;
+  min-width: 280px;
+}
+
+// Eliminate Bootstrap collapse animation lag/stutter in DevTools panel
+.collapsing {
+  min-height: 0 !important;
+  transition: none !important;
+}
+
+#expeditionText table,
+#expeditionText table thead,
+#expeditionText table tbody,
+#expeditionText table tr,
+#expeditionText table th,
+#expeditionText table td,
+#geChampionshipText table,
+#geChampionshipText table thead,
+#geChampionshipText table tbody,
+#geChampionshipText table tr,
+#geChampionshipText table th,
+#geChampionshipText table td,
+#geContributionText table,
+#geContributionText table thead,
+#geContributionText table tbody,
+#geContributionText table tr,
+#geContributionText table th,
+#geContributionText table td,
+.gb-info-table,
+.gb-info-table tbody,
+.gb-info-table tr,
+.gb-info-table td,
+#gbInfoCollapse table,
+#gbInfoCollapse table tbody,
+#gbInfoCollapse table tr,
+#gbInfoCollapse table td,
+#friendsText2,
+#friendsText2 tbody,
+#friendsText2 tr,
+#friendsText2 td,
+#guildText2,
+#guildText2 tbody,
+#guildText2 tr,
+#guildText2 td,
+#hoodText2,
+#hoodText2 tbody,
+#hoodText2 tr,
+#hoodText2 td {
+  background-color: transparent !important;
+  --bs-table-bg: transparent !important;
+  --bs-table-accent-bg: transparent !important;
+  --bs-table-color: inherit !important;
+  color: inherit !important;
+  border: 0 !important;
+}
+
+// The game page's own stylesheet applies a font-family/font-size to bare
+// <table> elements. #friendsText2/#guildText2/#hoodText2 (Friends/Guild/
+// Hood lists) have no class of their own to out-specificity that, so they
+// pick up the host page's font instead of ours. Force it back to match
+// every other panel.
+#friendsText2,
+#guildText2,
+#hoodText2 {
+  font-family: inherit;
+  font-size: inherit;
 }
 
 #goodstable,
@@ -74,10 +174,6 @@ p,
     width: 1%;
   }
 
-  td.ps-3 {
-    padding-left: 14px;
-  }
-
   .goods-era-header,
   .special-goods-header {
     text-align: left;
@@ -87,6 +183,39 @@ p,
     background-color: rgba(0, 0, 0, 0.06);
     border-top: 1px solid rgba(0, 0, 0, 0.12);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+
+// #guildMemberTable, #geChampionshipTable, and #geContributionTable reuse .goods-table's base styling,
+// but their columns hold short strings and names rather than the long descriptive
+// labels .goods-table's word-break was designed for. In a narrow sidebar those columns
+// get squeezed enough that word-break starts breaking mid-word onto 2-3 lines.
+#guildMemberTable,
+#geChampionshipTable,
+#geContributionTable {
+  th.text-start,
+  td.text-start {
+    white-space: nowrap;
+    word-break: normal;
+  }
+}
+
+#geChampionshipTable,
+#geContributionTable {
+  th,
+  td {
+    padding: 2px 4px;
+  }
+
+  th.text-start,
+  td.text-start {
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th.text-center,
+  td.text-center {
+    white-space: nowrap;
   }
 }
 
@@ -118,14 +247,13 @@ p,
 }
 
 .info-icon {
-  // padding-left: 0.25em;
-  //margin-right: 0.5em;
-  /* margin-left: -1em; */
-  margin-top: -15px;
-  /* fill: currentColor; */
-  // color: red;
-  // stroke: green;
-  // fill: blue;
+  margin-top: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .gvg-warn {
@@ -208,16 +336,32 @@ svg {
 .bg-dark {
   .green,
   .invest-good {
-    color: #4cd964;
+    color: #28a745;
   }
 
   .red,
   .invest-bad {
-    color: #ff6b6b;
+    color: #dc3545;
   }
 
   .invest-fair {
-    color: #ffb74d;
+    color: #d97706;
+  }
+
+  .bg-light {
+    .green,
+    .invest-good {
+      color: #198754;
+    }
+
+    .red,
+    .invest-bad {
+      color: #cc0000;
+    }
+
+    .invest-fair {
+      color: #b35900;
+    }
   }
 }
 
@@ -385,10 +529,168 @@ hr {
   max-height: max-content !important;
 }
 
-.popover {
+.resize-both {
+  resize: both;
   overflow: auto;
-  // resize: vertical;
-  max-height: 20em;
+  min-width: 200px;
+  max-width: 100%;
+}
+
+.popover {
+  // Bootstrap 5.3 Popover CSS Variables (Unified Dark Theme)
+  --bs-popover-bg: #212529;
+  --bs-popover-border-color: #373b3e;
+  --bs-popover-header-bg: #212529;
+  --bs-popover-header-color: #ffffff;
+  --bs-popover-header-border-color: #373b3e;
+  --bs-popover-body-color: #e9ecef;
+  --bs-popover-arrow-border: #373b3e;
+  --bs-popover-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  background-color: var(--bs-popover-bg);
+  border-color: var(--bs-popover-border-color);
+  box-shadow: var(--bs-popover-box-shadow);
+  opacity: 0.95;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 24em;
+  user-select: text;
+  -webkit-user-select: text;
+  pointer-events: auto !important;
+
+  .popover-header {
+    background-color: var(--bs-popover-header-bg);
+    color: var(--bs-popover-header-color);
+    border-bottom: none;
+    font-weight: 600;
+  }
+
+  .popover-body {
+    background-color: var(--bs-popover-bg);
+    color: var(--bs-popover-body-color);
+    user-select: text;
+    -webkit-user-select: text;
+    pointer-events: auto;
+
+    strong,
+    b {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    a {
+      color: #6ea8fe;
+      text-decoration: underline;
+
+      &:hover,
+      &:focus {
+        color: #9ec5fe;
+      }
+    }
+
+    code,
+    pre {
+      color: #f8f9fa;
+      background-color: rgba(255, 255, 255, 0.12);
+      border-radius: 3px;
+      padding: 1px 4px;
+      font-size: 0.9em;
+    }
+
+    em,
+    i {
+      color: #ced4da;
+    }
+
+    table {
+      color: #e9ecef;
+      --bs-table-color: #e9ecef;
+      --bs-table-bg: transparent;
+
+      th,
+      td {
+        border-color: #373b3e;
+        color: #e9ecef;
+      }
+    }
+  }
+
+  &.bs-popover-bottom > .popover-arrow::after,
+  &[data-popper-placement^='bottom'] > .popover-arrow::after {
+    border-bottom-color: var(--bs-popover-header-bg);
+  }
+
+  &.bs-popover-bottom .popover-header::before,
+  &[data-popper-placement^='bottom'] .popover-header::before {
+    border-bottom-color: var(--bs-popover-header-bg);
+  }
+}
+
+// Unified Tooltips matching Dark Palette
+.tooltip {
+  --bs-tooltip-bg: #212529;
+  --bs-tooltip-color: #ffffff;
+  --bs-tooltip-opacity: 0.95;
+  --bs-tooltip-padding-x: 0.6rem;
+  --bs-tooltip-padding-y: 0.35rem;
+
+  .tooltip-inner {
+    background-color: var(--bs-tooltip-bg);
+    color: var(--bs-tooltip-color);
+    border: 1px solid #373b3e;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    user-select: text;
+    -webkit-user-select: text;
+    font-size: 0.85rem;
+    line-height: 1.35;
+
+    strong,
+    b {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    a {
+      color: #6ea8fe;
+      text-decoration: underline;
+
+      &:hover,
+      &:focus {
+        color: #9ec5fe;
+      }
+    }
+
+    code,
+    pre {
+      color: #f8f9fa;
+      background-color: rgba(255, 255, 255, 0.12);
+      border-radius: 3px;
+      padding: 1px 4px;
+      font-size: 0.9em;
+    }
+
+    em,
+    i {
+      color: #ced4da;
+    }
+  }
+
+  &.bs-tooltip-top .tooltip-arrow::before,
+  &[data-popper-placement^='top'] .tooltip-arrow::before {
+    border-top-color: #212529;
+  }
+  &.bs-tooltip-bottom .tooltip-arrow::before,
+  &[data-popper-placement^='bottom'] .tooltip-arrow::before {
+    border-bottom-color: #212529;
+  }
+  &.bs-tooltip-start .tooltip-arrow::before,
+  &[data-popper-placement^='left'] .tooltip-arrow::before {
+    border-left-color: #212529;
+  }
+  &.bs-tooltip-end .tooltip-arrow::before,
+  &[data-popper-placement^='right'] .tooltip-arrow::before {
+    border-right-color: #212529;
+  }
 }
 
 .nopadding {
@@ -502,288 +804,3 @@ hr {
 .material-icons-outlined.md-light.md-inactive {
   color: rgba(255, 255, 255, 0.3);
 }
-
-//   div {
-//         /* font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, “Helvetica Neue”, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”; */
-//         /* default is 1rem or 16px */
-//         font-size: 16px;
-//         /* fw: 400; */
-//         line-height: 1.25;
-//         /* background-color: #000; */
-//     }
-
-//     .alert-error {
-//         color: #b94a48;
-//         background-color: #f2dede;
-//         border-color: #eed3d7;
-//     }
-
-//     .alert-grey {
-//         color: #5d5957;
-//         background-color: #f0f0f0;
-//         border-color: #cbc5c2;
-//     }
-
-//     h6 {
-//         // padding: 0.5em;
-//         line-height: 1;
-//     }
-
-//     p,
-//     .alert {
-//         font-size: 0.8em;
-//         margin-bottom: 0.33em;
-//     }
-
-//     .title {
-//         // margin-left: 0.625em;
-//         /* color: white; */
-//     }
-
-//     // .badge {}
-//     .bi p {
-//         display: inline-block;
-//         vertical-align: text-bottom;
-//     }
-
-//     .bi-tools {
-//         /* padding-left: 0.25em; */
-//         /* padding-right: 0.5em; */
-//         /* margin-left: -1em; */
-//         /* margin-top: -2px; */
-//         /* fill: currentColor; */
-//         color: red;
-//         stroke: green;
-//         fill: blue;
-//     }
-
-//     .header-icon {
-//         padding-left: 0.25em;
-//         padding-right: 0.5em;
-//         /* margin-left: -1em; */
-//         /* margin-top: -2px; */
-//         /* fill: currentColor; */
-//         color: red;
-//         stroke: green;
-//         fill: blue;
-//     }
-
-//     .favorite-btn {
-//         background: #3d1472;
-//         color: white;
-//     }
-
-//     .favorite-btn:hover {
-//         color: grey;
-//     }
-
-//     // svg {
-//     //     /* fill: currentColor; */
-//     // }
-//     .alert-error {
-//         color: #b94a48;
-//         background-color: #f2dede;
-//         border-color: #eed3d7;
-//     }
-
-//     .alert-grey {
-//         color: #5d5957;
-//         background-color: #f0f0f0;
-//         border-color: #cbc5c2;
-//     }
-
-//     .alert-dismissible {
-//         padding-left: 0.75em;
-//         padding-right: 0.5em;
-//         padding-top: 0.5em;
-//         padding-bottom: 0.5em;
-//     }
-
-//     .alert-dismissible .btn-close {
-//         padding: 0rem .25rem 0rem 0em;
-//         color: inherit;
-//     }
-
-//     hr {
-//         margin-top: .5em;
-//         margin-bottom: .5em;
-//     }
-
-//     .hidden {
-//         display: none;
-//     }
-
-//     .grid {
-//         display: grid;
-//         grid-template-columns: 6.25em 6.25em 6.25em;
-//     }
-
-//     .button-container {
-//         width: 25em;
-//         height: 15em;
-//         border: 5px solid rgb(111, 41, 97);
-//         border-radius: .5em;
-//         padding: 0.625em;
-//         justify-content: space-between;
-//         align-content: space-between;
-//     }
-
-//     .row {
-//         line-height: 1.5;
-//     }
-
-//     .container {
-//         overflow: hidden;
-//         width: 100%;
-//     }
-
-//     .cell {
-//         width: 33%;
-//         float: center;
-//     }
-
-//     .popper[x-out-of-boundaries] {
-//         display: none;
-//     }
-
-//     .overflow {
-//         overflow: auto;
-//         resize: vertical;
-//         /* max-height: 16em; */
-//     }
-
-//     .overflow-y {
-//         overflow-y: auto;
-//         overflow-x: hidden;
-//         /* max-height: 16em; */
-//         resize: vertical;
-//     }
-
-//     .container {
-//         /* overflow: auto; */
-//         resize: both;
-//         /* max-height: 16em; */
-//     }
-
-//     .no-overflow,
-//     .no-overflow * {
-//         overflow: hidden;
-//     }
-
-//     .table-fixed {
-//         table-layout: fixed;
-//     }
-
-//     .bi {
-//         vertical-align: -0.125em;
-//         margin-bottom: calc(-0.125em / 2);
-//     }
-
-//     .resize {
-//         overflow: auto;
-//         resize: vertical;
-//     }
-
-//     .copy {
-//         color: green;
-//     }
-
-//     .copy:hover {
-//         background-color: #4CAF50;
-//         color: white;
-//     }
-
-//     .notice {
-//         color: red;
-//         fw: bold;
-//         display: table-cell;
-//         padding: 0px 5px;
-//     }
-
-//     .table {
-//         padding-bottom: 1px;
-//     }
-
-//     .table>tbody>tr>td {
-//         padding-top: 1px;
-//         padding-bottom: 1px;
-//         border-top: 0
-//     }
-
-//     hr {
-//         margin-top: .5em;
-//         margin-bottom: .5em;
-//     }
-
-//     .top5 td {
-//         padding: 1px;
-//     }
-
-//     .hidden {
-//         display: none;
-//     }
-
-//     .right-button {
-//         position: absolute;
-//         top: 0;
-//         right: 0;
-//         margin-top: 0.6em;
-//         margin-right: 3em;
-//         /* padding: .5rem 1em; */
-//     }
-
-//     .mid-button {
-//         position: absolute;
-//         top: 0;
-//         right: 0;
-//         margin-top: 0.6em;
-//         margin-right: 7.5em;
-//         /* padding: .5rem 1em; */
-//     }
-
-//     .left-button {
-//         position: absolute;
-//         top: 0;
-//         right: 0;
-//         margin-top: 0.6em;
-//         margin-right: 11em;
-//         /* padding: .5rem 1em; */
-//     }
-
-//     .button-container {
-//         width: 25em;
-//         height: 15em;
-//         border: 5px solid rgb(111, 41, 97);
-//         border-radius: .5em;
-//         padding: 0.625em;
-//         justify-content: space-between;
-//         align-content: space-between;
-//     }
-
-//     .GBselected-name {
-//         overflow: hidden;
-//         padding-left: 0em;
-//         padding-right: 0.5em;
-//         /* padding-top: 0.5em; */
-//         /* padding-bottom: 0.5em; */
-//     }
-
-//     .table-fixed {
-//         table-layout: fixed;
-//     }
-
-//     .bi {
-//         vertical-align: -0.125em;
-//         margin-bottom: calc(-0.125em / 2);
-//     }
-
-//     .resize {
-//         overflow: auto;
-//         resize: vertical;
-//     }
-
-//     .table>tbody>tr>td {
-//         padding-top: 1px;
-//         padding-bottom: 1px;
-//         border-top: 0
-//     }

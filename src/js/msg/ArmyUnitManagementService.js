@@ -39,6 +39,10 @@ if (typeof __webpack_require__ !== 'undefined') {
   try {
     defaultState = require('../vars/state.js');
   } catch {}
+} else {
+  try {
+    globals = require('../fn/globals.js');
+  } catch {}
 }
 
 let metadataStore = null;
@@ -131,7 +135,7 @@ function fallbackGVGagesname(age) {
   return age || 'NoAge';
 }
 
-function armyUnitManagementService(msg) {
+function armyUnitManagementService(msg, deps = {}) {
   let army = null;
   if (Array.isArray(msg?.responseData?.counts)) {
     army = msg.responseData.counts;
@@ -155,7 +159,7 @@ function armyUnitManagementService(msg) {
   }
 
   lastArmyMsg = msg;
-  const MilitaryDefs = defaultState?.MilitaryDefs || {};
+  const MilitaryDefs = deps.MilitaryDefs || defaultState?.MilitaryDefs || {};
   const unitsPerEra = [];
   let allUnits = 0;
   let rogues = 0;
@@ -185,6 +189,7 @@ function armyUnitManagementService(msg) {
           .join(' ');
       }
     }
+    unitName = unitName.replace(/^FGX-\d+\s*/i, '');
     const getAgeName = helper?.fGVGagesname || fallbackGVGagesname;
     const eraText = getAgeName(eraId);
 
@@ -235,7 +240,14 @@ function armyUnitManagementService(msg) {
       if (targetDiv) {
         const diff = rogues - (ArmyUnits['rogue'] ?? 0);
         const isCollapsed = collapse?.collapseArmy ?? false;
-        const armySize = globals?.toolOptions?.armySize ?? 150;
+        const rawArmySize =
+          (deps.globals || globals)?.toolOptions?.armySize ??
+          deps.toolOptions?.armySize ??
+          globals?.toolOptions?.armySize;
+        const armySize =
+          typeof rawArmySize === 'number' && rawArmySize >= 50 ?
+            rawArmySize
+          : 185;
         const closeBtn =
           element && typeof element.close === 'function' ?
             element.close()
@@ -247,17 +259,19 @@ function armyUnitManagementService(msg) {
 
         let armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">`;
         armyHTML += closeBtn;
-        armyHTML += `<p id="armyTextLabel" href="#armyText" data-bs-toggle="collapse">`;
+        armyHTML += `<p id="armyTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#armyText" aria-expanded="${!isCollapsed}" aria-controls="armyText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
         armyHTML += iconHtml;
-        armyHTML += `<strong>Army:</strong><span id="armyUnits">${
-          isCollapsed ? `Rogues: ${rogues} Units: ${allUnits}` : ''
+        armyHTML += `<strong>Army:</strong> <span id="armyUnits" class="ms-2">${
+          isCollapsed ?
+            `Rogues: ${rogues.toLocaleString()} Units: ${allUnits.toLocaleString()}`
+          : ''
         }</span></p>`;
-        armyHTML += `<div id="armyText" style="height: ${armySize}px" class="overflow-y collapse ${
+        armyHTML += `<div id="armyText" style="height: ${armySize}px" class="overflow-y resize collapse ${
           isCollapsed ? '' : 'show'
         }"><p class="" >`;
-        armyHTML += `<span id="armyUnits2">Rogues: ${rogues}</span> <span class=${
+        armyHTML += `<span id="armyUnits2">Rogues: ${rogues.toLocaleString()}</span> <span class=${
           diff > 0 ? '"green">+' : '"red">'
-        }${diff !== 0 ? diff : ''}</span><br><span id="armyUnits3">Units: ${allUnits}</span><br>`;
+        }${diff !== 0 ? diff : ''}</span><br><span id="armyUnits3">Units: ${allUnits.toLocaleString()}</span><br>`;
 
         const getAgeLevel = helper?.fLevelfromAge || fallbackAgeLevel;
         const armyText = unitsPerEra
@@ -273,19 +287,44 @@ function armyUnitManagementService(msg) {
           collapse &&
           typeof collapse.fCollapseArmy === 'function'
         ) {
-          labelEl.addEventListener('click', collapse.fCollapseArmy);
+          labelEl.addEventListener('click', (e) => {
+            if (
+              e?.target &&
+              typeof e.target.closest === 'function' &&
+              e.target.closest('#armyicon')
+            ) {
+              return;
+            }
+            collapse.fCollapseArmy();
+          });
+        }
+        const iconEl = document.getElementById('armyicon');
+        if (
+          iconEl &&
+          iconEl !== labelEl &&
+          collapse &&
+          typeof collapse.fCollapseArmy === 'function'
+        ) {
+          iconEl.addEventListener('click', () => {
+            collapse.fCollapseArmy();
+          });
         }
 
         const armyDiv = document.getElementById('armyText');
         if (armyDiv && typeof ResizeObserver !== 'undefined') {
+          const setArmySizeFn =
+            deps.setArmySize || (deps.globals || globals)?.setArmySize;
           const resizeObserver = new ResizeObserver((entries) => {
+            if (
+              armyDiv.classList?.contains('collapsing') ||
+              (armyDiv.classList && !armyDiv.classList.contains('show'))
+            ) {
+              return;
+            }
             for (const entry of entries) {
-              if (
-                entry.contentRect &&
-                entry.contentRect.height &&
-                globals?.setArmySize
-              ) {
-                globals.setArmySize(entry.contentRect.height);
+              const height = entry.contentRect?.height;
+              if (height && height >= 50 && setArmySizeFn) {
+                setArmySizeFn(height);
               }
             }
           });

@@ -1,0 +1,18 @@
+[
+ {
+  "gridId": "main",
+  "type": "antiquesAuction",
+  "time": 1788963070,
+  "__class__": "AntiquesDealerAuctionTimer"
+ },
+ {
+  "gridId": "era_outpost",
+  "type": "outpostProduction",
+  "__class__": "Timer"
+ },
+ {
+  "gridId": "guild_raids",
+  "type": "outpostProduction",
+  "__class__": "Timer"
+ }
+]
