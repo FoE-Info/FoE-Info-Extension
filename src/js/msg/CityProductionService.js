@@ -11,15 +11,11 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import {
-  showReward,
-  rewardsArmy,
-  rewardsCity,
-  MilitaryDefs,
-} from '../index.js';
-import { updateGalaxy } from './StartupService.js';
-import { showOptions } from '../vars/showOptions.js';
 import * as helper from '../fn/helper.js';
+import { showReward } from '../fn/RewardRenderer.js';
+import { showOptions } from '../vars/showOptions.js';
+import { MilitaryDefs, rewardsArmy, rewardsCity } from '../vars/state.js';
+import { updateGalaxy } from './StartupService.js';
 
 export function pickupProduction(msg) {
   if (msg.responseData.militaryProducts.length) {
@@ -63,38 +59,45 @@ export function pickupProduction(msg) {
         );
       }
       if (
-        reward.state.hasOwnProperty('productionOption') &&
-        reward.state.productionOption.hasOwnProperty('products')
+        reward.state &&
+        reward.state.productionOption &&
+        reward.state.productionOption.products
       ) {
-        // updateGalaxy(reward.cityentity_id);
-        // var resources = reward.state.current_product.product.resources;
-        // console.debug(resources);
-        reward.state.productionOption.products.array.forEach((element) => {
+        const prodList =
+          Array.isArray(reward.state.productionOption.products) ?
+            reward.state.productionOption.products
+          : reward.state.productionOption.products.array || [];
+
+        prodList.forEach((element) => {
           if (
-            element.hasOwnProperty('playerResources') &&
-            element.playerResources.hasOwnProperty('resources')
-          )
+            element &&
+            element.playerResources &&
+            element.playerResources.resources
+          ) {
             Object.keys(element.playerResources.resources).forEach(
               (resource) => {
                 const name = helper.fResourceShortName(resource);
-                // console.debug(name,resource)
-                if (rewardsCity[name])
-                  rewardsCity[name] +=
-                    reward.state.current_product.product.resources[resource];
-                else
-                  rewardsCity[name] =
-                    reward.state.current_product.product.resources[resource];
+                const resQty =
+                  element.playerResources.resources[resource] ??
+                  reward.state?.current_product?.product?.resources?.[
+                    resource
+                  ] ??
+                  0;
+                if (rewardsCity[name]) rewardsCity[name] += resQty;
+                else rewardsCity[name] = resQty;
               },
             );
+          }
         });
       }
     });
   }
   console.debug(rewardsCity);
-  var reward = [];
-  reward.source = 'pickupProduction';
-  reward.name = '';
-  reward.amount = 0;
+  var reward = {
+    source: 'pickupProduction',
+    name: '',
+    amount: 0,
+  };
 
   if (showOptions.showRewards) {
     showReward(reward);

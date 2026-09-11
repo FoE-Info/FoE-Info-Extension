@@ -1,0 +1,1695 @@
+[
+ {
+  "productId": "foe_220_0_app",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "diamonds"
+  },
+  "pricePointId": 2,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "premium"
+  },
+  "config": {
+   "shortProductId": "foe_220_0_app_bundle",
+   "payload": "",
+   "paymentSignature": "e50ef08096ad8e37008be4e7c34b903dc5256dcb02993b813e151b86428b5d20",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "premium"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "foe_220_0_app",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "foe_220_0_app",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 2500,
+     "id": "resource#castle_points#2500",
+     "name": "2,500 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 220,
+     "id": "resource#premium#220",
+     "name": "220 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 80,
+     "id": "resource#premium#80",
+     "name": "80 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "rewardId": "resource#premium#440",
+     "bonusPercentage": 100,
+     "bonusUntil": 1789038872,
+     "bonusUntilFormatted": "2026-09-10T12:14:32+01:00",
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "foe_530_0_app",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "diamonds"
+  },
+  "pricePointId": 3,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "premium"
+  },
+  "config": {
+   "shortProductId": "foe_530_0_app_bundle",
+   "payload": "",
+   "paymentSignature": "e878c0afdfb6d684bc5fbf24dcb5866141a51f2eb9c58d440289592b8790e081",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "premium"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "foe_530_0_app",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "foe_530_0_app",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 5000,
+     "id": "resource#castle_points#5000",
+     "name": "5,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 550,
+     "id": "resource#premium#550",
+     "name": "550 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 150,
+     "id": "resource#premium#150",
+     "name": "150 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "rewardId": "resource#premium#1100",
+     "bonusPercentage": 100,
+     "bonusUntil": 1789038872,
+     "bonusUntilFormatted": "2026-09-10T12:14:32+01:00",
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "foe_1250_0_app",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "diamonds"
+  },
+  "pricePointId": 4,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "premium"
+  },
+  "config": {
+   "shortProductId": "foe_1250_0_app_bundle",
+   "payload": "",
+   "paymentSignature": "105f131a1d1e140c0bf1f6fe5125bd80a9bce15b8cabf38a2f0b22a1d0e3a7b0",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "premium"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "foe_1250_0_app",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "foe_1250_0_app",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 10000,
+     "id": "resource#castle_points#10000",
+     "name": "10,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 1250,
+     "id": "resource#premium#1250",
+     "name": "1,250 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 400,
+     "id": "resource#premium#400",
+     "name": "400 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "rewardId": "resource#premium#2500",
+     "bonusPercentage": 100,
+     "bonusUntil": 1789038872,
+     "bonusUntilFormatted": "2026-09-10T12:14:32+01:00",
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "foe_4000_0_app",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "diamonds"
+  },
+  "pricePointId": 5,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "premium"
+  },
+  "config": {
+   "shortProductId": "foe_4000_0_app_bundle",
+   "payload": "",
+   "paymentSignature": "381c56ab0facdc20030e8130d29fa68dce18be394bd6646a4783417fc3fe8c00",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "premium"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "foe_4000_0_app",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "foe_4000_0_app",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 25000,
+     "id": "resource#castle_points#25000",
+     "name": "25,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 4150,
+     "id": "resource#premium#4150",
+     "name": "4,150 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 1150,
+     "id": "resource#premium#1150",
+     "name": "1,150 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "rewardId": "resource#premium#8300",
+     "bonusPercentage": 100,
+     "bonusUntil": 1789038872,
+     "bonusUntilFormatted": "2026-09-10T12:14:32+01:00",
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "foe_10000_0_app",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "diamonds"
+  },
+  "pricePointId": 6,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "premium"
+  },
+  "config": {
+   "shortProductId": "foe_10000_0_app_bundle",
+   "payload": "",
+   "paymentSignature": "3451a9dd7854bf7512d3504a3cfdb3735e3d36608ea94017f96119143cffb3e2",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "premium"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "foe_10000_0_app",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "foe_10000_0_app",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 40000,
+     "id": "resource#castle_points#40000",
+     "name": "40,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 10000,
+     "id": "resource#premium#10000",
+     "name": "10,000 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 1500,
+     "id": "resource#premium#1500",
+     "name": "1,500 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "rewardId": "resource#premium#20000",
+     "bonusPercentage": 100,
+     "bonusUntil": 1789038872,
+     "bonusUntilFormatted": "2026-09-10T12:14:32+01:00",
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "foe_13000_1_app",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "diamonds"
+  },
+  "pricePointId": 7,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "premium"
+  },
+  "config": {
+   "shortProductId": "foe_13000_0_app_bundle",
+   "payload": "",
+   "paymentSignature": "191bda791b1bb3159ed63b04dd55cc481c33d934f9fe1fa5f8484cd805d510f7",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "premium"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "foe_13000_1_app",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "foe_13000_1_app",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 50000,
+     "id": "resource#castle_points#50000",
+     "name": "50,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 13000,
+     "id": "resource#premium#13000",
+     "name": "13,000 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 2300,
+     "id": "resource#premium#2300",
+     "name": "2,300 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "rewardId": "resource#premium#26000",
+     "bonusPercentage": 100,
+     "bonusUntil": 1789038872,
+     "bonusUntilFormatted": "2026-09-10T12:14:32+01:00",
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "foe_20000_0_app",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "diamonds"
+  },
+  "pricePointId": 1150,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "premium"
+  },
+  "config": {
+   "shortProductId": "foe_20000_0_app_bundle",
+   "payload": "",
+   "paymentSignature": "8f7d5d626c9ccae111686c538ff787d0a8c12f1c93559aa56ee743d0d51b0d62",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "premium"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "foe_20000_0_app",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "foe_20000_0_app",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 75000,
+     "id": "resource#castle_points#75000",
+     "name": "75,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 20000,
+     "id": "resource#premium#20000",
+     "name": "20,000 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 3500,
+     "id": "resource#premium#3500",
+     "name": "3,500 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "rewardId": "resource#premium#40000",
+     "bonusPercentage": 100,
+     "bonusUntil": 1789038872,
+     "bonusUntilFormatted": "2026-09-10T12:14:32+01:00",
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "foe_27000_0_app",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "diamonds"
+  },
+  "pricePointId": 1200,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "premium"
+  },
+  "config": {
+   "shortProductId": "foe_27000_0_app_bundle",
+   "payload": "",
+   "paymentSignature": "88bed871584bb54c6910ecabdc3a9aa94d802fb59a759252cbe0302c0a33390a",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "premium"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "foe_27000_0_app",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "foe_27000_0_app",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 100000,
+     "id": "resource#castle_points#100000",
+     "name": "100,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 27000,
+     "id": "resource#premium#27000",
+     "name": "27,000 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 4500,
+     "id": "resource#premium#4500",
+     "name": "4,500 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "rewardId": "resource#premium#54000",
+     "bonusPercentage": 100,
+     "bonusUntil": 1789038872,
+     "bonusUntilFormatted": "2026-09-10T12:14:32+01:00",
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "at_your_command_space_age_space_hub",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "packages"
+  },
+  "pricePointId": 1,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "package"
+  },
+  "config": {
+   "shortProductId": "foe_0_0_app_at_your_command",
+   "payload": "at_your_command_space_age_space_hub#8ff4367a52e4fb8568d41dc9402628cc5d2a",
+   "paymentSignature": "c4867b7f0e020dc802319a9490af8ae5c5c651f40b13ae288030bcef4c730fd2",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "package"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "at_your_command_space_age_space_hub",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "at_your_command_space_age_space_hub",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 2000,
+     "id": "resource#castle_points#2000",
+     "name": "2,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 40,
+     "id": "resource#premium#40",
+     "name": "40 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "unit",
+     "subType": "SpaceAgeSpaceHub_champion",
+     "amount": 2,
+     "id": "era_unit#champion#CurrentEra#2",
+     "name": "2x Champion",
+     "description": "Assign units to your armies and use them in battles!",
+     "flags": [],
+     "unit": {
+      "abilities": [
+       {
+        "type": "chivalry",
+        "name": "Chivalry",
+        "description": "Gains bonus to attack and defense when it is the only unit with chivalry in your army.",
+        "icon": "chivalry",
+        "value": 75,
+        "__class__": "BattleChivalryAbility"
+       },
+       {
+        "type": "call_of_duty",
+        "name": "Call of Duty",
+        "description": "Grants attack and defense bonus to all friendly units when this unit is killed. Only applicable once.",
+        "icon": "call_of_duty",
+        "value": 300,
+        "__class__": "BattleCallOfDutyAbility"
+       }
+      ],
+      "bonuses": [],
+      "unitTypeId": "SpaceAgeSpaceHub_champion",
+      "__class__": "BattleUnit"
+     },
+     "__class__": "GenericUnitReward"
+    },
+    {
+     "type": "unit",
+     "subType": "gravity_gunner",
+     "amount": 2,
+     "id": "era_unit#short_ranged#CurrentEra#2",
+     "name": "2x Gravity Gunner",
+     "description": "Assign units to your armies and use them in battles!",
+     "flags": [],
+     "unit": {
+      "abilities": [
+       {
+        "type": "double_damage",
+        "name": "Keen Eye",
+        "description": "Upon attacking, provides a X% chance of doubling the damage on enemy units of any era.",
+        "icon": "double_damage",
+        "value": 45,
+        "__class__": "BattleDoubleDamageAbility"
+       },
+       {
+        "type": "contact",
+        "name": "Contact!",
+        "description": "Always retaliates against attacks.",
+        "icon": "contact",
+        "__class__": "BattleContactAbility"
+       }
+      ],
+      "bonuses": [],
+      "unitTypeId": "gravity_gunner",
+      "__class__": "BattleUnit"
+     },
+     "__class__": "GenericUnitReward"
+    },
+    {
+     "type": "unit",
+     "subType": "stardust_sentinel",
+     "amount": 2,
+     "id": "era_unit#fast#CurrentEra#2",
+     "name": "2x Stardust Sentinel",
+     "description": "Assign units to your armies and use them in battles!",
+     "flags": [],
+     "unit": {
+      "abilities": [
+       {
+        "type": "double_damage",
+        "name": "Keen Eye",
+        "description": "Upon attacking, provides a X% chance of doubling the damage on enemy units of any era.",
+        "icon": "double_damage",
+        "value": 45,
+        "__class__": "BattleDoubleDamageAbility"
+       },
+       {
+        "type": "flying",
+        "name": "Flying",
+        "description": "Cannot be attacked by artillery units. Ignores terrain when moving.",
+        "icon": "flying",
+        "__class__": "BattleFlyingAbility"
+       }
+      ],
+      "bonuses": [],
+      "unitTypeId": "stardust_sentinel",
+      "__class__": "BattleUnit"
+     },
+     "__class__": "GenericUnitReward"
+    },
+    {
+     "type": "unit",
+     "subType": "galactic_juggernaut",
+     "amount": 2,
+     "id": "era_unit#heavy_melee#CurrentEra#2",
+     "name": "2x Galactic Juggernaut",
+     "description": "Assign units to your armies and use them in battles!",
+     "flags": [],
+     "unit": {
+      "abilities": [
+       {
+        "type": "double_damage",
+        "name": "Keen Eye",
+        "description": "Upon attacking, provides a X% chance of doubling the damage on enemy units of any era.",
+        "icon": "double_damage",
+        "value": 45,
+        "__class__": "BattleDoubleDamageAbility"
+       },
+       {
+        "type": "force_field",
+        "name": "Force Field",
+        "description": "Absorbs damage points by %d, up to a minimum of 1 damage point.",
+        "icon": "force_field",
+        "value": 2,
+        "__class__": "BattleForceFieldAbility"
+       }
+      ],
+      "bonuses": [],
+      "unitTypeId": "galactic_juggernaut",
+      "__class__": "BattleUnit"
+     },
+     "__class__": "GenericUnitReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "the_whole_package_SpaceAgeSpaceHub",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "packages"
+  },
+  "pricePointId": 104,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "package"
+  },
+  "config": {
+   "shortProductId": "foe_0_0_app_the_whole_package_10",
+   "payload": "the_whole_package_SpaceAgeSpaceHub#b17590f6b6b49bc9bfdea72e15bacd06",
+   "paymentSignature": "32a279b5cb032b3bfeffb7828e8471bbdd56e4e7b6867c7ff2531c87aed7f48f",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "package"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "the_whole_package_SpaceAgeSpaceHub",
+   "limit": 1,
+   "remainingPurchases": 1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "the_whole_package_SpaceAgeSpaceHub",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 4000,
+     "id": "resource#castle_points#4000",
+     "name": "4,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 70,
+     "id": "resource#premium#70",
+     "name": "70 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "building",
+     "subType": "R_SpaceAgeSpaceHub_Residential2",
+     "amount": 1,
+     "id": "building_premium_residential",
+     "name": "Galactic Suite",
+     "description": "More coins: This is the best residential building of your age!",
+     "iconAssetName": "residential",
+     "isHighlighted": true,
+     "flags": [
+      "rare"
+     ],
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "building",
+     "subType": "P_SpaceAgeSpaceHub_Workshop2",
+     "amount": 1,
+     "id": "building_premium_workshop",
+     "name": "A.I. Laboratory",
+     "description": "More supplies: This is the best production building of your age!",
+     "iconAssetName": "workshop",
+     "isHighlighted": true,
+     "flags": [
+      "rare"
+     ],
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "building",
+     "subType": "A_SpaceAgeSpaceHub_Culture2",
+     "amount": 1,
+     "id": "building_premium_culture",
+     "name": "LU-N-Arcade",
+     "description": "More happiness: This is the best cultural building of your age!",
+     "iconAssetName": "culture",
+     "isHighlighted": true,
+     "flags": [
+      "rare"
+     ],
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "fall_silver_event_pass",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "event_passes"
+  },
+  "pricePointId": 115,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "package"
+  },
+  "config": {
+   "shortProductId": "foe_0_0_silver_event_pass_115",
+   "payload": "fall_silver_event_pass#c1e3ec1cb2ab75fbc92d7e69b9acf567757756d7cfb348a",
+   "paymentSignature": "240e85cc35d2c970518324245373677b9125c67cfd15453199cb51840752723b",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "package"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "fall_silver_event_pass",
+   "limit": 1,
+   "remainingPurchases": 1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "fall_silver_event_pass",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 7500,
+     "id": "resource#castle_points#7500",
+     "name": "7,500 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 250,
+     "id": "resource#premium#250",
+     "name": "250 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "unlock_event_pass",
+     "subType": "fall_event",
+     "amount": 1,
+     "id": "unlock_event_pass#fall_event#event_pass",
+     "name": "Fall Prizes",
+     "description": "This package can only be purchased once while the event is active.",
+     "iconAssetName": "event_pass_silver",
+     "flags": [],
+     "eventPassType": "event_pass",
+     "__class__": "EventPassReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "expirationTime": 1789979400,
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "guild_raids_2_silver_raid_pass",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "quantum_incursions"
+  },
+  "pricePointId": 115,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "package"
+  },
+  "config": {
+   "shortProductId": "foe_0_0_silver_raid_pass_115",
+   "payload": "guild_raids_2_silver_raid_pass#57ff68407aa2df92e7fd119fe9908050b4e90024",
+   "paymentSignature": "016c63d5cf0358fd11d79d6ae672393a1a10faef6f901c7db69ec6696af517d6",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "package"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "guild_raids_2_silver_raid_pass",
+   "limit": 1,
+   "remainingPurchases": 1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "guild_raids_2_silver_raid_pass",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 7500,
+     "id": "resource#castle_points#7500",
+     "name": "7,500 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 250,
+     "id": "resource#premium#250",
+     "name": "250 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "unlock_event_pass",
+     "subType": "guild_raids_2_pass",
+     "amount": 1,
+     "id": "unlock_event_pass#guild_raids_2_pass#event_pass",
+     "name": "Quantum Pass",
+     "description": "This package can only be purchased once while the event is active.",
+     "iconAssetName": "guild_raids_silver",
+     "flags": [],
+     "eventPassType": "event_pass",
+     "__class__": "EventPassReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "expirationTime": 1795420800,
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "fall_golden_event_pass",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "event_passes"
+  },
+  "pricePointId": 125,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "package"
+  },
+  "config": {
+   "shortProductId": "foe_0_0_golden_event_pass_125",
+   "payload": "fall_golden_event_pass#4670d036613d0bfb0d7cbf80e3cd4ab782e30f7219f51ef",
+   "paymentSignature": "64abfcec0c881df5587bd7d9460473b800b6554b7ab382baf697560ba78e615c",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "package"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "fall_golden_event_pass",
+   "limit": 1,
+   "remainingPurchases": 1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "fall_golden_event_pass",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 12500,
+     "id": "resource#castle_points#12500",
+     "name": "12,500 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 500,
+     "id": "resource#premium#500",
+     "name": "500 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "unlock_event_pass",
+     "subType": "fall_event",
+     "amount": 1,
+     "id": "unlock_event_pass#fall_event#golden_event_pass",
+     "name": "Golden Event Pass",
+     "description": "This package can only be purchased once while the event is active.",
+     "iconAssetName": "event_pass_gold_and_silver",
+     "flags": [],
+     "eventPassType": "golden_event_pass",
+     "__class__": "EventPassReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "expirationTime": 1789979400,
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "guild_raids_2_golden_raid_pass",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "quantum_incursions"
+  },
+  "pricePointId": 125,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "package"
+  },
+  "config": {
+   "shortProductId": "foe_0_0_golden_raid_pass_125",
+   "payload": "guild_raids_2_golden_raid_pass#9832bb89247a0c4e04c0ec9084aee4b514456859",
+   "paymentSignature": "3f42bca6485091d87dc4fa49379a16baa36087211a39c8a464c4fe7f4e0289e7",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "package"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "guild_raids_2_golden_raid_pass",
+   "limit": 1,
+   "remainingPurchases": 1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "guild_raids_2_golden_raid_pass",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 12500,
+     "id": "resource#castle_points#12500",
+     "name": "12,500 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 500,
+     "id": "resource#premium#500",
+     "name": "500 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "unlock_event_pass",
+     "subType": "guild_raids_2_pass",
+     "amount": 1,
+     "id": "unlock_event_pass#guild_raids_2_pass#golden_event_pass",
+     "name": "Golden Quantum Pass",
+     "description": "This package can only be purchased once while the event is active.",
+     "iconAssetName": "guild_raids_gold_and_silver",
+     "flags": [],
+     "eventPassType": "golden_event_pass",
+     "__class__": "EventPassReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "expirationTime": 1795420800,
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "crm_modular_1459_v11886__0",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "special_offers"
+  },
+  "pricePointId": 6,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "package"
+  },
+  "config": {
+   "shortProductId": "foe_0_0_app_package_6",
+   "payload": "crm_modular_1459_v11886__0#b3d2db5633f12c5ed143e8b3ea007d5a6c7d449360d9cb0fa73",
+   "paymentSignature": "40d12359d63be4ef40ba7efe66aefed312ed21def8f870ca2a291ce805f005d1",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "package"
+   },
+   "modularOfferName": "package_offer#oneuseitemsboost#79.99_1",
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "crm_modular_1459_v11886__0",
+   "limit": -1,
+   "remainingPurchases": -1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "crm_modular_1459_v11886__0",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 40000,
+     "id": "resource#castle_points#40000",
+     "name": "40,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 1500,
+     "id": "resource#premium#1500",
+     "name": "1,500 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "consumable",
+     "subType": "one_up_kit",
+     "amount": 4,
+     "id": "one_up_kit",
+     "name": "4x One Up Kit",
+     "description": "Upgrade an event building to the next age! Cannot surpass your current age.",
+     "iconAssetName": "one_up_kit",
+     "isHighlighted": true,
+     "flags": [
+      "uncommon"
+     ],
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "consumable",
+     "subType": "store_building",
+     "amount": 5,
+     "id": "store_building",
+     "name": "5x Store Building",
+     "description": "Use the store building item to put an event building back into your inventory!",
+     "iconAssetName": "store_building",
+     "isHighlighted": true,
+     "flags": [
+      "uncommon"
+     ],
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "consumable",
+     "subType": "renovation_kit",
+     "amount": 3,
+     "id": "renovation_kit",
+     "name": "3x Renovation Kit",
+     "description": "Upgrade an event building to your current age!",
+     "iconAssetName": "renovation_kit",
+     "isHighlighted": true,
+     "flags": [
+      "rare"
+     ],
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "expirationTime": 1789036086,
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "philosophers_stone",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "packages"
+  },
+  "pricePointId": 102,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "package"
+  },
+  "config": {
+   "shortProductId": "foe_0_0_app_philosophers_stone",
+   "payload": "philosophers_stone#407edb96faaabd3546018ac60b1b601eea1fdd1353c4a443a6",
+   "paymentSignature": "03f96c9b05d3b373ba532aea18994fc47e00b4a25aa8e48c925bb804d13c0ffe",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "package"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "philosophers_stone",
+   "limit": 1,
+   "remainingPurchases": 1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "philosophers_stone",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 3000,
+     "id": "resource#castle_points#3000",
+     "name": "3,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 80,
+     "id": "resource#premium#80",
+     "name": "80 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "strategy_points",
+     "amount": 10,
+     "id": "forgepoints_10",
+     "name": "10 Forge Points",
+     "description": "Use Forge Points to research technologies or contribute them to Great Buildings.",
+     "iconAssetName": "forgepoints_10",
+     "flags": [
+      "common"
+     ],
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "good",
+     "subType": "all_SpaceAgeSpaceHub",
+     "amount": 5,
+     "id": "goods#era_each#CurrentEra#10",
+     "name": "25 Goods",
+     "description": "5 of each good from your age!",
+     "iconAssetName": "random_goods",
+     "flags": [],
+     "totalAmount": 25,
+     "__class__": "GenericReward"
+    }
+   ],
+   "bonuses": [
+    {
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ },
+ {
+  "productId": "forge_plus_counselor_cheaper",
+  "groupType": {
+   "__enum__": "CashShopGroupType",
+   "value": "forge_plus"
+  },
+  "pricePointId": 130,
+  "type": {
+   "__enum__": "ProductMainType",
+   "value": "package"
+  },
+  "config": {
+   "shortProductId": "foe_0_0_forge_plus_package_130",
+   "payload": "forge_plus_counselor_cheaper#67014f38edf19104685ea729f3ed80c7967bd78e",
+   "paymentSignature": "8d88544466333c26beb9023d893adb899ef2b36aa97d2ded9804c2c2071723df",
+   "paymentMainType": {
+    "__enum__": "ProductMainType",
+    "value": "package"
+   },
+   "__class__": "PaymentProcessConfig"
+  },
+  "purchaseLimit": {
+   "productId": "forge_plus_counselor_cheaper",
+   "limit": 1,
+   "remainingPurchases": 1,
+   "__class__": "PurchaseLimit"
+  },
+  "rewardData": {
+   "productId": "forge_plus_counselor_cheaper",
+   "rewards": [
+    {
+     "type": "resource",
+     "subType": "castle_points",
+     "amount": 15000,
+     "id": "resource#castle_points#15000",
+     "name": "15,000 Castle Points",
+     "description": "Castle Points are required to level up in the Castle System.",
+     "iconAssetName": "castle_points",
+     "flags": [],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "resource",
+     "subType": "premium",
+     "amount": 650,
+     "id": "resource#premium#650",
+     "name": "650 Diamonds",
+     "description": "Diamonds are rare and valuable. Use them to pay for goods, buildings, expansions, Forge Points or special actions.",
+     "iconAssetName": "diamond",
+     "isHighlighted": true,
+     "flags": [
+      "igPaymentBonus"
+     ],
+     "boostValue": 1,
+     "__class__": "GenericReward"
+    },
+    {
+     "type": "forge_plus",
+     "subType": "counselor",
+     "amount": 28,
+     "id": "forge_plus#counselor#28",
+     "name": "Forge Plus",
+     "description": "This contains the following benefits for the next 28 days.",
+     "iconAssetName": "forge_plus_reward",
+     "isHighlighted": true,
+     "flags": [],
+     "rewards": [
+      {
+       "type": "forge_plus",
+       "subType": "counselor",
+       "amount": 28,
+       "id": "counselor",
+       "name": "Forge Plus",
+       "description": "This contains the following benefits for the next 28 days.",
+       "iconAssetName": "forge_plus_reward",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      },
+      {
+       "type": "none",
+       "amount": 1,
+       "id": "forgePointLimitIncrease",
+       "name": "Increased Forge Points Storage",
+       "description": "While this package is active, your Forge Points limit is increased 10 times! After the package expires, you keep all overflowing FP.",
+       "iconAssetName": "forge_plus_forgepointlimitincrease",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      },
+      {
+       "type": "none",
+       "amount": 1,
+       "id": "collectAll",
+       "name": "Collect All for Free",
+       "description": "While this package is active collect and restart all your finished production buildings in your city and exclusively collect all available incidents at once for free.",
+       "iconAssetName": "forge_plus_collectall",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      },
+      {
+       "type": "none",
+       "amount": 1,
+       "id": "boosts",
+       "name": "Town Hall Boosts",
+       "description": "While this package is active, you gain additional attack and defense for both your armies. 15% for your attacking and 15% for your defending army.",
+       "iconAssetName": "forge_plus_boosts",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      },
+      {
+       "type": "none",
+       "amount": 1,
+       "id": "giveReward",
+       "name": "Reward Delivery",
+       "description": "Get additional Rewards once per week! 50 Goods, 10 Forge Points",
+       "iconAssetName": "forge_plus_givereward",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      },
+      {
+       "type": "none",
+       "amount": 1,
+       "id": "antiquesDealerItemExchangeExclusiveTimer",
+       "name": "Exclusive Timer",
+       "description": "While this package is active, you can exchange items with an additional exclusive Timer in the Antiques Dealer.",
+       "iconAssetName": "forge_plus_antiquesdealeritemexchangeexclusivetimer",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      },
+      {
+       "type": "none",
+       "amount": 1,
+       "id": "freeAntiquesDealerItemShopRefresh",
+       "name": "Refresh The Shop",
+       "description": "While this package is active once per day, the first shuffle of the Antiques Dealer shop is free.",
+       "iconAssetName": "forge_plus_freeantiquesdealeritemshoprefresh",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      },
+      {
+       "type": "none",
+       "amount": 1,
+       "id": "doubleEmissaryCollection",
+       "name": "Emissary Double Production",
+       "description": "While this package is active, the first 2 assigned Emissaries in the Town Hall do produce double.",
+       "iconAssetName": "forge_plus_doubleemissarycollection",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      },
+      {
+       "type": "none",
+       "amount": 1,
+       "id": "avatarFrame",
+       "name": "New Avatar Frame",
+       "description": "While this package is active, you get a new frame in the social bar everyone can see. You can disable the visibility in the options.",
+       "iconAssetName": "forge_plus_avatarframe",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      },
+      {
+       "type": "none",
+       "amount": 1,
+       "id": "videoRemoval",
+       "name": "Remove ads",
+       "description": "While this package is active, no video ads will be shown.",
+       "iconAssetName": "forge_plus_videoremoval",
+       "isHighlighted": true,
+       "flags": [],
+       "__class__": "GenericReward"
+      }
+     ],
+     "__class__": "GenericRewardSet"
+    }
+   ],
+   "bonuses": [
+    {
+     "__class__": "ProductBonus"
+    }
+   ],
+   "__class__": "ProductRewards"
+  },
+  "__class__": "CashShopProduct"
+ }
+]

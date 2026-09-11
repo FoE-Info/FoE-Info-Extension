@@ -1,0 +1,74 @@
+# Agent & Assistant Metadata
+.agents/
+AGENTS.md
+.gemini/
+.superpowers/
+tests/agents/
+
+# Graphify Outputs & Offline Indexes (prevent self-indexing)
+graphify-out/
+metadata-store/
+offline-metadata/
+
+# Git Worktrees (prevent duplicate tree indexing)
+.worktrees/
+worktrees/
+
+# Dependencies & Local Scratch
+node_modules/
+stuff/
+vendor/
+package-lock.json
+
+# Build & Minified Artifacts
+build/
+dist/
+*.map
+*.min.js
+*.min.css
+*.bundle.js
+*.chunk.js
+
+# Notes, Workspaces & IDE Files
+*note.html
+*.code-workspace
+.vscode/
+.idea/
+.husky/
+.DS_Store
+Thumbs.db
+
+# Logs, Temp & Coverage
+*.log
+tmp/
+temp/
+coverage/
+
+# Archives & Extension Packages
+*.zip
+*.crx
+*.tar.gz
+*.tgz
+
+# Environment, Secrets & CDP Dumps
+.env
+.env.*
+*.pem
+*.key
+*.heapsnapshot
+docs/heap-snapshot/
+
+# Media & Binary Assets (avoids vision/parser overhead)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.cur
+*.webp
+*.svg
+*.woff
+*.woff2
+*.mp3
+*.wav
+*.ogg
