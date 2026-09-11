@@ -137,6 +137,9 @@ class QuestService {
 }
 
 const questService = new QuestService();
+if (messageDispatcher && typeof messageDispatcher.register === 'function') {
+  questService.register(messageDispatcher);
+}
 
 module.exports = {
   QuestService,

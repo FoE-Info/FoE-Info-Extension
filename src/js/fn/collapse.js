@@ -22,12 +22,18 @@ export var collapseHood = true;
 export var collapseIncidents = true;
 export var collapseArmy = false;
 export var collapseGoods = true;
+export var collapseGVG = false;
+export var collapseGVGinfo = false;
+export var collapseGVGOverview = false;
+export var collapseGVGGuildPower = false;
+export var collapseGVGCurrAge = false;
+export var collapseGVGAllGuildsPower = false;
 export var collapseStats = false;
 export var collapseGBInfo = false;
 export var collapseGBRewards = false;
 export var collapseGBDonors = false;
 export var collapseGBinvest = false;
-export var collapseInvested = false;
+export var collapseInvested = true;
 export var collapseDonation = false;
 export var collapseBattleground = false;
 export var collapseBuildingCost = true;
@@ -68,6 +74,24 @@ export default function set(key, value) {
       break;
     case 'collapseStats':
       collapseStats = value;
+      break;
+    case 'collapseGVGinfo':
+      collapseGVGinfo = value;
+      break;
+    case 'collapseGVG':
+      collapseGVG = value;
+      break;
+    case 'collapseGVGOverview':
+      collapseGVGOverview = value;
+      break;
+    case 'collapseGVGGuildPower':
+      collapseGVGGuildPower = value;
+      break;
+    case 'collapseGVGCurrAge':
+      collapseGVGCurrAge = value;
+      break;
+    case 'collapseGVGAllGuildsPower':
+      collapseGVGAllGuildsPower = value;
       break;
     case 'collapseGoods':
       collapseGoods = value;
@@ -152,11 +176,7 @@ export default function set(key, value) {
 export function fCollapseGBInfo() {
   collapseGBInfo = !collapseGBInfo;
   storage.set('collapseGBInfo', collapseGBInfo);
-  const copyEl = document.getElementById('gbInfoCopyID');
-  if (copyEl) {
-    copyEl.style.display = collapseGBInfo ? 'none' : 'block';
-  }
-  element.updateIcon('gbinfoicon', 'gbInfoCollapse', collapseGBInfo);
+  element.updateIcon('guildicon', 'guildText', collapseGBInfo);
 }
 
 export function fCollapseFriends() {
@@ -201,31 +221,62 @@ export function fCollapseIncidents() {
   // console.debug('collapseIncidents',collapseIncidents);
 }
 
+export function fCollapseGVG() {
+  collapseGVG = !collapseGVG;
+  element.updateIcon('gvgicon', 'gvgText', collapseGVG);
+  // console.debug('fCollapseGVG',collapseOptions);
+}
+
+export function fCollapseGVGinfo() {
+  collapseGVGinfo = !collapseGVGinfo;
+  element.updateIcon('gvgInfoIcon', 'gvgInfoText', collapseGVGinfo);
+  // console.debug('fCollapseGVGinfo',collapseGVGinfo,collapseOptions);
+}
+
+export function fcollapseGVGOverview() {
+  collapseGVGOverview = !collapseGVGOverview;
+  element.updateIcon('gvgOverviewIcon', 'gvgOverviewText', collapseGVGOverview);
+  // console.debug('fcollapseGVGOverview',collapseGVGinfo,collapseOptions);
+}
+export function fcollapseGVGGuildPower() {
+  collapseGVGGuildPower = !collapseGVGGuildPower;
+  element.updateIcon(
+    'gvgGuildPowerIcon',
+    'gvgGuildPowerText',
+    collapseGVGGuildPower,
+  );
+  // console.debug('fcollapseGVGGuildPower',collapseGVGinfo,collapseOptions);
+}
+export function fcollapseGVGCurrAge() {
+  collapseGVGCurrAge = !collapseGVGCurrAge;
+  element.updateIcon('gvgCurrAgeIcon', 'gvgCurrAgeText', collapseGVGCurrAge);
+  // console.debug('fcollapseGVGCurrAge',collapseGVGinfo,collapseOptions);
+}
+export function fcollapseGVGAllGuildsPower() {
+  collapseGVGAllGuildsPower = !collapseGVGAllGuildsPower;
+  element.updateIcon(
+    'gvgAllGuildsPowerIcon',
+    'gvgAllGuildsPowerText',
+    collapseGVGAllGuildsPower,
+  );
+  // console.debug('fcollapseGVGAllGuildsPower',collapseGVGinfo,collapseOptions);
+}
+
 export function fCollapseArmy() {
   collapseArmy = !collapseArmy;
-  if (typeof document !== 'undefined') {
-    const armyUnits = document.getElementById('armyUnits');
-    const armyUnits2 = document.getElementById('armyUnits2');
-    const armyUnits3 = document.getElementById('armyUnits3');
-    if (armyUnits) {
-      armyUnits.innerHTML =
-        collapseArmy && armyUnits2 && armyUnits3 ?
-          armyUnits2.innerHTML + ' ' + armyUnits3.innerHTML
-        : '';
-    }
-  }
+  document.getElementById('armyUnits').innerHTML =
+    collapseArmy ?
+      document.getElementById('armyUnits2').innerHTML +
+      ' ' +
+      document.getElementById('armyUnits3').innerHTML
+    : '';
   element.updateIcon('armyicon', 'armyText', collapseArmy);
 }
 
 export function fCollapseGoods() {
   collapseGoods = !collapseGoods;
-  const copyEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('goodsCopyID')
-    : null;
-  if (copyEl) {
-    copyEl.style.display = collapseGoods ? 'none' : 'block';
-  }
+  document.getElementById('goodsCopyID').style.display =
+    collapseGoods ? 'none' : 'block';
   element.updateIcon('goodsicon', 'goodsText', collapseGoods);
 }
 
@@ -233,13 +284,8 @@ export function fCollapseStats() {
   fHideAllTooltips();
   collapseStats = !collapseStats;
   // console.debug('collapseStats',collapseStats);
-  const copyEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('citystatsCopyID')
-    : null;
-  if (copyEl) {
-    copyEl.style.display = collapseStats ? 'none' : 'block';
-  }
+  document.getElementById('citystatsCopyID').style.display =
+    collapseStats ? 'none' : 'block';
   element.updateIcon('citystatsicon', 'citystatsText', collapseStats);
 }
 
@@ -251,41 +297,17 @@ export function fCollapseRewards() {
 
 export function fCollapseGBDonors() {
   collapseGBDonors = !collapseGBDonors;
-  const copyEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('donorCopyID')
-    : null;
-  if (copyEl) {
-    copyEl.style.display = collapseGBDonors ? 'none' : 'block';
-  }
-  const iconId =
-    typeof document !== 'undefined' && document.getElementById('gbinvesticon') ?
-      'gbinvesticon'
-    : 'donoricon';
-  const targetId =
-    typeof document !== 'undefined' && document.getElementById('donorText') ?
-      'donorText'
-    : 'donorcollapse';
-  element.updateIcon(iconId, targetId, collapseGBDonors);
+  document.getElementById('donorCopyID').style.display =
+    collapseGBDonors ? 'none' : 'block';
+  element.updateIcon('donoricon', 'donorcollapse', collapseGBDonors);
 }
 
 export function fCollapseInvested() {
   collapseInvested = !collapseInvested;
-  if (typeof document !== 'undefined') {
-    const onHandEl = document.getElementById('onHandFP');
-    const availableFpEl = document.getElementById('availableFPID');
-    if (onHandEl) {
-      if (collapseInvested && availableFpEl) {
-        onHandEl.innerHTML = `<span data-i18n="available">Available FP</span>: ${availableFpEl.innerHTML}`;
-      } else {
-        onHandEl.innerHTML = '';
-      }
-    }
-    const copyEl = document.getElementById('investedCopyID');
-    if (copyEl) {
-      copyEl.style.display = collapseInvested ? 'none' : 'block';
-    }
-  }
+  document.getElementById('onHandFP').innerHTML =
+    collapseInvested ? document.getElementById('onHandFP2').innerHTML : '';
+  document.getElementById('investedCopyID').style.display =
+    collapseInvested ? 'none' : 'block';
   element.updateIcon('investedicon', 'investedText', collapseInvested);
 }
 
@@ -299,37 +321,25 @@ export function fCollapseInvested() {
 export function fCollapseDonation() {
   collapseDonation = !collapseDonation;
   // console.debug('fCollapseDonation',collapseOptions);
-  const copyEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('donationCopyID')
-    : null;
-  if (copyEl) {
-    copyEl.style.display = collapseDonation ? 'none' : 'block';
-  }
+  document.getElementById('donationCopyID').style.display =
+    collapseDonation ? 'none' : 'block';
   element.updateIcon('donationicon', 'donationText3', collapseDonation);
 }
 
 export function fCollapseBattleground() {
   collapseBattleground = !collapseBattleground;
   // console.debug('fCollapseBattleground',collapseOptions);
-  if (typeof document !== 'undefined') {
-    const postEl = document.getElementById('battlegroundPostID');
-    if (postEl) {
-      postEl.style.display = collapseBattleground ? 'none' : 'block';
-    }
-    const copyEl = document.getElementById('battlegroundCopyID');
-    if (copyEl) {
-      copyEl.style.display = collapseBattleground ? 'none' : 'block';
-    }
-  }
-  const targetId =
-    (
-      typeof document !== 'undefined' &&
-      document.getElementById('battlegroundTextCollapse')
-    ) ?
-      'battlegroundTextCollapse'
-    : 'battlegroundCollapse';
-  element.updateIcon('battlegroundicon', targetId, collapseBattleground);
+  if (document.getElementById('battlegroundPostID'))
+    document.getElementById('battlegroundPostID').style.display =
+      collapseBattleground ? 'none' : 'block';
+  if (document.getElementById('battlegroundCopyID'))
+    document.getElementById('battlegroundCopyID').style.display =
+      collapseBattleground ? 'none' : 'block';
+  element.updateIcon(
+    'battlegroundicon',
+    'battlegroundCollapse',
+    collapseBattleground,
+  );
 }
 
 export function fCollapseBuildingCost() {

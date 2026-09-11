@@ -129,6 +129,9 @@ class FriendsTavernService {
 }
 
 const friendsTavernService = new FriendsTavernService();
+if (messageDispatcher && typeof messageDispatcher.register === 'function') {
+  friendsTavernService.register(messageDispatcher);
+}
 
 module.exports = {
   FriendsTavernService,
