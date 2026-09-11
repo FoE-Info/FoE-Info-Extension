@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 function run(cmd) {
@@ -30,9 +30,10 @@ console.log(`=== Releasing FoE-Info ${tag} ===`);
 console.log('\n[1/5] Running verification gate...');
 run('npm run verify');
 
-// 2. Build production assets
-console.log('\n[2/5] Building production WebStore package...');
-run('npm run build');
+// 2. Build production assets and package zip
+console.log('\n[2/5] Building and packaging production WebStore archive...');
+run('npm run build:prod');
+run('node scripts/package-extension.js --env=prod');
 
 // 3. Find the generated zip
 const today = new Date().toISOString().slice(0, 10);
@@ -51,17 +52,32 @@ if (existingTags.includes(tag)) {
 } else {
   run(`git tag -a ${tag} -m "Release ${tag}"`);
 }
+run(`git push origin ${tag}`);
 
 // 5. GitHub Release creation
 console.log('\n[5/5] Creating GitHub Release...');
 const changelogPath = resolve(root, 'CHANGELOG.md');
-let releaseNotesArgs = '';
+let notesFileArg = '';
 if (existsSync(changelogPath)) {
-  // Extract the notes for this version if possible, or use the whole changelog
-  releaseNotesArgs = `--notes "FoE-Info Extension ${tag} — see CHANGELOG.md for details"`;
+  const changelog = readFileSync(changelogPath, 'utf8');
+  const sectionMatch = changelog.match(
+    new RegExp(`## \\[${version}\\][^\n]*\n([\\s\\S]*?)(?=\\n## \\[|$)`),
+  );
+  const releaseNotes = sectionMatch ? sectionMatch[1].trim() : `Release ${tag}`;
+  const tmpNotesPath = resolve(root, '.release-notes.tmp.md');
+  writeFileSync(tmpNotesPath, releaseNotes, 'utf8');
+  notesFileArg = `--notes-file "${tmpNotesPath}"`;
 }
 
 run(
-  `gh release create ${tag} "${zipPath}" --title "${tag}" ${releaseNotesArgs}`,
+  `gh release create ${tag} "${zipPath}" --title "FoE-Info ${tag}" ${notesFileArg}`,
 );
+
+try {
+  const tmpNotesPath = resolve(root, '.release-notes.tmp.md');
+  if (existsSync(tmpNotesPath)) {
+    execSync(`rm -f "${tmpNotesPath}"`);
+  }
+} catch {}
+
 console.log(`\n Successfully published release ${tag} on GitHub!`);

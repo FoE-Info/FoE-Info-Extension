@@ -4,6 +4,88 @@ Updated 2026-09-11 after graph pipeline extension for LoW-Tool and FoE-Info-orig
 
 ## Current session (2026-09-11)
 
+- **TypeScript visibility/dispatcher mirrors (`ceef68d`, merged `d7dd28d`)**:
+  - Added `src/js/ui/cardVisibility.ts` exporting `ViewState = 'CITY' | 'GBG'`, `ViewFilter`, `PanelId` (all 15 sidebar panels), `ReadonlySet<PanelId>` allow/block sets, and `ShowOptionsState`; all four view branches (debug override, GBG, CITY, unconstrained default) mirror `cardVisibility.js` exactly.
+  - Added `src/js/ui/panelDispatcher.ts` with typed `PanelContainers`, `ResettableState`, `TreasuryResources` (Map + BigNumber-`toNumber` aware), `ResourceDef`, and `RenderTreasuryDeps`; all seven clear routines and `renderTreasuryPanel` mirror `panelDispatcher.js` exactly.
+  - Grep-verified both modules are jQuery-free (vanilla `getElementById`/`querySelector`/`addEventListener` only); `.js` runtimes, callers (`index.js`, `networkListener.js`, `TreasuryService.js`), and tests untouched — zero UI behavior shift.
+  - Verification on merged `development`: `npx tsc --noEmit` clean, `npm run verify` exit 0 (eslint 0 errors, prettier clean, 704/704 tests pass, webpack dev build compiles).
+- **Chrome API types & hybrid TS config (`a5c5b96`, merged `9e63acb`)**:
+  - `@types/chrome` (^0.2.9) in devDependencies; `tsconfig.json` set for gradual adoption (`allowJs`, `checkJs: false`, `strict: false`, `chrome`/`webextension-polyfill`/`node` types); `eslint.config.mjs` scopes Chrome extension globals (`globals.browser`/`chrome`/`webextensions`) to `src/**/*.{js,mjs,cjs}`.
+  - `typescript-eslint` (^8.70.0) added as devDependency but not wired into the flat config: it does not support TypeScript 7.x yet, so `.ts` files stay outside `eslint .` (default JS-only lint) until upstream supports TS ≥ 7.1.
+- **Release v0.0.835 (tag `v0.0.835`)**:
+  - Context-aware dynamic view filtering, standalone Incidents card extraction, 15-panel vertical mounting hierarchy, player score normalization, and codebase audit hardening across `src/js/msg/` and `src/js/ui/`.
+  - Re-verified full test suite (683/683 passed, 0 failures) and prepared for `npm run release` execution.
+- **Codebase Audit Quick Fixes (`RewardRenderer.js`, `BonusService.js`, `AddElement.js`, `CityProductionService.js`, `ConversationService.js`, `renderGbInfoPanel.js`, `gbDonationTables.js`)**:
+  - Parity for collapse headers: Added label-click listener to `rewardsTextLabel` in `RewardRenderer.js` and `bonusTextLabel` in `BonusService.js`, allowing users to toggle collapses by clicking anywhere on the header without conflicting with icon clicks.
+  - Guarded against duplicate accessibility keydown listeners in `AddElement.js` via `document._foeA11yBound`.
+  - Added defensive optional chaining to `CityProductionService.js` for `reward.state?.current_product?.product?.resources` and nullish `unit` objects, preventing unhandled `TypeError` exceptions.
+  - Formatted raw numeric Unix epoch timestamps in `ConversationService.js` using `dateUtils.formatTime` (with `dayjs` and `toLocaleTimeString` fallbacks) instead of rendering raw integer epoch digits.
+  - Cleaned up dead code `playerPrefix` in `renderGbInfoPanel.js`.
+  - Prevented duplicate DOM `id='copyText'` in `gbDonationTables.js` by scoping secondary place card footers to `copyText_${place}`.
+  - Added unit test in `tests/msg/conversation-service.test.mjs` verifying formatted numeric timestamps (683/683 tests passing, full `npm run verify` passed).
+- **Context-Aware View Filtering, Incidents Extraction, Player Points Fix, and 15-Panel Stacking Order (`cardVisibility.js`, `containerBinding.js`, `renderIncidentsPanel.js`, `renderHeaderPanel.js`, `accountParser.js`)**:
+  - Implemented dynamic context view filtering in `src/js/ui/cardVisibility.js`:
+    - **GBG Map View (`currentView === 'GBG'`)**: Shows ONLY 6 combat-essential panels (`#header`, `#army`, `#rewards`, `#gbgTargetGenerator`, `#battlegrounds`, `#gbgLeaderboard`) and explicitly blocks/hides all 9 non-combat panels plus city utility lists.
+    - **City View (`currentView === 'CITY'`)**: Hides GBG-specific panels (`#gbgTargetGenerator`, `#battlegrounds`, `#gbgLeaderboard`) while city panels obey `showOptions`.
+    - **Debug Mode Override (`isDebug === true`)**: Overrides all view gates and forces ALL 15 panels visible simultaneously, injecting `<div class="alert alert-secondary p-2 mb-2 font-monospace small debug-stub"><strong>[DEBUG STUB]</strong> ${panelId}</div>` when content is absent.
+    - Integrated with `panelDispatcher.js` (`clearForBattleground` -> 'GBG', `clearForMainCity` -> 'CITY', `clearStartup` -> 'CITY').
+  - Extracted Incidents into standalone card module `src/js/ui/renderIncidentsPanel.js` decoupled from Harvest (`#buildings`), instrumented with `createLogger('IncidentsPanel')`.
+  - Created `src/js/ui/renderHeaderPanel.js` with `createLogger('HeaderPanel')`, integrating Player Points, Era, Guild, Daily Income, Combat Boosts (Base, GBG, GE, QI), and City Boosts (Arc, CF, Coins, Supplies) into `#header`.
+  - Created `src/js/parsers/accountParser.js` to normalize user account data and extract player points across `rank_points ?? player_points ?? score ?? points`, wiring into `StartupService.js`, `state.js`, and `renderLiveCityStats.js`.
+  - Reordered `setupPanelContainers` and `mountPanels` in `src/js/ui/containerBinding.js` to mount the exact 15-panel vertical sequence directly into `#content`:
+    1. `#header`, 2. `#incidents`, 3. `#army`, 4. `#rewards`, 5. `#gbDonation`, 6. `#gbInfo`, 7. `#gbContributors`, 8. `#gbgTargetGenerator`, 9. `#battlegrounds`, 10. `#gbgLeaderboard`, 11. `#geChampionship`, 12. `#geContributions`, 13. `#goodsInventory`, 14. `#guildOverview`, 15. `#treasury`.
+  - Added unit test suites `tests/parsers/account-parser.test.mjs`, `tests/ui/render-incidents-panel.test.mjs`, `tests/ui/render-header-panel.test.mjs`, `tests/ui/context-view-filtering.test.mjs`, and updated `tests/ui/container-binding.test.mjs` (682/682 tests passing, full `npm run verify` passed).
+  - Fixed own-city Great Building failing to load or sticking on a previously viewed foreign GB when clicked inside city.
+  - Root cause: clicking an own-city GB triggered `CityProductionService.fGetEntityList` with `type: "greatbuilding"`, but `GreatBuildingRegistry` only registered GBs when visiting foreign cities or loading contributor lists, leaving own-city lookups unpopulated and falling back to whatever foreign GB was last cached.
+  - Registered city map Great Building entities in `GreatBuildingRegistry.registerBuilding` upon receiving `city_map.getEntities` or `CityProductionService.fGetEntityList`.
+  - Added fallback in `legacyBridge.js` to use local player ID when player ID is missing or `0` in Great Building service requests.
+  - Added unit tests in `tests/msg/great-buildings-unified.test.mjs` (9 tests passing).
+- **Enforced Great Buildings and GBG panel display ordering (`containerBinding.js`, `GreatBuildingsService.js`)**:
+  - Enforced strict hierarchical panel DOM order:
+    - Great Buildings: 1. GB Donation panel (`#donation2` / `#donationDIV2`), 2. GB Info (`#gbInfo`), 3. GB Contributors (`#greatbuilding`).
+    - Guild Battlegrounds (GBG): 1. GBG Target Generator (`#targets` / `#targetsGBG`), 2. Battlegrounds Changes (`#battleground`), 3. GBG Leaderboard (`#gbgLeaderboard`), 4. rest (`#guild`, `#output`, `#treasury`, `#treasuryLog`).
+  - Updated `mountPanels` and `setupPanelContainers` in `containerBinding.js` to mount containers in strict order.
+  - Updated `fCheckOutput` in `GreatBuildingsService.js` to re-order DOM nodes using `insertBefore` if containers were inserted out-of-order, guarded for headless environments.
+  - Added unit tests in `tests/ui/container-binding.test.mjs` (8 tests passing).
+- **Custom panel resize retention & collapse expand bugfix (`panelResize.js`, `custom.scss`)**:
+  - Eliminated bug where expanding a collapsed panel caused it to blow up to maximum content height (~800px) instead of restoring default or custom user-resized height.
+  - Root cause: `.resize { max-height: max-content !important; }` in `custom.scss` overrode inline height styles; Bootstrap's `shown.bs.collapse` cleared inline `style.height = ''`.
+  - Created reusable `bindResizableCollapse` in `src/js/ui/panelResize.js` using `ResizeObserver`, clamping `maxHeight` during `show.bs.collapse`, restoring persisted height on `shown.bs.collapse`, and storing user adjustments in per-world storage.
+  - Applied `bindResizableCollapse` to Army (`#armyText`), Goods Inventory (`#goodsText`), and Guild Treasury (`#treasuryText`).
+  - Added unit test suites in `tests/ui/panel-resize.test.mjs` and updated `tests/ui/panel-resize-and-visibility.test.mjs` (659 total unit tests passing).
+- **Army panel default calibration & collapse guard (`3b167a3` + update)**:
+  - Calibrated default Army Panel height to 185px (`#armyText`, outer card height 229px) across [`globals.js`](../src/js/fn/globals.js), [`factoryDefaults.js`](../src/js/state/factoryDefaults.js), and [`ArmyUnitManagementService.js`](../src/js/msg/ArmyUnitManagementService.js), matching desired visual geometry.
+  - Added `.collapsing` and `!show` guards to the Army `ResizeObserver` preventing intermediate transition heights during collapse from corrupting the stored user height.
+  - Wired per-world storage handling for `toolOptions` in [`storage.js`](../src/js/utils/storage.js) (`setStorage` and `getStorage`), saving via `saveWorldSettings(currentWorld, { toolOptions })` and syncing `memoryWorldCache`.
+  - Preserved `resize-both` so custom user-resized heights persist across game sessions and world reloads.
+  - Updated unit test suites verifying 185px default, custom overrides, collapse animation guards, and per-world persistence (649/649 tests passing).
+- **Battlegrounds collapse performance & transition fix**:
+  - Scoped `min-height: 250px` to `.gbg-full-roster.show` in [`custom.scss`](../src/css/custom.scss) to prevent CSS min-height from fighting Bootstrap collapse height calculation.
+  - Suppressed animations on collapsing elements (`.collapsing { min-height: 0 !important; transition: none !important; }`), eliminating frame-by-frame 350ms table reflow lag.
+  - Added observer guards in `helper.js` (`gbgResizeObserver`) so intermediate heights during collapse/hide are ignored.
+  - Added `e.stopPropagation()` to `battlegroundicon` click handler preventing event double-triggers.
+- **Lists Copy button alignment (`OtherPlayerService.js`)**:
+  - Replaced absolute offset positioning (`top: 0; right: 0; margin-top: 0.75em; margin-right: 3em;`) with clean flex row headers (`<div class="d-flex flex-row justify-content-between align-items-center mb-0">`) for Friends, Guild, and Hood lists.
+  - Aligned Copy buttons flush with the right edge without overlapping container borders.
+  - Updated `collapse.js` (`fCollapseFriends`, `fCollapseGuild`, `fCollapseHood`) to handle `display = 'inline-block'`.
+- **GE Championship & Leaderboard styling alignment (`expeditionTables.js`, `custom.scss`)**:
+  - Left-aligned Server column header and data cells (`text-start`) in GE Championship table.
+  - Styled GE Leaderboard (`#geContributionTable`) with `.goods-table table-sm table-borderless align-middle w-100 mb-0 bg-transparent`, aligning member names to the left, trial to center, and points and solved encounters centered with `tabular-nums` and formatted numbers (`toLocaleString()`).
+- **DevTools `#content` panel ordering (`containerBinding.js`)**:
+  - Organized all active panels into a clean, predictable 5-group workflow: City & Production (`#cityOverview`, `#visitinfo`, `#cityproduction`, `#bluegalaxy`, `#incidentstext`, `#bonusText`) $\to$ Military (`#army`, `#unitsText`, `#pvpArena`, `#combatBoosts`) $\to$ Great Buildings (`#greatbuilding`, `#gbInfo`, `#donation2`, `#invested`, `#stats`) $\to$ Guild Activities (`#guildoverview`, `#battleground`, `#gbgLeaderboard`, `#internationalExpedition`, `#expedition`, `#treasury`, `#guildraid`, `#contributions`) $\to$ Social & Logs (`#friends`, `#guild`, `#hood`, `#settlement`, `#goods`, `#rewardText`, `#buildingCost`, `#itemExchange`, `#logstext`).
+- **i18n table header capitalization**:
+  - Capitalized `Type` and `Amount` keys across all 7 language dictionaries (`de`, `el`, `en`, `es`, `fr`, `gr`, `it`) in `src/i18n/` for Goods Inventory and Guild Treasury consistency.
+- **Goods Inventory, Treasury & Outpost table alignment (`5608b43`)**:
+  - Removed artificial `ps-3` indentation from item cells in [`ResourceService.js`](../src/js/msg/ResourceService.js), [`panelDispatcher.js`](../src/js/ui/panelDispatcher.js), and [`OutpostService.js`](../src/js/msg/OutpostService.js).
+  - Aligned all goods, medals, and outpost resources flush left with column headers (`Type`/`Resource`) and era section titles with uniform 6px padding.
+  - Cleaned up `td.ps-3` override from [`custom.scss`](../src/css/custom.scss).
+- **Universal panel collapsibility, GB reopen lifecycle & UI fixes (`c1c8a00`, `53b89c0`, `5c2dbf1`, `fbe4b4a`, `b19c2eb`)**:
+  - Added title-click collapse, `[-]`/`[+]` icons, and close buttons across all active panels.
+  - Separated "Other Player Information" header from player name ScoreDB link, moving the link to card body line 1.
+  - Preserved player's own City Info overview as permanently visible without a close button.
+  - Formatted Chateau Frontenac (CF) bonus on its own div line under Arc bonus in City Overview.
+  - Reverted GB donation place headers to classic "1st Place", "2nd Place" (removed Arc bonus suffix).
+  - Fixed closed Great Building panels (`#greatbuilding`, `#gbInfo`, `#donation2`) failing to reappear on subsequent GB opens by preserving container mount points.
 - **Options page instant rendering & FOUC fix**:
   - Eliminated blank delay and unpopulated controls when opening `options.html`.
   - Populated the world selector and settings form immediately and synchronously from storage cache (`globals` and `getWorldSettings`) without waiting on browser tab IPC queries.
@@ -11,6 +93,17 @@ Updated 2026-09-11 after graph pipeline extension for LoW-Tool and FoE-Info-orig
   - Added smooth CSS transition on `.container.loaded` in [`options.scss`](../src/css/options.scss) to eliminate any flash of unpopulated checkboxes.
   - Fixed duplicate "Options Options" title in [`options.html`](../src/chrome/options.html).
   - Added unit test [`tests/ui/options.test.mjs`](../tests/ui/options.test.mjs) (verified 625/625 tests pass).
+- **Release v0.0.834 and Codebase Audit Fixes (`bf83230`, tag `v0.0.834`)**:
+  - Performed deep codebase audit across `src/js/msg/`, `src/js/calc/`, `src/js/ui/`, and `src/js/protocol/` with specialist subagents.
+  - Resolved DOM node detachment on `#visit` close button click in `renderCityStats.js`, maintaining container order and preventing visit stats freeze.
+  - Fixed Colonial Age tooltip ID typo (`cma` → `ca`) in `cityStatsTooltips.js`.
+  - Bound `showStats` directly to `#citystats` container in `cardVisibility.js`, cleanly hiding outer card when disabled.
+  - Resolved memory leak in `PopoverManager.js` by scoping `window` mouseup listener with `{ once: true }` on mousedown.
+  - Fixed HTML syntax errors in `gbDonationTables.js` and removed orphaned `</p>` in `renderBuildingCollectionTimes.js`.
+  - Guarded payload arrays in `BonusService.js` and `CityProductionService.js`; removed errant inner-loop bonus wipe in `BonusService.js`.
+  - Replaced un-gated `console.debug()` calls with module loggers in `BonusService.js` and `CityProductionService.js`.
+  - Cleaned up dead variables in `ownCityCard.js`.
+  - Re-verified full test suite (661/661 passed) and executed `npm run release` to build WebStore zip and publish GitHub Release [v0.0.834](https://github.com/FoE-Info/FoE-Info-Extension/releases/tag/v0.0.834).
 - **Release v0.0.833 and GitHub Release workflow (`02d776b`, tag `v0.0.833`)**:
   - Transitioned from ad-hoc local zip builds to formalized GitHub Releases using Option A (releasing and tagging directly on `development`).
   - Bumped version to `0.0.833` in [`package.json`](../package.json) and [`src/chrome/manifest.json`](../src/chrome/manifest.json).
@@ -40,7 +133,7 @@ Updated 2026-09-11 after graph pipeline extension for LoW-Tool and FoE-Info-orig
   - 31→36 subagents, 5→6 MCP servers, 51→53 skills in AGENTS.md, `.agents/rules/graphify.md`, `.agents/rules/workspace-structure.md`, `antigravity-interop` skill, `.opencode/instructions/guardrail.md`, `pre-invocation-reminder.mjs`, `docs/STATUS.md`, `docs/COORDINATION.md`, `docs/OPENCODE.md`, `tests/agents/agent-config.test.mjs`.
   - Antigravity FoE-Info project grants: +10 `mcp(graphify-low-tool/*)`, 79 total, 0 bare MCP wildcards.
   - `graphify-guard` `GRAPHIFY_QUERY_TOOLS` regex and MCP prompt message updated with `low-tool` in both harnesses.
-- **Graph generation status**: deferred during the Antigravity transition; now safe to run via `npm run graph:low-tool:reindex` / `npm run graph:foe-info-original:reindex`. A partial AST cache exists in `../LoW-Tool/graphify-out/cache/` from an aborted run (no graph.json created; harmless).
+- **Graph generation status**: Completed 2026-09-11 via `npm run graph:low-tool:reindex` and `npm run graph:foe-info-original:reindex`; both `../LoW-Tool/graphify-out/graph.json` and `../FoE-Info-Extension-original/graphify-out/graph.json` are generated and available for MCP queries.
 
 ## Resume safely
 
@@ -131,7 +224,7 @@ The old statement that DevTools panels cannot be inspected through CDP was too b
 - Startup rendering delegates to `scheduleStartupRender`; do not restore an unconditional early render.
 - GBG renders in its dedicated battleground containers, not Great Buildings' `#donation` container.
 - Legacy GvG removal was deliberate; do not reintroduce its dead panels.
-- Runtime game metadata stays network-driven. `metadata-store/` is offline development/test input, never a runtime bundle dependency.
+- Runtime game metadata stays network-driven. `../metadata-store/` is offline development/test input, never a runtime bundle dependency.
 
 ## Remaining product work
 
@@ -167,12 +260,6 @@ Root causes fixed: (1) `calculateSafeSpots()` wasn't threading a sequential `rem
 
 UI: three-way color coding (green = profit, yellow/neutral = break-even, red = loss) plus a "Guaranteed profit" note when `guaranteedProfit` is true. The donation-loop card headers in `GreatBuildingsService.js` no longer attribute a place to a player name (the loop iterates P1–P5 as the _viewer's_ potential-donor outcome at each rank, not a specific current holder's identity — the old code was mislabeling the building owner as sitting in P1). All 575 tests pass at the time of writing (591 as of 2026-09-09); `npm run verify`/`typecheck` should still be run before the Chrome Web Store release, but the math itself is verified release-ready.
 
-## Queued feature: parse guild thread titles for the donation-standard ratio
+## Guild thread donation ratio parsing (Implemented & Verified)
 
-Implemented in `src/js/fn/rateParser.js` (`extractRateFromTitle`) and wired into `src/js/msg/ConversationService.js` (`getConversation` → `getPercent` → `setCurrentPercent`), which overrides the configured "Donation %" default when a guild thread title carries an embedded ratio in the 1.00–2.50 (100%–250%) range. Covered by `tests/protocol/domain-services.test.mjs`.
-
-Guild message threads that coordinate GB donations often carry the agreed standard ratio directly in the thread title, e.g. `LoW BE All GBs [secure @ 1.92]`, or variants like `1.9 Secure`, `2.0 All Levels`. Today the extension only uses a static, user-configured "Donation %" option (Options panel, default 190).
-
-Requested behavior: when FoE-Info can see the active guild message thread's title, parse it for an embedded ratio in the 1.90–2.00 (or equivalently 190%–200%) range, and if found, use that value as the effective standard donation percent for `calculateSuggestedDonation`/`calculateDonorOutcome` in that context — overriding, not replacing, the static Options default (which remains the fallback when no thread title or no valid ratio is present). Example given by the project owner: thread titled `LoW BE All GBs [secure @ 1.92]` should show 1.92 and multiply the base reward by 1.92 instead of the configured default.
-
-Open implementation questions for whoever picks this up: where the thread title is available in the existing message/RPC pipeline (likely `src/js/msg/` — check what already parses guild message metadata); the exact regex/format tolerance needed (decimal "1.92" vs percent "192%" vs "1.9" with implied trailing zero); and whether the override should be scoped per-thread or per-GB-panel-session. Verify against real thread titles/screenshots before shipping, per this project's standing rule against guessing formulas from UI alone.
+Implemented in `src/js/fn/rateParser.js` (`extractRateFromTitle`) and wired into `src/js/msg/ConversationService.js` (`getConversation` → `getPercent` → `setCurrentPercent`), overriding the configured "Donation %" default when a guild message thread title carries an embedded ratio in the 1.00–2.50 (100%–250%) range (e.g. `LoW BE All GBs [secure @ 1.92]`, `1.9 Secure`, `2.0 All Levels`). Verified in `tests/protocol/domain-services.test.mjs`. Fallback to static Options default remains when no valid ratio or thread title is present.

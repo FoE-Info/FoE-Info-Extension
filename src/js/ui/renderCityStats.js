@@ -160,9 +160,10 @@ function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
         content.insertBefore(container, content.firstChild);
       }
     }
+    container.style.display = '';
     container.className =
       isOwnCity ?
-        'alert alert-dismissible alert-warning show collapsed mb-2'
+        'alert alert-warning show collapsed mb-2'
       : 'alert alert-dismissible alert-dark show collapsed mb-2';
     container.innerHTML = html;
 
@@ -170,7 +171,7 @@ function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
     if (closeBtn) {
       closeBtn.addEventListener('click', () => {
         container.innerHTML = '';
-        if (container.parentNode) container.parentNode.removeChild(container);
+        container.style.display = 'none';
       });
     }
 

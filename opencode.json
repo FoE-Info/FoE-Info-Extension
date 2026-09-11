@@ -131,7 +131,7 @@
     },
     "graphify-metadata-store": {
       "type": "local",
-      "command": ["graphify-mcp", "graphify-out/metadata/graph.json"],
+      "command": ["graphify-mcp", "../metadata-store/graphify-out/graph.json"],
       "environment": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",

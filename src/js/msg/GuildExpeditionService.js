@@ -110,7 +110,7 @@ function attachTableHandlers(container) {
   if (copyChampBtn) {
     copyChampBtn.addEventListener('click', () => {
       try {
-        require('../utils/copy.js')?.ExpeditionCopy?.();
+        require('../utils/copy.js')?.ExpeditionCopy?.('geChampionshipText');
       } catch {}
     });
   }
@@ -118,7 +118,7 @@ function attachTableHandlers(container) {
   if (copyContribBtn) {
     copyContribBtn.addEventListener('click', () => {
       try {
-        require('../utils/copy.js')?.ExpeditionCopy?.();
+        require('../utils/copy.js')?.ExpeditionCopy?.('geContributionText');
       } catch {}
     });
   }

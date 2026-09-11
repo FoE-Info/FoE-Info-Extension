@@ -60,6 +60,23 @@ test('Agent Config - validates subagent definitions', () => {
       `subagent must be true in ${file}`,
     );
   }
+
+  // 1:1 Parity with .opencode/agents/
+  const opencodeDir = path.join(PROJECT_ROOT, '.opencode', 'agents');
+  const opencodeFiles = fs
+    .readdirSync(opencodeDir)
+    .filter((f) => f.endsWith('.md'));
+  assert.equal(
+    opencodeFiles.length,
+    agentFiles.length,
+    'Expected .opencode/agents to match canonical subagent count',
+  );
+  for (const file of agentFiles) {
+    assert.ok(
+      fs.existsSync(path.join(opencodeDir, file)),
+      `Missing opencode shim for ${file}`,
+    );
+  }
 });
 
 test('Agent Config - validates skill definitions', () => {
@@ -91,6 +108,14 @@ test('Agent Config - validates skill definitions', () => {
 
     const nameVal = nameMatch[1].trim().replace(/^["']|["']$/g, '');
     assert.equal(nameVal, dir.name, `Skill name mismatch in ${dir.name}`);
+
+    const nonStandardKeys = ['category', 'risk', 'source', 'date_added'];
+    for (const key of nonStandardKeys) {
+      assert.ok(
+        !new RegExp(`^${key}:`, 'm').test(frontmatter),
+        `Non-standard frontmatter key "${key}" in ${dir.name}/SKILL.md`,
+      );
+    }
   }
 });
 
@@ -100,8 +125,8 @@ test('Agent Config - validates rule definitions', () => {
 
   assert.equal(
     ruleFiles.length,
-    16,
-    'Expected exactly 16 rules in .agents/rules',
+    17,
+    'Expected exactly 17 rules in .agents/rules',
   );
 
   for (const file of ruleFiles) {
@@ -122,6 +147,16 @@ test('Agent Config - validates rule definitions', () => {
       `Invalid trigger "${triggerVal}" in ${file}`,
     );
   }
+
+  const delegationContent = fs.readFileSync(
+    path.join(rulesDir, 'subagent-delegation.md'),
+    'utf8',
+  );
+  assert.match(
+    delegationContent,
+    /roster of 36 specialized domain subagents/,
+    'subagent-delegation.md must reflect all 36 subagents',
+  );
 });
 
 test('Agent Config - validates hooks.json and hook scripts', () => {
@@ -164,8 +199,25 @@ test('Agent Config - validates hooks.json and hook scripts', () => {
     }
     if (hookSpec.Stop) {
       assert.ok(Array.isArray(hookSpec.Stop), `${hookName}.Stop must be array`);
-      for (const handler of hookSpec.Stop) {
-        assert.ok(handler.command, `${hookName}.Stop missing command`);
+    }
+
+    const allHooks = [
+      ...(hookSpec.PreToolUse?.flatMap((g) => g.hooks) || []),
+      ...(hookSpec.PostToolUse?.flatMap((g) => g.hooks) || []),
+      ...(hookSpec.PreInvocation || []),
+      ...(hookSpec.Stop || []),
+    ];
+    for (const handler of allHooks) {
+      assert.ok(handler.command, `${hookName} missing command`);
+      const scriptMatch = handler.command.match(/([^\s"']+\.(?:mjs|sh|js))/);
+      if (scriptMatch) {
+        const scriptRel = scriptMatch[1];
+        const fromAgents = path.resolve(AGENTS_DIR, scriptRel);
+        const fromRoot = path.resolve(PROJECT_ROOT, scriptRel);
+        assert.ok(
+          fs.existsSync(fromAgents) || fs.existsSync(fromRoot),
+          `Hook script does not exist on disk: ${scriptRel} in ${hookName}`,
+        );
       }
     }
   }
@@ -197,7 +249,7 @@ test('Agent Config - validates AGENTS.md integrity and internal links', () => {
   );
 
   // Exact counts
-  assert.match(agentsMd, /36 subagents, 16 rules, and 53 skills/);
+  assert.match(agentsMd, /36 subagents, 17 rules, and 53 skills/);
   assert.match(agentsMd, /53 on-demand runbooks and procedures/);
   assert.match(agentsMd, /Skills & Runbooks Taxonomy \(53 Skills\)/);
 
@@ -224,18 +276,68 @@ test('Agent Config - validates AGENTS.md integrity and internal links', () => {
   }
 });
 
+test('Agent Config - validates markdown links across all skills, rules, agents, and docs', () => {
+  const checkDirs = [
+    path.join(AGENTS_DIR, 'skills'),
+    path.join(AGENTS_DIR, 'rules'),
+    path.join(AGENTS_DIR, 'agents'),
+    path.join(PROJECT_ROOT, 'docs'),
+  ];
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+  function walk(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (entry.name.endsWith('.md')) {
+        const content = fs.readFileSync(full, 'utf8');
+        let match;
+        while ((match = linkRegex.exec(content)) !== null) {
+          const link = match[2];
+          if (
+            link.startsWith('http://') ||
+            link.startsWith('https://') ||
+            link.startsWith('#') ||
+            link.startsWith('mailto:')
+          ) {
+            continue;
+          }
+          const cleanLink = link.split('#')[0];
+          if (!cleanLink) continue;
+
+          const resolved = path.resolve(path.dirname(full), cleanLink);
+          assert.ok(
+            fs.existsSync(resolved),
+            `Broken link in ${path.relative(PROJECT_ROOT, full)}: ${link} (resolved: ${resolved})`,
+          );
+        }
+      }
+    }
+  }
+
+  for (const dir of checkDirs) {
+    walk(dir);
+  }
+});
+
 test('Agent Config - validates standardized shell script naming convention', () => {
   const scriptsDir = path.join(AGENTS_DIR, 'scripts');
   const expectedScripts = [
     'graph-foe-info-reindex.sh',
     'graph-foe-info-update.sh',
-    'graph-metadata-reindex.sh',
-    'graph-metadata-update.sh',
+    'graph-foe-info-original-reindex.sh',
+    'graph-foe-info-original-update.sh',
     'graph-forge-hammer-reindex.sh',
     'graph-forge-hammer-update.sh',
+    'graph-low-tool-reindex.sh',
+    'graph-low-tool-update.sh',
+    'graph-metadata-reindex.sh',
+    'graph-metadata-update.sh',
     'llama-swap-lifecycle.sh',
-    'run-with-llama-swap.sh',
     'run-chrome-devtools-mcp.sh',
+    'run-graphify-local.sh',
+    'run-with-llama-swap.sh',
   ];
 
   for (const script of expectedScripts) {
@@ -340,8 +442,8 @@ test('Agent Config - enforces context budget limits and rule size thresholds', (
     assert.ok(descMatch, `Missing description in ${dir.name}/SKILL.md`);
     const desc = descMatch[1].trim();
     assert.ok(
-      desc.length <= 120,
-      `Skill ${dir.name} description is too long (${desc.length} chars, max 120) - risks context budget exclusion`,
+      desc.length <= 80,
+      `Skill ${dir.name} description is too long (${desc.length} chars, max 80) - risks context budget exclusion`,
     );
   }
 
@@ -353,4 +455,39 @@ test('Agent Config - enforces context budget limits and rule size thresholds', (
     Buffer.byteLength(agentsMd, 'utf8') <= 18000,
     `AGENTS.md size (${Buffer.byteLength(agentsMd, 'utf8')} bytes) exceeds budget threshold (18,000 bytes)`,
   );
+});
+
+test('Agent Config - enforces zero references to obsolete protocol paths', () => {
+  const checkDirs = [
+    path.join(AGENTS_DIR, 'agents'),
+    path.join(AGENTS_DIR, 'rules'),
+    path.join(AGENTS_DIR, 'skills'),
+  ];
+  const obsoletePatterns = [
+    'src/js/xhr-interceptor.js',
+    'src/js/content-bridge.js',
+    'xhr-interceptor.js',
+    'content-bridge.js',
+  ];
+
+  function walk(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (entry.name.endsWith('.md')) {
+        const content = fs.readFileSync(full, 'utf8');
+        for (const pattern of obsoletePatterns) {
+          assert.ok(
+            !content.includes(pattern),
+            `Obsolete reference "${pattern}" found in ${path.relative(PROJECT_ROOT, full)}`,
+          );
+        }
+      }
+    }
+  }
+
+  for (const dir of checkDirs) {
+    walk(dir);
+  }
 });

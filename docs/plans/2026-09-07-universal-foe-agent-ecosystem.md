@@ -34,7 +34,7 @@
 - Consumes: None
 - Produces: `.agents/project.json` with schema `{ name: string, displayName: string, primaryGraph: string, runtime: object }`
 
-- [ ] **Step 1: Write the failing test for project.json validation**
+- [x] **Step 1: Write the failing test for project.json validation**
 
 Add test in `tests/agents/agent-config.test.mjs`:
 
@@ -80,12 +80,12 @@ test('Agent Config - validates project.json workspace profile', () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `node --test tests/agents/agent-config.test.mjs`
 Expected: FAIL with `project.json must exist in .agents/`
 
-- [ ] **Step 3: Create `.agents/project.json` in FoE-Info and Forge-Hammer**
+- [x] **Step 3: Create `.agents/project.json` in FoE-Info and Forge-Hammer**
 
 In FoE-Info:
 
@@ -127,12 +127,12 @@ In Forge-Hammer:
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `node --test tests/agents/agent-config.test.mjs`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add .agents/project.json tests/agents/agent-config.test.mjs
