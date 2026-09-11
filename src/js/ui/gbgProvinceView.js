@@ -2,7 +2,9 @@
  * gbgProvinceView.js
  *
  * Presentation and DOM card rendering for Guild Battleground province
- * target generation, building costs table, and leaderboard views.
+ * building costs table and leaderboard views.
+ *
+ * Target generator card rendering lives in renderTargetGeneratorCard.js.
  */
 
 async function copyToClipboard(element) {
@@ -58,119 +60,6 @@ function buildingCostCopy() {
     }
   } catch (err) {
     console.error('Building cost copy failed:', err);
-  }
-}
-
-function targetCopy() {
-  copyToClipboard('#targetGenText');
-  if (typeof document !== 'undefined') {
-    const el = document.getElementById('targetGenText');
-    if (el) console.debug(el.innerHTML);
-  }
-}
-
-function buildTargetGeneratorMarkup({
-  targetsHTML = '',
-  textProvinceUnlocked = '',
-  textProvinceLocked = '',
-  collapse = {},
-} = {}) {
-  const isShow = collapse?.collapseTargetGen === false ? 'show' : '';
-  const separator = textProvinceUnlocked !== '' ? '<br>' : '';
-  return (
-    targetsHTML +
-    `<div id="targetGenCollapse" class="collapse ${isShow}"><p id="targetGenText">` +
-    textProvinceUnlocked +
-    separator +
-    textProvinceLocked +
-    `</p></div>`
-  );
-}
-
-function renderTargetGeneratorCard({
-  targetGenerator,
-  targetsHTML = '',
-  textProvinceUnlocked = '',
-  textProvinceLocked = '',
-  collapse = {},
-  targetCopy: onTargetCopy = targetCopy,
-  targetPost: onTargetPost = null,
-  Tooltip = null,
-  helper = {},
-  url = {},
-  post_webstore = {},
-} = {}) {
-  if (textProvinceUnlocked || textProvinceLocked) {
-    const markup = buildTargetGeneratorMarkup({
-      targetsHTML,
-      textProvinceUnlocked,
-      textProvinceLocked,
-      collapse,
-    });
-
-    if (targetGenerator) {
-      targetGenerator.innerHTML = markup;
-    }
-
-    if (typeof document !== 'undefined') {
-      const copyBtn = document.getElementById('targetCopyID');
-      if (copyBtn && typeof onTargetCopy === 'function') {
-        copyBtn.addEventListener('click', onTargetCopy);
-      }
-
-      const postBtn = document.getElementById('targetGenPostID');
-      const postHandler =
-        typeof onTargetPost === 'function' ? onTargetPost
-        : typeof post_webstore?.postTargetGenToDiscord === 'function' ?
-          post_webstore.postTargetGenToDiscord
-        : typeof post_webstore?.postTargetsToDiscord === 'function' ?
-          post_webstore.postTargetsToDiscord
-        : null;
-      if (postBtn && postHandler) {
-        postBtn.addEventListener('click', postHandler);
-      }
-
-      const labelEl = document.getElementById('targetGenLabel');
-      if (labelEl && typeof collapse?.fCollapseTargetGen === 'function') {
-        labelEl.addEventListener('click', (e) => {
-          if (
-            e?.target &&
-            typeof e.target.closest === 'function' &&
-            e.target.closest('#targetGenicon')
-          ) {
-            return;
-          }
-          collapse.fCollapseTargetGen();
-        });
-      }
-      const iconEl = document.getElementById('targetGenicon');
-      if (
-        iconEl &&
-        iconEl !== labelEl &&
-        typeof collapse?.fCollapseTargetGen === 'function'
-      ) {
-        iconEl.addEventListener('click', () => {
-          collapse.fCollapseTargetGen();
-        });
-      }
-
-      const siegecamp_tooltip = document.getElementById('siegecamp_tooltip');
-      if (siegecamp_tooltip && typeof Tooltip === 'function') {
-        try {
-          new Tooltip(siegecamp_tooltip, {
-            html: true,
-            delay: { show: 200, hide: 500 },
-          });
-        } catch (e) {}
-      }
-    }
-
-    return markup;
-  } else {
-    if (targetGenerator) {
-      targetGenerator.innerHTML = '';
-    }
-    return '';
   }
 }
 
@@ -254,7 +143,7 @@ function buildBuildingCostCardHTML({
   const height = toolOptions?.buildingCostSize || 100;
 
   return (
-    `<div class="alert alert-info alert-dismissible  show collapsed" role="alert">
+    `<div class="alert alert-info alert-dismissible  show collapsed" role="status" aria-live="polite">
     ${closeBtn}
     <p id="buildingCostTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#buildingCostText" aria-expanded="${!collapse?.collapseBuildingCost}" aria-controls="buildingCostText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconMarkup}
@@ -369,15 +258,12 @@ function buildLeaderboardHTML(leaderboard = []) {
 }
 
 module.exports = {
-  renderTargetGeneratorCard,
   renderBuildingCostCard,
   buildProvinceTableHTML,
   buildBuildingCostsTableHTML,
   buildLeaderboardHTML,
-  buildTargetGeneratorMarkup,
   buildBuildingCostCardHTML,
   copyToClipboard,
   buildingCostCopy,
-  targetCopy,
 };
 module.exports.default = module.exports;

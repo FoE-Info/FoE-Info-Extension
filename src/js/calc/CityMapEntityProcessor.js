@@ -70,6 +70,7 @@ function processCityMapEntities(mapEntities, options = {}) {
   let clanPower = 0;
   let clanGoods = 0;
   let totalGoods = 0;
+  let uncountedEntitiesCount = 0;
   const unknownBonusTypes = new Map();
 
   let galaxyEntityMs = 0;
@@ -614,8 +615,8 @@ function processCityMapEntities(mapEntities, options = {}) {
       }
     }
 
-    if (DEV && !found && debugEl) {
-      debugEl.innerHTML += `<br>#${id}: ${fEntityName(cid)}`;
+    if (!found) {
+      uncountedEntitiesCount++;
     }
   }
 
@@ -627,6 +628,7 @@ function processCityMapEntities(mapEntities, options = {}) {
     clanGoods,
     clanPower,
     diamonds,
+    uncountedEntitiesCount,
   });
 
   return {

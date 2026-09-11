@@ -108,7 +108,7 @@ function buildBattlegroundResultCardHTML(responseData = {}, options = {}) {
   }
 
   return (
-    `<div id="battlegroundResultCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
+    `<div id="battlegroundResultCard" class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">
         ${closeBtn}
         <p id="battlegroundResultTextLabel" class="cursor-pointer" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundTextCollapse" aria-expanded="${!isCollapsed}" aria-controls="battlegroundTextCollapse" style="cursor: pointer; user-select: none;">
       ${iconMarkup}

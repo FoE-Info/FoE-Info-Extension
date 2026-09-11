@@ -152,7 +152,7 @@ export default function set(key, value) {
 
 export function fCollapseGBInfo() {
   collapseGBInfo = !collapseGBInfo;
-  storage.set('collapseGBInfo', collapseGBInfo);
+  storage.setCollapse('collapseGBInfo', collapseGBInfo);
   const copyEl = document.getElementById('gbInfoCopyID');
   if (copyEl) {
     copyEl.style.display = collapseGBInfo ? 'none' : 'block';
@@ -202,6 +202,7 @@ export function fCollapseGuild() {
   }
   // console.debug('collapseGuild',collapseGuild);
   element.updateIcon('guildicon', 'guildText', collapseGuild);
+  element.updateIcon('guildOverviewIcon', 'guildOverviewText', collapseGuild);
 }
 
 export function fCollapseIncidents() {
@@ -430,7 +431,7 @@ export function fCollapseCultural() {
 
 export function fCollapseClipboard() {
   collapseClipboard = !collapseClipboard;
-  storage.set('collapseClipboard', collapseClipboard);
+  storage.setCollapse('collapseClipboard', collapseClipboard);
   if (typeof document !== 'undefined') {
     const copyEl = document.getElementById('clipboardCopyID');
     if (copyEl) {

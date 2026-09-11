@@ -796,15 +796,19 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         !indexSource.includes("export var targetsTopic = 'targets';"),
         'index.js must not shadow targetsTopic declaration',
       );
-      assert.match(
-        indexSource,
-        /setTargetText\(/,
-        'index.js must call setTargetText on storage updates',
+      const bindingsSource = fs.readFileSync(
+        path.join(ROOT_DIR, 'src/js/ui/indexUiBindings.js'),
+        'utf8',
       );
       assert.match(
-        indexSource,
-        /setTargetsTopic\(/,
-        'index.js must call setTargetsTopic on storage updates',
+        bindingsSource,
+        /setTargetText:\s*\(val\)\s*=>\s*state\?\.setTargetText\?\.\(val\)/,
+        'indexUiBindings.js must call setTargetText on storage updates',
+      );
+      assert.match(
+        bindingsSource,
+        /setTargetsTopic:\s*\(val\)\s*=>\s*state\?\.setTargetsTopic\?\.\(val\)/,
+        'indexUiBindings.js must call setTargetsTopic on storage updates',
       );
     },
   );
@@ -812,8 +816,8 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
   await t.test(
     'fshowBattleground and getLeaderboard render to dedicated containers with null guards',
     () => {
-      const helperSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/fn/helper.js'),
+      const rendererSource = fs.readFileSync(
+        path.join(ROOT_DIR, 'src/js/ui/renderBattlegroundsPanel.js'),
         'utf8',
       );
       const gbgServiceSource = fs.readFileSync(
@@ -825,26 +829,26 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         'utf8',
       );
 
-      // Verify helper.js imports battlegroundDIV and renders to it
+      // Verify the battleground renderer imports battlegroundDIV and renders to it
       assert.match(
-        helperSource,
+        rendererSource,
         /battlegroundDIV/,
-        'helper.js must import battlegroundDIV from state',
+        'renderBattlegroundsPanel.js must import battlegroundDIV from state',
       );
       assert.match(
-        helperSource,
+        rendererSource,
         /document\.getElementById\(['"]battleground['"]\)[\s\S]*?battlegroundDIV/,
-        'helper.js fshowBattleground must target dedicated battleground container',
+        'renderBattlegroundsPanel.js fshowBattleground must target dedicated battleground container',
       );
       assert.match(
-        helperSource,
+        rendererSource,
         /const\s+copyEl\s*=\s*document\.getElementById\(['"]battlegroundCopyID['"]\);[\s\S]*?if\s*\(\s*copyEl\s*\)/,
-        'helper.js fshowBattleground must null-guard battlegroundCopyID click listener',
+        'renderBattlegroundsPanel.js fshowBattleground must null-guard battlegroundCopyID click listener',
       );
       assert.match(
-        helperSource,
+        rendererSource,
         /const\s+iconEl\s*=\s*document\.getElementById\(['"]battlegroundicon['"]\);[\s\S]*?if\s*\(\s*iconEl\s*\)/,
-        'helper.js fshowBattleground must null-guard battlegroundicon click listener',
+        'renderBattlegroundsPanel.js fshowBattleground must null-guard battlegroundicon click listener',
       );
 
       // Verify GuildBattlegroundService.js imports and renders to dedicated containers
