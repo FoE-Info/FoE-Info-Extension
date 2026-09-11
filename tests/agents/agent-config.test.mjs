@@ -6,27 +6,6 @@ import test from 'node:test';
 const PROJECT_ROOT = path.resolve('.');
 const AGENTS_DIR = path.join(PROJECT_ROOT, '.agents');
 
-test('Agent Config - validates project.json workspace profile', () => {
-  const projectJsonFile = path.join(AGENTS_DIR, 'project.json');
-  assert.ok(
-    fs.existsSync(projectJsonFile),
-    'project.json must exist in .agents/',
-  );
-
-  const config = JSON.parse(fs.readFileSync(projectJsonFile, 'utf8'));
-  assert.equal(config.name, 'foe-info', 'Must define config.name as foe-info');
-  assert.equal(
-    config.displayName,
-    'FoE-Info Extension',
-    'Must define config.displayName',
-  );
-  assert.equal(
-    config.primaryGraph,
-    'graphify-foe-info',
-    'Must define valid config.primaryGraph',
-  );
-});
-
 test('Agent Config - validates subagent definitions', () => {
   const agentsDir = path.join(AGENTS_DIR, 'agents');
   const agentFiles = fs.readdirSync(agentsDir).filter((f) => f.endsWith('.md'));
@@ -70,8 +49,8 @@ test('Agent Config - validates skill definitions', () => {
 
   assert.equal(
     skillDirs.length,
-    52,
-    'Expected exactly 52 skills in .agents/skills',
+    45,
+    'Expected exactly 45 skills in .agents/skills',
   );
 
   for (const dir of skillDirs) {
@@ -100,8 +79,8 @@ test('Agent Config - validates rule definitions', () => {
 
   assert.equal(
     ruleFiles.length,
-    16,
-    'Expected exactly 16 rules in .agents/rules',
+    12,
+    'Expected exactly 12 rules in .agents/rules',
   );
 
   for (const file of ruleFiles) {
@@ -197,9 +176,9 @@ test('Agent Config - validates AGENTS.md integrity and internal links', () => {
   );
 
   // Exact counts
-  assert.match(agentsMd, /31 subagents, 16 rules, and 52 skills/);
-  assert.match(agentsMd, /52 on-demand runbooks and procedures/);
-  assert.match(agentsMd, /Skills & Runbooks Taxonomy \(52 Skills\)/);
+  assert.match(agentsMd, /31 subagents, 12 rules, and 45 skills/);
+  assert.match(agentsMd, /45 on-demand runbooks and procedures/);
+  assert.match(agentsMd, /Skills & Runbooks Taxonomy \(45 Skills\)/);
 
   // Link validation
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;

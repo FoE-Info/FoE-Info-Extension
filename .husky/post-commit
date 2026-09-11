@@ -3,10 +3,6 @@
 # Auto-rebuilds the knowledge graph after each commit (code files only, no LLM needed).
 # Installed by: graphify hook install
 
-# Apply the same inference policy as CLI/MCP, without starting a model.
-_GRAPHIFY_ROOT=$(git rev-parse --show-toplevel) || exit 1
-. "$_GRAPHIFY_ROOT/.agents/scripts/graphify-local-env.sh"
-
 # Deterministic clustering: networkx louvain iterates string-keyed sets whose
 # order is randomized per-process by PYTHONHASHSEED, so community assignments
 # churn run-to-run. Pinning it makes graphify-out reproducible.
@@ -166,6 +162,7 @@ export GRAPHIFY_CHANGED="$CHANGED"
 _GRAPHIFY_LOG="${HOME}/.cache/graphify-rebuild.log"
 mkdir -p "$(dirname "$_GRAPHIFY_LOG")"
 export GRAPHIFY_REBUILD_LOG="$_GRAPHIFY_LOG"
+echo "[graphify hook] launching background rebuild (log: $_GRAPHIFY_LOG)"
 "$GRAPHIFY_PYTHON" -c "import os, subprocess, sys
 _src = '''
 import os, signal, sys, threading

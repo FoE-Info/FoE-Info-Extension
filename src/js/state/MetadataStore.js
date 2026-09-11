@@ -7,48 +7,13 @@
  * sets, chains, military units, and technologies.
  */
 
-let logger = null;
-let isDebugEnabled = () => false;
-try {
-  const logging = require('../utils/logger.js');
-  logger = logging.createLogger('MetadataStore');
-  isDebugEnabled = logging.isDebugEnabled;
-} catch {}
-
-function isEntityEqual(a, b) {
-  if (a === b) return true;
-  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false;
-  const keysA = Object.keys(a);
-  const keysB = Object.keys(b);
-  if (keysA.length !== keysB.length) return false;
-  for (let i = 0; i < keysA.length; i++) {
-    const key = keysA[i];
-    const valA = a[key];
-    const valB = b[key];
-    if (valA === valB) continue;
-    if (
-      typeof valA === 'object' &&
-      typeof valB === 'object' &&
-      valA !== null &&
-      valB !== null
-    ) {
-      if (JSON.stringify(valA) !== JSON.stringify(valB)) return false;
-    } else {
-      return false;
-    }
-  }
-  return true;
-}
-
 class MetadataStore {
   constructor() {
     this.reset();
   }
 
   reset() {
-    logger?.debug('Metadata cache invalidated / reset');
     this.entities = new Map();
-    this._reportedEntityMisses = new Set();
     this.resources = new Map();
     this.technologies = new Map();
     this.units = new Map();
@@ -59,9 +24,6 @@ class MetadataStore {
     this.selectionKits = new Map();
     this.allies = new Map();
     this.lookupUrls = new Map();
-    this.volcanoProvinces = [];
-    this.waterfallProvinces = [];
-    this.buildingDefs = [];
 
     // Relational Inverted Indexes
     this.entityToUpgrade = new Map();
@@ -74,7 +36,6 @@ class MetadataStore {
     this._readyPromise = new Promise((resolve) => {
       this._resolveReady = resolve;
     });
-    this._subscribers = new Set();
   }
 
   whenReady() {
@@ -89,44 +50,13 @@ class MetadataStore {
     if (!this._isReady) {
       this._isReady = true;
       this._resolveReady();
-      this.notifySubscribers({ type: 'ready' });
-    }
-  }
-
-  subscribe(callback) {
-    if (typeof callback !== 'function') return () => {};
-    this._subscribers.add(callback);
-    return () => this.unsubscribe(callback);
-  }
-
-  unsubscribe(callback) {
-    this._subscribers.delete(callback);
-  }
-
-  notifySubscribers(data) {
-    for (const callback of this._subscribers) {
-      try {
-        callback(data);
-      } catch (err) {
-        console.warn('MetadataStore subscriber error:', err);
-      }
     }
   }
 
   // --- Entity Ingestion & Indexing ---
 
-  registerEntity(entity, notify = true) {
+  registerEntity(entity) {
     if (!entity || !entity.id) return;
-
-    const existing = this.entities.get(entity.id);
-    const isNew = !existing;
-    const isChanged = !isNew && !isEntityEqual(existing, entity);
-
-    if (!isNew && !isChanged) {
-      return;
-    }
-
-    if (notify) logger?.debug('Entity cached:', entity.id);
     this.entities.set(entity.id, entity);
 
     if (entity.asset_id) {
@@ -144,44 +74,13 @@ class MetadataStore {
       });
     }
 
-    // Strip building_entity_ prefix alias and register cleanId variants
-    if (typeof entity.id === 'string') {
-      const rawEntityId = entity.id.replace(/^building_entity_/, '');
-      this.entities.set(rawEntityId, entity);
-
-      const cleanId = rawEntityId
-        .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
-        .replace(/^(MultiAge_|AllAge_)/, '');
-      if (cleanId) {
-        if (!this.entities.has(cleanId)) this.entities.set(cleanId, entity);
-        if (!this.entities.has(`building_entity_${cleanId}`))
-          this.entities.set(`building_entity_${cleanId}`, entity);
-        if (!this.entities.has(`W_MultiAge_${cleanId}`))
-          this.entities.set(`W_MultiAge_${cleanId}`, entity);
-        if (!this.entities.has(`R_MultiAge_${cleanId}`))
-          this.entities.set(`R_MultiAge_${cleanId}`, entity);
-        if (!this.entities.has(`M_MultiAge_${cleanId}`))
-          this.entities.set(`M_MultiAge_${cleanId}`, entity);
-        if (!this.entities.has(`M_AllAge_${cleanId}`))
-          this.entities.set(`M_AllAge_${cleanId}`, entity);
-      }
-    }
-
-    if (notify) {
-      this.notifySubscribers({ type: 'entity', id: entity.id, entity });
-    }
-  }
-
-  registerEntities(entities, notify = true) {
-    if (!Array.isArray(entities)) return;
-    logger?.debug(
-      `Batch caching ${entities.length} entities into MetadataStore`,
-    );
-    for (const entity of entities) {
-      this.registerEntity(entity, false);
-    }
-    if (notify) {
-      this.notifySubscribers({ type: 'entities', count: entities.length });
+    // Strip building_entity_ prefix alias
+    if (
+      typeof entity.id === 'string' &&
+      entity.id.startsWith('building_entity_')
+    ) {
+      const alias = entity.id.replace('building_entity_', '');
+      this.entities.set(alias, entity);
     }
   }
 
@@ -201,8 +100,7 @@ class MetadataStore {
     for (const s of sets) {
       if (!s.id) continue;
       this.sets.set(s.id, s);
-      const ids = s.cityEntityIds || s.buildings || [];
-      for (const bId of ids) {
+      for (const bId of s.cityEntityIds || []) {
         this.entityToSet.set(bId, s.id);
       }
     }
@@ -213,8 +111,7 @@ class MetadataStore {
     for (const c of chains) {
       if (!c.id) continue;
       this.chains.set(c.id, c);
-      const ids = c.cityEntityIds || c.buildings || [];
-      for (const bId of ids) {
+      for (const bId of c.cityEntityIds || []) {
         this.entityToChain.set(bId, c.id);
       }
     }
@@ -322,52 +219,13 @@ class MetadataStore {
   // --- Query API ---
 
   getEntity(id) {
-    const found = this.peekEntity(id);
-    this.reportEntityLookup(id, found);
-    return found;
-  }
-
-  // Alias candidates and legacy property probes are not completed lookups.
-  peekEntity(id) {
     if (!id) return null;
-    let found =
+    return (
       this.entities.get(id) ||
       this.entities.get(`building_entity_${id}`) ||
       this.entities.get(id.replace(/^building_entity_/, '')) ||
-      null;
-
-    if (!found && typeof id === 'string') {
-      const cleanId = id
-        .replace(/^building_entity_/, '')
-        .replace(/^(W_|R_|X_|L_|D_|B_|M_|S_|P_|G_|Q_)/, '')
-        .replace(/^(MultiAge_|AllAge_)/, '');
-      if (cleanId) {
-        found =
-          this.entities.get(cleanId) ||
-          this.entities.get(`W_MultiAge_${cleanId}`) ||
-          this.entities.get(`R_MultiAge_${cleanId}`) ||
-          this.entities.get(`M_MultiAge_${cleanId}`) ||
-          this.entities.get(`M_AllAge_${cleanId}`) ||
-          null;
-      }
-    }
-    return found;
-  }
-
-  reportEntityLookup(id, found) {
-    if (!id) return;
-    if (found) {
-      this._reportedEntityMisses.delete(id);
-    } else if (isDebugEnabled() && !this._reportedEntityMisses.has(id)) {
-      // Bound diagnostic bookkeeping; this never caches a lookup result.
-      if (this._reportedEntityMisses.size >= 4096) {
-        this._reportedEntityMisses.delete(
-          this._reportedEntityMisses.values().next().value,
-        );
-      }
-      this._reportedEntityMisses.add(id);
-      logger?.debug('Cache miss for entity:', id);
-    }
+      null
+    );
   }
 
   getUpgradePath(id) {
@@ -388,17 +246,9 @@ class MetadataStore {
     return this.sets.get(setId) || null;
   }
 
-  getSetForEntity(id) {
-    return this.entityToSet.get(id) || null;
-  }
-
   getChain(id) {
     const chainId = this.entityToChain.get(id) || id;
     return this.chains.get(chainId) || null;
-  }
-
-  getChainForEntity(id) {
-    return this.entityToChain.get(id) || null;
   }
 
   getResource(id) {
@@ -439,23 +289,15 @@ class MetadataStore {
       {
         get: (_target, prop) => {
           if (typeof prop !== 'string') return undefined;
-          return this.peekEntity(prop) || undefined;
+          return this.getEntity(prop) || undefined;
         },
         has: (_target, prop) => {
           if (typeof prop !== 'string') return false;
-          return this.peekEntity(prop) !== null;
+          return this.getEntity(prop) !== null;
         },
         set: (_target, prop, value) => {
           if (typeof prop === 'string' && value && typeof value === 'object') {
-            const canonicalId = value.id || prop;
-            if (prop === canonicalId) {
-              this.registerEntity(value);
-            } else {
-              if (!this.entities.has(canonicalId)) {
-                this.registerEntity({ ...value, id: canonicalId });
-              }
-              this.entities.set(prop, value);
-            }
+            this.registerEntity({ ...value, id: value.id || prop });
             return true;
           }
           return false;
@@ -464,12 +306,12 @@ class MetadataStore {
           return Array.from(this.entities.keys());
         },
         getOwnPropertyDescriptor: (_target, prop) => {
-          if (typeof prop === 'string' && this.peekEntity(prop)) {
+          if (typeof prop === 'string' && this.getEntity(prop)) {
             return {
               configurable: true,
               enumerable: true,
               writable: true,
-              value: this.peekEntity(prop),
+              value: this.getEntity(prop),
             };
           }
           return undefined;

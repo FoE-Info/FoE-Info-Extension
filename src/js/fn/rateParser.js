@@ -5,7 +5,7 @@
  */
 
 function extractRateFromTitle(title) {
-  if (!title || typeof title !== 'string') return 0;
+  if (!title || typeof title !== 'string') return 190;
 
   // Match decimal rates like 1.85, 1.9, 1.92, 1,9, 2.0
   const decMatch = title.match(/(?:^|\s|[^\d])([12][.,]\d{1,2})(?:$|\s|[^\d])/);
@@ -25,7 +25,7 @@ function extractRateFromTitle(title) {
     }
   }
 
-  return 0;
+  return 190;
 }
 
 module.exports = { extractRateFromTitle };

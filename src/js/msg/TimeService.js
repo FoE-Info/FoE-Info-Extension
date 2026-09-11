@@ -126,6 +126,9 @@ class TimeService {
 }
 
 const timeService = new TimeService();
+if (messageDispatcher && typeof messageDispatcher.register === 'function') {
+  timeService.register(messageDispatcher);
+}
 
 module.exports = {
   TimeService,
