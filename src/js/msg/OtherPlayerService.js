@@ -21,6 +21,7 @@ let i18n;
 let renderCityStatsPkg;
 let visitedStatsPkg;
 let showOptionsPkg;
+let castleSystemService = null;
 
 try {
   element = require('../fn/AddElement');
@@ -45,6 +46,9 @@ try {
 } catch {}
 try {
   visitedStatsPkg = require('../fn/VisitedCityStatsCalculator.js');
+} catch {}
+try {
+  ({ castleSystemService } = require('./CastleSystemService.js'));
 } catch {}
 try {
   showOptionsPkg = require('../vars/showOptions.js');
@@ -126,6 +130,7 @@ function otherPlayerService(msg) {
         visitedCityStatsCalculator.calculateVisitedCityStats({
           entities: mapEntities,
           playerEra,
+          castleBoostResolver: castleSystemService?.getBoostsForEntity,
         });
 
       const inactiveHtml = checkInactivePlunder(friends);
