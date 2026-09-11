@@ -12,6 +12,12 @@
 import BigNumber from 'bignumber.js';
 import type { GreatBuildingSpot } from '../../types/state';
 
+let logger: { debug?: (...args: unknown[]) => void } | null = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('GBCalc');
+} catch {}
+
 export type NumericValue = number | string | BigNumber;
 
 export interface GreatBuildingRankingItem {
@@ -99,10 +105,18 @@ export function calculateArcReward(
   const bonusBN = new BigNumber(arcBonusPercent ?? 90);
   const multiplier = new BigNumber(1).plus(bonusBN.dividedBy(100));
 
-  return baseBN
+  const reward = baseBN
     .multipliedBy(multiplier)
     .integerValue(BigNumber.ROUND_HALF_UP)
     .toNumber();
+
+  logger?.debug('Arc reward calculated:', {
+    baseReward: baseBN.toString(),
+    arcBonusPercent: bonusBN.toString(),
+    reward,
+  });
+
+  return reward;
 }
 
 /**

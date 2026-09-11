@@ -69,6 +69,7 @@ const FACTORY_WORLD_SETTINGS = Object.freeze({
   caches: Object.freeze({
     hiddenInvestments: Object.freeze([]),
   }),
+  collapses: Object.freeze({}),
 });
 
 const FACTORY_GLOBAL_SETTINGS = Object.freeze({

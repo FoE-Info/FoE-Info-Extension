@@ -179,11 +179,24 @@ export function showReward(reward) {
     collapse.collapseRewards ? '' : 'show'
   }">${text}</div></div>`;
     rewardObserve();
-    const rewardsLabel =
-      document.getElementById('rewardsicon') ||
-      document.getElementById('rewardsTextLabel');
-    if (rewardsLabel) {
-      rewardsLabel.addEventListener('click', collapse.fCollapseRewards);
+    const labelEl = document.getElementById('rewardsTextLabel');
+    if (labelEl) {
+      labelEl.addEventListener('click', (e) => {
+        if (
+          e?.target &&
+          typeof e.target.closest === 'function' &&
+          e.target.closest('#rewardsicon')
+        ) {
+          return;
+        }
+        collapse.fCollapseRewards();
+      });
+    }
+    const iconEl = document.getElementById('rewardsicon');
+    if (iconEl && iconEl !== labelEl) {
+      iconEl.addEventListener('click', () => {
+        collapse.fCollapseRewards();
+      });
     }
   }
 }
