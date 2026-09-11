@@ -245,12 +245,6 @@ test('Per-World Storage Subsystem', async (t) => {
     setStorage('investSettings', { showBonus: false });
     assert.strictEqual(getSync('showOptions').showBonus, false);
 
-    // Test set for toolOptions per-world persistence
-    setStorage('toolOptions', { armySize: 300 });
-    assert.strictEqual(getSync('toolOptions').armySize, 300);
-    const toolOptsVal = await getStorage('toolOptions');
-    assert.strictEqual(toolOptsVal.armySize, 300);
-
     // Test generic key
     setStorage('customTestKey', 'foobar');
     assert.strictEqual(getSync('customTestKey'), 'foobar');

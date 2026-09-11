@@ -82,8 +82,8 @@ function renderGuildPanel(clanData, deps = {}) {
       <td class="text-start fw-semibold">${name}</td>
       <td class="text-start text-muted">${title}</td>
       <td class="text-start">${era}</td>
-      <td class="text-end">${battles}</td>
-      <td class="text-end">${score}</td>
+      <td class="text-end font-monospace">${battles}</td>
+      <td class="text-end font-monospace">${score}</td>
     </tr>`;
   }
 

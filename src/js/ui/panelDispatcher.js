@@ -360,7 +360,7 @@ function renderTreasuryPanel(resources, deps = {}) {
   treasuryHTML += copyHtml;
   treasuryHTML += `<div id="treasuryText" style="height: ${treasuryHeight}px" class="overflow-y resize collapse ${
     isCollapsed ? '' : 'show'
-  }"><table id="treasurytable" class="goods-table w-100"><thead><tr><th class="text-start"><span data-i18n="type">Type</span></th><th class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
+  }"><table id="treasurytable" class="goods-table w-100"><thead><tr><th class="text-start ps-3"><span data-i18n="resource">Resource</span></th><th class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
 
   if (typeof deps.initTreasury === 'function') {
     deps.initTreasury(resources);
@@ -390,7 +390,7 @@ function renderTreasuryPanel(resources, deps = {}) {
           typeof help.escapeHTML === 'function' ?
             help.escapeHTML(displayName)
           : displayName;
-        eraTreasuryText += `<tr><td class="text-start">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
+        eraTreasuryText += `<tr><td class="text-start ps-3">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
       }
     });
     if (eraTreasuryText) {
@@ -400,7 +400,7 @@ function renderTreasuryPanel(resources, deps = {}) {
 
   const medals = getResourceAmount(resources, 'medals');
   if (medals > 0) {
-    treasuryHTML += `<tr><td class="text-start">Medals</td><td class="text-end">${medals.toLocaleString()}</td></tr>`;
+    treasuryHTML += `<tr><td class="text-start ps-3">Medals</td><td class="text-end">${medals.toLocaleString()}</td></tr>`;
   }
 
   let otherTreasuryText = '';
@@ -420,7 +420,7 @@ function renderTreasuryPanel(resources, deps = {}) {
           typeof help.escapeHTML === 'function' ?
             help.escapeHTML(displayName)
           : displayName;
-        otherTreasuryText += `<tr><td class="text-start">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
+        otherTreasuryText += `<tr><td class="text-start ps-3">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
       }
     }
   }

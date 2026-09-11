@@ -11,57 +11,48 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-let debug = null;
-try {
-  debug = require('../state/state.js').debug;
-} catch {}
+import { debug } from '../state/state.js';
 
-function fClipboardCopy() {
+export function fClipboardCopy() {
   copyToClipboard('div#clipboardText');
 }
 
-function DonorCopy() {
+export function DonorCopy() {
   copyToClipboard('#donorText');
 }
 
-function DonorCopy2() {
+export function DonorCopy2() {
   copyToClipboard('div#donorTextCollapse');
 }
 
-function fInvestedCopy() {
+export function fInvestedCopy() {
   copyToClipboard('div#investedText');
 }
 
-function fGBInfoCopy() {
+export function fGBInfoCopy() {
   copyToClipboard('div#gbInfoCollapse');
 }
 
-function DonationCopy() {
-  var copytext =
-    typeof document !== 'undefined' ?
-      document.getElementById('copyText')
-    : null;
-  if (!copytext) return;
+export function DonationCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
+  var copytext = document.getElementById('copyText');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-function fCityStatsCopy() {
-  if (typeof document === 'undefined') return;
-  var labelEl = document.getElementById('citystatsLabel');
-  var textEl = document.getElementById('citystatsText');
-  if (!labelEl && !textEl) return;
-  var cityStatsHTML =
-    (labelEl ? labelEl.innerHTML + '<br>' : '') +
-    (textEl ? textEl.innerHTML : '');
-  if (!debug) return;
+export function fCityStatsCopy() {
+  var cityStatsHTML = '';
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
+
+  var copytext = document.getElementById('citystatsLabel');
+  cityStatsHTML = copytext.innerHTML + '<br>';
+  copytext = document.getElementById('citystatsText');
+  cityStatsHTML += copytext.innerHTML;
   debug.innerHTML = cityStatsHTML;
   range.selectNode(debug);
   selection.addRange(range);
@@ -69,70 +60,52 @@ function fCityStatsCopy() {
   debug.innerHTML = '';
 }
 
-function fFriendsCopy() {
-  var copytext =
-    typeof document !== 'undefined' ?
-      document.getElementById('friendsText2')
-    : null;
-  if (!copytext) return;
+export function fFriendsCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
+  var copytext = document.getElementById('friendsText2');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-function fGuildCopy() {
-  var copytext =
-    typeof document !== 'undefined' ?
-      document.getElementById('guildText2')
-    : null;
-  if (!copytext) return;
+export function fGuildCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
+  var copytext = document.getElementById('guildText2');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-function fHoodCopy() {
-  var copytext =
-    typeof document !== 'undefined' ?
-      document.getElementById('hoodText2')
-    : null;
-  if (!copytext) return;
+export function fHoodCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
+  var copytext = document.getElementById('hoodText2');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-function BattlegroundCopy() {
+export function BattlegroundCopy() {
   let node = document.querySelector('#gbg-table');
-  if (node) copyNode(node);
+  copyNode(node);
 }
 
-function ExpeditionCopy(targetId = 'geContributionText') {
-  if (typeof document === 'undefined') return;
-  var copytext =
-    (targetId ? document.getElementById(targetId) : null) ||
-    document.getElementById('geContributionText') ||
-    document.getElementById('geChampionshipText') ||
-    document.getElementById('expeditionText');
-  if (!copytext) return;
+export function ExpeditionCopy() {
   var selection = window.getSelection();
   selection.removeAllRanges();
   var range = document.createRange();
+  var copytext = document.getElementById('expeditionText');
   range.selectNode(copytext);
   selection.addRange(range);
   document.execCommand('copy');
 }
 
-async function TreasuryCopy() {
+export async function TreasuryCopy() {
   const table = document.getElementById('treasurytable');
   if (!table) return;
 
@@ -218,7 +191,6 @@ function addToClipboard(element, html) {
 }
 
 function copyNode(node) {
-  if (!node) return;
   let range = document.createRange();
   range.selectNodeContents(node);
   let select = window.getSelection();
@@ -226,20 +198,3 @@ function copyNode(node) {
   select.addRange(range);
   document.execCommand('copy');
 }
-
-module.exports = {
-  fClipboardCopy,
-  DonorCopy,
-  DonorCopy2,
-  fInvestedCopy,
-  fGBInfoCopy,
-  DonationCopy,
-  fCityStatsCopy,
-  fFriendsCopy,
-  fGuildCopy,
-  fHoodCopy,
-  BattlegroundCopy,
-  ExpeditionCopy,
-  TreasuryCopy,
-};
-module.exports.default = module.exports;

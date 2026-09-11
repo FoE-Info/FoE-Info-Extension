@@ -358,12 +358,12 @@ function renderBuildingCostCard({
 }
 
 function buildLeaderboardHTML(leaderboard = []) {
-  let leaderboardHTML = `<tr><th class="text-start">Guild</th><th class="text-center">VP/hr</th><th class="text-center">Total VP</th></tr>`;
+  let leaderboardHTML = `<tr><th>Guild</th><th>VP/hr</th><th>Total VP</th></tr>`;
   (leaderboard || []).forEach((guild) => {
     const name = guild?.clan?.name || '';
-    const vpHourly = Number(guild?.victoryPointsHourly || 0).toLocaleString();
-    const vpTotal = Number(guild?.victoryPointsTotal || 0).toLocaleString();
-    leaderboardHTML += `<tr><td class="text-start">${name}</td><td class="text-center tabular-nums">${vpHourly}</td><td class="text-center tabular-nums">${vpTotal}</td></tr>`;
+    const vpHourly = guild?.victoryPointsHourly ? guild.victoryPointsHourly : 0;
+    const vpTotal = guild?.victoryPointsTotal ? guild.victoryPointsTotal : 0;
+    leaderboardHTML += `<tr><td>${name}</td><td>${vpHourly}</td><td>${vpTotal}</td></tr>`;
   });
   return leaderboardHTML;
 }

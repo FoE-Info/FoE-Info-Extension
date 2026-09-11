@@ -313,8 +313,9 @@ export function showGreatBuldingDonation() {
         : p === 2 ? '2nd'
         : p === 3 ? '3rd'
         : `${p}th`;
+      const donorArcPercent = 100 + (City?.ArcBonus ?? 90);
       if (Profit > 0) {
-        olddonationHTML += `<p class="invest-good">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
+        olddonationHTML += `<p class="invest-good">${placeOrdinal} Place (${donorArcPercent}% Arc)<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
         newdonationHTML += gbTabSafe(
           p,
           currentPercent,
@@ -349,7 +350,7 @@ export function showGreatBuldingDonation() {
           outcomeClass = 'invest-neutral';
           outcomeValue = 0;
         }
-        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="${outcomeKey}">${outcomeLabel}</span>: ${outcomeValue}<br>`;
+        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place (${donorArcPercent}% Arc)<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="${outcomeKey}">${outcomeLabel}</span>: ${outcomeValue}<br>`;
         newdonationHTML += gbTabNotSafe(
           p,
           currentPercent,

@@ -31,18 +31,6 @@ p,
   margin-bottom: 0.33em;
 }
 
-.alert {
-  padding: 0.5em 0.75em;
-}
-
-.foe-panel-body {
-  line-height: 1.4;
-}
-
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
-}
-
 .title {
   margin-left: 0.625em;
   margin-bottom: 0em;
@@ -73,15 +61,9 @@ p,
   min-width: 280px;
 }
 
-.gbg-full-roster.show {
+.gbg-full-roster {
   min-height: 250px;
   min-width: 280px;
-}
-
-// Eliminate Bootstrap collapse animation lag/stutter in DevTools panel
-.collapsing {
-  min-height: 0 !important;
-  transition: none !important;
 }
 
 #expeditionText table,
@@ -174,6 +156,10 @@ p,
     width: 1%;
   }
 
+  td.ps-3 {
+    padding-left: 14px;
+  }
+
   .goods-era-header,
   .special-goods-header {
     text-align: left;
@@ -186,36 +172,18 @@ p,
   }
 }
 
-// #guildMemberTable, #geChampionshipTable, and #geContributionTable reuse .goods-table's base styling,
-// but their columns hold short strings and names rather than the long descriptive
-// labels .goods-table's word-break was designed for. In a narrow sidebar those columns
-// get squeezed enough that word-break starts breaking mid-word onto 2-3 lines.
-#guildMemberTable,
-#geChampionshipTable,
-#geContributionTable {
+// #guildMemberTable reuses .goods-table's base styling, but its columns
+// (#, name, title, era) hold short, single-token strings rather than the
+// long descriptive labels .goods-table's word-break was designed for. In
+// a narrow sidebar those columns get squeezed enough that word-break:
+// break-word starts breaking mid-word, one letter per line. Keep those
+// cells on one line instead and let the panel's existing horizontal
+// scroll (.overflow-y already sets overflow-x: auto) handle overflow.
+#guildMemberTable {
   th.text-start,
   td.text-start {
     white-space: nowrap;
     word-break: normal;
-  }
-}
-
-#geChampionshipTable,
-#geContributionTable {
-  th,
-  td {
-    padding: 2px 4px;
-  }
-
-  th.text-start,
-  td.text-start {
-    text-align: left;
-    white-space: nowrap;
-  }
-
-  th.text-center,
-  td.text-center {
-    white-space: nowrap;
   }
 }
 

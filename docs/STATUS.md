@@ -10,20 +10,6 @@ a changelog. See `docs/README.md` for the full hub.
 
 ## In progress
 
-| DevTools teardown delay | Done | Eliminated 1.7–2.5s freeze when closing DevTools; guarded flushCityEntityDefs to only run when dirty, stripped 30MB unmodified metadata writes (AllyDefs, BuildingEntityLookup) on unload, and cleaned up panelWindow references in devtools.js on panel.onHidden/unload (`39e3b10`). |
-| Army panel sizing & persistence | Done | Calibrated default Army Panel height to 185px (`#armyText`, outer card 229px) across `globals.js`, `factoryDefaults.js`, and `ArmyUnitManagementService.js`. Added `.collapsing` and `!show` guards to `ResizeObserver` preventing animation frames from corrupting stored height; verified per-world storage persistence (`3b167a3` + update). |
-| Battlegrounds collapse performance | Done | Fixed lag/freeze on Battlegrounds panel collapse: scoped `min-height: 250px` to `.gbg-full-roster.show` and disabled collapse transitions on `.collapsing` in `custom.scss` to eliminate frame-by-frame 350ms table reflow; added observer guards in `helper.js`. |
-| Lists Copy button alignment | Done | Fixed Friends, Guild, and Hood player lists Copy buttons overlapping container borders; replaced absolute offset with flex header rows (`d-flex flex-row justify-content-between align-items-center mb-0`) in `OtherPlayerService.js` and updated `collapse.js`. |
-| GE Championship server alignment | Done | Left-aligned Server column header and cell text (`text-start`) in `expeditionTables.js` and `custom.scss` (`#geChampionshipTable`). |
-| GE Leaderboard styling parity | Done | Styled GE Leaderboard (`#geContributionTable`) to match GBG Leaderboard: `.goods-table` table styling, text-start for members, text-center for trial, and centered formatted numbers with `tabular-nums`. |
-| Panel layout ordering | Done | Organized DevTools `#content` container into a clean 5-group player workflow in `containerBinding.js` (City -> Military -> Great Buildings -> Guild Activities -> Social/System). |
-| Table header capitalization | Done | Capitalized `Type` and `Amount` across all 7 language dictionaries in `src/i18n/` for Goods Inventory and Guild Treasury consistency. |
-| Goods & Treasury table alignment | Done | Removed artificial `ps-3` indentation from item cells in `ResourceService.js`, `panelDispatcher.js`, and `OutpostService.js`, aligning goods and resource rows flush with table headers and era titles (`5608b43`). |
-| Own City Info card non-dismissible | Done | Preserved player's own City Info overview as permanently visible by removing close button and `alert-dismissible` from `ownCityCard.js` and `renderCityStats.js` (`5c2dbf1`). |
-| GB donation place headers | Done | Reverted GB donation place titles to classic "1st Place", "2nd Place" etc. by removing accidental `(${donorArcPercent}% Arc)` suffix (`53b89c0`). |
-| Universal panel collapsibility & controls | Done | Made all panels collapsible on title click with `[-]`/`[+]` toggles and close buttons. Created dedicated "Other Player Information" header with player link on line 1 (`c1c8a00`). |
-| GB closed panels reopen fix | Done | Retained `#greatbuilding`, `#gbInfo`, `#donation2` containers in DOM upon close so opening subsequent Great Buildings re-mounts and displays them properly (`fbe4b4a`). |
-| CF Bonus line placement | Done | Positioned Chateau Frontenac (CF) bonus on its own line directly under Arc bonus in `ownCityCard.js` and `visitedCityCard.js` (`b19c2eb`). |
 | Options page instant render | Done | Eliminated blank delay and unpopulated FOUC in options.html; populated form synchronously from storage; moved tab discovery to non-blocking background; added unit test. |
 | Release v0.0.833 | Done | Bumped version to 0.0.833, created CHANGELOG.md, added scripts/release.mjs, built WebStore zip, created git tag v0.0.833. |
 | GBG UC & rushed camps | Done | Formatted UC camps as `(60% / 20% UC)`. Reconciled server `gainAttritionChance` in `GbgCalculator.js` so rushed camps promote to ready immediately rather than showing stale UC (`bbd25b9`). |
@@ -67,19 +53,7 @@ a changelog. See `docs/README.md` for the full hub.
 - [x] Run `npm run verify` + graphify AST sync after consolidation completes (2026-09-11)
 - [x] Push `development` (`6df53f3` + `5dae931`) to `origin/development` (2026-09-11)
 - [x] Live browser spot-check: own GB donate → card refreshes without reopening (verified on en7 Zeus 2026-09-11)
-- [x] Position Chateau Frontenac (CF) bonus on its own line under Arc bonus in City Overview (`b19c2eb`)
-- [x] Fix GB closed panels (GB info, contributors, donation) to reappear upon opening Great Buildings (`fbe4b4a`)
-- [x] Make all panels collapsible on title click with `[-]`/`[+]` icons and close buttons; "Other Player Information" header separation (`c1c8a00`)
-- [x] Revert GB donation place headers to classic "1st Place", "2nd Place" (removed Arc bonus suffix) (`53b89c0`)
-- [x] Keep player's own City Info overview non-dismissible without close button (`5c2dbf1`)
-- [x] Align Goods Inventory, Guild Treasury, and Cultural Outpost tables flush with headers (removed `ps-3`) (`5608b43`)
-- [x] Calibrate Army Panel default height to 185px (`#armyText`, outer card 229px) and guard ResizeObserver against collapse animation (`3b167a3` + update)
-- [x] Fix Battlegrounds panel collapse stutter/lag (min-height scoping + collapse transition suppression)
-- [x] Fix Lists Copy button border overlap via flex header alignment (`OtherPlayerService.js`)
-- [x] Left-align Server column in GE Championship table
-- [x] Match GE Leaderboard styling to GBG Leaderboard with tabular-nums and number formatting
-- [x] Organize `#content` panel order into clean 5-group workflow (`containerBinding.js`)
-- [x] Capitalize `Type` and `Amount` across all 7 language dictionaries for Goods & Treasury tables
+- [x] Graph pipeline + subagents setup for LoW-Tool and FoE-Info-original (scripts, npm runners, MCP servers, grants, docs, tests)
 - [ ] Generate `../LoW-Tool/graphify-out/graph.json` via `npm run graph:low-tool:reindex`
 - [ ] Generate `../FoE-Info-Extension-original/graphify-out/graph.json` via `npm run graph:foe-info-original:reindex`
 

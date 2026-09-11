@@ -416,7 +416,7 @@ function renderCulturalPanel(
     for (const res of costKeys) {
       const amount = remainingCosts[res];
       const resLabel = helper?.escapeHTML ? helper.escapeHTML(res) : res;
-      html += `<tr><td class="text-start">${resLabel}</td><td class="text-end font-monospace">${amount.toLocaleString()}</td></tr>`;
+      html += `<tr><td class="text-start ps-3">${resLabel}</td><td class="text-end font-monospace">${amount.toLocaleString()}</td></tr>`;
     }
     html += `</tbody></table>`;
   }
