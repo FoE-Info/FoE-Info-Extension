@@ -820,6 +820,10 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         path.join(ROOT_DIR, 'src/js/msg/GuildBattlegroundService.js'),
         'utf8',
       );
+      const resultCardSource = fs.readFileSync(
+        path.join(ROOT_DIR, 'src/js/ui/renderBattlegroundResultCard.js'),
+        'utf8',
+      );
 
       // Verify helper.js imports battlegroundDIV and renders to it
       assert.match(
@@ -865,37 +869,37 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         'GuildBattlegroundService.js getState must target dedicated battleground container',
       );
       assert.match(
-        gbgServiceSource,
-        /const\s+copyEl\s*=\s*document\.getElementById\(['"]battlegroundCopyID['"]\);\s*if\s*\(\s*copyEl\s*\)/,
-        'GuildBattlegroundService.js getState must null-guard battlegroundCopyID listener',
+        resultCardSource,
+        /document\.getElementById\(['"]battlegroundCopyID['"]\)[\s\S]*?BattlegroundCopy/,
+        'renderBattlegroundResultCard must null-guard and wire battlegroundCopyID listener',
       );
     },
   );
 
   await t.test(
-    'getState renders GBG table with centered rank, member start, centered negs/fights/attrition, and clickable title',
+    'renderBattlegroundResultCard renders GBG table with centered rank, member start, centered negs/fights/attrition, and clickable title',
     () => {
-      const gbgServiceSource = fs.readFileSync(
-        path.resolve('src/js/msg/GuildBattlegroundService.js'),
+      const resultCardSource = fs.readFileSync(
+        path.resolve('src/js/ui/renderBattlegroundResultCard.js'),
         'utf8',
       );
       assert.match(
-        gbgServiceSource,
+        resultCardSource,
         /<th class="text-center">Rank<\/th><th class="text-start">Member<\/th><th class="text-center">Negs<\/th><th class="text-center">Fights<\/th><th class="text-center">Attrition<\/th>/,
         'GBG table must render centered headers with capitalized Attrition',
       );
       assert.match(
-        gbgServiceSource,
-        /<td class="text-center">\$\{entry\.rank\}<\/td><td class="text-start">\$\{safePlayerName\}<\/td><td class="text-center">\$\{wonNegotiations\}<\/td><td class="text-center">\$\{wonBattles\}<\/td><td class="text-center">\$\{attrition\}<\/td>/,
+        resultCardSource,
+        /<td class="text-center">\$\{row\.rank\}<\/td><td class="text-start">\$\{safePlayerName\}<\/td><td class="text-center">\$\{row\.negotiations\}<\/td><td class="text-center">\$\{row\.fights\}<\/td><td class="text-center">\$\{row\.attrition\}<\/td>/,
         'GBG table rows must have centered rank, negotiations, battles, attrition, and left-aligned name',
       );
       assert.match(
-        gbgServiceSource,
+        resultCardSource,
         /id="battlegroundResultTextLabel"\s+class="cursor-pointer"/,
         'GBG result text label must have cursor-pointer class',
       );
       assert.match(
-        gbgServiceSource,
+        resultCardSource,
         /document\.getElementById\(['"]battlegroundResultTextLabel['"]\)/,
         'GBG result text label must have collapse event listener bound',
       );

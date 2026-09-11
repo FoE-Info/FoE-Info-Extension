@@ -72,16 +72,20 @@ function renderBuildingCollectionTimes({
 
   sortedReady.forEach((entry) => {
     if (entry.ready > minValidEpoch) {
-      const displayName =
+      const rawName =
         (helper?.fEntityNameTrim &&
           helper.fEntityNameTrim(entry.id || entry.name)) ||
         entry.name ||
         entry.id;
+      const displayName =
+        typeof helper?.escapeHTML === 'function' ?
+          helper.escapeHTML(rawName)
+        : String(rawName ?? '');
       buildingsHTML += `${displayName}: ${formatDateTime(entry.ready)}<br>`;
     }
   });
 
-  buildings.innerHTML = buildingsHTML + `</p></div></div>`;
+  buildings.innerHTML = buildingsHTML + `</div></div>`;
   const labelEl = document.getElementById('buildingsTextLabel');
   if (labelEl && collapse?.fCollapseBuildings) {
     labelEl.addEventListener('click', (e) => {

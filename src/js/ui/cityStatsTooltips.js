@@ -35,7 +35,7 @@ const AGES = [
   'me',
   'pe',
   'ina',
-  'cma',
+  'ca',
   'lma',
   'hma',
   'ema',

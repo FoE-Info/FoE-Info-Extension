@@ -153,6 +153,9 @@ function registerGreatBuilding(entity, playerId) {
   };
 
   gbRegistry.set(compositeKey, normalized);
+  if (Number(pId) === 0) {
+    gbRegistry.set(`0_${eId}`, normalized);
+  }
   gbRegistry.set(String(eId), normalized);
   if (entity.id && entity.entity_id && entity.id !== entity.entity_id) {
     gbRegistry.set(String(entity.id), normalized);
@@ -197,11 +200,26 @@ function getGreatBuilding(playerId, entityId) {
     if (gbRegistry.has(compositeKey)) {
       return gbRegistry.get(compositeKey);
     }
+    if (Number(playerId) === 0 && gbRegistry.has(`0_${entityId}`)) {
+      return gbRegistry.get(`0_${entityId}`);
+    }
   }
   if (entityId !== undefined && entityId !== null) {
+    if (
+      (playerId === 0 ||
+        playerId === '0' ||
+        playerId === undefined ||
+        playerId === null) &&
+      gbRegistry.has(`0_${entityId}`)
+    ) {
+      return gbRegistry.get(`0_${entityId}`);
+    }
     const singleKey = String(entityId);
     if (gbRegistry.has(singleKey)) {
       return gbRegistry.get(singleKey);
+    }
+    if (gbRegistry.has(`0_${entityId}`)) {
+      return gbRegistry.get(`0_${entityId}`);
     }
   }
   if (

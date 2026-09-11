@@ -15,9 +15,12 @@
 import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import { renderBetaPanel } from '../ui/betaDebugPanel.js';
+import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
 import { Bonus, checkDebug } from '../vars/state.js';
 import { City, Galaxy, showGalaxy } from './StartupService.js';
+
+const logger = createLogger('BonusService');
 
 export function getBonuses(msg) {
   if (typeof DEV !== 'undefined' && DEV && checkDebug()) {
@@ -43,15 +46,18 @@ export function getBonuses(msg) {
 }
 
 export function getLimitedBonuses(msg) {
-  if (showOptions && showOptions.showBonus && msg.responseData.length) {
+  if (
+    showOptions &&
+    showOptions.showBonus &&
+    Array.isArray(msg?.responseData) &&
+    msg.responseData.length
+  ) {
     var bonusHTML = '';
-    var bonus = document.getElementById('bonus');
-    console.debug(msg.responseData);
+    var bonus =
+      typeof document !== 'undefined' ? document.getElementById('bonus') : null;
+    logger.debug('Limited bonuses received:', msg.responseData);
 
     msg.responseData.forEach((entry) => {
-      // console.debug(entry);
-      if (!entry.amount) bonus.innerHTML = ``;
-
       if (entry.type == 'spoils_of_war') {
         Bonus.spoils = entry.amount;
         if (document.getElementById('spoilsID'))
@@ -92,6 +98,7 @@ export function getLimitedBonuses(msg) {
     });
     // console.debug(bonusHTML);
     if (
+      bonus &&
       bonus.innerHTML == `` &&
       (Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
     ) {
@@ -101,15 +108,27 @@ export function getLimitedBonuses(msg) {
 			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
             ${element.close()}
             <div id="bonusText" class="alert-light collapse"><p><strong>Legend:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
-      document
-        .getElementById('bonusicon')
-        ?.addEventListener('click', collapse.fCollapseBonus);
-    } else if (!(
-      Bonus.aid ||
-      Bonus.spoils ||
-      Bonus.diplomatic ||
-      Bonus.strike
-    )) {
+      const labelEl = document.getElementById('bonusTextLabel');
+      if (labelEl) {
+        labelEl.addEventListener('click', (e) => {
+          if (
+            e?.target &&
+            typeof e.target.closest === 'function' &&
+            e.target.closest('#bonusicon')
+          ) {
+            return;
+          }
+          collapse.fCollapseBonus();
+        });
+      }
+      const iconEl = document.getElementById('bonusicon');
+      if (iconEl && iconEl !== labelEl) {
+        iconEl.addEventListener('click', collapse.fCollapseBonus);
+      }
+    } else if (
+      bonus &&
+      !(Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
+    ) {
       bonus.innerHTML = ``;
     }
   }
