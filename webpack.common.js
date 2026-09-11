@@ -12,8 +12,8 @@ module.exports = {
     options: './src/js/options.js',
     devtools: './src/js/devtools.js',
     popup: './src/js/popup.js',
-    xhrInterceptor: './src/js/protocol/xhrInterceptor.js',
-    contentBridge: './src/js/protocol/contentBridge.js',
+    xhrInterceptor: './src/js/xhr-interceptor.js',
+    contentBridge: './src/js/content-bridge.js',
   },
   output: {
     clean: true,
@@ -23,18 +23,6 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-            },
-          },
-        ],
-      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -105,7 +93,6 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.mjs', '.json'],
     fallback: {
       fs: false,
     },

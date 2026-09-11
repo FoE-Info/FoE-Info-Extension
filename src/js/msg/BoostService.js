@@ -25,120 +25,6 @@ function createFeatureBoostMatrix() {
   };
 }
 
-const CITY_BOOST_KEYS = [
-  'CoinBoost',
-  'SupplyBoost',
-  'rawBoostAttack',
-  'rawBoostDefense',
-  'rawBoostCityAttack',
-  'rawBoostCityDefense',
-  'GEAttackingAttack',
-  'GEAttackingDefense',
-  'GEDefendingAttack',
-  'GEDefendingDefense',
-  'GBGAttackingAttack',
-  'GBGAttackingDefense',
-  'GBGDefendingAttack',
-  'GBGDefendingDefense',
-  'QIAttackingAttack',
-  'QIAttackingDefense',
-  'QIDefendingAttack',
-  'QIDefendingDefense',
-  'fpProductionBoost',
-  'goodsProductionBoost',
-  'guildGoodsProductionBoost',
-];
-
-const FEATURE_PROPERTY_MAP = {
-  all: {
-    attAtt: 'rawBoostAttack',
-    defAtt: 'rawBoostDefense',
-    attDef: 'rawBoostCityAttack',
-    defDef: 'rawBoostCityDefense',
-  },
-  battleground: {
-    attAtt: 'GBGAttackingAttack',
-    defAtt: 'GBGAttackingDefense',
-    attDef: 'GBGDefendingAttack',
-    defDef: 'GBGDefendingDefense',
-  },
-  guild_expedition: {
-    attAtt: 'GEAttackingAttack',
-    defAtt: 'GEAttackingDefense',
-    attDef: 'GEDefendingAttack',
-    defDef: 'GEDefendingDefense',
-  },
-  guild_raids: {
-    attAtt: 'QIAttackingAttack',
-    defAtt: 'QIAttackingDefense',
-    attDef: 'QIDefendingAttack',
-    defDef: 'QIDefendingDefense',
-  },
-};
-
-/**
- * Resets and ingests raw JSON-RPC boost payload into target City properties.
- * @param {Object} msg JSON-RPC response envelope or payload array
- * @param {Object} [cityTarget={}] Target city object to mutate
- * @returns {Object} mutated cityTarget
- */
-function applyBoostsToCity(msg, cityTarget = {}) {
-  for (const key of CITY_BOOST_KEYS) {
-    cityTarget[key] = 0;
-  }
-
-  const list =
-    Array.isArray(msg?.responseData) ? msg.responseData
-    : Array.isArray(msg) ? msg
-    : [];
-
-  for (const item of list) {
-    if (!item) continue;
-    const val = Number(item.value) || 0;
-    const type = item.type;
-    const feature = item.targetedFeature;
-
-    if (type === 'coin_production') {
-      cityTarget.CoinBoost += val;
-    } else if (type === 'supply_production' || type === 'supplies_production') {
-      cityTarget.SupplyBoost += val;
-    } else if (
-      type === 'forge_points_production' ||
-      type === 'fp_production_boost'
-    ) {
-      cityTarget.fpProductionBoost += val;
-    } else if (type === 'guild_goods_production') {
-      cityTarget.guildGoodsProductionBoost += val;
-    } else if (type === 'goods_production') {
-      cityTarget.goodsProductionBoost += val;
-    } else if (feature && FEATURE_PROPERTY_MAP[feature]) {
-      const map = FEATURE_PROPERTY_MAP[feature];
-      if (type === 'att_boost_attacker') {
-        cityTarget[map.attAtt] += val;
-      } else if (type === 'att_boost_defender') {
-        cityTarget[map.attDef] += val;
-      } else if (type === 'def_boost_attacker') {
-        cityTarget[map.defAtt] += val;
-      } else if (type === 'def_boost_defender') {
-        cityTarget[map.defDef] += val;
-      } else if (type === 'att_def_boost_attacker') {
-        cityTarget[map.attAtt] += val;
-        cityTarget[map.defAtt] += val;
-      } else if (type === 'att_def_boost_defender') {
-        cityTarget[map.attDef] += val;
-        cityTarget[map.defDef] += val;
-      } else if (type === 'att_def_boost_attacker_defender') {
-        cityTarget[map.attAtt] += val;
-        cityTarget[map.defAtt] += val;
-        cityTarget[map.attDef] += val;
-        cityTarget[map.defDef] += val;
-      }
-    }
-  }
-
-  return cityTarget;
-}
-
 class BoostService {
   constructor() {
     this.rawBoosts = [];
@@ -300,10 +186,6 @@ class BoostService {
     return base.plus(addon);
   }
 
-  applyBoostsToCity(msg, cityTarget = {}) {
-    return applyBoostsToCity(msg, cityTarget);
-  }
-
   getAggregatedBoosts() {
     return {
       all: this.features.all,
@@ -316,19 +198,14 @@ class BoostService {
 }
 
 const boostService = new BoostService();
+if (messageDispatcher && typeof messageDispatcher.register === 'function') {
+  boostService.register(messageDispatcher);
+}
 
-const exportsObj = {
+module.exports = {
   BoostService,
   boostService,
-  applyBoostsToCity,
   getAllBoosts: boostService.getAllBoosts,
   getTimerBoost: boostService.getTimerBoost,
 };
-
-module.exports = exportsObj;
 module.exports.default = boostService;
-module.exports.BoostService = BoostService;
-module.exports.boostService = boostService;
-module.exports.applyBoostsToCity = applyBoostsToCity;
-module.exports.getAllBoosts = boostService.getAllBoosts;
-module.exports.getTimerBoost = boostService.getTimerBoost;
