@@ -56,26 +56,51 @@ docs/har/ (39 files, 2.0 GB)
 
 ---
 
-## 2. Phase 1: Automated Multi-Domain HAR Ingestion into `metadata-store`
+## 2. Phase 1: Automated Multi-Domain HAR Ingestion into `metadata-store/extracts/`
+
+> [!IMPORTANT]
+> **Isolation Invariant**: HAR extractions must **NEVER** overwrite or pollute the baseline downloaded metadata (`../metadata-store/entities/`, `manifest.json`, `resources.json`, `technologies.json`, or `translations_en.json`).
+> All extracted data from the 39 HAR captures must be isolated exclusively within a dedicated directory:  
+> `../metadata-store/extracts/`
 
 OpenCode must implement an ingestion runner `scripts/ingest-hars-to-metadata.mjs` that streams through all 39 `.har` files without loading 2 GB into memory at once:
 
+### Ingestion Directory Structure:
+
+```text
+../metadata-store/extracts/
+├── raw_rpc_capture.json       # Master append-only ledger of unique RPCs across all 39 HARs
+├── rpc/                       # Discovered RPC response payloads: <requestClass>.<requestMethod>.json
+│   ├── GuildRaidsService.getState.json
+│   ├── GuildRaidsMapService.getOverview.json
+│   ├── GuildBattlegroundBuildingService.getBuildings.json
+│   └── ...
+├── qi/                        # Dedicated Quantum Incursions payload bundles
+│   ├── map_overview.json
+│   ├── settlement_outpost.json
+│   └── member_contributions.json
+├── gbg/                       # Dedicated GBG action snapshots
+│   ├── building_construction.json
+│   ├── building_destruction.json
+│   ├── diamond_rushed_camps.json
+│   └── signals_and_markers.json
+├── treasury/                  # Treasury bags & 10 pages of donation history
+│   ├── treasury_bag.json
+│   └── donation_history_pages.json
+└── visits/                    # 13 authentic player city snapshots
+    ├── visit-bootnreboot.json
+    ├── visit-JonSunset.json
+    └── ...
+```
+
 ### Ingestion Requirements:
 
-1. **`../metadata-store/raw_rpc_capture.json`**:
-   - Merge all unique JSON-RPC request/response pairs from all 39 files into the master capture ledger.
-2. **`../metadata-store/rpc/<requestClass>.<requestMethod>.json`**:
-   - Save or update authoritative response schemas for:
-     - `GuildBattleground*` (buildings, destroy, signals, leaderboards, state)
-     - `ClanService` (`getTreasuryBag`, paginated treasury contributions)
-     - `TradeService` (`getTradeOffers`)
-     - `GuildRaids*` (`GuildRaidsService`, `GuildRaidsMapService`, `GuildRaidsOutpostService`)
-     - `OtherPlayerService` (`visitPlayer`, `getOtherPlayerVO`)
-3. **`../metadata-store/entities/<entity_id>.json`**:
-   - Extract any newly discovered building entity definitions across the 13 visited cities and update `../metadata-store/manifest.json`.
-4. **`tests/fixtures/visits/*.json`**:
-   - Replace or expand the visit fixtures with clean, sanitized JSON representations of the 13 visited cities for regression testing against `VisitedCityStatsCalculator`.
-5. **Re-index the Knowledge Graph**:
+1. **Strict Directory Isolation**:
+   - Write all outputs exclusively to `../metadata-store/extracts/` (create if absent).
+   - Zero modifications to baseline `../metadata-store/entities/` or default downloaded metadata.
+2. **`tests/fixtures/` Targeted Sync**:
+   - Mirror relevant test fixtures into `tests/fixtures/visits/` and `tests/fixtures/rpc/` for regression test assertions.
+3. **Re-index the Knowledge Graph**:
    ```bash
    npm run graph:metadata:update
    ```
