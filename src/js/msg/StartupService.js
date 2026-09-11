@@ -19,7 +19,7 @@ import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
 import * as helper from '../fn/helper.js';
 import { t, translateContainer } from '../fn/i18n.js';
-import { extractPlayerIds, renderCityStats } from '../fn/renderCityStats.js';
+import { renderCityStats } from '../fn/renderCityStats.js';
 import { metadataStore } from '../state/MetadataStore.js';
 import { showOptions } from '../vars/showOptions.js';
 import {
@@ -36,7 +36,6 @@ import {
   MyInfo,
   playerNameCache,
   removeDebug,
-  setIgnoredPlayers,
   setMyInfo,
   updatePlayerNameCache,
 } from '../vars/state.js';
@@ -64,7 +63,6 @@ export var City = {
   baseUnboostableFp: 0,
   fpProductionBoost: 0,
   goodsProductionBoost: 0,
-  guildGoodsProductionBoost: 0,
   TrazUnits: 0,
   Coins: 0,
   CoinBoost: 0,
@@ -167,68 +165,64 @@ function formatPlayerLabel(id) {
         }
         updateIgnoreListUI();
       })
-      .catch(() => {
-        updatePlayerNameCache(id, null, { notFound: true });
-        updateIgnoreListUI();
+      .catch((err) => {
+        console.warn('ScoreDB fetch error for player', id, err);
       });
   }
 
-  return `#${id}`;
+  return null;
 }
 
 export function getUserTooltipHTML() {
-  let html = `<p class="pop">`;
+  var html = `<p class="pop">`;
   const origin = getScoreDBOrigin();
 
-  const ignoredByList = extractPlayerIds(ignoredPlayers?.ignoredByPlayerIds);
   let ignoredByHtml = '';
-  let ignoredByCount = 0;
-  ignoredByList.forEach((elem) => {
-    const label = formatPlayerLabel(elem);
-    if (label) {
-      ignoredByCount++;
-      ignoredByHtml += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a><br>`;
-    }
-  });
-  if (ignoredByCount > 0) {
+  let countIgnoredBy = 0;
+  if (
+    ignoredPlayers &&
+    ignoredPlayers.ignoredByPlayerIds &&
+    Object.keys(ignoredPlayers.ignoredByPlayerIds).length > 0
+  ) {
+    Object.values(ignoredPlayers.ignoredByPlayerIds).forEach((elem) => {
+      const label = formatPlayerLabel(elem);
+      if (label) {
+        countIgnoredBy++;
+        ignoredByHtml += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a><br>`;
+      }
+    });
+  }
+  if (countIgnoredBy > 0) {
     html += `<strong>Ignored By:</strong><br>${ignoredByHtml}`;
   }
 
-  const ignoringList = extractPlayerIds(ignoredPlayers?.ignoredPlayerIds);
   let ignoringHtml = '';
-  let ignoringCount = 0;
-  ignoringList.forEach((elem) => {
-    const label = formatPlayerLabel(elem);
-    if (label) {
-      ignoringCount++;
-      ignoringHtml += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a><br>`;
-    }
-  });
-  if (ignoringCount > 0) {
+  let countIgnoring = 0;
+  if (
+    ignoredPlayers &&
+    ignoredPlayers.ignoredPlayerIds &&
+    Object.keys(ignoredPlayers.ignoredPlayerIds).length > 0
+  ) {
+    Object.values(ignoredPlayers.ignoredPlayerIds).forEach((elem) => {
+      const label = formatPlayerLabel(elem);
+      if (label) {
+        countIgnoring++;
+        ignoringHtml += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a><br>`;
+      }
+    });
+  }
+  if (countIgnoring > 0) {
     html += `<strong>Ignoring:</strong><br>${ignoringHtml}`;
   }
 
-  if (ignoredByCount === 0 && ignoringCount === 0) {
+  if (countIgnoredBy === 0 && countIgnoring === 0) {
     html += `<em>None</em>`;
   }
   html += `</p>`;
   return html;
 }
 
-export function updateIgnoreListUI(msg) {
-  const data = msg?.responseData || msg;
-  if (
-    data &&
-    (data.ignoredByPlayerIds ||
-      data.ignoredPlayerIds ||
-      data.ignored_by_player_ids ||
-      data.ignored_player_ids)
-  ) {
-    setIgnoredPlayers(
-      data.ignoredByPlayerIds || data.ignored_by_player_ids || {},
-      data.ignoredPlayerIds || data.ignored_player_ids || {},
-    );
-  }
+export function updateIgnoreListUI() {
   const userElem = document.getElementById('user');
   if (!userElem) return;
   const newHTML = getUserTooltipHTML();
@@ -236,23 +230,9 @@ export function updateIgnoreListUI(msg) {
   userElem.setAttribute('data-bs-content', escapedHTML);
 
   try {
-    const bs =
-      (typeof window !== 'undefined' && window.bootstrap) ||
-      (typeof global !== 'undefined' && global.bootstrap) ||
-      null;
-    const popoverClass = bs?.Popover || Popover;
-    if (popoverClass) {
-      const popover = popoverClass.getInstance(userElem);
-      if (popover) {
-        const titleStr =
-          userElem.getAttribute('data-bs-title') ||
-          userElem.getAttribute('title') ||
-          '';
-        popover.setContent({
-          '.popover-header': titleStr,
-          '.popover-body': newHTML,
-        });
-      }
+    const popover = Popover.getInstance(userElem);
+    if (popover) {
+      popover.setContent({ '.popover-body': newHTML });
     }
   } catch (e) {
     console.warn('Popover update error:', e);
@@ -278,17 +258,6 @@ export function startupService(msg) {
     user.createdAt,
     user.era,
   );
-  const ignoredBy =
-    msg.responseData?.ignoredByPlayerIds ||
-    user?.ignoredByPlayerIds ||
-    msg.responseData?.ignored_by_player_ids;
-  const ignoring =
-    msg.responseData?.ignoredPlayerIds ||
-    user?.ignoredPlayerIds ||
-    msg.responseData?.ignored_player_ids;
-  if (ignoredBy || ignoring) {
-    setIgnoredPlayers(ignoredBy, ignoring);
-  }
   helper.setMyGuildPermissions(user.clan_permissions);
   clearArmyUnits();
   Galaxy.bonus = [];
@@ -308,7 +277,6 @@ export function startupService(msg) {
   City.gbCityAttack = 0;
   City.gbCityDefense = 0;
   City.Coins = 0;
-  City.Supplies = 0;
   City.CoinBoost = 0;
   City.SupplyBoost = 0;
   City.Attack = 0;
@@ -399,24 +367,16 @@ export function startupService(msg) {
             ).amount;
             // console.debug(entity.name, entity.abilities.find(id => id.__class__ == 'RandomUnitOfAgeWhenMotivatedAbility').amount);
           }
-          if (entity && entity.abilities) {
-            const ab = entity.abilities.find(
+          if (
+            entity &&
+            entity.abilities &&
+            entity.abilities.find(
               (id) => id.__class__ == 'AddResourcesToGuildTreasuryAbility',
-            );
-            if (ab && ab.additionalResources) {
-              const res =
-                ab.additionalResources['AllAge']?.resources ||
-                ab.additionalResources[MyInfo?.era]?.resources;
-              if (res && res.all_goods_of_age) {
-                const goods = res.all_goods_of_age * 5;
-                clanGoods += goods;
-                clanGoodsBuildings.push({
-                  id: mapID.cityentity_id,
-                  name: helper.fEntityNameTrim(mapID.cityentity_id),
-                  goods: goods,
-                });
-              }
-            }
+            )
+          ) {
+            // clanGoods += entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility').additionalResources['AllAge'].resources.all_goods_of_age;
+            // clanGoodsBuildings.push({'name': helper.fEntityNameTrim(mapID.cityentity_id),'goods': entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility').additionalResources['AllAge'].resources.all_goods_of_age});
+            // console.debug(entity.name, entity.abilities.find(id => id.__class__ == 'AddResourcesToGuildTreasuryAbility').additionalResources['AllAge'].resources.all_goods_of_age);
           }
         }
       } else if (mapID.cityentity_id == 'X_OceanicFuture_Landmark3') {
@@ -503,45 +463,27 @@ export function startupService(msg) {
         if (mapID.state.current_product.goods) {
           if (DEV && checkDebug())
             console.debug(mapID.state.current_product.goods);
-          if (
-            mapID.state.current_product.name === 'clan_goods' ||
-            mapID.state.current_product.goods?.name === 'clan_goods'
-          ) {
+          if (mapID.state.current_product.goods.name === 'clan_goods') {
+            // console.debug(mapID);
             var goods = 0;
-            let gbEra = '';
-            if (Array.isArray(mapID.state.current_product.goods)) {
-              for (
-                var good = 0;
-                good < mapID.state.current_product.goods.length;
-                good++
-              ) {
-                const gItem = mapID.state.current_product.goods[good];
-                goods += gItem.value || 0;
-                if (!gbEra && gItem.good_id) {
-                  const resDef = ResourceDefs.find(
-                    (r) => r.id === gItem.good_id,
-                  );
-                  if (resDef?.era) gbEra = resDef.era;
-                }
-              }
-            } else if (mapID.state.current_product.goods?.value) {
-              goods += mapID.state.current_product.goods.value;
-            } else if (typeof mapID.state.current_product.amount === 'number') {
-              goods += mapID.state.current_product.amount;
+            for (
+              var good = 0;
+              good < mapID.state.current_product.goods.length;
+              good++
+            ) {
+              // console.debug(mapID.state.current_product.goods[good]);
+              goods += mapID.state.current_product.goods[good].value;
             }
             if (goods > 0) {
               clanGoods += goods;
-              const eraName = gbEra || MyInfo.era;
               clanGoodsBuildings.push({
                 id: mapID.cityentity_id,
-                era: eraName,
+                era: MyInfo.era,
                 name:
                   helper.fEntityNameTrim(mapID.cityentity_id) +
                   ' ' +
-                  helper.fGVGagesname(eraName),
+                  helper.fGVGagesname(MyInfo.era),
                 goods: goods,
-                baseGoods: goods,
-                isBoostable: false,
               });
               if (DEV && checkDebug())
                 console.debug(
@@ -625,9 +567,6 @@ export function startupService(msg) {
             }
             if (mapID.state.current_product.product.resources.money)
               City.Coins += mapID.state.current_product.product.resources.money;
-            if (mapID.state.current_product.product.resources.supplies)
-              City.Supplies +=
-                mapID.state.current_product.product.resources.supplies;
             if (mapID.state.current_product.name == 'random_goods') {
               // console.debug('random_goods: ', mapID.state.current_product.product.resources);
               Object.keys(
@@ -753,25 +692,16 @@ export function startupService(msg) {
         if (mapID.state.productionOption.goods) {
           if (DEV && checkDebug())
             console.debug(mapID.state.productionOption.goods);
-          if (
-            mapID.state.productionOption.name === 'clan_goods' ||
-            mapID.state.productionOption.goods?.name === 'clan_goods'
-          ) {
+          if ((mapID.state.productionOption.goods.name = 'clan_goods')) {
+            // console.debug(mapID);
             var goods = 0;
-            if (Array.isArray(mapID.state.productionOption.goods)) {
-              for (
-                var good = 0;
-                good < mapID.state.productionOption.goods.length;
-                good++
-              ) {
-                goods += mapID.state.productionOption.goods[good].value || 0;
-              }
-            } else if (mapID.state.productionOption.goods?.value) {
-              goods += mapID.state.productionOption.goods.value;
-            } else if (
-              typeof mapID.state.productionOption.amount === 'number'
+            for (
+              var good = 0;
+              good < mapID.state.productionOption.goods.length;
+              good++
             ) {
-              goods += mapID.state.productionOption.amount;
+              // console.debug(mapID.state.productionOption.goods[good]);
+              goods += mapID.state.productionOption.goods[good].value;
             }
             if (goods > 0) {
               clanGoods += goods;
@@ -820,7 +750,6 @@ export function startupService(msg) {
                 forgePoints += resources.strategy_points;
               }
               if (resources.money) City.Coins += resources.money;
-              if (resources.supplies) City.Supplies += resources.supplies;
               if (mapID.state.productionOption.name == 'random_goods') {
                 // console.debug('random_goods: ', product.playerResources.resources);
                 Object.keys(resources).forEach((entry) => {
@@ -876,41 +805,6 @@ export function startupService(msg) {
                   helper.fEntityNameTrim(mapID.cityentity_id),
                   mapID,
                 );
-            }
-
-            const guildRes =
-              product.guildResources?.resources ||
-              product.guildProduct?.resources ||
-              (product.type === 'guildResources' ? product.resources : null);
-            if (guildRes) {
-              let pClanGoods = 0;
-              let gEra = '';
-              let isAllGoods = false;
-              Object.keys(guildRes).forEach((entry) => {
-                if (entry === 'clan_power') {
-                  clanPower += guildRes[entry] || 0;
-                } else if (typeof guildRes[entry] === 'number') {
-                  if (entry === 'all_goods_of_age') {
-                    isAllGoods = true;
-                  }
-                  pClanGoods += guildRes[entry];
-                  if (!gEra && entry !== 'all_goods_of_age') {
-                    const resDef = ResourceDefs.find((r) => r.id === entry);
-                    if (resDef?.era) gEra = resDef.era;
-                  }
-                }
-              });
-              if (pClanGoods > 0) {
-                clanGoods += pClanGoods;
-                clanGoodsBuildings.push({
-                  id: mapID.cityentity_id,
-                  era: gEra,
-                  name: helper.fEntityNameTrim(mapID.cityentity_id),
-                  goods: pClanGoods,
-                  baseGoods: pClanGoods,
-                  isBoostable: mapID.type !== 'greatbuilding' && isAllGoods,
-                });
-              }
             }
           });
           // console.debug('goods: ', goodsList);
@@ -1206,7 +1100,40 @@ export function startupService(msg) {
     }
   }
 
-  clanGoods = buildClanGoodsData();
+  if (clanGoodsBuildings.length > 0) {
+    const groupedClan = {};
+    clanGoodsBuildings.forEach((entry) => {
+      const resolvedName =
+        helper.fEntityNameTrim(entry.id || entry.name) ||
+        entry.name ||
+        'Unknown Building';
+      const eraSuffix = entry.era ? ' ' + helper.fGVGagesname(entry.era) : '';
+      const name =
+        entry.era ? `${resolvedName}${eraSuffix}`
+        : entry.name && entry.id && entry.name.length > entry.id.length ?
+          entry.name.replace(entry.id, resolvedName)
+        : resolvedName;
+      if (!groupedClan[name]) {
+        groupedClan[name] = { count: 0, totalGoods: 0 };
+      }
+      groupedClan[name].count++;
+      groupedClan[name].totalGoods += entry.goods;
+    });
+
+    const groupedClanList = Object.keys(groupedClan).map((name) => ({
+      name,
+      count: groupedClan[name].count,
+      totalGoods: groupedClan[name].totalGoods,
+    }));
+
+    groupedClanList.sort((a, b) => b.totalGoods - a.totalGoods);
+
+    tooltipHTML.clanGoods = ``;
+    groupedClanList.forEach((item) => {
+      const countStr = item.count > 1 ? ` (x${item.count})` : ``;
+      tooltipHTML.clanGoods += `${item.totalGoods} <strong>${item.name}</strong>${countStr}<br>`;
+    });
+  }
 
   Goods.sad = 0;
   Goods.sash = 0;
@@ -1362,11 +1289,6 @@ export function startupService(msg) {
       clanPower,
       availablePacksFP,
       collapseStats: collapse.collapseStats,
-      tooltipHTML: {
-        fp: tooltipHTML.fp,
-        clanGoods: tooltipHTML.clanGoods,
-        totalGoods: tooltipHTML.totalGoods,
-      },
     };
     renderLiveCityStats();
     // citystats.title=`<p>${tooltipHTML}</p>`;
@@ -1374,7 +1296,9 @@ export function startupService(msg) {
     // console.debug('citystats toggle');
     // $(this).find('span.toggle-icon').toggleClass('glyphicon-collapse-up glyphicon-collapse-down');
     // });
-
+    document
+      .getElementById('user')
+      .addEventListener('click', collapse.fCollapseStats);
     //document.getElementById("citystatsicon").addEventListener("click", collapse.fCollapseStats);
     if (!collapse.collapseStats)
       document
@@ -1399,68 +1323,8 @@ export function startupService(msg) {
   // console.debug('tooltipHTML:',tooltipHTML);
 }
 
-export function buildClanGoodsData() {
-  const boost = City.guildGoodsProductionBoost || 0;
-  let totalClanGoods = 0;
-  let unboostedBase = 0;
-
-  if (clanGoodsBuildings.length > 0) {
-    const groupedClan = {};
-    clanGoodsBuildings.forEach((entry) => {
-      const resolvedName =
-        helper.fEntityNameTrim(entry.id || entry.name) ||
-        entry.name ||
-        'Unknown Building';
-      const eraSuffix = entry.era ? ' ' + helper.fGVGagesname(entry.era) : '';
-      const name =
-        entry.era ? `${resolvedName}${eraSuffix}`
-        : entry.name && entry.id && entry.name.length > entry.id.length ?
-          entry.name.replace(entry.id, resolvedName)
-        : resolvedName;
-
-      const baseAmount = entry.baseGoods ?? entry.goods ?? 0;
-      unboostedBase += baseAmount;
-
-      let effectiveGoods = baseAmount;
-      if (entry.isBoostable && boost > 0) {
-        const extra = Math.round((baseAmount / 5) * (boost / 100)) * 5;
-        effectiveGoods += extra;
-      }
-
-      totalClanGoods += effectiveGoods;
-
-      if (!groupedClan[name]) {
-        groupedClan[name] = { count: 0, totalGoods: 0 };
-      }
-      groupedClan[name].count++;
-      groupedClan[name].totalGoods += effectiveGoods;
-    });
-
-    const groupedClanList = Object.keys(groupedClan).map((name) => ({
-      name,
-      count: groupedClan[name].count,
-      totalGoods: groupedClan[name].totalGoods,
-    }));
-
-    groupedClanList.sort((a, b) => b.totalGoods - a.totalGoods);
-
-    tooltipHTML.clanGoods = ``;
-    groupedClanList.forEach((item) => {
-      const countStr = item.count > 1 ? ` (x${item.count})` : ``;
-      tooltipHTML.clanGoods += `${item.totalGoods} <strong>${item.name}</strong>${countStr}<br>`;
-    });
-
-    if (boost > 0 && totalClanGoods > unboostedBase) {
-      tooltipHTML.clanGoods += `<br><strong>Base: ${unboostedBase} (+${boost}% Boost = ${totalClanGoods})</strong>`;
-    }
-  }
-
-  return totalClanGoods;
-}
-
 export function renderLiveCityStats() {
   if (showOptions.showStats === false) return;
-  if (typeof window !== 'undefined') window.foeCity = City;
   const user = lastStartupContext?.user || MyInfo;
   const currentEra = user?.era || 'SpaceAgeSpaceHub';
 
@@ -1477,9 +1341,6 @@ export function renderLiveCityStats() {
     availableFP: availablePacksFP || 0,
     clanGoods: lastStartupContext?.clanGoods || 0,
     goodsHTML: goodsHTML,
-    goods: {
-      boostPercent: new BigNumber(City.goodsProductionBoost || 0),
-    },
     fp: {
       total: new BigNumber(City.ForgePoints || 0),
       boostPercent: new BigNumber(City.fpProductionBoost || 0),
@@ -1499,16 +1360,6 @@ export function renderLiveCityStats() {
         )
         .integerValue(BigNumber.ROUND_FLOOR),
       boostPercent: new BigNumber(City.CoinBoost || 0),
-    },
-    supplies: {
-      total: new BigNumber(City.Supplies || 0)
-        .multipliedBy(
-          new BigNumber(1).plus(
-            new BigNumber(City.SupplyBoost || 0).dividedBy(100),
-          ),
-        )
-        .integerValue(BigNumber.ROUND_FLOOR),
-      boostPercent: new BigNumber(City.SupplyBoost || 0),
     },
     military: {
       red: {
@@ -1575,13 +1426,6 @@ export function renderLiveCityStats() {
   };
 
   try {
-    const userTooltipHTML = getUserTooltipHTML();
-    const userTooltipHTMLEscaped = userTooltipHTML
-      .replace(/'/g, '&#39;')
-      .replace(/"/g, '&quot;');
-    const origin = getScoreDBOrigin();
-    const userTitle = `Playing <strong>FoE</strong> since<br>${new Date((MyInfo?.createdAt || 0) * 1000).toLocaleString()}`;
-
     renderCityStats(
       'citystats',
       calculatedStats,
@@ -1591,18 +1435,9 @@ export function renderLiveCityStats() {
         era: currentEra,
         score: user?.score,
         goodsHTML: goodsHTML,
-        goodsBoostPercent: City.goodsProductionBoost || 0,
         clanGoods: calculatedStats.clanGoods,
-        clanGoodsTooltipHTML:
-          lastStartupContext?.tooltipHTML?.clanGoods || tooltipHTML.clanGoods,
-        fpTooltipHTML: lastStartupContext?.tooltipHTML?.fp || tooltipHTML.fp,
-        goodsTooltipHTML:
-          lastStartupContext?.tooltipHTML?.totalGoods || tooltipHTML.totalGoods,
         clanPower: lastStartupContext?.clanPower || 0,
         availableFP: calculatedStats.availableFP,
-        userTooltipHTML: userTooltipHTMLEscaped,
-        userTitle: userTitle,
-        origin: origin ? origin.toUpperCase() : '',
       },
       { collapseStats: lastStartupContext?.collapseStats },
     );
@@ -1680,7 +1515,6 @@ export function boostService(msg) {
 export function boostServiceAllBoosts(msg) {
   // console.debug('msg:', msg);
   City.CoinBoost = 0;
-  City.SupplyBoost = 0;
   City.rawBoostAttack = 0;
   City.rawBoostDefense = 0;
   City.rawBoostCityAttack = 0;
@@ -1702,7 +1536,6 @@ export function boostServiceAllBoosts(msg) {
   City.QIDefendingDefense = 0;
   City.fpProductionBoost = 0;
   City.goodsProductionBoost = 0;
-  City.guildGoodsProductionBoost = 0;
 
   if (msg.responseData.length) {
     var boost = msg.responseData;
@@ -1710,17 +1543,10 @@ export function boostServiceAllBoosts(msg) {
     for (var j = 0; j < boost.length; j++) {
       if (boost[j].type == 'coin_production') City.CoinBoost += boost[j].value;
       else if (
-        boost[j].type == 'supply_production' ||
-        boost[j].type == 'supplies_production'
-      )
-        City.SupplyBoost += boost[j].value;
-      else if (
         boost[j].type == 'forge_points_production' ||
         boost[j].type == 'fp_production_boost'
       )
         City.fpProductionBoost += boost[j].value;
-      else if (boost[j].type == 'guild_goods_production')
-        City.guildGoodsProductionBoost += boost[j].value;
       else if (boost[j].type == 'att_boost_attacker') {
         if (boost[j].targetedFeature == 'all') {
           City.rawBoostAttack += boost[j].value;
@@ -1858,20 +1684,6 @@ export function boostServiceAllBoosts(msg) {
             popover.setContent({ '.popover-body': tooltipHTML.fp });
           }
         }
-      }
-    }
-    if (clanGoodsBuildings.length > 0) {
-      const boostedClanGoods = buildClanGoodsData();
-      if (lastStartupContext) {
-        lastStartupContext.clanGoods = boostedClanGoods;
-        if (!lastStartupContext.tooltipHTML)
-          lastStartupContext.tooltipHTML = {};
-        lastStartupContext.tooltipHTML.clanGoods = tooltipHTML.clanGoods;
-      }
-      const clanSpan = document.getElementById('clanGoods');
-      if (clanSpan) {
-        clanSpan.innerHTML = `<span data-i18n="guildgoods">Guild Goods</span>: ${boostedClanGoods}`;
-        clanSpan.setAttribute('data-bs-content', tooltipHTML.clanGoods);
       }
     }
     renderLiveCityStats();
@@ -2046,10 +1858,10 @@ function showTooltips() {
     delay: { show: 200, hide: 500 },
   };
   const popoverTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="popover"]:not(#user)',
+    '[data-bs-toggle="popover"]',
   );
-  const popoverList = [...popoverTriggerList].map((popoverTriggerEl) =>
-    Popover.getOrCreateInstance(popoverTriggerEl, options),
+  const popoverList = [...popoverTriggerList].map(
+    (popoverTriggerEl) => new Popover(popoverTriggerEl, options),
   );
 
   // $(".pop").popover({
@@ -2096,13 +1908,6 @@ function showTooltips() {
 
 function fGoodsHTML(age, goods) {
   const content = fGoodsText(age, goods);
-  const plainTitle =
-    content ?
-      content
-        .replace(/<br\s*\/?>/gi, '\n')
-        .replace(/<[^>]+>/g, '')
-        .trim()
-    : '';
   const boost = City.goodsProductionBoost || 0;
   let rawAmount = Goods[age] || 0;
   if (age === 'sad' && rawAmount === 2840) rawAmount = 3047;
@@ -2118,7 +1923,7 @@ function fGoodsHTML(age, goods) {
         .integerValue(BigNumber.ROUND_HALF_UP)
         .toNumber()
     : rawAmount;
-  return `<span id="${age}" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" data-bs-title="${content}" title="${plainTitle}">${age.toUpperCase()}:${displayAmount}</span> `;
+  return `<span id="${age}" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="${content}">${age.toUpperCase()}:${displayAmount}</span> `;
 }
 
 function fGoodsText(age, goods) {
