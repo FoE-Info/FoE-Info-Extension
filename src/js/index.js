@@ -12,14 +12,14 @@
  * ________________________________________________________________
  */
 import BigNumber from 'bignumber.js';
-import { t, translateContainer } from './fn/i18n.js';
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import browser from 'webextension-polyfill';
 import * as element from './fn/AddElement';
 import collapseOptions, * as collapse from './fn/collapse.js';
 import * as copy from './fn/copy.js';
 import { setToolOptions, setTreasurySize, toolOptions } from './fn/globals.js';
 import * as helper from './fn/helper.js';
+import { t, translateContainer } from './fn/i18n.js';
 import { rewardObserve, showReward, showRewards } from './fn/RewardRenderer.js';
 import * as storage from './fn/storage.js';
 import { armyUnitManagementService } from './msg/ArmyUnitManagementService.js';
@@ -97,6 +97,8 @@ import {
   setPlayerName,
   setUrl,
 } from './vars/state.js';
+
+if (typeof window !== 'undefined') window.bootstrap = bootstrap;
 
 export { rewardObserve, showReward, showRewards };
 

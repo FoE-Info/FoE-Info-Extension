@@ -269,6 +269,20 @@ export function setPlayerName(name, id) {
 export function setIgnoredPlayers(ignoredBy, ignoring) {
   if (ignoredBy) ignoredPlayers.ignoredByPlayerIds = ignoredBy;
   if (ignoring) ignoredPlayers.ignoredPlayerIds = ignoring;
+  storage.set('ignoredPlayers', ignoredPlayers);
+}
+
+try {
+  storage.get('ignoredPlayers', (err, data) => {
+    if (data && typeof data === 'object') {
+      if (data.ignoredByPlayerIds)
+        ignoredPlayers.ignoredByPlayerIds = data.ignoredByPlayerIds;
+      if (data.ignoredPlayerIds)
+        ignoredPlayers.ignoredPlayerIds = data.ignoredPlayerIds;
+    }
+  });
+} catch {
+  // Ignore storage errors in test environments
 }
 
 export function setGameOrigin(origin) {

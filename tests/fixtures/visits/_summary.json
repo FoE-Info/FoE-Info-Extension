@@ -1,0 +1,242 @@
+[
+  {
+    "category": "hood",
+    "index": 1,
+    "playerName": "Crispy Frisbee",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 403,
+    "filename": "hood_1_Crispy_Frisbee.json"
+  },
+  {
+    "category": "hood",
+    "index": 2,
+    "playerName": "aquarius1960",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 517,
+    "filename": "hood_2_aquarius1960.json"
+  },
+  {
+    "category": "hood",
+    "index": 3,
+    "playerName": "omarthepersian",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 832,
+    "filename": "hood_3_omarthepersian.json"
+  },
+  {
+    "category": "hood",
+    "index": 4,
+    "playerName": "Whirlwind Tom",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 473,
+    "filename": "hood_4_Whirlwind_Tom.json"
+  },
+  {
+    "category": "hood",
+    "index": 5,
+    "playerName": "RockMudson",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 592,
+    "filename": "hood_5_RockMudson.json"
+  },
+  {
+    "category": "hood",
+    "index": 6,
+    "playerName": "Quicksilver99",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 461,
+    "filename": "hood_6_Quicksilver99.json"
+  },
+  {
+    "category": "hood",
+    "index": 7,
+    "playerName": "gdincic",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 542,
+    "filename": "hood_7_gdincic.json"
+  },
+  {
+    "category": "hood",
+    "index": 8,
+    "playerName": "scott of scotland",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 576,
+    "filename": "hood_8_scott_of_scotland.json"
+  },
+  {
+    "category": "hood",
+    "index": 9,
+    "playerName": "Flvff",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 523,
+    "filename": "hood_9_Flvff.json"
+  },
+  {
+    "category": "hood",
+    "index": 10,
+    "playerName": "kevalle",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 639,
+    "filename": "hood_10_kevalle.json"
+  },
+  {
+    "category": "guild",
+    "index": 1,
+    "playerName": "bootnreboot",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 637,
+    "filename": "guild_1_bootnreboot.json"
+  },
+  {
+    "category": "guild",
+    "index": 2,
+    "playerName": "-Queenie-",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 485,
+    "filename": "guild_2_-Queenie-.json"
+  },
+  {
+    "category": "guild",
+    "index": 3,
+    "playerName": "JonSunset",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 496,
+    "filename": "guild_3_JonSunset.json"
+  },
+  {
+    "category": "guild",
+    "index": 4,
+    "playerName": "Monster Jack",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 432,
+    "filename": "guild_4_Monster_Jack.json"
+  },
+  {
+    "category": "guild",
+    "index": 5,
+    "playerName": "Zeno the Red 170",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 732,
+    "filename": "guild_5_Zeno_the_Red_170.json"
+  },
+  {
+    "category": "guild",
+    "index": 6,
+    "playerName": "Whirlwind Tom",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 473,
+    "filename": "guild_6_Whirlwind_Tom.json"
+  },
+  {
+    "category": "guild",
+    "index": 7,
+    "playerName": "Pippin the Just 345",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 446,
+    "filename": "guild_7_Pippin_the_Just_345.json"
+  },
+  {
+    "category": "guild",
+    "index": 8,
+    "playerName": "lsc.",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 592,
+    "filename": "guild_8_lsc_.json"
+  },
+  {
+    "category": "guild",
+    "index": 9,
+    "playerName": "Lord of the Lozt",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 501,
+    "filename": "guild_9_Lord_of_the_Lozt.json"
+  },
+  {
+    "category": "guild",
+    "index": 10,
+    "playerName": "Quicksilver99",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 461,
+    "filename": "guild_10_Quicksilver99.json"
+  },
+  {
+    "category": "friends",
+    "index": 1,
+    "playerName": "Marc Wick",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 374,
+    "filename": "friends_1_Marc_Wick.json"
+  },
+  {
+    "category": "friends",
+    "index": 2,
+    "playerName": "S King",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 520,
+    "filename": "friends_2_S_King.json"
+  },
+  {
+    "category": "friends",
+    "index": 3,
+    "playerName": "GoodRoddy",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 724,
+    "filename": "friends_3_GoodRoddy.json"
+  },
+  {
+    "category": "friends",
+    "index": 4,
+    "playerName": "SayaPantera",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 589,
+    "filename": "friends_4_SayaPantera.json"
+  },
+  {
+    "category": "friends",
+    "index": 5,
+    "playerName": "kamaika",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 451,
+    "filename": "friends_5_kamaika.json"
+  },
+  {
+    "category": "friends",
+    "index": 6,
+    "playerName": "Caconym",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 920,
+    "filename": "friends_6_Caconym.json"
+  },
+  {
+    "category": "friends",
+    "index": 7,
+    "playerName": "TheoriginalDante",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 978,
+    "filename": "friends_7_TheoriginalDante.json"
+  },
+  {
+    "category": "friends",
+    "index": 8,
+    "playerName": "Ramune.",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 775,
+    "filename": "friends_8_Ramune_.json"
+  },
+  {
+    "category": "friends",
+    "index": 9,
+    "playerName": "Margusmagi",
+    "era": "StellarAgeDiscovery",
+    "entitiesCount": 613,
+    "filename": "friends_9_Margusmagi.json"
+  },
+  {
+    "category": "friends",
+    "index": 10,
+    "playerName": "V1nce",
+    "era": "SpaceAgeSpaceHub",
+    "entitiesCount": 516,
+    "filename": "friends_10_V1nce.json"
+  }
+]

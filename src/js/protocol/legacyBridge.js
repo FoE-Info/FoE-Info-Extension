@@ -129,13 +129,40 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     dispatcher.register('OtherPlayerService', 'getSocialList', (msg) => {
       otherPlayerServiceUpdateActions(msg.responseData);
     });
+    dispatcher.register('OtherPlayerService', 'getFriendsList', (msg) => {
+      otherPlayerServiceUpdateActions(msg.responseData);
+    });
+    dispatcher.register('OtherPlayerService', 'getClanMemberList', (msg) => {
+      otherPlayerServiceUpdateActions(msg.responseData);
+    });
+    dispatcher.register('OtherPlayerService', 'getNeighbourList', (msg) => {
+      otherPlayerServiceUpdateActions(msg.responseData);
+    });
+    dispatcher.register(
+      'OtherPlayerService',
+      'getOtherPlayerOverview',
+      (msg) => {
+        otherPlayerServiceUpdateActions(msg.responseData);
+      },
+    );
+    dispatcher.register('ClanMemberService', 'getMemberList', (msg) => {
+      otherPlayerServiceUpdateActions(msg.responseData);
+    });
+    dispatcher.register('ClanService', 'getMembers', (msg) => {
+      otherPlayerServiceUpdateActions(msg.responseData);
+    });
+    dispatcher.register(
+      'GreatBuildingsService',
+      'getOtherPlayerOverview',
+      (msg) => {
+        otherPlayerServiceUpdateActions(msg.responseData);
+      },
+    );
   }
   if (updateIgnoreListUI) {
-    dispatcher.register(
-      'IgnorePlayerService',
-      'getIgnoreList',
-      updateIgnoreListUI,
-    );
+    dispatcher.register('IgnorePlayerService', 'getIgnoreList', (msg) => {
+      updateIgnoreListUI(msg);
+    });
   }
   if (handlers.GBselected) {
     dispatcher.register(
