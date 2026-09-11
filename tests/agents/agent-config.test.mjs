@@ -79,8 +79,8 @@ test('Agent Config - validates rule definitions', () => {
 
   assert.equal(
     ruleFiles.length,
-    13,
-    'Expected exactly 13 rules in .agents/rules',
+    12,
+    'Expected exactly 12 rules in .agents/rules',
   );
 
   for (const file of ruleFiles) {
@@ -176,7 +176,7 @@ test('Agent Config - validates AGENTS.md integrity and internal links', () => {
   );
 
   // Exact counts
-  assert.match(agentsMd, /31 subagents, 13 rules, and 45 skills/);
+  assert.match(agentsMd, /31 subagents, 12 rules, and 45 skills/);
   assert.match(agentsMd, /45 on-demand runbooks and procedures/);
   assert.match(agentsMd, /Skills & Runbooks Taxonomy \(45 Skills\)/);
 
