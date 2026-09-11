@@ -18,14 +18,30 @@
  * (getElementById, querySelectorAll, addEventListener).
  */
 
-import { showOptions as liveShowOptions } from '../state/showOptions.js';
-import {
-  createLogger,
-  isDebugEnabled,
-  onDebugToggle,
-} from '../utils/logger.js';
+declare const __webpack_require__: unknown;
 
-const logger = createLogger('CardVisibility');
+let showOptionsState: ShowOptionsState = {};
+if (typeof __webpack_require__ !== 'undefined') {
+  try {
+    const showOptModule = require('../state/showOptions.js');
+    showOptionsState = showOptModule.showOptions || showOptModule;
+  } catch {
+    showOptionsState = {};
+  }
+}
+
+let isDebugEnabledGlobal: () => boolean = () => false;
+try {
+  const loggerModule = require('../utils/logger.js');
+  if (typeof loggerModule.isDebugEnabled === 'function') {
+    isDebugEnabledGlobal = loggerModule.isDebugEnabled;
+  }
+  if (typeof loggerModule.onDebugToggle === 'function') {
+    loggerModule.onDebugToggle(() => {
+      applyCardVisibility();
+    });
+  }
+} catch {}
 
 /** Context view filter: city map, GBG map, or unconstrained default. */
 export type ViewState = 'CITY' | 'GBG';
@@ -135,7 +151,6 @@ export function setCurrentView(
 
   if (currentView === normalized) return;
   currentView = normalized;
-  logger.debug('Context view changed', { view: currentView });
   for (const fn of viewListeners) {
     try {
       fn(currentView);
@@ -168,22 +183,16 @@ export function applyCardVisibility(
   viewOverride: ViewState | string | null = null,
 ): void {
   if (typeof document === 'undefined') return;
-  const opts: ShowOptionsState =
-    optionsOverride || (liveShowOptions as ShowOptionsState) || {};
+  const opts: ShowOptionsState = optionsOverride || showOptionsState || {};
   const isDebug =
     debugOverride !== null && debugOverride !== undefined ?
       Boolean(debugOverride)
-    : isDebugEnabled();
+    : isDebugEnabledGlobal();
   const activeView: string | null =
     viewOverride !== null && viewOverride !== undefined ?
       viewOverride ? String(viewOverride).toUpperCase()
       : null
     : currentView;
-
-  logger.debug('Applying card visibility', {
-    isDebug,
-    activeView,
-  });
 
   // --- 1. DEBUG MODE OVERRIDE (isDebug === true) ---
   if (isDebug) {
@@ -451,13 +460,6 @@ if (
   typeof window.addEventListener === 'function'
 ) {
   window.addEventListener('foe_options_updated', () => {
-    logger.debug('Re-applying card visibility after options update');
-    applyCardVisibility();
-  });
-}
-
-if (typeof onDebugToggle === 'function') {
-  onDebugToggle(() => {
     applyCardVisibility();
   });
 }

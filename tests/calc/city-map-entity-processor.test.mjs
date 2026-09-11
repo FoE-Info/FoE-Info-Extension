@@ -207,4 +207,29 @@ test('CityMapEntityProcessor Suite', async (t) => {
     assert.equal(result.clanGoods, 75); // 25 + 50
     assert.equal(result.clanGoodsBuildings.length, 2);
   });
+
+  await t.test(
+    'safely handles unmatched entity definitions without DOM mutations',
+    () => {
+      const City = {};
+      const entities = [
+        {
+          id: 9999,
+          cityentity_id: 'unknown_decor_1',
+          type: 'decoration',
+          state: {},
+        },
+      ];
+
+      const result = processCityMapEntities(entities, {
+        City,
+        DEV: true,
+        debugEnabled: true,
+        fEntityName: (id) => `Name_${id}`,
+      });
+
+      assert.equal(result.buildingsReady.length, 0);
+      assert.equal(result.fpBuildings.length, 0);
+    },
+  );
 });

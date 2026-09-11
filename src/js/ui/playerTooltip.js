@@ -198,18 +198,34 @@ function getUserTooltipHTML() {
   return html;
 }
 
-function updateIgnoreListUI(msg) {
-  const data = msg?.responseData || msg;
-  if (
-    data &&
-    (data.ignoredByPlayerIds ||
-      data.ignoredPlayerIds ||
-      data.ignored_by_player_ids ||
-      data.ignored_player_ids)
-  ) {
+/**
+ * Normalizes ignore list payload into a standardized DTO.
+ * @param {Object} [data]
+ * @returns {{ ignoredByPlayerIds: Object, ignoredPlayerIds: Object } | null}
+ */
+function normalizeIgnoreListData(data) {
+  if (!data || typeof data !== 'object') return null;
+  const payload =
+    data.responseData && typeof data.responseData === 'object' ?
+      data.responseData
+    : data;
+  const ignoredBy =
+    payload.ignoredByPlayerIds || payload.ignored_by_player_ids || null;
+  const ignored =
+    payload.ignoredPlayerIds || payload.ignored_player_ids || null;
+  if (!ignoredBy && !ignored) return null;
+  return {
+    ignoredByPlayerIds: ignoredBy || {},
+    ignoredPlayerIds: ignored || {},
+  };
+}
+
+function updateIgnoreListUI(data) {
+  const normalized = normalizeIgnoreListData(data);
+  if (normalized) {
     setIgnoredPlayers(
-      data.ignoredByPlayerIds || data.ignored_by_player_ids || {},
-      data.ignoredPlayerIds || data.ignored_player_ids || {},
+      normalized.ignoredByPlayerIds,
+      normalized.ignoredPlayerIds,
     );
   }
   if (typeof document === 'undefined') return;
@@ -248,6 +264,7 @@ module.exports = {
   formatPlayerLabel,
   getUserTooltipHTML,
   updateIgnoreListUI,
+  normalizeIgnoreListData,
   pendingScoreDBFetches,
   setGameOrigin,
   setIgnoredPlayers,
@@ -258,6 +275,7 @@ module.exports = {
     formatPlayerLabel,
     getUserTooltipHTML,
     updateIgnoreListUI,
+    normalizeIgnoreListData,
     pendingScoreDBFetches,
     setGameOrigin,
     setIgnoredPlayers,

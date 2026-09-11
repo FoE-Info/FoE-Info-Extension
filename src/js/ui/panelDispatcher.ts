@@ -10,7 +10,6 @@
  */
 
 import { createLogger } from '../utils/logger.js';
-import { showOptions as liveShowOptions } from '../vars/showOptions.js';
 import { setCurrentView } from './cardVisibility.js';
 
 const logger = createLogger('PanelDispatcher');
@@ -168,6 +167,19 @@ try {
 } catch {
   defaultHelper = null;
 }
+let defaultShowOptions: { showTreasury?: boolean } | null = null;
+try {
+  const showOptModule = require('../vars/showOptions.js') as {
+    showOptions?: { showTreasury?: boolean };
+    default?: { showTreasury?: boolean };
+  };
+  defaultShowOptions =
+    showOptModule.showOptions ??
+    showOptModule.default ??
+    (showOptModule as { showTreasury?: boolean });
+} catch {
+  defaultShowOptions = null;
+}
 try {
   const globalsModule = require('../fn/globals.js') as {
     setTreasurySize?: (height: number) => void;
@@ -247,7 +259,6 @@ export function clearVisitPlayer(containers: PanelContainers = {}): void {
 }
 
 export function clearExpedition(containers: PanelContainers = {}): void {
-  logger.debug('UI clear & re-render triggered: Expedition');
   clearElement(containers.cityinvested);
   clearElement(containers.overview);
   clearElement(containers.alerts);
@@ -351,7 +362,6 @@ export function clearStartup(
 }
 
 export function clearCultural(containers: PanelContainers = {}): void {
-  logger.debug('UI clear & re-render triggered: Cultural');
   clearElement(containers.cityinvested);
   clearElement(containers.overview);
   clearElement(containers.donationDIV);
@@ -419,7 +429,7 @@ export function renderTreasuryPanel(
 
   const showOpts =
     (deps.showOptions as RenderTreasuryDeps['showOptions']) ||
-    (liveShowOptions as unknown as { showTreasury?: boolean });
+    defaultShowOptions;
   if (showOpts && showOpts.showTreasury === false) return;
 
   const doc: Document | null =
@@ -714,7 +724,7 @@ export function renderTreasuryPanel(
         });
         resizeObserver.observe(treasuryDiv);
       } catch (err) {
-        logger.debug('Failed to observe treasuryDiv resize', { err });
+        console.error('[FoEInfo] Failed to observe treasuryDiv resize:', err);
       }
     }
   }

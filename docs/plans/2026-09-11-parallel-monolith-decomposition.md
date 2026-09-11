@@ -27,6 +27,7 @@ FoE-Info-Extension/ (main checkout: development)
 
 ## 2. Workstream A: Antigravity (GreatBuildingsService Decomposition)
 
+- **Status**: Complete (2026-09-11, worktree `antigravity-gb-donation`, uncommitted). Extracted `renderGbDonationPanel.js` (492 lines). `GreatBuildingsService.js` dropped from 736 to 458 lines (−278 lines, −38%, $\le 600$ lines ceiling satisfied). All 745 unit tests pass, verification gate green.
 - **Target File**: `src/js/msg/GreatBuildingsService.js` (736 lines $\to \le 450$ lines).
 - **Target New Module**: `src/js/ui/renderGbDonationPanel.js` ($\le 300$ lines).
 - **Test File**: `tests/ui/render-gb-donation-panel.test.mjs`.

@@ -5,10 +5,14 @@ import {
   buildBuildingCostsTableHTML,
   buildLeaderboardHTML,
   buildProvinceTableHTML,
-  buildTargetGeneratorMarkup,
   renderBuildingCostCard,
-  renderTargetGeneratorCard,
 } from '../../src/js/ui/gbgProvinceView.js';
+import {
+  buildTargetGeneratorMarkup,
+  buildTargetGeneratorTargets,
+  renderTargetGeneratorCard,
+  renderTargetGeneratorPanel,
+} from '../../src/js/ui/renderTargetGeneratorCard.js';
 
 function createMockElement(id = '') {
   const listeners = new Map();
@@ -255,6 +259,122 @@ describe('gbgProvinceView Suite', () => {
       });
 
       assert.equal(targetGenerator.innerHTML, '');
+    });
+  });
+
+  describe('Target Generator Panel', () => {
+    it('buildTargetGeneratorTargets produces an unlocked focus token with sector tag and target text', () => {
+      const { textProvinceUnlocked, textProvinceLocked } =
+        buildTargetGeneratorTargets({
+          map: [{ id: 1, lockedUntil: 0 }],
+          signals: [{ provinceId: 1, signal: 'focus' }],
+          provinceDefs: [{ id: 1, name: 'A1 South', connections: [] }],
+          mapName: 'volcano',
+          currentParticipantId: 0,
+          epocTime: 1700000000,
+          showOptions: { GBGshowSC: false, GBGprovinceTime: false },
+          targetText: 'HOLD',
+        });
+
+      assert.equal(textProvinceUnlocked, 'A1S HOLD');
+      assert.equal(textProvinceLocked, '');
+    });
+
+    it('buildTargetGeneratorTargets routes time-locked provinces to the locked text via formatTime', () => {
+      const { textProvinceUnlocked, textProvinceLocked } =
+        buildTargetGeneratorTargets({
+          map: [{ id: 1, lockedUntil: 1700000000 }],
+          signals: [{ provinceId: 1, signal: 'focus' }],
+          provinceDefs: [{ id: 1, name: 'B1 North', connections: [] }],
+          mapName: 'volcano',
+          currentParticipantId: 0,
+          epocTime: 1700000000,
+          showOptions: { GBGshowSC: false, GBGprovinceTime: true },
+          formatTime: () => '@ 12:00',
+        });
+
+      assert.equal(textProvinceUnlocked, '');
+      assert.equal(textProvinceLocked, 'B1N @ 12:00');
+    });
+
+    it('buildTargetGeneratorTargets skips own provinces and non-focus signals', () => {
+      const { textProvinceUnlocked, textProvinceLocked } =
+        buildTargetGeneratorTargets({
+          map: [
+            { id: 1, ownerId: 5, lockedUntil: 0 },
+            { id: 2, lockedUntil: 0 },
+          ],
+          signals: [
+            { provinceId: 1, signal: 'focus' },
+            { provinceId: 2, signal: 'ignore' },
+          ],
+          provinceDefs: [
+            { id: 1, name: 'A1 South', connections: [] },
+            { id: 2, name: 'B1 North', connections: [] },
+          ],
+          mapName: 'volcano',
+          currentParticipantId: 5,
+          epocTime: 1700000000,
+          showOptions: { GBGshowSC: false, GBGprovinceTime: false },
+        });
+
+      assert.equal(textProvinceUnlocked, '');
+      assert.equal(textProvinceLocked, '');
+    });
+
+    it('renderTargetGeneratorPanel mounts the card into #targetsGBG and wires copy, post, and collapse listeners', () => {
+      let copyClicked = false;
+      let postClicked = false;
+      let collapseClicked = false;
+
+      const element = {
+        close: () => '<button id="targetClose">x</button>',
+        post: () => '<button id="targetGenPostID">Post</button>',
+        copy: () => '<button id="targetCopyID">Copy</button>',
+        icon: () => '<span id="targetGenicon">[-]</span>',
+      };
+
+      renderTargetGeneratorPanel({
+        targetsContainer: createMockElement('targets'),
+        map: [{ id: 1, lockedUntil: 0 }],
+        signals: [{ provinceId: 1, signal: 'focus' }],
+        provinceDefs: [{ id: 1, name: 'A1 South', connections: [] }],
+        mapName: 'volcano',
+        currentParticipantId: 0,
+        epocTime: 1700000000,
+        showOptions: { GBGshowSC: false, GBGprovinceTime: false },
+        gameOrigin: 'en7',
+        targetText: 'HOLD',
+        element,
+        collapse: {
+          collapseTargetGen: false,
+          collapseBattleground: false,
+          fCollapseTargetGen: () => {
+            collapseClicked = true;
+          },
+        },
+        helper: { checkGBG: () => true },
+        url: { discordTargetURL: 'https://discord.test/webhook' },
+        post_webstore: { postTargetGenToDiscord: () => {} },
+        targetCopy: () => {
+          copyClicked = true;
+        },
+        targetPost: () => {
+          postClicked = true;
+        },
+      });
+
+      const targetGenerator = doc.getElementById('targetsGBG');
+      assert.ok(targetGenerator.innerHTML.includes('GBG Target Generator:'));
+      assert.ok(targetGenerator.innerHTML.includes('A1S HOLD'));
+
+      doc.getElementById('targetCopyID').click();
+      doc.getElementById('targetGenPostID').click();
+      doc.getElementById('targetGenicon').click();
+
+      assert.equal(copyClicked, true);
+      assert.equal(postClicked, true);
+      assert.equal(collapseClicked, true);
     });
   });
 
