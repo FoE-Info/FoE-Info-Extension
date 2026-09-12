@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import '../../src/js/ui/outpostRenderBinding.js';
+import culturalPkg from '../../src/js/ui/renderCulturalPanel.js';
+
+const { renderCulturalPanel, setShowOptions } = culturalPkg;
 
 function createMockDOM() {
   const elementsById = new Map();
@@ -36,13 +40,8 @@ function createMockDOM() {
 test('OutpostService & Cultural Settlement Lifecycle Suite', async (t) => {
   createMockDOM();
   const outpostPkg = await import('../../src/js/msg/OutpostService.js');
-  const {
-    OutpostService,
-    Settlement,
-    renderCulturalPanel,
-    setShowOptions,
-    isSettlementActive,
-  } = outpostPkg.default || outpostPkg;
+  const { OutpostService, Settlement, isSettlementActive } =
+    outpostPkg.default || outpostPkg;
   const cardVisPkg = await import('../../src/js/ui/cardVisibility.js');
   const { applyCardVisibility, optionToElementId } =
     cardVisPkg.default || cardVisPkg;

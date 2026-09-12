@@ -7,10 +7,7 @@
  */
 
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
-const {
-  renderCulturalPanel,
-  setShowOptions,
-} = require('../ui/renderCulturalPanel.js');
+const { outpostState } = require('../state/OutpostState.js');
 
 const CULTURAL_GOODS_MAP = {
   vikings: ['axes', 'mead', 'horns', 'wool'],
@@ -103,6 +100,14 @@ class OutpostService {
     return this;
   }
 
+  publishCulturalPanel() {
+    outpostState.setCulturalPanel({
+      activeSettlement: this.activeSettlement,
+      advancements: this.advancements,
+      remainingCosts: this.remainingCosts,
+    });
+  }
+
   getAll(msg) {
     const rawList =
       Array.isArray(msg?.responseData) ? msg.responseData
@@ -115,11 +120,7 @@ class OutpostService {
       this.settlements.find((s) => s.isActive || isSettlementActive(s.raw)) ||
       null;
     this.lastUpdated = Date.now();
-    renderCulturalPanel(
-      this.activeSettlement,
-      this.advancements,
-      this.remainingCosts,
-    );
+    this.publishCulturalPanel();
 
     return {
       success: true,
@@ -217,11 +218,7 @@ class OutpostService {
     }
 
     this.lastUpdated = Date.now();
-    renderCulturalPanel(
-      this.activeSettlement,
-      this.advancements,
-      this.remainingCosts,
-    );
+    this.publishCulturalPanel();
 
     return {
       success: true,
@@ -251,11 +248,7 @@ class OutpostService {
         }
         this.remainingCosts = costs;
         this.lastUpdated = Date.now();
-        renderCulturalPanel(
-          this.activeSettlement,
-          this.advancements,
-          this.remainingCosts,
-        );
+        this.publishCulturalPanel();
       }
     }
     return { success: true };
@@ -311,8 +304,6 @@ const exportsObj = {
   startEraOutpost: outpostService.startEraOutpost,
   handleAdvancements: outpostService.handleAdvancements,
   handleUnlockAdvancement: outpostService.handleUnlockAdvancement,
-  renderCulturalPanel,
-  setShowOptions,
   isSettlementActive,
   CULTURAL_GOODS_MAP,
 };
