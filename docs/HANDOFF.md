@@ -21,8 +21,11 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
   - **F3 resolved** — `panelDispatcher.js`/`.ts` read `ResourceDefs` from
     `state/state.js`; `indexUiBindings.js` msg requires moved to lazy
     `resolveDep` injection. Refreshed AST: 0 production `ui/ → msg/` static
-    edges. Next: **F2** (batch-migrate 14 services), **F7** (explicit bootstrap).
-  - **Verification**: `npm run verify` exit 0 — **1,120 tests / 0 fail**.
+    edges. Next: **F2** (batch-migrate 13 services), **F7** (explicit bootstrap).
+  - **F2 batch 1** — `EmissaryService` calls new
+    `StartupRenderState.requestCityStatsRepaint()` instead of importing
+    `ui/renderLiveCityStats`; zero `ui/` imports remain there.
+  - **Verification**: `npm run verify` exit 0 — **1,122 tests / 0 fail**.
 
 - **Reactive stores for msg→ui decoupling (Actionable Item 2) + scope closures**:
   - Slice 1 — `src/js/state/QuantumState.js` publish/subscribe store
