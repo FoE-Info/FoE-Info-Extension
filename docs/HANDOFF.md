@@ -6,10 +6,11 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 - **City Overview Layout Redesign (Own + Visited)**:
   - `#citystats` and `#visit` now share the target layout: `[-] City Overview` header (new `city_overview` i18n key, 232 keys × 7 locales) with a collapse toggle, plain-text `Copy`, and a `foe-card-divider` rule; the player identity line (`[WORLD] Name`) moved into the body; body order is Guild → Age → Score → Arc/CF/Crit; section headers render as `── DAILY PRODUCTION ────` / `── COMBAT BOOSTS ────` text rules with no background band.
-  - Removed the green `badge rounded-pill bg-success` Copy pill; `Copy` is now `.foe-copy-btn` (plain text with a circular `currentColor` outline) and the header info-icon popover is gone.
+  - Removed the green `badge rounded-pill bg-success` Copy pill; `Copy` is now `.foe-copy-btn` (plain text with a circular `currentColor` outline). The header title swaps live between `foe-title-expanded` (`City Overview`) and `foe-title-collapsed` (`[WORLD] Name` + info icon) via `:has(> .collapse:not(.show))`; the own card no longer forces `text-dark`, so the title/name inherit the card theme.
   - The visited card mirrors the layout with **zero popovers/tooltips**: FP, Goods, Guild Goods, and Units render as plain text; the shield is plain text.
   - CSS: added `.foe-card-divider`; `.foe-section-header` now uses `::before`/`::after` rules. Updated `tests/ui/city-card-bonuses.test.mjs` and `tests/fn/city-stats-calculator.test.mjs`.
-  - Follow-up: the collapsed header shows the player name (expanded keeps `City Overview`); all scrollbars are unified to an 8px WebKit bar with the standard `scrollbar-width`/`scrollbar-color` scoped behind `@supports not selector(::-webkit-scrollbar)` so Chromium stops ignoring the custom width.
+  - `formatStatsText` (`ClipboardFormatter.js`) now copies the card body only — it skips the title, strips the icon ligature text, and emits section headers as `Daily Production:` / `Combat Boosts:` with blank-line separators.
+  - Follow-up: all scrollbars are unified to an 8px WebKit bar with the standard `scrollbar-width`/`scrollbar-color` scoped behind `@supports not selector(::-webkit-scrollbar)` so Chromium stops ignoring the custom width.
   - **Verification**: `npm run verify` exit 0 — 1,043 tests / 0 fail, prettier/lint/typecheck clean, i18n 232 keys × 7, RPC contract 0 unhandled, dev build compiles.
 
 - **FoE Expert Third-Pass Audit — Metadata Graph + HAR Edge-to-Edge**:

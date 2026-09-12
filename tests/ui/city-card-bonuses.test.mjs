@@ -254,16 +254,13 @@ test('City Card Bonus Lines Suite', async (t) => {
 
       const parts = html.split('id="visitText"');
       assert.equal(parts.length, 2);
+      assert.match(parts[0], /foe-title-expanded/);
       assert.match(
         parts[0],
         /data-i18n="city_overview"/,
-        'Header bar must show the City Overview title',
+        'Header bar must carry the City Overview title',
       );
-      assert.doesNotMatch(
-        parts[0],
-        /VisitedPlayer/,
-        'Header bar must not contain the player name',
-      );
+      assert.match(parts[0], /foe-title-collapsed/);
       assert.match(
         parts[1],
         /VisitedPlayer/,
@@ -288,34 +285,24 @@ test('City Card Bonus Lines Suite', async (t) => {
   );
 
   await t.test(
-    'buildOwnCityCard: collapsed header shows the player name',
+    'buildOwnCityCard: header toggles between title and player name',
     () => {
-      const html = buildOwnCityCard({ ...baseOwnParams, isCollapsed: true });
-      const header = html.split('id="citystatsText"')[0];
-      assert.match(header, /Player1/);
-      assert.doesNotMatch(
-        header,
-        /data-i18n="city_overview"/,
-        'Collapsed header must not show the City Overview title',
-      );
-      assert.match(header, /id="infoIcon"/);
+      const html = buildOwnCityCard(baseOwnParams);
+      const [header, body] = html.split('id="citystatsText"');
+      assert.match(header, /foe-title-expanded/);
+      assert.match(header, /foe-title-collapsed">Player1/);
+      assert.match(header, /foe-header-info/);
+      assert.match(body, /id="infoIcon"/);
     },
   );
 
   await t.test(
-    'buildVisitedCityCard: collapsed header shows the player name',
+    'buildVisitedCityCard: header toggles between title and player name',
     () => {
-      const html = buildVisitedCityCard({
-        ...baseVisitedParams,
-        isCollapsed: true,
-      });
+      const html = buildVisitedCityCard(baseVisitedParams);
       const header = html.split('id="visitText"')[0];
-      assert.match(header, /VisitedPlayer/);
-      assert.doesNotMatch(
-        header,
-        /data-i18n="city_overview"/,
-        'Collapsed header must not show the City Overview title',
-      );
+      assert.match(header, /foe-title-expanded/);
+      assert.match(header, /foe-title-collapsed">VisitedPlayer/);
       assert.doesNotMatch(header, /data-bs-toggle="popover"/);
     },
   );
