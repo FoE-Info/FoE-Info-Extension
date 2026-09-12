@@ -1,6 +1,5 @@
 /** Startup data RPC service orchestrating initial city and player ingestion. */
 import { processCityMapEntities } from '../calc/CityMapEntityProcessor.js';
-import { fArcname, fCFname } from '../calc/gbNaming.js';
 import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
@@ -13,7 +12,6 @@ import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
 import { resolvePlayerScore } from '../state/playerScoreResolver.js';
 import { startupRenderState } from '../state/StartupRenderState.js';
-import { showGalaxy, updateGalaxy } from '../ui/renderGalaxyPanel.js';
 import {
   buildClanGoodsData as buildClanGoodsDataImpl,
   fGoodsHTML,
@@ -80,7 +78,6 @@ var tooltipHTML = {
 };
 
 export var Galaxy = blueGalaxyState.getLegacyShim();
-blueGalaxyState.setRenderCallback(() => showGalaxy());
 
 var buildingsReady = [];
 var fpBuildings = [];
@@ -254,10 +251,6 @@ export function startupService(msg) {
 
   blueGalaxyState.notify();
   timingStep('P4e', 'blueGalaxy notify complete');
-  // if(Galaxy.amount){
-  showGalaxy();
-  timingStep('P4f', 'showGalaxy complete');
-  // }
 
   renderBuildingCollectionTimes();
   timingStep('P4g', 'building collection render complete');
@@ -400,8 +393,6 @@ export function boostServiceAllBoosts(msg) {
 
 subscribeBoostUpdates(boostServiceAllBoosts);
 
-export { fArcname, showGalaxy, updateGalaxy };
-
 function fEntityName(entity) {
   const def = helper.getCityEntityDef(entity);
   return def && def.name ? def.name : entity;
@@ -426,6 +417,6 @@ subscribeMetadataRenders({
   logger,
   getTimingRun: () => startupTimingRun,
   onRenderBuildingCollectionTimes: renderBuildingCollectionTimes,
-  onRenderGalaxy: showGalaxy,
+  onRenderGalaxy: () => blueGalaxyState.notify(),
   onRenderLiveCityStats: renderLiveCityStats,
 });
