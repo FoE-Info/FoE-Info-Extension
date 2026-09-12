@@ -64,14 +64,14 @@ the F2 reactive-decoupling program closed.
 
 ### P2 — monolith extracts (ranked, all with existing tests)
 
-| File (lines)                               | Extract                                                         | ~Lines |
-| :----------------------------------------- | :-------------------------------------------------------------- | -----: |
-| `protocol/MessageDispatcher.js` (434)      | ✅ direct-CDN metadata router → `protocol/directMetadata.js`    |    106 |
-| ”                                          | ✅ request `postData` extraction → `protocol/requestPayload.js` |     63 |
-| `msg/GreatBuildingsService.js` (468 → 386) | ✅ `fCheckOutput` → `ui/gbOutputRepair.js`                      |     83 |
-| `ui/containerBinding.js` (571 → 274)       | ✅ `setupPanelContainers` → `ui/panelContainerFactory.js`       |    277 |
-| `fn/collapse.js` (494 → 448)               | ✅ 28 toggles + runner → `ui/collapseToggleRunner.js`           |    172 |
-| `ui/indexUiBindings.js` (528)              | storage bootstrap + drop hardcoded jQuery locale map L210–242   |     75 |
+| File (lines)                               | Extract                                                          | ~Lines |
+| :----------------------------------------- | :--------------------------------------------------------------- | -----: |
+| `protocol/MessageDispatcher.js` (434)      | ✅ direct-CDN metadata router → `protocol/directMetadata.js`     |    106 |
+| ”                                          | ✅ request `postData` extraction → `protocol/requestPayload.js`  |     63 |
+| `msg/GreatBuildingsService.js` (468 → 386) | ✅ `fCheckOutput` → `ui/gbOutputRepair.js`                       |     83 |
+| `ui/containerBinding.js` (571 → 274)       | ✅ `setupPanelContainers` → `ui/panelContainerFactory.js`        |    277 |
+| `fn/collapse.js` (494 → 448)               | ✅ 28 toggles + runner → `ui/collapseToggleRunner.js`            |    172 |
+| `ui/indexUiBindings.js` (529 → 434)        | ✅ storage bootstrap + canonical i18n → `ui/storageBootstrap.js` |     95 |
 
 ### P2 — TS mirror drift ✅ resolved by Phase 0
 
