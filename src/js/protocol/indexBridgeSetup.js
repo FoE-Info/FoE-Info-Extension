@@ -49,9 +49,9 @@ import {
   boostServiceAllBoosts,
   emissaryService,
   startupService,
-  updateIgnoreListUI,
 } from '../msg/StartupService.js';
 import { clearVisitPlayer } from '../ui/panelDispatcher.js';
+import { updateIgnoreListUI } from '../ui/playerTooltip.js';
 import { renderGuildPanel } from '../ui/renderGuildPanel.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';

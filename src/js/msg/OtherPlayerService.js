@@ -87,14 +87,6 @@ try {
   }
 } catch {}
 
-let updateIgnoreListUI = () => {};
-try {
-  const startup = require('./StartupService.js');
-  if (startup?.updateIgnoreListUI) {
-    updateIgnoreListUI = startup.updateIgnoreListUI;
-  }
-} catch {}
-
 const renderCityStats = renderCityStatsPkg?.renderCityStats;
 const visitedCityStatsCalculator = visitedStatsPkg?.visitedCityStatsCalculator;
 const showOptions = showOptionsPkg?.showOptions || {};
@@ -287,7 +279,8 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
     });
 
     try {
-      updateIgnoreListUI();
+      const { startupRenderState } = require('../state/StartupRenderState.js');
+      startupRenderState.requestIgnoreListRefresh();
     } catch {
       // Ignore in headless/test environments
     }

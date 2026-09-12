@@ -117,6 +117,19 @@ test('StartupRenderState - reactive publish/subscribe', async (t) => {
     },
   );
 
+  await t.test(
+    'requestIgnoreListRefresh notifies the ignore-list channel',
+    () => {
+      const state = new StartupRenderState();
+      const channels = [];
+      state.subscribe((snapshot, channel) => channels.push(channel));
+
+      state.requestIgnoreListRefresh();
+
+      assert.deepEqual(channels, ['ignore-list']);
+    },
+  );
+
   await t.test('singleton exposes shared reactive state', () => {
     assert.ok(startupRenderState instanceof StartupRenderState);
     assert.equal(typeof startupRenderState.subscribe, 'function');

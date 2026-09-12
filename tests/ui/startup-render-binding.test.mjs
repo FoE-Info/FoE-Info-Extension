@@ -65,6 +65,22 @@ test('startupRenderBinding - reactive channel routing', async (t) => {
     assert.equal(tooltips, 1);
   });
 
+  await t.test('refreshes the ignore-list popover on its channel', () => {
+    const state = new StartupRenderState();
+    let refreshes = 0;
+    bindStartupRenderState(state, {
+      renderCityStats: () => {},
+      renderBuildingCollection: () => {},
+      showCityStatsTooltips: () => {},
+      refreshIgnoreList: () => {
+        refreshes += 1;
+      },
+    });
+
+    state.requestIgnoreListRefresh();
+    assert.equal(refreshes, 1);
+  });
+
   await t.test('returns a safe no-op for an invalid state', () => {
     const off = bindStartupRenderState(null, {});
     assert.equal(typeof off, 'function');
