@@ -1,10 +1,10 @@
 /** City production RPC service rendering harvest rewards and units. */
+import { blueGalaxyState } from '../state/BlueGalaxyState.js';
 import rewardStatePkg from '../state/RewardState.js';
 import { fTitleCase } from '../utils/formatters.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
 import { MilitaryDefs } from '../vars/state.js';
-import { updateGalaxy } from './StartupService.js';
 
 const logger = createLogger('CityProductionService');
 const rewardState =
@@ -37,7 +37,7 @@ export function pickupProduction(msg) {
   if (Array.isArray(resp.updatedEntities) && resp.updatedEntities.length) {
     resp.updatedEntities.forEach((reward) => {
       if (!reward) return;
-      updateGalaxy(reward);
+      blueGalaxyState.updateEntity(reward);
 
       const resources = reward.state?.current_product?.product?.resources;
       if (resources && typeof resources === 'object') {
