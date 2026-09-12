@@ -4,6 +4,20 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **`cardVisibility` config extraction**:
+  - Moved the frozen tables out of `ui/cardVisibility.js` (739 → 503 L) into
+    new `ui/cardVisibilityConfig.js` (272 L): `GAME_CONTEXTS`,
+    `CONTEXT_ALLOWED_PANELS`, `PANEL_PARENT`, `PANEL_OPTION_KEY`,
+    `ALL_15_PANEL_IDS`, `GBG_ALLOWED_PANEL_IDS`, `CITY_HIDDEN_PANEL_IDS`,
+    `optionToElementId`, `SECONDARY_PANEL_IDS`, derived sets, debug-stub sets.
+    `cardVisibility.js` imports them and keeps its back-compat re-exports; the
+    runtime/DOM engine is unchanged.
+  - `.ts` mirror (`cardVisibility.ts`) re-export is deferred to the P2
+    `.js`/`.ts` canonical-direction decision (it duplicates `PanelId` tuple
+    typing), tracked in the backlog doc.
+  - **Verification**: `npm run verify` exit 0 — **1,284 tests / 0 fail**,
+    `tsc --noEmit` clean.
+
 - **Bug fix + layering — `SocialState` for GB donation inactive/plunder markers**:
   - `ui/gbDonationTables.js` used to snapshot `OtherPlayerService.friends`/
     `guildMembers`/`hoodlist` at module load, but the service reassigns those
