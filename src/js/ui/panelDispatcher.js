@@ -39,8 +39,8 @@ try {
   defaultSetTreasurySize = globalsModule.setTreasurySize;
 } catch {}
 try {
-  const resModule = require('../msg/ResourceService.js');
-  defaultResourceDefs = resModule.ResourceDefs;
+  const stateModule = require('../state/state.js');
+  defaultResourceDefs = stateModule.ResourceDefs;
 } catch {}
 try {
   const i18nModule = require('../fn/i18n.js');
@@ -235,12 +235,6 @@ function renderTreasuryPanel(resources, deps = {}) {
   help = help || {};
 
   let rssDefs = deps.ResourceDefs || defaultResourceDefs;
-  if (!rssDefs || rssDefs.length === 0) {
-    try {
-      const resModule = require('../msg/ResourceService.js');
-      rssDefs = resModule.ResourceDefs;
-    } catch {}
-  }
   if (!rssDefs || rssDefs.length === 0) {
     try {
       const stateModule = require('../state/state.js');

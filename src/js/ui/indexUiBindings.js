@@ -18,8 +18,6 @@ const { createLogger } = require('../utils/logger.js');
 const { translateContainer } = require('../fn/i18n.js');
 const { escapeHTML } = require('../utils/formatters.js');
 const { applyCardVisibility } = require('../ui/cardVisibility.js');
-const { processMetadataData } = require('../msg/MetadataService.js');
-const { setResourceDefs } = require('../msg/ResourceService.js');
 const {
   initStorageListeners,
   handleReceiveStorage,
@@ -139,11 +137,21 @@ function buildStorageDeps(config = {}) {
       () => require('../fn/globals.js'),
       'setToolOptions',
     ),
-    setResourceDefs,
+    setResourceDefs: resolveDep(
+      config,
+      'setResourceDefs',
+      () => require('../msg/ResourceService.js'),
+      'setResourceDefs',
+    ),
     collapseOptions: resolveDep(config, 'collapseOptions', () =>
       require('../fn/collapse.js'),
     ),
-    processMetadataData,
+    processMetadataData: resolveDep(
+      config,
+      'processMetadataData',
+      () => require('../msg/MetadataService.js'),
+      'processMetadataData',
+    ),
     resolveMissingCityEntitiesFromMap: config.resolveMissingCityEntitiesFromMap,
     renderLiveCityStats: startup?.renderLiveCityStats,
     startupService: startup?.startupService,
