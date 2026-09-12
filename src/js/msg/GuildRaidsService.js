@@ -12,13 +12,7 @@ try {
   logger = createLogger('GuildRaidsService');
 } catch {}
 
-let renderQuantumContributionsCard = null;
-let renderQuantumLeaderboardCard = null;
-try {
-  const panels = require('../ui/renderQuantumPanels.js');
-  renderQuantumContributionsCard = panels.renderQuantumContributionsCard;
-  renderQuantumLeaderboardCard = panels.renderQuantumLeaderboardCard;
-} catch {}
+const { quantumState } = require('../state/QuantumState.js');
 
 class GuildRaidsService {
   constructor() {
@@ -148,13 +142,7 @@ class GuildRaidsService {
       ),
     });
 
-    if (typeof renderQuantumContributionsCard === 'function') {
-      try {
-        renderQuantumContributionsCard(currentMembers, now);
-      } catch (err) {
-        logger?.error('Failed to render QI contributions card:', err);
-      }
-    }
+    quantumState.setMemberActivity(currentMembers, now);
 
     return {
       success: true,
@@ -199,13 +187,7 @@ class GuildRaidsService {
       topClan: rankings[0]?.clanName,
     });
 
-    if (typeof renderQuantumLeaderboardCard === 'function') {
-      try {
-        renderQuantumLeaderboardCard(rankings);
-      } catch (err) {
-        logger?.error('Failed to render QI leaderboard card:', err);
-      }
-    }
+    quantumState.setLeaderboard(rankings);
 
     return {
       success: true,

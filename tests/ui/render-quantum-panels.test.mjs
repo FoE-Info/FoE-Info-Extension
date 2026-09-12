@@ -183,4 +183,21 @@ describe('renderQuantumPanels UI Suite', () => {
       assert.doesNotMatch(html, /<td class="text-end font-monospace">/);
     });
   });
+
+  describe('reactive QuantumState binding', () => {
+    it('repaints only the changed panel', async () => {
+      const statePkg = await import('../../src/js/state/QuantumState.js');
+      const { quantumState } = statePkg;
+
+      renderQuantumLeaderboardCard(sampleRankings());
+      const leaderboardBefore = leaderboardContainer.innerHTML;
+
+      quantumState.setMemberActivity(sampleMembers(), 1715420000000);
+      assert.match(contributionsContainer.innerHTML, /Arthur/);
+      assert.equal(leaderboardContainer.innerHTML, leaderboardBefore);
+
+      quantumState.setLeaderboard(sampleRankings());
+      assert.match(leaderboardContainer.innerHTML, /Knights of the Round/);
+    });
+  });
 });
