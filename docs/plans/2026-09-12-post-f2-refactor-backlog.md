@@ -70,7 +70,7 @@ the F2 reactive-decoupling program closed.
 | ”                                          | ✅ request `postData` extraction → `protocol/requestPayload.js` |     63 |
 | `msg/GreatBuildingsService.js` (468 → 386) | ✅ `fCheckOutput` → `ui/gbOutputRepair.js`                      |     83 |
 | `ui/containerBinding.js` (571 → 274)       | ✅ `setupPanelContainers` → `ui/panelContainerFactory.js`       |    277 |
-| `fn/collapse.js` (493)                     | 27 toggles L143–478 → declarative specs                         |    330 |
+| `fn/collapse.js` (494 → 448)               | ✅ 28 toggles + runner → `ui/collapseToggleRunner.js`           |    172 |
 | `ui/indexUiBindings.js` (528)              | storage bootstrap + drop hardcoded jQuery locale map L210–242   |     75 |
 
 ### P2 — TS mirror drift ✅ resolved by Phase 0
