@@ -4,22 +4,16 @@
  * PreToolUse Safety Gate Hook
  * Blocks or asks for confirmation before executing destructive commands.
  *
- * Command matching is operand-aware: the command is tokenized with
- * `shell-quote` and only real `rm` invocations (or `rm` nested in a POSIX
- * shell) are checked, so unrelated strings such as commit messages or
- * `node -e` payloads do not trip the gate. Git and browser guards stay
- * regex-based over the quote-stripped command.
+ * Command matching is operand-aware via an internal minimal shell tokenizer,
+ * so behavior is identical across the Antigravity hook runner and the opencode
+ * plugin regardless of module resolution (no runtime dependency on
+ * `shell-quote`). Only real `rm` invocations — or `rm` nested in a POSIX shell
+ * — are checked, so unrelated strings such as commit messages or `node -e`
+ * payloads do not trip the gate. Git and browser guards stay regex-based over
+ * the quote-stripped command.
  */
 
 import { fileURLToPath } from 'node:url';
-import { createRequire } from 'node:module';
-
-let parseShell = null;
-try {
-  ({ parse: parseShell } = createRequire(import.meta.url)('shell-quote'));
-} catch {
-  parseShell = null;
-}
 
 export const DANGEROUS_PATTERNS = [
   /git\s+reset\s+.*(--hard|--merge)/i,
@@ -35,13 +29,10 @@ export const DANGEROUS_PATTERNS = [
   /\b(pkill|killall)\s+.*chrome/i,
 ];
 
-// Used only when shell-quote is unavailable, so recursive `rm` of protected
-// trees is still blocked rather than silently allowed.
-export const LEGACY_RM_PATTERN =
-  /rm\s+(-[a-z]*r[a-z]*f[a-z]*|-[a-z]*f[a-z]*r[a-z]*|-r\s+-f|-f\s+-r)\s+.*(src|\.agents|tests|\/|\*|\.\/)/i;
-
+// Trees that must never be recursively deleted.
 const PROTECTED_ROOTS = new Set(['src', '.agents', 'tests']);
 
+// Scratch/build trees that are safe to remove.
 const GENERATED_ARTIFACTS = new Set([
   'build',
   'dist',
@@ -49,6 +40,7 @@ const GENERATED_ARTIFACTS = new Set([
   '__pycache__',
   '.cache',
   '.worktrees',
+  '.superpowers',
   'coverage',
   'tmp',
   'temp',
@@ -59,47 +51,6 @@ const GENERATED_ARTIFACTS = new Set([
 ]);
 
 const SHELL_INTERPRETERS = new Set(['sh', 'bash', 'zsh', 'dash', 'ksh']);
-
-const SHELL_OPERATORS = new Set([
-  '&&',
-  '||',
-  ';',
-  '|',
-  '&',
-  '>>',
-  '>',
-  '<',
-  '<<',
-  '>&',
-  '<&',
-]);
-
-function isObjectToken(token) {
-  return token && typeof token === 'object' && typeof token.op === 'string';
-}
-
-function isSeparator(token) {
-  return isObjectToken(token) && SHELL_OPERATORS.has(token.op);
-}
-
-function isGlob(token) {
-  return isObjectToken(token) && token.op === 'glob';
-}
-
-function splitSegments(tokens) {
-  const segments = [];
-  let current = [];
-  for (const token of tokens) {
-    if (isSeparator(token)) {
-      if (current.length) segments.push(current);
-      current = [];
-    } else {
-      current.push(token);
-    }
-  }
-  if (current.length) segments.push(current);
-  return segments;
-}
 
 function stripQuoted(text) {
   return text.replace(/"[^"]*"|'[^']*'/g, ' ');
@@ -123,7 +74,6 @@ function isRecursiveFlag(token) {
 }
 
 function isDangerousOperand(operand) {
-  if (isGlob(operand)) return true;
   const raw = String(operand);
   if (raw.includes('*') || raw.includes('?') || raw.includes('[')) return true;
   const normalized = raw.replace(/\/+$/, '').replace(/^\.\//, '');
@@ -136,15 +86,88 @@ function isDangerousOperand(operand) {
   return !isGeneratedArtifact(normalized);
 }
 
+/**
+ * Minimal shell tokenizer: splits a command into segments on unquoted
+ * operators/newlines and each segment into whitespace-delimited string tokens.
+ * Quotes and backslash escapes are resolved. Deterministic across runtimes so
+ * the gate cannot silently fall back to a blunter policy.
+ *
+ * @param {string} cmd
+ * @returns {string[][]}
+ */
+export function tokenizeCommand(cmd) {
+  const segments = [];
+  let current = [];
+  let token = '';
+  let quote = null;
+
+  const flushToken = () => {
+    if (token !== '') {
+      current.push(token);
+      token = '';
+    }
+  };
+  const flushSegment = () => {
+    flushToken();
+    if (current.length) segments.push(current);
+    current = [];
+  };
+
+  for (let i = 0; i < cmd.length; i += 1) {
+    const ch = cmd[i];
+    if (quote) {
+      if (ch === quote) {
+        quote = null;
+      } else if (ch === '\\' && quote === '"' && i + 1 < cmd.length) {
+        token += cmd[i + 1];
+        i += 1;
+      } else {
+        token += ch;
+      }
+      continue;
+    }
+    if (ch === "'" || ch === '"') {
+      quote = ch;
+      continue;
+    }
+    if (ch === '\\') {
+      if (i + 1 < cmd.length) {
+        token += cmd[i + 1];
+        i += 1;
+      }
+      continue;
+    }
+    if (ch === ' ' || ch === '\t' || ch === '\r') {
+      flushToken();
+      continue;
+    }
+    if (ch === '\n' || ch === ';') {
+      flushSegment();
+      continue;
+    }
+    if (ch === '&' || ch === '|') {
+      if (cmd[i + 1] === ch) i += 1;
+      flushSegment();
+      continue;
+    }
+    if (ch === '>' || ch === '<') {
+      flushToken();
+      while (i + 1 < cmd.length && /[><&]/.test(cmd[i + 1])) i += 1;
+      continue;
+    }
+    token += ch;
+  }
+  flushSegment();
+  return segments;
+}
+
 function isDangerousRmTokens(tokens) {
   if (!tokens.length) return false;
   if (basename(tokens[0]) !== 'rm') return false;
   const rest = tokens.slice(1);
   if (!rest.some(isRecursiveFlag)) return false;
   const operands = rest.filter(
-    (token) =>
-      !isSeparator(token) &&
-      !(typeof token === 'string' && token.startsWith('-')),
+    (token) => !(typeof token === 'string' && token.startsWith('-')),
   );
   if (!operands.length) return false;
   return operands.some(isDangerousOperand);
@@ -155,12 +178,9 @@ function nestedShellDanger(tokens) {
   if (!SHELL_INTERPRETERS.has(basename(tokens[0]))) return false;
   return tokens.some((token) => {
     if (typeof token !== 'string' || !/\brm\b/.test(token)) return false;
-    try {
-      const nested = parseShell(token).filter((part) => !isSeparator(part));
-      return isDangerousRmTokens(nested);
-    } catch {
-      return false;
-    }
+    return tokenizeCommand(token).some((segment) =>
+      isDangerousRmTokens(segment),
+    );
   });
 }
 
@@ -171,16 +191,7 @@ export function isDangerousCommand(cmd) {
     return true;
   }
 
-  if (!parseShell) return LEGACY_RM_PATTERN.test(cmd);
-
-  let tokens;
-  try {
-    tokens = parseShell(cmd);
-  } catch {
-    return LEGACY_RM_PATTERN.test(cmd);
-  }
-
-  for (const segment of splitSegments(tokens)) {
+  for (const segment of tokenizeCommand(cmd)) {
     if (isDangerousRmTokens(segment)) return true;
     if (nestedShellDanger(segment)) return true;
   }

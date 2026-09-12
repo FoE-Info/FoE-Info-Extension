@@ -76,7 +76,7 @@ OpenCode grants live in `opencode.json` `permission` block — different format,
 
 | File | Scope | Count | Notes |
 | :--- | :--- | :--- | :--- |
-| `~/.gemini/config/config.json` | Global | 86 | All 6 servers × per-tool + `*` wildcards |
+| `~/.gemini/config/config.json` | Global | 86 | All 7 servers × per-tool grants (add explicit `mcp(github-mcp/<tool>)` grants) |
 | `projects/5c62244a-...json` | FoE-Info project | 79 | Host-scoped grants (incl. 10 graphify-low-tool) |
 | `projects/18cb2ceb-...json` | Forge-Hammer project | 13 | Peer-scoped grants |
 | `projects/outside-of-project.json` | Outside-of-project | 86 | Global fallback |

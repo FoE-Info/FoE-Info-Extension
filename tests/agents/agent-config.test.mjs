@@ -336,6 +336,7 @@ test('Agent Config - validates standardized shell script naming convention', () 
     'graph-metadata-update.sh',
     'llama-swap-lifecycle.sh',
     'run-chrome-devtools-mcp.sh',
+    'run-github-mcp.sh',
     'run-graphify-local.sh',
     'run-with-llama-swap.sh',
   ];

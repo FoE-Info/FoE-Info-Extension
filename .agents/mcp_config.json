@@ -138,6 +138,10 @@
         "https_proxy": "",
         "all_proxy": ""
       }
+    },
+    "github-mcp": {
+      "command": "bash",
+      "args": [".agents/scripts/run-github-mcp.sh"]
     }
   }
 }
