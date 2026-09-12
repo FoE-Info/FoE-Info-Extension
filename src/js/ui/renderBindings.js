@@ -15,5 +15,6 @@ require('./rewardRenderBinding.js');
 require('./startupMetadataLoadingBinding.js');
 require('./startupRenderBinding.js');
 require('./treasuryRenderBinding.js');
+require('./visitedCityRenderBinding.js');
 
 module.exports = {};
