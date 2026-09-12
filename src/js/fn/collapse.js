@@ -1,8 +1,11 @@
-/** Bootstrap collapse/alert/popover binding helpers for panel toggles. */
-import { Alert, Popover, Tooltip } from 'bootstrap';
-import { checkDebug } from '../vars/state.js';
-import * as element from './AddElement.js';
-import * as storage from './storage.js';
+/**
+ * collapse.js
+ *
+ * Bootstrap collapse/alert/popover state bindings and declarative toggle
+ * functions for extension panels and cards.
+ */
+
+import { createToggle, hideAllTooltips } from '../ui/collapseToggleRunner.js';
 
 export var collapseFriends = true;
 export var collapseGuild = true;
@@ -35,459 +38,412 @@ export var collapseGBGLeaderboard = false;
 export var collapseQIContributions = false;
 export var collapseQILeaderboard = false;
 
-// export default class set {
-// 	constructor(name, state) {
-// 		this[name] = state;
-// 	}
-// }
-
-// export default function set (name, state){
-// 	console.debug(name,state);
-// 	this.name = state;
-// 	console.debug(this.name);
-// }
+const SETTERS = {
+  collapseFriends: (v) => {
+    collapseFriends = v;
+  },
+  collapseGuild: (v) => {
+    collapseGuild = v;
+  },
+  collapseHood: (v) => {
+    collapseHood = v;
+  },
+  collapseIncidents: (v) => {
+    collapseIncidents = v;
+  },
+  collapseArmy: (v) => {
+    collapseArmy = v;
+  },
+  collapseGoods: (v) => {
+    collapseGoods = v;
+  },
+  collapseStats: (v) => {
+    collapseStats = v;
+  },
+  collapseGBInfo: (v) => {
+    collapseGBInfo = v;
+  },
+  collapseGBRewards: (v) => {
+    collapseGBRewards = v;
+  },
+  collapseGBDonors: (v) => {
+    collapseGBDonors = v;
+  },
+  collapseGBinvest: (v) => {
+    collapseGBinvest = v;
+  },
+  collapseInvested: (v) => {
+    collapseInvested = v;
+  },
+  collapseDonation: (v) => {
+    collapseDonation = v;
+  },
+  collapseBattleground: (v) => {
+    collapseBattleground = v;
+  },
+  collapseBuildingCost: (v) => {
+    collapseBuildingCost = v;
+  },
+  collapseExpedition: (v) => {
+    collapseExpedition = v;
+  },
+  collapseTreasury: (v) => {
+    collapseTreasury = v;
+  },
+  collapseTreasuryLog: (v) => {
+    collapseTreasuryLog = v;
+  },
+  collapseGalaxy: (v) => {
+    collapseGalaxy = v;
+  },
+  collapseTarget: (v) => {
+    collapseTarget = v;
+  },
+  collapseTargetGen: (v) => {
+    collapseTargetGen = v;
+  },
+  collapseBuildings: (v) => {
+    collapseBuildings = v;
+  },
+  collapseLists: (v) => {
+    collapseLists = v;
+  },
+  collapseRewards: (v) => {
+    collapseRewards = v;
+  },
+  collapseBonus: (v) => {
+    collapseBonus = v;
+  },
+  collapseCultural: (v) => {
+    collapseCultural = v;
+  },
+  collapseClipboard: (v) => {
+    collapseClipboard = v;
+  },
+  collapseGBGLeaderboard: (v) => {
+    collapseGBGLeaderboard = v;
+  },
+  collapseQIContributions: (v) => {
+    collapseQIContributions = v;
+  },
+  collapseQILeaderboard: (v) => {
+    collapseQILeaderboard = v;
+  },
+};
 
 export default function set(key, value) {
-  // console.debug(key, value);
-  switch (key) {
-    case 'collapseFriends':
-      collapseFriends = value;
-      // console.debug(collapseFriends);
-      break;
-    case 'collapseGuild':
-      collapseGuild = value;
-      break;
-    case 'collapseStats':
-      collapseStats = value;
-      break;
-    case 'collapseGoods':
-      collapseGoods = value;
-      break;
-    case 'collapseIncidents':
-      collapseIncidents = value;
-      break;
-    case 'collapseHood':
-      collapseHood = value;
-      break;
-    case 'collapseArmy':
-      collapseArmy = value;
-      break;
-
-    case 'collapseGBInfo':
-      collapseGBInfo = value;
-      break;
-    case 'collapseGBRewards':
-      collapseGBRewards = value;
-      break;
-    case 'collapseGBDonors':
-      collapseGBDonors = value;
-      break;
-    case 'collapseGBinvest':
-      collapseGBinvest = value;
-      break;
-    case 'collapseInvested':
-      collapseInvested = value;
-      break;
-    case 'collapseDonation':
-      collapseDonation = value;
-      break;
-    case 'collapseBattleground':
-      collapseBattleground = value;
-      break;
-    case 'collapseBuildingCost':
-      collapseBuildingCost = value;
-      break;
-    case 'collapseExpedition':
-      collapseExpedition = value;
-      break;
-    case 'collapseTreasury':
-      collapseTreasury = value;
-      break;
-    case 'collapseTreasuryLog':
-      collapseTreasuryLog = value;
-      break;
-    case 'collapseGalaxy':
-      collapseGalaxy = value;
-      break;
-    case 'collapseTarget':
-      collapseTarget = value;
-      break;
-    case 'collapseTargetGen':
-      collapseTargetGen = value;
-      break;
-    case 'collapseBuildings':
-      collapseBuildings = value;
-      break;
-    case 'collapseLists':
-      collapseLists = value;
-      break;
-    case 'collapseRewards':
-      collapseRewards = value;
-      break;
-    case 'collapseBonus':
-      collapseBonus = value;
-      break;
-    case 'collapseCultural':
-      collapseCultural = value;
-      break;
-    case 'collapseClipboard':
-      collapseClipboard = value;
-      break;
-
-    default:
-      // console.debug(key, value);
-      break;
+  const setter = SETTERS[key];
+  if (setter) {
+    setter(value);
   }
 }
 
-export function fCollapseGBInfo() {
-  collapseGBInfo = !collapseGBInfo;
-  storage.setCollapse('collapseGBInfo', collapseGBInfo);
-  const copyEl = document.getElementById('gbInfoCopyID');
-  if (copyEl) {
-    copyEl.style.display = collapseGBInfo ? 'none' : 'block';
-  }
-  element.updateIcon('gbinfoicon', 'gbInfoCollapse', collapseGBInfo);
-}
+export const fCollapseGBInfo = createToggle({
+  get: () => collapseGBInfo,
+  set: (v) => {
+    collapseGBInfo = v;
+  },
+  key: 'collapseGBInfo',
+  persist: true,
+  copyEls: ['gbInfoCopyID'],
+  icons: [{ iconId: 'gbinfoicon', targetId: 'gbInfoCollapse' }],
+});
 
-export function fCollapseFriends() {
-  collapseFriends = !collapseFriends;
-  const copyEl =
-    typeof document !== 'undefined' && document.getElementById('friendsCopyID');
-  if (copyEl) {
-    copyEl.style.display = collapseFriends ? 'none' : 'inline-block';
-  }
-  // console.debug('collapseFriends',collapseFriends);
-  element.updateIcon('friendsicon', 'friendsText', collapseFriends);
-}
+export const fCollapseFriends = createToggle({
+  get: () => collapseFriends,
+  set: (v) => {
+    collapseFriends = v;
+  },
+  copyEls: [{ id: 'friendsCopyID', display: 'inline-block' }],
+  icons: [{ iconId: 'friendsicon', targetId: 'friendsText' }],
+});
 
-export function fCollapseLists() {
-  collapseLists = !collapseLists;
-  element.updateIcon('listsicon', 'listsText', collapseLists);
-}
+export const fCollapseLists = createToggle({
+  get: () => collapseLists,
+  set: (v) => {
+    collapseLists = v;
+  },
+  icons: [{ iconId: 'listsicon', targetId: 'listsText' }],
+});
 
-export function fCollapseHood() {
-  collapseHood = !collapseHood;
-  const copyEl =
-    typeof document !== 'undefined' && document.getElementById('hoodCopyID');
-  if (copyEl) {
-    copyEl.style.display = collapseHood ? 'none' : 'inline-block';
-  }
-  // console.debug('collapseHood',collapseHood);
-  element.updateIcon('hoodicon', 'hoodText', collapseHood);
-}
+export const fCollapseHood = createToggle({
+  get: () => collapseHood,
+  set: (v) => {
+    collapseHood = v;
+  },
+  copyEls: [{ id: 'hoodCopyID', display: 'inline-block' }],
+  icons: [{ iconId: 'hoodicon', targetId: 'hoodText' }],
+});
 
-export function fCollapseGalaxy() {
-  collapseGalaxy = !collapseGalaxy;
-  // storage.set('collapseGalaxy', collapseGalaxy);
-  element.updateIcon('galaxyicon', 'galaxyText', collapseGalaxy);
-}
+export const fCollapseGalaxy = createToggle({
+  get: () => collapseGalaxy,
+  set: (v) => {
+    collapseGalaxy = v;
+  },
+  icons: [{ iconId: 'galaxyicon', targetId: 'galaxyText' }],
+});
 
-export function fCollapseGuild() {
-  collapseGuild = !collapseGuild;
-  const copyEl =
-    typeof document !== 'undefined' && document.getElementById('guildCopyID');
-  if (copyEl) {
-    copyEl.style.display = collapseGuild ? 'none' : 'inline-block';
-  }
-  // console.debug('collapseGuild',collapseGuild);
-  element.updateIcon('guildicon', 'guildText', collapseGuild);
-  element.updateIcon('guildOverviewIcon', 'guildOverviewText', collapseGuild);
-}
+export const fCollapseGuild = createToggle({
+  get: () => collapseGuild,
+  set: (v) => {
+    collapseGuild = v;
+  },
+  copyEls: [{ id: 'guildCopyID', display: 'inline-block' }],
+  icons: [
+    { iconId: 'guildicon', targetId: 'guildText' },
+    { iconId: 'guildOverviewIcon', targetId: 'guildOverviewText' },
+  ],
+});
 
-export function fCollapseIncidents() {
-  fHideAllTooltips();
-  collapseIncidents = !collapseIncidents;
-  element.updateIcon('incidentsicon', 'incidentsText', collapseIncidents);
-  // console.debug('collapseIncidents',collapseIncidents);
-}
+export const fCollapseIncidents = createToggle({
+  get: () => collapseIncidents,
+  set: (v) => {
+    collapseIncidents = v;
+  },
+  hideTooltips: true,
+  icons: [{ iconId: 'incidentsicon', targetId: 'incidentsText' }],
+});
 
-export function fCollapseArmy() {
-  collapseArmy = !collapseArmy;
-  if (typeof document !== 'undefined') {
-    const armyUnits = document.getElementById('armyUnits');
-    const armyUnits2 = document.getElementById('armyUnits2');
-    const armyUnits3 = document.getElementById('armyUnits3');
+export const fCollapseArmy = createToggle({
+  get: () => collapseArmy,
+  set: (v) => {
+    collapseArmy = v;
+  },
+  onToggle: (next, doc) => {
+    const armyUnits = doc.getElementById('armyUnits');
+    const armyUnits2 = doc.getElementById('armyUnits2');
+    const armyUnits3 = doc.getElementById('armyUnits3');
     if (armyUnits) {
       armyUnits.innerHTML =
-        collapseArmy && armyUnits2 && armyUnits3 ?
+        next && armyUnits2 && armyUnits3 ?
           armyUnits2.innerHTML + ' ' + armyUnits3.innerHTML
         : '';
     }
-  }
-  element.updateIcon('armyicon', 'armyText', collapseArmy);
-}
+  },
+  icons: [{ iconId: 'armyicon', targetId: 'armyText' }],
+});
 
-export function fCollapseGoods() {
-  collapseGoods = !collapseGoods;
-  const copyEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('goodsCopyID')
-    : null;
-  if (copyEl) {
-    copyEl.style.display = collapseGoods ? 'none' : 'block';
-  }
-  element.updateIcon('goodsicon', 'goodsText', collapseGoods);
-}
+export const fCollapseGoods = createToggle({
+  get: () => collapseGoods,
+  set: (v) => {
+    collapseGoods = v;
+  },
+  copyEls: ['goodsCopyID'],
+  icons: [{ iconId: 'goodsicon', targetId: 'goodsText' }],
+});
 
-export function fCollapseStats() {
-  fHideAllTooltips();
-  collapseStats = !collapseStats;
-  // console.debug('collapseStats',collapseStats);
-  const copyEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('citystatsCopyID')
-    : null;
-  if (copyEl) {
-    copyEl.style.display = collapseStats ? 'none' : 'block';
-  }
-  element.updateIcon('citystatsicon', 'citystatsText', collapseStats);
-}
+export const fCollapseStats = createToggle({
+  get: () => collapseStats,
+  set: (v) => {
+    collapseStats = v;
+  },
+  hideTooltips: true,
+  copyEls: ['citystatsCopyID'],
+  icons: [{ iconId: 'citystatsicon', targetId: 'citystatsText' }],
+});
 
-export function fCollapseRewards() {
-  collapseRewards = !collapseRewards;
-  // console.debug('collapseRewards',collapseRewards);
-  element.updateIcon('rewardsicon', 'rewardsText', collapseRewards);
-}
+export const fCollapseRewards = createToggle({
+  get: () => collapseRewards,
+  set: (v) => {
+    collapseRewards = v;
+  },
+  icons: [{ iconId: 'rewardsicon', targetId: 'rewardsText' }],
+});
 
-export function fCollapseGBDonors() {
-  collapseGBDonors = !collapseGBDonors;
-  const copyEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('donorCopyID')
-    : null;
-  if (copyEl) {
-    copyEl.style.display = collapseGBDonors ? 'none' : 'block';
-  }
-  const iconId =
-    typeof document !== 'undefined' && document.getElementById('gbinvesticon') ?
-      'gbinvesticon'
-    : 'donoricon';
-  const targetId =
-    typeof document !== 'undefined' && document.getElementById('donorText') ?
-      'donorText'
-    : 'donorcollapse';
-  element.updateIcon(iconId, targetId, collapseGBDonors);
-}
+export const fCollapseGBDonors = createToggle({
+  get: () => collapseGBDonors,
+  set: (v) => {
+    collapseGBDonors = v;
+  },
+  copyEls: ['donorCopyID'],
+  icons: [
+    {
+      iconId: (doc) =>
+        doc && doc.getElementById('gbinvesticon') ?
+          'gbinvesticon'
+        : 'donoricon',
+      targetId: (doc) =>
+        doc && doc.getElementById('donorText') ? 'donorText' : 'donorcollapse',
+    },
+  ],
+});
 
-export function fCollapseInvested() {
-  collapseInvested = !collapseInvested;
-  if (typeof document !== 'undefined') {
-    const onHandEl = document.getElementById('onHandFP');
-    const availableFpEl = document.getElementById('availableFPID');
+export const fCollapseInvested = createToggle({
+  get: () => collapseInvested,
+  set: (v) => {
+    collapseInvested = v;
+  },
+  copyEls: ['investedCopyID'],
+  onToggle: (next, doc) => {
+    const onHandEl = doc.getElementById('onHandFP');
+    const availableFpEl = doc.getElementById('availableFPID');
     if (onHandEl) {
-      if (collapseInvested && availableFpEl) {
+      if (next && availableFpEl) {
         onHandEl.innerHTML = `<span data-i18n="available">Available FP</span>: ${availableFpEl.innerHTML}`;
       } else {
         onHandEl.innerHTML = '';
       }
     }
-    const copyEl = document.getElementById('investedCopyID');
-    if (copyEl) {
-      copyEl.style.display = collapseInvested ? 'none' : 'block';
-    }
-  }
-  element.updateIcon('investedicon', 'investedText', collapseInvested);
-}
+  },
+  icons: [{ iconId: 'investedicon', targetId: 'investedText' }],
+});
 
-// export function fcollapseGBinvest() {
-// 	collapseGBinvest = !collapseGBinvest;
-// 	// storage.set('collapseGBinvest', collapseGBinvest);
-// 	// console.debug('fcollapseGBinvest',collapseOptions);
-// 	element.updateIcon("guildicon","guildText",collapseGuild);
-// }
+export const fCollapseDonation = createToggle({
+  get: () => collapseDonation,
+  set: (v) => {
+    collapseDonation = v;
+  },
+  copyEls: ['donationCopyID'],
+  icons: [{ iconId: 'donationicon', targetId: 'donationText3' }],
+});
 
-export function fCollapseDonation() {
-  collapseDonation = !collapseDonation;
-  // console.debug('fCollapseDonation',collapseOptions);
-  const copyEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('donationCopyID')
-    : null;
-  if (copyEl) {
-    copyEl.style.display = collapseDonation ? 'none' : 'block';
-  }
-  element.updateIcon('donationicon', 'donationText3', collapseDonation);
-}
+export const fCollapseBattleground = createToggle({
+  get: () => collapseBattleground,
+  set: (v) => {
+    collapseBattleground = v;
+  },
+  copyEls: ['battlegroundPostID', 'battlegroundCopyID'],
+  icons: [
+    {
+      iconId: 'battlegroundicon',
+      targetId: (doc) =>
+        doc && doc.getElementById('battlegroundTextCollapse') ?
+          'battlegroundTextCollapse'
+        : 'battlegroundCollapse',
+    },
+  ],
+});
 
-export function fCollapseBattleground() {
-  collapseBattleground = !collapseBattleground;
-  // console.debug('fCollapseBattleground',collapseOptions);
-  if (typeof document !== 'undefined') {
-    const postEl = document.getElementById('battlegroundPostID');
-    if (postEl) {
-      postEl.style.display = collapseBattleground ? 'none' : 'block';
-    }
-    const copyEl = document.getElementById('battlegroundCopyID');
-    if (copyEl) {
-      copyEl.style.display = collapseBattleground ? 'none' : 'block';
-    }
-  }
-  const targetId =
-    (
-      typeof document !== 'undefined' &&
-      document.getElementById('battlegroundTextCollapse')
-    ) ?
-      'battlegroundTextCollapse'
-    : 'battlegroundCollapse';
-  element.updateIcon('battlegroundicon', targetId, collapseBattleground);
-}
+export const fCollapseBuildingCost = createToggle({
+  get: () => collapseBuildingCost,
+  set: (v) => {
+    collapseBuildingCost = v;
+  },
+  icons: [{ iconId: 'buildingCosticon', targetId: 'buildingCostText' }],
+});
 
-export function fCollapseBuildingCost() {
-  collapseBuildingCost = !collapseBuildingCost;
-  // console.debug('collapseBuildingCost',collapseBuildingCost);
-  element.updateIcon(
-    'buildingCosticon',
-    'buildingCostText',
-    collapseBuildingCost,
-  );
-}
+export const fCollapseBuildings = createToggle({
+  get: () => collapseBuildings,
+  set: (v) => {
+    collapseBuildings = v;
+  },
+  icons: [{ iconId: 'buildingsicon', targetId: 'buildingsText' }],
+});
 
-export function fCollapseBuildings() {
-  collapseBuildings = !collapseBuildings;
-  // console.debug('collapseBuildings',collapseBuildings);
-  element.updateIcon('buildingsicon', 'buildingsText', collapseBuildings);
-}
+export const fCollapseExpedition = createToggle({
+  get: () => collapseExpedition,
+  set: (v) => {
+    collapseExpedition = v;
+  },
+  copyEls: ['expeditionCopyID', 'geChampionshipCopyID', 'geContributionCopyID'],
+  icons: [
+    { iconId: 'expeditionicon', targetId: 'expeditionText' },
+    { iconId: 'geChampionshipIcon', targetId: 'geChampionshipText' },
+    { iconId: 'geContributionIcon', targetId: 'geContributionText' },
+  ],
+});
 
-export function fCollapseExpedition() {
-  collapseExpedition = !collapseExpedition;
-  if (typeof document !== 'undefined') {
-    const copyIds = [
-      'expeditionCopyID',
-      'geChampionshipCopyID',
-      'geContributionCopyID',
-    ];
-    for (const id of copyIds) {
-      const el = document.getElementById(id);
-      if (el) {
-        el.style.display = collapseExpedition ? 'none' : 'block';
-      }
-    }
-  }
-  element.updateIcon('expeditionicon', 'expeditionText', collapseExpedition);
-  element.updateIcon(
-    'geChampionshipIcon',
-    'geChampionshipText',
-    collapseExpedition,
-  );
-  element.updateIcon(
-    'geContributionIcon',
-    'geContributionText',
-    collapseExpedition,
-  );
-}
+export const fCollapseTreasury = createToggle({
+  get: () => collapseTreasury,
+  set: (v) => {
+    collapseTreasury = v;
+  },
+  copyEls: ['treasuryCopyID'],
+  icons: [{ iconId: 'treasuryicon', targetId: 'treasuryText' }],
+});
 
-export function fCollapseTreasury() {
-  collapseTreasury = !collapseTreasury;
-  if (typeof document !== 'undefined') {
-    const copyEl = document.getElementById('treasuryCopyID');
-    if (copyEl) {
-      copyEl.style.display = collapseTreasury ? 'none' : 'block';
-    }
-  }
-  element.updateIcon('treasuryicon', 'treasuryText', collapseTreasury);
-}
+export const fCollapseTreasuryLog = createToggle({
+  get: () => collapseTreasuryLog,
+  set: (v) => {
+    collapseTreasuryLog = v;
+  },
+  icons: [{ iconId: 'treasuryLogicon', targetId: 'treasuryLogText' }],
+});
 
-export function fCollapseTreasuryLog() {
-  collapseTreasuryLog = !collapseTreasuryLog;
-  element.updateIcon('treasuryLogicon', 'treasuryLogText', collapseTreasuryLog);
-}
+export const fCollapseTarget = createToggle({
+  get: () => collapseTarget,
+  set: (v) => {
+    collapseTarget = v;
+  },
+  copyEls: ['targetPostID'],
+  icons: [{ iconId: 'targeticon', targetId: 'targetText' }],
+});
 
-export function fCollapseTarget() {
-  collapseTarget = !collapseTarget;
-  if (typeof document !== 'undefined') {
-    const postEl = document.getElementById('targetPostID');
-    if (postEl) {
-      postEl.style.display = collapseTarget ? 'none' : 'block';
-    }
-  }
-  element.updateIcon('targeticon', 'targetText', collapseTarget);
-}
+export const fCollapseTargetGen = createToggle({
+  get: () => collapseTargetGen,
+  set: (v) => {
+    collapseTargetGen = v;
+  },
+  icons: [{ iconId: 'targetGenicon', targetId: 'targetGenCollapse' }],
+});
 
-export function fCollapseTargetGen() {
-  collapseTargetGen = !collapseTargetGen;
-  element.updateIcon('targetGenicon', 'targetGenCollapse', collapseTargetGen);
-}
+export const fCollapseBonus = createToggle({
+  get: () => collapseBonus,
+  set: (v) => {
+    collapseBonus = v;
+  },
+  icons: [{ iconId: 'bonusicon', targetId: 'bonusText' }],
+});
 
-export function fCollapseBonus() {
-  collapseBonus = !collapseBonus;
-  element.updateIcon('bonusicon', 'bonusText', collapseBonus);
-}
+export const fCollapseCultural = createToggle({
+  get: () => collapseCultural,
+  set: (v) => {
+    collapseCultural = v;
+  },
+  icons: [{ iconId: 'culturalicon', targetId: 'culturalText' }],
+});
 
-export function fCollapseCultural() {
-  collapseCultural = !collapseCultural;
-  element.updateIcon('culturalicon', 'culturalText', collapseCultural);
-}
+export const fCollapseClipboard = createToggle({
+  get: () => collapseClipboard,
+  set: (v) => {
+    collapseClipboard = v;
+  },
+  key: 'collapseClipboard',
+  persist: true,
+  copyEls: ['clipboardCopyID'],
+  icons: [{ iconId: 'clipboardicon', targetId: 'clipboardText' }],
+});
 
-export function fCollapseClipboard() {
-  collapseClipboard = !collapseClipboard;
-  storage.setCollapse('collapseClipboard', collapseClipboard);
-  if (typeof document !== 'undefined') {
-    const copyEl = document.getElementById('clipboardCopyID');
-    if (copyEl) {
-      copyEl.style.display = collapseClipboard ? 'none' : 'block';
-    }
-  }
-  element.updateIcon('clipboardicon', 'clipboardText', collapseClipboard);
-}
+export const fCollapseGBGLeaderboard = createToggle({
+  get: () => collapseGBGLeaderboard,
+  set: (v) => {
+    collapseGBGLeaderboard = v;
+  },
+  copyEls: ['gbgLeaderboardCopyID'],
+  icons: [
+    {
+      iconId: 'gbgLeaderboardIcon',
+      targetId: 'gbgLeaderboardCollapse',
+    },
+  ],
+});
 
-export function fCollapseGBGLeaderboard() {
-  collapseGBGLeaderboard = !collapseGBGLeaderboard;
-  if (typeof document !== 'undefined') {
-    const copyEl = document.getElementById('gbgLeaderboardCopyID');
-    if (copyEl) {
-      copyEl.style.display = collapseGBGLeaderboard ? 'none' : 'block';
-    }
-  }
-  element.updateIcon(
-    'gbgLeaderboardIcon',
-    'gbgLeaderboardCollapse',
-    collapseGBGLeaderboard,
-  );
-}
+export const fCollapseQIContributions = createToggle({
+  get: () => collapseQIContributions,
+  set: (v) => {
+    collapseQIContributions = v;
+  },
+  copyEls: ['qiContributionsCopyID'],
+  icons: [
+    {
+      iconId: 'qiContributionsIcon',
+      targetId: 'qiContributionsCollapse',
+    },
+  ],
+});
 
-export function fCollapseQIContributions() {
-  collapseQIContributions = !collapseQIContributions;
-  if (typeof document !== 'undefined') {
-    const copyEl = document.getElementById('qiContributionsCopyID');
-    if (copyEl) {
-      copyEl.style.display = collapseQIContributions ? 'none' : 'block';
-    }
-  }
-  element.updateIcon(
-    'qiContributionsIcon',
-    'qiContributionsCollapse',
-    collapseQIContributions,
-  );
-}
+export const fCollapseQILeaderboard = createToggle({
+  get: () => collapseQILeaderboard,
+  set: (v) => {
+    collapseQILeaderboard = v;
+  },
+  copyEls: ['qiLeaderboardCopyID'],
+  icons: [
+    {
+      iconId: 'qiLeaderboardIcon',
+      targetId: 'qiLeaderboardCollapse',
+    },
+  ],
+});
 
-export function fCollapseQILeaderboard() {
-  collapseQILeaderboard = !collapseQILeaderboard;
-  if (typeof document !== 'undefined') {
-    const copyEl = document.getElementById('qiLeaderboardCopyID');
-    if (copyEl) {
-      copyEl.style.display = collapseQILeaderboard ? 'none' : 'block';
-    }
-  }
-  element.updateIcon(
-    'qiLeaderboardIcon',
-    'qiLeaderboardCollapse',
-    collapseQILeaderboard,
-  );
-}
-
-function fHideAllTooltips() {
-  const popoverTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="popover"]',
-  );
-  const popoverList = [...popoverTriggerList].map((popoverEl) =>
-    Popover.getOrCreateInstance(popoverEl).hide(),
-  );
-  const tooltipTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="tooltip"]',
-  );
-  const tooltipList = [...tooltipTriggerList].map((tooltipEl) =>
-    Tooltip.getOrCreateInstance(tooltipEl).hide(),
-  );
-  if (checkDebug()) console.debug('fHideAllTooltips');
-}
+export { hideAllTooltips as fHideAllTooltips };
