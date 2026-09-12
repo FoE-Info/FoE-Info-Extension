@@ -5,6 +5,7 @@ import {
   applyCardVisibility,
   CONTEXT_ALLOWED_PANELS,
   GAME_CONTEXTS,
+  getAllowedPanelsForView,
   getCurrentView,
   onViewChange,
   setCurrentView,
@@ -51,7 +52,6 @@ const DISALLOWED_BY_CONTEXT = {
     'cultural',
     'visit',
     'geContributions',
-    'friends',
   ],
   GBG: [
     'incidents',
@@ -77,6 +77,7 @@ const DISALLOWED_BY_CONTEXT = {
     'quantumLeaderboard',
     'cultural',
     'visit',
+    'friends',
   ],
   QI: [
     'incidents',
@@ -136,6 +137,7 @@ function createMockDOM() {
 
   const doc = {
     createElement,
+    body: createElement('body'),
     getElementById(id) {
       if (!elementsById.has(id)) {
         const el = createElement('div');
@@ -250,6 +252,14 @@ describe('6-Context Panel Visibility Engine', () => {
     unsubscribe();
   });
 
+  it('GE allowed panels expand to include the hidden donationDIV2 wrapper', () => {
+    const allowed = getAllowedPanelsForView('GE');
+    assert.ok(allowed.has('geChampionship'));
+    assert.ok(allowed.has('donationDIV2'));
+    assert.ok(allowed.has('geContributionSection'));
+    assert.ok(allowed.has('geInternationalSection'));
+  });
+
   it('normalizes legacy CITY/MAIN aliases to OWN_CITY', () => {
     setCurrentView('CITY');
     assert.equal(getCurrentView(), 'OWN_CITY');
@@ -333,6 +343,86 @@ describe('6-Context Panel Visibility Engine', () => {
         !el.innerHTML.includes('[DEBUG STUB]'),
         `Hidden panel #${id} must not be stubbed`,
       );
+    }
+  });
+
+  it('debug mode stubs QI contribution and leaderboard panels', () => {
+    setCurrentView('QI');
+    applyCardVisibility(null, true, 'QI');
+
+    for (const id of ['quantumContributions', 'quantumLeaderboard']) {
+      const el = document.getElementById(id);
+      assert.equal(el.style.display, '', `Panel #${id} must be visible`);
+      assert.ok(
+        el.innerHTML.includes(`[DEBUG STUB]</strong> ${id}`),
+        `Panel #${id} must contain a debug stub`,
+      );
+      assert.ok(
+        el.innerHTML.includes(`Content for ${id}`),
+        `Stub for #${id} must embed its raw content`,
+      );
+    }
+  });
+
+  it('debug mode stubs each Lists checker section separately', () => {
+    setCurrentView('OWN_CITY');
+    for (const id of ['friendsText', 'guildText', 'hoodText']) {
+      document.getElementById(id).innerHTML = `<span>${id} data</span>`;
+    }
+    applyCardVisibility(null, true, 'OWN_CITY');
+
+    for (const id of ['friendsText', 'guildText', 'hoodText']) {
+      const el = document.getElementById(id);
+      assert.ok(
+        el.innerHTML.includes(`[DEBUG STUB]</strong> ${id}`),
+        `#${id} must have its own stub`,
+      );
+      assert.ok(el.innerHTML.includes(`${id} data`));
+    }
+
+    const listsCard = document.getElementById('friends');
+    assert.ok(
+      !listsCard.innerHTML.includes('[DEBUG STUB]'),
+      'The Lists card must not be double-stubbed',
+    );
+  });
+
+  it('debug stubs refresh to a panel live content after re-render', () => {
+    setCurrentView('GBG');
+    applyCardVisibility(null, true, 'GBG');
+
+    const el = document.getElementById('army');
+    el.innerHTML = '<span>Army live 731972</span>';
+    applyCardVisibility(null, true, 'GBG');
+
+    assert.ok(el.innerHTML.includes('[DEBUG STUB]</strong> army'));
+    assert.ok(el.innerHTML.includes('Army live 731972'));
+  });
+
+  it('observer refreshes stubs when a panel mutates after render', async () => {
+    const observers = [];
+    globalThis.MutationObserver = class {
+      constructor(cb) {
+        this.cb = cb;
+        observers.push(this);
+      }
+      observe() {}
+      disconnect() {}
+    };
+    try {
+      setCurrentView('GBG');
+      applyCardVisibility(null, true, 'GBG');
+      assert.equal(observers.length, 1);
+
+      const el = document.getElementById('army');
+      el.innerHTML = '<span>Army observed 42</span>';
+      observers[0].cb([{ target: el, addedNodes: [], removedNodes: [] }]);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      assert.ok(el.innerHTML.includes('[DEBUG STUB]</strong> army'));
+      assert.ok(el.innerHTML.includes('Army observed 42'));
+    } finally {
+      delete globalThis.MutationObserver;
     }
   });
 });
