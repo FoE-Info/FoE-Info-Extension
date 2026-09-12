@@ -20,6 +20,21 @@ try {
 
 const GbDonationService = require('../../msg/GbDonationService.js');
 
+let setCurrentView = () => {};
+try {
+  ({ setCurrentView } = require('../../ui/cardVisibility.js'));
+} catch {}
+
+function extractGridId(msg) {
+  const candidates = [
+    msg?.responseData?.gridId,
+    msg?.responseData?.[0]?.gridId,
+    msg?.requestData?.[0]?.gridId,
+    msg?.gridId,
+  ];
+  return candidates.find((val) => typeof val === 'string' && val) || null;
+}
+
 function registerCityRoutes(ctx) {
   const { dispatcher, handlers, gbRegistry, gbSelected } = ctx;
   const {
@@ -98,10 +113,23 @@ function registerCityRoutes(ctx) {
 
   // City Map Service (Own City GBs)
   dispatcher.register('CityMapService', 'getEntities', (msg) => {
+    setCurrentView('OWN_CITY');
     if (Array.isArray(msg?.responseData)) {
       const myId = handlers?.MyInfo?.id || 0;
       const myName = handlers?.MyInfo?.name || '';
       registerCityEntities(msg.responseData, myId, myName);
+    }
+  });
+
+  // City Map grid switch: ground-truth signal for own city, settlements & QI.
+  dispatcher.register('CityMapService', 'getCityMap', (msg) => {
+    const gridId = extractGridId(msg);
+    if (gridId === 'cultural_outpost') {
+      setCurrentView('SETTLEMENT');
+    } else if (gridId === 'guild_raids') {
+      setCurrentView('QI');
+    } else if (gridId === 'city' || gridId === 'main') {
+      setCurrentView('OWN_CITY');
     }
   });
   dispatcher.register('CityMapService', 'updateEntity', (msg) => {
