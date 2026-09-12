@@ -5,6 +5,7 @@ import test from 'node:test';
 import BigNumber from 'bignumber.js';
 import factoryDefaultsPkg from '../../src/js/state/factoryDefaults.js';
 import panelDispatcherPkg from '../../src/js/ui/panelDispatcher.js';
+import '../../src/js/ui/armyRenderBinding.js';
 
 const { createFreshWorldSettings, FACTORY_WORLD_SETTINGS } = factoryDefaultsPkg;
 
