@@ -25,6 +25,25 @@ try {
   helper = require('../fn/helper.js');
 } catch {}
 
+function unhideElement(container) {
+  if (!container) return;
+  if (container.classList?.contains('d-none')) {
+    container.classList.remove('d-none');
+  }
+  if (container.style) {
+    container.style.display = '';
+  }
+}
+
+function resolveGuildOverviewWrapper(targetContainer, doc) {
+  const byId =
+    doc && typeof doc.getElementById === 'function' ?
+      doc.getElementById('guildOverview')
+    : null;
+  if (byId) return byId;
+  return targetContainer?.parentElement || null;
+}
+
 function renderGuildPanel(clanData, deps = {}) {
   if (!clanData) return;
   const rawMembers =
@@ -119,6 +138,10 @@ function renderGuildPanel(clanData, deps = {}) {
   }
   if (targetContainer.style) {
     targetContainer.style.display = '';
+  }
+  const wrapper = resolveGuildOverviewWrapper(targetContainer, doc);
+  if (wrapper && wrapper !== targetContainer) {
+    unhideElement(wrapper);
   }
   targetContainer.innerHTML = html;
 
