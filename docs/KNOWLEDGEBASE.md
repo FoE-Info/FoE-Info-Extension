@@ -1,6 +1,6 @@
 # FoE-Info Extension Architecture & Knowledge Base
 
-**Last Updated**: 2026-09-12  
+**Last Updated**: 2026-09-13  
 **Knowledge Engine**: Graphify Multi-Graph Architecture (`graphify-foe-info` + `graphify-metadata-store`)  
 **AST Topology**: 3,047 Nodes · 4,975 Edges · 248 Communities  
 **Metadata Store**: 5,499 Nodes · 46,623 Edges · 383 Communities  
@@ -25,7 +25,7 @@ FoE-Info-Extension/
 │       ├── state/           # In-memory reactive state & dynamic MetadataStore
 │       ├── ui/              # Container binding, Bootstrap cards, renderers
 │       └── utils/           # Storage isolation, i18n resolver, XSS formatters, logger
-├── tests/                   # Native Node.js test suites (1,002 tests, 97 suites)
+├── tests/                   # Native Node.js test suites (1,327 tests, 96 suites)
 └── graphify-out/            # Knowledge graphs, wiki, and visual exports
 ```
 
@@ -116,7 +116,11 @@ sequenceDiagram
 ### 4.1 Protocol & Network Layer
 
 - `src/js/devtools.js`: DevTools network listener and panel bridge.
+- `src/js/protocol/devtoolsBridge.js`: Versioned structured postMessage bridge with panel readiness handshake.
 - `src/js/protocol/networkListener.js`: World ID extraction and 3s deduplication.
+- `src/js/protocol/dedupCache.js`: Rolling deduplication hash cache for incoming network payloads.
+- `src/js/protocol/directMetadata.js`: Direct-CDN metadata URL parser and batch routing seam.
+- `src/js/protocol/requestPayload.js`: Pure request payload parser for JSON-RPC message envelopes.
 - `src/js/protocol/MessageDispatcher.js`: Priority sorting and error-isolated RPC dispatching.
 - `src/js/protocol/indexBridgeSetup.js`: Modular service registration and bridge initialization.
 - `src/js/protocol/legacyBridge.js`: Legacy action routing partitioned into:
@@ -155,11 +159,18 @@ sequenceDiagram
 - `GuildBattlegroundService.js`: GBG attrition curves, sector timers, and siege camp costs.
 - `GuildExpeditionService.js`: GE encounter trials, negotiation stages, and championship stats.
 - `MetadataService.js`: CDN entity payload ingestion and on-demand resolution.
+- `OtherPlayerService.js`: Neighborhood, friend, and guild member social list parsing and visited city hydration.
 
 ### 4.4 State & Storage Architecture (`src/js/state/` & `src/js/utils/`)
 
 - `MetadataStore.js`: Reactive entity graph and relational indexes.
 - `BlueGalaxyState.js`: Event-driven state model for Blue Galaxy charges.
+- `SocialState.js`: In-memory reactive state for friends, guild members, and neighborhood lists.
+- `GreatBuildingsState.js`: Channeled store for GB donor rankings, info, and donation tables.
+- `StartupRenderState.js`: Channeled store for deferred startup city stats and building collection times.
+- `QuantumState.js`: Channeled store for QI player contributions and guild leaderboards.
+- `VisitedCityState.js`: Reactive store routing scouted player city topologies to render bindings.
+- `ArmyState.js`, `ResourceState.js`, `RewardState.js`, `TreasuryState.js`: Domain-specific reactive state stores.
 - `showOptions.js`: Feature visibility toggles.
 - `worldStorage.js`: Per-world key-prefixed storage with default hydration.
 - `factoryDefaults.js`: Baseline settings configuration.
@@ -167,11 +178,17 @@ sequenceDiagram
 
 ### 4.5 UI & Renderers (`src/js/ui/`)
 
-- `containerBinding.js`: Dynamic DOM container mounting in `panel.html`.
-- `indexUiBindings.js`: DevTools panel lifecycle and UI event binding.
-- `cardVisibility.js`: Declarative 6-context card visibility engine.
+- `renderBindings.js`: Composition root registering all 16 reactive store-to-UI render bindings.
+- `containerBinding.js`: Panel container binding and dynamic DOM mounting in `panel.html`.
+- `panelContainerFactory.js`: Factory creating and mounting primary and secondary panel containers.
+- `indexUiBindings.js`: DevTools panel lifecycle, bootstrap delegation, and UI event binding.
+- `storageBootstrap.js`: Storage initialization, canonical locale mapping (`CANONICAL_LOCALES`), and storage quota logging.
+- `collapseToggleRunner.js`: Declarative runner for panel collapse/expand toggles, tooltips, and state persistence.
+- `cardVisibility.js` & `cardVisibilityConfig.js`: Declarative 6-context card visibility engine and frozen config tables.
 - `optionsForm.js`: Settings UI serialization and deserialization.
 - `renderLiveCityStats.js`: Primary city statistics panel renderer.
+- `renderSocialListsPanel.js`: Social lists panel renderer (friends, guild, neighbors, inactive/plunder badges).
+- `gbOutputRepair.js`: Great Buildings DOM output repair and status synchronization.
 - `renderQuantumPanels.js`: Quantum Incursions contributions and leaderboard cards.
 - `renderGbDonationPanel.js`: Great Buildings donation and snipe cards.
 - `renderBattlegroundsPanel.js`: Guild Battlegrounds map and attrition panel.
@@ -185,8 +202,8 @@ sequenceDiagram
 ## 5. Corroborated Invariants
 
 1. **Modular Architecture ($\le 600$ lines/file)**:
-   - `index.js` decomposed from 2,806 lines to 165 lines.
-   - 99.4% of files comply with the budget.
+   - `index.js` decomposed from 2,806 lines to 159 lines.
+   - 100% of modules in `src/js/` comply with the $\le 600$-line budget (target 100–450 lines).
 2. **BigNumber Precision Math**:
    - Zero native JavaScript floating-point drift in FP calculations or boost tallies.
    - Strict half-up rounding for rewards; strict ceiling rounding for position locks.
