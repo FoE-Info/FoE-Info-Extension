@@ -129,26 +129,30 @@ test('Great Buildings Close -> Reopen Lifecycle & Static Invariants Suite', asyn
         'rankings must fallback to [] if not an array',
       );
 
-      // 3. Container displays must be restored in fCheckOutput
-      assert.match(
-        source,
-        /gbInfoDIV\.style\.display\s*=\s*['"]['"]/,
-        'fCheckOutput must reset gbInfoDIV display',
+      // 3. Container displays must be restored in gbOutputRepair
+      const repairSource = fs.readFileSync(
+        path.join(ROOT_DIR, 'src/js/ui/gbOutputRepair.js'),
+        'utf8',
       );
       assert.match(
-        source,
-        /greatbuilding\.style\.display\s*=\s*['"]['"]/,
-        'fCheckOutput must reset greatbuilding display',
+        repairSource,
+        /resolvedGbInfo\.style\.display\s*=\s*['"]['"]/,
+        'gbOutputRepair must reset gbInfoDIV display',
       );
       assert.match(
-        source,
-        /donation2DIV\.style\.display\s*=\s*['"]['"]/,
-        'fCheckOutput must reset donation2DIV display',
+        repairSource,
+        /resolvedGreatbuilding\.style\.display\s*=\s*['"]['"]/,
+        'gbOutputRepair must reset greatbuilding display',
+      );
+      assert.match(
+        repairSource,
+        /resolvedDonation2\.style\.display\s*=\s*['"]['"]/,
+        'gbOutputRepair must reset donation2DIV display',
       );
 
       // 4. showOptions?.showDonation !== false must be used
       assert.match(
-        source,
+        repairSource,
         /showOptions\?\.showDonation\s*!==\s*false/,
         'showDonation check must use !== false',
       );

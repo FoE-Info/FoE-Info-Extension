@@ -10,6 +10,7 @@ const { greatBuildingsState } = require('../state/GreatBuildingsState.js');
 const { renderGbDonorsCard } = require('./gbOverviewCard.js');
 const { renderGbInfoPanel } = require('./renderGbInfoPanel.js');
 const { renderGbDonationPanel } = require('./renderGbDonationPanel.js');
+const { repairGbOutput } = require('./gbOutputRepair.js');
 
 function bindGreatBuildingsPanels(
   state = greatBuildingsState,
@@ -17,11 +18,13 @@ function bindGreatBuildingsPanels(
     renderDonors = renderGbDonorsCard,
     renderInfo = renderGbInfoPanel,
     renderDonation = renderGbDonationPanel,
+    repairOutput = repairGbOutput,
   } = {},
 ) {
   if (!state || typeof state.subscribe !== 'function') return () => {};
   return state.subscribe((snapshot, channel) => {
     if (channel === 'donors' || channel === 'all') {
+      if (typeof repairOutput === 'function') repairOutput();
       const donors = snapshot.getDonors();
       if (donors) renderDonors(donors);
     }
