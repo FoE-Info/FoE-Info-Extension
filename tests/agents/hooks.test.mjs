@@ -41,6 +41,12 @@ test('Safety Gate Hook - flags destructive commands', () => {
     'rm -rf tests/',
     'rm -rf *',
     'rm -rf ./build',
+    'foe-browser',
+    'foe-browser --restart',
+    'foe-browser --reload',
+    'foe-browser --kill',
+    'pkill -f chrome',
+    'killall chrome',
   ];
 
   for (const cmd of dangerousCommands) {
