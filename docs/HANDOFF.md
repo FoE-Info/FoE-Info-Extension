@@ -4,6 +4,11 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
 
 ## Current session (2026-09-12)
 
+- **Context-Driven Panel Visibility Engine & Ephemeral Lifecycle (Parallel Execution: OpenCode & Antigravity)**:
+  - **Plan**: [`docs/plans/2026-09-12-context-driven-panel-visibility-engine.md`](plans/2026-09-12-context-driven-panel-visibility-engine.md).
+  - **Stream 1 (OpenCode)**: Worktree `.worktrees/feat-context-engine` on branch `feat/context-view-engine`. Declarative 6-context visibility matrix (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`) in `cardVisibility.js` / `cardVisibility.ts`, route transitions in `combatRoutes.js`, `quantumRoutes.js`, `cityRoutes.js`, `socialRoutes.js`, non-destructive `panelDispatcher.js` refactoring, and test suite `tests/ui/context-view-filtering.test.mjs`.
+  - **Stream 2 (Antigravity)**: Worktree `.worktrees/feat-goods-lifecycle` on branch `feat/goods-and-panel-lifecycle`. Extract `renderGoodsPanel.js` (<=250L) from `ResourceService.js` (dropping 580 -> <=380L), wire `.btn-close` dismiss/lock lifecycle, and prevent unwanted goods respawns on harvests/reloads.
+
 - **Quantum Incursions (QI) UX & Modernization Parallel Integration (Antigravity & OpenCode)**:
   - **Stream 1 — QI UX (Antigravity)**:
     - Implemented `src/js/msg/GuildRaidsService.js` (243L) handling `GuildRaidsService.getMemberActivityOverview` and `RankingService.searchRanking` (`guild_raids` category).
