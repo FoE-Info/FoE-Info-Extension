@@ -1,0 +1,2515 @@
+{
+  "description": "Per-player Great Building contribution overview rows.",
+  "captures": [
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:49:39.474Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 14,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2631,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8211,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13703,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 155,
+          "current_progress": 18743,
+          "max_progress": 18761,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:49:41.605Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 17,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2631,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8211,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13703,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 155,
+          "current_progress": 18743,
+          "max_progress": 18761,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:50:44.503Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 19,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2750,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8330,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13703,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 155,
+          "current_progress": 18743,
+          "max_progress": 18761,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:50:45.388Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 22,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2869,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8449,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13703,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 155,
+          "current_progress": 18743,
+          "max_progress": 18761,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:50:55.531Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 25,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13703,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 155,
+          "current_progress": 18743,
+          "max_progress": 18761,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:51:38.717Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 35,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13703,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 155,
+          "current_progress": 18743,
+          "max_progress": 18761,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:51:40.824Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 38,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13703,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 155,
+          "current_progress": 18743,
+          "max_progress": 18761,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:51:42.979Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 40,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 156,
+          "max_progress": 19230,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:51:46.134Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 44,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 156,
+          "max_progress": 19230,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:09.127Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 46,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 6655,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 156,
+          "current_progress": 6655,
+          "max_progress": 19230,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:13.373Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 50,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 6655,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 156,
+          "current_progress": 6655,
+          "max_progress": 19230,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:15.245Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 52,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13310,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 156,
+          "current_progress": 13310,
+          "max_progress": 19230,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:17.467Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 56,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13310,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 156,
+          "current_progress": 13310,
+          "max_progress": 19230,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:50.697Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 68,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13310,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 156,
+          "current_progress": 13310,
+          "max_progress": 19230,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:53.497Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 71,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13310,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 156,
+          "current_progress": 13310,
+          "max_progress": 19230,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:56.303Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 74,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 69,
+          "max_progress": 63049,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13310,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 156,
+          "current_progress": 13310,
+          "max_progress": 19230,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2879,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8459,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    },
+    {
+      "sourceHar": "open own GB list.har",
+      "capturedAt": "2026-09-12T00:44:59.793Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getOtherPlayerOverview",
+      "requestId": 14,
+      "requestData": [
+        7560963
+      ],
+      "responseData": [
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 2631,
+          "entity_id": 34862,
+          "city_entity_id": "X_OceanicFuture_Landmark3",
+          "name": "The Blue Galaxy",
+          "level": 95,
+          "current_progress": 8211,
+          "max_progress": 9699,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 42261,
+          "entity_id": 28479,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark2",
+          "name": "Cosmic Catalyst",
+          "level": 67,
+          "current_progress": 46916,
+          "max_progress": 48328,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 13703,
+          "entity_id": 19,
+          "city_entity_id": "X_BronzeAge_Landmark2",
+          "name": "Statue of Zeus",
+          "level": 155,
+          "current_progress": 18743,
+          "max_progress": 18761,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 56189,
+          "entity_id": 28376,
+          "city_entity_id": "X_SpaceAgeSpaceHub_Landmark1",
+          "name": "Stellar Warship",
+          "level": 68,
+          "current_progress": 61484,
+          "max_progress": 61512,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "forge_points": 39011,
+          "entity_id": 8,
+          "city_entity_id": "X_ArcticFuture_Landmark2",
+          "name": "Arctic Orangery",
+          "level": 197,
+          "current_progress": 39011,
+          "max_progress": 115189,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22405,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark2",
+          "name": "Saturn VI Gate PEGASUS",
+          "level": 67,
+          "max_progress": 10554,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 67,
+          "city_entity_id": "X_FutureEra_Landmark1",
+          "name": "The Arc",
+          "level": 183,
+          "max_progress": 71241,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22457,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark1",
+          "name": "Saturn VI Gate CENTAURUS",
+          "level": 84,
+          "max_progress": 20710,
+          "__class__": "GreatBuildingContributionRow"
+        },
+        {
+          "player": {
+            "player_id": 7560963,
+            "name": "Overlord Negan",
+            "avatar": "addon_portrait_id_anni26_9",
+            "__class__": "OtherPlayer"
+          },
+          "entity_id": 22450,
+          "city_entity_id": "X_SpaceAgeTitan_Landmark3",
+          "name": "Saturn VI Gate HYDRA",
+          "level": 80,
+          "max_progress": 22977,
+          "__class__": "GreatBuildingContributionRow"
+        }
+      ]
+    }
+  ]
+}
