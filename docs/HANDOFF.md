@@ -1,8 +1,19 @@
 # FoE-Info Extension — Project Handoff
 
-Updated 2026-09-12 after the quad-graph exploration and comparative analysis suite.
+Updated 2026-09-12 after the modern-web-guidance audit and Tier 1/2 remediation (and the prior quad-graph exploration and comparative analysis suite).
 
 ## Current session (2026-09-12)
+
+- **Modern-Web-Guidance Codebase Audit & Tier 1/2 Remediation**:
+  - **Method**: 5 parallel specialist subagents audited the runtime (DevTools panel + options/popup + content scripts) against the local 141-guide Chrome-team `modern-web-guidance` library across all 14 categories. Findings: P-1..P-9 (performance), U-1..U-17 (UI/CSS/visual-design), J-1..J-6 (JS/date), A-1..A-12 (accessibility/HTML), F-1..F-10 (forms/security/privacy), and E-1..E-3 (Built-in AI/WebMCP enhancements, not defects).
+  - **Implemented (4 parallel file-partitioned subagents, Tier 1 + Tier 2)**:
+    - **Performance** (new `src/js/utils/scheduler.js`; `msg/StartupRenderOrchestrator.js`, `msg/MetadataService.js`, `protocol/networkListener.js`, `msg/MetadataResolver.js`, `ui/playerTooltip.js`, `msg/GuildExpeditionService.js`, `msg/ArmyUnitManagementService.js`, `utils/formatters.js`, `index.js`, `ui/indexUiBindings.js`, `ui/gameVersionStatus.js`, `ui/betaDebugPanel.js`): P-1 yield between metadata renders, P-3 `scheduler.yield`/`postTask` utility with fallbacks, P-5 low-priority enrichment fetches, P-6 long-lived `ResizeObserver`, P-8 cached `Intl.NumberFormat`, P-9 `innerHTML +=` removal.
+    - **JS UI accessibility** (16 `src/js/ui/*` renderers + `panelDispatcher.js`, `containerBinding.js`, `components/PopoverManager.js`, `AddElement.js`, `msg/TreasuryService.js`, `msg/BonusService.js`, `msg/OutpostService.js`, `fn/collapse.js`, `utils/copy.js`): A-1 informational `role="alert"` -> `role="status" aria-live="polite"`, A-3 shared `#foeCopyStatus` live region, A-6 Space-on-keyup activation, A-7 `aria-expanded` sync, A-8 single focusable collapse control, A-9 table `<caption>`/`scope`, A-10 debug-toggle button semantics, A-11 popover Escape/ARIA, U-12 `innerHTML +=` removal.
+    - **CSS/HTML/forms/theming** (`src/css/custom.scss`, `options.scss`, all 4 `src/chrome/*.html`, both manifests, `src/js/options.js`, `src/js/ui/optionsForm.js`): U-6 `color-scheme` meta, U-7 standard `scrollbar-color` + `prefers-contrast`, U-8 `prefers-reduced-motion`, A-2/A-4/A-12 semantics, F-1..F-3/F-5 `<form id="optionsForm">` + `name`/constraints/`:user-invalid`, F-8 CSP `base-uri 'none'`.
+    - **Date/JS correctness** (`src/js/utils/date.js`, `msg/ConversationService.js`, `msg/GuildBattlegroundService.js`, `msg/GbgSignalService.js`, `msg/OtherPlayerService.js`, `src/js/ui/incidentsPanel.js`, `package.json`/`package-lock.json`): J-1 removed `dayjs`, J-2 removed `1e11` heuristics, J-3 `formatInTimeZone`, J-5 normalized shield `expireTime` seconds/ms (+ regression test), J-6 clone-safe `resolveDate`.
+  - **Extra correctness fix**: `src/js/ui/incidentsPanel.js` read seconds `startTime`/`expireTime` as ms, producing a ~1000x-wrong incident countdown (test fixtures used ms, masking it); normalized via `resolveDate()`. Added i18n keys `copied`/`copy_failed`, backfilled to all 7 locales.
+  - **Deferred (Tier 3 + guarded skips)**: native popover/anchor-positioning migration (U-1/U-2/U-4), `light-dark()` theming (U-5), Built-in AI/WebMCP enhancements (E-1..E-3), `content-visibility` (P-2, no safe stable selector), `MessageDispatcher` parse yielding (P-4), visibility instrumentation (P-7), `panel.html <main>`.
+  - **Verification**: `npm run verify` exit 0 — 1,033 tests / 98 suites, 0 failures, 0 eslint errors (140 pre-existing warnings), `tsc --noEmit` clean, RPC contract 0 unhandled, i18n 100% (149 keys x 7 locales), dev bundle compiled in 4.9s. 63 files modified + 2 new, **uncommitted**.
 
 - **City Info Panel Redesign & Player Score Resolution (Forge-Hammer Parity)**:
   - **City Info Panel Redesign (`ownCityCard.js`, `visitedCityCard.js`, `renderCityStats.js`, `custom.scss`, `statFormatters.js`, `src/i18n/`)**:
