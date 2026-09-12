@@ -50,7 +50,7 @@
 
 - [x] **D1g** Shipped — `tests/math/formula-parity-pinning.test.mjs` pins half-up Arc rewards, ceiling spot locks, and owner safe adds.
 - [x] **D2g** Shipped 2026-09-12 — `tests/protocol/dispatcher-resilience.test.mjs` (18 tests): priority ordering, dedup replay/expiry, `clearDedupCache()` reset, error isolation, fallback precedence.
-- [ ] **D3g** Open — LoW-Tool fork/exclusion rationale lives only in the synthesis + STATUS/HANDOFF; no dedicated archived record under `docs/specs/`.
+- [x] **D3g** Shipped 2026-09-12 — added the archived rationale under `docs/specs/2026-09-12-low-tool-fork-exclusion-record.md` (fork/overlay provenance, excluded hardcoded-secret/allowlist artifacts, host-only features, formula lineage, and the safe coordination-posting candidate).
 
 ---
 
@@ -58,10 +58,12 @@
 
 Actionable Item 1 (dedup extraction), Actionable Item 3 (TS mirrors), B1 (calc
 purity), D2g (dispatcher resilience tests), B5 (msg DOM decoupling),
-Actionable Item 4 (structured DevTools bridge), and both Actionable Item 2
-reactive-store slices (QuantumState, StartupRenderState) shipped 2026-09-12.
-C3 was closed by user directive (sniping UX already shipped; BG deferred).
-Only **D3g** (LoW-Tool exclusion record) remains open.
+Actionable Item 4 (structured DevTools bridge), both Actionable Item 2
+reactive-store slices (QuantumState, StartupRenderState), and D3g (LoW-Tool
+exclusion record) shipped 2026-09-12. C3 was closed by user directive (sniping
+UX already shipped; BG deferred). **All roadmap items are now complete.** The
+remaining queue lives in `docs/STATUS.md` Todos: the F2 residual batch
+migration (9 services) and the deferred Modern-Web Tier 3 enhancements.
 
 ## Plan premises corrected (do not inherit)
 
