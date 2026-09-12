@@ -47,6 +47,11 @@ try {
   formatDate = (ts) => (ts ? String(ts) : '');
 }
 
+let storage = null;
+try {
+  storage = require('../utils/storage.js');
+} catch {}
+
 let MyInfo = null;
 let Goods = null;
 let stateModule = null;
@@ -366,7 +371,8 @@ function renderLiveCityStats(ctx = {}) {
     },
   };
 
-  if (typeof renderCityStats === 'function') {
+  const renderCityStatsFn = ctx.renderCityStats || renderCityStats;
+  if (typeof renderCityStatsFn === 'function') {
     try {
       const userTooltipHTML =
         typeof ctx.getUserTooltipHTML === 'function' ?
@@ -386,14 +392,20 @@ function renderLiveCityStats(ctx = {}) {
       const goodsList =
         ctx.lastStartupContext?.goodsBuildings || ctx.goodsBuildings || [];
 
-      renderCityStats(
+      renderCityStatsFn(
         'citystats',
         calculatedStats,
         {
           isOwnCity: true,
           name: user?.user_name || MyInfo?.name || 'My City',
           era: currentEra,
-          score: user?.score ?? MyInfo?.score,
+          score:
+            (Number(MyInfo?.score) > 0 ? Number(MyInfo.score) : null) ??
+            (Number(user?.score) > 0 ? Number(user.score) : null) ??
+            (storage?.getSync ?
+              Number(storage.getSync('playerScore')) || null
+            : null) ??
+            0,
           guild: user?.clan_name || MyInfo?.clan || '',
           totalGoods: totalGoodsAmount,
           goodsBoostPercent: goodsBoostPercent,

@@ -62,6 +62,7 @@ try {
 let setPlayerName = () => {};
 let updatePlayerNameCache = () => {};
 let PlayerName = '';
+let MyInfo = null;
 let CityProtections = [];
 let PlayerID = 0;
 
@@ -79,8 +80,6 @@ try {
 } catch {
   // Graceful fallback when state.js is an ES module outside of bundler
 }
-
-let MyInfo = null;
 
 let resolveMissingCityEntities = () => {};
 try {
@@ -193,7 +192,9 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
   const guildList =
     payload.guildMembers ||
     payload.clanMembers ||
+    payload.clan_members ||
     payload.members ||
+    payload.clan?.members ||
     (Array.isArray(payload) ? payload : []);
   const hoodList = payload.neighbours || payload.neighbors || [];
 
@@ -202,6 +203,8 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
     guildList.length ||
     hoodList.length ||
     payload.socialbar_list?.length ||
+    payload.clan_members?.length ||
+    payload.members?.length ||
     Array.isArray(payload)
   ) {
     if (friendsList.length) friends = friendsList;
@@ -215,6 +218,8 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
       ...(Array.isArray(hoodList) ? hoodList : []),
       ...(Array.isArray(payload.socialbar_list) ? payload.socialbar_list : []),
       ...(Array.isArray(payload.clan_members) ? payload.clan_members : []),
+      ...(Array.isArray(payload.members) ? payload.members : []),
+      ...(Array.isArray(payload.clan?.members) ? payload.clan.members : []),
       ...(Array.isArray(payload.other_players) ? payload.other_players : []),
       ...(Array.isArray(payload.players) ? payload.players : []),
     ];
@@ -243,16 +248,25 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
         if (Number.isFinite(scoreNum) && scoreNum > 0) {
           if (MyInfo) {
             MyInfo.score = scoreNum;
+            if (id && !MyInfo.id) MyInfo.id = id;
           }
           if (globals?.MyInfo) {
             globals.MyInfo.score = scoreNum;
+            if (id && !globals.MyInfo.id) globals.MyInfo.id = id;
           }
+          try {
+            const { setMyScore } = require('../state/state.js');
+            if (typeof setMyScore === 'function') setMyScore(scoreNum);
+          } catch {}
           if (storage && typeof storage.set === 'function') {
             storage.set('playerScore', scoreNum);
           }
           try {
             const worldId =
-              globals?.worldId || globals?.world || globals?.World;
+              globals?.worldId ||
+              globals?.world ||
+              globals?.World ||
+              storage?.getCurrentWorld?.();
             if (worldId && storage?.set) {
               storage.set(`world:${worldId}.playerScore`, scoreNum);
             }

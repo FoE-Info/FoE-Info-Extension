@@ -71,6 +71,7 @@ import {
   removeDebug,
   setIgnoredPlayers,
   setMyInfo,
+  setMyScore,
   updatePlayerNameCache,
 } from '../vars/state.js';
 import { clearArmyUnits } from './ArmyUnitManagementService.js';
@@ -158,16 +159,31 @@ export function startupService(msg) {
   const parsedUser = parseUserAccount(user);
   if (!parsedUser.score || parsedUser.score === 0) {
     try {
-      const storagePkg = require('../fn/storage.js');
+      const storagePkg = require('../utils/storage.js');
       const cached =
-        storagePkg?.get ?
-          storagePkg.get('playerScore') ||
+        storagePkg?.getSync ?
+          storagePkg.getSync('playerScore') ||
           (user?.world_id ?
-            storagePkg.get(`world:${user.world_id}.playerScore`)
+            storagePkg.getSync(`world:${user.world_id}.playerScore`)
           : null)
         : null;
       if (cached && Number(cached) > 0) {
         parsedUser.score = Number(cached);
+      } else if (typeof storagePkg?.get === 'function') {
+        storagePkg.get('playerScore', (err, val) => {
+          const num = Number(val);
+          if (Number.isFinite(num) && num > 0) {
+            setMyScore(num);
+            try {
+              const {
+                renderLiveCityStats,
+              } = require('../ui/renderLiveCityStats.js');
+              if (typeof renderLiveCityStats === 'function') {
+                renderLiveCityStats();
+              }
+            } catch {}
+          }
+        });
       }
     } catch {}
   }
