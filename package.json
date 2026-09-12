@@ -58,7 +58,7 @@
     "test:cdp:popovers": "node tests/cdp/panel-popovers.mjs",
     "test:watch": "node --test --watch tests/**/*.test.mjs",
     "typecheck": "tsc --noEmit",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build:dev"
+    "verify": "npm run check && npm run lint && npm run typecheck && npm run i18n:check && npm test && npm run build:dev"
   },
   "lint-staged": {
     "*.{js,mjs,cjs}": [
