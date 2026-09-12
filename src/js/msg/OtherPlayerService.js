@@ -27,7 +27,7 @@ try {
 } catch {}
 
 try {
-  element = require('../fn/AddElement');
+  element = require('../fn/AddElement.js');
 } catch {}
 try {
   collapse = require('../fn/collapse.js');

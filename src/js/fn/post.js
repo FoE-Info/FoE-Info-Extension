@@ -17,7 +17,7 @@ let MyInfo = { name: '' };
 let url = {};
 let element = null;
 try {
-  element = require('./AddElement');
+  element = require('./AddElement.js');
 } catch {}
 if (typeof __webpack_require__ !== 'undefined') {
   try {
