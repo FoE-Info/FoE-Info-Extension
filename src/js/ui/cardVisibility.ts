@@ -492,6 +492,16 @@ export function applyCardVisibility(
     }
   }
 
+  const guildVisible = opts.showGuildOverview !== false;
+  const guildOverviewEl = document.getElementById('guildOverview');
+  if (guildOverviewEl) {
+    guildOverviewEl.style.display = guildVisible ? '' : 'none';
+  }
+  const guildEl = document.getElementById('guild');
+  if (guildEl) {
+    guildEl.style.display = guildVisible ? '' : 'none';
+  }
+
   const donation2El = document.getElementById('donation2');
   if (donation2El) {
     donation2El.style.display = opts.showDonation !== false ? '' : 'none';

@@ -272,4 +272,36 @@ test('Card Visibility Suite - Decoupling GBG from GB Donation', async (t) => {
       );
     },
   );
+
+  await t.test(
+    'unconstrained mode reveals #guildOverview wrapper alongside #guild',
+    () => {
+      const guildOverviewEl =
+        globalThis.document.getElementById('guildOverview');
+      const guildEl = globalThis.document.getElementById('guild');
+
+      guildOverviewEl.style.display = 'none';
+      guildEl.style.display = 'none';
+
+      applyCardVisibility({ showGuildOverview: true });
+      assert.equal(
+        guildOverviewEl.style.display,
+        '',
+        '#guildOverview wrapper must be revealed when showGuildOverview is on',
+      );
+      assert.equal(
+        guildEl.style.display,
+        '',
+        '#guild must be revealed when showGuildOverview is on',
+      );
+
+      applyCardVisibility({ showGuildOverview: false });
+      assert.equal(
+        guildOverviewEl.style.display,
+        'none',
+        '#guildOverview wrapper must be hidden when showGuildOverview is off',
+      );
+      assert.equal(guildEl.style.display, 'none');
+    },
+  );
 });

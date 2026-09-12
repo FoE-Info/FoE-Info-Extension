@@ -80,6 +80,7 @@ import {
   clearVisitPlayer as clearVisitPlayerHelper,
   renderTreasuryPanel,
 } from './ui/panelDispatcher.js';
+import { renderGuildPanel } from './ui/renderGuildPanel.js';
 import { escapeHTML } from './utils/formatters.js';
 import {
   createLogger,
@@ -188,6 +189,7 @@ registerLegacyBridge(messageDispatcher, {
   removeSignal,
   updateSignal,
   guildExpeditionService,
+  renderGuildPanel,
   armyUnitManagementService,
   pickupProduction,
   conversationService,
