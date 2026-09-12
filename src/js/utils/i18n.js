@@ -64,36 +64,41 @@ function t(key, ...args) {
   return str;
 }
 
-function translateContainer(container) {
-  if (!container) return;
+const I18N_ATTRIBUTES = [
+  ['data-i18n', 'textContent'],
+  ['data-i18n-title', 'title'],
+  ['data-i18n-aria-label', 'aria-label'],
+  ['data-i18n-placeholder', 'placeholder'],
+];
+
+function collectI18nElements(container) {
   const elements = [];
-  if (
-    typeof container.getAttribute === 'function' &&
-    container.getAttribute('data-i18n')
-  ) {
-    elements.push(container);
-  }
+  const hasBinding = (el) =>
+    typeof el.getAttribute === 'function' &&
+    I18N_ATTRIBUTES.some(([attr]) => el.getAttribute(attr));
+  if (hasBinding(container)) elements.push(container);
   if (typeof container.querySelectorAll === 'function') {
-    const matched = container.querySelectorAll('[data-i18n]');
+    const selector = I18N_ATTRIBUTES.map(([attr]) => `[${attr}]`).join(', ');
+    const matched = container.querySelectorAll(selector);
     for (let i = 0; i < matched.length; i++) {
       elements.push(matched[i]);
     }
   }
+  return elements;
+}
 
-  for (const el of elements) {
-    const key =
-      typeof el.getAttribute === 'function' ?
-        el.getAttribute('data-i18n')
-      : null;
-    if (key) {
-      el.textContent = t(key);
-    }
-    const titleKey =
-      typeof el.getAttribute === 'function' ?
-        el.getAttribute('data-i18n-title')
-      : null;
-    if (titleKey && typeof el.setAttribute === 'function') {
-      el.setAttribute('title', t(titleKey));
+function translateContainer(container) {
+  if (!container) return;
+  for (const el of collectI18nElements(container)) {
+    if (typeof el.getAttribute !== 'function') continue;
+    for (const [attr, target] of I18N_ATTRIBUTES) {
+      const key = el.getAttribute(attr);
+      if (!key) continue;
+      if (target === 'textContent') {
+        el.textContent = t(key);
+      } else if (typeof el.setAttribute === 'function') {
+        el.setAttribute(target, t(key));
+      }
     }
   }
 }

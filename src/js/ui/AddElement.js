@@ -53,7 +53,7 @@ function fCopyButton(id, colour, pos, collapse) {
 }
 
 function fCopyIcon(id, colour, pos, collapse) {
-  return `<span class="bi ${pos}-icon float-end material-symbols-outlined" id="${id}" role="button" tabindex="0" aria-label="Copy" style="display: ${
+  return `<span class="bi ${pos}-icon float-end material-symbols-outlined" id="${id}" role="button" tabindex="0" aria-label="Copy" data-i18n-aria-label="copy" style="display: ${
     collapse ? 'none' : 'block'
   }">content_copy</span>`;
 }
@@ -65,19 +65,20 @@ function fPostButton(id, colour, pos, collapse) {
 }
 
 function fCloseButton() {
-  return '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+  return '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" data-i18n-aria-label="close"></button>';
 }
+
+const isCustomButton = (target) =>
+  Boolean(
+    target &&
+    typeof target.getAttribute === 'function' &&
+    target.getAttribute('role') === 'button' &&
+    target.tagName !== 'BUTTON' &&
+    target.getAttribute('data-foe-native-keys') !== 'true',
+  );
 
 if (typeof document !== 'undefined' && !document._foeA11yBound) {
   document._foeA11yBound = true;
-  const isCustomButton = (target) =>
-    Boolean(
-      target &&
-      typeof target.getAttribute === 'function' &&
-      target.getAttribute('role') === 'button' &&
-      target.tagName !== 'BUTTON',
-    );
-
   document.addEventListener('keydown', (e) => {
     if (!isCustomButton(e.target)) return;
     if (e.key === 'Enter') {
@@ -105,5 +106,6 @@ module.exports = {
   fCopyIcon,
   post: fPostButton,
   close: fCloseButton,
+  isCustomButton,
 };
 module.exports.default = module.exports;
