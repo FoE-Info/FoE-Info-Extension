@@ -26,7 +26,14 @@ test('options initialization immediately populates from storage without blank de
     addEventListener() {},
   };
 
-  const checkboxes = ['Stats', 'bonus', 'Incidents', 'showGalaxy'];
+  const checkboxes = [
+    'Stats',
+    'bonus',
+    'Incidents',
+    'showGalaxy',
+    'quantumContributions',
+    'quantumLeaderboard',
+  ];
   for (const id of checkboxes) {
     elements[id] = { id, checked: false };
   }
@@ -60,6 +67,8 @@ test('options initialization immediately populates from storage without blank de
         showBonus: true,
         showIncidents: true,
         showGalaxy: true,
+        showQuantum: true,
+        showQuantumLeaderboard: true,
       },
       donation: { percent: 190 },
     },
@@ -121,6 +130,16 @@ test('options initialization immediately populates from storage without blank de
     elements['Incidents'].checked,
     true,
     'Incidents should be checked',
+  );
+  assert.strictEqual(
+    elements['quantumContributions'].checked,
+    true,
+    'quantumContributions should be checked',
+  );
+  assert.strictEqual(
+    elements['quantumLeaderboard'].checked,
+    true,
+    'quantumLeaderboard should be checked',
   );
 
   // Verified: container has .loaded class to avoid FOUC

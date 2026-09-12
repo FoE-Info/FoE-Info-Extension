@@ -234,6 +234,7 @@ export interface ShowOptionsState {
   showGoods?: boolean;
   showQuantum?: boolean;
   showQuantumLeaderboard?: boolean;
+  showQIChanges?: boolean;
 }
 
 export const optionToElementId: Record<string, string> = {

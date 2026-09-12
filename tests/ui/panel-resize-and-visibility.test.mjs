@@ -11,10 +11,10 @@ const { createFreshWorldSettings, FACTORY_WORLD_SETTINGS } = factoryDefaultsPkg;
 const { renderTreasuryPanel } = TreasuryPkg;
 
 test('Panel Resize & Visibility Defaults Suite', async (t) => {
-  await t.test('createFreshWorldSettings defaults showGoods to false', () => {
+  await t.test('createFreshWorldSettings defaults showGoods to true', () => {
     const defaults = createFreshWorldSettings();
-    assert.equal(defaults.showOptions.showGoods, false);
-    assert.equal(FACTORY_WORLD_SETTINGS.showOptions.showGoods, false);
+    assert.equal(defaults.showOptions.showGoods, true);
+    assert.equal(FACTORY_WORLD_SETTINGS.showOptions.showGoods, true);
   });
 
   await t.test(

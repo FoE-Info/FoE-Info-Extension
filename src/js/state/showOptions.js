@@ -19,7 +19,7 @@ export var showTreasury = true;
 export var showVisit = true;
 export var showSettlement = true;
 export var showArmy = true;
-export var showGoods = false;
+export var showGoods = true;
 export var showGuildOverview = true;
 export var showLeaderboard = false;
 export var showGBGrewards = true;
@@ -27,13 +27,17 @@ export var GBGprovinceTime = true;
 export var GBGshowSC = true;
 export var showGErewards = true;
 export var showRewards = true;
-export var showLogs = false;
-export var showContributions = false;
+export var showLogs = true;
+export var showContributions = true;
 export var showGuildPosition = false;
 export var hideUnsafe = true;
 export var buildingCosts = false;
 export var collectionTimes = false;
 export var clipboard = true;
+export var showGalaxy = true;
+export var showQuantum = true;
+export var showQuantumLeaderboard = true;
+export var showQIChanges = false;
 
 export function updateShowOptions(newOptions) {
   if (!newOptions || typeof newOptions !== 'object') return;
@@ -95,6 +99,10 @@ var items = {
   buildingCosts,
   collectionTimes,
   clipboard,
+  showGalaxy,
+  showQuantum,
+  showQuantumLeaderboard,
+  showQIChanges,
 };
 
 export { items as showOptions };
