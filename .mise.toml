@@ -1,8 +1,17 @@
+[tools]
+# Pinned to the verified dev toolchain. engines.node requires >=24; the
+# @types/node devDependency tracks the 26.x line. Refresh with `mise lock`.
+node = "26.8.2"
+
 [env]
 NODE_ENV = "development"
 
 [env._]
-path = ["/home/linuxbrew/.linuxbrew/bin", "./node_modules/.bin", "./.agents/scripts"]
+path = ["./node_modules/.bin", "./.agents/scripts"]
+
+[tasks.setup]
+description = "Install npm dependencies for the pinned toolchain"
+run = "npm ci"
 
 [tasks.check]
 description = "Check project code formatting with Prettier"
