@@ -1,22 +1,18 @@
-/*
- * ________________________________________________________________
- * Copyright (C) 2022 FoE-Info - All Rights Reserved
- * this source-code uses a copy-left license
- *
- * you are welcome to contribute changes here:
- * https://github.com/FoE-Info/FoE-Info-Extension
- *
- * AGPL license info:
- * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
- * or else visit https://www.gnu.org/licenses/#AGPL
- * ________________________________________________________________
- */
+/** DevTools panel registration and lifecycle bootstrap. */
 import browser from 'webextension-polyfill';
+import {
+  createHostMessageHandler,
+  MESSAGE_TYPES,
+  postNetworkEntry,
+  postRequestFinished,
+  postToWindow,
+} from './protocol/devtoolsBridge.js';
 import { createLogger, isDebugEnabled } from './utils/logger.js';
 
 const devtoolsLogger = createLogger('DevTools');
 
 let panelWindow = null;
+let panelReady = false;
 let pendingEntries = [];
 
 function isRelevantRequest(request) {
@@ -30,85 +26,83 @@ function isRelevantRequest(request) {
   );
 }
 
+function deliverEntry(entry) {
+  if (entry.body) {
+    return postNetworkEntry(panelWindow, {
+      url: entry.url,
+      headers: entry.headers,
+      body: entry.body,
+      encoding: entry.encoding,
+      request: entry.request,
+    });
+  }
+  if (entry.request) {
+    return postRequestFinished(panelWindow, entry.request);
+  }
+  return false;
+}
+
+function bufferEntry(entry) {
+  if (isDebugEnabled()) {
+    devtoolsLogger.debug('Buffering pending network entry:', {
+      url: entry.url || entry.request?.request?.url,
+      pendingCount: pendingEntries.length + 1,
+    });
+  }
+  pendingEntries.push(entry);
+  if (pendingEntries.length > 500) pendingEntries.shift();
+}
+
 function forwardOrBufferEntry(entry) {
-  if (
-    panelWindow &&
-    typeof panelWindow.handleRawNetworkEntry === 'function' &&
-    entry.body
-  ) {
+  if (panelWindow && panelReady && (entry.body || entry.request)) {
     try {
       if (isDebugEnabled()) {
-        devtoolsLogger.debug('Forwarding raw network entry to panelWindow:', {
+        devtoolsLogger.debug('Forwarding network entry to panel:', {
           url: entry.url,
           bodyLength: entry.body?.length,
         });
       }
-      panelWindow.handleRawNetworkEntry(
-        entry.url,
-        entry.headers,
-        entry.body,
-        entry.encoding,
-        entry.request,
-      );
-    } catch (e) {
-      console.error('Error forwarding network entry to panelWindow:', e);
-      panelWindow = null;
-    }
-  } else if (
-    panelWindow &&
-    typeof panelWindow.handleRequestFinished === 'function' &&
-    entry.request
-  ) {
-    try {
-      if (isDebugEnabled()) {
-        devtoolsLogger.debug('Forwarding request to handleRequestFinished:', {
-          url: entry.request?.request?.url,
-        });
+      if (!deliverEntry(entry)) {
+        panelWindow = null;
+        panelReady = false;
+        bufferEntry(entry);
       }
-      panelWindow.handleRequestFinished(entry.request);
     } catch (e) {
-      console.error('Error forwarding request to handleRequestFinished:', e);
+      console.error('Error forwarding network entry to panel:', e);
       panelWindow = null;
+      panelReady = false;
+      bufferEntry(entry);
     }
-  } else {
-    if (isDebugEnabled()) {
-      devtoolsLogger.debug('Buffering pending network entry:', {
-        url: entry.url || entry.request?.request?.url,
-        pendingCount: pendingEntries.length + 1,
-      });
-    }
-    pendingEntries.push(entry);
-    if (pendingEntries.length > 500) pendingEntries.shift();
+    return;
   }
+  bufferEntry(entry);
 }
 
 function flushPending() {
-  if (!panelWindow || pendingEntries.length === 0) return;
+  if (!panelWindow || !panelReady || pendingEntries.length === 0) return;
   const toProcess = pendingEntries;
   pendingEntries = [];
   toProcess.forEach((entry) => {
     try {
-      if (
-        typeof panelWindow.handleRawNetworkEntry === 'function' &&
-        entry.body
-      ) {
-        panelWindow.handleRawNetworkEntry(
-          entry.url,
-          entry.headers,
-          entry.body,
-          entry.encoding,
-          entry.request,
-        );
-      } else if (
-        typeof panelWindow.handleRequestFinished === 'function' &&
-        entry.request
-      ) {
-        panelWindow.handleRequestFinished(entry.request);
-      }
+      deliverEntry(entry);
     } catch (e) {
       console.error('Error in flushPending:', e);
     }
   });
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener(
+    'message',
+    createHostMessageHandler({
+      getPanelWindow: () => panelWindow,
+      onReady: (source) => {
+        if (source) panelWindow = source;
+        panelReady = true;
+        flushPending();
+      },
+    }),
+  );
 }
 
 let firstRelevantRequestIntercepted = false;
@@ -120,21 +114,26 @@ browser.devtools.panels.create(EXT_NAME, null, 'panel.html').then((panel) => {
       `[TIMING:P1] DevTools panel.onShown fired | t = ${performance.now().toFixed(2)}ms`,
     );
     panelWindow = win;
-    flushPending();
+    panelReady = false;
+    // Re-handshake on every show: the panel page persists across hide/show, so
+    // the single proactive READY may already have fired.
+    postToWindow(win, MESSAGE_TYPES.HOST_PING);
   });
   panel.onHidden.addListener(() => {
     panelWindow = null;
+    panelReady = false;
   });
 });
 
 if (typeof window !== 'undefined') {
   window.addEventListener('unload', () => {
     panelWindow = null;
+    panelReady = false;
     pendingEntries = [];
   });
 }
 
-// Pass network entries directly to panelWindow
+// Pass network entries directly to the panel via the structured channel
 browser.devtools.network.onRequestFinished.addListener((request) => {
   if (!isRelevantRequest(request)) return;
 
