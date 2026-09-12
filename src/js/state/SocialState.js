@@ -47,10 +47,11 @@ class SocialState {
     }
   }
 
-  setLists({ friends, guildMembers, hoodlist } = {}) {
+  setLists({ friends, guildMembers, hoodlist, options } = {}) {
     if (Array.isArray(friends)) this.friends = friends;
     if (Array.isArray(guildMembers)) this.guildMembers = guildMembers;
     if (Array.isArray(hoodlist)) this.hoodlist = hoodlist;
+    if (options && typeof options === 'object') this.options = options;
     this.notify('lists');
   }
 
@@ -64,6 +65,10 @@ class SocialState {
 
   getHoodlist() {
     return this.hoodlist;
+  }
+
+  getOptions() {
+    return this.options;
   }
 }
 
