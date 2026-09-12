@@ -2,7 +2,8 @@
  * cityRoutes.js
  *
  * Legacy bridge route table for city map entities, startup payloads,
- * production, resources, treasury, outposts, and bonuses.
+ * production, and bonuses. Resource, trade, treasury, and advancement
+ * handlers are owned by their modern src/js/msg services.
  */
 
 let logger = null;
@@ -41,15 +42,6 @@ function registerCityRoutes(ctx) {
     startupService,
     processMetadataEntry,
     processMetadataData,
-    getResourceDefinitions,
-    getPlayerResources,
-    getPlayerResourceBag,
-    getTreasury,
-    getTreasuryBag,
-    getTreasuryLogs,
-    treasuryService,
-    getAdvancements,
-    outpostService,
     pickupProduction,
     getBonuses,
     getLimitedBonuses,
@@ -181,88 +173,6 @@ function registerCityRoutes(ctx) {
     }
   });
 
-  // Resources
-  if (getResourceDefinitions) {
-    dispatcher.register(
-      'ResourceService',
-      'getResourceDefinitions',
-      getResourceDefinitions,
-    );
-  }
-  if (getPlayerResources) {
-    dispatcher.register(
-      'ResourceService',
-      'getPlayerResources',
-      getPlayerResources,
-    );
-  } else if (getPlayerResourceBag) {
-    dispatcher.register(
-      'ResourceService',
-      'getPlayerResources',
-      getPlayerResourceBag,
-    );
-  }
-  const resourceBagHandler = getPlayerResourceBag || getPlayerResources;
-  if (resourceBagHandler) {
-    dispatcher.register(
-      'ResourceService',
-      'getPlayerResourceBag',
-      resourceBagHandler,
-    );
-  }
-
-  // Trade Service / Market Triggers for Goods Inventory
-  const renderGoodsHandler =
-    handlers.renderGoodsPanel ||
-    (handlers.getPlayerResources ? () => handlers.getPlayerResources() : null);
-
-  if (renderGoodsHandler) {
-    for (const method of [
-      'getTradeList',
-      'getOpenOffers',
-      'getTradeOffers',
-      'getYourOffers',
-    ]) {
-      dispatcher.register('TradeService', method, (msg) =>
-        renderGoodsHandler(msg),
-      );
-    }
-  }
-
-  // Guild Treasury
-  const treasuryBagHandler = getTreasuryBag || treasuryService?.getTreasuryBag;
-  if (treasuryBagHandler) {
-    dispatcher.register('ClanService', 'getTreasuryBag', treasuryBagHandler);
-    dispatcher.register(
-      'ResourceService',
-      'getTreasuryBag',
-      treasuryBagHandler,
-    );
-  }
-  const treasuryLogsHandler =
-    getTreasuryLogs || treasuryService?.getTreasuryLogs;
-  if (treasuryLogsHandler) {
-    dispatcher.register('ClanService', 'getTreasuryLogs', treasuryLogsHandler);
-  }
-  const treasuryHandler = getTreasury || treasuryService?.getTreasury;
-  if (treasuryHandler) {
-    dispatcher.register('ClanService', 'getTreasury', treasuryHandler);
-  }
-
-  // Cultural Settlements & Outposts
-  const advancementHandler =
-    getAdvancements || outpostService?.handleAdvancements;
-  if (advancementHandler) {
-    dispatcher.register('AdvancementService', 'getAll', advancementHandler);
-  }
-  if (outpostService?.handleUnlockAdvancement) {
-    dispatcher.register(
-      'AdvancementService',
-      'unlock',
-      outpostService.handleUnlockAdvancement,
-    );
-  }
-
   // City Production
   if (pickupProduction) {
     dispatcher.register(
@@ -282,7 +192,6 @@ function registerCityRoutes(ctx) {
 
   logger.debug('City routes registered', {
     startup: !!startupService,
-    resources: !!(getPlayerResources || getPlayerResourceBag),
   });
 }
 

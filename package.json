@@ -52,13 +52,15 @@
     "prepare": "husky",
     "release": "node scripts/release.mjs",
     "release:prod": "npm run lint && npm run test && npm run build:prod && node scripts/package-extension.js --env=prod",
+    "rpc:contract": "node scripts/rpc-contract.mjs",
+    "rpc:contract:check": "node scripts/rpc-contract.mjs --check",
     "test": "node --test tests/**/*.test.mjs",
     "test:cdp": "node tests/cdp/run-all.mjs",
     "test:cdp:devtools": "node tests/cdp/devtools-reload.mjs",
     "test:cdp:popovers": "node tests/cdp/panel-popovers.mjs",
     "test:watch": "node --test --watch tests/**/*.test.mjs",
     "typecheck": "tsc --noEmit",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build:dev"
+    "verify": "npm run lint && npm run typecheck && npm run rpc:contract:check && npm run test && npm run build:dev"
   },
   "lint-staged": {
     "*.{js,mjs,cjs}": [
