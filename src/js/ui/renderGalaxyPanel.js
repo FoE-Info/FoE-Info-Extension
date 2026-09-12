@@ -15,6 +15,17 @@ const {
 const element = require('./AddElement.js');
 const { backfillPendingNames } = require('../fn/liveNameResolver.js');
 
+/** Galaxy is context-gated: hidden in GBG/GE/QI/SETTLEMENT/OTHER_PLAYER. */
+function contextAllowsGalaxy() {
+  try {
+    const vis = require('./cardVisibility.js');
+    const allowed = vis.getAllowedPanelsForView?.(vis.getCurrentView?.());
+    return allowed ? allowed.has('galaxy') : true;
+  } catch {
+    return true;
+  }
+}
+
 function renderGalaxyPanel({
   container = null,
   candidates = [],
@@ -32,6 +43,12 @@ function renderGalaxyPanel({
       document.getElementById('galaxy')
     : null);
   if (!el) return;
+
+  if (!contextAllowsGalaxy()) {
+    el.style.display = 'none';
+    el.innerHTML = '';
+    return;
+  }
 
   if (showOptions && showOptions.showGalaxy === false) {
     el.style.display = 'none';

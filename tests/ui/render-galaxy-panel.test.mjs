@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
 import metadataService from '../../src/js/msg/MetadataService.js';
 import metadataState from '../../src/js/state/MetadataStore.js';
+import { setCurrentView } from '../../src/js/ui/cardVisibility.js';
 import { renderGalaxyPanel } from '../../src/js/ui/renderGalaxyPanel.js';
 
 const { triggerMetadataUpdated } = metadataService;
@@ -82,6 +83,22 @@ describe('renderGalaxyPanel Suite', () => {
       container,
       candidates,
       charges: 0,
+      currentEpoch: 1700000000,
+      isDebug: false,
+    });
+    assert.equal(container.style.display, 'none');
+  });
+
+  it('hides the panel in the GBG context even with charges', (t) => {
+    t.after(() => setCurrentView(null));
+    setCurrentView('GBG');
+    const candidates = [
+      { id: 1, name: 'B1', fp: 30, state: 'ProductionFinishedState' },
+    ];
+    renderGalaxyPanel({
+      container,
+      candidates,
+      charges: 3,
       currentEpoch: 1700000000,
       isDebug: false,
     });
