@@ -115,7 +115,7 @@ test('Harness Parity - opencode.json plugin entries resolve to files', () => {
   const config = JSON.parse(
     fs.readFileSync(path.join(PROJECT_ROOT, 'opencode.json'), 'utf8'),
   );
-  for (const entry of config.plugin ?? []) {
+  for (const entry of config.plugins ?? []) {
     if (!entry.startsWith('.')) continue;
     assert.ok(
       fs.existsSync(path.join(PROJECT_ROOT, entry)),
