@@ -851,7 +851,7 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         'renderBattlegroundsPanel.js fshowBattleground must null-guard battlegroundicon click listener',
       );
 
-      // Verify GuildBattlegroundService.js imports and renders to dedicated containers
+      // Verify GuildBattlegroundService.js imports and delegates to UI renderers
       assert.match(
         gbgServiceSource,
         /battlegroundDIV/,
@@ -859,18 +859,23 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
       );
       assert.match(
         gbgServiceSource,
-        /gbgLeaderboardDIV/,
-        'GuildBattlegroundService.js must import gbgLeaderboardDIV',
-      );
-      assert.match(
-        gbgServiceSource,
-        /document\.getElementById\(['"]gbgLeaderboard['"]\)[\s\S]*?gbgLeaderboardDIV/,
-        'GuildBattlegroundService.js getLeaderboard must target dedicated gbgLeaderboard container',
+        /renderGbgLeaderboardPanel/,
+        'GuildBattlegroundService.js getLeaderboard must delegate to renderBattlegroundsPanel.js',
       );
       assert.match(
         gbgServiceSource,
         /document\.getElementById\(['"]battleground['"]\)[\s\S]*?battlegroundDIV/,
         'GuildBattlegroundService.js getState must target dedicated battleground container',
+      );
+      assert.match(
+        rendererSource,
+        /gbgLeaderboardDIV/,
+        'renderBattlegroundsPanel.js must import gbgLeaderboardDIV',
+      );
+      assert.match(
+        rendererSource,
+        /getElementById\(['"]gbgLeaderboard['"]\)[\s\S]*?gbgLeaderboardDIV/,
+        'renderBattlegroundsPanel.js renderGbgLeaderboardPanel must target dedicated gbgLeaderboard container',
       );
       assert.match(
         resultCardSource,
