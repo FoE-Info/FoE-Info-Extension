@@ -7,9 +7,9 @@ shared; only discovery and frontmatter enforcement differ.
 
 opencode scans `**/SKILL.md` in these locations:
 
-- Project: `.opencode/skills/<name>/SKILL.md`, `.claude/skills/<name>/SKILL.md`,
+- Project: `.opencode/skills/<name>/SKILL.md`
   and `.agents/skills/<name>/SKILL.md` (walk-up to the git worktree root).
-- Global: `~/.config/opencode/skills/`, `~/.claude/skills/`, `~/.agents/skills/`.
+- Global: `~/.config/opencode/skills/`, `~/.agents/skills/`.
 
 The canonical workspace skills live in `.agents/skills/` and are picked up
 natively; no `skills.paths` entry is required. Registering extra locations via

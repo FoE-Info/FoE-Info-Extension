@@ -31,7 +31,7 @@ Supported URL types (auto-detected):
 - Twitter/X → fetched via oEmbed, saved as `.md` with tweet text and author
 - arXiv → abstract + metadata saved as `.md`
 - PDF → downloaded as `.pdf`
-- Images (.png/.jpg/.webp) → downloaded, Claude vision extracts on next run
+- Images (.png/.jpg/.webp) → downloaded, vision model extracts on next run
 - Any webpage → converted to markdown via html2text
 
 ---

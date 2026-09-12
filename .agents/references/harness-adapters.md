@@ -70,9 +70,8 @@ the user's instruction govern dispatch. A skill that names an unavailable
 - **Antigravity**: skills are first-class slash commands (`/<skill-name>`), plus
   semantic auto-discovery from the `description`.
 - **opencode**: skills are model-invoked through the `skill` tool; discovery is
-  `**/SKILL.md` under `.opencode/skills`, `.claude/skills`, and
-  `.agents/skills` (project walk-up) plus the `~/.config/opencode/skills`,
-  `~/.claude/skills`, and `~/.agents/skills` globals. There is no implicit
+  `**/SKILL.md` under `.opencode/skills` and `.agents/skills` (project walk-up)
+  plus the `~/.config/opencode/skills` and `~/.agents/skills` globals. There is no implicit
   `/<skill>` command; use `.opencode/command/<name>.md` to add one.
 - Frontmatter must satisfy opencode: `name` matches the directory and the regex
   `^[a-z0-9]+(-[a-z0-9]+)*$`, and `description` is 1-1024 characters.
