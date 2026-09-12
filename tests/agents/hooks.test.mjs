@@ -40,7 +40,11 @@ test('Safety Gate Hook - flags destructive commands', () => {
     'rm -rf .agents',
     'rm -rf tests/',
     'rm -rf *',
-    'rm -rf ./build',
+    'rm -rf .',
+    'rm -rf /',
+    'rm -rf src/js',
+    'sh -c "rm -rf .agents"',
+    'bash -c "rm -rf tests"',
     'foe-browser',
     'foe-browser --restart',
     'foe-browser --reload',
@@ -75,6 +79,13 @@ test('Safety Gate Hook - permits safe read/build/test commands', () => {
     'git add src/js/fn/i18n.js',
     'git commit -m "feat: add i18n helper"',
     'node scripts/audit-i18n.mjs',
+    'npm run clean',
+    'rm -rf build',
+    'rm -rf ./build',
+    'rm -rf build dist node_modules',
+    'rm -rf .agents/skills/ui-ux-pro-max/scripts/__pycache__',
+    'node -e "rm -rf .agents"',
+    'git commit -m "rm -rf src"',
   ];
 
   for (const cmd of safeCommands) {
