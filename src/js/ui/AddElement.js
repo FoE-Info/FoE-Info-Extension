@@ -3,6 +3,26 @@ try {
   storage = require('../utils/storage.js');
 } catch {}
 
+function fSyncTriggerState(targetId, collapse) {
+  if (
+    !targetId ||
+    typeof document === 'undefined' ||
+    typeof document.querySelectorAll !== 'function'
+  ) {
+    return;
+  }
+  const safeTarget = String(targetId).replace(/["\\]/g, '\\$&');
+  const triggers = document.querySelectorAll(
+    `[data-bs-target="#${safeTarget}"]`,
+  );
+  if (!triggers || typeof triggers.forEach !== 'function') return;
+  triggers.forEach((trigger) => {
+    if (trigger && typeof trigger.setAttribute === 'function') {
+      trigger.setAttribute('aria-expanded', String(!collapse));
+    }
+  });
+}
+
 function fCollapseIcon(id, _href, collapse) {
   if (
     typeof document !== 'undefined' &&
@@ -16,13 +36,14 @@ function fCollapseIcon(id, _href, collapse) {
       el.outerHTML = fAddCollapseIcon(id, _href, collapse);
     }
   }
+  fSyncTriggerState(_href, collapse);
   if (storage && typeof storage.set === 'function') {
     storage.set(`${id}`, collapse);
   }
 }
 
 function fAddCollapseIcon(id, _href, collapse) {
-  return `<span class="header-icon collapse-toggle fw-bold font-monospace" id="${id}" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!collapse}" aria-controls="${_href}" data-bs-target="#${_href}" data-bs-toggle="collapse">${collapse ? '[+]' : '[-]'}</span>`;
+  return `<span class="header-icon collapse-toggle fw-bold font-monospace" id="${id}" role="button" tabindex="-1" aria-hidden="true" aria-expanded="${!collapse}" aria-controls="${_href}" data-bs-target="#${_href}" data-bs-toggle="collapse">${collapse ? '[+]' : '[-]'}</span>`;
 }
 
 function fCopyButton(id, colour, pos, collapse) {
@@ -49,14 +70,28 @@ function fCloseButton() {
 
 if (typeof document !== 'undefined' && !document._foeA11yBound) {
   document._foeA11yBound = true;
+  const isCustomButton = (target) =>
+    Boolean(
+      target &&
+      typeof target.getAttribute === 'function' &&
+      target.getAttribute('role') === 'button' &&
+      target.tagName !== 'BUTTON',
+    );
+
   document.addEventListener('keydown', (e) => {
-    if (
-      (e.key === 'Enter' || e.key === ' ') &&
-      e.target &&
-      e.target.getAttribute &&
-      e.target.getAttribute('role') === 'button' &&
-      e.target.tagName !== 'BUTTON'
-    ) {
+    if (!isCustomButton(e.target)) return;
+    if (e.key === 'Enter') {
+      if (e.repeat) return;
+      e.preventDefault();
+      e.target.click();
+    } else if (e.key === ' ' || e.key === 'Spacebar') {
+      // Space must not scroll while held; activation happens on keyup.
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener('keyup', (e) => {
+    if ((e.key === ' ' || e.key === 'Spacebar') && isCustomButton(e.target)) {
       e.preventDefault();
       e.target.click();
     }

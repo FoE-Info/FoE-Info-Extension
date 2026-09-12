@@ -125,7 +125,10 @@ test('renderGuildPanel UI Suite', async (t) => {
       );
 
       // 3. Table headers
-      assert.match(mockGuildDiv.innerHTML, /<th class="text-start">#<\/th>/);
+      assert.match(
+        mockGuildDiv.innerHTML,
+        /<th scope="col" class="text-start">#<\/th>/,
+      );
       assert.match(mockGuildDiv.innerHTML, /data-i18n="name"/);
       assert.match(mockGuildDiv.innerHTML, /data-i18n="title"/);
       assert.match(mockGuildDiv.innerHTML, /data-i18n="era"/);
