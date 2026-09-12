@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
+import statePkg from '../../src/js/state/QuantumState.js';
+
+const { quantumState } = statePkg;
 
 const memberContributionsFixture = JSON.parse(
   fs.readFileSync(
@@ -138,6 +141,32 @@ test('GuildRaidsService Suite', async (t) => {
       const result = service.handleSearchRanking(msg);
       assert.equal(result.ignored, true);
       assert.deepEqual(service.getLeaderboard(), []);
+    },
+  );
+
+  await t.test(
+    'publishes parsed data to the reactive QuantumState store',
+    () => {
+      const service = new GuildRaidsService();
+      const storageAdapter = { get: () => [], set: () => {} };
+      const seen = [];
+      const off = quantumState.subscribe((snap, changed) => {
+        seen.push(changed);
+      });
+
+      try {
+        service.handleMemberActivityOverview(
+          memberContributionsFixture.captures[0],
+          storageAdapter,
+        );
+        service.handleSearchRanking(rankingsFixture.captures[0]);
+      } finally {
+        off();
+      }
+
+      assert.deepEqual(seen, ['members', 'leaderboard']);
+      assert.equal(quantumState.getMemberActivity().length, 72);
+      assert.ok(quantumState.getLeaderboard().length >= 10);
     },
   );
 });
