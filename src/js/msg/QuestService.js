@@ -8,6 +8,7 @@
  */
 
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
+const { rewardState } = require('../state/RewardState.js');
 
 const COMPLETED_QUEST_STATES = new Set([
   'fulfilled',
@@ -53,7 +54,7 @@ class QuestService {
     this.questPeriods = [];
     this.categoryTimes = null;
     this.lastUpdated = null;
-    this.rewardRenderer = deps.rewardRenderer || null;
+    this.rewardState = deps.rewardState || rewardState;
     this.rewardedQuestIds = new Set();
     this.suppressStartupQuests = deps.suppressStartupQuests === true;
     this.hasProcessedInitial = false;
@@ -80,18 +81,6 @@ class QuestService {
     return this;
   }
 
-  resolveRewardRenderer() {
-    if (this.rewardRenderer) return this.rewardRenderer;
-    if (typeof __webpack_require__ !== 'undefined') {
-      try {
-        this.rewardRenderer = require('../ui/RewardRenderer.js');
-      } catch {
-        this.rewardRenderer = null;
-      }
-    }
-    return this.rewardRenderer;
-  }
-
   resolveShowRewards() {
     if (typeof this.showRewards === 'boolean') return this.showRewards;
     if (typeof __webpack_require__ !== 'undefined') {
@@ -108,23 +97,16 @@ class QuestService {
 
   routeCompletedRewards() {
     if (!this.resolveShowRewards()) return;
-
-    const renderer = this.resolveRewardRenderer();
-    const showRewardFn =
-      (renderer && typeof renderer.showReward === 'function' ?
-        renderer.showReward
-      : null) ||
-      (renderer?.default && typeof renderer.default.showReward === 'function' ?
-        renderer.default.showReward
-      : null);
-    if (!showRewardFn) return;
+    if (!this.rewardState || typeof this.rewardState.setReward !== 'function') {
+      return;
+    }
 
     for (const quest of this.quests.values()) {
       if (!quest.isCompleted() || this.rewardedQuestIds.has(quest.id)) continue;
       this.rewardedQuestIds.add(quest.id);
       for (const reward of quest.getRewards()) {
         if (!reward || typeof reward !== 'object') continue;
-        showRewardFn('quest', reward);
+        this.rewardState.setReward({ source: 'quest', payload: reward });
       }
     }
   }

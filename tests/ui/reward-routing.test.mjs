@@ -110,12 +110,12 @@ test('Reward routing — single-source category map', async (t) => {
   });
 });
 
-test('QuestService routes only completed quest rewards through showReward', async (t) => {
+test('QuestService routes only completed quest rewards to RewardState', async (t) => {
   await t.test('routes completed quest rewards once via quest source', () => {
     const calls = [];
     const service = new QuestService({
-      rewardRenderer: {
-        showReward: (source, payload) => calls.push({ source, payload }),
+      rewardState: {
+        setReward: (entry) => calls.push(entry),
       },
     });
 
@@ -159,8 +159,8 @@ test('QuestService routes only completed quest rewards through showReward', asyn
   await t.test('does not re-route the same completed quest twice', () => {
     const calls = [];
     const service = new QuestService({
-      rewardRenderer: {
-        showReward: (source, payload) => calls.push({ source, payload }),
+      rewardState: {
+        setReward: (entry) => calls.push(entry),
       },
     });
 
@@ -184,8 +184,8 @@ test('QuestService routes only completed quest rewards through showReward', asyn
   await t.test('routes rewards when a quest transitions to completed', () => {
     const calls = [];
     const service = new QuestService({
-      rewardRenderer: {
-        showReward: (source, payload) => calls.push({ source, payload }),
+      rewardState: {
+        setReward: (entry) => calls.push(entry),
       },
     });
 
@@ -208,8 +208,8 @@ test('QuestService routes only completed quest rewards through showReward', asyn
       const calls = [];
       const service = new QuestService({
         suppressStartupQuests: true,
-        rewardRenderer: {
-          showReward: (source, payload) => calls.push({ source, payload }),
+        rewardState: {
+          setReward: (entry) => calls.push(entry),
         },
       });
 
@@ -248,8 +248,8 @@ test('QuestService routes only completed quest rewards through showReward', asyn
   await t.test('stays silent when reward routing is disabled', () => {
     const calls = [];
     const service = new QuestService({
-      rewardRenderer: {
-        showReward: (source, payload) => calls.push({ source, payload }),
+      rewardState: {
+        setReward: (entry) => calls.push(entry),
       },
     });
     service.resolveShowRewards = () => false;
@@ -268,9 +268,11 @@ test('QuestService routes only completed quest rewards through showReward', asyn
   });
 });
 
-test('CityProductionService delegates category ownership to showReward', () => {
-  assert.match(cityProductionSrc, /showReward\('cityProductionArmy'/);
-  assert.match(cityProductionSrc, /showReward\('cityProductionCity'/);
+test('CityProductionService publishes rewards to the shared RewardState', () => {
+  assert.match(cityProductionSrc, /rewardState\.setReward\(\{/);
+  assert.match(cityProductionSrc, /source: 'cityProductionArmy'/);
+  assert.match(cityProductionSrc, /source: 'cityProductionCity'/);
+  assert.doesNotMatch(cityProductionSrc, /showReward\(/);
   assert.doesNotMatch(cityProductionSrc, /rewardsArmy\[/);
   assert.doesNotMatch(cityProductionSrc, /rewardsCity\[/);
 });
