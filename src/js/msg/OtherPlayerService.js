@@ -275,11 +275,10 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
           }
           try {
             const {
-              renderLiveCityStats,
-            } = require('../ui/renderLiveCityStats.js');
-            if (typeof renderLiveCityStats === 'function') {
-              renderLiveCityStats();
-            }
+              startupRenderState,
+            } = require('../state/StartupRenderState.js');
+            startupRenderState.requestCityStatsRepaint();
+            logger.debug('requested city stats repaint after score update');
           } catch (err) {
             logger.warn('score re-render failed', err);
           }

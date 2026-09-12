@@ -4,6 +4,21 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 6 (slice) — Other Player own-city repaint**:
+  - `OtherPlayerService` no longer lazily requires `ui/renderLiveCityStats.js`;
+    after persisting a positive self score it calls
+    `startupRenderState.requestCityStatsRepaint()` (the `EmissaryService`
+    pattern). The service now has zero direct `../ui/` imports.
+  - Tests: `tests/msg/other-player-service.test.mjs` gains a functional repaint
+    assertion (subscribe to `StartupRenderState`, feed an `is_self` member) and
+    an F2 invariant source guard (no `../ui/` import, repaint present).
+  - **Deferred**: moving the visited-card/list DOM rendering — which flows
+    through the legacy `fn/renderCityStats.js` and `fn/AddElement` shims —
+    behind a `VisitedCityState` binding. That is a larger DOM extraction and is
+    tracked as a follow-up.
+  - **Verification**: `npm run verify` exit 0 — **1,234 tests / 0 fail**,
+    prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
+
 - **F2 Session 5 — City Production / Invested / Quest decoupling**:
   - New shared `src/js/state/RewardState.js` (`reward` channel) plus
     `src/js/ui/rewardRenderBinding.js` route City/Quest rewards through the
