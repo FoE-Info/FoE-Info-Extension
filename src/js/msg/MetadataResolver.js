@@ -243,7 +243,9 @@ async function resolveMissingUnitTypes(
   if (!unitUrl || fetchedMetadataUrls.has(unitUrl)) return false;
   const loaded = await shareDownload(unitUrl, async () => {
     try {
-      const res = await fetch(unitUrl);
+      // Unit-type metadata is non-critical enrichment; fetch it at low
+      // priority so it never competes with critical startup CDN fetches.
+      const res = await fetch(unitUrl, { priority: 'low' });
       if (res.ok) {
         const json = await res.json();
         if (json) {

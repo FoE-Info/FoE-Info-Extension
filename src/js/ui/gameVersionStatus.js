@@ -57,10 +57,10 @@ function appendGameVersionStatus(
   const safeToolVersion = safeEscape(toolVersion);
   const html = `<div><span data-i18n="gameversion">Game Version</span>: ${safeVersion}<br>${safeExtName}: ${safeToolVersion}</div>`;
 
-  if (typeof container.innerHTML === 'string') {
-    container.innerHTML += html;
-  } else if (typeof container.insertAdjacentHTML === 'function') {
+  if (typeof container.insertAdjacentHTML === 'function') {
     container.insertAdjacentHTML('beforeend', html);
+  } else if (typeof container.innerHTML === 'string') {
+    container.innerHTML = `${container.innerHTML}${html}`;
   } else {
     return false;
   }

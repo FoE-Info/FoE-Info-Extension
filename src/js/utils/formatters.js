@@ -150,6 +150,27 @@ function fNumber(val, fallback = 0) {
 }
 
 /**
+ * Module-level cache of `Intl.NumberFormat` instances keyed by locale.
+ * Constructing a formatter is comparatively expensive, so reuse one per
+ * locale instead of rebuilding it on every `fFormatNumber` call.
+ */
+const numberFormatCache = new Map();
+
+function getNumberFormatter(locale) {
+  const key = locale || 'en-US';
+  let formatter = numberFormatCache.get(key);
+  if (!formatter) {
+    try {
+      formatter = new Intl.NumberFormat(key);
+    } catch {
+      formatter = new Intl.NumberFormat('en-US');
+    }
+    numberFormatCache.set(key, formatter);
+  }
+  return formatter;
+}
+
+/**
  * Formats a numeric value with locale-aware thousands separators.
  * Invalid input resolves to '0'.
  *
@@ -167,7 +188,7 @@ function fFormatNumber(num, locale = 'en-US') {
   ) {
     return '0';
   }
-  return parsed.toLocaleString(locale);
+  return getNumberFormatter(locale).format(parsed);
 }
 
 /**

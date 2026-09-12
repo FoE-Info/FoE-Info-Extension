@@ -158,7 +158,12 @@ initIndexUiBindings({
   onGameVersionChange: (newVersion) => {
     if (citystats) {
       const tool = browser?.runtime?.getManifest?.() || {};
-      citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${escapeHTML(newVersion)}<br>${escapeHTML(tool.name || '')}: ${escapeHTML(tool.version || '')}</div>`;
+      const html = `<div><span data-i18n="gameversion">Game Version</span>: ${escapeHTML(newVersion)}<br>${escapeHTML(tool.name || '')}: ${escapeHTML(tool.version || '')}</div>`;
+      if (typeof citystats.insertAdjacentHTML === 'function') {
+        citystats.insertAdjacentHTML('beforeend', html);
+      } else {
+        citystats.innerHTML = `${citystats.innerHTML}${html}`;
+      }
     }
   },
 });
