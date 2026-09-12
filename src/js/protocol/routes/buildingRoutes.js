@@ -48,6 +48,7 @@ function registerBuildingRoutes(ctx) {
     getConstructionRanking,
     getContributions,
     handleNewReward,
+    getAvailablePackageForgePoints,
   } = handlers;
 
   if (getConstruction) {
@@ -134,6 +135,13 @@ function registerBuildingRoutes(ctx) {
       getContributions(msg),
     );
   }
+  if (getAvailablePackageForgePoints) {
+    dispatcher.register(
+      'GreatBuildingsService',
+      'getAvailablePackageForgePoints',
+      (msg, context) => getAvailablePackageForgePoints(msg, context),
+    );
+  }
   const rewardHandler = handleNewReward || GbDonationService.handleNewReward;
   if (rewardHandler) {
     dispatcher.register('BlueprintService', 'newReward', (msg) => {
@@ -150,6 +158,7 @@ function registerBuildingRoutes(ctx) {
   logger.debug('Building routes registered', {
     construction: !!getConstruction,
     contributions: !!getContributions,
+    packageFp: !!getAvailablePackageForgePoints,
   });
 }
 

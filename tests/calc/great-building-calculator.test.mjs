@@ -3,6 +3,7 @@ import { describe, it } from 'node:test';
 import {
   calculateArcReward,
   calculateDonorOutcome,
+  calculateLevelClosingProfit,
   calculateOwnerSafeAdd,
   calculateSafeSpots,
   calculateSpotLock,
@@ -484,5 +485,52 @@ describe('GreatBuildingCalculator Pure Math Engine', () => {
         assert.deepEqual(getSafePlaces(spots), fh.SafePlaces, 'safe places');
       });
     }
+  });
+
+  describe('calculateLevelClosingProfit', () => {
+    it('identifies profitable level-closing scenario without existing deposit', () => {
+      const result = calculateLevelClosingProfit(50, 90, 0);
+      assert.deepEqual(result, {
+        cost: 50,
+        netProfit: 40,
+        isProfitable: true,
+      });
+    });
+
+    it('identifies profitable level-closing with existing deposit accounted for', () => {
+      const result = calculateLevelClosingProfit(40, 100, 20);
+      assert.deepEqual(result, {
+        cost: 40,
+        netProfit: 40,
+        isProfitable: true,
+      });
+    });
+
+    it('identifies break-even scenario (netProfit == 0 is not profitable)', () => {
+      const result = calculateLevelClosingProfit(100, 100, 0);
+      assert.deepEqual(result, {
+        cost: 100,
+        netProfit: 0,
+        isProfitable: false,
+      });
+    });
+
+    it('identifies loss scenario when closing cost exceeds reward', () => {
+      const result = calculateLevelClosingProfit(120, 100, 0);
+      assert.deepEqual(result, {
+        cost: 120,
+        netProfit: -20,
+        isProfitable: false,
+      });
+    });
+
+    it('supports BigNumber and string inputs with exact precision', () => {
+      const result = calculateLevelClosingProfit('150', '200', '25');
+      assert.deepEqual(result, {
+        cost: 150,
+        netProfit: 25,
+        isProfitable: true,
+      });
+    });
   });
 });

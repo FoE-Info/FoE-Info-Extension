@@ -53,6 +53,7 @@ var Reward = [0, 0, 0, 0, 0];
 var currentPercent = donationPercent ? donationPercent : 190;
 var googleSheetGame = '';
 var rankings;
+var availablePackageForgePoints = 0;
 
 if (url && url.hasOwnProperty('sheetGameURL'))
   googleSheetGame = url.sheetGameURL;
@@ -253,6 +254,7 @@ export function showGreatBuldingDonation() {
     PlayerName,
     MyInfo,
     donationSuffix,
+    availablePackageForgePoints,
     onRerender: showGreatBuldingDonation,
   });
 }
@@ -364,6 +366,17 @@ export function handleNewReward(msg) {
   return GbDonationService.handleNewReward(msg, showOptions, cityrewards);
 }
 
+export function getAvailablePackageForgePoints(msg) {
+  const data = msg?.responseData ?? msg;
+  const raw = Array.isArray(data) ? data[0] : data;
+  availablePackageForgePoints = Number(raw) || 0;
+  return availablePackageForgePoints;
+}
+
+export function getAvailablePackageFp() {
+  return availablePackageForgePoints;
+}
+
 export function fCheckOutput() {
   const contentEl =
     typeof document !== 'undefined' ? document.getElementById('content') : null;
@@ -462,4 +475,6 @@ export default {
   setCurrentPercent,
   getContributions,
   fCheckOutput,
+  getAvailablePackageForgePoints,
+  getAvailablePackageFp,
 };
