@@ -217,6 +217,7 @@ describe('6-Context Panel Visibility Engine', () => {
         `CONTEXT_ALLOWED_PANELS.${context} must be an array`,
       );
       assert.ok(CONTEXT_ALLOWED_PANELS[context].includes('header'));
+      assert.ok(CONTEXT_ALLOWED_PANELS[context].includes('citystats'));
     }
 
     assert.ok(CONTEXT_ALLOWED_PANELS.GBG.includes('gbgTargetGenerator'));

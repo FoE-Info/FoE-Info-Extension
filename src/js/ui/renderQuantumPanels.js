@@ -49,6 +49,29 @@ try {
   worldStorage = require('../utils/worldStorage.js');
 } catch {}
 
+const QI_CONTRIBUTIONS_BOUNDED_HEIGHT = 480;
+const QI_LEADERBOARD_BOUNDED_HEIGHT = 260;
+
+function applyContributionsSizing(collapseEl, isChangesOnly) {
+  if (!collapseEl || !collapseEl.style) return;
+  if (isChangesOnly) {
+    collapseEl.style.height = 'auto';
+    collapseEl.style.maxHeight = 'none';
+    collapseEl.style.overflowY = 'visible';
+  } else {
+    collapseEl.style.height = `${QI_CONTRIBUTIONS_BOUNDED_HEIGHT}px`;
+    collapseEl.style.maxHeight = `${QI_CONTRIBUTIONS_BOUNDED_HEIGHT}px`;
+    collapseEl.style.overflowY = 'auto';
+  }
+}
+
+function applyLeaderboardSizing(collapseEl) {
+  if (!collapseEl || !collapseEl.style) return;
+  collapseEl.style.height = `${QI_LEADERBOARD_BOUNDED_HEIGHT}px`;
+  collapseEl.style.maxHeight = `${QI_LEADERBOARD_BOUNDED_HEIGHT}px`;
+  collapseEl.style.overflowY = 'auto';
+}
+
 function getWorldLabel() {
   try {
     const currentW =
@@ -173,6 +196,16 @@ function renderQuantumContributionsCard(members, lastSavedTimestamp) {
   cardHTML += `</tbody></table></div></div></div>`;
   targetEl.innerHTML = cardHTML;
 
+  const contributionsCollapseEl = document.getElementById(
+    'qiContributionsCollapse',
+  );
+  if (contributionsCollapseEl) {
+    applyContributionsSizing(contributionsCollapseEl, isChangesOnly);
+    contributionsCollapseEl.addEventListener('shown.bs.collapse', () =>
+      applyContributionsSizing(contributionsCollapseEl, isChangesOnly),
+    );
+  }
+
   // Bind Checkbox
   const checkboxEl = document.getElementById('showQIchanges');
   if (checkboxEl) {
@@ -289,6 +322,16 @@ function renderQuantumLeaderboardCard(rankings) {
 
   cardHTML += `</tbody></table></div></div></div>`;
   targetEl.innerHTML = cardHTML;
+
+  const leaderboardCollapseEl = document.getElementById(
+    'qiLeaderboardCollapse',
+  );
+  if (leaderboardCollapseEl) {
+    applyLeaderboardSizing(leaderboardCollapseEl);
+    leaderboardCollapseEl.addEventListener('shown.bs.collapse', () =>
+      applyLeaderboardSizing(leaderboardCollapseEl),
+    );
+  }
 
   // Bind Collapse
   const labelEl = document.getElementById('qiLeaderboardTextLabel');

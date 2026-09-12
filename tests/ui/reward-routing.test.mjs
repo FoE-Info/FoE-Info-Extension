@@ -202,6 +202,49 @@ test('QuestService routes only completed quest rewards through showReward', asyn
     assert.equal(calls[0].source, 'quest');
   });
 
+  await t.test(
+    'suppressStartupQuests: true suppresses closed quests on startup initial batch but allows subsequent completions',
+    () => {
+      const calls = [];
+      const service = new QuestService({
+        suppressStartupQuests: true,
+        rewardRenderer: {
+          showReward: (source, payload) => calls.push({ source, payload }),
+        },
+      });
+
+      const startupReward = { type: 'item', subType: 'upgrade_kit', amount: 1 };
+      const subsequentReward = {
+        type: 'resource',
+        subType: 'coins',
+        amount: 50,
+      };
+
+      // Initial startup batch with closed historical quest
+      service.getUpdates({
+        responseData: [
+          { id: 401, state: 'closed', genericRewards: [startupReward] },
+          { id: 402, state: 'accepted', genericRewards: [subsequentReward] },
+        ],
+      });
+      assert.equal(calls.length, 0, 'Startup closed quests must be suppressed');
+
+      // Subsequent update where 402 transitions to closed
+      service.getUpdates({
+        responseData: [
+          { id: 401, state: 'closed', genericRewards: [startupReward] },
+          { id: 402, state: 'closed', genericRewards: [subsequentReward] },
+        ],
+      });
+      assert.equal(
+        calls.length,
+        1,
+        'Subsequent quest completion must be routed',
+      );
+      assert.equal(calls[0].payload, subsequentReward);
+    },
+  );
+
   await t.test('stays silent when reward routing is disabled', () => {
     const calls = [];
     const service = new QuestService({

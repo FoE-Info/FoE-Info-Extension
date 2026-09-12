@@ -114,14 +114,14 @@ test('renderGuildPanel UI Suite', async (t) => {
       assert.equal(styleDisplay, '');
       assert.equal(dNoneRemoved, true);
 
-      // 2. Guild header
+      // 2. Guild header (expanded: title + subtitle)
       assert.match(
         mockGuildDiv.innerHTML,
-        /<span data-i18n="guild">Guild<\/span>:\s*Knights of the Round/,
+        /<span data-i18n="guild_overview">Guild Overview<\/span>/,
       );
       assert.match(
         mockGuildDiv.innerHTML,
-        /3\s*<span data-i18n="members">members<\/span>/,
+        /Knights of the Round • 3\s*<span data-i18n="members">members<\/span>/,
       );
 
       // 3. Table headers

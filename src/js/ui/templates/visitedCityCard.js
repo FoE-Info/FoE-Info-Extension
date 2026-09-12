@@ -11,6 +11,12 @@ const {
   escapeHtml,
 } = require('../components/statFormatters.js');
 
+let showOptions = {};
+try {
+  const showOptionsPkg = require('../../state/showOptions.js');
+  if (showOptionsPkg?.showOptions) showOptions = showOptionsPkg.showOptions;
+} catch {}
+
 function buildVisitedCityCard({
   prefix,
   playerName,
@@ -20,6 +26,8 @@ function buildVisitedCityCard({
   fpTooltipEscaped,
   fp,
   exact,
+  coins,
+  supplies,
   goodsDisplay,
   goodsBoostText,
   goodsHTML,
@@ -33,6 +41,31 @@ function buildVisitedCityCard({
   const safeGuild = playerInfo.guild ? escapeHtml(playerInfo.guild) : '';
   const safeShield =
     playerInfo.shieldTimeText ? escapeHtml(playerInfo.shieldTimeText) : '';
+
+  const coinBoostVal = coins?.boostPercent ? Number(coins.boostPercent) : 0;
+  const supplyBoostVal =
+    supplies?.boostPercent ? Number(supplies.boostPercent) : 0;
+  const showDailyCoins = showOptions.showDailyCoins !== false;
+  const showDailySupplies = showOptions.showDailySupplies !== false;
+  const showCoinBoost = showOptions.showCoinBoost !== false;
+  const showSupplyBoost = showOptions.showSupplyBoost !== false;
+
+  const dailyCoinsHTML =
+    showDailyCoins ?
+      `<div><span data-i18n="stat_daily_coins">Coins</span>: ${formatStatNumber(coins?.total ?? 0, { exact, comma: true })}</div>`
+    : '';
+  const dailySuppliesHTML =
+    showDailySupplies ?
+      `<div><span data-i18n="stat_daily_supplies">Supplies</span>: ${formatStatNumber(supplies?.total ?? 0, { exact, comma: true })}</div>`
+    : '';
+  const coinBonusHTML =
+    showCoinBoost && coinBoostVal > 0 ?
+      `<div><span data-i18n="stat_coin_boost">Coins Bonus</span>: ${formatPercent(coins.boostPercent)}</div>`
+    : '';
+  const supplyBonusHTML =
+    showSupplyBoost && supplyBoostVal > 0 ?
+      `<div><span data-i18n="stat_supply_boost">Supplies Bonus</span>: ${formatPercent(supplies.boostPercent)}</div>`
+    : '';
 
   return `
 <div id="${prefix}-panel" class="foe-original-card">
@@ -54,6 +87,8 @@ function buildVisitedCityCard({
     <div><span data-i18n="age">Age</span>: ${formatEraName(playerEra)}</div>
     <div><span data-i18n="score">Score</span>: ${playerScore || '0'}</div>
     <div><span data-i18n="stat_daily_fp">Daily FP</span>: ${fpTooltipEscaped ? `<span id="${prefix}-fp" class="pop" role="button" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily FP" data-bs-content='${fpTooltipEscaped}'>${formatStatNumber(fp.total, { exact })}</span>` : formatStatNumber(fp.total, { exact })}</div>
+    ${dailyCoinsHTML}
+    ${dailySuppliesHTML}
     ${
       goodsHTML ? `<div>${goodsHTML}</div>`
       : goodsDisplay ?
@@ -63,6 +98,8 @@ function buildVisitedCityCard({
     ${clanGoodsHTML ? `<div>${clanGoodsHTML}</div>` : ''}
     ${spec.arcPercent && !spec.arcPercent.isZero() ? `<div>Arc <span data-i18n="bonus">Bonus</span>: ${formatPercent(spec.arcPercent)}</div>` : ''}
     ${spec.chatBonus && !spec.chatBonus.isZero() ? `<div>CF <span data-i18n="bonus">Bonus</span>: ${formatPercent(spec.chatBonus)} (${formatStatNumber(spec.goodsPerQuest)} <span data-i18n="goods">Goods</span>)</div>` : ''}
+    ${coinBonusHTML}
+    ${supplyBonusHTML}
     ${(units.total && !units.total.isZero()) || units.daily || units.traz ? `<div><span data-i18n="stat_daily_units">Daily Units</span>: ${formatStatNumber(units.total || units.daily || units.traz, { exact })}</div>` : ''}
     <div><span data-i18n="attackers">Attackers</span>: ${formatPercent(mil.red.base.att, true)} Att, ${formatPercent(mil.red.base.def, true)} Def</div>
     <div><span data-i18n="defenders">Defenders</span>: ${formatPercent(mil.blue.base.att, true)} Att, ${formatPercent(mil.blue.base.def, true)} Def</div>

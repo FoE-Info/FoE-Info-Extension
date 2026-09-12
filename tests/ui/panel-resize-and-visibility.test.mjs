@@ -137,11 +137,11 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
         'utf8',
       );
 
-      // Verify globals default is updated to 400
+      // Verify globals default is updated to 480
       assert.match(
         globalsSrc,
-        /battlegroundsSize:\s*400/,
-        'toolOptions.battlegroundsSize in globals.js must default to 400',
+        /battlegroundsSize:\s*480/,
+        'toolOptions.battlegroundsSize in globals.js must default to 480',
       );
 
       // Verify the battleground renderer applies gbg-changes-full vs gbg-full-roster
@@ -159,8 +159,8 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
       );
       assert.match(
         battlegroundSrc,
-        /DEFAULT_RESTRICTED_GBG_HEIGHT\s*=\s*400/,
-        'renderBattlegroundsPanel.js must define DEFAULT_RESTRICTED_GBG_HEIGHT as 400',
+        /DEFAULT_RESTRICTED_GBG_HEIGHT\s*=\s*480/,
+        'renderBattlegroundsPanel.js must define DEFAULT_RESTRICTED_GBG_HEIGHT as 480',
       );
 
       // Verify setHeight only persists when NOT in changes-only mode
