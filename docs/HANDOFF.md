@@ -4,6 +4,20 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **RPC Log Filtering, Checkbox Theming, Debug Stubs, Reward Labels**:
+  - Added reversible out-of-scope RPC log filtering (`src/js/protocol/rpcScope.js`
+    - `rpcLogger.js` + `MessageDispatcher.js`); hidden by default, restored with
+      `window.foeShowIgnoredRpc(true)`.
+  - Fixed the GBG "show changes only" checkbox to use Bootstrap
+    `form-check-input` (it rendered as a dark native widget on the light card);
+    added an `accent-color` fallback for native checkboxes in the panel/options.
+  - Debug mode now stubs only the panels visible in the active context/options,
+    each with a collapsed raw-content dump (`cardVisibility.js`/`.ts`).
+  - Reward labels fall back to core aliases (`strategy_points` -> Forge Points)
+    plus `fTitleCase` for unit ids (`rogue` -> Rogue).
+  - Verification: `npm run verify` exit 0 — 1,091 tests / 0 fail, prettier/lint/
+    typecheck/RPC-contract/i18n green, dev bundle compiles.
+
 - **Parallel Open-Items Execution & Dev Seeder Debug Gating**:
   - Four disjoint parallel subagent tasks shipped and reconciled to verified
     reality: dedup extraction (`MessageDispatcher.js` 607 -> 583 L +
