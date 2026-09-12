@@ -72,9 +72,13 @@ const {
   renderTargetGeneratorPanel,
 } = require('./renderTargetGeneratorCard.js');
 
+let fshowBattleground = null;
 let renderGbgLeaderboardPanel = null;
 try {
-  ({ renderGbgLeaderboardPanel } = require('./renderBattlegroundsPanel.js'));
+  ({
+    fshowBattleground,
+    renderGbgLeaderboardPanel,
+  } = require('./renderBattlegroundsPanel.js'));
 } catch {}
 
 function resolveTooltip() {
@@ -172,6 +176,7 @@ function bindGuildBattlegroundPanels(
     renderResult = renderBattlegroundResultCard,
     renderLeaderboard = renderGbgLeaderboardPanel,
     renderCosts = renderProvinceCosts,
+    renderPerformance = fshowBattleground,
   } = {},
 ) {
   if (!state || typeof state.subscribe !== 'function') return () => {};
@@ -196,6 +201,12 @@ function bindGuildBattlegroundPanels(
     if (channel === 'province' || channel === 'all') {
       const payload = snapshot.getProvince();
       if (payload) renderCosts(payload);
+    }
+    if (channel === 'performance' || channel === 'all') {
+      const payload = snapshot.getPerformance();
+      if (payload && typeof renderPerformance === 'function') {
+        renderPerformance(payload);
+      }
     }
   });
 }

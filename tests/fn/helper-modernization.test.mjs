@@ -113,16 +113,36 @@ test('helper.js re-exports the pure formatters with identity parity', () => {
   }
 });
 
-test('helper.js re-exports the extracted GBG renderer functions', () => {
-  assert.strictEqual(
+test('helper.js no longer re-exports UI panel renderers (msg/ -> ui/ decoupled)', () => {
+  assert.equal(
     helper.fshowBattleground,
-    renderer.fshowBattleground,
-    'fshowBattleground must be the extracted renderer reference',
+    undefined,
+    'fshowBattleground must not be re-exported by helper.js',
   );
-  assert.strictEqual(
+  assert.equal(
     helper.fshowBattlegroundChanges,
-    renderer.fshowBattlegroundChanges,
-    'fshowBattlegroundChanges must be the extracted renderer reference',
+    undefined,
+    'fshowBattlegroundChanges must not be re-exported by helper.js',
+  );
+  assert.equal(
+    helper.fShowIncidents,
+    undefined,
+    'fShowIncidents must not be re-exported by helper.js',
+  );
+  assert.equal(
+    helper.fIncidentName,
+    undefined,
+    'fIncidentName must not be re-exported by helper.js',
+  );
+  assert.equal(
+    helper.renderIncidentsPanel,
+    undefined,
+    'renderIncidentsPanel must not be re-exported by helper.js',
+  );
+  assert.doesNotMatch(
+    helperSource,
+    /from\s+['"]\.\.\/ui\//,
+    'helper.js must have zero imports from ../ui/',
   );
 });
 

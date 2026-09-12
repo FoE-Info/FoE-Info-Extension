@@ -10,12 +10,13 @@ const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 
 let defaultState = null;
 let defaultHelper = null;
+let incidentState = null;
+try {
+  ({ incidentState } = require('../state/IncidentState.js'));
+} catch {}
 if (typeof __webpack_require__ !== 'undefined') {
   try {
     defaultState = require('../vars/state.js');
-  } catch {}
-  try {
-    defaultHelper = require('../fn/helper.js');
   } catch {}
 }
 
@@ -75,6 +76,8 @@ class TimeService {
     if (targetState && typeof targetState.setEpocTime === 'function') {
       targetState.setEpocTime(rawTime);
     }
+
+    incidentState?.setServerTime?.(this.serverTime);
 
     const targetHelper = this.helper || defaultHelper;
     if (targetHelper && typeof targetHelper.fShowIncidents === 'function') {
