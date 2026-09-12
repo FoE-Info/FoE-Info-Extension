@@ -862,6 +862,16 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         /guildBattlegroundState\.setLeaderboard/,
         'GuildBattlegroundService.getLeaderboard must publish to the reactive store',
       );
+      assert.match(
+        gbgServiceSource,
+        /guildBattlegroundState\.setPerformance/,
+        'GuildBattlegroundService must publish performance to the reactive store',
+      );
+      assert.doesNotMatch(
+        gbgServiceSource,
+        /from '\.\.\/fn\/helper(?:\.js)?'/,
+        'GuildBattlegroundService must not import from helper.js',
+      );
       assert.doesNotMatch(
         gbgServiceSource,
         /from '\.\.\/ui\//,
