@@ -1,5 +1,9 @@
 /** Startup data RPC service orchestrating initial city and player ingestion. */
 import { processCityMapEntities } from '../calc/CityMapEntityProcessor.js';
+import {
+  buildClanGoodsData as buildClanGoodsDataImpl,
+  fGoodsHTML,
+} from '../calc/goodsTooltipFormatter.js';
 import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
@@ -12,10 +16,6 @@ import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
 import { resolvePlayerScore } from '../state/playerScoreResolver.js';
 import { startupRenderState } from '../state/StartupRenderState.js';
-import {
-  buildClanGoodsData as buildClanGoodsDataImpl,
-  fGoodsHTML,
-} from '../ui/renderLiveCityStats.js';
 import { formatDate, formatDateTime } from '../utils/date.js';
 import { createLogger, isDebugEnabled } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';

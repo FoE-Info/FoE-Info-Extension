@@ -4,6 +4,23 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Slice B + program DoD — `StartupService` fully decoupled from `ui/`**:
+  - **Galaxy**: new `ui/galaxyRenderBinding.js` owns
+    `blueGalaxyState.setRenderCallback(showGalaxy)` and is registered in
+    `ui/renderBindings.js`; `StartupService` drops its `showGalaxy`/`updateGalaxy`
+    wiring/re-export and drives galaxy repaints via `blueGalaxyState.notify()`.
+    `CityProductionService` now calls `blueGalaxyState.updateEntity(reward)`
+    directly.
+  - **Live city stats**: `fGoodsText`, `fGoodsHTML`, and `buildClanGoodsData`
+    moved to a pure `calc/goodsTooltipFormatter.js` (state-backed defaults
+    preserved); `ui/renderLiveCityStats.js` re-exports them for back-compat and
+    `StartupService` imports the calc versions.
+  - **Result**: `grep -rnE "from '\.\./ui/|require\('\.\./ui/" src/js/msg/` now
+    returns only `ConversationService.js → ui/AddElement.js` (deliberately
+    retained element factory). **F2 remediation DoD met.**
+  - **Verification**: `npm run verify` exit 0 — **1,269 tests / 0 fail**,
+    calc purity guard green, webpack dev bundle compiles.
+
 - **F2 Slice A — `StartupService` tooltip + player-helper edges removed**:
   - `buildTotalGoodsTooltipHTML` no longer runs in `StartupService`; the live
     renderer already builds `totalGoodsTooltipHTML` from `goodsList`, so the
