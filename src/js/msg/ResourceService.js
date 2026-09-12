@@ -29,12 +29,7 @@ try {
 
 const { createLogger, isDebugEnabled } = require('../utils/logger.js');
 const logger = createLogger('ResourceService');
-const goodsRenderer = require('../ui/renderGoodsPanel.js');
-const {
-  setAvailableForgePoints,
-  clearGoodsPanel,
-  goodsCopy,
-} = require('../ui/renderResourcePanel.js');
+const { resourceState } = require('../state/ResourceState.js');
 
 const ResourceDefs = defaultState?.ResourceDefs || [];
 const ResourceNames = defaultState?.ResourceNames || {};
@@ -145,7 +140,7 @@ function getPlayerResources(msg) {
     }
   } catch {}
 
-  setAvailableForgePoints(availablePacksFP);
+  resourceState.setAvailableForgePoints(availablePacksFP);
 
   lastGoodsPayload = msg;
   renderGoodsPanel(Resources);
@@ -166,7 +161,7 @@ function unlockGoodsPanel() {
 function lockGoodsPanel() {
   goodsPanelDismissed = true;
   goodsPanelUnlocked = false;
-  clearGoodsPanel();
+  resourceState.requestClearGoods();
   logger.debug('goods panel locked/dismissed');
   return false;
 }
@@ -177,8 +172,8 @@ function onMarketOpened(msg) {
   if (!currentGoods || Object.keys(currentGoods).length === 0) {
     return { success: false, retriggered: false, reason: 'no_cached_goods' };
   }
-  const result = renderGoodsPanel(currentGoods, true);
-  return { success: true, retriggered: true, targetDiv: result };
+  renderGoodsPanel(currentGoods, true);
+  return { success: true, retriggered: true };
 }
 
 function renderGoodsPanel(
@@ -186,16 +181,18 @@ function renderGoodsPanel(
   force = false,
 ) {
   const isUnlocked = force || (goodsPanelUnlocked && !goodsPanelDismissed);
-  return goodsRenderer.renderGoodsPanel(currentResources, {
-    force,
-    showGoods: showOptions?.showGoods,
-    unlocked: isUnlocked,
-    debug: isDebugEnabled(),
-    resourceDefs: ResourceDefs,
-    resourceNames: ResourceNames,
-    fallbackDiv: defaultState?.goodsDIV,
-    onDismiss: lockGoodsPanel,
-    onCopy: goodsCopy,
+  resourceState.renderGoods({
+    resources: currentResources,
+    options: {
+      force,
+      showGoods: showOptions?.showGoods,
+      unlocked: isUnlocked,
+      debug: isDebugEnabled(),
+      resourceDefs: ResourceDefs,
+      resourceNames: ResourceNames,
+      fallbackDiv: defaultState?.goodsDIV,
+      onDismiss: lockGoodsPanel,
+    },
   });
 }
 
@@ -236,7 +233,7 @@ function setResources(resource, needed = 0) {
 }
 
 function setGlobals(g) {
-  goodsRenderer.setGlobals(g);
+  resourceState.setGlobals(g);
 }
 
 function setShowOptions(opts) {
