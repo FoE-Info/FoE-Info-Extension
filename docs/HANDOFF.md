@@ -16,6 +16,8 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
     now asserts the live `checkInactive` behavior.
   - **Remaining `ui/ → msg/` edges**: only the 4 lazy `resolveDep` fallbacks in
     `ui/indexUiBindings.js` (F3-sanctioned, injectable at the composition root).
+    Full ranked follow-ups in
+    [`docs/plans/2026-09-12-post-f2-refactor-backlog.md`](plans/2026-09-12-post-f2-refactor-backlog.md).
   - **Verification**: `npm run verify` exit 0 — **1,284 tests / 0 fail**.
 
 - **A11y — panel `<main>` landmark**:
