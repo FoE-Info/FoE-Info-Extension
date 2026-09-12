@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import treasuryPkg from '../../src/js/msg/TreasuryService.js';
 import legacyBridgePkg from '../../src/js/protocol/legacyBridge.js';
 import { MessageDispatcher } from '../../src/js/protocol/MessageDispatcher.js';
 
 const { registerLegacyBridge } = legacyBridgePkg;
+const { TreasuryService } = treasuryPkg;
 
 test('Guild Menu RPC Ingestion Suite', async (t) => {
   await t.test(
@@ -73,18 +75,11 @@ test('Guild Menu RPC Ingestion Suite', async (t) => {
   );
 
   await t.test(
-    'ClanService.getTreasuryBag routes to getTreasuryBag handler in legacyBridge',
+    'ClanService.getTreasuryBag is owned by the modern TreasuryService',
     async () => {
-      let treasuryBagCalled = false;
-      let bagPayload = null;
-
+      const service = new TreasuryService();
       const dispatcher = new MessageDispatcher();
-      registerLegacyBridge(dispatcher, {
-        getTreasuryBag: (msg) => {
-          treasuryBagCalled = true;
-          bagPayload = msg.responseData;
-        },
-      });
+      service.register(dispatcher);
 
       // Dispatch ClanService.getTreasuryBag from captured HAR
       await dispatcher.dispatchBatch([
@@ -104,11 +99,8 @@ test('Guild Menu RPC Ingestion Suite', async (t) => {
         },
       ]);
 
-      assert.equal(treasuryBagCalled, true);
-      assert.deepEqual(bagPayload.resources.resources, {
-        iron: 500,
-        cloth: 300,
-      });
+      assert.equal(service.getReserve('iron').toString(), '500');
+      assert.equal(service.getReserve('cloth').toString(), '300');
     },
   );
 });
