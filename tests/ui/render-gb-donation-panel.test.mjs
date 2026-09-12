@@ -154,4 +154,113 @@ test('renderGbDonationPanel UI Module Suite', async (t) => {
       assert.ok(!mockContainer.innerHTML.includes('href="#donationText3"'));
     },
   );
+
+  await t.test(
+    'displays package balance badge when availablePackageForgePoints > 0',
+    () => {
+      const mockContainer = { innerHTML: '', style: { display: 'none' } };
+      renderGbDonationPanel({
+        GBselected: { name: 'The Arc', level: 80, total: 2000, current: 500 },
+        showOptions: { showDonation: true },
+        donation2DIV: mockContainer,
+        availablePackageForgePoints: 1250,
+      });
+
+      assert.ok(mockContainer.innerHTML.includes('Packages: 1,250 FP'));
+    },
+  );
+
+  await t.test(
+    'omits package balance badge when availablePackageForgePoints is 0 or missing',
+    () => {
+      const mockContainer = { innerHTML: '', style: { display: 'none' } };
+      renderGbDonationPanel({
+        GBselected: { name: 'The Arc', level: 80, total: 2000, current: 500 },
+        showOptions: { showDonation: true },
+        donation2DIV: mockContainer,
+        availablePackageForgePoints: 0,
+      });
+
+      assert.ok(!mockContainer.innerHTML.includes('Packages:'));
+    },
+  );
+
+  await t.test(
+    'renders level-closing profit badge for profitable foreign GB',
+    () => {
+      const mockContainer = { innerHTML: '', style: { display: 'none' } };
+      renderGbDonationPanel({
+        GBselected: {
+          name: 'Statue of Zeus',
+          level: 10,
+          total: 1000,
+          current: 950,
+        },
+        showOptions: { showDonation: true },
+        donation2DIV: mockContainer,
+        GBrewards: [50, 25, 10, 5, 0], // P1 base 50 -> 95 FP at 90% Arc
+        City: { ArcBonus: 90 },
+        PlayerName: 'RivalPlayer',
+        MyInfo: { name: 'MyPlayer' },
+      });
+
+      assert.ok(mockContainer.innerHTML.includes('level-closing-badge'));
+      assert.ok(
+        mockContainer.innerHTML.includes(
+          'Close for 50 FP (Reward: 95 FP, Net: +45 FP)',
+        ),
+      );
+    },
+  );
+
+  await t.test(
+    'renders self-leveling warning when viewing own GB with open donation places',
+    () => {
+      const mockContainer = { innerHTML: '', style: { display: 'none' } };
+      renderGbDonationPanel({
+        GBselected: {
+          name: 'Statue of Zeus',
+          level: 10,
+          total: 1000,
+          current: 800,
+        },
+        showOptions: { showDonation: true },
+        donation2DIV: mockContainer,
+        GBrewards: [100, 50, 20, 10, 5],
+        Top: [0, 0, 0, 0, 0],
+        PlayerName: 'MyPlayer',
+        MyInfo: { name: 'MyPlayer' },
+      });
+
+      assert.ok(mockContainer.innerHTML.includes('self-leveling-warning'));
+      assert.ok(
+        mockContainer.innerHTML.includes(
+          'Open donation places available. Self-leveling will waste donor FP.',
+        ),
+      );
+    },
+  );
+
+  await t.test(
+    'omits level-closing badge when closing is not profitable (net <= 0)',
+    () => {
+      const mockContainer = { innerHTML: '', style: { display: 'none' } };
+      renderGbDonationPanel({
+        GBselected: {
+          name: 'Statue of Zeus',
+          level: 10,
+          total: 1000,
+          current: 800,
+        }, // remaining 200
+        showOptions: { showDonation: true },
+        donation2DIV: mockContainer,
+        GBrewards: [50, 25, 10, 5, 0], // P1 reward 95 FP -> cost 200, net -105
+        City: { ArcBonus: 90 },
+        PlayerName: 'RivalPlayer',
+        MyInfo: { name: 'MyPlayer' },
+      });
+
+      assert.ok(!mockContainer.innerHTML.includes('level-closing-badge'));
+    },
+  );
 });
