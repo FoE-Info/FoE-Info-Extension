@@ -49,6 +49,25 @@ test('QuantumState - reactive publish/subscribe', async (t) => {
     assert.equal(reached, true);
   });
 
+  await t.test('reports subscriber failures to the logger', () => {
+    const errors = [];
+    const state = new QuantumState({
+      logger: { error: (...args) => errors.push(args) },
+    });
+    state.subscribe(() => {
+      throw new Error('render boom');
+    });
+
+    state.setMemberActivity([{ name: 'x' }]);
+
+    assert.equal(errors.length, 1);
+    assert.equal(errors[0][0], 'Reactive subscriber failed');
+    assert.deepEqual(errors[0][1], {
+      changed: 'members',
+      error: 'render boom',
+    });
+  });
+
   await t.test('defaults non-array inputs to empty collections', () => {
     const state = new QuantumState();
     state.setMemberActivity(null);
