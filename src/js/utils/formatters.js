@@ -140,6 +140,13 @@ function fRewardShortName(reward) {
     return 'Forge Points';
   }
 
+  const aliased = fResourceShortName(cleaned);
+  if (aliased !== cleaned) {
+    return aliased;
+  }
+  if (/^[a-z][a-z0-9_]*$/.test(cleaned)) {
+    return fTitleCase(cleaned);
+  }
   return cleaned;
 }
 
