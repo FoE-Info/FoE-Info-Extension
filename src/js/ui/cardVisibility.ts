@@ -84,6 +84,7 @@ export const CONTEXT_ALLOWED_PANELS: Readonly<
     'treasury',
     'treasuryLog',
     'goods',
+    'friends',
   ],
   GBG: [
     'header',
@@ -138,6 +139,8 @@ export const PANEL_PARENT: Readonly<Record<string, string>> = {
   battleground: 'battlegrounds',
   donationDIV2: 'geChampionship',
   goods: 'goodsInventory',
+  geContributionSection: 'donationDIV2',
+  geInternationalSection: 'donationDIV2',
   guild: 'guildOverview',
   treasuryLog: 'treasury',
   leaderboard: 'gbgLeaderboard',
@@ -163,6 +166,7 @@ export const PANEL_OPTION_KEY: Readonly<Record<string, string>> = {
   treasury: 'showTreasury',
   treasuryLog: 'showTreasury',
   goodsInventory: 'showGoods',
+  friends: 'showFriends',
   gbgTargetGenerator: 'showBattleground',
   targets: 'showBattleground',
   battlegrounds: 'showBattleground',
@@ -308,6 +312,33 @@ export const ALL_KNOWN_PANEL_IDS: readonly string[] = Array.from(
   ]),
 );
 
+/**
+ * Panels eligible for a debug stub. Only the visible topmost non-empty target in
+ * a subtree is stubbed, so wrappers and empty shells are skipped. The Lists card
+ * (#friends) is unwrapped into its three per-checker sections, and the GE cards
+ * are targeted directly rather than their hidden wrappers.
+ */
+const DEBUG_STUB_EXCLUDED = new Set<string>([
+  'friends',
+  'geChampionship',
+  'geContributions',
+  'geContributionSection',
+  'geInternationalSection',
+  'donationDIV2',
+  'donation2DIV',
+]);
+const DEBUG_STUB_PANEL_IDS = new Set<string>([
+  ...ALL_KNOWN_PANEL_IDS.filter((id) => !DEBUG_STUB_EXCLUDED.has(id)),
+  'friendsText',
+  'guildText',
+  'hoodText',
+  'geChampionshipCard',
+  'geContributionCard',
+]);
+
+let debugStubObserver: MutationObserver | null = null;
+let debugStubSyncQueued = false;
+
 let currentView: ViewFilter = null;
 const viewListeners = new Set<ViewChangeListener>();
 
@@ -378,12 +409,112 @@ function escapeDebugData(value: unknown): string {
 /** Strip any previously injected debug stub from a panel's innerHTML. */
 function stripDebugStubs(html: string): string {
   return String(html || '')
-    .replace(/<div class="[^"]*debug-stub[^"]*">.*?<\/div>/gs, '')
+    .replace(/<div[^>]*class="[^"]*debug-stub[^"]*"[^>]*>.*?<\/div>/gs, '')
     .trim();
 }
 
-/** Remove every debug stub currently present in the document. */
+function debugStubBody(data: string): string {
+  return data ?
+      `<details><summary>data</summary><pre class="m-0" style="white-space: pre-wrap; word-break: break-word;">${escapeDebugData(
+        data,
+      )}</pre></details>`
+    : '<span class="fst-italic">empty</span>';
+}
+
+function makeDebugStubMarkup(panelId: string, data: string): string {
+  return `<div class="alert alert-secondary p-2 mb-2 font-monospace small debug-stub" data-foe-stub-for="${panelId}"><strong>[DEBUG STUB]</strong> ${panelId} ${debugStubBody(
+    data,
+  )}</div>`;
+}
+
+/** True when the element is currently rendered (inline or computed display). */
+function isPanelVisible(el: HTMLElement | null): boolean {
+  if (!el) return false;
+  if (el.style && el.style.display === 'none') return false;
+  if (typeof getComputedStyle === 'function') {
+    try {
+      if (getComputedStyle(el).display === 'none') return false;
+    } catch {
+      // ignore: non-DOM test double
+    }
+  }
+  return true;
+}
+
+/** True when a visible stubbed panel wraps this element (avoids nesting stubs). */
+function hasVisibleStubAncestor(el: HTMLElement): boolean {
+  let parent: Element | null = el.parentElement;
+  while (parent) {
+    if (
+      DEBUG_STUB_PANEL_IDS.has(parent.id) &&
+      isPanelVisible(parent as HTMLElement)
+    ) {
+      return true;
+    }
+    parent = parent.parentElement;
+  }
+  return false;
+}
+
+/** Prefer the panel's primary card so the stub reads as attached inside it. */
+function resolveDebugStubHost(el: HTMLElement): HTMLElement {
+  if (typeof el.querySelector !== 'function') return el;
+  return (
+    (el.querySelector(
+      ':scope > .alert:not(.debug-stub)',
+    ) as HTMLElement | null) ||
+    (el.querySelector(':scope > [class*="foe-card"]') as HTMLElement | null) ||
+    (el.querySelector(':scope > .card') as HTMLElement | null) ||
+    (el.querySelector('.alert:not(.debug-stub)') as HTMLElement | null) ||
+    (el.querySelector('[class*="foe-card"]') as HTMLElement | null) ||
+    (el.querySelector('.card') as HTMLElement | null) ||
+    el
+  );
+}
+
+/**
+ * Insert or refresh a panel's debug stub with a raw (escaped) dump of its
+ * current rendered content. The stub is kept as the first child of the panel's
+ * card so it reads as attached, while sibling nodes and their listeners survive.
+ */
+function upsertDebugStub(el: HTMLElement, panelId: string): void {
+  const data = stripDebugStubs(el.innerHTML);
+
+  if (typeof el.querySelector === 'function') {
+    const host = resolveDebugStubHost(el);
+    const existing =
+      (el.querySelector(
+        `.debug-stub[data-foe-stub-for="${panelId}"]`,
+      ) as HTMLElement | null) ||
+      (el.querySelector('.debug-stub') as HTMLElement | null);
+
+    if (existing && existing.parentElement === host) {
+      existing.setAttribute('data-foe-stub-for', panelId);
+      const pre = existing.querySelector('pre');
+      if (data && pre) {
+        if (pre.textContent !== data) pre.textContent = data;
+        return;
+      }
+      if (!data && !pre) return;
+    }
+    if (existing) existing.remove();
+    if (typeof host.insertAdjacentHTML === 'function') {
+      host.insertAdjacentHTML('afterbegin', makeDebugStubMarkup(panelId, data));
+      return;
+    }
+  }
+
+  // Test-double fallback (no real DOM querying): rebuild stripped markup.
+  el.innerHTML =
+    makeDebugStubMarkup(panelId, data) + stripDebugStubs(el.innerHTML);
+}
+
+/** Remove every debug stub and stop observing panel mutations. */
 function removeDebugStubs(): void {
+  if (debugStubObserver) {
+    debugStubObserver.disconnect();
+    debugStubObserver = null;
+  }
   if (typeof document.querySelectorAll !== 'function') return;
   const stubs = document.querySelectorAll('.debug-stub');
   stubs.forEach((stub) => {
@@ -392,24 +523,77 @@ function removeDebugStubs(): void {
   });
 }
 
-/**
- * Prepend a debug stub to a visible panel, embedding a raw (escaped) dump of
- * the panel's current rendered content so it can be inspected directly.
- */
-function insertDebugStub(el: HTMLElement, panelId: string): void {
-  const data = stripDebugStubs(el.innerHTML);
-  const body =
-    data ?
-      `<details><summary>data</summary><pre class="m-0" style="white-space: pre-wrap; word-break: break-word;">${escapeDebugData(
-        data,
-      )}</pre></details>`
-    : '<span class="fst-italic">empty</span>';
-  const stub = `<div class="alert alert-secondary p-2 mb-2 font-monospace small debug-stub"><strong>[DEBUG STUB]</strong> ${panelId} ${body}</div>`;
-  if (typeof el.insertAdjacentHTML === 'function') {
-    el.insertAdjacentHTML('afterbegin', stub);
-  } else {
-    el.innerHTML = stub + el.innerHTML;
+/** Rebuild stubs for every visible topmost panel with its live content. */
+function syncDebugStubs(): void {
+  if (typeof document === 'undefined') return;
+
+  const targets: Array<[string, HTMLElement]> = [];
+  for (const id of DEBUG_STUB_PANEL_IDS) {
+    const el = document.getElementById(id);
+    if (!el || !isPanelVisible(el)) continue;
+    if (hasVisibleStubAncestor(el)) continue;
+    if (stripDebugStubs(el.innerHTML).trim() === '') continue;
+    targets.push([id, el]);
   }
+  const keep = new Set(targets.map(([id]) => id));
+
+  if (typeof document.querySelectorAll === 'function') {
+    for (const stub of document.querySelectorAll('.debug-stub')) {
+      const owner =
+        stub.getAttribute('data-foe-stub-for') ||
+        (stub as HTMLElement).dataset?.foeStubFor ||
+        '';
+      const ownerEl = owner ? document.getElementById(owner) : null;
+      if (!keep.has(owner) || !isPanelVisible(ownerEl)) {
+        const parent = stub.parentNode as Node | null;
+        if (parent?.removeChild) parent.removeChild(stub);
+      }
+    }
+  }
+
+  for (const [id, el] of targets) upsertDebugStub(el, id);
+}
+
+function scheduleDebugStubSync(): void {
+  if (debugStubSyncQueued) return;
+  debugStubSyncQueued = true;
+  const run = (): void => {
+    debugStubSyncQueued = false;
+    syncDebugStubs();
+  };
+  if (typeof queueMicrotask === 'function') queueMicrotask(run);
+  else if (typeof setTimeout === 'function') setTimeout(run, 0);
+  else run();
+}
+
+/** Watch panel mount/render mutations so stubs always reflect live content. */
+function ensureDebugStubObserver(): void {
+  if (debugStubObserver || typeof MutationObserver === 'undefined') return;
+  if (typeof document === 'undefined') return;
+  const root = document.body || document.documentElement;
+  if (!root) return;
+  debugStubObserver = new MutationObserver((mutations) => {
+    const relevant = mutations.some((m) => {
+      if ((m.target as Element)?.closest?.('.debug-stub')) return false;
+      const nodes = [
+        ...Array.from(m.addedNodes),
+        ...Array.from(m.removedNodes),
+      ] as Element[];
+      if (
+        nodes.length > 0 &&
+        nodes.every((n) => n.classList && n.classList.contains('debug-stub'))
+      ) {
+        return false;
+      }
+      return true;
+    });
+    if (relevant) scheduleDebugStubSync();
+  });
+  debugStubObserver.observe(root, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+  });
 }
 
 /** Expand a context whitelist to include every permitted panel's wrappers. */
@@ -483,19 +667,16 @@ export function applyCardVisibility(
 
   // --- 1. DEBUG MODE OVERRIDE (isDebug === true) ---
   // Respect the active context/options visibility, then annotate every visible
-  // panel with a stub carrying its raw rendered content.
+  // panel with a stub carrying its raw rendered content. A MutationObserver
+  // keeps the stubs in sync as panels mount and re-render after this pass.
   if (isDebug) {
     if (activeView && CONTEXT_ALLOWED_PANELS[activeView]) {
       applyContextVisibility(opts, activeView);
     } else {
       applyUnconstrainedVisibility(opts);
     }
-    removeDebugStubs();
-    for (const panelId of ALL_15_PANEL_IDS) {
-      const el = document.getElementById(panelId);
-      if (!el || el.style.display === 'none') continue;
-      insertDebugStub(el, panelId);
-    }
+    syncDebugStubs();
+    ensureDebugStubObserver();
     return;
   }
 
@@ -527,12 +708,14 @@ function applyUnconstrainedVisibility(opts: ShowOptionsState): void {
   }
 
   const goodsEl = document.getElementById('goods');
+  const goodsWrapperEl = document.getElementById('goodsInventory');
+  const goodsHasContent = (goodsEl?.innerHTML || '').trim() !== '';
+  const goodsVisible = opts.showGoods !== false && goodsHasContent;
   if (goodsEl) {
-    if (opts.showGoods === false) {
-      goodsEl.style.display = 'none';
-    } else if ((goodsEl.innerHTML || '').trim() !== '') {
-      goodsEl.style.display = '';
-    }
+    goodsEl.style.display = goodsVisible ? '' : 'none';
+  }
+  if (goodsWrapperEl) {
+    goodsWrapperEl.style.display = goodsVisible ? '' : 'none';
   }
 
   const guildVisible = opts.showGuildOverview !== false;
