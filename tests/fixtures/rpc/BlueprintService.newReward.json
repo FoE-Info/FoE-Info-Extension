@@ -1,0 +1,201 @@
+{
+  "resources": {
+    "medals": 430,
+    "__class__": "CityResource"
+  },
+  "blueprints": {
+    "buildingId": "X_EarlyMiddleAge_Landmark2",
+    "blueprints": [
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "amount": 3447,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 1,
+        "amount": 3449,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 2,
+        "amount": 3470,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 3,
+        "amount": 3419,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 4,
+        "amount": 3458,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 5,
+        "amount": 3432,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 6,
+        "amount": 3408,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 7,
+        "amount": 3366,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 8,
+        "amount": 3438,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      }
+    ],
+    "found": [
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 2,
+        "amount": 1,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 7,
+        "amount": 2,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 3,
+        "amount": 3,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 4,
+        "amount": 2,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 1,
+        "amount": 2,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 5,
+        "amount": 1,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 8,
+        "amount": 1,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "piece_number": 6,
+        "amount": 1,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_EarlyMiddleAge_Landmark2",
+        "amount": 1,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      }
+    ],
+    "__class__": "GreatBuildingBlueprintFound"
+  },
+  "strategy_point_amount": 200,
+  "rank": 3,
+  "building_owner": {
+    "name": "tonybm",
+    "__class__": "OtherPlayer"
+  },
+  "level": 63,
+  "cityentity_id": "X_EarlyMiddleAge_Landmark2",
+  "__class__": "GreatBuildingReward"
+}

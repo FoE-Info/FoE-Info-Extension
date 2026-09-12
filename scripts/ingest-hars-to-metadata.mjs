@@ -117,6 +117,7 @@ const DOMAIN_ROUTES = new Map([
     'GreatBuildingsService.contributeForgePoints',
     ['greatbuildings/contribute_forge_points.json'],
   ],
+  ['BlueprintService.newReward', ['greatbuildings/blueprint_reward.json']],
   [
     'GreatBuildingsService.getAvailablePackageForgePoints',
     ['greatbuildings/available_package_forge_points.json'],
@@ -169,6 +170,8 @@ const DOMAIN_DESCRIPTIONS = {
     'Per-GB construction rankings with rank rewards (sniping ground truth).',
   'greatbuildings/contribute_forge_points.json':
     'Great Building Forge Point donation actions and resulting rankings.',
+  'greatbuildings/blueprint_reward.json':
+    'Level-completion rewards (medals + blueprints) from BlueprintService.newReward.',
   'greatbuildings/available_package_forge_points.json':
     'Available FP packages usable for Great Building donations.',
   'greatbuildings/other_player_city_map_entity.json':
@@ -199,6 +202,7 @@ const FIXTURE_RPC_KEYS = new Set([
   'GreatBuildingsService.getOtherPlayerOverview',
   'GreatBuildingsService.getConstruction',
   'GreatBuildingsService.getConstructionRanking',
+  'BlueprintService.newReward',
   'GreatBuildingsService.getAvailablePackageForgePoints',
   'OtherPlayerService.getOtherPlayerCityMapEntity',
 ]);

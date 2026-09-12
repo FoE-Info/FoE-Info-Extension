@@ -1,0 +1,44 @@
+{
+  "description": "Antiques Dealer auction payloads.",
+  "captures": [
+    {
+      "sourceHar": "snipes hood at 10 percent profit.har",
+      "capturedAt": "2026-09-12T01:07:27.723Z",
+      "requestClass": "ItemAuctionService",
+      "requestMethod": "getAuction",
+      "requestId": 211,
+      "requestData": [],
+      "responseData": {
+        "reward": {
+          "type": "consumable",
+          "subType": "selection_kit",
+          "amount": 1,
+          "id": "selection_kit_hippodrome_sphendone",
+          "name": "Hippodrome Sphendone Selection Kit",
+          "description": "Choose between an upgrade kit or the base building for the Hippodrome Sphendone",
+          "iconAssetName": "selection_kit_hippodrome_sphendone",
+          "flags": [
+            "epic"
+          ],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        },
+        "state": "open",
+        "transitionAt": 1789179298,
+        "highestBid": {
+          "player": {
+            "player_id": 856545082,
+            "name": "Leander the Dire 1018",
+            "avatar": "portrait_id_76",
+            "__class__": "BasePlayer"
+          },
+          "amount": 2777,
+          "__class__": "AuctionBid"
+        },
+        "resourceId": "trade_coins",
+        "startingBid": 2770,
+        "__class__": "ItemAuction"
+      }
+    }
+  ]
+}
