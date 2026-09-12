@@ -12,6 +12,7 @@ require('./outpostRenderBinding.js');
 require('./quantumRenderBinding.js');
 require('./resourceRenderBinding.js');
 require('./rewardRenderBinding.js');
+require('./socialRenderBinding.js');
 require('./startupMetadataLoadingBinding.js');
 require('./startupRenderBinding.js');
 require('./treasuryRenderBinding.js');
