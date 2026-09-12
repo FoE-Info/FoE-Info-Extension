@@ -163,8 +163,11 @@ class BoostService {
       forgePoints: new BigNumber(0),
     };
 
+    this.listeners = new Set();
+
     this.getAllBoosts = this.getAllBoosts.bind(this);
     this.getTimerBoost = this.getTimerBoost.bind(this);
+    this.onBoostsUpdated = this.onBoostsUpdated.bind(this);
   }
 
   /**
@@ -254,11 +257,44 @@ class BoostService {
     }
 
     this.lastUpdated = Date.now();
+
+    let city = null;
+    try {
+      const cityStateMod = require('../state/CityState.js');
+      city = cityStateMod.City || cityStateMod.default?.City;
+    } catch {}
+    if (city) {
+      applyBoostsToCity(msg, city);
+    }
+
+    if (this.listeners && this.listeners.size > 0) {
+      for (const listener of this.listeners) {
+        try {
+          listener(msg, this);
+        } catch {}
+      }
+    }
+
     return {
       success: true,
       totalEntries: list.length,
       boosts: this.getAggregatedBoosts(),
     };
+  }
+
+  /**
+   * Subscribe to boost updates.
+   * @param {Function} callback
+   * @returns {Function} unsubscribe function
+   */
+  onBoostsUpdated(callback) {
+    if (typeof callback === 'function') {
+      this.listeners.add(callback);
+      return () => {
+        this.listeners.delete(callback);
+      };
+    }
+    return () => {};
   }
 
   /**
@@ -332,6 +368,7 @@ const exportsObj = {
   applyBoostsToCity,
   getAllBoosts: boostService.getAllBoosts,
   getTimerBoost: boostService.getTimerBoost,
+  onBoostsUpdated: boostService.onBoostsUpdated,
 };
 
 module.exports = exportsObj;
@@ -341,3 +378,4 @@ module.exports.boostService = boostService;
 module.exports.applyBoostsToCity = applyBoostsToCity;
 module.exports.getAllBoosts = boostService.getAllBoosts;
 module.exports.getTimerBoost = boostService.getTimerBoost;
+module.exports.onBoostsUpdated = boostService.onBoostsUpdated;

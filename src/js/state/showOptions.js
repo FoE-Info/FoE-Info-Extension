@@ -38,6 +38,10 @@ export var showGalaxy = true;
 export var showQuantum = true;
 export var showQuantumLeaderboard = true;
 export var showQIChanges = false;
+export var showDailyCoins = true;
+export var showDailySupplies = true;
+export var showCoinBoost = true;
+export var showSupplyBoost = true;
 
 export function updateShowOptions(newOptions) {
   if (!newOptions || typeof newOptions !== 'object') return;
@@ -103,6 +107,10 @@ var items = {
   showQuantum,
   showQuantumLeaderboard,
   showQIChanges,
+  showDailyCoins,
+  showDailySupplies,
+  showCoinBoost,
+  showSupplyBoost,
 };
 
 export { items as showOptions };

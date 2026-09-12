@@ -92,6 +92,10 @@ test('all showOptions keys are present with correct boolean defaults', () => {
     showQuantum: true,
     showQuantumLeaderboard: true,
     showQIChanges: false,
+    showDailyCoins: true,
+    showDailySupplies: true,
+    showCoinBoost: true,
+    showSupplyBoost: true,
   };
 
   assert.deepStrictEqual(
