@@ -20,6 +20,11 @@ try {
 
 const GbDonationService = require('../../msg/GbDonationService.js');
 
+let setCurrentView = () => {};
+try {
+  ({ setCurrentView } = require('../../ui/cardVisibility.js'));
+} catch {}
+
 function registerSocialRoutes(ctx) {
   const { dispatcher, handlers, gbRegistry, gbSelected, showOptions } = ctx;
   const {
@@ -39,6 +44,7 @@ function registerSocialRoutes(ctx) {
       otherPlayerService,
     );
     dispatcher.register('OtherPlayerService', 'visitPlayer', (msg, context) => {
+      setCurrentView('OTHER_PLAYER');
       const gbs = msg?.responseData?.city_map?.entities || [];
       const pid =
         msg?.responseData?.other_player?.player_id ||
