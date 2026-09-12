@@ -35,7 +35,10 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
   - **F2 batch 3** — `BonusService` publishes to new `state/BonusState.js` via
     `ui/bonusRenderBinding.js`; also drops its `StartupService` import (uses
     `blueGalaxyState.setCharges`). `msg/ → ui/` static edges 29 → 23.
-  - **Verification**: `npm run verify` exit 0 — **1,149 tests / 0 fail**.
+  - **F2 batch 4** — `ArmyUnitManagementService` publishes to new
+    `state/ArmyState.js` via `ui/armyRenderBinding.js`; DOM test migrated to load
+    the binding. `msg/ → ui/` static edges → 21.
+  - **Verification**: `npm run verify` exit 0 — **1,158 tests / 0 fail**.
 
 - **Reactive stores for msg→ui decoupling (Actionable Item 2) + scope closures**:
   - Slice 1 — `src/js/state/QuantumState.js` publish/subscribe store
