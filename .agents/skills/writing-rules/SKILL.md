@@ -3,9 +3,9 @@ name: writing-rules
 description: "Author and optimize workspace rules in .agents/rules/."
 ---
 
-# Writing Antigravity Rules
+# Writing Rules
 
-Runbook for creating, structuring, and scoping workspace rules in `.agents/rules/` and `AGENTS.md`.
+Runbook for creating, structuring, and scoping workspace rules in `.agents/rules/` and `AGENTS.md`. The trigger frontmatter below is Antigravity-specific; the opencode activation model (instructions glob, no triggers) is in [opencode authoring](references/opencode.md) and [Harness Adapters](../../references/harness-adapters.md).
 
 ---
 

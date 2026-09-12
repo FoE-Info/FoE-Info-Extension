@@ -3,9 +3,9 @@ name: writing-hooks
 description: "Author and configure Antigravity hooks in hooks.json."
 ---
 
-# Writing Antigravity Lifecycle Hooks
+# Writing Lifecycle Hooks & Plugins
 
-Runbook for authoring, configuring, and verifying lifecycle hooks in `.agents/hooks.json` (or `plugins/<name>/hooks.json`).
+Runbook for authoring, configuring, and verifying lifecycle hooks in `.agents/hooks.json` (or `plugins/<name>/hooks.json`). opencode uses plugins instead of `hooks.json`; see [opencode plugins](references/opencode-plugins.md) and [Harness Adapters](../../references/harness-adapters.md).
 
 ---
 

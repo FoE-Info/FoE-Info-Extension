@@ -31,10 +31,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 **2. Dispatch code reviewer subagent:**
 
-Dispatch the project's native `code-reviewer` subagent (or `self`) using `invoke_subagent`:
-- **`TypeName`**: `"code-reviewer"` (enforces FoE's 8 invariant gates: monolith containment, CSP, BigNumber, modular limits, dynamic metadata, i18n, small slices, and debuggability by design)
-- **`Role`**: `"Code Reviewer"`
-- **`Prompt`**: Fill the review template at [code-reviewer.md](references/code-reviewer.md)
+Dispatch the project's native `code-reviewer` specialist. It enforces FoE's 8 invariant gates: monolith containment, CSP, BigNumber, modular limits, dynamic metadata, i18n, small slices, and debuggability by design. Host dispatch mechanics (Antigravity `invoke_subagent` vs opencode `task`) are in [Harness Adapters](../../references/harness-adapters.md); pass the filled review template at [code-reviewer.md](references/code-reviewer.md).
 
 **Placeholders:**
 - `{DESCRIPTION}` - Brief summary of what you built

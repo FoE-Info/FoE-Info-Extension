@@ -1,11 +1,11 @@
 ---
 name: writing-skills
-description: "Author and test Antigravity skills with progressive disclosure."
+description: "Author and test skills with progressive disclosure, both harnesses."
 ---
 
-# Writing Antigravity Skills
+# Writing Skills
 
-Guide for authoring, structuring, and verifying high-performance Antigravity skills using progressive disclosure and reference subdirectories.
+Guide for authoring, structuring, and verifying high-performance skills using progressive disclosure and reference subdirectories. The body is harness-neutral; host-specific paths, frontmatter limits, and tool mappings live in [Harness Adapters](../../references/harness-adapters.md) and [opencode authoring](references/opencode.md).
 
 ---
 

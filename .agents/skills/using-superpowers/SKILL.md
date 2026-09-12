@@ -44,9 +44,12 @@ These thoughts mean STOP—you're rationalizing:
 | "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
 | "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
 
-## Platform Adaptation (Google Antigravity & OpenCode)
+## Platform Adaptation (Antigravity & opencode)
 
-This workspace runs on Google Antigravity (`agy`) with dual-harness OpenCode support. For tool mappings, subagent execution conventions, and rules, consult [`.agents/rules/superpowers.md`](../../rules/superpowers.md) and [`references/antigravity-tools.md`](references/antigravity-tools.md).
+This workspace is dual-harness. Tool mappings, subagent dispatch, worktree
+isolation, rules, and skill/slash differences live in one shared adapter:
+[`.agents/references/harness-adapters.md`](../../references/harness-adapters.md).
+Workspace invariants remain in [`.agents/rules/superpowers.md`](../../rules/superpowers.md).
 
 ## User Instructions
 

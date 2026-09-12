@@ -218,16 +218,15 @@ that implementer. Single-file mechanical fixes also take the cheapest tier.
 - Touches multiple files with integration concerns → standard model
 - Requires design judgment or broad codebase understanding → most capable model
 
-## Surface-Aware Subagent Dispatching (Antigravity 2.5 / IDE / CLI)
+## Surface-Aware Subagent Dispatching
 
-When invoking subagents via `invoke_subagent`, configure the `Workspace` mode based on task isolation needs:
+Isolate subagents by task need, using the host's mechanism:
 
-- **`Workspace: "share"` (Recommended for isolated tasks)**: Creates a new workspace sharing the parent's underlying repository directory (via Git worktree / shared repo storage) without duplicating disk space. Use when subagents modify code or run tests that must not conflict with the parent session or other concurrent workers.
-- **`Workspace: "branch"`**: Creates a fully isolated workspace cloned or branched from the parent. Best for high-risk spikes or speculative refactoring.
-- **`Workspace: "inherit"` (Default)**: Executes within the parent's exact working directory and active git branch. Use for read-only audits (e.g. task reviewers, spec verifiers) or strictly sequential single-worker steps where no file collision is possible.
+- **Isolated (recommended for concurrent writers)**: Antigravity `Workspace: "share"`; opencode an explicit `.worktrees/<branch>` checkout with the writer's cwd set there. Use when subagents modify code or run tests that must not conflict with the parent or other workers.
+- **Fully isolated clone/branch**: Antigravity `Workspace: "branch"`. opencode: clone or branch into a dedicated worktree for high-risk spikes.
+- **Inherit parent (default)**: Antigravity `Workspace: "inherit"`. opencode: run in the parent cwd. Use for read-only audits (task reviewers, spec verifiers) or strictly sequential single-worker steps where no file collision is possible.
 
-> [!TIP]
-> **Antigravity 2.5 & IDE Visibility**: In Antigravity 2.5 and Antigravity IDE, subagents spawned with `Workspace: "share"` or `"branch"` appear directly in the **Auxiliary Subagents Panel** (Agents drawer). The IDE displays their live execution status, streaming transcript, and isolated git diffs in real-time. In Antigravity CLI (`agy`), subagents run concurrently in the background and notify the parent upon completion via reactive messaging without manual polling.
+Full mapping: [Harness Adapters](../../references/harness-adapters.md).
 
 ## The Task Loop
 

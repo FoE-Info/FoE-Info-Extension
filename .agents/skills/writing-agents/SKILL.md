@@ -3,9 +3,9 @@ name: writing-agents
 description: "Design and verify custom subagents in .agents/agents/."
 ---
 
-# Writing Antigravity Subagents
+# Writing Subagents
 
-Runbook for creating, configuring, and testing specialized subagents in `.agents/agents/` (or `~/.gemini/config/agents/`).
+Runbook for creating, configuring, and testing specialized subagents in `.agents/agents/` (or `~/.gemini/config/agents/`). Host-specific tool names, dispatch, and shim formats live in [Harness Adapters](../../references/harness-adapters.md) and [opencode authoring](references/opencode.md).
 
 ---
 
@@ -57,7 +57,7 @@ Follow the standard specialist structure:
 See [System Prompt Templates](references/system-prompt-templates.md) for boilerplate.
 
 ### Step 3: Configure Lifecycles & Workspace Modes
-- Use `Workspace: "share"` when dispatching subagents for parallel feature tasks to isolate worktrees under `.worktrees/`.
+- When dispatching subagents for parallel feature tasks, isolate them: Antigravity `Workspace: "share"`, opencode explicit `.worktrees/<branch>` checkouts. See [Harness Adapters](../../references/harness-adapters.md).
 - See [Subagent Lifecycles & Coordination](references/subagent-lifecycles.md).
 
 ### Step 4: Validate Subagent Configuration

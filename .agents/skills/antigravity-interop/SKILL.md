@@ -15,7 +15,7 @@ This skill documents the dual-harness contract so work hands off seamlessly betw
 | :--- | :--- | :--- |
 | Subagents (36) | `.agents/agents/*.md` | `.opencode/agents/*.md` (thin shims) |
 | Rules (17) | `.agents/rules/*.md` | `opencode.json` instructions glob |
-| Skills (53) | `.agents/skills/*/SKILL.md` | Auto-discovered via `skills.json` |
+| Skills (53) | `.agents/skills/*/SKILL.md` | Antigravity via `skills.json`; opencode natively from `.agents/skills` |
 | MCP servers | `.agents/mcp_config.json` | `opencode.json` `mcp` block |
 | Hooks | `.agents/hooks.json` | `.opencode/plugins/*.mjs` |
 | Grants | `~/.gemini/config/config.json` | `opencode.json` `permission` block |
