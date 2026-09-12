@@ -168,15 +168,15 @@ export function startupService(msg) {
   City.ArcBonus = 0;
   City.ChatBonus = 0;
 
-  console.debug('window', window);
+  logger.debug('window', window);
 
-  console.debug('user :', MyInfo);
+  logger.debug('user :', MyInfo);
   if (language != 'auto') {
     $.i18n({
       locale: language,
     });
   }
-  console.debug(language, $.i18n().locale, $.i18n.debug);
+  logger.debug(language, $.i18n().locale, $.i18n.debug);
 
   // console.log('checkBeta:', users.checkBeta());
   if (!DEV) {
