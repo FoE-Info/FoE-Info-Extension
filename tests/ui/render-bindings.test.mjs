@@ -73,13 +73,14 @@ test('renderBindings composition root wires every shared store', async (t) => {
       const modules = [
         ['armyState', '../../src/js/state/ArmyState.js'],
         ['bonusState', '../../src/js/state/BonusState.js'],
-        ['quantumState', '../../src/js/state/QuantumState.js'],
-        ['startupRenderState', '../../src/js/state/StartupRenderState.js'],
-        ['treasuryState', '../../src/js/state/TreasuryState.js'],
+        ['gbDonationState', '../../src/js/state/GbDonationState.js'],
         [
           'guildBattlegroundState',
           '../../src/js/state/GuildBattlegroundState.js',
         ],
+        ['quantumState', '../../src/js/state/QuantumState.js'],
+        ['startupRenderState', '../../src/js/state/StartupRenderState.js'],
+        ['treasuryState', '../../src/js/state/TreasuryState.js'],
       ];
       for (const [name, path] of modules) {
         const pkg = await import(path);
