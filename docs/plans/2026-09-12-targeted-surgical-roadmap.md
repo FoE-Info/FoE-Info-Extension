@@ -1,7 +1,7 @@
 # Targeted Surgical Roadmap (Post Quad-Graph Exploration)
 
 **Date**: 2026-09-12
-**Status**: Proposed — awaiting go-ahead
+**Status**: Reconciled 2026-09-12 — Phase A, B2–B4, C1/C2, D1g/D2g shipped; B1 shipped (calc purity); B5/C3/D3g remain open. See `docs/STATUS.md` Actionable Items 1–4 for the current queue.
 **Source**: `graphify-out/foe-info/findings/2026-09-12-quad-graph-executive-synthesis.md`
 (derived from the 4-stream suite in
 [`2026-09-12-quad-graph-exploration-and-comparison.md`](2026-09-12-quad-graph-exploration-and-comparison.md))
@@ -28,36 +28,39 @@
 
 ## Phase A — Correctness & Safety (P0)
 
-- [ ] **A1 (D1)** Restore resource-name mapping. Pass the live `ResourceNames` map at call sites that have it, or bind a thin wrapper in `src/js/fn/helper.js`. Add a **helper-path** regression test with a populated map. Blast radius < ~40 L.
-- [ ] **A2 (D2)** Choose one owner per duplicated RPC key; remove the `legacyBridge` duplicate; add a test asserting exactly one distinct handler per key. Log `combinedHandlerMembers` growth when duplicates are combined.
-- [ ] **A3 (D4)** Decide `webRequestFilter.js`: re-add `"webRequest"` and call `initWebRequestFilter()` from the entry (with a live CDN smoke check), **or** delete the module and document page-context metadata fetching. Do not leave it orphaned.
+- [x] **A1 (D1)** Shipped — `src/js/fn/helper.js:37` now binds the live `ResourceNames` map (`lookup || ResourceNames`), so helper-path callers (`RewardRenderer`, `panelDispatcher`, `gbgProvinceView`) resolve names; one-arg lookup path covered in `tests/utils/formatters.test.mjs:94`.
+- [x] **A2 (D2)** Shipped — all 14 duplicate RPC registrations eliminated; `scripts/rpc-contract.config.json` enforces `knownDuplicates: []` via `rpc:contract:check` in `npm run verify`.
+- [x] **A3 (D4)** Resolved — orphaned `webRequestFilter.js` deleted; no `webRequest` permission in any `src/chrome/manifest*.json`; metadata fetching remains page-context.
 
 ## Phase B — Purity & Containment (P1)
 
-- [ ] **B1 (D3)** Add a calc purity test-guard: fail if `src/js/calc/**` imports from `../msg/` or references `window`/`document`/`globalThis`; forbid raw `Math.round|ceil|floor` in GB/reward calc paths. Then inject the castle boost lookup and remove `gbNaming.js` `globalThis` fallbacks.
-- [ ] **B2 (D5)** Add `npm run typecheck` to the `verify` pipeline (smaller/safer) — or delete runtime-shadowed `.ts` mirrors.
-- [ ] **B3** Decompose `CityMapEntityProcessor.processCityMapEntities` (~610 L) into `src/js/calc/cityMap/` per-entity processors with a ≤80-L orchestrator. No external import changes; keep the existing test. **Safest first decomposition.**
-- [ ] **B4** Decompose `registerLegacyBridge` (~817 L, 71 register calls) into per-domain registrars under `src/js/protocol/legacy/` (city map, GB, clan/treasury, battleground, trade/other-player) behind a byte-compatible `registerLegacyBridge(dispatcher, handlers)` facade. **Do after A2.**
-- [ ] **B5** Pull residual DOM out of `msg`/`protocol` into `src/js/ui/`: `networkListener.js:123` `innerHTML` (worst), `StartupRenderOrchestrator.js:63`, `StartupService.js:221-225/348-355`, `GuildBattlegroundService.js:153`.
+- [x] **B1 (D3)** Shipped 2026-09-12 — removed the dead `globalThis.CityEntityDefs`/`metadataStore` fallbacks in `src/js/calc/gbNaming.js` (no assignments existed repo-wide); added `tests/calc/calc-purity.test.mjs` guarding `src/js/calc/**` against `globalThis.`/`window.`/`document.` and `../msg/` imports. Zero residual violations.
+- [x] **B2 (D5)** Shipped — `npm run typecheck` (`tsc --noEmit`) wired into the `verify` pipeline.
+- [x] **B3** Shipped — `CityMapEntityProcessor.js` 657 -> 244 L; harvest logic extracted to `src/js/calc/entities/CityEntityHarvestCalculator.js`.
+- [x] **B4** Shipped — `legacyBridge.js` 831 -> 62 L with per-domain route tables under `src/js/protocol/routes/` behind the `registerLegacyBridge` facade.
+- [ ] **B5** Partially open — DOM still written directly in `msg/` (`TreasuryService`, `OutpostService`, `GbDonationService`, `BonusService`, `ResourceService`, `GuildExpeditionService`, `ArmyUnitManagementService`); not yet routed through `src/js/ui/`.
 
 ## Phase C — Differentiated Feature Parity (P1–P2)
 
-- [ ] **C1** Blue Galaxy economic ranking: extend the pure calc with `CombinedValue = FP + goodsRate·Goods + olderGoodsRate·OlderGoods` (user-configurable rates, optionally fragments). Failed-first tests + i18n keys + `npm run i18n:check`. **(Order before C3.)**
-- [ ] **C2** Date-engine completion: localized name tokens (`MMM`/`MMMM`/`ddd`) via `Intl.DateTimeFormat`, relative time via `Intl.RelativeTimeFormat`, four independent format types, live preview + reset; migrate the 30 residual `toLocale*` date call sites. **No moment.js.**
-- [ ] **C3** Blue Galaxy UX + sniping UX controls: 23.5 h window filter, polivation/fragment indicators, sortable columns, auto-open trigger; surface "trust/lock existing places" and danger warnings on top of the existing precise BigNumber engine.
+- [x] **C1** Shipped — pure `computeEconomicScore` in `BlueGalaxyCalculator.js` with configurable `fpWeight`/`goodsWeight`/`olderGoodsWeight` and BigNumber precision.
+- [x] **C2** Shipped — `src/js/utils/date.js` uses `Intl` tokens (`MMM`/`MMMM`/`ddd`) + `formatRelativeTime()`; residual `toLocale*` call sites migrated. No moment.js.
+- [ ] **C3** Open — no BG/sniping UX window filter or sortable-control layer found on top of the shipped economic calc.
 
 ## Phase D — Guardrails & Record (P2)
 
-- [ ] **D1g** Formula parity fixtures: pin `calculateSpotLock` = `ROUND_CEIL`, `calculateArcReward` = `ROUND_HALF_UP`, and the direct-remainder `calculateOwnerSafeAdd` against the LoW-Tool/Forge-Hammer lineage reference.
-- [ ] **D2g** Dispatcher resilience tests: reconnection replay, world-switch reset, stale `activeRun` barrier.
-- [ ] **D3g** Archive the LoW-Tool exclusion rationale (synthesis + Stream 4 dossier) as the record for intentionally not restoring the `src/extras/` overlay.
+- [x] **D1g** Shipped — `tests/math/formula-parity-pinning.test.mjs` pins half-up Arc rewards, ceiling spot locks, and owner safe adds.
+- [x] **D2g** Shipped 2026-09-12 — `tests/protocol/dispatcher-resilience.test.mjs` (18 tests): priority ordering, dedup replay/expiry, `clearDedupCache()` reset, error isolation, fallback precedence.
+- [ ] **D3g** Open — LoW-Tool fork/exclusion rationale lives only in the synthesis + STATUS/HANDOFF; no dedicated archived record under `docs/specs/`.
 
 ---
 
 ## Recommended immediate next slice
 
-**A1 (D1)** — the only confirmed user-visible defect, self-contained, < ~40 L, with an
-obvious regression test. Then **A2 (D2)** before any `legacyBridge` decomposition.
+Actionable Item 1 (dedup extraction), Actionable Item 3 (TS mirrors), B1 (calc
+purity), and D2g (dispatcher resilience tests) shipped 2026-09-12. Remaining
+next slices: **B5** (route residual `msg/` DOM through `src/js/ui/`), then
+**Actionable Item 4** (structured `devtools.js` ↔ `index.js` bridge), then
+**C3** (BG/sniping UX controls) and **D3g** (LoW-Tool exclusion record).
 
 ## Plan premises corrected (do not inherit)
 
