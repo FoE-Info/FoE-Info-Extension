@@ -136,5 +136,11 @@
   "name": "Name",
   "title": "Title",
   "era": "Era",
-  "battles": "Battles"
+  "battles": "Battles",
+  "qi_contributions": "QI Contributions",
+  "qi_leaderboard": "QI Leaderboard",
+  "show_changes_only": "show changes only",
+  "ap_spent": "AP Spent",
+  "no_active_changes": "No active changes since last save",
+  "total_points": "Total Points"
 }

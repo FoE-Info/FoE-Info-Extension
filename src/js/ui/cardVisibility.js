@@ -91,6 +91,8 @@ const optionToElementId = {
   showGalaxy: 'galaxy',
   showBattleground: 'battleground',
   showLeaderboard: 'gbgLeaderboard',
+  showQuantum: 'quantumContributions',
+  showQuantumLeaderboard: 'quantumLeaderboard',
 };
 
 let currentView = null; // 'CITY' | 'GBG' | null (null means unconstrained default)
@@ -241,6 +243,8 @@ function applyCardVisibility(
     setElementDisplay('guild', 'none');
     setElementDisplay('treasury', 'none');
     setElementDisplay('treasuryLog', 'none');
+    setElementDisplay('quantumContributions', 'none');
+    setElementDisplay('quantumLeaderboard', 'none');
 
     // City Utilities & Lists
     setElementDisplay('friends', 'none');
@@ -335,6 +339,14 @@ function applyCardVisibility(
     setElementDisplay('friends', opts.showFriends !== false ? '' : 'none');
     setElementDisplay('hood', opts.showHood !== false ? '' : 'none');
     setElementDisplay('galaxy', opts.showGalaxy !== false ? '' : 'none');
+    setElementDisplay(
+      'quantumContributions',
+      opts.showQuantum !== false ? '' : 'none',
+    );
+    setElementDisplay(
+      'quantumLeaderboard',
+      opts.showQuantumLeaderboard !== false ? '' : 'none',
+    );
     return;
   }
 

@@ -437,6 +437,8 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
       );
       const entitiesDir =
         [
+          path.resolve(__dirname, '../../../../../metadata-store/entities'),
+          path.resolve(__dirname, '../../../../metadata-store/entities'),
           path.resolve(__dirname, '../../../metadata-store/entities'),
           path.resolve(__dirname, '../../metadata-store/entities'),
         ].find((p) => fs.existsSync(p)) ||
