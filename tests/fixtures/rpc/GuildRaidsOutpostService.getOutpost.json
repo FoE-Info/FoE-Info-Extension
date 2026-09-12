@@ -1,0 +1,341 @@
+{
+  "id": 474623,
+  "content": "guild_raids_middle_ages",
+  "name": "Quantum Incursion (Middle Ages)",
+  "gridId": "guild_raids",
+  "populationResourceId": "guild_raids_population",
+  "primaryResourceId": "guild_raids_money",
+  "goodsResourceIds": [
+    "guild_raids_bronze",
+    "guild_raids_honey",
+    "guild_raids_brick",
+    "guild_raids_rope",
+    "guild_raids_gunpowder"
+  ],
+  "unlockedBuildings": [
+    "W_GuildRaidsEarlyMiddleAge_Residential1",
+    "W_GuildRaidsEarlyMiddleAge_Residential2",
+    "W_GuildRaidsEarlyMiddleAge_Residential3",
+    "W_GuildRaidsEarlyMiddleAge_Tannery",
+    "W_GuildRaidsEarlyMiddleAge_Shoemaker",
+    "W_GuildRaidsEarlyMiddleAge_Bakery",
+    "W_GuildRaidsEarlyMiddleAge_Marketplace",
+    "W_GuildRaidsEarlyMiddleAge_Galgen",
+    "W_GuildRaidsEarlyMiddleAge_Pranger",
+    "W_GuildRaidsEarlyMiddleAge_Hedgewithflowers",
+    "W_GuildRaidsEarlyMiddleAge_Cypress",
+    "W_GuildRaidsEarlyMiddleAge_Pond",
+    "W_GuildRaidsHighMiddleAge_Residential1",
+    "W_GuildRaidsHighMiddleAge_Residential2",
+    "W_GuildRaidsHighMiddleAge_Residential3",
+    "W_GuildRaidsHighMiddleAge_Wheatfarm",
+    "W_GuildRaidsHighMiddleAge_Alchimist",
+    "W_GuildRaidsHighMiddleAge_Windmill",
+    "W_GuildRaidsHighMiddleAge_Church",
+    "W_GuildRaidsHighMiddleAge_Printshop",
+    "W_GuildRaidsHighMiddleAge_Doctor",
+    "W_GuildRaidsHighMiddleAge_Gargoyle",
+    "W_GuildRaidsHighMiddleAge_Signpost",
+    "W_GuildRaidsHighMiddleAge_Flag",
+    "W_GuildRaidsLateMiddleAge_Residential1",
+    "W_GuildRaidsLateMiddleAge_Residential2",
+    "W_GuildRaidsLateMiddleAge_Residential3",
+    "W_GuildRaidsLateMiddleAge_Brewery",
+    "W_GuildRaidsLateMiddleAge_Spicefarm",
+    "W_GuildRaidsLateMiddleAge_Barrelproducer",
+    "W_GuildRaidsLateMiddleAge_Palace",
+    "W_GuildRaidsLateMiddleAge_Library",
+    "W_GuildRaidsLateMiddleAge_Cartographer",
+    "W_GuildRaidsLateMiddleAge_Sailorstatue",
+    "W_GuildRaidsLateMiddleAge_Treegroup",
+    "W_GuildRaidsLateMiddleAge_Decayedtower",
+    "W_GuildRaidsLateMiddleAge_Gunpowder",
+    "W_GuildRaidsHighMiddleAge_Ropery",
+    "W_GuildRaidsEarlyMiddleAge_Beekeeper",
+    "W_GuildRaidsEarlyMiddleAge_Siegecamp",
+    "W_GuildRaidsHighMiddleAge_Siege",
+    "W_GuildRaidsLateMiddleAge_Siegecamp",
+    "W_GuildRaidsEarlyMiddleAge_Armoredswordsmsanbarracks",
+    "W_GuildRaidsHighMiddleAge_Dismountedknight",
+    "W_GuildRaidsLateMiddleAge_Pikemanbarracks",
+    "W_GuildRaidsEarlyMiddleAge_Archeryrange",
+    "W_GuildRaidsHighMiddleAge_Archery",
+    "W_GuildRaidsLateMiddleAge_Archeryrange"
+  ],
+  "moodLevels": [
+    {
+      "id": "rebelling",
+      "name": "Rebelling",
+      "threshold": 0,
+      "productionFactor": 0.2,
+      "affectedResourceProductions": [
+        "guild_raids_money",
+        "guild_raids_supplies",
+        "guild_raids_chrono_alloy"
+      ],
+      "__class__": "MoodLevel"
+    },
+    {
+      "id": "unruly",
+      "name": "Unruly",
+      "threshold": 0.21,
+      "productionFactor": 0.6,
+      "affectedResourceProductions": [
+        "guild_raids_money",
+        "guild_raids_supplies",
+        "guild_raids_chrono_alloy"
+      ],
+      "__class__": "MoodLevel"
+    },
+    {
+      "id": "unhappy",
+      "name": "Unhappy",
+      "threshold": 0.61,
+      "productionFactor": 0.8,
+      "affectedResourceProductions": [
+        "guild_raids_money",
+        "guild_raids_supplies",
+        "guild_raids_chrono_alloy"
+      ],
+      "__class__": "MoodLevel"
+    },
+    {
+      "id": "neutral",
+      "name": "Neutral",
+      "threshold": 0.81,
+      "productionFactor": 1,
+      "affectedResourceProductions": [
+        "guild_raids_money",
+        "guild_raids_supplies",
+        "guild_raids_chrono_alloy"
+      ],
+      "__class__": "MoodLevel"
+    },
+    {
+      "id": "content",
+      "name": "Content",
+      "threshold": 1.21,
+      "productionFactor": 1.1,
+      "affectedResourceProductions": [
+        "guild_raids_money",
+        "guild_raids_supplies",
+        "guild_raids_chrono_alloy"
+      ],
+      "__class__": "MoodLevel"
+    },
+    {
+      "id": "happy",
+      "name": "Happy",
+      "threshold": 1.41,
+      "productionFactor": 1.2,
+      "affectedResourceProductions": [
+        "guild_raids_money",
+        "guild_raids_supplies",
+        "guild_raids_chrono_alloy"
+      ],
+      "__class__": "MoodLevel"
+    },
+    {
+      "id": "enthusiastic",
+      "name": "Enthusiastic",
+      "threshold": 2,
+      "productionFactor": 1.5,
+      "affectedResourceProductions": [
+        "guild_raids_money",
+        "guild_raids_supplies",
+        "guild_raids_chrono_alloy"
+      ],
+      "__class__": "MoodLevel"
+    }
+  ],
+  "buildingSelectionOptions": {
+    "guildParticipantsAmount": 72,
+    "buildingSelectionOptions": [
+      {
+        "id": "goods",
+        "buildingIds": [
+          "W_GuildRaidsEarlyMiddleAge_BronzeFoundry",
+          "W_GuildRaidsEarlyMiddleAge_Beekeeper",
+          "W_GuildRaidsHighMiddleAge_Brickworks",
+          "W_GuildRaidsHighMiddleAge_Ropery",
+          "W_GuildRaidsLateMiddleAge_Gunpowder"
+        ],
+        "selectableAmount": 3,
+        "selectedBuildings": {
+          "W_GuildRaidsEarlyMiddleAge_Beekeeper": 44,
+          "W_GuildRaidsEarlyMiddleAge_BronzeFoundry": 12,
+          "W_GuildRaidsHighMiddleAge_Brickworks": 27,
+          "W_GuildRaidsHighMiddleAge_Ropery": 58,
+          "W_GuildRaidsLateMiddleAge_Gunpowder": 54
+        },
+        "__class__": "BuildingSelectionOption"
+      },
+      {
+        "id": "military",
+        "buildingIds": [
+          "W_GuildRaidsEarlyMiddleAge_Spearmanbarracks",
+          "W_GuildRaidsHighMiddleAge_Axehammer",
+          "W_GuildRaidsLateMiddleAge_BidenhnderMercenaryBarracks",
+          "W_GuildRaidsEarlyMiddleAge_Archeryrange",
+          "W_GuildRaidsHighMiddleAge_Archery",
+          "W_GuildRaidsLateMiddleAge_Archeryrange",
+          "W_GuildRaidsEarlyMiddleAge_Stablecataphract",
+          "W_GuildRaidsHighMiddleAge_Stable",
+          "W_GuildRaidsLateMiddleAge_Stable",
+          "W_GuildRaidsEarlyMiddleAge_Armoredswordsmsanbarracks",
+          "W_GuildRaidsHighMiddleAge_Dismountedknight",
+          "W_GuildRaidsLateMiddleAge_Pikemanbarracks",
+          "W_GuildRaidsEarlyMiddleAge_Siegecamp",
+          "W_GuildRaidsHighMiddleAge_Siege",
+          "W_GuildRaidsLateMiddleAge_Siegecamp"
+        ],
+        "selectableAmount": 3,
+        "selectedBuildings": {
+          "W_GuildRaidsEarlyMiddleAge_Archeryrange": 44,
+          "W_GuildRaidsEarlyMiddleAge_Armoredswordsmsanbarracks": 51,
+          "W_GuildRaidsEarlyMiddleAge_Siegecamp": 66,
+          "W_GuildRaidsEarlyMiddleAge_Spearmanbarracks": 6,
+          "W_GuildRaidsEarlyMiddleAge_Stablecataphract": 31,
+          "W_GuildRaidsHighMiddleAge_Archery": 44,
+          "W_GuildRaidsHighMiddleAge_Axehammer": 6,
+          "W_GuildRaidsHighMiddleAge_Dismountedknight": 51,
+          "W_GuildRaidsHighMiddleAge_Siege": 66,
+          "W_GuildRaidsHighMiddleAge_Stable": 31,
+          "W_GuildRaidsLateMiddleAge_Archeryrange": 44,
+          "W_GuildRaidsLateMiddleAge_BidenhnderMercenaryBarracks": 6,
+          "W_GuildRaidsLateMiddleAge_Pikemanbarracks": 51,
+          "W_GuildRaidsLateMiddleAge_Siegecamp": 66,
+          "W_GuildRaidsLateMiddleAge_Stable": 31
+        },
+        "__class__": "BuildingSelectionOption"
+      }
+    ],
+    "selectionOptions": [
+      {
+        "groupId": "goods",
+        "selectableAmount": 3,
+        "slots": [
+          {
+            "type": "guild_raids_bronze",
+            "buildingIds": [
+              "W_GuildRaidsEarlyMiddleAge_BronzeFoundry"
+            ],
+            "__class__": "SelectionOptionSlot"
+          },
+          {
+            "slotId": 1,
+            "type": "guild_raids_honey",
+            "buildingIds": [
+              "W_GuildRaidsEarlyMiddleAge_Beekeeper"
+            ],
+            "__class__": "SelectionOptionSlot"
+          },
+          {
+            "slotId": 2,
+            "type": "guild_raids_brick",
+            "buildingIds": [
+              "W_GuildRaidsHighMiddleAge_Brickworks"
+            ],
+            "__class__": "SelectionOptionSlot"
+          },
+          {
+            "slotId": 3,
+            "type": "guild_raids_rope",
+            "buildingIds": [
+              "W_GuildRaidsHighMiddleAge_Ropery"
+            ],
+            "__class__": "SelectionOptionSlot"
+          },
+          {
+            "slotId": 4,
+            "type": "guild_raids_gunpowder",
+            "buildingIds": [
+              "W_GuildRaidsLateMiddleAge_Gunpowder"
+            ],
+            "__class__": "SelectionOptionSlot"
+          }
+        ],
+        "selectedSlots": [
+          12,
+          44,
+          27,
+          58,
+          54
+        ],
+        "__class__": "SelectionOption"
+      },
+      {
+        "groupId": "military",
+        "selectableAmount": 3,
+        "slots": [
+          {
+            "type": "light_melee",
+            "buildingIds": [
+              "W_GuildRaidsEarlyMiddleAge_Spearmanbarracks",
+              "W_GuildRaidsHighMiddleAge_Axehammer",
+              "W_GuildRaidsLateMiddleAge_BidenhnderMercenaryBarracks"
+            ],
+            "__class__": "SelectionOptionSlot"
+          },
+          {
+            "slotId": 1,
+            "type": "short_ranged",
+            "buildingIds": [
+              "W_GuildRaidsEarlyMiddleAge_Archeryrange",
+              "W_GuildRaidsHighMiddleAge_Archery",
+              "W_GuildRaidsLateMiddleAge_Archeryrange"
+            ],
+            "__class__": "SelectionOptionSlot"
+          },
+          {
+            "slotId": 2,
+            "type": "fast",
+            "buildingIds": [
+              "W_GuildRaidsEarlyMiddleAge_Stablecataphract",
+              "W_GuildRaidsHighMiddleAge_Stable",
+              "W_GuildRaidsLateMiddleAge_Stable"
+            ],
+            "__class__": "SelectionOptionSlot"
+          },
+          {
+            "slotId": 3,
+            "type": "heavy_melee",
+            "buildingIds": [
+              "W_GuildRaidsEarlyMiddleAge_Armoredswordsmsanbarracks",
+              "W_GuildRaidsHighMiddleAge_Dismountedknight",
+              "W_GuildRaidsLateMiddleAge_Pikemanbarracks"
+            ],
+            "__class__": "SelectionOptionSlot"
+          },
+          {
+            "slotId": 4,
+            "type": "long_ranged",
+            "buildingIds": [
+              "W_GuildRaidsEarlyMiddleAge_Siegecamp",
+              "W_GuildRaidsHighMiddleAge_Siege",
+              "W_GuildRaidsLateMiddleAge_Siegecamp"
+            ],
+            "__class__": "SelectionOptionSlot"
+          }
+        ],
+        "selectedSlots": [
+          6,
+          44,
+          31,
+          51,
+          66
+        ],
+        "__class__": "SelectionOption"
+      }
+    ],
+    "__class__": "BuildingSelectionOptions"
+  },
+  "secondaryResourceId": "guild_raids_supplies",
+  "impedimentRemovalCost": {
+    "resources": {
+      "guild_raids_currency": 25
+    },
+    "__class__": "Resources"
+  },
+  "__class__": "GuildRaidsOutpost"
+}

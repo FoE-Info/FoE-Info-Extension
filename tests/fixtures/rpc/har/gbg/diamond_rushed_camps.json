@@ -1,0 +1,33 @@
+{
+  "description": "GBG camp diamond rush (instantFinish) actions and resource state.",
+  "captures": [
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:40:02.993Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "instantFinish",
+      "requestId": 80,
+      "requestData": [
+        7,
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:40:03.923Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "instantFinish",
+      "requestId": 81,
+      "requestData": [
+        7,
+        1
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    }
+  ]
+}

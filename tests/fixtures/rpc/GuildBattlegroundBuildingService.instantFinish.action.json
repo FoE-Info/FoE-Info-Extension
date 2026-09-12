@@ -1,0 +1,20 @@
+{
+  "requestSamples": [
+    [
+      7,
+      0
+    ],
+    [
+      7,
+      1
+    ]
+  ],
+  "responseSamples": [
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    }
+  ]
+}
