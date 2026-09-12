@@ -4,6 +4,24 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
 
 ## Current session (2026-09-12)
 
+- **City Info Panel Redesign & Player Score Resolution (Forge-Hammer Parity)**:
+  - **City Info Panel Redesign (`ownCityCard.js`, `visitedCityCard.js`, `renderCityStats.js`, `custom.scss`, `statFormatters.js`, `src/i18n/`)**:
+    - Clean top header: `[-] [WORLD] PlayerName (i) [Copy]` with world origin badge, info modal trigger, and clipboard copy.
+    - Card body layout: `Guild: MyGuildName` directly below `PlayerName`, followed by `Score: ...`, `Age: ...`, `Arc Bonus: ...`, `Chateau Frontenac Bonus: ...`, and `Crit Strike: ...` (AO and Cosmic Catalyst only, excluding Kraken).
+    - Section headers: `── DAILY PRODUCTION ──` and `── COMBAT BOOSTS ──` styled via `.foe-section-header` and `.foe-section-header-title`.
+    - Inline Boosts: Daily Coins and Daily Supplies display inline boost percentages on the totals line (e.g. `Coins: 1,234,567 (+150%)`).
+    - Units Breakdown Popover: Interactive popover on units line listing individual military buildings with descending unit counts.
+    - Complete symmetry between `#citystats` (own city) and `#visit` (other player city).
+  - **Player Score Resolution & Storage Fix (`OtherPlayerService.js`, `StartupService.js`, `socialRoutes.js`, `storage.js`, `renderLiveCityStats.js`)**:
+    - Diagnosed `Score: 0` root causes:
+      1. `src/js/fn/storage.js` had `export * from '../utils/storage.js';` causing SyntaxError in CJS, leaving storage null. Converted to CJS export.
+      2. `src/js/msg/OtherPlayerService.js` had duplicate `let MyInfo = null;` after requiring state, clearing `MyInfo`. Moved declaration up.
+      3. `src/js/protocol/routes/socialRoutes.js` registered `'getNeighbourList'` with British spelling (`u`); added InnoGames `'getNeighborList'`.
+      4. `OtherPlayerService.js` social arrays lacked `payload.members` and `payload.clan.members` from guild services.
+      5. `StartupService.js` called `storagePkg.get('playerScore')` synchronously which returned a Promise; updated to `getSync` and added async callback fallback.
+      6. `renderLiveCityStats.js` used `user?.score ?? MyInfo?.score` which evaluated to 0 when `user.score === 0`; updated fallback hierarchy to check positive `MyInfo.score`, `user.score`, and storage cache.
+  - **Verification Gate**: Full 5-stage verification gate (`npm run verify`) passed exit 0: **1,027/1,027 tests passing across 97 test suites**, 0 eslint errors, prettier clean, typecheck clean, dev bundle compiled successfully in 5.3s.
+
 - **City Overview Persistence, Boosts Wiring, Panel Sizing, Guild Redesign & Options Reorganization (Tracks 1 & 2)**:
   - **City Overview Permanence & Unconditional Persistence (`cardVisibility.ts`, `cardVisibility.js`, `renderCityStats.js`)**: Permanently allowed `'citystats'` and `'header'` across all game contexts (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`) so City Overview / City Info is never hidden or wiped on context switches.
   - **Combat Boosts Wiring & Hydration (`BoostService.js`, `StartupService.js`)**: Subscribed `StartupService.boostServiceAllBoosts` via `onBoostsUpdated` in `BoostService.js` to ingest all 1,005 live server boosts from `BoostService.getAllBoosts`, hydrating `City` boosts across GBG, GE, and QI.
