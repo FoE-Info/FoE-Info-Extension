@@ -10,9 +10,11 @@ const {
   buildSubpanel,
   buildContributionTable,
   buildInternationalTable,
+} = require('../ui/expeditionTables.js');
+const {
   extractTrialLevel,
   extractInternationalExpeditionEntries,
-} = require('../ui/expeditionTables.js');
+} = require('../parsers/expeditionParser.js');
 const { renderExpeditionPanel } = require('../ui/renderExpeditionPanel.js');
 
 let cachedInternationalEntries = null;
