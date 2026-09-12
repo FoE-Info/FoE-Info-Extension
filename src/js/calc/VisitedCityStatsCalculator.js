@@ -72,7 +72,7 @@ class VisitedCityStatsCalculator {
     let arcBonusPercent = new BigNumber(0);
     let chatBonusPercent = new BigNumber(0);
     let aoCritPercent = new BigNumber(0);
-    let krakenCritPercent = new BigNumber(0);
+    let ccCritPercent = new BigNumber(0);
 
     let clanPower = new BigNumber(0);
     let clanSOHcount = 0;
@@ -142,8 +142,7 @@ class VisitedCityStatsCalculator {
         if (special.chatBonusPercent)
           chatBonusPercent = special.chatBonusPercent;
         if (special.aoCritPercent) aoCritPercent = special.aoCritPercent;
-        if (special.krakenCritPercent)
-          krakenCritPercent = special.krakenCritPercent;
+        if (special.ccCritPercent) ccCritPercent = special.ccCritPercent;
 
         if (entity.bonus?.type && entity.bonus.value != null) {
           tallySingleBoost(entity.bonus, rawBoosts, qiBoosts);
@@ -224,6 +223,7 @@ class VisitedCityStatsCalculator {
           dailyRemainder.isGreaterThan(0) ? dailyRemainder : new BigNumber(0),
         traz: unitsAccum.trazUnits,
         total: unitsAccum.dailyUnits,
+        buildings: unitsAccum.buildings,
       },
       military,
       special: {
@@ -232,7 +232,7 @@ class VisitedCityStatsCalculator {
         goodsPerQuest,
         qiBoosts,
         aoCriticalStrike: aoCritPercent,
-        krakenCriticalStrike: krakenCritPercent,
+        ccCriticalStrike: ccCritPercent,
       },
       clanPower,
       sohCount: clanSOHcount,
