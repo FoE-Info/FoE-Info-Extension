@@ -179,23 +179,28 @@ function getPlaceValues(
   const donation = new BigNumber(outcome.spotLock);
   const rewardFP = new BigNumber(outcome.donorReward);
   const donateCustom = new BigNumber(outcome.costs);
-  const profitStr = rewardFP.minus(donation).toString();
-  const profit = rewardFP.minus(donation).toNumber();
+  const committedCost = new BigNumber(outcome.donorRankCost);
+  const net = new BigNumber(outcome.net);
+  const profitStr = net.toString();
+  const profit = net.toNumber();
   const spotPercent =
-    donation.isZero() ?
+    committedCost.isZero() ?
       new BigNumber(0)
-    : new BigNumber(profitStr).multipliedBy(100).idiv(donation);
+    : net.multipliedBy(100).idiv(committedCost);
 
   return {
     remaining,
     donation,
     rewardFP,
+    committedCost,
+    net,
     profit: profitStr,
     profitNum: profit,
     percent: spotPercent,
     donateCustom,
+    outcome: outcome.outcome,
     guaranteedProfit: outcome.guaranteedProfit,
-    band: fPercentBanded(spotPercent),
+    band: outcome.band,
   };
 }
 

@@ -57,6 +57,12 @@ const logger =
     loggerModule.createLogger('GbDonationPanel')
   : { debug: () => {}, warn: () => {} };
 
+const isPlacePassableFn =
+  typeof GreatBuildingCalculator.isPlacePassable === 'function' ?
+    GreatBuildingCalculator.isPlacePassable
+  : (remainingFp, occupantFp) =>
+      Number(occupantFp || 0) < Number(remainingFp || 0);
+
 let useNewDonationPanel = false;
 try {
   if (typeof storage.getSync === 'function') {
@@ -65,12 +71,14 @@ try {
   }
 } catch {}
 
-function getFriendlyDonation(donation, reward, percent, lock) {
+function getFriendlyDonation(donation, reward, percent, lock, band) {
   const isLoss =
-    donation &&
-    reward &&
-    lock &&
-    (donation.isGreaterThan(reward) || lock.isGreaterThan(donation));
+    band !== undefined ?
+      band === 'red'
+    : donation &&
+      reward &&
+      lock &&
+      (donation.isGreaterThan(reward) || lock.isGreaterThan(donation));
   return `<span class="${isLoss ? 'red' : 'green'}">${
     percent / 100
   }: ${donation}FP</span><br>`;
@@ -293,12 +301,12 @@ function renderGbDonationPanel(params = {}) {
     donateSuggestArr = safeRes.donateSuggest;
     const placeIdx = p - 1;
 
-    const isLeq =
-      typeof Donation?.isLessThanOrEqualTo === 'function' ?
-        Donation.isLessThanOrEqualTo(BN ? new BN(remaining) : remaining)
-      : Number(Donation) <= remaining;
+    // Only target a place a rival can still overtake. Places whose occupant
+    // already holds >= the remaining pool are locked (adding enough to pass
+    // would level the GB first), so they are skipped.
+    const canBePassed = isPlacePassableFn(remaining, Top[placeIdx] || 0);
 
-    if (isLeq) {
+    if (canBePassed) {
       foundPlace = true;
       const placeOrdinal =
         p === 1 ? '1st'
@@ -306,9 +314,13 @@ function renderGbDonationPanel(params = {}) {
         : p === 3 ? '3rd'
         : `${p}th`;
 
-      if (Profit > 0) {
-        olddonationHTML += `<p class="invest-good">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="profit">Profit</span>: ${Profit} (${Percent}%)<br>`;
-        newdonationHTML += gbTabSafe(
+      const outcome = vals.outcome || (Profit > 0 ? 'profit' : 'loss');
+      const netValue = Math.abs(vals.profitNum ?? 0);
+      const outcomeClass = outcome === 'loss' ? 'invest-bad' : 'invest-good';
+
+      if (outcome === 'loss') {
+        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="loss">Loss</span>: ${netValue}<br>`;
+        newdonationHTML += gbTabNotSafe(
           p,
           currentPercent,
           Donation,
@@ -321,30 +333,12 @@ function renderGbDonationPanel(params = {}) {
           safeArr,
         );
       } else {
-        const netDifference =
-          typeof Donation?.minus === 'function' ?
-            Donation.minus(donateCustom).toNumber()
-          : Number(Donation) - Number(donateCustom);
-
-        let outcomeKey = 'safe';
-        let outcomeLabel = 'Break-even';
-        let outcomeClass = 'invest-neutral';
-        let outcomeValue = 0;
-
-        if (netDifference > 0) {
-          outcomeKey = 'loss';
-          outcomeLabel = 'Loss';
-          outcomeClass = 'invest-bad';
-          outcomeValue = netDifference;
-        } else if (netDifference < 0) {
-          outcomeKey = 'profit';
-          outcomeLabel = 'Profit';
-          outcomeClass = 'invest-good';
-          outcomeValue = -netDifference;
-        }
-
-        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="${outcomeKey}">${outcomeLabel}</span>: ${outcomeValue}<br>`;
-        newdonationHTML += gbTabNotSafe(
+        const outcomeLine =
+          outcome === 'safe' ?
+            `<span data-i18n="safe_net">Safe</span>: 0 NET`
+          : `<span data-i18n="profit">Profit</span>: ${netValue} (${Percent}%)`;
+        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br>${outcomeLine}<br>`;
+        newdonationHTML += gbTabSafe(
           p,
           currentPercent,
           Donation,
@@ -364,6 +358,7 @@ function renderGbDonationPanel(params = {}) {
           RewardFP,
           currentPercent,
           Donation,
+          vals.band,
         );
         olddonationHTML +=
           p === 1 ? `BE: ${RewardFP}FP</p>` : `BE: ${RewardFP}FP<br></p>`;

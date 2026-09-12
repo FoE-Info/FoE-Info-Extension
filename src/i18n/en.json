@@ -116,6 +116,7 @@
   "show_hidden_gb": "Show hidden GBs",
   "calculate_safe_profit": "Calculate only safe profit/loss",
   "safe_profit": "safe",
+  "safe_net": "Safe",
   "hide_gb": "Hide GB",
   "unhide_gb": "Unhide GB",
   "progress": "Progress",

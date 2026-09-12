@@ -232,9 +232,16 @@ export interface GreatBuildingSpot {
   rewardFP: number;
   donateCustom: number;
   lockFP: number;
+  ownerAdd: number;
   isSafe: boolean;
+  safeToDonate: boolean;
+  levelWarning: boolean;
+  danger: number;
   profit: number;
+  worseProfit: boolean;
 }
+
+export function getSafePlaces(spots: GreatBuildingSpot[]): number[];
 
 export interface GreatBuildingCalculationResult {
   spots: GreatBuildingSpot[];
