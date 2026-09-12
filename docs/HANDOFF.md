@@ -4,6 +4,29 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 3 — Guild Battlegrounds decoupling + F7 composition root**:
+  - **F7 (Session 0 prerequisite)**: added `src/js/ui/renderBindings.js`, the
+    single side-effect-only composition root for the reactive bindings.
+    `src/js/index.js` imports it once instead of five bare
+    `./ui/*RenderBinding.js` imports. Guarded by
+    `tests/ui/render-bindings.test.mjs`.
+  - **Session 3**: `GuildBattlegroundService` (507 → 446 L) no longer imports
+    `../ui/`; it publishes `province`/`result`/`leaderboard`/`targets` payloads to
+    the new `src/js/state/GuildBattlegroundState.js`. `src/js/ui/gbgRenderBinding.js`
+    owns renderer wiring, container targeting, and the result-card `onRow` side
+    effect. ESM collaborators are required defensively in the CJS binding
+    (mirrors `panelDispatcher.js`).
+  - Tests: `tests/state/guild-battleground-state.test.mjs`,
+    `tests/ui/gbg-render-binding.test.mjs`; source-coupled assertions in
+    `tests/msg/guild-battleground-signals.test.mjs` now check the binding's
+    container targeting instead of the service's renderer imports.
+  - **Verification**: `npm run verify` exit 0 — 1,172 tests / 0 fail, prettier/
+    lint/typecheck/RPC-contract/i18n green, dev bundle compiles. Worktree
+    `feat/f2-gbg-decoupling` (base `9fc156e`). Note: the base webpack config
+    still references `postcss-loader`, which the uncommitted main-tree toolchain
+    cleanup removed from the shared `node_modules`; the union build was validated
+    against the main-tree configs, with the branch configs left untouched.
+
 - **Graph audit of the reactive-store migration + F6 fix**:
   - Refreshed the FoE-Info AST and audited Actionable Item 2: the stores
     landed as `service → state ← ui`, `calc/` purity intact. Catalogued residual
