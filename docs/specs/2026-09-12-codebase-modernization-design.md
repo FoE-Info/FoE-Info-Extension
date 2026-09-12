@@ -18,6 +18,10 @@ migrate incrementally without changing runtime behavior.
 - The **resolved runtime is the `.js`** and dev == prod on that source graph
   (differences are only dev-only `src/js/dev/*` seeders and the prod CSS
   pipeline). There is no `.ts` in either artifact.
+- The twins are not drop-in equivalents: the `.ts` mirrors are **ESM**
+  (`export function/const`) while the authoritative `.js` is **CJS**
+  (`module.exports = { … }`), and they have drifted. Promoting a mirror would
+  require a per-function parity audit, not a file swap.
 - The codebase is **overwhelmingly CJS**: 166 files use `require(`, 181
   `module.exports`; only 20 `import` / 22 `export`.
 - `tsconfig.json` is `allowJs:true`, `checkJs:false`, `strict:false`,
@@ -73,15 +77,15 @@ migrate incrementally without changing runtime behavior.
 
 **Phase 0 — TS hygiene & pipeline (new; prerequisite)**
 
-- P0a resolve the 12 twins. Migrate to `.ts` (per D3): the 9 pure, tested leaf
-  modules — `calc/GreatBuildingCalculator`, `calc/BlueGalaxyCalculator`,
-  `calc/InvestedCalculator`, `calc/GbgCalculator`, `calc/CityStatsCalculator`,
-  `calc/eraMapping`, `calc/utils/spatialUtils`, `calc/utils/eraUtils`,
-  `calc/utils/bignumberUtils`. Delete the stale, never-resolved `.ts` for the 3
-  entangled modules — `ui/cardVisibility`, `ui/panelDispatcher`,
-  `state/MetadataStore` — and re-type them after the Phase 3 decomposition.
+- P0a delete all 12 dead `.ts` twins. The mirrors are ESM while the runtime is
+  CJS and they have drifted, so promoting them would need per-function parity
+  audits. The resolved `.js` stays authoritative; real TS is authored from it in
+  Phase 2 (a deleted mirror may be consulted as a reference only, never
+  trusted). This satisfies D2/D3 with zero behavior risk.
 - P0b add the twin-guard test + explicit-extension check to `verify`.
-- P0c flip `strict:true` once the twins are gone; confirm `tsc --noEmit` clean.
+- P0c set `strict:true` so Phase 2 starts under strict checking; confirm
+  `tsc --noEmit` clean. (With no `.ts` source left, this is forward-looking;
+  JS stays unchecked via `checkJs:false`.)
 
 **Phase 1 — Contracts.** Finish ambient `.d.ts` for InnoGames RPC and stores
 (`src/types/foe-rpc.d.ts`, `state.d.ts` already exist); add store contracts.
