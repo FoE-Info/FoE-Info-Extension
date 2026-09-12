@@ -62,6 +62,12 @@ try {
   storage = require('../utils/storage.js');
 } catch {}
 
+let getUserTooltipHTML = null;
+let getScoreDBOrigin = null;
+try {
+  ({ getUserTooltipHTML, getScoreDBOrigin } = require('./playerTooltip.js'));
+} catch {}
+
 let MyInfo = null;
 let Goods = null;
 let stateModule = null;
@@ -385,15 +391,16 @@ function renderLiveCityStats(ctx = {}) {
   if (typeof renderCityStatsFn === 'function') {
     try {
       const userTooltipHTML =
-        typeof ctx.getUserTooltipHTML === 'function' ?
+        typeof getUserTooltipHTML === 'function' ? getUserTooltipHTML()
+        : typeof ctx.getUserTooltipHTML === 'function' ?
           ctx.getUserTooltipHTML()
         : '';
       const userTooltipHTMLEscaped = userTooltipHTML
         .replace(/'/g, '&#39;')
         .replace(/"/g, '&quot;');
       const origin =
-        typeof ctx.getScoreDBOrigin === 'function' ?
-          ctx.getScoreDBOrigin()
+        typeof getScoreDBOrigin === 'function' ? getScoreDBOrigin()
+        : typeof ctx.getScoreDBOrigin === 'function' ? ctx.getScoreDBOrigin()
         : '';
       const userTitle = `Playing <strong>FoE</strong> since<br>${formatDate ? formatDate(MyInfo?.createdAt) : ''}`;
 

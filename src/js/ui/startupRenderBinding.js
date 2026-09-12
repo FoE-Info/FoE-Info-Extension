@@ -10,6 +10,7 @@ const { startupRenderState } = require('../state/StartupRenderState.js');
 const liveStats = require('./renderLiveCityStats.js');
 const buildingCollection = require('./renderBuildingCollectionTimes.js');
 const cityStatsTooltips = require('./cityStatsTooltips.js');
+const playerTooltip = require('./playerTooltip.js');
 
 function bindStartupRenderState(
   state = startupRenderState,
@@ -17,6 +18,7 @@ function bindStartupRenderState(
     renderCityStats = liveStats.renderLiveCityStats,
     renderBuildingCollection = buildingCollection.renderBuildingCollectionTimes,
     showCityStatsTooltips = cityStatsTooltips.showTooltips,
+    refreshIgnoreList = playerTooltip.updateIgnoreListUI,
   } = {},
 ) {
   if (!state || typeof state.subscribe !== 'function') return () => {};
@@ -29,6 +31,9 @@ function bindStartupRenderState(
     }
     if (channel === 'building-collection' || channel === 'all') {
       renderBuildingCollection(snapshot.getBuildingCollectionOptions() || {});
+    }
+    if (channel === 'ignore-list' && typeof refreshIgnoreList === 'function') {
+      refreshIgnoreList();
     }
   });
 }
