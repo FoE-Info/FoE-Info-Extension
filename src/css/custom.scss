@@ -286,8 +286,14 @@ p,
 }
 
 .showGBGchanges {
-  margin: 0.5em;
+  margin: 0.5em 0;
   vertical-align: middle;
+}
+
+input[type='checkbox']:not(.form-check-input),
+input[type='radio']:not(.form-check-input) {
+  accent-color: var(--bs-primary);
+  color-scheme: light;
 }
 
 .bi p {
