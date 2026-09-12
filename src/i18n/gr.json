@@ -234,5 +234,6 @@
   "opt_language_settings": "Ρυθμίσεις γλώσσας",
   "opt_language": "Γλώσσα",
   "opt_use_browser_language": "Χρήση γλώσσας προγράμματος περιήγησης",
-  "opt_use_game_language": "Χρήση γλώσσας παιχνιδιού"
+  "opt_use_game_language": "Χρήση γλώσσας παιχνιδιού",
+  "city_overview": "City Overview"
 }

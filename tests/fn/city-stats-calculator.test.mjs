@@ -280,14 +280,15 @@ test('renderCityStats - Dashboard UI Rendering & Unblurred Parity', async (t) =>
       assert.ok(html.includes('Space Age Titan'));
       assert.ok(html.includes('Score'));
       assert.ok(html.includes('150.0M'));
-      // Ensure strong tag has collapse attributes and contains player name
+      // Title toggles collapse; player identity renders in the card body
       assert.match(
         html,
-        /<strong[^>]*data-bs-toggle="collapse"[^>]*>\[EN7\] TestCommander<\/strong>/,
+        /<strong[^>]*data-bs-toggle="collapse"[^>]*><span data-i18n="city_overview">City Overview<\/span><\/strong>/,
       );
+      assert.ok(html.includes('[EN7] TestCommander'));
       assert.ok(
         html.includes(
-          'id="citystats-copy-btn" role="button" tabindex="0" class="badge rounded-pill bg-success',
+          'id="citystats-copy-btn" role="button" tabindex="0" class="foe-copy-btn',
         ),
       );
       assert.ok(

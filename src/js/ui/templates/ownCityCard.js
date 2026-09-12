@@ -117,22 +117,26 @@ function buildOwnCityCard({
     <div class="d-flex align-items-center gap-1 text-truncate">
       <span role="button" tabindex="0" class="foe-collapse-icon header-icon collapse-toggle fw-bold font-monospace me-1 flex-shrink-0" id="${prefix}icon" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text"
         aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" title="Toggle Stats" data-i18n-title="toggle_stats">${isCollapsed ? '[+]' : '[-]'}</span>
-      <strong class="text-dark text-truncate cursor-pointer user-select-none" role="button" tabindex="0" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text" aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" style="cursor: pointer; user-select: none;">${originPrefix}${safePlayerName}</strong>
-      <span id="user" class="pop d-inline-flex align-items-center flex-shrink-0 ms-1" role="button" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true"
-        data-bs-title="${userTitle}" data-bs-content='${userTooltip || `<p class="pop"><em>${tr('none', 'None')}</em></p>`}'>
-        <span class="material-icons-outlined info-icon" id="infoIcon" style="font-size: 14px; line-height: 1; vertical-align: middle; cursor: pointer; color: #6c757d;">info</span>
-      </span>
+      <strong class="text-dark text-truncate cursor-pointer user-select-none" role="button" tabindex="0" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text" aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" style="cursor: pointer; user-select: none;"><span data-i18n="city_overview">City Overview</span></strong>
     </div>
     <div class="d-flex align-items-center gap-1 flex-shrink-0">
-      <span id="${prefix}-copy-btn" role="button" tabindex="0" class="badge rounded-pill bg-success foe-copy-btn flex-shrink-0"
-        style="cursor: pointer;" data-i18n="copy" title="Copy Stats" data-i18n-title="copy_stats">Copy</span>
+      <span id="${prefix}-copy-btn" role="button" tabindex="0" class="foe-copy-btn flex-shrink-0"
+        data-i18n="copy" title="Copy Stats" data-i18n-title="copy_stats">Copy</span>
     </div>
   </div>
+  <hr class="foe-card-divider my-1">
   <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'}">
     <div class="foe-panel-body">
+      <div class="d-flex align-items-center gap-1 text-truncate mb-1">
+        <strong class="text-dark text-truncate">${originPrefix}${safePlayerName}</strong>
+        <span id="user" class="pop d-inline-flex align-items-center flex-shrink-0 ms-1" role="button" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true"
+          data-bs-title="${userTitle}" data-bs-content='${userTooltip || `<p class="pop"><em>${tr('none', 'None')}</em></p>`}'>
+          <span class="material-icons-outlined info-icon" id="infoIcon" style="font-size: 14px; line-height: 1; vertical-align: middle; cursor: pointer; color: #6c757d;">info</span>
+        </span>
+      </div>
       ${safeGuild ? `<div><span data-i18n="guild">Guild</span>: ${safeGuild}</div>` : ''}
-      ${playerScore ? `<div><span data-i18n="score">Score</span>: ${playerScore}</div>` : ''}
       ${playerEra ? `<div><span data-i18n="age">Age</span>: ${formatEraName(playerEra)}</div>` : ''}
+      ${playerScore ? `<div><span data-i18n="score">Score</span>: ${playerScore}</div>` : ''}
       ${specBonusesHTML}
       <div class="foe-section-header"><span data-i18n="daily_production">Daily Production</span></div>
       ${dailyCoinsHTML}

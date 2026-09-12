@@ -30,9 +30,9 @@ Chrome DevTools panel extensions require zero margin waste, robust text truncati
       </span>
     </div>
 
-    <!-- Action Badge / Button -->
-    <span role="button" tabindex="0" class="badge rounded-pill bg-success foe-copy-btn flex-shrink-0"
-          style="cursor: pointer;" data-i18n="copy" title="Copy Stats" data-i18n-title="copy_stats">Copy</span>
+    <!-- Action Badge / Button (plain text to match panel copy) -->
+    <span role="button" tabindex="0" class="foe-copy-btn flex-shrink-0"
+          data-i18n="copy" title="Copy Stats" data-i18n-title="copy_stats">Copy</span>
   </div>
 
   <!-- Collapsible Content Body -->

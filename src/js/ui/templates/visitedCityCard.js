@@ -2,8 +2,8 @@
  * visitedCityCard.js
  *
  * HTML template generator for visited player city cards.
- * Symmetrical with ownCityCard: identity, Daily Production, and Combat Boosts
- * sections with inline boosts and critical strike breakdown.
+ * Mirrors ownCityCard's header/section layout. Deliberately renders plain text
+ * only — no tooltips, popovers, or interactive breakdowns.
  */
 
 const {
@@ -12,7 +12,6 @@ const {
   formatEraName,
   escapeHtml,
   formatCritStrikeHTML,
-  formatUnitsHTML,
 } = require('../components/statFormatters.js');
 
 let showOptions = {};
@@ -21,31 +20,18 @@ try {
   if (showOptionsPkg?.showOptions) showOptions = showOptionsPkg.showOptions;
 } catch {}
 
-let i18nModule = null;
-try {
-  i18nModule = require('../../utils/i18n.js');
-} catch {}
-
-function tr(key, fallback) {
-  const value = i18nModule?.t?.(key);
-  return value && value !== key ? value : fallback;
-}
-
 function buildVisitedCityCard({
   prefix,
   playerName,
   playerEra,
   playerScore,
   playerInfo,
-  fpTooltipEscaped,
   fp,
   exact,
   coins,
   supplies,
   goodsDisplay,
   goodsBoostText,
-  goodsHTML,
-  clanGoodsHTML,
   spec,
   units,
   mil,
@@ -73,15 +59,6 @@ function buildVisitedCityCard({
     }
   }
 
-  const userTooltip = (
-    playerInfo.userTooltipHTML ||
-    stats.userTooltipHTML ||
-    ''
-  ).replace(/"/g, '&quot;');
-  const userTitle = escapeHtml(
-    playerInfo.userTitle || tr('player_information', 'Player Information'),
-  );
-
   const arcBonusHTML =
     spec.arcPercent && !spec.arcPercent.isZero() ?
       `<div>Arc <span data-i18n="bonus">Bonus</span>: ${formatPercent(spec.arcPercent)}</div>`
@@ -108,16 +85,27 @@ function buildVisitedCityCard({
       `<div><span data-i18n="stat_supplies">Supplies</span>: ${formatStatNumber(supplies?.total ?? 0, { exact, comma: true })}${showSupplyBoost && supplyBoostVal > 0 ? ` (+${supplies.boostPercent}%)` : ''}</div>`
     : '';
   const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}${critStrikeHTML}`;
-  const unitsHTML = formatUnitsHTML(
-    { ...stats, units },
-    playerInfo,
-    prefix,
-    exact,
-  );
+
+  const fpBoost = fp?.boostPercent ? ` (+${fp.boostPercent}%)` : '';
   const fpLine =
     fp ?
-      `<div><span data-i18n="stat_daily_fp">Daily FP</span>: ${fpTooltipEscaped ? `<span id="${prefix}-fp" class="pop" role="button" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily FP" data-bs-content='${fpTooltipEscaped}'>${formatStatNumber(fp.total, { exact })}</span>` : formatStatNumber(fp.total, { exact })}</div>`
+      `<div><span data-i18n="stat_daily_fp">Daily FP</span>: ${formatStatNumber(fp.total, { exact })}${fpBoost}</div>`
     : '';
+
+  const goodsLine =
+    goodsDisplay ?
+      `<div><span data-i18n="stat_daily_goods">Daily Goods</span>: ${goodsDisplay}${goodsBoostText}</div>`
+    : '';
+
+  const clanGoods =
+    stats.clanGoods ?? stats.goods?.treasury ?? playerInfo.clanGoods ?? null;
+  const clanGoodsLine =
+    clanGoods !== null && clanGoods !== undefined && clanGoods !== '' ?
+      `<div><span data-i18n="guildgoods">Guild Goods</span>: ${formatStatNumber(clanGoods, { exact: true, comma: true })}</div>`
+    : '';
+
+  const unitsTotal = units?.total || units?.daily || units?.traz || 0;
+  const unitsLine = `<div><span data-i18n="stat_daily_units">Daily Units</span>: ${formatStatNumber(unitsTotal, { exact, comma: true })}</div>`;
 
   return `
 <div id="${prefix}-panel" class="foe-original-card">
@@ -125,37 +113,32 @@ function buildVisitedCityCard({
     <div class="d-flex align-items-center gap-1 text-truncate">
       <span role="button" tabindex="0" class="foe-collapse-icon header-icon collapse-toggle fw-bold font-monospace me-1 flex-shrink-0" id="${prefix}icon" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text"
         aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" title="Toggle Stats" data-i18n-title="toggle_stats">${isCollapsed ? '[+]' : '[-]'}</span>
-      <strong class="text-primary text-truncate cursor-pointer user-select-none" role="button" tabindex="0" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text"
-        aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" style="cursor: pointer; user-select: none;">${originPrefix}${safePlayerName}</strong>
-      <span id="${prefix}-user" class="pop d-inline-flex align-items-center flex-shrink-0 ms-1" role="button" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true"
-        data-bs-title="${userTitle}" data-bs-content='${userTooltip || `<p class="pop"><em>${tr('none', 'None')}</em></p>`}'>
-        <span class="material-icons-outlined info-icon" id="${prefix}-info-icon" style="font-size: 14px; line-height: 1; vertical-align: middle; cursor: pointer; color: #6c757d;">info</span>
-      </span>
+      <strong class="text-primary text-truncate cursor-pointer user-select-none" role="button" tabindex="0" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text" aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" style="cursor: pointer; user-select: none;"><span data-i18n="city_overview">City Overview</span></strong>
     </div>
     <div class="d-flex align-items-center gap-1 flex-shrink-0">
-      <span id="${prefix}-copy-btn" role="button" tabindex="0" class="badge rounded-pill bg-success foe-copy-btn flex-shrink-0"
-        style="cursor: pointer;" data-i18n="copy" title="Copy Stats" data-i18n-title="copy_stats">Copy</span>
+      <span id="${prefix}-copy-btn" role="button" tabindex="0" class="foe-copy-btn flex-shrink-0"
+        data-i18n="copy" title="Copy Stats" data-i18n-title="copy_stats">Copy</span>
       <button type="button" class="btn-close btn-close-white flex-shrink-0" id="${prefix}-close-btn" aria-label="Close" title="Close" data-i18n-title="close" data-i18n-aria-label="close"></button>
     </div>
   </div>
-  <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'} mt-1 foe-panel-body">
-      ${safeShield ? `<div><span class="badge bg-danger">🛡 ${safeShield}</span></div>` : ''}
+  <hr class="foe-card-divider my-1">
+  <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'}">
+    <div class="foe-panel-body">
+      <div class="d-flex align-items-center gap-1 text-truncate mb-1">
+        <strong class="text-primary text-truncate">${originPrefix}${safePlayerName}</strong>
+      </div>
+      ${safeShield ? `<div>🛡 ${safeShield}</div>` : ''}
       ${safeGuild ? `<div><span data-i18n="guild">Guild</span>: ${safeGuild}</div>` : ''}
-      ${playerScore ? `<div><span data-i18n="score">Score</span>: ${playerScore}</div>` : ''}
       ${playerEra ? `<div><span data-i18n="age">Age</span>: ${formatEraName(playerEra)}</div>` : ''}
+      ${playerScore ? `<div><span data-i18n="score">Score</span>: ${playerScore}</div>` : ''}
       ${specBonusesHTML}
       <div class="foe-section-header"><span data-i18n="daily_production">Daily Production</span></div>
       ${dailyCoinsHTML}
       ${dailySuppliesHTML}
       ${fpLine}
-      ${
-        goodsHTML ? `<div>${goodsHTML}</div>`
-        : goodsDisplay ?
-          `<div><span data-i18n="stat_daily_goods">Daily Goods</span>: ${goodsDisplay}${goodsBoostText}</div>`
-        : ''
-      }
-      ${clanGoodsHTML ? `<div>${clanGoodsHTML}</div>` : ''}
-      <div>${unitsHTML}</div>
+      ${goodsLine}
+      ${clanGoodsLine}
+      ${unitsLine}
       <div class="foe-section-header"><span data-i18n="combat_boosts">Combat Boosts</span></div>
       <div><span data-i18n="attackers">Attackers</span>: ${formatPercent(mil.red.base.att, true)} Att, ${formatPercent(mil.red.base.def, true)} Def</div>
       <div><span data-i18n="defenders">Defenders</span>: ${formatPercent(mil.blue.base.att, true)} Att, ${formatPercent(mil.blue.base.def, true)} Def</div>
@@ -165,6 +148,7 @@ function buildVisitedCityCard({
       <div><span data-i18n="ge-defenders">GE Defenders</span>: ${formatPercent(mil.blue.ge.att, true)} Att, ${formatPercent(mil.blue.ge.def, true)} Def</div>
       <div><span data-i18n="qi-attackers">QI Attackers</span>: ${formatPercent(mil.red.qi.att, true)} Att, ${formatPercent(mil.red.qi.def, true)} Def</div>
       <div><span data-i18n="qi-defenders">QI Defenders</span>: ${formatPercent(mil.blue.qi.att, true)} Att, ${formatPercent(mil.blue.qi.def, true)} Def</div>
+    </div>
   </div>
 </div>`;
 }
