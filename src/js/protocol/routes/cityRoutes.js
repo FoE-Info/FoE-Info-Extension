@@ -43,7 +43,6 @@ function registerCityRoutes(ctx) {
     processMetadataEntry,
     processMetadataData,
     pickupProduction,
-    getBonuses,
     getLimitedBonuses,
   } = handlers;
 
@@ -183,9 +182,6 @@ function registerCityRoutes(ctx) {
   }
 
   // Bonuses
-  if (getBonuses) {
-    dispatcher.register('BonusService', 'getBonuses', getBonuses);
-  }
   if (getLimitedBonuses) {
     dispatcher.register('BonusService', 'getLimitedBonuses', getLimitedBonuses);
   }

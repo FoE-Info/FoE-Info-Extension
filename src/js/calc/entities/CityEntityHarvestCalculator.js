@@ -83,7 +83,6 @@ function accumulatePlayerGoods({ resources, cid, accum, helper }) {
 function parseCurrentProduct({
   curProduct,
   cid,
-  index,
   mapID,
   MyInfo,
   ResourceDefs,
@@ -91,9 +90,6 @@ function parseCurrentProduct({
   City,
   Galaxy,
   accum,
-  DEV,
-  checkDebug,
-  appendBetaText,
 }) {
   let forgePoints = 0;
   let found = false;
@@ -180,18 +176,6 @@ function parseCurrentProduct({
           fp: forgePoints,
           isBoostable: mapID.type !== 'greatbuilding',
         });
-        if (DEV && checkDebug()) {
-          const trimmedName = helper.fEntityNameTrim(cid);
-          if (trimmedName && trimmedName !== cid) {
-            appendBetaText(
-              `<br>#${index}: ${forgePoints}FP Total: ${City.ForgePoints}FP <strong>${trimmedName}</strong>`,
-            );
-          } else {
-            appendBetaText(
-              `<br>#${index}: <span class="pending-name" data-id="${cid}">${cid}</span> ${forgePoints}FP Total: ${City.ForgePoints}FP`,
-            );
-          }
-        }
         if (
           mapID.type !== 'greatbuilding' &&
           Galaxy &&
@@ -235,16 +219,12 @@ function parseCurrentProduct({
 function parseProductionOption({
   prodOpt,
   cid,
-  index,
   mapID,
   ResourceDefs,
   helper,
   City,
   Galaxy,
   accum,
-  DEV,
-  checkDebug,
-  appendBetaText,
 }) {
   let forgePoints = 0;
   let found = false;
@@ -358,18 +338,6 @@ function parseProductionOption({
       fp: forgePoints,
       isBoostable: mapID.type !== 'greatbuilding',
     });
-    if (DEV && checkDebug()) {
-      const trimmedName = helper.fEntityNameTrim(cid);
-      if (trimmedName && trimmedName !== cid) {
-        appendBetaText(
-          `<br>#${index}: ${forgePoints}FP Total: ${City.ForgePoints}FP <strong>${trimmedName}</strong>`,
-        );
-      } else {
-        appendBetaText(
-          `<br>#${index}: <span class="pending-name" data-id="${cid}">${cid}</span> ${forgePoints}FP Total: ${City.ForgePoints}FP`,
-        );
-      }
-    }
     if (
       mapID.type !== 'greatbuilding' &&
       Galaxy &&
@@ -422,10 +390,7 @@ function evaluateEntityHarvest(mapID, index, options = {}) {
     fGVGagesname: (era) => era,
   };
   const formatLiveName = options.formatLiveName || ((id, fallback) => fallback);
-  const checkDebug = options.checkDebug || (() => false);
-  const appendBetaText = options.appendBetaText || (() => {});
   const debugEnabled = options.debugEnabled ?? false;
-  const DEV = options.DEV ?? false;
   const accum = options.accum || createHarvestAccumulator();
 
   let found = false;
@@ -507,7 +472,6 @@ function evaluateEntityHarvest(mapID, index, options = {}) {
     const parsed = parseCurrentProduct({
       curProduct: mapID.state.current_product,
       cid,
-      index,
       mapID,
       MyInfo,
       ResourceDefs,
@@ -515,9 +479,6 @@ function evaluateEntityHarvest(mapID, index, options = {}) {
       City,
       Galaxy,
       accum,
-      DEV,
-      checkDebug,
-      appendBetaText,
     });
     found = found || parsed.found;
   }
@@ -527,16 +488,12 @@ function evaluateEntityHarvest(mapID, index, options = {}) {
     const parsed = parseProductionOption({
       prodOpt: mapID.state.productionOption,
       cid,
-      index,
       mapID,
       ResourceDefs,
       helper,
       City,
       Galaxy,
       accum,
-      DEV,
-      checkDebug,
-      appendBetaText,
     });
     found = found || parsed.found;
   }

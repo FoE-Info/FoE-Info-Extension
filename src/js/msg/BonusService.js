@@ -14,36 +14,12 @@
 
 import * as element from '../fn/AddElement';
 import * as collapse from '../fn/collapse.js';
-import { renderBetaPanel } from '../ui/betaDebugPanel.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
-import { Bonus, checkDebug } from '../vars/state.js';
+import { Bonus } from '../vars/state.js';
 import { City, Galaxy, showGalaxy } from './StartupService.js';
 
 const logger = createLogger('BonusService');
-
-export function getBonuses(msg) {
-  if (typeof DEV !== 'undefined' && DEV && checkDebug()) {
-    if (typeof document === 'undefined') return;
-    var beta = document.getElementById('beta');
-
-    if (beta == null) {
-      beta = document.createElement('div');
-      const contentEl = document.getElementById('content');
-      if (contentEl) contentEl.appendChild(beta);
-      beta.id = 'beta';
-    }
-
-    if (
-      msg?.responseData &&
-      msg.responseData.length > 2 &&
-      msg.responseData[2]?.value
-    ) {
-      City.ForgePoints = (City.ForgePoints || 0) + msg.responseData[2].value;
-      renderBetaPanel(beta, msg.responseData[2].value, City.ForgePoints);
-    }
-  }
-}
 
 export function getLimitedBonuses(msg) {
   if (
