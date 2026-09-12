@@ -44,6 +44,8 @@ export var collapseBonus = true;
 export var collapseCultural = true;
 export var collapseClipboard = true;
 export var collapseGBGLeaderboard = false;
+export var collapseQIContributions = false;
+export var collapseQILeaderboard = false;
 
 // export default class set {
 // 	constructor(name, state) {
@@ -453,6 +455,36 @@ export function fCollapseGBGLeaderboard() {
     'gbgLeaderboardIcon',
     'gbgLeaderboardCollapse',
     collapseGBGLeaderboard,
+  );
+}
+
+export function fCollapseQIContributions() {
+  collapseQIContributions = !collapseQIContributions;
+  if (typeof document !== 'undefined') {
+    const copyEl = document.getElementById('qiContributionsCopyID');
+    if (copyEl) {
+      copyEl.style.display = collapseQIContributions ? 'none' : 'block';
+    }
+  }
+  element.updateIcon(
+    'qiContributionsIcon',
+    'qiContributionsCollapse',
+    collapseQIContributions,
+  );
+}
+
+export function fCollapseQILeaderboard() {
+  collapseQILeaderboard = !collapseQILeaderboard;
+  if (typeof document !== 'undefined') {
+    const copyEl = document.getElementById('qiLeaderboardCopyID');
+    if (copyEl) {
+      copyEl.style.display = collapseQILeaderboard ? 'none' : 'block';
+    }
+  }
+  element.updateIcon(
+    'qiLeaderboardIcon',
+    'qiLeaderboardCollapse',
+    collapseQILeaderboard,
   );
 }
 

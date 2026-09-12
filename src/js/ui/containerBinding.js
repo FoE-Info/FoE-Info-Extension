@@ -57,6 +57,8 @@ function mountPanels(contentEl, containers = {}) {
     gbgLeaderboard,
     geChampionship,
     geContributions,
+    quantumLeaderboard,
+    quantumContributions,
     goodsInventory,
     goodsDIV,
     guildOverview,
@@ -90,6 +92,14 @@ function mountPanels(contentEl, containers = {}) {
     ensureContainerMounted(contentEl, geChampionship, 'geChampionship');
   if (geContributions)
     ensureContainerMounted(contentEl, geContributions, 'geContributions');
+  if (quantumLeaderboard)
+    ensureContainerMounted(contentEl, quantumLeaderboard, 'quantumLeaderboard');
+  if (quantumContributions)
+    ensureContainerMounted(
+      contentEl,
+      quantumContributions,
+      'quantumContributions',
+    );
   if (goodsInventory)
     ensureContainerMounted(contentEl, goodsInventory, 'goodsInventory');
   if (guildOverview)
@@ -468,6 +478,16 @@ function setupPanelContainers(
     treasury,
   );
 
+  // 16. Quantum Incursions (Leaderboard & Contributions)
+  const quantumLeaderboard = mountOrAdopt(
+    'quantumLeaderboard',
+    sharedContainers.quantumLeaderboard,
+  );
+  const quantumContributions = mountOrAdopt(
+    'quantumContributions',
+    sharedContainers.quantumContributions,
+  );
+
   // Secondary, Exploration, Social & Utility Containers
   const visitstats = createPanel('visit');
   const galaxyDIV = createPanel('galaxy', '', true);
@@ -507,6 +527,8 @@ function setupPanelContainers(
     goodsInventory,
     guildOverview,
     treasury,
+    quantumLeaderboard,
+    quantumContributions,
 
     // Legacy and secondary panels & aliases
     citystats,
