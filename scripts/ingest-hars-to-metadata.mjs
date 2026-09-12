@@ -100,6 +100,28 @@ const DOMAIN_ROUTES = new Map([
     ['economy/conversations.json'],
   ],
   ['ConversationService.getConversation', ['economy/conversations.json']],
+  // Great Buildings (leveling, donations, safe-spot scouting)
+  [
+    'GreatBuildingsService.getOtherPlayerOverview',
+    ['greatbuildings/other_player_overview.json'],
+  ],
+  [
+    'GreatBuildingsService.getConstruction',
+    ['greatbuildings/construction.json'],
+  ],
+  [
+    'GreatBuildingsService.contributeForgePoints',
+    ['greatbuildings/contribute_forge_points.json'],
+  ],
+  [
+    'GreatBuildingsService.getAvailablePackageForgePoints',
+    ['greatbuildings/available_package_forge_points.json'],
+  ],
+  [
+    'OtherPlayerService.getOtherPlayerCityMapEntity',
+    ['greatbuildings/other_player_city_map_entity.json'],
+  ],
+  ['CityMapService.updateEntity', ['greatbuildings/city_map_updates.json']],
 ]);
 
 const DOMAIN_DESCRIPTIONS = {
@@ -132,6 +154,18 @@ const DOMAIN_DESCRIPTIONS = {
   'economy/marketplace_trades.json': 'Marketplace trade offers.',
   'economy/inventory.json': 'Inventory items and Great Building inventory.',
   'economy/conversations.json': 'Guild and social message centre threads.',
+  'greatbuildings/other_player_overview.json':
+    'Per-player Great Building contribution overview rows.',
+  'greatbuildings/construction.json':
+    'Great Building construction state: next bonuses and ranking rows.',
+  'greatbuildings/contribute_forge_points.json':
+    'Great Building Forge Point donation actions and resulting rankings.',
+  'greatbuildings/available_package_forge_points.json':
+    'Available FP packages usable for Great Building donations.',
+  'greatbuildings/other_player_city_map_entity.json':
+    'Foreign Great Building city-map entities with invested/level-up state.',
+  'greatbuildings/city_map_updates.json':
+    'City map entity updates emitted around Great Building donations.',
 };
 
 // Curated read-only RPCs mirrored into tests/fixtures/rpc/ (non-destructive).
@@ -153,6 +187,10 @@ const FIXTURE_RPC_KEYS = new Set([
   'CityMapService.getEntities',
   'CityProductionService.pickupProduction',
   'OtherPlayerService.getOtherPlayerVO',
+  'GreatBuildingsService.getOtherPlayerOverview',
+  'GreatBuildingsService.getConstruction',
+  'GreatBuildingsService.getAvailablePackageForgePoints',
+  'OtherPlayerService.getOtherPlayerCityMapEntity',
 ]);
 
 // Action RPCs whose valuable ground truth lives in the request payload
@@ -164,6 +202,7 @@ const FIXTURE_ACTION_KEYS = new Set([
   'GuildBattlegroundSignalsService.setSignal',
   'GuildBattlegroundSignalsService.removeSignal',
   'GuildRaidsMapService.setNodeTarget',
+  'GreatBuildingsService.contributeForgePoints',
 ]);
 
 function decodeContent(content) {
