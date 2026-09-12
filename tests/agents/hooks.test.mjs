@@ -84,6 +84,10 @@ test('Safety Gate Hook - permits safe read/build/test commands', () => {
     'rm -rf ./build',
     'rm -rf build dist node_modules',
     'rm -rf .agents/skills/ui-ux-pro-max/scripts/__pycache__',
+    'rm -rf .worktrees/ts-hygiene-phase0',
+    'rm -rf .worktrees/chore',
+    'rm -rf .superpowers/sdd/2026-09-12-ts-hygiene-phase0',
+    'rm -rf .worktrees/foo && rm -rf .superpowers/sdd/bar',
     'node -e "rm -rf .agents"',
     'git commit -m "rm -rf src"',
   ];
