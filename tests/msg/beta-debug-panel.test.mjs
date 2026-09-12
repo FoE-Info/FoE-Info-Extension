@@ -167,7 +167,7 @@ test('startupService resets the beta panel at the start of each run to avoid dup
   );
   assert.match(
     source,
-    /appendBetaText,\s*resetBetaPanel\s*}\s*from\s*'\.\.\/ui\/betaDebugPanel\.js'/,
+    /appendBetaText,[\s\S]*?resetBetaPanel,?\s*}\s*from\s*'\.\.\/ui\/betaDebugPanel\.js'/,
   );
   assert.match(
     source,
