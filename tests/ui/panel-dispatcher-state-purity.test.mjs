@@ -2,10 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 
-const PANEL_DISPATCHER_FILES = [
-  'src/js/ui/panelDispatcher.js',
-  'src/js/ui/panelDispatcher.ts',
-];
+const PANEL_DISPATCHER_FILES = ['src/js/ui/panelDispatcher.js'];
 
 test('panelDispatcher reads ResourceDefs from state, not msg services', () => {
   for (const file of PANEL_DISPATCHER_FILES) {
