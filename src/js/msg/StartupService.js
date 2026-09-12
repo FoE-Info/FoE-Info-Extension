@@ -13,12 +13,8 @@ import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
 import { resolvePlayerScore } from '../state/playerScoreResolver.js';
 import { startupRenderState } from '../state/StartupRenderState.js';
-import { buildCityStatsHTML } from '../ui/cityStatsHtmlBuilder.js';
 import { showTooltips } from '../ui/cityStatsTooltips.js';
-import {
-  buildFpTooltipHTML,
-  buildTotalGoodsTooltipHTML,
-} from '../ui/components/cityStatsTooltipBuilder.js';
+import { buildTotalGoodsTooltipHTML } from '../ui/components/cityStatsTooltipBuilder.js';
 import {
   formatPlayerLabel,
   getScoreDBOrigin,
@@ -45,7 +41,6 @@ import {
   CityEntityDefs,
   debug,
   EpocTime,
-  GameOrigin,
   Goods,
   ignoredPlayers,
   language,
@@ -211,13 +206,10 @@ export function startupService(msg) {
   if (!DEV) {
     removeDebug();
   }
-  var diamonds = 0;
   var clanPower = 0;
   var clanGoods = 0;
   var totalGoods = 0;
   var goodsList = [];
-  var goodsHTML;
-  var citystatsHTML = ``;
   tooltipHTML.goods = [];
   // Galaxy.html = '';
   // Galaxy.amount = 0;
@@ -249,7 +241,6 @@ export function startupService(msg) {
   goodsBuildings = entityResult.goodsBuildings;
   clanGoodsBuildings = entityResult.clanGoodsBuildings;
   goodsList = entityResult.goodsList;
-  diamonds = entityResult.diamonds;
   clanPower = entityResult.clanPower;
   clanGoods = entityResult.clanGoods;
   totalGoods = entityResult.totalGoods;
@@ -296,7 +287,7 @@ export function startupService(msg) {
     tooltipHTML.totalGoods = buildTotalGoodsTooltipHTML(goodsBuildings, helper);
   }
 
-  const { goodsHTML: aggregatedGoodsHTML } = aggregateCityStats({
+  aggregateCityStats({
     City,
     fpBuildings,
     goodsList,
@@ -307,25 +298,11 @@ export function startupService(msg) {
     tooltipHTML,
     fGoodsHTML,
   });
-  goodsHTML = aggregatedGoodsHTML;
 
   timingStep('P4h', 'goods and FP tooltip grouping complete');
   clanGoods = buildClanGoodsData();
   timingStep('P4i', 'clan goods aggregation complete');
   timingStep('P4j', 'goods era tally and HTML complete');
-  citystatsHTML = buildCityStatsHTML({
-    City,
-    MyInfo,
-    tooltipHTML,
-    goodsHTML,
-    userTooltipHTML: getUserTooltipHTML(),
-    clanGoods,
-    clanPower,
-    diamonds,
-    gameOrigin: GameOrigin,
-    collapseStats: collapse.collapseStats,
-  });
-  //citystatsHTML += `<hr>`;
   var citystats = document.getElementById('citystats');
 
   if (citystats == null) {
