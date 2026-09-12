@@ -4,6 +4,22 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **Reactive stores for msg→ui decoupling (Actionable Item 2) + scope closures**:
+  - Slice 1 — `src/js/state/QuantumState.js` publish/subscribe store
+    (`notify(changed)`); `GuildRaidsService` publishes member-activity and
+    leaderboard data instead of importing `renderQuantumPanels`;
+    `renderQuantumPanels` self-subscribes and repaints only the changed card.
+  - Slice 2 — `src/js/state/StartupRenderState.js` channeled
+    `city-stats`/`building-collection` store; `StartupService` publishes render
+    context instead of importing the UI renderers; new
+    `src/js/ui/startupRenderBinding.js` subscribes both renderers, loaded via
+    `index.js`.
+  - Closed **C3** (BG/sniping UX; sniping UX already shipped, BG deferred) and
+    the standalone live-visual-verification task by user directive; only
+    **D3g** (LoW-Tool exclusion record) remains open.
+  - **Verification**: `npm run verify` exit 0 — **1,114 tests / 0 fail**,
+    prettier/lint/typecheck/RPC-contract/i18n clean, dev bundle compiles.
+
 - **B5 DOM Decoupling + Structured DevTools Bridge + header cleanup**:
   - Routed the last residual `src/js/msg/` DOM through `src/js/ui/`
     (roadmap B5): new `renderTreasuryLogPanel`, `renderCulturalPanel`,
