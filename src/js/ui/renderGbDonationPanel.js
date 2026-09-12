@@ -242,7 +242,7 @@ function renderGbDonationPanel(params = {}) {
       )} FP</span>`
     : '';
 
-  let olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
+  let olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="status" aria-live="polite">
             ${closeBtn}
             <p id="freeTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#donationText3" aria-expanded="${!isCollapsed}" aria-controls="donationText3" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconHtml}

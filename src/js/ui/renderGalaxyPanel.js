@@ -86,9 +86,9 @@ function renderGalaxyPanel({
   const collapseIcon = isCollapsed ? '[+]' : '[-]';
 
   el.innerHTML = `
-    <div class="alert alert-success alert-dismissible show collapsed mb-2" role="alert">${element.close()}
+    <div class="alert alert-success alert-dismissible show collapsed mb-2" role="status" aria-live="polite">${element.close()}
       <p id="galaxyTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#galaxyText" aria-expanded="${!isCollapsed}" aria-controls="galaxyText" class="cursor-pointer user-select-none mb-1" style="cursor: pointer; user-select: none;">
-        <span class="header-icon collapse-toggle fw-bold font-monospace" id="galaxyicon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="galaxyText" data-bs-target="#galaxyText" data-bs-toggle="collapse">${collapseIcon}</span>
+        <span class="header-icon collapse-toggle fw-bold font-monospace" id="galaxyicon" role="button" tabindex="-1" aria-hidden="true" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="galaxyText" data-bs-target="#galaxyText" data-bs-toggle="collapse">${collapseIcon}</span>
         <strong><span data-i18n="galaxy_double_collection">${titleText}</span></strong>
       </p>
       <div id="galaxyText" class="resize collapse ${collapseClass}" style="max-height: 20em; overflow-y: auto;">

@@ -102,7 +102,7 @@ export function getLimitedBonuses(msg) {
       bonus.innerHTML == `` &&
       (Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
     ) {
-      bonus.innerHTML = `<div id="bonusTip" class="alert alert-light alert-dismissible" role="alert">
+      bonus.innerHTML = `<div id="bonusTip" class="alert alert-light alert-dismissible" role="status" aria-live="polite">
             <p id="bonusTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#bonusText" aria-expanded="${!collapse.collapseBonus}" aria-controls="bonusText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${element.icon('bonusicon', 'bonusText', collapse.collapseBonus)}
 			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
