@@ -91,7 +91,9 @@ export function fshowBattleground() {
     collapse.collapseBattleground ? '' : 'show'
   }"><div id="battlegroundText">`;
 
-  battlegroundHTML += `<p class="showGBGchanges"><input type="checkbox" id="showGBGchanges"><label for="showGBGchanges" data-i18n="show_changes_only">show changes only</label></p>
+  battlegroundHTML += `<div class="form-check form-check-inline showGBGchanges"><input class="form-check-input" type="checkbox" id="showGBGchanges" ${
+    isChangesOnly ? 'checked' : ''
+  }><label class="form-check-label small" for="showGBGchanges" data-i18n="show_changes_only">show changes only</label></div>
 	${BGtime ? '<p><span data-i18n="last_saved">Last Saved</span>: ' + BGtime + '</p>' : ''}
 	<div><table id="gbg-table" class="gbg-table w-100"><caption class="visually-hidden"><span data-i18n="member_activity">Member Activity</span></caption><thead><tr><th scope="col" class="text-start"><span data-i18n="member">Member</span></th><th scope="col" class="text-center"><span data-i18n="neg">Negs</span></th><th scope="col" class="text-center"><span data-i18n="fights">Fights</span></th><th scope="col" class="text-center"><span data-i18n="attrition">Attrition</span></th></tr></thead><tbody>`;
   let renderedRows = 0;
