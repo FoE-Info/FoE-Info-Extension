@@ -290,29 +290,48 @@ describe('6-Context Panel Visibility Engine', () => {
     });
   }
 
-  it('debug mode override forces every known panel visible with stubs', () => {
-    for (const id of ALL_15_PANEL_IDS) {
-      const el = document.getElementById(id);
-      el.innerHTML = '';
-      el.style.display = 'none';
-    }
+  it('debug mode stubs only visible panels with their raw data', () => {
+    setCurrentView('GBG');
+    applyCardVisibility(null, true, 'GBG');
 
-    applyCardVisibility(null, true);
-
-    for (const id of ALL_15_PANEL_IDS) {
+    const visible = [
+      'header',
+      'army',
+      'rewards',
+      'gbgTargetGenerator',
+      'battlegrounds',
+      'gbgLeaderboard',
+    ];
+    for (const id of visible) {
       const el = document.getElementById(id);
       assert.equal(el.style.display, '', `Panel #${id} must be visible`);
       assert.ok(
         el.innerHTML.includes(`[DEBUG STUB]</strong> ${id}`),
-        `Panel #${id} must contain a debug stub`,
+        `Visible panel #${id} must contain a debug stub`,
+      );
+      assert.ok(
+        el.innerHTML.includes(`Content for ${id}`),
+        `Stub for #${id} must embed its raw content`,
       );
     }
 
-    for (const id of ['cultural', 'visit', 'galaxy', 'quantumContributions']) {
+    for (const id of [
+      'geContributions',
+      'gbContributors',
+      'gbDonation',
+      'goodsInventory',
+      'treasury',
+      'incidents',
+    ]) {
+      const el = document.getElementById(id);
       assert.equal(
-        document.getElementById(id).style.display,
-        '',
-        `Utility panel #${id} must be visible in debug mode`,
+        el.style.display,
+        'none',
+        `Panel #${id} must stay hidden in GBG debug mode`,
+      );
+      assert.ok(
+        !el.innerHTML.includes('[DEBUG STUB]'),
+        `Hidden panel #${id} must not be stubbed`,
       );
     }
   });
