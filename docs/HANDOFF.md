@@ -4,6 +4,22 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **Parallel Open-Items Execution & Dev Seeder Debug Gating**:
+  - Four disjoint parallel subagent tasks shipped and reconciled to verified
+    reality: dedup extraction (`MessageDispatcher.js` 607 -> 583 L +
+    `src/js/protocol/dedupCache.js`), calc purity (`gbNaming.js` dead
+    `globalThis` fallbacks removed + `tests/calc/calc-purity.test.mjs` guard),
+    TS mirrors (`CityStatsCalculator.ts`, `MetadataStore.ts`, `tsc --noEmit`
+    clean), and dispatcher resilience tests (18 tests). Roadmap A1/A2/A3,
+    B1-B4, C1/C2, D1g/D2g and STATUS Actionable Items 1 & 3 are now marked
+    done; B5, C3, D3g and Actionable Items 2 & 4 remain open.
+  - Fixed the unrequested "Dev fixtures loaded" control: the dev-only
+    forced-state seeder is now gated on debug mode (`isDebugEnabled()` +
+    `onDebugToggle()`), gains `unmountDevSeedButton()`, and applies fixtures
+    only while debug is on rather than whenever the dev bundle loads.
+  - Verification: `npm run verify` exit 0 — 1,085 tests / 0 fail, prettier/
+    lint/typecheck/RPC-contract/i18n green, dev bundle compiles.
+
 - **City Overview Layout Redesign (Own + Visited)**:
   - `#citystats` and `#visit` now share the target layout: `[-] City Overview` header (new `city_overview` i18n key, 232 keys × 7 locales) with a collapse toggle, plain-text `Copy`, and a `foe-card-divider` rule; the player identity line (`[WORLD] Name`) moved into the body; body order is Guild → Age → Score → Arc/CF/Crit; section headers render as `── DAILY PRODUCTION ────` / `── COMBAT BOOSTS ────` text rules with no background band.
   - Removed the green `badge rounded-pill bg-success` Copy pill; `Copy` is now `.foe-copy-btn` (plain text with a circular `currentColor` outline). The header title swaps live between `foe-title-expanded` (`City Overview`) and `foe-title-collapsed` (`[WORLD] Name` + info icon) via `:has(> .collapse:not(.show))`; the own card no longer forces `text-dark`, so the title/name inherit the card theme.
