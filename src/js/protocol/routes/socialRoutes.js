@@ -91,10 +91,21 @@ function registerSocialRoutes(ctx) {
 
     const guildHandler = (msg) => {
       const data = msg?.responseData || msg;
-      if (typeof renderGuildHandler === 'function') {
+      if (typeof document !== 'undefined' && document.getElementById) {
+        const guildOverviewEl = document.getElementById('guildOverview');
+        if (guildOverviewEl) {
+          if (guildOverviewEl.classList?.contains('d-none')) {
+            guildOverviewEl.classList.remove('d-none');
+          }
+          if (guildOverviewEl.style) {
+            guildOverviewEl.style.display = '';
+          }
+        }
+      }
+      if (typeof renderGuildHandler === 'function' && data) {
         renderGuildHandler(data);
       }
-      if (typeof otherPlayerServiceUpdateActions === 'function') {
+      if (typeof otherPlayerServiceUpdateActions === 'function' && data) {
         otherPlayerServiceUpdateActions(data, { autoExpandGuild: true });
       }
     };
