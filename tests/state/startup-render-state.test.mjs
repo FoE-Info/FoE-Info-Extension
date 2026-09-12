@@ -57,6 +57,25 @@ test('StartupRenderState - reactive publish/subscribe', async (t) => {
     assert.equal(reached, true);
   });
 
+  await t.test('reports subscriber failures to the logger', () => {
+    const errors = [];
+    const state = new StartupRenderState({
+      logger: { error: (...args) => errors.push(args) },
+    });
+    state.subscribe(() => {
+      throw new Error('render boom');
+    });
+
+    state.setCityStatsContext({ fp: 1 });
+
+    assert.equal(errors.length, 1);
+    assert.equal(errors[0][0], 'Reactive subscriber failed');
+    assert.deepEqual(errors[0][1], {
+      channel: 'city-stats',
+      error: 'render boom',
+    });
+  });
+
   await t.test('defaults missing payloads to null', () => {
     const state = new StartupRenderState();
     state.setCityStatsContext(undefined);
