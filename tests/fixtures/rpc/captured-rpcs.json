@@ -1,0 +1,414 @@
+[
+  {
+    "key": "AllyService.getAssignedAllies",
+    "occurrences": 1
+  },
+  {
+    "key": "AnnouncementsService.fetchAllAnnouncements",
+    "occurrences": 4
+  },
+  {
+    "key": "AutoAidService.getStates",
+    "occurrences": 1
+  },
+  {
+    "key": "BlueprintService.newReward",
+    "occurrences": 33
+  },
+  {
+    "key": "BonusService.getBonuses",
+    "occurrences": 1
+  },
+  {
+    "key": "BonusService.getLimitedBonuses",
+    "occurrences": 1
+  },
+  {
+    "key": "BoostService.getAllBoosts",
+    "occurrences": 1
+  },
+  {
+    "key": "BoostService.getTimerBoost",
+    "occurrences": 1
+  },
+  {
+    "key": "CampaignService.getDeposits",
+    "occurrences": 1
+  },
+  {
+    "key": "CashShopService.getCashShopPrices",
+    "occurrences": 1
+  },
+  {
+    "key": "CashShopService.getCashShopProducts",
+    "occurrences": 1
+  },
+  {
+    "key": "CashShopService.getModularOffersDisplays",
+    "occurrences": 1
+  },
+  {
+    "key": "CashShopService.getProductGroups",
+    "occurrences": 1
+  },
+  {
+    "key": "CastleSystemService.getCastleSystemPlayer",
+    "occurrences": 1
+  },
+  {
+    "key": "CastleSystemService.getOverview",
+    "occurrences": 1
+  },
+  {
+    "key": "ChallengeService.getActiveChallenges",
+    "occurrences": 1
+  },
+  {
+    "key": "ChallengeService.getOptions",
+    "occurrences": 1
+  },
+  {
+    "key": "CityMapService.getCityMap",
+    "occurrences": 5
+  },
+  {
+    "key": "CityMapService.getEntities",
+    "occurrences": 3
+  },
+  {
+    "key": "CityMapService.getNextId",
+    "occurrences": 1
+  },
+  {
+    "key": "CityMapService.reset",
+    "occurrences": 70
+  },
+  {
+    "key": "CityMapService.updateEntity",
+    "occurrences": 7
+  },
+  {
+    "key": "CityProductionService.pickupProduction",
+    "occurrences": 16
+  },
+  {
+    "key": "ClanRecruitmentService.getClanRecruitments",
+    "occurrences": 2
+  },
+  {
+    "key": "ClanService.getOwnClanData",
+    "occurrences": 7
+  },
+  {
+    "key": "ClanService.getTreasuryBag",
+    "occurrences": 18
+  },
+  {
+    "key": "ClanService.getTreasuryLogs",
+    "occurrences": 10
+  },
+  {
+    "key": "ConversationService.getCategory",
+    "occurrences": 2
+  },
+  {
+    "key": "ConversationService.getConversation",
+    "occurrences": 4
+  },
+  {
+    "key": "ConversationService.getOverviewForCategory",
+    "occurrences": 8
+  },
+  {
+    "key": "ConversationService.markMessageRead",
+    "occurrences": 4
+  },
+  {
+    "key": "ConversationService.sendMessage",
+    "occurrences": 3
+  },
+  {
+    "key": "CrmService.getContent",
+    "occurrences": 1
+  },
+  {
+    "key": "EmissaryService.getAssigned",
+    "occurrences": 1
+  },
+  {
+    "key": "ForgePlusPackageService.getPackages",
+    "occurrences": 1
+  },
+  {
+    "key": "FriendService.getInvitationLink",
+    "occurrences": 1
+  },
+  {
+    "key": "FriendsTavernService.getOtherTavernStates",
+    "occurrences": 1
+  },
+  {
+    "key": "FriendsTavernService.getSittingPlayersCount",
+    "occurrences": 14
+  },
+  {
+    "key": "GreatBuildingsService.contributeForgePoints",
+    "occurrences": 70
+  },
+  {
+    "key": "GreatBuildingsService.getAvailablePackageForgePoints",
+    "occurrences": 70
+  },
+  {
+    "key": "GreatBuildingsService.getConstruction",
+    "occurrences": 10
+  },
+  {
+    "key": "GreatBuildingsService.getConstructionRanking",
+    "occurrences": 1962
+  },
+  {
+    "key": "GreatBuildingsService.getOtherPlayerOverview",
+    "occurrences": 305
+  },
+  {
+    "key": "GuildBattlegroundBuildingService.destroy",
+    "occurrences": 8
+  },
+  {
+    "key": "GuildBattlegroundBuildingService.getBuildings",
+    "occurrences": 16
+  },
+  {
+    "key": "GuildBattlegroundBuildingService.instantFinish",
+    "occurrences": 2
+  },
+  {
+    "key": "GuildBattlegroundBuildingService.place",
+    "occurrences": 4
+  },
+  {
+    "key": "GuildBattlegroundService.getBattleground",
+    "occurrences": 10
+  },
+  {
+    "key": "GuildBattlegroundService.getLeaderboard",
+    "occurrences": 9
+  },
+  {
+    "key": "GuildBattlegroundService.getPlayerLeaderboard",
+    "occurrences": 9
+  },
+  {
+    "key": "GuildBattlegroundSignalsService.removeSignal",
+    "occurrences": 69
+  },
+  {
+    "key": "GuildBattlegroundSignalsService.setSignal",
+    "occurrences": 72
+  },
+  {
+    "key": "GuildBattlegroundStateService.getState",
+    "occurrences": 10
+  },
+  {
+    "key": "GuildRaidsMapService.getNodeExtendedInfo",
+    "occurrences": 12
+  },
+  {
+    "key": "GuildRaidsMapService.getOverview",
+    "occurrences": 10
+  },
+  {
+    "key": "GuildRaidsMapService.setNodeTarget",
+    "occurrences": 90
+  },
+  {
+    "key": "GuildRaidsOutpostService.getOutpost",
+    "occurrences": 5
+  },
+  {
+    "key": "GuildRaidsService.getMemberActivityOverview",
+    "occurrences": 4
+  },
+  {
+    "key": "GuildRaidsService.getState",
+    "occurrences": 10
+  },
+  {
+    "key": "HiddenRewardService.getOverview",
+    "occurrences": 2
+  },
+  {
+    "key": "IgnorePlayerService.getIgnoreList",
+    "occurrences": 1
+  },
+  {
+    "key": "InventoryService.getGreatBuildings",
+    "occurrences": 34
+  },
+  {
+    "key": "InventoryService.getItems",
+    "occurrences": 1
+  },
+  {
+    "key": "InventoryService.updateItem",
+    "occurrences": 44
+  },
+  {
+    "key": "ItemAuctionService.getAuction",
+    "occurrences": 1
+  },
+  {
+    "key": "ItemExchangeService.getConfig",
+    "occurrences": 1
+  },
+  {
+    "key": "ItemShopService.getOffers",
+    "occurrences": 1
+  },
+  {
+    "key": "ItemStoreService.getConfigs",
+    "occurrences": 1
+  },
+  {
+    "key": "LogService.setLogState",
+    "occurrences": 1
+  },
+  {
+    "key": "MessageService.newMessage",
+    "occurrences": 2936
+  },
+  {
+    "key": "NoticeIndicatorService.getPlayerNoticeIndicators",
+    "occurrences": 1
+  },
+  {
+    "key": "OtherPlayerService.getAwaitingFriendRequestCount",
+    "occurrences": 1
+  },
+  {
+    "key": "OtherPlayerService.getCityProtections",
+    "occurrences": 1
+  },
+  {
+    "key": "OtherPlayerService.getEventsPaginated",
+    "occurrences": 1
+  },
+  {
+    "key": "OtherPlayerService.getOtherPlayerCityMapEntity",
+    "occurrences": 117
+  },
+  {
+    "key": "OtherPlayerService.getOtherPlayerVO",
+    "occurrences": 2
+  },
+  {
+    "key": "OtherPlayerService.getSocialList",
+    "occurrences": 1
+  },
+  {
+    "key": "OtherPlayerService.updateActions",
+    "occurrences": 1
+  },
+  {
+    "key": "OtherPlayerService.visitPlayer",
+    "occurrences": 13
+  },
+  {
+    "key": "OutpostService.getAll",
+    "occurrences": 1
+  },
+  {
+    "key": "OutpostService.startEraOutpost",
+    "occurrences": 1
+  },
+  {
+    "key": "PlayerProfileService.getFreeNameChangeTime",
+    "occurrences": 1
+  },
+  {
+    "key": "PremiumService.getActivePackages",
+    "occurrences": 1
+  },
+  {
+    "key": "QuestService.getQuestCategoryTimes",
+    "occurrences": 14
+  },
+  {
+    "key": "QuestService.getQuestPeriods",
+    "occurrences": 1
+  },
+  {
+    "key": "QuestService.getUpdates",
+    "occurrences": 14
+  },
+  {
+    "key": "RankingService.newRank",
+    "occurrences": 3
+  },
+  {
+    "key": "RankingService.searchRanking",
+    "occurrences": 2
+  },
+  {
+    "key": "ResearchService.getProgress",
+    "occurrences": 1
+  },
+  {
+    "key": "ResourceService.getPlayerAutoRefills",
+    "occurrences": 89
+  },
+  {
+    "key": "ResourceService.getPlayerResourceBag",
+    "occurrences": 89
+  },
+  {
+    "key": "ResourceService.getResourceDefinition",
+    "occurrences": 1
+  },
+  {
+    "key": "ResourceService.getResourceDefinitions",
+    "occurrences": 1
+  },
+  {
+    "key": "SaleInfoService.getActiveSales",
+    "occurrences": 1
+  },
+  {
+    "key": "SettingsService.updateSettings",
+    "occurrences": 4
+  },
+  {
+    "key": "StartupService.getData",
+    "occurrences": 1
+  },
+  {
+    "key": "StaticDataService.getMetadata",
+    "occurrences": 1
+  },
+  {
+    "key": "TimerService.getTimers",
+    "occurrences": 6
+  },
+  {
+    "key": "TimeService.updateTime",
+    "occurrences": 2983
+  },
+  {
+    "key": "TrackingService.trackLoginDone",
+    "occurrences": 1
+  },
+  {
+    "key": "TradeService.getTradeOffers",
+    "occurrences": 1
+  },
+  {
+    "key": "TutorialService.getProgress",
+    "occurrences": 1
+  },
+  {
+    "key": "VisitAllService.getState",
+    "occurrences": 1
+  }
+]
