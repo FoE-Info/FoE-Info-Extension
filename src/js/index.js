@@ -20,11 +20,7 @@ import {
   setupPanelContainers,
   setupPanelHeader,
 } from './ui/containerBinding.js';
-import './ui/armyRenderBinding.js';
-import './ui/bonusRenderBinding.js';
-import './ui/quantumRenderBinding.js';
-import './ui/startupRenderBinding.js';
-import './ui/treasuryRenderBinding.js';
+import './ui/renderBindings.js';
 import { initIndexUiBindings } from './ui/indexUiBindings.js';
 import { escapeHTML } from './utils/formatters.js';
 import { isDebugEnabled, onDebugToggle, toggleDebug } from './utils/logger.js';
