@@ -172,6 +172,14 @@ describe('Formatters Utility Suite', () => {
       );
     });
 
+    it('maps raw engine ids to display labels', () => {
+      assert.equal(fRewardShortName('strategy_points'), 'Forge Points');
+      assert.equal(fRewardShortName('medals'), 'Medals');
+      assert.equal(fRewardShortName('rogue'), 'Rogue');
+      assert.equal(fRewardShortName('clan_power'), 'Guild Power');
+      assert.equal(fRewardShortName('city_reward_token'), 'City Reward Token');
+    });
+
     it('handles falsy input safely', () => {
       assert.equal(fRewardShortName(null), '');
       assert.equal(fRewardShortName(''), '');
