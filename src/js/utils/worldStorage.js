@@ -148,7 +148,7 @@ async function initWorldStorage() {
         for (const [k, v] of Object.entries(worldsRes)) {
           if (k.startsWith('world:')) {
             const wid = sanitizeWorldId(k.slice(6));
-            memoryWorldCache[wid] = v;
+            memoryWorldCache[wid] = mergeWithWorldDefaults(v);
           }
         }
       }
@@ -170,6 +170,39 @@ async function initWorldStorage() {
   memoryGlobalCache = createFreshGlobalSettings();
 }
 
+function mergeWithWorldDefaults(stored) {
+  if (!stored || typeof stored !== 'object') return createFreshWorldSettings();
+  const fresh = createFreshWorldSettings();
+  return {
+    ...fresh,
+    ...stored,
+    showOptions: {
+      ...fresh.showOptions,
+      ...(stored.showOptions || {}),
+    },
+    donation: {
+      ...fresh.donation,
+      ...(stored.donation || {}),
+    },
+    webhooks: {
+      ...fresh.webhooks,
+      ...(stored.webhooks || {}),
+    },
+    toolOptions: {
+      ...fresh.toolOptions,
+      ...(stored.toolOptions || {}),
+    },
+    caches: {
+      ...fresh.caches,
+      ...(stored.caches || {}),
+    },
+    collapses: {
+      ...fresh.collapses,
+      ...(stored.collapses || {}),
+    },
+  };
+}
+
 function onWorldSettingsChange(cb) {
   setupStorageListener();
   if (typeof cb === 'function') {
@@ -188,8 +221,9 @@ async function getWorldSettings(worldId = currentWorldId) {
   if (local) {
     const res = await local.get(key).catch(() => null);
     if (res && res[key]) {
-      memoryWorldCache[wid] = res[key];
-      return res[key];
+      const merged = mergeWithWorldDefaults(res[key]);
+      memoryWorldCache[wid] = merged;
+      return merged;
     }
   }
 
