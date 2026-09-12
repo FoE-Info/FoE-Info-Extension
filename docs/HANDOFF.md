@@ -4,6 +4,20 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **Graph audit of the reactive-store migration + F6 fix**:
+  - Refreshed the FoE-Info AST and audited Actionable Item 2: the stores
+    landed as `service → state ← ui`, `calc/` purity intact. Catalogued residual
+    coupling — 29 production `msg/ → ui/` import edges across 14 services, plus
+    3 `ui/ → msg/` inversions (`indexUiBindings`, `panelDispatcher`).
+  - Fixed **F6**: `QuantumState`/`StartupRenderState` `notify()` silently
+    swallowed subscriber errors; both now take an injectable scoped logger and
+    emit `logger.error('Reactive subscriber failed', …)`. Added logger
+    regression tests.
+  - Findings: `graphify-out/foe-info/findings/2026-09-12-reactive-store-migration-audit.md`.
+    Next queue: **F5** (standardize binding convention), **F3** (ui→msg
+    inversions), **F2** (batch-migrate 14 services), **F7** (explicit bootstrap).
+  - **Verification**: `npm run verify` exit 0 — **1,116 tests / 0 fail**.
+
 - **Reactive stores for msg→ui decoupling (Actionable Item 2) + scope closures**:
   - Slice 1 — `src/js/state/QuantumState.js` publish/subscribe store
     (`notify(changed)`); `GuildRaidsService` publishes member-activity and
