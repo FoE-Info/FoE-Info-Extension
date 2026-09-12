@@ -5,6 +5,8 @@
  * Modular UI component compatible with both Node test runners and Webpack extension builds.
  */
 
+const { resolveDate } = require('../utils/date.js');
+
 const INCIDENT_LOOKUP = {
   incident_fallen_tree_1x1: { type: 'r', text: 'Fallen Tree' },
   incident_fallen_tree_2x2: {
@@ -159,8 +161,10 @@ function fShowIncidents(incidentsTarget = null, context = {}) {
         console.debug(incident);
       }
 
-      const start = new Date(incident.startTime).getTime() / 1000 - nowSec;
-      const finish = new Date(incident.expireTime).getTime() / 1000 - nowSec;
+      const startDate = resolveDate(incident.startTime);
+      const finishDate = resolveDate(incident.expireTime);
+      const start = startDate ? startDate.getTime() / 1000 - nowSec : -nowSec;
+      const finish = finishDate ? finishDate.getTime() / 1000 - nowSec : 0;
       const diff = Math.abs(start < 0 ? start : finish);
 
       const hours = Math.floor(diff / 3600) % 24;
