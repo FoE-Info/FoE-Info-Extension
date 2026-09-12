@@ -37,11 +37,11 @@ try {
   logger = createLogger('NetworkListener');
 } catch {}
 
-let escapeHTML = (s) => String(s ?? '');
+let appendGameVersionStatus = null;
 try {
-  const formatters = require('../utils/formatters.js');
-  if (typeof formatters.escapeHTML === 'function') {
-    escapeHTML = formatters.escapeHTML;
+  const versionStatus = require('../ui/gameVersionStatus.js');
+  if (typeof versionStatus.appendGameVersionStatus === 'function') {
+    appendGameVersionStatus = versionStatus.appendGameVersionStatus;
   }
 } catch {}
 
@@ -116,11 +116,15 @@ function notifyGameVersionChange(newVersion, deps) {
     }
     if (typeof deps.onGameVersionChange === 'function') {
       deps.onGameVersionChange(newVersion);
-    } else if (deps.citystats) {
-      const extName = escapeHTML(deps.extName || 'FoE-Info');
-      const toolVersion = escapeHTML(deps.toolVersion || '');
-      const safeVersion = escapeHTML(newVersion);
-      deps.citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${safeVersion}<br>${extName}: ${toolVersion}</div>`;
+    } else if (
+      deps.citystats &&
+      typeof appendGameVersionStatus === 'function'
+    ) {
+      appendGameVersionStatus(deps.citystats, {
+        version: newVersion,
+        extName: deps.extName || 'FoE-Info',
+        toolVersion: deps.toolVersion || '',
+      });
     }
   }
 }
