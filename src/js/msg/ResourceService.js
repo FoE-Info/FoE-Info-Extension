@@ -36,11 +36,10 @@ const ResourceNames = defaultState?.ResourceNames || {};
 let Resources = {};
 let availableFP = 0;
 let lastGoodsPayload = null;
-// Only render the Goods Inventory panel once the player has actually opened
-// the Marketplace this session. Login/background resource RPCs must not
-// surface it on their own. InventoryService.getItems was ruled out as a second
-// unlock signal because the game fires it automatically on login too.
-let goodsPanelUnlocked = false;
+// Goods Inventory panel is unlocked by default when showGoods is enabled,
+// while respecting manual dismissal ([X]). Opening Market or Inventory restores it.
+let goodsPanelUnlocked = true;
+let goodsPanelDismissed = false;
 
 function getResourceDefinitions(msg) {
   if (msg && msg.responseData) {
@@ -154,18 +153,18 @@ function getPlayerResources(msg) {
 }
 
 function isGoodsPanelUnlocked() {
-  return goodsPanelUnlocked;
+  return goodsPanelUnlocked && !goodsPanelDismissed;
 }
 
 function unlockGoodsPanel() {
-  if (!goodsPanelUnlocked) {
-    goodsPanelUnlocked = true;
-    logger.debug('goods panel unlocked');
-  }
-  return goodsPanelUnlocked;
+  goodsPanelDismissed = false;
+  goodsPanelUnlocked = true;
+  logger.debug('goods panel unlocked');
+  return true;
 }
 
 function lockGoodsPanel() {
+  goodsPanelDismissed = true;
   goodsPanelUnlocked = false;
   if (typeof document !== 'undefined') {
     const targetDiv = document.getElementById('goods');
@@ -175,8 +174,8 @@ function lockGoodsPanel() {
       targetDiv.classList?.add('d-none');
     }
   }
-  logger.debug('goods panel locked');
-  return goodsPanelUnlocked;
+  logger.debug('goods panel locked/dismissed');
+  return false;
 }
 
 function onMarketOpened(msg) {
@@ -193,10 +192,11 @@ function renderGoodsPanel(
   currentResources = exportsObj.goods || Resources,
   force = false,
 ) {
+  const isUnlocked = force || (goodsPanelUnlocked && !goodsPanelDismissed);
   return goodsRenderer.renderGoodsPanel(currentResources, {
     force,
     showGoods: showOptions?.showGoods,
-    unlocked: goodsPanelUnlocked,
+    unlocked: isUnlocked,
     debug: isDebugEnabled(),
     resourceDefs: ResourceDefs,
     resourceNames: ResourceNames,

@@ -19,7 +19,7 @@ export var toolOptions = {
   friendsSize: 200,
   treasurySize: 200,
   logsSize: 200,
-  battlegroundsSize: 400,
+  battlegroundsSize: 480,
   expeditionSize: 200,
   visitSize: 200,
   rewardSize: 200,

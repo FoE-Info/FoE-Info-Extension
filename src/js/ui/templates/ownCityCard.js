@@ -12,6 +12,12 @@ const {
   escapeHtml,
 } = require('../components/statFormatters.js');
 
+let showOptions = {};
+try {
+  const showOptionsPkg = require('../../state/showOptions.js');
+  if (showOptionsPkg?.showOptions) showOptions = showOptionsPkg.showOptions;
+} catch {}
+
 function buildOwnCityCard({
   prefix,
   playerName,
@@ -70,13 +76,26 @@ function buildOwnCityCard({
   const coinBoostVal = coins?.boostPercent ? Number(coins.boostPercent) : 0;
   const supplyBoostVal =
     supplies?.boostPercent ? Number(supplies.boostPercent) : 0;
+  const showDailyCoins = showOptions.showDailyCoins !== false;
+  const showDailySupplies = showOptions.showDailySupplies !== false;
+  const showCoinBoost = showOptions.showCoinBoost !== false;
+  const showSupplyBoost = showOptions.showSupplyBoost !== false;
+
+  const dailyCoinsHTML =
+    showDailyCoins ?
+      `<div><span data-i18n="stat_daily_coins">Coins</span>: ${formatStatNumber(coins?.total ?? 0, { exact, comma: true })}</div>`
+    : '';
+  const dailySuppliesHTML =
+    showDailySupplies ?
+      `<div><span data-i18n="stat_daily_supplies">Supplies</span>: ${formatStatNumber(supplies?.total ?? 0, { exact, comma: true })}</div>`
+    : '';
   const coinBonusHTML =
-    coinBoostVal > 0 ?
-      `<div><span data-i18n="stat_coins">Coins</span> <span data-i18n="bonus">Bonus</span>: ${formatPercent(coins.boostPercent)}</div>`
+    showCoinBoost && coinBoostVal > 0 ?
+      `<div><span data-i18n="stat_coin_boost">Coins Bonus</span>: ${formatPercent(coins.boostPercent)}</div>`
     : '';
   const supplyBonusHTML =
-    supplyBoostVal > 0 ?
-      `<div><span data-i18n="stat_supplies">Supplies</span> <span data-i18n="bonus">Bonus</span>: ${formatPercent(supplies.boostPercent)}</div>`
+    showSupplyBoost && supplyBoostVal > 0 ?
+      `<div><span data-i18n="stat_supply_boost">Supplies Bonus</span>: ${formatPercent(supplies.boostPercent)}</div>`
     : '';
   const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}${coinBonusHTML}${supplyBonusHTML}`;
 
@@ -104,6 +123,8 @@ function buildOwnCityCard({
       ${playerScore ? `<div><span data-i18n="score">Score</span>: ${playerScore}</div>` : ''}
       ${specBonusesHTML}
       <div>${fpHTML}</div>
+      ${dailyCoinsHTML}
+      ${dailySuppliesHTML}
       ${goodsHTML ? `<div>${goodsHTML}</div>` : `<div><span data-i18n="stat_daily_goods">Daily Goods</span>: ${goodsDisplay || '0'}${goodsBoostText}</div>`}
       ${clanGoodsHTML ? `<div>${clanGoodsHTML}</div>` : ''}
       <div><span data-i18n="stat_daily_units">Daily Units</span>: ${formatStatNumber(units.daily || units.traz, { exact })}</div>

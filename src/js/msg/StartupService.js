@@ -155,8 +155,22 @@ export function startupService(msg) {
     console.error('startupService received payload without user_data', msg);
     return;
   }
-  console.debug('user_data:', user);
   const parsedUser = parseUserAccount(user);
+  if (!parsedUser.score || parsedUser.score === 0) {
+    try {
+      const storagePkg = require('../fn/storage.js');
+      const cached =
+        storagePkg?.get ?
+          storagePkg.get('playerScore') ||
+          (user?.world_id ?
+            storagePkg.get(`world:${user.world_id}.playerScore`)
+          : null)
+        : null;
+      if (cached && Number(cached) > 0) {
+        parsedUser.score = Number(cached);
+      }
+    } catch {}
+  }
   user.score = parsedUser.score;
   setMyInfo(
     parsedUser.name,
@@ -466,6 +480,15 @@ export function boostServiceAllBoosts(msg) {
     renderLiveCityStats,
   });
 }
+
+try {
+  const { boostService } = require('./BoostService.js');
+  if (boostService && typeof boostService.onBoostsUpdated === 'function') {
+    boostService.onBoostsUpdated((msg) => {
+      boostServiceAllBoosts(msg);
+    });
+  }
+} catch {}
 
 export { fArcname, showGalaxy, updateGalaxy };
 
