@@ -1,17 +1,4 @@
-/*
- * ________________________________________________________________
- * Copyright (C) 2022 FoE-Info - All Rights Reserved
- * this source-code uses a copy-left license
- *
- * you are welcome to contribute changes here:
- * https://github.com/FoE-Info/FoE-Info-Extension
- *
- * AGPL license info:
- * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
- * or else visit https://www.gnu.org/licenses/#AGPL
- * ________________________________________________________________
- */
-
+/** Renders categorized reward cards and harvest popovers. */
 import * as collapse from '../fn/collapse.js';
 import { setRewardSize, toolOptions } from '../fn/globals.js';
 import * as helper from '../fn/helper.js';
