@@ -157,4 +157,138 @@ test('renderGuildPanel UI Suite', async (t) => {
       assert.match(mockGuildDiv.innerHTML, /id="guildOverviewTextLabel"/);
     },
   );
+
+  await t.test(
+    'unhides the parent #guildOverview wrapper so #guild becomes visible',
+    () => {
+      let guildDisplay = 'none';
+      let parentDisplay = 'none';
+      let parentDNoneRemoved = false;
+
+      const parent = {
+        id: 'guildOverview',
+        classList: {
+          contains: (cls) => cls === 'd-none',
+          remove: (cls) => {
+            if (cls === 'd-none') parentDNoneRemoved = true;
+          },
+        },
+        style: {
+          get display() {
+            return parentDisplay;
+          },
+          set display(val) {
+            parentDisplay = val;
+          },
+        },
+      };
+
+      const guildDiv = {
+        id: 'guild',
+        innerHTML: '',
+        parentElement: parent,
+        classList: {
+          contains: (cls) => cls === 'd-none',
+          remove: () => {},
+        },
+        style: {
+          get display() {
+            return guildDisplay;
+          },
+          set display(val) {
+            guildDisplay = val;
+          },
+        },
+        querySelector: () => ({ addEventListener: () => {} }),
+      };
+
+      renderGuildPanel(
+        { name: 'Wrapper Guild', members: [{ rank: 1, name: 'ParentFix' }] },
+        {
+          guild: guildDiv,
+          collapse: { collapseGuild: false, fCollapseGuild: () => {} },
+          element: { close: () => '', copy: () => '', icon: () => '' },
+          helper: {
+            escapeHTML: (s) => s,
+            fGVGagesname: (e) => e,
+            translateContainer: () => {},
+          },
+        },
+      );
+
+      assert.equal(guildDisplay, '', '#guild should be unhidden');
+      assert.equal(
+        parentDisplay,
+        '',
+        '#guildOverview parent should be unhidden',
+      );
+      assert.equal(
+        parentDNoneRemoved,
+        true,
+        'd-none should be removed from #guildOverview',
+      );
+      assert.match(guildDiv.innerHTML, /Wrapper Guild/);
+      assert.match(guildDiv.innerHTML, /ParentFix/);
+    },
+  );
+
+  await t.test(
+    'falls back to document lookup when #guild has no parentElement',
+    () => {
+      let parentDisplay = 'none';
+
+      const parent = {
+        id: 'guildOverview',
+        classList: { contains: () => false, remove: () => {} },
+        style: {
+          get display() {
+            return parentDisplay;
+          },
+          set display(val) {
+            parentDisplay = val;
+          },
+        },
+      };
+
+      const guildDiv = {
+        id: 'guild',
+        innerHTML: '',
+        parentElement: null,
+        classList: { contains: () => false, remove: () => {} },
+        style: { display: '' },
+        querySelector: () => ({ addEventListener: () => {} }),
+      };
+
+      const doc = {
+        getElementById: (id) => (id === 'guildOverview' ? parent : null),
+        createElement: () => ({
+          style: {},
+          select: () => {},
+          remove: () => {},
+        }),
+      };
+
+      renderGuildPanel(
+        { name: 'Fallback Guild', members: [{ rank: 2, name: 'DocLookup' }] },
+        {
+          guild: guildDiv,
+          document: doc,
+          collapse: { collapseGuild: false, fCollapseGuild: () => {} },
+          element: { close: () => '', copy: () => '', icon: () => '' },
+          helper: {
+            escapeHTML: (s) => s,
+            fGVGagesname: (e) => e,
+            translateContainer: () => {},
+          },
+        },
+      );
+
+      assert.equal(
+        parentDisplay,
+        '',
+        '#guildOverview should be resolved via document lookup',
+      );
+      assert.match(guildDiv.innerHTML, /Fallback Guild/);
+    },
+  );
 });
