@@ -342,7 +342,7 @@ test('renderCityStats - Dashboard UI Rendering & Unblurred Parity', async (t) =>
 
       assert.ok(html.includes('id="visit-panel"'));
       assert.ok(html.includes('RivalNeighbor'));
-      assert.ok(html.includes('(RivalGuild)'));
+      assert.ok(html.includes('Guild</span>: RivalGuild'));
       assert.ok(html.includes('Space Age Titan'));
       assert.ok(html.includes('🛡 2 Days 4hr'));
       assert.ok(html.includes('data-i18n="stat_daily_units"'));
