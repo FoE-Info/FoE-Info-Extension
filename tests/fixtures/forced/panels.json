@@ -1,0 +1,7 @@
+{
+  "galaxy": true,
+  "galaxyFixture": "rpc/CityMapService.getEntities.json",
+  "galaxyCharges": 10,
+  "rewards": true,
+  "rewardsFixture": "rewards.json"
+}

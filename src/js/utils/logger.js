@@ -10,6 +10,16 @@
 let debugEnabled = false;
 const subscribers = new Set();
 
+// Webpack DefinePlugin inlines DEBUG_BUILD: prod=false, beta/dev=true.
+// Falls back to true in Node/test environments where the global is absent so
+// tests can exercise debug logging via setDebugEnabled(true).
+const DEBUG_BUILD_ENABLED =
+  typeof DEBUG_BUILD === 'undefined' ? true : DEBUG_BUILD;
+// Only auto-enable debug in real debug builds (webpack-defined), never in
+// Node/test runs where a mock window may trigger initDebugState.
+const DEBUG_DEFAULT_ON =
+  typeof DEBUG_BUILD !== 'undefined' && DEBUG_BUILD === true;
+
 function getBrowserStorage() {
   if (typeof chrome !== 'undefined' && chrome?.storage?.local) {
     return chrome.storage.local;
@@ -88,11 +98,11 @@ function createLogger(moduleName = '') {
 
   return {
     debug: (...args) => {
-      if (!debugEnabled) return;
+      if (!DEBUG_BUILD_ENABLED || !debugEnabled) return;
       console.debug(prefix, ...args);
     },
     info: (...args) => {
-      if (!debugEnabled) return;
+      if (!DEBUG_BUILD_ENABLED || !debugEnabled) return;
       console.info(prefix, ...args);
     },
     warn: (...args) => {
@@ -117,9 +127,13 @@ async function initDebugState() {
   if (storage?.get) {
     try {
       const res = await storage.get('debugEnabled');
-      if (res && typeof res.debugEnabled === 'boolean') {
-        setDebugEnabled(res.debugEnabled, { persist: false });
-      }
+      const stored =
+        res && typeof res.debugEnabled === 'boolean' ?
+          res.debugEnabled
+        : undefined;
+      // Persisted user choice wins; otherwise default on for beta/dev only.
+      const initial = stored !== undefined ? stored : DEBUG_DEFAULT_ON;
+      setDebugEnabled(initial, { persist: false });
     } catch {}
   }
 

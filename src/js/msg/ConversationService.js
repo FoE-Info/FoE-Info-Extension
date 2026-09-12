@@ -293,7 +293,7 @@ function getPercent(title) {
     const rate = extractRateFromTitle(title);
     setCurrentPercent(rate);
   } catch (error) {
-    console.log(error);
+    logger?.error?.('Failed to parse trade percentage from title', error);
   }
 }
 

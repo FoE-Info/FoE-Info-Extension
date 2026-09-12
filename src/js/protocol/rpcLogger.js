@@ -59,7 +59,5 @@ export function logRpcMessage(msg, isHandled) {
       requestId: entry.requestId,
       responseData: entry.responseData,
     });
-  } else {
-    console.debug(`[FoE-RPC] ${tag} ${reqClass}.${reqMethod}`, msg);
   }
 }
