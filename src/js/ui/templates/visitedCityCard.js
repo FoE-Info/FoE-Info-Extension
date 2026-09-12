@@ -59,6 +59,11 @@ function buildVisitedCityCard({
     }
   }
 
+  const headerTitle =
+    isCollapsed ?
+      `${originPrefix}${safePlayerName}`
+    : `<span data-i18n="city_overview">City Overview</span>`;
+
   const arcBonusHTML =
     spec.arcPercent && !spec.arcPercent.isZero() ?
       `<div>Arc <span data-i18n="bonus">Bonus</span>: ${formatPercent(spec.arcPercent)}</div>`
@@ -113,7 +118,7 @@ function buildVisitedCityCard({
     <div class="d-flex align-items-center gap-1 text-truncate">
       <span role="button" tabindex="0" class="foe-collapse-icon header-icon collapse-toggle fw-bold font-monospace me-1 flex-shrink-0" id="${prefix}icon" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text"
         aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" title="Toggle Stats" data-i18n-title="toggle_stats">${isCollapsed ? '[+]' : '[-]'}</span>
-      <strong class="text-primary text-truncate cursor-pointer user-select-none" role="button" tabindex="0" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text" aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" style="cursor: pointer; user-select: none;"><span data-i18n="city_overview">City Overview</span></strong>
+      <strong class="text-primary text-truncate cursor-pointer user-select-none" role="button" tabindex="0" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text" aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" style="cursor: pointer; user-select: none;">${headerTitle}</strong>
     </div>
     <div class="d-flex align-items-center gap-1 flex-shrink-0">
       <span id="${prefix}-copy-btn" role="button" tabindex="0" class="foe-copy-btn flex-shrink-0"
@@ -124,9 +129,13 @@ function buildVisitedCityCard({
   <hr class="foe-card-divider my-1">
   <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'}">
     <div class="foe-panel-body">
-      <div class="d-flex align-items-center gap-1 text-truncate mb-1">
+      ${
+        !isCollapsed ?
+          `<div class="d-flex align-items-center gap-1 text-truncate mb-1">
         <strong class="text-primary text-truncate">${originPrefix}${safePlayerName}</strong>
-      </div>
+      </div>`
+        : ''
+      }
       ${safeShield ? `<div>🛡 ${safeShield}</div>` : ''}
       ${safeGuild ? `<div><span data-i18n="guild">Guild</span>: ${safeGuild}</div>` : ''}
       ${playerEra ? `<div><span data-i18n="age">Age</span>: ${formatEraName(playerEra)}</div>` : ''}
