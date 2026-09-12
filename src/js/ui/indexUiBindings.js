@@ -16,6 +16,7 @@
 
 const { createLogger } = require('../utils/logger.js');
 const { translateContainer } = require('../fn/i18n.js');
+const { escapeHTML } = require('../utils/formatters.js');
 const { applyCardVisibility } = require('../ui/cardVisibility.js');
 const { processMetadataData } = require('../msg/MetadataService.js');
 const { setResourceDefs } = require('../msg/ResourceService.js');
@@ -433,8 +434,73 @@ function initIndexUiBindings(config = {}) {
   return { storageDeps };
 }
 
+function bootstrapExtensionUi(options = {}) {
+  const browserObj =
+    options.browser ||
+    (typeof __webpack_require__ !== 'undefined' ?
+      require('webextension-polyfill')
+    : globalThis.browser);
+  const win =
+    options.window || (typeof window !== 'undefined' ? window : undefined);
+  const targetDoc =
+    options.document ||
+    (typeof document !== 'undefined' ? document : undefined);
+  const citystats = options.citystats || options.containers?.citystats;
+  const tool = options.tool || browserObj?.runtime?.getManifest?.() || {};
+
+  let lastStartupMsg = null;
+  let pendingStartupMsg = null;
+  let inspectedWorldId = null;
+  let gameVersion = 0;
+  let language =
+    (win && (win.navigator?.userLanguage || win.navigator?.language)) || 'en';
+
+  const onStartupMsg = options.onStartupMsg || (() => {});
+
+  return initIndexUiBindings({
+    browser: browserObj,
+    window: win,
+    document: targetDoc,
+    citystats,
+    tool,
+    getLanguage: () => language,
+    setLanguage: (v) => {
+      language = v;
+    },
+    getLastStartupMsg: () => lastStartupMsg,
+    setLastStartupMsg: (m) => {
+      lastStartupMsg = m;
+      onStartupMsg(m);
+    },
+    getPendingStartupMsg: () => pendingStartupMsg,
+    setPendingStartupMsg: (m) => {
+      pendingStartupMsg = m;
+    },
+    resolveMissingCityEntitiesFromMap:
+      options.resolveMissingCityEntitiesFromMap,
+    logRpcMessage: options.logRpcMessage,
+    getInspectedWorldId: () => inspectedWorldId,
+    setInspectedWorldId: (w) => {
+      inspectedWorldId = w;
+    },
+    getGameVersion: () => gameVersion,
+    setGameVersion: (v) => {
+      gameVersion = v;
+    },
+    onGameVersionChange: (newVersion) => {
+      if (citystats) {
+        const safeVersion = escapeHTML(newVersion);
+        const safeName = escapeHTML(tool.name || 'FoE-Info');
+        const safeToolVersion = escapeHTML(tool.version || '');
+        citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${safeVersion}<br>${safeName}: ${safeToolVersion}</div>`;
+      }
+    },
+  });
+}
+
 module.exports = {
   initIndexUiBindings,
+  bootstrapExtensionUi,
   bindOptionsButton,
   bindWindowMessageListener,
   bindThemeToggle,
