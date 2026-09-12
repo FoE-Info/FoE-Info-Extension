@@ -12,6 +12,7 @@ import { blueGalaxyState } from '../state/BlueGalaxyState.js';
 import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
 import { resolvePlayerScore } from '../state/playerScoreResolver.js';
+import { startupRenderState } from '../state/StartupRenderState.js';
 import { buildCityStatsHTML } from '../ui/cityStatsHtmlBuilder.js';
 import { showTooltips } from '../ui/cityStatsTooltips.js';
 import {
@@ -24,7 +25,6 @@ import {
   getUserTooltipHTML,
   updateIgnoreListUI,
 } from '../ui/playerTooltip.js';
-import { renderBuildingCollectionTimes as renderBuildingCollectionTimesUI } from '../ui/renderBuildingCollectionTimes.js';
 import {
   renderGalaxyPanel,
   showGalaxy,
@@ -34,7 +34,6 @@ import {
   buildClanGoodsData as buildClanGoodsDataImpl,
   fGoodsHTML,
   fGoodsText,
-  renderLiveCityStats as renderLiveCityStatsImpl,
 } from '../ui/renderLiveCityStats.js';
 import { formatDate, formatDateTime } from '../utils/date.js';
 import { createLogger, isDebugEnabled } from '../utils/logger.js';
@@ -412,7 +411,7 @@ export function renderLiveCityStats(ctx) {
     );
   }
   return renderWhenStartupReady(() =>
-    renderLiveCityStatsImpl(
+    startupRenderState.setCityStatsContext(
       ctx || {
         lastStartupContext,
         tooltipHTML,
@@ -462,7 +461,7 @@ function fEntityName(entity) {
 }
 
 export function renderBuildingCollectionTimes(options = {}) {
-  return renderBuildingCollectionTimesUI({
+  return startupRenderState.setBuildingCollectionOptions({
     buildingsReady: options.buildingsReady || buildingsReady,
     epocTime: options.epocTime ?? EpocTime,
     showOptions,
