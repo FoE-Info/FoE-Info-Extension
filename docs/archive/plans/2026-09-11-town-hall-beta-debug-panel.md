@@ -1,7 +1,7 @@
 # Task Plan: Town Hall / Beta Debug Panel Height & Scroll Refactor
 
 **Target Harness**: OpenCode (Dual-Harness Task)  
-**Status**: Complete (2026-09-11)  
+**Status**: Superseded (2026-09-12) — the panel and its suite were removed; archived for history. Originally complete (2026-09-11).  
 **Target File**: `src/js/ui/betaDebugPanel.js`  
 **Associated Test**: `tests/ui/beta-debug-panel.test.mjs`
 
