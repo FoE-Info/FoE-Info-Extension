@@ -1,30 +1,98 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-import armyStatePkg from '../../src/js/state/ArmyState.js';
-import bonusStatePkg from '../../src/js/state/BonusState.js';
-import quantumStatePkg from '../../src/js/state/QuantumState.js';
-import startupRenderStatePkg from '../../src/js/state/StartupRenderState.js';
-import treasuryStatePkg from '../../src/js/state/TreasuryState.js';
 
-const stores = {
-  armyState: armyStatePkg.armyState,
-  bonusState: bonusStatePkg.bonusState,
-  quantumState: quantumStatePkg.quantumState,
-  startupRenderState: startupRenderStatePkg.startupRenderState,
-  treasuryState: treasuryStatePkg.treasuryState,
-};
+// Minimal browser globals so the panel renderer graph can be imported in Node.
+function createMockElement(id = '') {
+  return {
+    id,
+    innerHTML: '',
+    innerText: '',
+    style: {},
+    className: '',
+    classList: { add() {}, remove() {}, contains: () => false },
+    children: [],
+    appendChild(child) {
+      this.children.push(child);
+      return child;
+    },
+    addEventListener() {},
+    removeEventListener() {},
+    setAttribute() {},
+    getAttribute() {
+      return null;
+    },
+    querySelector() {
+      return null;
+    },
+    querySelectorAll() {
+      return [];
+    },
+    insertAdjacentHTML() {},
+    remove() {},
+    cloneNode() {
+      return { ...this };
+    },
+  };
+}
+
+if (typeof globalThis.document === 'undefined') {
+  globalThis.document = {
+    readyState: 'complete',
+    body: createMockElement(),
+    head: createMockElement(),
+    documentElement: createMockElement(),
+    getElementById() {
+      return null;
+    },
+    createElement: createMockElement,
+    querySelector() {
+      return null;
+    },
+    querySelectorAll() {
+      return [];
+    },
+    addEventListener() {},
+    removeEventListener() {},
+  };
+  globalThis.window = globalThis;
+}
+if (typeof globalThis.chrome === 'undefined') {
+  globalThis.chrome = {
+    runtime: { id: 'test-extension-id' },
+    storage: { local: { get: async () => ({}), set: async () => {} } },
+  };
+}
+
+const stores = {};
 
 test('renderBindings composition root wires every shared store', async (t) => {
-  await t.test('singletons have no subscribers before the barrel loads', () => {
-    for (const [name, store] of Object.entries(stores)) {
-      assert.equal(
-        store.subscribers.size,
-        0,
-        `${name} already had subscribers before renderBindings.js loaded`,
-      );
-    }
-  });
+  await t.test(
+    'singletons have no subscribers before the barrel loads',
+    async () => {
+      const modules = [
+        ['armyState', '../../src/js/state/ArmyState.js'],
+        ['bonusState', '../../src/js/state/BonusState.js'],
+        ['quantumState', '../../src/js/state/QuantumState.js'],
+        ['startupRenderState', '../../src/js/state/StartupRenderState.js'],
+        ['treasuryState', '../../src/js/state/TreasuryState.js'],
+        [
+          'guildBattlegroundState',
+          '../../src/js/state/GuildBattlegroundState.js',
+        ],
+      ];
+      for (const [name, path] of modules) {
+        const pkg = await import(path);
+        stores[name] = pkg[name] ?? pkg.default?.[name];
+        assert.ok(stores[name], `${name} singleton should be exported`);
+        assert.equal(
+          stores[name].subscribers.size,
+          0,
+          `${name} had subscribers before renderBindings.js loaded`,
+        );
+      }
+    },
+  );
 
   await t.test('importing the barrel subscribes each store', async () => {
     await import('../../src/js/ui/renderBindings.js');
