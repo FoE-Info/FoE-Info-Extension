@@ -78,9 +78,9 @@ function renderGbInfoPanel(
   const iconHtml =
     typeof element.icon === 'function' ?
       element.icon('gbinfoicon', 'gbInfoCollapse', isCollapsed)
-    : `<span id="gbinfoicon" class="header-icon collapse-toggle fw-bold font-monospace align-middle" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="gbInfoCollapse" data-bs-target="#gbInfoCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
+    : `<span id="gbinfoicon" class="header-icon collapse-toggle fw-bold font-monospace align-middle" role="button" tabindex="-1" aria-hidden="true" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="gbInfoCollapse" data-bs-target="#gbInfoCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
 
-  let html = `<div class="alert alert-dark alert-dismissible show" role="alert">`;
+  let html = `<div class="alert alert-dark alert-dismissible show" role="status" aria-live="polite">`;
   html += closeBtnHtml;
   html += `<p id="gbInfoTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#gbInfoCollapse" aria-expanded="${!isCollapsed}" aria-controls="gbInfoCollapse" class="pe-4 mb-0 cursor-pointer user-select-none" style="cursor: pointer; user-select: none;">`;
   html += iconHtml;

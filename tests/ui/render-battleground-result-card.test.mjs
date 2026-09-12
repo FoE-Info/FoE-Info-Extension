@@ -77,7 +77,7 @@ describe('renderBattlegroundResultCard Suite', () => {
     assert.match(html, /id="battlegroundCopyID"/);
     assert.match(
       html,
-      /<th class="text-center">Rank<\/th><th class="text-start">Member<\/th><th class="text-center">Negs<\/th><th class="text-center">Fights<\/th><th class="text-center">Attrition<\/th>/,
+      /<th scope="col" class="text-center">Rank<\/th><th scope="col" class="text-start">Member<\/th><th scope="col" class="text-center">Negs<\/th><th scope="col" class="text-center">Fights<\/th><th scope="col" class="text-center">Attrition<\/th>/,
     );
     assert.equal(targetEl.innerHTML, html);
   });
@@ -101,10 +101,10 @@ describe('renderBattlegroundResultCard Suite', () => {
       helper: { escapeHTML },
     });
 
-    assert.match(html, /<th class="text-start">Guild Total<\/th>/);
+    assert.match(html, /<th scope="col" class="text-start">Guild Total<\/th>/);
     assert.match(
       html,
-      /<th class="text-center">3<\/th><th class="text-center">14<\/th>/,
+      /<th scope="col" class="text-center">3<\/th><th scope="col" class="text-center">14<\/th>/,
       'totals row must show 3 negotiations and 14 fights',
     );
   });
@@ -146,7 +146,7 @@ describe('renderBattlegroundResultCard Suite', () => {
     );
     assert.match(
       emptyHtml,
-      /<th class="text-center">0<\/th><th class="text-center">0<\/th>/,
+      /<th scope="col" class="text-center">0<\/th><th scope="col" class="text-center">0<\/th>/,
     );
 
     const missingHtml = buildBattlegroundResultCardHTML({}, {});

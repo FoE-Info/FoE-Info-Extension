@@ -106,7 +106,7 @@ function renderGuildPanel(clanData, deps = {}) {
     </tr>`;
   }
 
-  const html = `<div id="guildOverviewCard" class="alert alert-success alert-dismissible show collapsed" role="alert">
+  const html = `<div id="guildOverviewCard" class="alert alert-success alert-dismissible show collapsed" role="status" aria-live="polite">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
       <p id="guildOverviewTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildOverviewText" aria-expanded="${!isCollapsed}" aria-controls="guildOverviewText" class="cursor-pointer user-select-none mb-0 d-flex align-items-center gap-1 flex-grow-1 text-truncate" style="cursor: pointer; user-select: none;">
         ${iconHtml}
@@ -126,14 +126,15 @@ function renderGuildPanel(clanData, deps = {}) {
     <div id="guildOverviewText" class="overflow-y resize collapse ${isCollapsed ? '' : 'show'}">
       <div class="table-responsive">
         <table id="guildMemberTable" class="goods-table table-sm w-100 align-middle">
+          <caption class="visually-hidden"><span data-i18n="guild_overview">Guild Overview</span></caption>
           <thead>
             <tr>
-              <th class="text-start">#</th>
-              <th class="text-start"><span data-i18n="name">Name</span></th>
-              <th class="text-start"><span data-i18n="title">Title</span></th>
-              <th class="text-start"><span data-i18n="era">Era</span></th>
-              <th class="text-end"><span data-i18n="battles">Battles</span></th>
-              <th class="text-end"><span data-i18n="points">Points</span></th>
+              <th scope="col" class="text-start">#</th>
+              <th scope="col" class="text-start"><span data-i18n="name">Name</span></th>
+              <th scope="col" class="text-start"><span data-i18n="title">Title</span></th>
+              <th scope="col" class="text-start"><span data-i18n="era">Era</span></th>
+              <th scope="col" class="text-end"><span data-i18n="battles">Battles</span></th>
+              <th scope="col" class="text-end"><span data-i18n="points">Points</span></th>
             </tr>
           </thead>
           <tbody>

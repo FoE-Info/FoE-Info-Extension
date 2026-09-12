@@ -120,7 +120,7 @@ export function renderInvestedPanel(rawContributions, arcBonusPercent) {
     netProfit.isGreaterThanOrEqualTo(0) ? 'text-success' : 'text-danger';
   const profitSign = netProfit.isGreaterThanOrEqualTo(0) ? '+' : '';
 
-  let html = `<div class="alert alert-success alert-dismissible show" role="alert">`;
+  let html = `<div class="alert alert-success alert-dismissible show" role="status" aria-live="polite">`;
   html += element.close();
   html += element.copy('investedCopyID', 'success', 'right', isCollapsed);
   /* Future feature: Settings button in header

@@ -203,13 +203,13 @@ function renderGoodsPanel(currentResources, context = {}) {
   const iconMarkup =
     element?.icon ?
       element.icon('goodsicon', 'goodsText', isCollapsed)
-    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="goodsicon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="goodsText" data-bs-target="#goodsText" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
+    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="goodsicon" role="button" tabindex="-1" aria-hidden="true" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="goodsText" data-bs-target="#goodsText" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
   const copyMarkup =
     element?.copy ?
       element.copy('goodsCopyID', 'success', 'right', isCollapsed)
     : '<span id="goodsCopyID" class="badge bg-success float-end right-button">Copy</span>';
 
-  let goodsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
+  let goodsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="status" aria-live="polite">
             ${closeMarkup}`;
   goodsHTML += `<p id="goodsTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#goodsText" aria-expanded="${!isCollapsed}" aria-controls="goodsText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
   goodsHTML += iconMarkup;
@@ -217,7 +217,7 @@ function renderGoodsPanel(currentResources, context = {}) {
   goodsHTML += copyMarkup;
   goodsHTML += `<div id="goodsText" style="height: ${goodsSize}px" class="overflow-y resize collapse ${
     isCollapsed ? '' : 'show'
-  }"><table id="goodstable" class="goods-table w-100"><thead><tr><th class="text-start"><span data-i18n="type">Type</span></th><th class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
+  }"><table id="goodstable" class="goods-table w-100"><caption class="visually-hidden"><span data-i18n="inventory">Goods Inventory</span></caption><thead><tr><th scope="col" class="text-start"><span data-i18n="type">Type</span></th><th scope="col" class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
 
   targetDiv.style.display = '';
   targetDiv.classList?.remove('d-none');

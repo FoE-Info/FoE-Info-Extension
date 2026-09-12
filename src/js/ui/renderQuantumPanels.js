@@ -116,7 +116,7 @@ function renderQuantumContributionsCard(members, lastSavedTimestamp) {
         'qiContributionsCollapse',
         isCollapsed,
       )
-    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="qiContributionsIcon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="qiContributionsCollapse" data-bs-target="#qiContributionsCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
+    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="qiContributionsIcon" role="button" tabindex="-1" aria-hidden="true" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="qiContributionsCollapse" data-bs-target="#qiContributionsCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
 
   const closeBtn =
     element && typeof element.close === 'function' ?
@@ -133,7 +133,7 @@ function renderQuantumContributionsCard(members, lastSavedTimestamp) {
       dateUtils.formatDateTime(lastSavedTimestamp)
     : '';
 
-  let cardHTML = `<div id="quantumContributionsCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
+  let cardHTML = `<div id="quantumContributionsCard" class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">
     ${closeBtn}
     <p id="qiContributionsTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#qiContributionsCollapse" aria-expanded="${!isCollapsed}" aria-controls="qiContributionsCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconHtml}
@@ -150,11 +150,12 @@ function renderQuantumContributionsCard(members, lastSavedTimestamp) {
       </div>
       <div id="qiContributionsTableWrapper" class="mt-1">
         <table id="qiContributionsTable" class="goods-table w-100">
+          <caption class="visually-hidden"><span data-i18n="qi_contributions">QI Contributions</span></caption>
           <thead>
             <tr>
-              <th class="text-start" data-i18n="member">Member</th>
-              <th class="text-end" data-i18n="progress">Progress</th>
-              <th class="text-end" data-i18n="ap_spent">AP Spent</th>
+              <th scope="col" class="text-start" data-i18n="member">Member</th>
+              <th scope="col" class="text-end" data-i18n="progress">Progress</th>
+              <th scope="col" class="text-end" data-i18n="ap_spent">AP Spent</th>
             </tr>
           </thead>
           <tbody>`;
@@ -278,7 +279,7 @@ function renderQuantumLeaderboardCard(rankings) {
   const iconHtml =
     element && typeof element.icon === 'function' ?
       element.icon('qiLeaderboardIcon', 'qiLeaderboardCollapse', isCollapsed)
-    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="qiLeaderboardIcon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="qiLeaderboardCollapse" data-bs-target="#qiLeaderboardCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
+    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="qiLeaderboardIcon" role="button" tabindex="-1" aria-hidden="true" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="qiLeaderboardCollapse" data-bs-target="#qiLeaderboardCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
 
   const closeBtn =
     element && typeof element.close === 'function' ?
@@ -290,7 +291,7 @@ function renderQuantumLeaderboardCard(rankings) {
       element.copy('qiLeaderboardCopyID', 'info', 'right', isCollapsed)
     : `<span id="qiLeaderboardCopyID" role="button" tabindex="0" class="badge rounded-pill bg-info float-end right-button" style="display: ${isCollapsed ? 'none' : 'block'}" data-i18n="copy">Copy</span>`;
 
-  let cardHTML = `<div id="quantumLeaderboardCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
+  let cardHTML = `<div id="quantumLeaderboardCard" class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">
     ${closeBtn}
     <p id="qiLeaderboardTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#qiLeaderboardCollapse" aria-expanded="${!isCollapsed}" aria-controls="qiLeaderboardCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconHtml}
@@ -300,11 +301,12 @@ function renderQuantumLeaderboardCard(rankings) {
     <div id="qiLeaderboardCollapse" class="alert-info overflow resize collapse ${isCollapsed ? '' : 'show'}">
       <div id="qiLeaderboardTableWrapper" class="mt-1">
         <table id="qiLeaderboardTable" class="goods-table w-100">
+          <caption class="visually-hidden"><span data-i18n="qi_leaderboard">QI Leaderboard</span></caption>
           <thead>
             <tr>
-              <th class="text-start" data-i18n="guild">Guild</th>
-              <th class="text-center" data-i18n="rank">Rank</th>
-              <th class="text-end" data-i18n="total_points">Total Points</th>
+              <th scope="col" class="text-start" data-i18n="guild">Guild</th>
+              <th scope="col" class="text-center" data-i18n="rank">Rank</th>
+              <th scope="col" class="text-end" data-i18n="total_points">Total Points</th>
             </tr>
           </thead>
           <tbody>`;

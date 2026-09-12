@@ -295,14 +295,14 @@ function renderTreasuryPanel(resources, deps = {}) {
       rawTreasuryHeight
     : 200;
 
-  let treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
+  let treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="status" aria-live="polite">
 	${closeHtml}<p id="treasuryTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#treasuryText" aria-expanded="${!isCollapsed}" aria-controls="treasuryText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
   treasuryHTML += iconHtml;
   treasuryHTML += `<strong><span data-i18n="treasury">Guild Treasury:</span></strong></p>`;
   treasuryHTML += copyHtml;
   treasuryHTML += `<div id="treasuryText" style="height: ${treasuryHeight}px" class="overflow-y resize collapse ${
     isCollapsed ? '' : 'show'
-  }"><table id="treasurytable" class="goods-table w-100"><thead><tr><th class="text-start"><span data-i18n="type">Type</span></th><th class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
+  }"><table id="treasurytable" class="goods-table w-100"><caption class="visually-hidden"><span data-i18n="treasury">Guild Treasury</span></caption><thead><tr><th scope="col" class="text-start"><span data-i18n="type">Type</span></th><th scope="col" class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
 
   if (typeof deps.initTreasury === 'function') {
     deps.initTreasury(resources);

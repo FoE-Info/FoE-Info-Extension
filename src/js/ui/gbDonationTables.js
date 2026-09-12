@@ -366,11 +366,12 @@ function gbTabSafe(...args) {
       <div class="card-body alert-success p-2">
         <h6 class="card-title mb-0"> <span id="GBselected">${cfg.gbData?.name} [${cfg.gbData?.level}/${cfg.gbData?.max_level}] (${cfg.gbData?.current}/${cfg.gbData?.total} FPs)</span></h6>
         <table class="table mb-1">
+        <caption class="visually-hidden"><span data-i18n="donation">GB Donation</span></caption>
         <thead><tr>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">Lock</th>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">${cfg.currentPercent / 100}</th>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">Reward</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Lock</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">${cfg.currentPercent / 100}</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Reward</th>
         </tr></thead>
         <tbody><tr>
         <td><strong>${placeString}</strong></td>
@@ -422,11 +423,12 @@ function gbTabNotSafe(...args) {
       <div class="card-body ${alertClass} p-2">
         <h6 class="card-title mb-0"> <span id="GBselected">${cfg.gbData?.name} [${cfg.gbData?.level}/${cfg.gbData?.max_level}] (${cfg.gbData?.current}/${cfg.gbData?.total})</span></h6>
         <table class="table mb-1">
+        <caption class="visually-hidden"><span data-i18n="donation">GB Donation</span></caption>
         <thead><tr>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">Lock</th>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">${cfg.currentPercent / 100}</th>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">Reward</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Lock</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">${cfg.currentPercent / 100}</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Reward</th>
         </tr></thead>
         <tbody><tr>
         <td><strong>${placeString}</strong></td>
@@ -465,11 +467,12 @@ function gbTabEmpty(...args) {
       <div class="card-body alert-danger p-2">
         <h6 class="card-title mb-0"> <span id="GBselected">${cfg.gbData?.name} [${nextLevel}]</span></h6>
         <table class="table mb-1">
+        <caption class="visually-hidden"><span data-i18n="donation">GB Donation</span></caption>
         <thead><tr>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">Lock</th>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">${cfg.currentPercent / 100}</th>
-        <th class="border border-top-0 border-left-0 border-right-0 border-dark">Reward</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Lock</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">${cfg.currentPercent / 100}</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Reward</th>
         </tr></thead>
         <tbody><tr>
         <td><strong>-</strong></td>

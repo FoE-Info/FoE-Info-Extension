@@ -66,7 +66,7 @@ export function fshowBattleground() {
         .replace(/https?:\/\//i, '')
         .replace(/\.forgeofempires\.com/i, '')
         .toUpperCase();
-  var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">
+  var battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">
 	<p id="battlegroundTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
 	${element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground)}
 	<strong>Battlegrounds: [${bgWorldLabel}]</strong></p>${element.close()}`;
@@ -93,7 +93,7 @@ export function fshowBattleground() {
 
   battlegroundHTML += `<p class="showGBGchanges"><input type="checkbox" id="showGBGchanges"><label for="showGBGchanges">show changes only</label></p>
 	${BGtime ? '<p>Last Saved: ' + BGtime + '</p>' : ''}
-	<div><table id="gbg-table" class="gbg-table w-100"><thead><tr><th class="text-start">Member</th><th class="text-center">Negs</th><th class="text-center">Fights</th><th class="text-center">Attrition</th></tr></thead><tbody>`;
+	<div><table id="gbg-table" class="gbg-table w-100"><caption class="visually-hidden"><span data-i18n="battles">Battles</span></caption><thead><tr><th scope="col" class="text-start">Member</th><th scope="col" class="text-center">Negs</th><th scope="col" class="text-center">Fights</th><th scope="col" class="text-center">Attrition</th></tr></thead><tbody>`;
   let renderedRows = 0;
   BattlegroundPerformance.forEach((entry) => {
     // console.debug(entry);
@@ -250,7 +250,7 @@ export function renderGbgLeaderboardPanel(leaderboard, options = {}) {
         'gbgLeaderboardCollapse',
         isCollapsed,
       )
-    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="gbgLeaderboardIcon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" data-bs-target="#gbgLeaderboardCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
+    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="gbgLeaderboardIcon" role="button" tabindex="-1" aria-hidden="true" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" data-bs-target="#gbgLeaderboardCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
   const closeBtn =
     depElement && typeof depElement.close === 'function' ?
       depElement.close()
@@ -273,7 +273,7 @@ export function renderGbgLeaderboardPanel(leaderboard, options = {}) {
     output;
   if (!resolvedTarget) return null;
 
-  resolvedTarget.innerHTML = `<div id="gbgLeaderboardCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
+  resolvedTarget.innerHTML = `<div id="gbgLeaderboardCard" class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">
       ${closeBtn}
       <p id="gbgLeaderboardTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#gbgLeaderboardCollapse" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
         ${iconHtml}

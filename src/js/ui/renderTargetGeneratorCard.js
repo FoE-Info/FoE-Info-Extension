@@ -322,7 +322,7 @@ function renderTargetGeneratorPanel(params = {}) {
   }
 
   const timerId = Math.random().toString(36).substr(2, 5);
-  let targetsHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="alert">`;
+  let targetsHTML = `<div class="alert-${timerId} alert alert-info alert-dismissible show" role="status" aria-live="polite">`;
   targetsHTML +=
     typeof depElement?.close === 'function' ? depElement.close() : '';
   if (

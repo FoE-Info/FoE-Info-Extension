@@ -203,6 +203,10 @@ function setupPanelHeader({
       currentLogo.style.fontSize = '24px';
       currentLogo.style.verticalAlign = 'middle';
       if (currentLogo.setAttribute) {
+        currentLogo.setAttribute('role', 'button');
+        currentLogo.setAttribute('tabindex', '0');
+        currentLogo.setAttribute('aria-pressed', 'true');
+        currentLogo.setAttribute('aria-label', 'FoE-Info debug mode');
         currentLogo.setAttribute('title', 'FoE-Info Debug Mode (Enabled)');
       }
     } else {
@@ -211,10 +215,15 @@ function setupPanelHeader({
       currentLogo.width = '24';
       currentLogo.height = '24';
       currentLogo.id = 'logo';
+      currentLogo.alt = 'FoE-Info';
       currentLogo.style = currentLogo.style || {};
       currentLogo.style.cursor = 'pointer';
       currentLogo.style.verticalAlign = 'middle';
       if (currentLogo.setAttribute) {
+        currentLogo.setAttribute('role', 'button');
+        currentLogo.setAttribute('tabindex', '0');
+        currentLogo.setAttribute('aria-pressed', 'false');
+        currentLogo.setAttribute('aria-label', 'FoE-Info debug mode');
         currentLogo.setAttribute(
           'title',
           'FoE-Info (Click to enable debug mode)',
@@ -223,6 +232,22 @@ function setupPanelHeader({
     }
     if (typeof onToggleDebug === 'function') {
       currentLogo.addEventListener('click', onToggleDebug);
+      currentLogo.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          if (e.repeat) return;
+          e.preventDefault();
+          onToggleDebug(e);
+        } else if (e.key === ' ' || e.key === 'Spacebar') {
+          // Space activates on keyup to match native button semantics.
+          e.preventDefault();
+        }
+      });
+      currentLogo.addEventListener('keyup', (e) => {
+        if (e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          onToggleDebug(e);
+        }
+      });
     }
     logoDiv.appendChild(currentLogo);
     return currentLogo;
