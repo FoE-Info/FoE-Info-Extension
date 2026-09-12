@@ -420,8 +420,21 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
     },
   );
 
+  const offlineEntitiesDir = [
+    path.resolve(__dirname, '../../../../../metadata-store/entities'),
+    path.resolve(__dirname, '../../../../metadata-store/entities'),
+    path.resolve(__dirname, '../../../metadata-store/entities'),
+    path.resolve(__dirname, '../../metadata-store/entities'),
+  ].find((p) => fs.existsSync(p));
+
   await t.test(
     'verifies authentic Guild Goods for Radika (32,440), II-IIyPer-79 (32,740), and robinmagister (23,380)',
+    {
+      skip:
+        offlineEntitiesDir ? false : (
+          'metadata-store offline corpus not available'
+        ),
+    },
     () => {
       const radikaFixturePath = path.resolve(
         __dirname,
@@ -435,14 +448,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
         __dirname,
         '../fixtures/visits/visit-robinmagister.json',
       );
-      const entitiesDir =
-        [
-          path.resolve(__dirname, '../../../../../metadata-store/entities'),
-          path.resolve(__dirname, '../../../../metadata-store/entities'),
-          path.resolve(__dirname, '../../../metadata-store/entities'),
-          path.resolve(__dirname, '../../metadata-store/entities'),
-        ].find((p) => fs.existsSync(p)) ||
-        path.resolve(__dirname, '../../../metadata-store/entities');
+      const entitiesDir = offlineEntitiesDir;
 
       function loadVisitData(fixturePath) {
         if (!fs.existsSync(fixturePath)) return null;
