@@ -670,5 +670,6 @@ counts and exit code. Do not commit. Depends on Sessions 9 and 10.
 - [x] `docs/STATUS.md` + `docs/HANDOFF.md` updated for each shipped batch.
 
 **Deferred (no `msg → ui` edge):** Session 6's `VisitedCityState.js` +
-`visitedCityRenderBinding.js` were not built; the visited-player card still
-renders via the legacy `fn/renderCityStats.js` → `ui/renderCityStats.js` shim.
+`visitedCityRenderBinding.js` landed in Batch 17 (2026-09-12) — the
+visited-player card now renders through the reactive store/binding rather than
+the legacy `fn/renderCityStats.js` → `ui/renderCityStats.js` shim.
