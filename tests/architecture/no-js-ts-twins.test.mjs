@@ -18,7 +18,12 @@ async function walk(dir) {
 
 test('no module exists as both .js and .ts under src/js', async () => {
   const bases = new Map();
-  for (const file of await walk(ROOT)) {
+  const files = await walk(ROOT);
+  assert.ok(
+    files.length > 0,
+    'expected to walk at least one file under src/js',
+  );
+  for (const file of files) {
     const ext = path.extname(file);
     if (ext !== '.js' && ext !== '.ts') continue;
     const base = file.slice(0, -ext.length);
