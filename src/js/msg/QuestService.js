@@ -9,6 +9,13 @@
 
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 
+const COMPLETED_QUEST_STATES = new Set([
+  'fulfilled',
+  'collect',
+  'closed',
+  'completed',
+]);
+
 class Quest {
   constructor(raw = {}) {
     this.id = raw.id || 0;
@@ -29,14 +36,25 @@ class Quest {
   isActive() {
     return this.state === 'accepted' || this.state === 'fulfilled';
   }
+
+  isCompleted() {
+    return COMPLETED_QUEST_STATES.has(this.state);
+  }
+
+  getRewards() {
+    const rewards = this.raw?.genericRewards;
+    return Array.isArray(rewards) ? rewards : [];
+  }
 }
 
 class QuestService {
-  constructor() {
+  constructor(deps = {}) {
     this.quests = new Map();
     this.questPeriods = [];
     this.categoryTimes = null;
     this.lastUpdated = null;
+    this.rewardRenderer = deps.rewardRenderer || null;
+    this.rewardedQuestIds = new Set();
 
     this.getUpdates = this.getUpdates.bind(this);
     this.getQuestPeriods = this.getQuestPeriods.bind(this);
@@ -60,6 +78,55 @@ class QuestService {
     return this;
   }
 
+  resolveRewardRenderer() {
+    if (this.rewardRenderer) return this.rewardRenderer;
+    if (typeof __webpack_require__ !== 'undefined') {
+      try {
+        this.rewardRenderer = require('../ui/RewardRenderer.js');
+      } catch {
+        this.rewardRenderer = null;
+      }
+    }
+    return this.rewardRenderer;
+  }
+
+  resolveShowRewards() {
+    if (typeof this.showRewards === 'boolean') return this.showRewards;
+    if (typeof __webpack_require__ !== 'undefined') {
+      try {
+        const options = require('../state/showOptions.js');
+        const value = options?.showOptions?.showRewards ?? options?.showRewards;
+        if (typeof value === 'boolean') return value;
+      } catch {
+        // showOptions unavailable — default on below.
+      }
+    }
+    return true;
+  }
+
+  routeCompletedRewards() {
+    if (!this.resolveShowRewards()) return;
+
+    const renderer = this.resolveRewardRenderer();
+    const showRewardFn =
+      (renderer && typeof renderer.showReward === 'function' ?
+        renderer.showReward
+      : null) ||
+      (renderer?.default && typeof renderer.default.showReward === 'function' ?
+        renderer.default.showReward
+      : null);
+    if (!showRewardFn) return;
+
+    for (const quest of this.quests.values()) {
+      if (!quest.isCompleted() || this.rewardedQuestIds.has(quest.id)) continue;
+      this.rewardedQuestIds.add(quest.id);
+      for (const reward of quest.getRewards()) {
+        if (!reward || typeof reward !== 'object') continue;
+        showRewardFn('quest', reward);
+      }
+    }
+  }
+
   getUpdates(msg) {
     const rawList =
       Array.isArray(msg?.responseData) ? msg.responseData
@@ -72,6 +139,8 @@ class QuestService {
       this.quests.set(quest.id, quest);
     }
     this.lastUpdated = Date.now();
+
+    this.routeCompletedRewards();
 
     return {
       success: true,

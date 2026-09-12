@@ -15,7 +15,7 @@ import * as bootstrap from 'bootstrap';
 import browser from 'webextension-polyfill';
 import { toolOptions } from './fn/globals.js';
 import * as helper from './fn/helper.js';
-import { rewardObserve, showReward, showRewards } from './fn/RewardRenderer.js';
+import { rewardObserve, showReward } from './fn/RewardRenderer.js';
 import * as storage from './fn/storage.js';
 import { armyUnitManagementService } from './msg/ArmyUnitManagementService.js';
 import { getBonuses, getLimitedBonuses } from './msg/BonusService.js';
@@ -129,7 +129,7 @@ if (typeof document !== 'undefined') {
 
 if (typeof window !== 'undefined') window.bootstrap = bootstrap;
 
-export { rewardObserve, showReward, showRewards };
+export { rewardObserve, showReward };
 
 export * from './vars/state.js';
 

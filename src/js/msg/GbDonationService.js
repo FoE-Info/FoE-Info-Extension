@@ -367,13 +367,12 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
     null;
 
   if (showRewardFn) {
-    showRewardFn({
+    showRewardFn('greatBuilding', {
       name: rewardName,
       subType: subType || rewardName,
       amount,
       totalAmount: amount,
       type: rewardType,
-      source: 'greatBuilding',
     });
   } else {
     if (!container) {

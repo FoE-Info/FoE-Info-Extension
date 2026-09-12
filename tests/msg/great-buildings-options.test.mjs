@@ -494,11 +494,13 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
       const cityrewards = createMockElement('div', 'cityrewards');
       domStore.set('cityrewards', cityrewards);
 
+      let capturedSource = null;
       let capturedReward = null;
       const mockRenderer = {
-        showReward: (r) => {
-          capturedReward = r;
-          cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel">REWARDS:</p><div id="rewardsText">${r.amount} ${r.name}</div></div>`;
+        showReward: (source, payload) => {
+          capturedSource = source;
+          capturedReward = payload;
+          cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel">REWARDS:</p><div id="rewardsText">${payload.amount} ${payload.name}</div></div>`;
         },
       };
 
@@ -522,8 +524,8 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
 
       assert.equal(result.success, true);
       assert.notEqual(capturedReward, null);
+      assert.equal(capturedSource, 'greatBuilding');
       assert.equal(capturedReward.type, 'blueprint');
-      assert.equal(capturedReward.source, 'greatBuilding');
       assert.match(cityrewards.innerHTML, /alert-danger/);
       assert.doesNotMatch(cityrewards.innerHTML, /alert-info/);
       assert.doesNotMatch(cityrewards.innerHTML, /alert-primary/);
