@@ -2,53 +2,81 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import resourcePkg from '../../src/js/msg/ResourceService.js';
 import dispatcherPkg from '../../src/js/protocol/MessageDispatcher.js';
+import loggerPkg from '../../src/js/utils/logger.js';
 
 const { MessageDispatcher } = dispatcherPkg;
+const { setDebugEnabled } = loggerPkg;
+
+function createElement(id) {
+  const closeButton = {
+    handlers: {},
+    addEventListener(type, fn) {
+      this.handlers[type] = fn;
+    },
+  };
+  return {
+    id,
+    innerHTML: '',
+    innerText: '',
+    style: {},
+    className: '',
+    classList: {
+      classes: new Set(),
+      add(c) {
+        this.classes.add(c);
+      },
+      remove(c) {
+        this.classes.delete(c);
+      },
+      contains(c) {
+        return this.classes.has(c);
+      },
+    },
+    offsetHeight: 100,
+    addEventListener: () => {},
+    querySelector: (sel) => (sel === '.btn-close' ? closeButton : null),
+    closeButton,
+  };
+}
 
 test('ResourceService Market & Trade Interaction Suite', async (t) => {
   // Setup minimal DOM mock
   const domElements = new Map();
   global.document = {
     getElementById: (id) => {
-      if (!domElements.has(id)) {
-        domElements.set(id, {
-          id,
-          innerHTML: '',
-          innerText: '',
-          style: {},
-          className: '',
-          classList: {
-            classes: new Set(),
-            add(c) {
-              this.classes.add(c);
-            },
-            remove(c) {
-              this.classes.delete(c);
-            },
-            contains(c) {
-              return this.classes.has(c);
-            },
-          },
-          offsetHeight: 100,
-          addEventListener: () => {},
-        });
-      }
+      if (!domElements.has(id)) domElements.set(id, createElement(id));
       return domElements.get(id);
     },
-    createElement: (tag) => ({
-      tagName: tag,
-      innerHTML: '',
-      style: {},
-      appendChild: () => {},
-    }),
+    createElement: (tag) => createElement(tag),
   };
 
   const goodsDiv = global.document.getElementById('goods');
 
+  const openMarket = async (method = 'getTradeList') => {
+    const dispatcher = new MessageDispatcher();
+    resourcePkg.register(dispatcher);
+    return dispatcher.dispatchBatch([
+      {
+        __class__: 'ServerRequest',
+        requestClass: 'TradeService',
+        requestMethod: method,
+        responseData: [],
+      },
+    ]);
+  };
+
+  const harvest = (resources) =>
+    resourcePkg.getPlayerResources({
+      __class__: 'ServerRequest',
+      requestClass: 'ResourceService',
+      requestMethod: 'getPlayerResources',
+      responseData: { resources },
+    });
+
   await t.test(
     '1. Initial getPlayerResources caches goods and does not render #goods on login (showGoods: false)',
     () => {
-      const loginPayload = {
+      resourcePkg.getPlayerResources({
         __class__: 'ServerRequest',
         requestClass: 'ResourceService',
         requestMethod: 'getPlayerResources',
@@ -60,9 +88,7 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
             strategy_points: 12,
           },
         },
-      };
-
-      resourcePkg.getPlayerResources(loginPayload);
+      });
 
       // Verify cached inventory
       assert.equal(resourcePkg.goods.wine, 150);
@@ -70,13 +96,16 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       assert.ok(resourcePkg.lastGoodsPayload);
       assert.equal(resourcePkg.availableFP, 12);
 
+      // Locked until Market/Inventory open
+      assert.equal(resourcePkg.isGoodsPanelUnlocked(), false);
+
       // Verify DOM not rendered on login
       assert.equal(goodsDiv.style.display, 'none');
     },
   );
 
   await t.test(
-    '1b. Login does not render #goods even when showGoods is enabled, until Market/Inventory has been opened',
+    '2. Login does not render #goods even when showGoods is enabled, until Market/Inventory has been opened',
     async () => {
       resourcePkg.setShowOptions({ showGoods: true });
       goodsDiv.innerHTML = '';
@@ -99,16 +128,9 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       assert.equal(goodsDiv.innerHTML, '');
 
       // Opening the market unlocks it for the rest of the session.
-      const dispatcher = new MessageDispatcher();
-      resourcePkg.register(dispatcher);
-      await dispatcher.dispatchBatch([
-        {
-          __class__: 'ServerRequest',
-          requestClass: 'TradeService',
-          requestMethod: 'getTradeList',
-          responseData: [],
-        },
-      ]);
+      const res = await openMarket();
+      assert.equal(res.succeeded, 1);
+      assert.equal(resourcePkg.isGoodsPanelUnlocked(), true);
       assert.equal(goodsDiv.style.display, '');
       assert.ok(goodsDiv.innerHTML.includes('goodstable'));
 
@@ -118,73 +140,67 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       resourcePkg.getPlayerResources(loginPayload);
       assert.equal(goodsDiv.style.display, '');
       assert.ok(goodsDiv.innerHTML.includes('goodstable'));
+    },
+  );
+
+  await t.test(
+    '3. Clicking the #goods .btn-close dismiss relocks the panel and clears its content',
+    () => {
+      assert.ok(goodsDiv.closeButton.handlers.click, 'dismiss handler bound');
+      goodsDiv.closeButton.handlers.click();
+
+      assert.equal(resourcePkg.isGoodsPanelUnlocked(), false);
+      assert.equal(goodsDiv.innerHTML, '');
+      assert.equal(goodsDiv.style.display, 'none');
+      assert.ok(goodsDiv.classList.contains('d-none'));
+    },
+  );
+
+  await t.test(
+    '4. Routine OWN_CITY harvest / background entity sync does not respawn #goods after dismissal',
+    () => {
+      resourcePkg.setShowOptions({ showGoods: true });
+      harvest({ wine: 900, stone: 800, marble: 700 });
+      assert.equal(goodsDiv.innerHTML, '');
+      assert.equal(goodsDiv.style.display, 'none');
+      assert.equal(resourcePkg.isGoodsPanelUnlocked(), false);
+    },
+  );
+
+  await t.test(
+    '5. Reopening the market after dismissal unlocks and renders again',
+    async () => {
+      const res = await openMarket('getOpenOffers');
+      assert.equal(res.succeeded, 1);
+      assert.equal(resourcePkg.isGoodsPanelUnlocked(), true);
+      assert.equal(goodsDiv.style.display, '');
+      assert.ok(goodsDiv.innerHTML.includes('goodstable'));
+    },
+  );
+
+  await t.test(
+    '6. Debug mode bypasses the unlock guard so locked harvests still render',
+    () => {
+      resourcePkg.lockGoodsPanel();
+      goodsDiv.innerHTML = '';
+      goodsDiv.style.display = 'none';
+      assert.equal(resourcePkg.isGoodsPanelUnlocked(), false);
+
+      setDebugEnabled(true);
+      try {
+        harvest({ wine: 111, stone: 222 });
+        assert.equal(goodsDiv.style.display, '');
+        assert.ok(goodsDiv.innerHTML.includes('goodstable'));
+      } finally {
+        setDebugEnabled(false);
+      }
 
       resourcePkg.setShowOptions({ showGoods: false });
     },
   );
 
-  await t.test('2. Dismissing/closing panel clears or hides #goods', () => {
-    // Simulate user closing panel
-    goodsDiv.innerHTML = '';
-    goodsDiv.style.display = 'none';
-    goodsDiv.classList.add('d-none');
-
-    assert.equal(goodsDiv.innerHTML, '');
-    assert.equal(goodsDiv.style.display, 'none');
-    assert.ok(goodsDiv.classList.contains('d-none'));
-  });
-
   await t.test(
-    '3. Opening market (TradeService.getTradeList) unhides and re-renders #goods',
-    async () => {
-      const dispatcher = new MessageDispatcher();
-      resourcePkg.register(dispatcher);
-
-      const marketMsg = {
-        __class__: 'ServerRequest',
-        requestClass: 'TradeService',
-        requestMethod: 'getTradeList',
-        responseData: [],
-      };
-
-      const dispatchRes = await dispatcher.dispatchBatch([marketMsg]);
-      assert.equal(dispatchRes.succeeded, 1);
-
-      // Verify container unhidden and re-rendered
-      assert.equal(goodsDiv.style.display, '');
-      assert.equal(goodsDiv.classList.contains('d-none'), false);
-      assert.ok(goodsDiv.innerHTML.includes('goodstable'));
-      assert.ok(goodsDiv.innerHTML.includes('wine'));
-      assert.ok(goodsDiv.innerHTML.includes('stone'));
-    },
-  );
-
-  await t.test(
-    '4. TradeService.getOpenOffers also triggers re-render',
-    async () => {
-      // Re-hide container
-      goodsDiv.innerHTML = '';
-      goodsDiv.style.display = 'none';
-
-      const dispatcher = new MessageDispatcher();
-      resourcePkg.register(dispatcher);
-
-      const openOffersMsg = {
-        __class__: 'ServerRequest',
-        requestClass: 'TradeService',
-        requestMethod: 'getOpenOffers',
-        responseData: [],
-      };
-
-      const dispatchRes = await dispatcher.dispatchBatch([openOffersMsg]);
-      assert.equal(dispatchRes.succeeded, 1);
-      assert.equal(goodsDiv.style.display, '');
-      assert.ok(goodsDiv.innerHTML.includes('goodstable'));
-    },
-  );
-
-  await t.test(
-    '5. goodsSize defaults to 200px if stored value is collapsed/corrupted (< 80px)',
+    '7. goodsSize defaults to 200px if stored value is collapsed/corrupted (< 80px)',
     () => {
       // Simulate stored size corrupted by collapse (e.g. 35px)
       resourcePkg.setGlobals({
@@ -205,7 +221,7 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
     },
   );
 
-  await t.test('6. Special goods header uses data-i18n="special_goods"', () => {
+  await t.test('8. Special goods header uses data-i18n="special_goods"', () => {
     resourcePkg.getPlayerResources({
       responseData: {
         resources: {
