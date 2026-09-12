@@ -240,6 +240,53 @@ function formatFpHTML(stats = {}, playerInfo = {}, prefix = '', exact = false) {
   };
 }
 
+function formatCritStrikeHTML(spec = {}) {
+  const ao = spec.aoCriticalStrike;
+  const cc = spec.ccCriticalStrike;
+  const hasAo =
+    ao && (BigNumber.isBigNumber(ao) ? !ao.isZero() : Number(ao) > 0);
+  const hasCc =
+    cc && (BigNumber.isBigNumber(cc) ? !cc.isZero() : Number(cc) > 0);
+
+  if (hasAo && hasCc) {
+    return `<div><span data-i18n="crit_strike">Crit Strike</span>: ${formatPercent(ao)} (AO), ${formatPercent(cc)} (CC)</div>`;
+  }
+  if (hasAo) {
+    return `<div><span data-i18n="crit_strike">Crit Strike</span>: ${formatPercent(ao)}</div>`;
+  }
+  if (hasCc) {
+    return `<div><span data-i18n="crit_strike">Crit Strike</span>: ${formatPercent(cc)}</div>`;
+  }
+  return '';
+}
+
+function formatUnitsHTML(
+  stats = {},
+  playerInfo = {},
+  prefix = '',
+  exact = false,
+) {
+  const units = stats.units || {};
+  const total = units.total || units.daily || units.traz || 0;
+  const totalDisplay = formatStatNumber(total, { exact, comma: true });
+
+  const tooltip =
+    playerInfo.unitsTooltipHTML ||
+    stats.unitsTooltipHTML ||
+    units.tooltipHTML ||
+    '';
+  const escaped =
+    typeof tooltip === 'string' ?
+      tooltip.replace(/'/g, '&#39;').replace(/"/g, '&quot;')
+    : '';
+
+  if (escaped) {
+    const body = `<span id="${prefix}-units" class="pop" role="button" tabindex="0" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily Units" data-bs-content='${escaped}'>${totalDisplay}</span>`;
+    return `<span data-i18n="stat_daily_units">Daily Units</span>: ${body}`;
+  }
+  return `<span data-i18n="stat_daily_units">Daily Units</span>: ${totalDisplay}`;
+}
+
 module.exports = {
   formatStatNumber,
   formatPercent,
@@ -250,5 +297,7 @@ module.exports = {
   formatGoodsHTML,
   formatClanGoodsHTML,
   formatFpHTML,
+  formatCritStrikeHTML,
+  formatUnitsHTML,
 };
 module.exports.default = module.exports;
