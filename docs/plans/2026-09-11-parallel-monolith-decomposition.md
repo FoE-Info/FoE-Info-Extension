@@ -27,7 +27,7 @@ FoE-Info-Extension/ (main checkout: development)
 
 ## 2. Workstream A: Antigravity (GreatBuildingsService Decomposition)
 
-- **Status**: Complete (2026-09-11, worktree `antigravity-gb-donation`, uncommitted). Extracted `renderGbDonationPanel.js` (492 lines). `GreatBuildingsService.js` dropped from 736 to 458 lines (−278 lines, −38%, $\le 600$ lines ceiling satisfied). All 745 unit tests pass, verification gate green.
+- **Status**: Complete (2026-09-11, worktree `antigravity-gb-donation`). Extracted `renderGbDonationPanel.js` (492 lines). `GreatBuildingsService.js` dropped from 736 to 458 lines (−278 lines, −38%, $\le 600$ lines ceiling satisfied). All 745 unit tests pass, verification gate green.
 - **Target File**: `src/js/msg/GreatBuildingsService.js` (736 lines $\to \le 450$ lines).
 - **Target New Module**: `src/js/ui/renderGbDonationPanel.js` ($\le 300$ lines).
 - **Test File**: `tests/ui/render-gb-donation-panel.test.mjs`.
@@ -45,7 +45,7 @@ FoE-Info-Extension/ (main checkout: development)
 
 ## 3. Workstream B: OpenCode (GuildBattlegroundService Decomposition)
 
-- **Status**: Complete (2026-09-11, worktree `opencode-gbg-result`, uncommitted). Service reduced 1,032 $\to$ 980 lines; `getState` delegates to `renderBattlegroundResultCard.js` (217 lines). The $\le 850$ stretch target is not met by this single slice and would require further extraction.
+- **Status**: Complete (2026-09-11, worktree `opencode-gbg-result`). Service reduced 1,032 $\to$ 980 lines; `getState` delegates to `renderBattlegroundResultCard.js` (217 lines). The $\le 850$ stretch target is not met by this single slice and would require further extraction.
 - **Target File**: `src/js/msg/GuildBattlegroundService.js` (1,032 lines $\to \le 850$ lines).
 - **Target Extraction Module**: `src/js/ui/gbgProvinceView.js` (or `src/js/ui/renderBattlegroundResultCard.js`).
 - **Test File**: `tests/ui/gbg-province-view.test.mjs` (or `tests/ui/render-battleground-result-card.test.mjs`).
