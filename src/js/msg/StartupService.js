@@ -1,16 +1,4 @@
-/*
- * ________________________________________________________________
- * Copyright (C) 2022 FoE-Info - All Rights Reserved
- * this source-code uses a copy-left license
- *
- * you are welcome to contribute changes here:
- * https://github.com/FoE-Info/FoE-Info-Extension
- *
- * AGPL license info:
- * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
- * or else visit https://www.gnu.org/licenses/#AGPL
- * ________________________________________________________________
- */
+/** Startup data RPC service orchestrating initial city and player ingestion. */
 import { processCityMapEntities } from '../calc/CityMapEntityProcessor.js';
 import { fArcname, fCFname } from '../calc/gbNaming.js';
 import * as element from '../fn/AddElement';

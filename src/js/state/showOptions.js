@@ -1,3 +1,4 @@
+/** Reactive panel-visibility options shared across the panel UI. */
 import { onWorldSettingsChange } from '../utils/storage.js';
 
 export var showFriends = true;

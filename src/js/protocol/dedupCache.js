@@ -1,3 +1,4 @@
+/** Time-windowed dedup cache used by MessageDispatcher to suppress replay payloads. */
 let logger = null;
 try {
   const { createLogger } = require('../utils/logger.js');
