@@ -4,6 +4,21 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 8 — Resource / Goods decoupling**:
+  - `ResourceService` (305 → 305 L) no longer imports `../ui/`; it publishes to
+    the new `src/js/state/ResourceState.js` (`goods` / `fp` / `globals` /
+    `clear` channels). `src/js/ui/resourceRenderBinding.js` executes goods
+    renders and injects `onCopy` (`goodsCopy`) while the service supplies
+    `onDismiss` (`lockGoodsPanel`), preserving the ephemeral goods lock.
+  - The market-trigger flow is unchanged: `onMarketOpened` unlocks + republishes
+    the cached goods; `onMarketOpened`'s unused `targetDiv` return field was
+    dropped.
+  - Tests: `tests/state/resource-state.test.mjs`,
+    `tests/ui/resource-render-binding.test.mjs`; `resource-market-trigger`
+    side-effect-loads the binding; `render-bindings` now lists `resourceState`.
+  - **Verification**: `npm run verify` exit 0 — **1,257 tests / 0 fail**,
+    prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
+
 - **F2 Session 7 — Outpost / Cultural decoupling**:
   - `OutpostService` (321 → 316 L) no longer imports `../ui/`; it publishes the
     resolved settlement/advancements/costs to the new
