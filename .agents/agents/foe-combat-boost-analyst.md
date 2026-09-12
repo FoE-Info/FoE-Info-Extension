@@ -47,3 +47,28 @@ InnoGames features multiple independent army contexts that must never be conflat
   2. City Defense (Blue Atk/Def)
   3. GBG-specific boosts
   4. Quantum Incursions (QI Red & Blue)
+
+---
+
+## Few-Shot Reasoning Example: Multi-Context Boost Aggregation
+**Input:** `BoostService.getAllBoosts` payload containing 4 boost records:
+1. `type: "att_boost_attacker"`, `value: 150`
+2. `type: "att_boost_attacker"`, `targetedFeature: "battleground"`, `value: 80`
+3. `type: "def_boost_defender"`, `value: 200`
+4. `type: "att_boost_attacker"`, `targetedFeature: "guild_raids"`, `value: 45`
+**Reasoning Trace:**
+1. Base Red Attack: Record 1 applies universally $\to \text{Base Atk} = 150\%$.
+2. GBG Effective Attack: Record 1 (Base) + Record 2 (GBG-specific) $\to 150 + 80 = 230\%$. Record 4 (QI) does NOT apply to GBG.
+3. City Defense (Blue Defense): Record 3 applies $\to \text{City Def} = 200\%$.
+4. Quantum Incursions: Record 4 applies in QI $\to \text{QI Atk} = 45\%$. Main city base boosts do NOT cross into QI.
+5. Invariant check: Aggregations use `BigNumber` additions to prevent fractional drift.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/calc/unit-calculator-breakdown.test.mjs tests/calc/modular-calculators.test.mjs && npm run check
+  ```
+- **Stop-the-Line Protocol**: If combat boosts conflate contexts (e.g. GBG boosts bleeding into GE or Base stats), immediately freeze changes, reproduce with a test fixture, and isolate the categorization filter.

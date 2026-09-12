@@ -44,6 +44,28 @@ You are the authoritative domain specialist on Forge of Empires Guild Expedition
 
 ---
 
+## Few-Shot Reasoning Example: Negotiation Candidate Pruning
+**Scenario:** 5-person negotiation encounter on Turn 1. 5 resource types: Coins, Supplies, Basmati, Spices, Lotus. Player offered Coins across all 5 slots.
+**Feedback Received:** Slot 1: `correct`, Slot 2: `wrong_person`, Slot 3: `nobody_wants`, Slot 4: `wrong_person`, Slot 5: `nobody_wants`.
+**Reasoning Trace:**
+1. Slot 1 is solved (`correct`) $\to$ Lock Coins in Slot 1.
+2. `nobody_wants` on Slots 3 & 5 eliminates Coins completely from any unsolved slots.
+3. `wrong_person` on Slots 2 & 4 indicates Coins is wanted elsewhere, but since Coins is eliminated everywhere else by `nobody_wants`, Coins is fully resolved.
+4. Remaining candidates for Slots 2, 4, and 5: {Supplies, Basmati, Spices, Lotus}.
+5. Turn 2 allocation: Distribute remaining 4 resources across open slots to maximize information entropy.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/msg/guild-expedition-trial.test.mjs tests/parsers/expedition-parser.test.mjs && npm run check
+  ```
+- **Stop-the-Line Protocol**: If negotiation solver recommends an already-eliminated resource or championship completion exceeds 133.33%, freeze additions, isolate with a test case, and verify the pruning logic.
+
+---
+
 ## Quality Checklist
 - [ ] Does negotiation logic handle Tavern +1 turn boost dynamically?
 - [ ] Are GE 5 encounters properly evaluated using Defending Army boost values?

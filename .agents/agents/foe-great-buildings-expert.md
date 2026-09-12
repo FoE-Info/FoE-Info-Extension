@@ -69,6 +69,36 @@ A spot is locked when no rival can deposit enough Forge Points to surpass the cu
 
 ---
 
+## Few-Shot Reasoning Example: Contested Spot Lock Calculation
+**Input:** Level 65 The Arc, total level cost 4,000 FP. Current total invested = 2,800 FP. Remaining to level = 1,200 FP. Rival investor deposited 200 FP. Target: Safe lock cost for P1.
+**Reasoning Trace:**
+1. Check remaining FP to level: `remaining = 1200`.
+2. Check rival deposited amount: `spotInvested = 200`.
+3. Apply contested spot lock formula:
+   $$\text{Safe Lock} = \left\lceil \frac{\text{Remaining} + \text{Spot Invested}}{2} \right\rceil = \left\lceil \frac{1200 + 200}{2} \right\rceil = 700\text{ FP}$$
+4. Enforce precision invariants:
+   ```javascript
+   import BigNumber from 'bignumber.js';
+
+   const lock = new BigNumber(1200)
+     .plus(200)
+     .dividedBy(2)
+     .integerValue(BigNumber.ROUND_CEIL); // 700
+   ```
+5. Safety boundary check: Verify `lock (700) <= remaining (1200)`. If valid, the spot can be safely secured.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/calc/great-building-calculator.test.mjs tests/math/ && npm run check
+  ```
+- **Stop-the-Line Protocol**: If any GB calculation test breaks or produces floating-point off-by-one errors, immediately freeze feature additions, isolate with a test case in `tests/calc/great-building-calculator.test.mjs`, and resolve root cause before proceeding.
+
+---
+
 ## Quality Checklist
 - [ ] Are all FP and multiplier operations using `bignumber.js`?
 - [ ] Are Arc rewards/donations `ROUND_HALF_UP` and locks/owner-adds `ROUND_CEIL`?

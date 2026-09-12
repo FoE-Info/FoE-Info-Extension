@@ -43,6 +43,25 @@ Before triggering a production build or packaging release archives, verify all q
 * Generate release notes adhering to Keep-a-Changelog format.
 * Group commits by conventional types: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
+## Few-Shot Reasoning Example: Production Release Pre-Flight Gate
+**Scenario:** Packaging a new release build after feature additions.
+**Reasoning Trace:**
+1. Check Rule 17 (Release Policy): Version bumps and git tags are strictly forbidden during routine tasks; only perform when user explicitly requests a release.
+2. Synchronize versions: Ensure `package.json` and `src/chrome/manifest.json` versions match.
+3. Run full 5-stage verification gate: `npm run verify` must pass with exit 0.
+4. Execute packaging script: `node scripts/package-extension.js`.
+5. Audit build archive: Confirm `build/FoE-Info-Prod/` contains no test files, `.agents/`, or fixture dumps.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm run verify && npm run build:prod
+  ```
+- **Stop-the-Line Protocol**: If `npm run verify` fails or manifest versions drift, abort packaging immediately and resolve blockers.
+
 ---
 
 ## Quality Checklist

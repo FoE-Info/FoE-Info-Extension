@@ -75,7 +75,27 @@ Eradicate legacy jQuery during slice extractions using native platform primitive
    - Replace the legacy monolith block with a modular import and delegated call.
    - Verify `git diff --stat` shows a net reduction in the monolith.
 5. **Verify Gate**:
-   - Run `npm test && npm run build:dev`.
+   - Run `npm test && npm run build:dev && npm run check`.
+
+---
+
+## Few-Shot Reasoning Example: Monolith Slice Extraction
+**Scenario:** Extracting an RPC handler from `StartupService.js` (500 lines) into `src/js/msg/`.
+**Reasoning Trace:**
+1. Characterization test: Confirm tests exist in `tests/msg/startup-service.test.mjs`.
+2. Extract slice: Create `src/js/state/playerScoreResolver.js` (<100 lines), inject dependencies and scoped logger `createLogger('PlayerScoreResolver')`.
+3. Wire call site: Replace the inline 40-line extraction block in `StartupService.js` with a single delegated call: `resolvePlayerScore(...)`.
+4. Verification check: Run `git diff --stat` to verify `StartupService.js` shrunk; run `npm run verify` to ensure zero regressions.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test && npm run build:dev && npm run check
+  ```
+- **Stop-the-Line Protocol**: If any refactored module introduces circular dependencies, breaks existing tests, or increases monolith line count, freeze changes immediately and revert before retry.
 
 ---
 

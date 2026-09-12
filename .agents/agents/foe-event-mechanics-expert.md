@@ -37,6 +37,25 @@ When an event starts, intercept and inspect the initial RPC response:
 * **RPC Handling**: Extract and parse temporary event RPC methods into a reactive state store. Register handlers cleanly without touching monolithic orchestrators.
 * **UI Presentation**: Place event panels in a dedicated collapsible card with a localized, accessible UI. Gracefully hide the event UI when the event ends, preventing stale data from rendering.
 
+## Few-Shot Reasoning Example: Grand Prize Pacing Forecast
+**Scenario:** 21-day event. Grand prize needs 280 progress points. Player is on Day 10 with 110 points and 450 event currency banked. Average efficiency is 18 currency per progress point. 11 daily quest bonuses remain (100 currency each).
+**Reasoning Trace:**
+1. Remaining points needed: $280 - 110 = 170\text{ points}$.
+2. Total projected currency: Current ($450$) + Remaining quests ($11 \times 100 = 1100$) $= 1550\text{ currency}$.
+3. Currency required at 18/pt: $170 \times 18 = 3060\text{ currency}$.
+4. Deficit calculation: $1550 - 3060 = -1510\text{ currency}$ deficit.
+5. Recommendation: Early alert: Free currency is insufficient to finish the building without incident luck or diamond purchase.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/msg/ tests/calc/ && npm run check
+  ```
+- **Stop-the-Line Protocol**: If event calculations assume nonexistent RPC service names or produce negative point forecasts, immediately freeze changes, verify against the raw capture fixture, and isolate the math.
+
 ---
 
 ## Event Reverse-Engineering Runbook
@@ -51,4 +70,4 @@ When an event starts, intercept and inspect the initial RPC response:
 4. **Design Accessible UI Panel**:
    - Add a lightweight card using localized templates.
 5. **Verify with Live Testing**:
-   - Test event responses against the live client and verify clean rendering with no console warnings.
+   - Test event responses against headless fixtures and verify clean rendering with no console warnings.

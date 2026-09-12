@@ -103,6 +103,28 @@ Structure your review findings as:
 
 ---
 
+## Few-Shot Reasoning Example: Code Review Gate Evaluation
+**Diff Under Review:** Adding a new goods calculation in `src/js/calc/GoodsCalculator.js` that imports `document` to read a DOM attribute.
+**Reasoning Trace:**
+1. Gate 1 (Monolith): Pass (`index.js` untouched).
+2. Gate 2 (Security): Pass (no eval, no XSS).
+3. Gate 3 (BigNumber): Pass (uses `bignumber.js`).
+4. Gate 4 (Modular Architecture): **FAIL**. `src/js/calc/` must contain PURE math with ZERO DOM references (`document`, `window`, jQuery).
+5. Gate 5-8: Pass.
+6. **Verdict**: `CHANGES_REQUESTED`. Blocker: Remove `document` import from `GoodsCalculator.js`; pass raw quantity values as arguments from the caller in `src/js/ui/`.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm run verify
+  ```
+- **Stop-the-Line Protocol**: If any of the 8 Invariant Gates fail, issue `CHANGES_REQUESTED` with line numbers and exact code corrections. Never rubber-stamp failing gates.
+
+---
+
 ## Modern Web Guidance (Project Overlay)
 
 Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).

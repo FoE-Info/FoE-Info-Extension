@@ -47,6 +47,36 @@ You are the authoritative specialist in Chrome Extension Architecture with deep 
 * Standard mode (default) must remain 100% silent to avoid cluttering the developer console.
 * Debug mode should emit structured, tagged diagnostics for packet serialization, bridge handoffs, storage writes, and errors.
 
+## Few-Shot Reasoning Example: Versioned Bridge postMessage Protocol
+**Scenario:** Transmitting an intercepted RPC envelope from DevTools harness (`devtools.js`) to the extension panel (`index.js`).
+**Reasoning Trace:**
+1. Avoid window globals (`window.handleRawNetworkEntry`). Use structured `window.postMessage` envelopes.
+2. Specify version and message type:
+   ```javascript
+   export function postNetworkEntry(entry) {
+     window.postMessage(
+       {
+         source: 'foe-info-devtools',
+         version: 1,
+         type: 'raw-network-entry',
+         payload: entry,
+       },
+       '*',
+     );
+   }
+   ```
+3. In panel receiver: Verify `event.source === window`, validate `version === 1`, and check `event.data?.source === 'foe-info-devtools'` before dispatching.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/protocol/ && npm run check
+  ```
+- **Stop-the-Line Protocol**: If cross-context messaging encounters dropped events, CSP errors, or storage quota violations, freeze changes, isolate with a bridge test fixture, and resolve before proceeding.
+
 ---
 
 ## Architecture Review Checklist

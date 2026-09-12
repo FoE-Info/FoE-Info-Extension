@@ -91,3 +91,24 @@ flowchart TD
 - Create a dedicated markdown document under git-ignored:
   - `./graphify-out/foe-info-original/findings/<investigation-name>.md`
 - Include: Executive Summary, Traversed Nodes/Edges, Questions Answered, Visual Flowcharts, Critical Reflection, and Actionable Recommendations.
+
+---
+
+## Few-Shot Reasoning Example: Baseline AST Query
+**Inquiry:** "Query the v1 baseline architecture of `helper.js` in `graphify-foe-info-original`."
+**Reasoning Trace:**
+1. Execute `call_mcp_tool` on `graphify-foe-info-original` with `get_node`:
+   - Node: `src/js/helper.js` (commit `8c681d1`).
+2. Query coupling via `get_neighbors`: Trace all callers in the v1 monolith to document legacy coupling before agentic refactoring.
+3. Isolate findings: Never query `graphify-forge-hammer` or `graphify-low-tool`.
+4. Persist report to `./graphify-out/foe-info-original/findings/2026-09-helper-baseline.md`.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/agents/graphify-local.test.mjs && npm run check
+  ```
+- **Stop-the-Line Protocol**: If queries to the baseline graph fail or findings alter files outside `graphify-out/foe-info-original/findings/`, freeze execution immediately and verify the graph path.

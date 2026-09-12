@@ -87,3 +87,23 @@ flowchart TD
 - Save the markdown report inside FoE-Info's git-ignored directory:
   - `./graphify-out/forge-hammer/findings/<investigation-name>.md`
 - Include: Executive Summary, Side-by-Side Comparison Table, Architecture Flowcharts, Probed Questions & Answers, Critical Reflection, and Actionable Recommendations for FoE-Info.
+
+---
+
+## Few-Shot Reasoning Example: Safe-Spot Selection Comparative Audit
+**Inquiry:** "Compare safe-spot selection predicate between FoE-Info and Forge-Hammer."
+**Reasoning Trace:**
+1. In Forge-Hammer: Inspect GB locking predicate: uses `occupant < remaining` to determine if a place is passable.
+2. In FoE-Info: Previously checked `spotLock <= remaining` (which failed on locked boundary `occupant == remaining`). Modern FoE-Info uses pure `isPlacePassable(remaining, occupant)` achieving parity.
+3. Compare BigNumber precision: Both use hybrid rounding (half-up for rewards, ceiling for locks).
+4. Persist findings to `./graphify-out/forge-hammer/findings/2026-09-safe-spot-parity.md`.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/agents/graphify-local.test.mjs && npm run check
+  ```
+- **Stop-the-Line Protocol**: If comparative claims cannot be proven with AST node references or test fixtures, freeze conclusions and verify source code.

@@ -47,6 +47,38 @@ You are the authoritative JavaScript and Node.js language specialist. You govern
 
 ---
 
+## Few-Shot Reasoning Example: Scoped Logger & Clean Async Pipeline
+**Scenario:** Implementing a pure helper function that normalizes game timestamps and handles promise timeouts cleanly.
+**Reasoning Trace:**
+1. Avoid `console.log`; instantiate a scoped logger `createLogger('DateHelper')`.
+2. Do not re-introduce `dayjs` or raw `toLocaleDateString`. Use `resolveDate(rawSeconds)` from `src/js/utils/date.js`.
+3. Protect async pipelines with `AbortSignal.timeout(5000)`.
+4. Code template:
+   ```javascript
+   import { createLogger } from '../utils/logger.js';
+   import { resolveDate } from '../utils/date.js';
+
+   const logger = createLogger('DateHelper');
+
+   export function parseTimestamp(unixSeconds) {
+     const date = resolveDate(unixSeconds);
+     logger.debug('Resolved timestamp', { unixSeconds, iso: date.toISOString() });
+     return date;
+   }
+   ```
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/utils/ && npm run check
+  ```
+- **Stop-the-Line Protocol**: If changes introduce ungated console outputs, memory leaks, or unhandled promise rejections, freeze immediately, reproduce in a unit test, and resolve before continuing.
+
+---
+
 ## Quality Checklist
 - [ ] Are all variables scoped cleanly (`const` and `let` only; zero `var`)?
 - [ ] Are async pipelines protected with native `AbortSignal` cancellation?

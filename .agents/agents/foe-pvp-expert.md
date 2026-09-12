@@ -45,6 +45,30 @@ You are the authoritative domain specialist on Forge of Empires player-versus-pl
 
 ---
 
+## Few-Shot Reasoning Example: PvP Attempt Regeneration
+**Scenario:** Ingested `pvp_arena_attempt` resource definition:
+- `autoRefill: { interval: 5760, refillAmount: 1, maxAmount: 5 }`.
+- Player currently has 2 attempts remaining. Last refill occurred 1,800 seconds ago.
+**Reasoning Trace:**
+1. Capacity check: $2 < 5$, so regeneration is active.
+2. Time to next free attempt:
+   $$\text{Remaining Sec} = 5760 - 1800 = 3960\text{ sec} = 66\text{ minutes}$$
+3. Time to full 5 attempts ($3$ more attempts needed):
+   $$\text{Total Sec} = 3960 + (2 \times 5760) = 15,480\text{ sec} = 4.3\text{ hours}$$
+4. Invariant check: Respect captured `premiumPurchase.price = 50` for diamond refills; do not fabricate streak multipliers.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/calc/ tests/msg/ && npm run check
+  ```
+- **Stop-the-Line Protocol**: If attempt counts exceed 5 or unverified win-streak formulas are introduced, immediately freeze changes, isolate with a test fixture, and align to captured ground truth.
+
+---
+
 ## Quality Checklist
 - [ ] Are PvP attempt replenishment timestamps calculated accurately (`interval: 5760s`, `maxAmount: 5`)?
 - [ ] Is the absence of any captured win-streak field respected (do not fabricate streak multipliers)?

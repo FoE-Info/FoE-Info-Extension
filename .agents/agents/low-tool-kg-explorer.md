@@ -92,3 +92,23 @@ flowchart TD
 - Create a dedicated markdown document under git-ignored:
   - `./graphify-out/low-tool/findings/<investigation-name>.md`
 - Include: Executive Summary, Traversed Nodes/Edges, Questions Answered, Visual Flowcharts, Critical Reflection, and Actionable Recommendations.
+
+---
+
+## Few-Shot Reasoning Example: LoW-Tool Standalone AST Exploration
+**Inquiry:** "Inspect the closed-source LoW-Tool AST for legacy Great Building calculation formulas in `graphify-low-tool`."
+**Reasoning Trace:**
+1. Execute `call_mcp_tool` on `graphify-low-tool` with `get_node`:
+   - Node: `src/js/GreatBuildingsService.js` in LoW-Tool.
+2. Follow isolation invariant: Treat LoW-Tool strictly as its own standalone project; do NOT query `graphify-foe-info` or make comparative claims.
+3. Save findings to `./graphify-out/low-tool/findings/2026-09-gb-math-ast.md`.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/agents/graphify-local.test.mjs && npm run check
+  ```
+- **Stop-the-Line Protocol**: If queries to the LoW-Tool graph fail or findings alter files outside `graphify-out/low-tool/findings/`, freeze execution immediately and verify the graph path.

@@ -51,6 +51,30 @@ You are the authoritative domain specialist on Great Building sniping, safe spot
 
 ---
 
+## Few-Shot Reasoning Example: Snipe Opportunity Evaluation
+**Scenario:** Visited neighbor GB (Level 40 Alcatraz). Base reward for P1 = 450 FP. Player has Level 80 Arc (+90% boost). Remaining to level = 950 FP. Existing top investor deposited 150 FP. Target: Is this a profitable snipe?
+**Reasoning Trace:**
+1. Calculate Arc-boosted reward:
+   $$\text{Arc Reward} = \text{round}_{\text{half-up}}(450 \times 1.90) = 855\text{ FP}$$
+2. Calculate cost to safely lock P1 against existing investor (150 FP):
+   $$\text{Lock Cost} = \left\lceil \frac{950 + 150}{2} \right\rceil = \left\lceil \frac{1100}{2} \right\rceil = 550\text{ FP}$$
+3. Check lock validity: $550 \le 950$ (valid; building will not level early).
+4. Calculate net profit:
+   $$\text{Net Profit} = 855 - 550 = +305\text{ FP}$$
+5. Recommendation: Trigger snipe alert with 550 FP deposit requirement and expected +305 FP return.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/calc/great-building-calculator.test.mjs tests/math/ && npm run check
+  ```
+- **Stop-the-Line Protocol**: If spot locking math allows a rival to snipe back, or profit is negative, immediately freeze changes, reproduce with a test case, and verify the formula before returning.
+
+---
+
 ## Quality Checklist
 - [ ] Are Arc reward returns `BigNumber.ROUND_HALF_UP` while lock thresholds use `BigNumber.ROUND_CEIL`?
 - [ ] Does lock calculation account for existing rival investor contributions?

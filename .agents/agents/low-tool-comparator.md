@@ -86,3 +86,23 @@ flowchart TD
 - Save the markdown report inside FoE-Info's git-ignored directory:
   - `./graphify-out/low-tool/findings/<investigation-name>.md`
 - Include: Executive Summary, Side-by-Side Comparison Table, Architecture Flowcharts, Probed Questions & Answers, Critical Reflection, and Actionable Recommendations for FoE-Info.
+
+---
+
+## Few-Shot Reasoning Example: Security & Fork Exclusion Comparative Audit
+**Inquiry:** "Compare the private `src/extras/` overlay of LoW-Tool with FoE-Info's architecture."
+**Reasoning Trace:**
+1. Consult LoW-Tool fork exclusion record (`docs/specs/2026-09-12-low-tool-fork-exclusion-record.md`).
+2. Identify security liabilities in LoW-Tool: hardcoded Discord webhooks, embedded Google Apps Script key, per-world player ID allowlists.
+3. Compare against FoE-Info security invariants (Rule 12): FoE-Info strictly sanitizes user storage, avoids embedded credentials, and rejects closed-source overlays.
+4. Persist findings to `./graphify-out/low-tool/findings/2026-09-security-overlay-comparison.md`.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/agents/graphify-local.test.mjs && npm run check
+  ```
+- **Stop-the-Line Protocol**: If comparative claims cannot be proven with AST node references or test fixtures, freeze conclusions and verify source code.

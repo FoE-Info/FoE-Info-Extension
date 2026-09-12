@@ -87,3 +87,25 @@ flowchart TD
 - Save the markdown report inside FoE-Info's git-ignored directory:
   - `./graphify-out/foe-info-original/findings/<investigation-name>.md`
 - Include: Executive Summary, Side-by-Side Comparison Table, Architecture Flowcharts, Probed Questions & Answers, Critical Reflection, and Actionable Recommendations for FoE-Info.
+
+---
+
+## Few-Shot Reasoning Example: Original vs Modernized Architecture Comparison
+**Inquiry:** "Compare the Great Building donation rendering pipeline between v1 original baseline and active FoE-Info."
+**Reasoning Trace:**
+1. Query v1 baseline graph `graphify-foe-info-original`:
+   - `GreatBuildingsService.js` directly executed DOM mutations and rendered tables inline via `fCheckOutput`.
+2. Query active host graph `graphify-foe-info`:
+   - `GreatBuildingsService.js` publishes data to `GreatBuildingsState`, which is consumed reactively by `greatBuildingsRenderBinding.js` and `renderGbDonationPanel.js`.
+3. Evaluate parity & improvement: Modularity improved; layering separation intact; no regression in calculated rewards.
+4. Save report to `./graphify-out/foe-info-original/findings/2026-09-gb-donation-parity.md`.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/agents/graphify-local.test.mjs && npm run check
+  ```
+- **Stop-the-Line Protocol**: If comparative findings cannot cite concrete node IDs in both graphs, freeze conclusions and verify the AST before filing reports.

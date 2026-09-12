@@ -98,6 +98,44 @@ When InnoGames releases a new feature (e.g. a new mini-game or settlement):
 
 ---
 
+## Few-Shot Reasoning Example: InnoGames Envelope Extraction
+**Input:** Intercepted raw packet:
+```json
+[
+  {
+    "__class__": "ServerRequest",
+    "requestClass": "CityMapService",
+    "requestMethod": "getEntities",
+    "requestData": []
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "CityMapService",
+    "requestMethod": "getEntities",
+    "responseData": [
+      { "id": 12, "cityentity_id": "X_FutureEra_Landmark1", "type": "greatbuilding", "x": 10, "y": 14, "connected": 1 }
+    ]
+  }
+]
+```
+**Reasoning Trace:**
+1. Filter response envelope: Inspect `__class__ === "ServerResponse"`. (Do not attempt to parse `responseData` from a `ServerRequest` — request envelopes carry `requestData`).
+2. Method route: Match `requestClass === "CityMapService"` and `requestMethod === "getEntities"`.
+3. Array validation: Validate `Array.isArray(payload.responseData)`. If missing or corrupt, emit `logger.warn('Malformed entities payload')` and return safely.
+4. Entity extraction: Loop over entity rows, extract Great Buildings (`type === "greatbuilding"`), and publish to reactive `CityState`.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/protocol/ tests/state/ && npm run check
+  ```
+- **Stop-the-Line Protocol**: If packet parsing encounters an unhandled envelope shape or causes memory leaks, freeze additions, capture the raw payload as a fixture under `tests/fixtures/rpc/`, and verify the parser against it.
+
+---
+
 ## Quality Checklist
 
 - [ ] Does any new game calculation use `BigNumber` to prevent precision loss?

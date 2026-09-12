@@ -36,14 +36,40 @@ Browser extensions require compiling distinct execution contexts with strict bou
   - Never allow DOM-based `style-loader` injections into background scripts or isolated contexts.
 
 ### 4. Assets, Packaging & Build Optimization
+* **Build-Tier Matrix**:
+  - `dev`: `DEBUG_BUILD=true`, `FORCE_FIXTURES=true`, filesystem cache enabled, forced state bootstrap entry included.
+  - `beta`: `DEBUG_BUILD=true`, `FORCE_FIXTURES=false`, debug logs preserved (`pure_funcs: []`).
+  - `prod`: `DEBUG_BUILD=false`, Terser drops `console.debug/info/log`, zero fixture copies, clean store distribution.
 * **Asset Modules**:
   - Leverage Webpack 5 native asset modules (`asset/resource`, `asset/inline`) for fonts, icons, and images.
   - Use `CopyPlugin` for static assets (locale dictionaries, extension manifests, icons).
-* **Development Rebuilds**:
-  - Optimize incremental rebuilds via filesystem caching and watch mode.
-* **Production Packaging**:
-  - Configure Terser optimization with comments stripped and console debug flags configurable.
-  - Package production distributions into clean, store-ready ZIP archives excluding test and development files.
+* **MV3 CSP Compliance**: Never use `eval` source maps (`cheap-module-source-map` only).
+
+---
+
+## Few-Shot Reasoning Example: DefinePlugin Compile-Time Tier Flagging
+**Scenario:** Adding a compile-time feature flag to eliminate dev fixtures from production builds.
+**Reasoning Trace:**
+1. Avoid runtime checks that ship unused test fixtures to users.
+2. Inject compile-time boolean flags via `webpack.DefinePlugin`:
+   ```javascript
+   new webpack.DefinePlugin({
+     DEBUG_BUILD: JSON.stringify(isBeta || isDev),
+     FORCE_FIXTURES: JSON.stringify(isDev),
+   });
+   ```
+3. Terser dead-code elimination: Code inside `if (FORCE_FIXTURES) { ... }` is stripped cleanly from production output.
+4. Verify bundle output: Check that production output contains 0 references to test fixtures.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm run build:dev && npm run check
+  ```
+- **Stop-the-Line Protocol**: If webpack compilation fails or leaks `eval()` into bundle outputs, freeze immediately, inspect `webpack.config.js`, and verify build gates before proceeding.
 
 ---
 

@@ -92,3 +92,23 @@ flowchart TD
 - Create a dedicated markdown document under git-ignored:
   - `./graphify-out/forge-hammer/findings/<investigation-name>.md`
 - Include: Executive Summary, Traversed Nodes/Edges, Questions Answered, Visual Flowcharts, Critical Reflection, and Actionable Recommendations.
+
+---
+
+## Few-Shot Reasoning Example: Forge-Hammer Standalone Query
+**Inquiry:** "Inspect Forge-Hammer's approach to packet interception in `graphify-forge-hammer`."
+**Reasoning Trace:**
+1. Execute `call_mcp_tool` on `graphify-forge-hammer` with `query_graph`:
+   - Query: `network` or `interceptor`
+2. Follow isolation invariant: Treat Forge-Hammer strictly as its own standalone project; do NOT query `graphify-foe-info` or make comparative claims.
+3. Save findings to `./graphify-out/forge-hammer/findings/2026-09-interceptor-architecture.md`.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm test tests/agents/graphify-local.test.mjs && npm run check
+  ```
+- **Stop-the-Line Protocol**: If queries to the Forge-Hammer graph fail or findings alter files outside `graphify-out/forge-hammer/findings/`, freeze execution immediately and verify the graph path.

@@ -93,3 +93,26 @@ flowchart TD
 - Create a dedicated markdown document under git-ignored:
   - `graphify-out/foe-info/findings/<investigation-name>.md`
 - Include: Executive Summary, Traversed Nodes/Edges, Questions Answered, Visual Flowcharts, Critical Reflection, and Actionable Recommendations.
+
+---
+
+## Few-Shot Reasoning Example: Graphify Investigation
+**Inquiry:** "Trace dependencies of `CityStatsCalculator.js` to verify calculation purity."
+**Reasoning Trace:**
+1. Execute `call_mcp_tool` on `graphify-foe-info` with `get_node`:
+   - Node: `src/js/calc/CityStatsCalculator.js`
+2. Query outbound neighbors via `get_neighbors`:
+   - Outbound edges: `src/js/utils/formatters.js`, `bignumber.js`.
+   - Invariant check: Verify 0 inbound/outbound edges to `src/js/ui/` or `document/window` globals.
+3. Check AST freshness: If files were modified, run `npm run graph:foe-info:ast` before analyzing.
+4. Save report to `graphify-out/foe-info/findings/2026-09-city-stats-purity.md`.
+
+---
+
+## Verification & Quality Standards
+
+- **Verification Command**:
+  ```bash
+  npm run graph:foe-info:ast && npm test tests/agents/graphify-local.test.mjs && npm run check
+  ```
+- **Stop-the-Line Protocol**: If graph queries fail or findings contradict source code, freeze analysis, inspect the raw AST in `graphify-out/foe-info/graph.json`, and verify node IDs before reporting.
