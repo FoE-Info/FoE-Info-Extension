@@ -205,9 +205,9 @@ flowchart TD
 ## 6. Execution Record (2026-09-12)
 
 **Phase 1 — Ingestion (complete).** `scripts/ingest-hars-to-metadata.mjs`
-(`npm run metadata:extract-hars`) streamed all 41 captures (5,821 entries,
-1,669 game RPC responses, 100 unique RPCs) into `../metadata-store/extracts/`
-(24 domain bundles, 13 visited cities, ~33 MB) in ~102 s. Baseline
+(`npm run metadata:extract-hars`) streamed all 43 captures (8,306 entries,
+9,339 game RPC responses, 103 unique RPCs) into `../metadata-store/extracts/`
+(27 domain bundles, 13 visited cities, ~38 MB) in ~112 s. Baseline
 `entities/`, `rpc/`, `manifest.json`, and `raw_rpc_capture.json` were untouched
 and `git ls-files docs/har` = 0. Fixtures mirrored non-destructively to
 `tests/fixtures/visits/` and `tests/fixtures/rpc/har/`.
@@ -222,6 +222,8 @@ and `git ls-files docs/har` = 0. Fixtures mirrored non-destructively to
 | 2.4 13 visited cities                         | Deterministic, no-throw parsing                                                                                                                                      | `tests/fn/har-visited-cities.test.mjs`                |
 | 2.5 Marketplace / inventory                   | Payloads extracted (`economy/`) — deeper audit deferred                                                                                                              | —                                                     |
 | 2.6 Great Buildings (later captures)          | `getOtherPlayerOverview`/`getConstruction`/`contributeForgePoints`/`getOtherPlayerCityMapEntity` contracts verified; foreign progress matches overview at same level | `tests/msg/har-great-buildings-ground-truth.test.mjs` |
+| 2.7 GB sniping (hood @ 10%)                   | `getConstructionRanking` ×1,012 verified: `[entityId, playerId, level]`, 5-place rewards non-increasing by rank                                                      | same suite                                            |
+| 2.8 GB level-closing                          | `BlueprintService.newReward` ×32 verified: medals + blueprint pieces across 22 GBs (sniper levels host GB, recovers reward)                                          | same suite                                            |
 
 **Phase 3 — QI architecture (complete).** Protocol contracts and the Slice 1–3
 module roadmap are captured in
