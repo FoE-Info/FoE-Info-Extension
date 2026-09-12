@@ -108,7 +108,12 @@ function appendBetaText(line) {
     typeof document !== 'undefined' ?
       document.getElementById('betaText')
     : null;
-  if (betaText) betaText.innerHTML += line;
+  if (!betaText) return;
+  if (typeof betaText.insertAdjacentHTML === 'function') {
+    betaText.insertAdjacentHTML('beforeend', line);
+  } else {
+    betaText.innerHTML = `${betaText.innerHTML}${line}`;
+  }
 }
 
 function resetBetaPanel() {

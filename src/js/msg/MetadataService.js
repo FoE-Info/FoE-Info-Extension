@@ -11,6 +11,14 @@ try {
   logger = logging.createLogger('MetadataService');
 } catch {}
 
+let postBackgroundTask = (fn) => setTimeout(fn, 0);
+try {
+  const scheduler = require('../utils/scheduler.js');
+  if (typeof scheduler.postBackgroundTask === 'function') {
+    postBackgroundTask = scheduler.postBackgroundTask;
+  }
+} catch {}
+
 let defaultState = {};
 try {
   defaultState = require('../vars/state.js');
@@ -219,7 +227,7 @@ function notifyMetadataUpdated(options = {}) {
   if (!notifyDebounceTimer) {
     notifyDebounceTimer = setTimeout(() => {
       notifyDebounceTimer = null;
-      triggerMetadataUpdated();
+      postBackgroundTask(triggerMetadataUpdated);
     }, 50);
   }
 }
