@@ -41,7 +41,7 @@ the F2 reactive-decoupling program closed.
 
 ### P2 — dead code
 
-- Delete `fn/cityStatsUtils.js` (0 consumers).
+- ✅ Deleted `fn/cityStatsUtils.js` (0 consumers) on 2026-09-12.
 - Decide `ui/cityStatsHtmlBuilder.js` (131 L, production-orphan;
   `buildCityStatsHTML` has no production importer).
 - Retarget test-only `fn/CityStatsCalculator.js` consumers to `calc/`.
@@ -69,7 +69,7 @@ eraUtils,bignumberUtils}`, `calc/eraMapping`.
 
 ### P2 — small rule fixes
 
-- `msg/StartupService.js:171,173,179` use ungated `console.debug` (violates
-  Debuggability by Design) — route through the scoped logger.
+- ✅ `msg/StartupService.js` ungated `console.debug` calls (window/user/i18n
+  locale) routed through the scoped `logger.debug` on 2026-09-12.
 - `fn/helper.js:32,38` re-export UI panels (`renderBattlegroundsPanel`,
   `incidentsPanel`) — split out.
