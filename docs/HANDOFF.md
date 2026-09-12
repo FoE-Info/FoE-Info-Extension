@@ -4,6 +4,12 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **A11y — panel `<main>` landmark**:
+  - `src/js/index.js` now creates the panel content element as `<main>`
+    instead of `<div>` (closing the deferred modern-web `panel.html <main>`
+    item; no tag-based CSS/tests relied on the old `div`).
+  - **Verification**: `npm run verify` exit 0 — **1,278 tests / 0 fail**.
+
 - **F2 Session 6 completion — visited-city reactive store**:
   - New `state/VisitedCityState.js` (`visit` channel) + `ui/visitedCityRenderBinding.js`
     (registered in `ui/renderBindings.js`). `OtherPlayerService.renderVisit` now
