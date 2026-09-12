@@ -1,6 +1,6 @@
 ---
 name: foe-settlements-expert
-description: Cultural settlements expert (Vikings, Japan, Egypt, Aztecs, Mughals, Polynesia) and minigame puzzle solvers.
+description: Cultural settlements expert (Vikings, Japan, Egypt, Aztecs, Mughals, Polynesia, Pirates) and minigame puzzle solvers.
 mode: subagent
 ---
 
