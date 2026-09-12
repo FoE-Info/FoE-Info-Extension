@@ -14,6 +14,8 @@ try {
 
 const { DedupCache } = require('./dedupCache.js');
 const { shouldLogUnhandledRpc } = require('./rpcScope.js');
+const { extractRequestPayload } = require('./requestPayload.js');
+const { routeDirectMetadata } = require('./directMetadata.js');
 
 const combinedHandlerMembers = new WeakMap();
 
@@ -243,43 +245,6 @@ class MessageDispatcher {
   }
 
   /**
-   * Check if URL represents a direct InnoGames CDN metadata resource.
-   * @param {string} url
-   * @returns {boolean}
-   */
-  isDirectMetadataUrl(url) {
-    if (!url || typeof url !== 'string') return false;
-    return (
-      (url.includes('metadata?id=') ||
-        url.includes('/metadata') ||
-        url.includes('/start/metadata')) &&
-      !url.includes('/game/json')
-    );
-  }
-
-  /**
-   * Extract metadata id and hash from direct CDN metadata URL.
-   * @param {string} reqUrl
-   * @returns {{ metaId: string|null, metaHash: string|null, reqUrl: string }}
-   */
-  parseMetadataUrlContext(reqUrl) {
-    let metaId = null;
-    let metaHash = null;
-    const metaIdx = reqUrl.indexOf('metadata?id=');
-    if (metaIdx > -1) {
-      const metaStr = reqUrl
-        .substring(metaIdx + 'metadata?id='.length)
-        .split('&')[0];
-      const parts = metaStr.split('-');
-      metaId = parts[0];
-      if (parts.length > 1) {
-        metaHash = parts.slice(1).join('-');
-      }
-    }
-    return { metaId, metaHash, reqUrl };
-  }
-
-  /**
    * Dispatch a single ServerRequest to its registered handler.
    * @param {Object} msg
    * @param {Object} [context]
@@ -379,68 +344,7 @@ class MessageDispatcher {
     }
 
     // Parse request payload if available to attach requestData and differentiate duplicate requests
-    let requestPayload = null;
-    try {
-      if (Array.isArray(request)) {
-        requestPayload = request;
-      } else if (typeof request === 'string') {
-        try {
-          requestPayload = JSON.parse(request);
-        } catch {
-          requestPayload = null;
-        }
-      } else if (request && typeof request === 'object') {
-        const postText =
-          request.request?.postData?.text ||
-          request.postData?.text ||
-          (typeof request.request?.postData === 'string' ?
-            request.request.postData
-          : typeof request.postData === 'string' ? request.postData
-          : null);
-        if (typeof postText === 'string') {
-          try {
-            requestPayload = JSON.parse(postText);
-            if (
-              requestPayload &&
-              typeof requestPayload === 'object' &&
-              !Array.isArray(requestPayload) &&
-              Object.keys(requestPayload).length === 0
-            ) {
-              requestPayload = null;
-            }
-          } catch {
-            requestPayload = null;
-          }
-        } else if (typeof postText === 'object' && postText !== null) {
-          requestPayload =
-            Object.keys(postText).length > 0 || Array.isArray(postText) ?
-              postText
-            : null;
-        }
-
-        if (!requestPayload) {
-          if (Array.isArray(request.request?.postData)) {
-            requestPayload = request.request.postData;
-          } else if (
-            typeof request.request?.postData === 'object' &&
-            request.request.postData !== null
-          ) {
-            requestPayload = request.request.postData;
-          } else if (Array.isArray(request.postData)) {
-            requestPayload = request.postData;
-          } else if (
-            typeof request.postData === 'object' &&
-            request.postData !== null
-          ) {
-            requestPayload = request.postData;
-          } else if (Array.isArray(request.requestPayload)) {
-            requestPayload = request.requestPayload;
-          }
-        }
-      }
-    } catch (e) {
-      // Ignore parse failure on request payload
-    }
+    const requestPayload = extractRequestPayload(request);
 
     if (this.isDuplicate(reqUrl, textBody, requestPayload)) {
       return { handled: false, duplicate: true };
@@ -505,69 +409,13 @@ class MessageDispatcher {
     const context = { reqUrl, headers, request, requestPayload };
 
     // Direct CDN metadata routing
-    if (this.isDirectMetadataUrl(reqUrl)) {
-      const metaCtx = {
-        ...this.parseMetadataUrlContext(reqUrl),
-        headers,
-        request,
-      };
-
-      if (
-        parsed &&
-        typeof parsed === 'object' &&
-        !Array.isArray(parsed) &&
-        !parsed.id &&
-        metaCtx.metaId
-      ) {
-        parsed.id = metaCtx.metaId.replace(/^building_entity_/, '');
-      }
-
-      let handledDirect = false;
-      let directResult = null;
-
-      if (typeof this.directMetadataHandler === 'function') {
-        try {
-          directResult = await this.directMetadataHandler(parsed, metaCtx);
-          handledDirect = true;
-        } catch (err) {
-          if (typeof this.errorHandler === 'function') {
-            this.errorHandler(
-              err,
-              { isDirectMetadata: true, url: reqUrl },
-              metaCtx,
-            );
-          }
-        }
-      }
-
-      const staticKey = 'StaticDataService.getMetadata';
-      if (this.handlers.has(staticKey)) {
-        const staticMsg = {
-          __class__: 'ServerRequest',
-          requestClass: 'StaticDataService',
-          requestMethod: 'getMetadata',
-          responseData: parsed,
-          requestId: 0,
-          metaId: metaCtx.metaId,
-          metaHash: metaCtx.metaHash,
-          reqUrl,
-          isDirectMetadata: true,
-        };
-        const res = await this.dispatchBatch([staticMsg], metaCtx);
-        return {
-          handled: true,
-          isDirectMetadata: true,
-          directResult,
-          batchResult: res,
-        };
-      }
-
-      return {
-        handled: handledDirect,
-        isDirectMetadata: true,
-        directResult,
-      };
-    }
+    const direct = await routeDirectMetadata(this, {
+      parsed,
+      reqUrl,
+      headers,
+      request,
+    });
+    if (direct) return direct;
 
     const batchResult = await this.dispatchBatch(parsed, context);
     return { handled: true, duplicate: false, batchResult };
