@@ -232,3 +232,38 @@ test('options auto-switches to en16 when active tab is on en16', async () => {
   assert.strictEqual(elements['Stats'].checked, false);
   assert.strictEqual(elements['bonus'].checked, true);
 });
+
+test('options submit prevents reload and blocks success toast when invalid', async () => {
+  let prevented = false;
+  let reportCalls = 0;
+  const toast = { textContent: '', style: { display: 'none' } };
+  const form = {
+    checkValidity: () => false,
+    reportValidity: () => {
+      reportCalls += 1;
+    },
+  };
+
+  globalThis.document = {
+    getElementById: (id) => {
+      if (id === 'optionsForm') return form;
+      if (id === 'saveToast') return toast;
+      return null;
+    },
+  };
+
+  const { onOptionsSubmit } = await import('../../src/js/options.js');
+  onOptionsSubmit({
+    preventDefault: () => {
+      prevented = true;
+    },
+  });
+
+  assert.strictEqual(prevented, true, 'native submit must be prevented');
+  assert.strictEqual(reportCalls, 1, 'reportValidity should be invoked');
+  assert.notStrictEqual(
+    toast.style.display,
+    'block',
+    'toast must not claim success while the form is invalid',
+  );
+});

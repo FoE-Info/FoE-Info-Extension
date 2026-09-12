@@ -169,12 +169,20 @@ function renderWorldSelector(knownWorlds, currentWorld) {
 function showSaveToast(message = 'Settings saved automatically.') {
   const toast = document.getElementById('saveToast');
   if (!toast) return;
-  toast.textContent = message;
+  // Reveal the live region before writing so assistive tech announces it.
   toast.style.display = 'block';
+  toast.textContent = message;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => {
     toast.style.display = 'none';
   }, 2500);
+}
+
+function isOptionsFormValid() {
+  const form = document.getElementById('optionsForm');
+  return (
+    !form || typeof form.checkValidity !== 'function' || form.checkValidity()
+  );
 }
 
 async function saveCurrentSettings() {
@@ -209,6 +217,7 @@ function onFormInput(e) {
   }
   clearTimeout(autoSaveTimer);
   autoSaveTimer = setTimeout(async () => {
+    if (!isOptionsFormValid()) return;
     await saveCurrentSettings();
     showSaveToast();
   }, 300);
@@ -251,6 +260,20 @@ async function onExplicitSave() {
   clearTimeout(autoSaveTimer);
   await saveCurrentSettings();
   showSaveToast('Settings saved.');
+}
+
+function onOptionsSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('optionsForm');
+  if (
+    form &&
+    typeof form.checkValidity === 'function' &&
+    !form.checkValidity()
+  ) {
+    if (typeof form.reportValidity === 'function') form.reportValidity();
+    return;
+  }
+  onExplicitSave();
 }
 
 async function initOptions() {
@@ -297,7 +320,9 @@ async function initOptions() {
   document
     .getElementById('resetWorldBtn')
     ?.addEventListener('click', onResetWorld);
-  document.getElementById('save')?.addEventListener('click', onExplicitSave);
+  document
+    .getElementById('optionsForm')
+    ?.addEventListener('submit', onOptionsSubmit);
 
   const dateTimeFormatEl = document.getElementById('dateTimeFormat');
   const customPatternDiv = document.getElementById('customPatternDiv');
@@ -347,5 +372,7 @@ module.exports = {
   detectActiveWorld,
   renderWorldSelector,
   initOptions,
+  onOptionsSubmit,
+  isOptionsFormValid,
 };
 module.exports.default = module.exports;

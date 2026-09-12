@@ -29,3 +29,10 @@ button#save {
 input#donationPercent {
   width: auto;
 }
+
+// Only flag fields the user has actually interacted with and left invalid,
+// avoiding a flash of red on page load. Do not use bare :invalid here.
+#optionsForm :is(input, select, textarea):user-invalid {
+  border-color: var(--bs-danger);
+  outline: 1px solid var(--bs-danger);
+}
