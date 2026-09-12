@@ -286,4 +286,37 @@ test('City Card Bonus Lines Suite', async (t) => {
       );
     },
   );
+
+  await t.test(
+    'buildOwnCityCard: collapsed header shows the player name',
+    () => {
+      const html = buildOwnCityCard({ ...baseOwnParams, isCollapsed: true });
+      const header = html.split('id="citystatsText"')[0];
+      assert.match(header, /Player1/);
+      assert.doesNotMatch(
+        header,
+        /data-i18n="city_overview"/,
+        'Collapsed header must not show the City Overview title',
+      );
+      assert.match(header, /id="infoIcon"/);
+    },
+  );
+
+  await t.test(
+    'buildVisitedCityCard: collapsed header shows the player name',
+    () => {
+      const html = buildVisitedCityCard({
+        ...baseVisitedParams,
+        isCollapsed: true,
+      });
+      const header = html.split('id="visitText"')[0];
+      assert.match(header, /VisitedPlayer/);
+      assert.doesNotMatch(
+        header,
+        /data-i18n="city_overview"/,
+        'Collapsed header must not show the City Overview title',
+      );
+      assert.doesNotMatch(header, /data-bs-toggle="popover"/);
+    },
+  );
 });

@@ -219,11 +219,17 @@ p,
 .foe-copy-btn {
   cursor: pointer;
   user-select: none;
+  padding: 0.05em 0.6em;
+  font-size: 0.85em;
+  line-height: 1.4;
+  border: 1px solid currentColor;
+  border-radius: 50rem;
 }
 
 .foe-copy-btn:hover,
 .foe-copy-btn:focus-visible {
-  text-decoration: underline;
+  background-color: rgba(0, 0, 0, 0.08);
+  text-decoration: none;
 }
 
 // #guildMemberTable, #geChampionshipTable, and #geContributionTable reuse .goods-table's base styling,
@@ -736,11 +742,14 @@ hr {
   padding: 0;
 }
 
+/* Custom scrollbars: a consistent middle-ground thickness (between the old
+   5px bar and the native "thin" ~11px), applied to every scroll container. */
+
 /* width */
 
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
 }
 
 /* Track */
@@ -762,17 +771,22 @@ hr {
   background: #555;
 }
 
-// Standard (non-WebKit) scrollbar styling. Chromium 121+ and Firefox honor
-// these; older engines keep the ::-webkit-scrollbar fallback above.
-:root {
-  scrollbar-width: thin;
-  scrollbar-color: $gray-600 $gray-100;
+/* Standard scrollbar properties for engines without ::-webkit-scrollbar
+   (e.g. Firefox). They are scoped away from Chromium, which otherwise
+   ignores the 8px ::-webkit-scrollbar rules above. */
+@supports not selector(::-webkit-scrollbar) {
+  :root {
+    scrollbar-width: thin;
+    scrollbar-color: $gray-600 $gray-100;
+  }
 }
 
 // Higher-contrast scrollbars when the OS/browser requests more contrast.
 @media (prefers-contrast: more) {
-  :root {
-    scrollbar-color: $black $white;
+  @supports not selector(::-webkit-scrollbar) {
+    :root {
+      scrollbar-color: $black $white;
+    }
   }
 
   ::-webkit-scrollbar-track {
