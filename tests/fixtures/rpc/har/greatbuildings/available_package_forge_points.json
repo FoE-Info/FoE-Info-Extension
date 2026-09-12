@@ -1,0 +1,82 @@
+{
+  "description": "Available FP packages usable for Great Building donations.",
+  "captures": [
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:50:44.381Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getAvailablePackageForgePoints",
+      "requestId": 18,
+      "requestData": null,
+      "responseData": [
+        324500
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:50:45.250Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getAvailablePackageForgePoints",
+      "requestId": 21,
+      "requestData": null,
+      "responseData": [
+        324380
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:50:55.405Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getAvailablePackageForgePoints",
+      "requestId": 24,
+      "requestData": null,
+      "responseData": [
+        324370
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:51:42.590Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getAvailablePackageForgePoints",
+      "requestId": 39,
+      "requestData": null,
+      "responseData": [
+        324350
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:09.012Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getAvailablePackageForgePoints",
+      "requestId": 45,
+      "requestData": null,
+      "responseData": [
+        317700
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:15.131Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getAvailablePackageForgePoints",
+      "requestId": 51,
+      "requestData": null,
+      "responseData": [
+        311040
+      ]
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:55.881Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getAvailablePackageForgePoints",
+      "requestId": 73,
+      "requestData": null,
+      "responseData": [
+        311010
+      ]
+    }
+  ]
+}

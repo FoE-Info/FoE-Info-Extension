@@ -1,0 +1,1136 @@
+{
+  "description": "Great Building construction state: next bonuses and ranking rows.",
+  "captures": [
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:49:41.448Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getConstruction",
+      "requestId": 16,
+      "requestData": [
+        34862,
+        7560963
+      ],
+      "responseData": {
+        "next_passive_bonus": {
+          "value": 71,
+          "type": "double_collection",
+          "amount": 15,
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "__class__": "GreatBuildingCityMapBonus"
+        },
+        "next_production_bonus": {
+          "value": 2468,
+          "type": "medals",
+          "amount": -1,
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "productionBonus"
+          },
+          "__class__": "GreatBuildingCityMapBonus"
+        },
+        "ownerEra": "SpaceAgeSpaceHub",
+        "rankings": [
+          {
+            "rank": 1,
+            "player": {
+              "player_id": 856159327,
+              "name": "Gumse",
+              "avatar": "portrait_id_169",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 3720,
+            "reward": {
+              "blueprints": 18,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_OceanicFuture_Landmark3",
+                  "amount": 18,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 1860,
+              "resources": {
+                "medals": 65787,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "player": {
+              "player_id": 7560963,
+              "name": "Overlord Negan",
+              "avatar": "addon_portrait_id_anni26_9",
+              "is_self": true,
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 2631,
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 2,
+            "player": {
+              "player_id": 12901904,
+              "name": "Lord of the Lozt",
+              "avatar": "addon_portrait_id_pirate_king",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 1860,
+            "reward": {
+              "blueprints": 13,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_OceanicFuture_Landmark3",
+                  "amount": 13,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 930,
+              "resources": {
+                "medals": 32894,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 3,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 10,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_OceanicFuture_Landmark3",
+                  "amount": 10,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 310,
+              "resources": {
+                "medals": 16447,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 4,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 8,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_OceanicFuture_Landmark3",
+                  "amount": 8,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 80,
+              "resources": {
+                "medals": 6579,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 5,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 7,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_OceanicFuture_Landmark3",
+                  "amount": 7,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 15,
+              "resources": {
+                "medals": 3289,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          }
+        ],
+        "__class__": "GreatBuildingConstruction"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:51:40.659Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getConstruction",
+      "requestId": 37,
+      "requestData": [
+        19,
+        7560963
+      ],
+      "responseData": {
+        "next_passive_bonus": {
+          "value": 103,
+          "type": "military_boost",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "ownerEra": "SpaceAgeSpaceHub",
+        "rankings": [
+          {
+            "player": {
+              "player_id": 7560963,
+              "name": "Overlord Negan",
+              "avatar": "addon_portrait_id_anni26_9",
+              "is_self": true,
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 13703,
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 1,
+            "player": {
+              "player_id": 854400879,
+              "name": "PEGASUS SPIRIT",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 2940,
+            "reward": {
+              "blueprints": 26,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 26,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 1470,
+              "resources": {
+                "medals": 1631,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 2,
+            "player": {
+              "player_id": 10134162,
+              "name": "Maximus Vorenus",
+              "avatar": "addon_portrait_id_carnival_green",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 1470,
+            "reward": {
+              "blueprints": 19,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 19,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 735,
+              "resources": {
+                "medals": 816,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 3,
+            "player": {
+              "player_id": 8457018,
+              "name": "robinmagister",
+              "avatar": "addon_portrait_id_vik26_2",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 490,
+            "reward": {
+              "blueprints": 14,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 14,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 245,
+              "resources": {
+                "medals": 408,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 4,
+            "player": {
+              "player_id": 8525048,
+              "name": "ivoSF",
+              "avatar": "addon_portrait_id_anni26_9",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 120,
+            "reward": {
+              "blueprints": 12,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 12,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 60,
+              "resources": {
+                "medals": 163,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 5,
+            "player": {
+              "player_id": 5475073,
+              "name": "toadis noctus astras",
+              "avatar": "addon_portrait_id_zombie",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 20,
+            "reward": {
+              "blueprints": 10,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 10,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 10,
+              "resources": {
+                "medals": 82,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          }
+        ],
+        "__class__": "GreatBuildingConstruction"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:51:45.952Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getConstruction",
+      "requestId": 43,
+      "requestData": [
+        19,
+        7560963
+      ],
+      "responseData": {
+        "next_passive_bonus": {
+          "value": 103.5,
+          "type": "military_boost",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "ownerEra": "SpaceAgeSpaceHub",
+        "rankings": [
+          {
+            "rank": 1,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 26,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 26,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 1480,
+              "resources": {
+                "medals": 1643,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 2,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 19,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 19,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 740,
+              "resources": {
+                "medals": 822,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 3,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 15,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 15,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 245,
+              "resources": {
+                "medals": 411,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 4,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 12,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 12,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 60,
+              "resources": {
+                "medals": 164,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 5,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 10,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 10,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 10,
+              "resources": {
+                "medals": 82,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          }
+        ],
+        "__class__": "GreatBuildingConstruction"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:13.146Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getConstruction",
+      "requestId": 49,
+      "requestData": [
+        19,
+        7560963
+      ],
+      "responseData": {
+        "next_passive_bonus": {
+          "value": 103.5,
+          "type": "military_boost",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "ownerEra": "SpaceAgeSpaceHub",
+        "rankings": [
+          {
+            "player": {
+              "player_id": 7560963,
+              "name": "Overlord Negan",
+              "avatar": "addon_portrait_id_anni26_9",
+              "is_self": true,
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 6655,
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 1,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 26,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 26,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 1480,
+              "resources": {
+                "medals": 1643,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 2,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 19,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 19,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 740,
+              "resources": {
+                "medals": 822,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 3,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 15,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 15,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 245,
+              "resources": {
+                "medals": 411,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 4,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 12,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 12,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 60,
+              "resources": {
+                "medals": 164,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 5,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 10,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 10,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 10,
+              "resources": {
+                "medals": 82,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          }
+        ],
+        "__class__": "GreatBuildingConstruction"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:17.287Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getConstruction",
+      "requestId": 55,
+      "requestData": [
+        19,
+        7560963
+      ],
+      "responseData": {
+        "next_passive_bonus": {
+          "value": 103.5,
+          "type": "military_boost",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "ownerEra": "SpaceAgeSpaceHub",
+        "rankings": [
+          {
+            "player": {
+              "player_id": 7560963,
+              "name": "Overlord Negan",
+              "avatar": "addon_portrait_id_anni26_9",
+              "is_self": true,
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 13310,
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 1,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 26,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 26,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 1480,
+              "resources": {
+                "medals": 1643,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 2,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 19,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 19,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 740,
+              "resources": {
+                "medals": 822,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 3,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 15,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 15,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 245,
+              "resources": {
+                "medals": 411,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 4,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 12,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 12,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 60,
+              "resources": {
+                "medals": 164,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 5,
+            "player": {
+              "name": "No contributor yet",
+              "avatar": "addon_portrait_id_unknown",
+              "__class__": "OtherPlayer"
+            },
+            "reward": {
+              "blueprints": 10,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_BronzeAge_Landmark2",
+                  "amount": 10,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 10,
+              "resources": {
+                "medals": 82,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          }
+        ],
+        "__class__": "GreatBuildingConstruction"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:53.333Z",
+      "requestClass": "GreatBuildingsService",
+      "requestMethod": "getConstruction",
+      "requestId": 70,
+      "requestData": [
+        28376,
+        7560963
+      ],
+      "responseData": {
+        "next_passive_bonus": {
+          "value": 345,
+          "type": "advanced_tactics",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "next_production_bonus": {
+          "value": 138,
+          "type": "penal_unit",
+          "amount": -1,
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "productionBonus"
+          },
+          "__class__": "GreatBuildingCityMapBonus"
+        },
+        "ownerEra": "SpaceAgeSpaceHub",
+        "rankings": [
+          {
+            "player": {
+              "player_id": 7560963,
+              "name": "Overlord Negan",
+              "avatar": "addon_portrait_id_anni26_9",
+              "is_self": true,
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 56189,
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 1,
+            "player": {
+              "player_id": 850179865,
+              "name": "jorroalbg",
+              "avatar": "addon_portrait_id_celeas",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 3040,
+            "reward": {
+              "blueprints": 14,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+                  "amount": 14,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 1600,
+              "resources": {
+                "medals": 139294,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 2,
+            "player": {
+              "player_id": 856159327,
+              "name": "Gumse",
+              "avatar": "portrait_id_169",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 1600,
+            "reward": {
+              "blueprints": 10,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+                  "amount": 10,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 800,
+              "resources": {
+                "medals": 69647,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 3,
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 530,
+            "reward": {
+              "blueprints": 8,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+                  "amount": 8,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 265,
+              "resources": {
+                "medals": 34824,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 4,
+            "player": {
+              "player_id": 853149026,
+              "name": "nikola09",
+              "avatar": "portrait_id_92",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 95,
+            "reward": {
+              "blueprints": 6,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+                  "amount": 6,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 65,
+              "resources": {
+                "medals": 13929,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          },
+          {
+            "rank": 5,
+            "player": {
+              "player_id": 854712836,
+              "name": "Lexe2k",
+              "avatar": "addon_portrait_id_vik26_3",
+              "__class__": "OtherPlayer"
+            },
+            "forge_points": 30,
+            "reward": {
+              "blueprints": 5,
+              "blueprintRewards": [
+                {
+                  "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+                  "amount": 5,
+                  "tier": {
+                    "__enum__": "GreatBuildingTier",
+                    "value": "copper"
+                  },
+                  "__class__": "GreatBuildingBlueprint"
+                }
+              ],
+              "strategy_point_amount": 15,
+              "resources": {
+                "medals": 6965,
+                "__class__": "CityResource"
+              },
+              "__class__": "GreatBuildingRankingRowReward"
+            },
+            "__class__": "GreatBuildingRankingRow"
+          }
+        ],
+        "__class__": "GreatBuildingConstruction"
+      }
+    }
+  ]
+}

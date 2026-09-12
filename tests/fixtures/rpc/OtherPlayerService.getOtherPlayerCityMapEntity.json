@@ -1,0 +1,44 @@
+{
+  "id": 28376,
+  "player_id": 7560963,
+  "cityentity_id": "X_SpaceAgeSpaceHub_Landmark1",
+  "type": "greatbuilding",
+  "x": 54,
+  "y": 20,
+  "connected": 1,
+  "state": {
+    "next_state_transition_in": 2147483647,
+    "next_state_transition_at": 2147483647,
+    "invested_forge_points": 61484,
+    "forge_points_for_level_up": 61512,
+    "current_product": {
+      "name": "penal_unit",
+      "production_time": 86400,
+      "asset_name": "penal_unit",
+      "requirements": {
+        "cost": {
+          "resources": [],
+          "__class__": "Resources"
+        },
+        "__class__": "CityEntityRequirements"
+      },
+      "amount": 136,
+      "__class__": "CityEntityMilitaryProduct"
+    },
+    "__class__": "ProducingState"
+  },
+  "level": 68,
+  "max_level": 70,
+  "bonus": {
+    "value": 340,
+    "type": "advanced_tactics",
+    "bonusCategory": {
+      "__enum__": "GreatBuildingBonusCategory",
+      "value": "passiveBonus"
+    },
+    "targetedFeature": "all",
+    "__class__": "GreatBuildingUnitBonus"
+  },
+  "bonuses": [],
+  "__class__": "CityMapEntity"
+}
