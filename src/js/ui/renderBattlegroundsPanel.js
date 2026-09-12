@@ -25,10 +25,13 @@ import {
   BGtime,
   donationDIV,
   GameOrigin,
+  gbgLeaderboardDIV,
   GuildMembers,
+  output,
   url,
 } from '../vars/state.js';
 import * as element from './AddElement.js';
+import { buildLeaderboardHTML, copyToClipboard } from './gbgProvinceView.js';
 
 const logger = createLogger('BattlegroundsPanel');
 
@@ -227,4 +230,91 @@ export function fshowBattleground() {
   if (targetEl) {
     translateContainer(targetEl);
   }
+}
+
+export function renderGbgLeaderboardPanel(leaderboard, options = {}) {
+  const {
+    targetEl,
+    collapse: depCollapse = collapse,
+    element: depElement = element,
+    translateContainer: depTranslate = translateContainer,
+    copyToClipboard: depCopyToClipboard = copyToClipboard,
+    doc = typeof document !== 'undefined' ? document : null,
+  } = options;
+
+  const isCollapsed = Boolean(depCollapse?.collapseGBGLeaderboard);
+  const iconHtml =
+    depElement && typeof depElement.icon === 'function' ?
+      depElement.icon(
+        'gbgLeaderboardIcon',
+        'gbgLeaderboardCollapse',
+        isCollapsed,
+      )
+    : `<span class="header-icon collapse-toggle fw-bold font-monospace" id="gbgLeaderboardIcon" role="button" tabindex="0" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" data-bs-target="#gbgLeaderboardCollapse" data-bs-toggle="collapse">${isCollapsed ? '[+]' : '[-]'}</span>`;
+  const closeBtn =
+    depElement && typeof depElement.close === 'function' ?
+      depElement.close()
+    : '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+  const copyBtn =
+    depElement && typeof depElement.copy === 'function' ?
+      depElement.copy('gbgLeaderboardCopyID', 'info', 'right', isCollapsed)
+    : `<span id="gbgLeaderboardCopyID" role="button" tabindex="0" class="badge rounded-pill bg-info float-end right-button" style="display: ${isCollapsed ? 'none' : 'block'}" data-i18n="copy">Copy</span>`;
+
+  const leaderboardHTML = buildLeaderboardHTML(leaderboard);
+  const tableMarkup =
+    leaderboardHTML.startsWith('<table') ? leaderboardHTML : (
+      `<table class="goods-table w-100">${leaderboardHTML}</table>`
+    );
+
+  const resolvedTarget =
+    targetEl ||
+    (doc && doc.getElementById('gbgLeaderboard')) ||
+    gbgLeaderboardDIV ||
+    output;
+  if (!resolvedTarget) return null;
+
+  resolvedTarget.innerHTML = `<div id="gbgLeaderboardCard" class="alert alert-info alert-dismissible show collapsed" role="alert">
+      ${closeBtn}
+      <p id="gbgLeaderboardTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#gbgLeaderboardCollapse" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
+        ${iconHtml}
+        <strong>GBG Leaderboard:</strong>
+      </p>
+      ${copyBtn}
+      <div id="gbgLeaderboardCollapse" class="alert-info overflow resize collapse ${isCollapsed ? '' : 'show'}">
+        <div id="leaderboardText" class="mt-1">${tableMarkup}</div>
+      </div>
+    </div>`;
+
+  if (!doc) return resolvedTarget;
+
+  const labelEl = doc.getElementById('gbgLeaderboardTextLabel');
+  if (labelEl) {
+    labelEl.addEventListener('click', (e) => {
+      if (e?.target?.closest?.('#gbgLeaderboardIcon')) return;
+      if (typeof depCollapse?.fCollapseGBGLeaderboard === 'function') {
+        depCollapse.fCollapseGBGLeaderboard();
+      }
+    });
+  }
+
+  const iconEl = doc.getElementById('gbgLeaderboardIcon');
+  if (iconEl && typeof depCollapse?.fCollapseGBGLeaderboard === 'function') {
+    iconEl.addEventListener('click', (e) => {
+      e?.stopPropagation?.();
+      depCollapse.fCollapseGBGLeaderboard();
+    });
+  }
+
+  const copyEl = doc.getElementById('gbgLeaderboardCopyID');
+  if (copyEl && typeof depCopyToClipboard === 'function') {
+    copyEl.addEventListener('click', () => {
+      depCopyToClipboard('#leaderboardText');
+    });
+  }
+
+  if (typeof depTranslate === 'function') {
+    depTranslate(resolvedTarget);
+  }
+
+  return resolvedTarget;
 }
