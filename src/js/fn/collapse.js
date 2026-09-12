@@ -1,7 +1,7 @@
 /** Bootstrap collapse/alert/popover binding helpers for panel toggles. */
 import { Alert, Popover, Tooltip } from 'bootstrap';
 import { checkDebug } from '../vars/state.js';
-import * as element from './AddElement';
+import * as element from './AddElement.js';
 import * as storage from './storage.js';
 
 export var collapseFriends = true;

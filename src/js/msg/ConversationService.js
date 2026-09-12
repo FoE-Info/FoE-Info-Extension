@@ -19,7 +19,7 @@ try {
   element = require('../ui/AddElement.js');
 } catch {
   try {
-    element = require('../fn/AddElement');
+    element = require('../fn/AddElement.js');
   } catch {}
 }
 let collapse = {};
