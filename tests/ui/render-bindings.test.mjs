@@ -80,7 +80,9 @@ test('renderBindings composition root wires every shared store', async (t) => {
           '../../src/js/state/GuildBattlegroundState.js',
         ],
         ['greatBuildingsState', '../../src/js/state/GreatBuildingsState.js'],
+        ['investedState', '../../src/js/state/InvestedState.js'],
         ['quantumState', '../../src/js/state/QuantumState.js'],
+        ['rewardState', '../../src/js/state/RewardState.js'],
         ['startupRenderState', '../../src/js/state/StartupRenderState.js'],
         ['treasuryState', '../../src/js/state/TreasuryState.js'],
       ];
