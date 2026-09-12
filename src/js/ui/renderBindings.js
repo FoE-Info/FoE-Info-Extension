@@ -9,6 +9,7 @@ require('./greatBuildingsRenderBinding.js');
 require('./investedRenderBinding.js');
 require('./outpostRenderBinding.js');
 require('./quantumRenderBinding.js');
+require('./resourceRenderBinding.js');
 require('./rewardRenderBinding.js');
 require('./startupRenderBinding.js');
 require('./treasuryRenderBinding.js');
