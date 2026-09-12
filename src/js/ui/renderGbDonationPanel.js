@@ -163,6 +163,7 @@ function renderGbDonationPanel(params = {}) {
     PlayerName = '',
     MyInfo = {},
     donationSuffix = '',
+    availablePackageForgePoints = 0,
     onRerender,
     depHelper = helper,
     depElement = element,
@@ -177,6 +178,7 @@ function renderGbDonationPanel(params = {}) {
     level: GBselected.level,
     player: PlayerName,
     currentPercent,
+    availablePackageForgePoints,
   });
 
   const escapeFn =
@@ -187,6 +189,14 @@ function renderGbDonationPanel(params = {}) {
     typeof depHelper.fGBsname === 'function' ?
       depHelper.fGBsname
     : (s) => String(s ?? '');
+
+  const formatNumberFn =
+    typeof depHelper?.fFormatNumber === 'function' ?
+      depHelper.fFormatNumber
+    : (n) => {
+        const num = Number(n || 0);
+        return Number.isFinite(num) ? num.toLocaleString('en-US') : String(n);
+      };
 
   const calcPlaceValues =
     depTables.getPlaceValues || depTables.calcPlaceValues || (() => ({}));
@@ -225,12 +235,18 @@ function renderGbDonationPanel(params = {}) {
     typeof depElement.copy === 'function' ?
       depElement.copy('donationCopyID', 'secondary', 'right', isCollapsed)
     : '<span id="donationCopyID" class="badge bg-secondary float-end">Copy</span>';
+  const packageBadgeHtml =
+    availablePackageForgePoints > 0 ?
+      `<span class="badge bg-secondary ms-1">Packages: ${formatNumberFn(
+        availablePackageForgePoints,
+      )} FP</span>`
+    : '';
 
   let olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
             ${closeBtn}
             <p id="freeTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#donationText3" aria-expanded="${!isCollapsed}" aria-controls="donationText3" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconHtml}
-            <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>`;
+            <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong>${packageBadgeHtml}</p>`;
   olddonationHTML += copyBtn;
   olddonationHTML += `<div id="donationText3" class="collapse ${
     isCollapsed ? '' : 'show'
@@ -247,6 +263,45 @@ function renderGbDonationPanel(params = {}) {
     olddonationHTML += '<p class="red">*** LOCKED ***</p>';
   }
   olddonationHTML += checkInactive();
+
+  const remainingTotal = Math.max(
+    0,
+    (GBselected.total || 0) - (GBselected.current || 0),
+  );
+  const p1Base = GBrewards[0] || 0;
+  const arcBonus = City?.ArcBonus ?? 90;
+  const p1Reward =
+    typeof GreatBuildingCalculator.calculateArcReward === 'function' ?
+      GreatBuildingCalculator.calculateArcReward(p1Base, arcBonus)
+    : Math.round(p1Base * (1 + arcBonus / 100));
+
+  let levelClosingHtml = '';
+  let selfLevelWarningHtml = '';
+  if (
+    remainingTotal > 0 &&
+    typeof GreatBuildingCalculator.calculateLevelClosingProfit === 'function'
+  ) {
+    const closingProfit = GreatBuildingCalculator.calculateLevelClosingProfit(
+      remainingTotal,
+      p1Reward,
+      0,
+    );
+    const isOwnGb = Boolean(
+      PlayerName && MyInfo?.name && PlayerName === MyInfo.name,
+    );
+    if (closingProfit.isProfitable && !isOwnGb) {
+      levelClosingHtml = `<div class="alert alert-success py-1 px-2 mb-2 level-closing-badge"><small><strong>Level-Closing:</strong> Close for ${closingProfit.cost} FP (Reward: ${p1Reward} FP, Net: +${closingProfit.netProfit} FP)</small></div>`;
+    } else if (isOwnGb) {
+      const hasOpenPassable = GBrewards.some(
+        (r, idx) => r > 0 && isPlacePassableFn(remainingTotal, Top[idx] || 0),
+      );
+      if (hasOpenPassable) {
+        selfLevelWarningHtml = `<div class="alert alert-warning py-1 px-2 mb-2 self-leveling-warning"><small><strong>Warning:</strong> Open donation places available. Self-leveling will waste donor FP.</small></div>`;
+      }
+    }
+  }
+  if (levelClosingHtml) olddonationHTML += levelClosingHtml;
+  if (selfLevelWarningHtml) olddonationHTML += selfLevelWarningHtml;
 
   if (donationDIV) {
     donationDIV.innerHTML = '';
