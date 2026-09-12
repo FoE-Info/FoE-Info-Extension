@@ -343,7 +343,7 @@ function renderTreasuryLogPanel(
     html += `<td class="text-start">${pName}</td>`;
     html += `<td class="text-start small text-muted">${act}</td>`;
     html += `<td class="text-start">${rName}</td>`;
-    html += `<td class="text-end font-monospace ${amountClass}">${amountSign}${amountStr}</td>`;
+    html += `<td class="text-end ${amountClass}">${amountSign}${amountStr}</td>`;
     html += `</tr>`;
   }
 
