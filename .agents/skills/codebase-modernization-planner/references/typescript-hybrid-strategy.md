@@ -7,7 +7,7 @@ Strategy for introducing TypeScript into FoE-Info alongside existing JavaScript 
 ## 1. Core Principles
 
 1. **Dual Extension Support (`.ts` and `.js`)**:
-   - Webpack resolves both extensions seamlessly: `resolve: { extensions: ['.ts', '.js', '.mjs'] }`.
+   - Webpack resolves both extensions seamlessly: `resolve: { extensions: ['.ts', '.js', '.mjs', '.json'] }`.
    - Once a module is migrated (Phase 2+), JavaScript and TypeScript files import each other with standard ES module syntax and explicit relative extensions.
 2. **Zero Runtime Impact**:
    - Transpilation produces standard ES2022 JavaScript bundled into the same distribution chunks.

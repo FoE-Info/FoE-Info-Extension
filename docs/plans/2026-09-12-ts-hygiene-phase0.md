@@ -30,7 +30,7 @@
 **Interfaces:**
 
 - Consumes: nothing.
-- Produces: the invariant "no basename exists as both `.js` and `.ts` under `src/js/`"; the guard test `tests/architecture/no-js-ts-twins.test.mjs`.
+- Produces: the invariant "no basename exists as both `.js` and `.ts` under `src/js/`"; the guard test `tests/architecture/no-js-ts-twins.test.mjs` (asserts a non-empty walk so it cannot pass vacuously).
 
 - [ ] **Step 1: Write the failing test**
 
@@ -120,7 +120,7 @@ git commit -m "chore(ts): remove dead js/ts twin modules" -m "- delete 12 never-
 **Interfaces:**
 
 - Consumes: nothing.
-- Produces: the invariant "every internal relative `require`/`from` specifier ends in `.js`/`.json`/`.mjs`/`.scss`/`.css`".
+- Produces: the invariant "every internal relative `require`/`from` specifier ends in `.js`/`.ts`/`.json`/`.mjs`/`.scss`/`.css`".
 
 - [ ] **Step 1: Write the failing test**
 
@@ -133,7 +133,7 @@ import test from 'node:test';
 
 const ROOT = path.resolve(import.meta.dirname, '../../src/js');
 const REL_IMPORT = /(?:require\(|from\s+)['"]\s*(\.\.?\/[^'"]+)['"]/g;
-const VALID_EXT = /\.(js|json|mjs|scss|css)$/;
+const VALID_EXT = /\.(js|ts|json|mjs|scss|css)$/;
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -148,15 +148,21 @@ async function walk(dir) {
 
 test('internal relative imports use explicit extensions', async () => {
   const violations = [];
+  let scanned = 0;
+  let matched = 0;
   for (const file of await walk(ROOT)) {
-    if (!file.endsWith('.js')) continue;
+    if (!file.endsWith('.js') && !file.endsWith('.ts')) continue;
+    scanned += 1;
     const source = await readFile(file, 'utf8');
     for (const match of source.matchAll(REL_IMPORT)) {
+      matched += 1;
       if (!VALID_EXT.test(match[1])) {
         violations.push(`${path.relative(ROOT, file)} -> ${match[1]}`);
       }
     }
   }
+  assert.ok(scanned > 0, 'expected to scan at least one .js/.ts file');
+  assert.ok(matched > 0, 'expected to match at least one relative specifier');
   assert.deepEqual(violations, [], violations.join('\n'));
 });
 ```
