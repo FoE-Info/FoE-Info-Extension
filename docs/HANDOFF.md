@@ -22,6 +22,12 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
       6. `renderLiveCityStats.js` used `user?.score ?? MyInfo?.score` which evaluated to 0 when `user.score === 0`; updated fallback hierarchy to check positive `MyInfo.score`, `user.score`, and storage cache.
   - **Verification Gate**: Full 5-stage verification gate (`npm run verify`) passed exit 0: **1,027/1,027 tests passing across 97 test suites**, 0 eslint errors, prettier clean, typecheck clean, dev bundle compiled successfully in 5.3s.
 
+- **opencode Agent/Skill/Rule Handoff Parity Audit**:
+  - Verified structural parity for cross-harness handoff: `.opencode/agents/` holds 36/36 exact-name shims, opencode auto-discovers the 53 canonical skills from `.agents/skills/<name>/SKILL.md`, all 17 rules are injected via the `opencode.json` instructions glob, and the handoff board (`STATUS`/`HANDOFF`/`plans`/`specs`) is shared.
+  - Added `.opencode/skills/writing-opencode-plugins/SKILL.md`, the opencode counterpart to the Antigravity-only `writing-hooks` skill: plugin locations, `opencode.json` registration, the hook surface (`tool.execute.before/after`, `event`, `shell.env`, compaction, custom tools), and the no-`PreInvocation`/no-`Stop`/no-`force_ask` limits. It is opencode-only and is not counted among the 53 canonical skills.
+  - Documented the opencode-only layer in `docs/OPENCODE.md` under "opencode-only skill and instruction layer", alongside the existing `.opencode/instructions/antigravity-tool-translation.md` token map.
+  - Evidence: `npm run check` clean; `node --test tests/agents/agent-config.test.mjs` 13/13 (canonical counts still 36 agents / 17 rules / 53 skills). No source code changed.
+
 - **City Overview Persistence, Boosts Wiring, Panel Sizing, Guild Redesign & Options Reorganization (Tracks 1 & 2)**:
   - **City Overview Permanence & Unconditional Persistence (`cardVisibility.ts`, `cardVisibility.js`, `renderCityStats.js`)**: Permanently allowed `'citystats'` and `'header'` across all game contexts (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`) so City Overview / City Info is never hidden or wiped on context switches.
   - **Combat Boosts Wiring & Hydration (`BoostService.js`, `StartupService.js`)**: Subscribed `StartupService.boostServiceAllBoosts` via `onBoostsUpdated` in `BoostService.js` to ingest all 1,005 live server boosts from `BoostService.getAllBoosts`, hydrating `City` boosts across GBG, GE, and QI.

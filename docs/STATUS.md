@@ -8,6 +8,7 @@ a changelog. See `docs/README.md` for the full hub.
 > user's explicit approval; investigate-and-report before fixing; one verified
 > change at a time.
 
+| opencode Agent/Skill/Rule Handoff Parity (OpenCode) | Done | Audited dual-harness parity for handing work between Antigravity and opencode: 36/36 exact-name agent shims in `.opencode/agents/`, 53 canonical skills auto-discovered from `.agents/skills/`, 17 rules injected via the `opencode.json` instructions glob, and shared `STATUS`/`HANDOFF`/`plans`/`specs`. Added opencode-only `.opencode/skills/writing-opencode-plugins/SKILL.md` (counterpart to the Antigravity-only `writing-hooks` runbook: `.opencode/plugins/*.mjs`, hook surface, and the no-`PreInvocation`/no-`Stop`/no-`force_ask` limits) and documented it plus the existing `.opencode/instructions/antigravity-tool-translation.md` token map in `docs/OPENCODE.md`. Canonical counts unchanged (36/17/53). Verified `npm run check` clean and `node --test tests/agents/agent-config.test.mjs` (13/13). |
 | City Info Panel Redesign (Daily Production & Combat Boosts) | Done | Redesigned `#citystats` (own city) and `#visit` (visited city) with clear visual hierarchy matching user specs: clean header (`[-] [WORLD] PlayerName (i) [Copy]`), top info (`Guild`, `Score`, `Age`, `Arc Bonus`, `Chateau Frontenac Bonus`, `Crit Strike` for AO & CC only), section headers (`── DAILY PRODUCTION ──` and `── COMBAT BOOSTS ──`), inline coin/supply boosts on totals line, units breakdown popover, and symmetrical visited player layout. Merged in `1287743`. |
 | Player Score Resolution & Social List Ingestion (Forge-Hammer Parity) | Done | Fixed `Score: 0` bug. Fixed CJS compatibility shim in `src/js/fn/storage.js`; fixed `MyInfo` variable overwrite in `OtherPlayerService.js`; registered `getNeighborList` (American spelling) in `socialRoutes.js`; ingested `payload.members` and `payload.clan.members` from clan services; added synchronous `storage.getSync('playerScore')` and async `chrome.storage.local` fallback in `StartupService.js`; prioritized positive `MyInfo.score` in `renderLiveCityStats.js`. Verified via 1,027 unit tests and 5-stage gate (`npm run verify`). Merged in `d41a64d`. |
 | City Overview Permanence, Boosts Wiring & Accuracies (Track 1) | Done | Permanently permit `#citystats` across all contexts in `cardVisibility.ts`/`.js`; wire `BoostService.getAllBoosts` (1,005 server boosts) to `StartupService.boostServiceAllBoosts`; hydrate player score from `OtherPlayerService.getSocialList` (`6,249,698,209`) and persist to `worldStorage`; fix reward ID regex in `CityMapEntityProcessor.js` (daily units); seed historical closed event quests on startup (`QuestService.js`); decouple goods inventory trigger from Market-only lock. |
@@ -181,7 +182,7 @@ a changelog. See `docs/README.md` for the full hub.
 - **Hook parity** — `graphify-sync`, `graphify-guard`, `monolith-guardrail`
   built + live-verified; `stop-guard` logs a warning plugin (no `fullyIdle`
   equivalent).
-- **opencode takeover** — RESOLVED. `opencode.json` (16 rules as instructions,
+- **opencode takeover** — RESOLVED. `opencode.json` (17 rules as instructions,
   6 MCP servers), 36 shims in `.opencode/agents/`, 4 hook plugins live-verified.
   Codex/Claude compatibility layer decommissioned 2026-09-09; opencode is the
   sole coding host.

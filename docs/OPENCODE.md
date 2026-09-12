@@ -71,6 +71,15 @@ Not wired: Antigravity's `force_ask` semantics (opencode permission system asks/
 - Routine logger debug/info messages are gated by Debug Mode. Warnings and errors remain visible locally in the DevTools panel console for diagnosis. Legacy direct console calls are not all migrated.
 - Global file caps describe the target architecture; existing oversized modules are baseline debt. Do not add inline feature logic to monoliths or repeat completed extractions based only on line counts.
 
+## opencode-only skill and instruction layer
+
+Two opencode-hosted artifacts close the remaining skill-layer handoff gaps without editing canonical Antigravity content:
+
+- `.opencode/instructions/antigravity-tool-translation.md` maps the Antigravity tool tokens found in canonical skills/rules/agents to their opencode equivalents, and lists the files that carry them.
+- `.opencode/skills/writing-opencode-plugins/SKILL.md` is the opencode counterpart to the Antigravity-only `writing-hooks` skill: `.opencode/plugins/*.mjs`, the hook surface, and the no-`PreInvocation`/no-`Stop`/no-`force_ask` limits.
+
+`.agents/` stays canonical; the `.opencode/` skill is opencode-only because Antigravity does not execute plugins, and it is not counted among the 53 canonical skills.
+
 ## Verification environment
 
 Use Node.js 24 or later with the installed dependencies. The `node_modules` under `.opencode/` only provides local type-checking of the hook plugin API (`@opencode-ai/plugin`, `@opencode-ai/sdk`); the plugins run inside opencode's own runtime. Live hook behavior must be confirmed with `opencode run` against a running model, not just a Node import harness.
