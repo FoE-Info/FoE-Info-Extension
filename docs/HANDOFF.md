@@ -4,6 +4,26 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Slice A — `StartupService` tooltip + player-helper edges removed**:
+  - `buildTotalGoodsTooltipHTML` no longer runs in `StartupService`; the live
+    renderer already builds `totalGoodsTooltipHTML` from `goodsList`, so the
+    stale `tooltipHTML.totalGoods` field/assignment/import were dropped
+    (`ui/components/cityStatsTooltipBuilder.js` edge gone).
+  - `getUserTooltipHTML`/`getScoreDBOrigin` are now resolved inside
+    `ui/renderLiveCityStats.js` (lazy `require('./playerTooltip.js')`, with the
+    old context-injection kept as a fallback seam).
+  - `updateIgnoreListUI` now flows through a new `ignore-list` channel on
+    `StartupRenderState` (`requestIgnoreListRefresh()`); `startupRenderBinding`
+    calls the popover refresh, `OtherPlayerService` publishes the signal, and
+    `protocol/indexBridgeSetup.js` imports `updateIgnoreListUI` directly from
+    `ui/playerTooltip.js`. All `playerTooltip` imports/re-export are gone from
+    `StartupService`.
+  - **Remaining `msg/ → ui/` edges**: `ConversationService → ui/AddElement.js`
+    (expected) plus `StartupService → renderGalaxyPanel` / `renderLiveCityStats`
+    (Slice B).
+  - **Verification**: `npm run verify` exit 0 — **1,266 tests / 0 fail**,
+    prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
+
 - **F2 Session 10 (continued) — StartupService tooltip binding move**:
   - `showTooltips` moved from `StartupService` into `ui/startupRenderBinding.js`,
     which now binds tooltips after every city-stats paint (injected seam,

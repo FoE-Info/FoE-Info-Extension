@@ -13,13 +13,6 @@ import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
 import { resolvePlayerScore } from '../state/playerScoreResolver.js';
 import { startupRenderState } from '../state/StartupRenderState.js';
-import { buildTotalGoodsTooltipHTML } from '../ui/components/cityStatsTooltipBuilder.js';
-import {
-  formatPlayerLabel,
-  getScoreDBOrigin,
-  getUserTooltipHTML,
-  updateIgnoreListUI,
-} from '../ui/playerTooltip.js';
 import { showGalaxy, updateGalaxy } from '../ui/renderGalaxyPanel.js';
 import {
   buildClanGoodsData as buildClanGoodsDataImpl,
@@ -79,7 +72,6 @@ export { City } from '../state/CityState.js';
 
 var tooltipHTML = {
   goods: [],
-  totalGoods: [],
   fp: [],
   clanGoods: [],
   clanPower: [],
@@ -98,13 +90,6 @@ let lastStartupContext = null;
 export let lastStartupMsg = null;
 export let lastBoostsMsg = null;
 let startupTimingRun = 0;
-
-export {
-  formatPlayerLabel,
-  getScoreDBOrigin,
-  getUserTooltipHTML,
-  updateIgnoreListUI,
-} from '../ui/playerTooltip.js';
 
 export function startupService(msg) {
   const debugEnabled = isDebugEnabled();
@@ -277,10 +262,6 @@ export function startupService(msg) {
   renderBuildingCollectionTimes();
   timingStep('P4g', 'building collection render complete');
 
-  if (goodsBuildings.length > 0) {
-    tooltipHTML.totalGoods = buildTotalGoodsTooltipHTML(goodsBuildings, helper);
-  }
-
   aggregateCityStats({
     City,
     fpBuildings,
@@ -320,7 +301,6 @@ export function startupService(msg) {
     tooltipHTML: {
       fp: tooltipHTML.fp,
       clanGoods: tooltipHTML.clanGoods,
-      totalGoods: tooltipHTML.totalGoods,
       goods: tooltipHTML.goods,
     },
   };
@@ -387,8 +367,6 @@ export function renderLiveCityStats(ctx) {
         fpBuildings,
         goodsBuildings,
         clanGoodsBuildings,
-        getUserTooltipHTML,
-        getScoreDBOrigin,
       },
     ),
   );
