@@ -17,6 +17,11 @@ try {
   ({ visitedCityState } = require('../state/VisitedCityState.js'));
 } catch {}
 
+let socialState = null;
+try {
+  ({ socialState } = require('../state/SocialState.js'));
+} catch {}
+
 try {
   storage = require('../fn/storage.js');
 } catch {}
@@ -192,6 +197,8 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
     if (friendsList.length) friends = friendsList;
     if (guildList.length) guildMembers = guildList;
     if (hoodList.length) hoodlist = hoodList;
+
+    socialState?.setLists({ friends, guildMembers, hoodlist });
 
     const allSocial = [
       ...(Array.isArray(payload) ? payload : []),

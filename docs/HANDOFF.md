@@ -4,6 +4,20 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **Bug fix + layering — `SocialState` for GB donation inactive/plunder markers**:
+  - `ui/gbDonationTables.js` used to snapshot `OtherPlayerService.friends`/
+    `guildMembers`/`hoodlist` at module load, but the service reassigns those
+    arrays later (`OtherPlayerService.js:192-194`) — so `checkInactive` read
+    empty/stale lists and inactive/plunder markers never rendered. New
+    `state/SocialState.js` (`lists` channel) is published by
+    `OtherPlayerService` after each social update; `checkInactive` reads the
+    live lists. This also removes a `ui/ → msg/` require edge.
+  - New suites `tests/state/social-state.test.mjs`; `gb-donation-tables` test
+    now asserts the live `checkInactive` behavior.
+  - **Remaining `ui/ → msg/` edges**: only the 4 lazy `resolveDep` fallbacks in
+    `ui/indexUiBindings.js` (F3-sanctioned, injectable at the composition root).
+  - **Verification**: `npm run verify` exit 0 — **1,284 tests / 0 fail**.
+
 - **A11y — panel `<main>` landmark**:
   - `src/js/index.js` now creates the panel content element as `<main>`
     instead of `<div>` (closing the deferred modern-web `panel.html <main>`
