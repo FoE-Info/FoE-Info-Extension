@@ -214,34 +214,6 @@ test('renderGbDonationPanel UI Module Suite', async (t) => {
   );
 
   await t.test(
-    'renders self-leveling warning when viewing own GB with open donation places',
-    () => {
-      const mockContainer = { innerHTML: '', style: { display: 'none' } };
-      renderGbDonationPanel({
-        GBselected: {
-          name: 'Statue of Zeus',
-          level: 10,
-          total: 1000,
-          current: 800,
-        },
-        showOptions: { showDonation: true },
-        donation2DIV: mockContainer,
-        GBrewards: [100, 50, 20, 10, 5],
-        Top: [0, 0, 0, 0, 0],
-        PlayerName: 'MyPlayer',
-        MyInfo: { name: 'MyPlayer' },
-      });
-
-      assert.ok(mockContainer.innerHTML.includes('self-leveling-warning'));
-      assert.ok(
-        mockContainer.innerHTML.includes(
-          'Open donation places available. Self-leveling will waste donor FP.',
-        ),
-      );
-    },
-  );
-
-  await t.test(
     'omits level-closing badge when closing is not profitable (net <= 0)',
     () => {
       const mockContainer = { innerHTML: '', style: { display: 'none' } };

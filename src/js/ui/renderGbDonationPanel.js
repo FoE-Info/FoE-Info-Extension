@@ -276,7 +276,6 @@ function renderGbDonationPanel(params = {}) {
     : Math.round(p1Base * (1 + arcBonus / 100));
 
   let levelClosingHtml = '';
-  let selfLevelWarningHtml = '';
   if (
     remainingTotal > 0 &&
     typeof GreatBuildingCalculator.calculateLevelClosingProfit === 'function'
@@ -291,17 +290,9 @@ function renderGbDonationPanel(params = {}) {
     );
     if (closingProfit.isProfitable && !isOwnGb) {
       levelClosingHtml = `<div class="alert alert-success py-1 px-2 mb-2 level-closing-badge"><small><strong>Level-Closing:</strong> Close for ${closingProfit.cost} FP (Reward: ${p1Reward} FP, Net: +${closingProfit.netProfit} FP)</small></div>`;
-    } else if (isOwnGb) {
-      const hasOpenPassable = GBrewards.some(
-        (r, idx) => r > 0 && isPlacePassableFn(remainingTotal, Top[idx] || 0),
-      );
-      if (hasOpenPassable) {
-        selfLevelWarningHtml = `<div class="alert alert-warning py-1 px-2 mb-2 self-leveling-warning"><small><strong>Warning:</strong> Open donation places available. Self-leveling will waste donor FP.</small></div>`;
-      }
     }
   }
   if (levelClosingHtml) olddonationHTML += levelClosingHtml;
-  if (selfLevelWarningHtml) olddonationHTML += selfLevelWarningHtml;
 
   if (donationDIV) {
     donationDIV.innerHTML = '';
