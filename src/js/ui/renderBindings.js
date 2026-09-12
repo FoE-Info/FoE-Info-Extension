@@ -2,6 +2,7 @@
 
 require('./armyRenderBinding.js');
 require('./bonusRenderBinding.js');
+require('./expeditionRenderBinding.js');
 require('./gbDonationRenderBinding.js');
 require('./gbgRenderBinding.js');
 require('./greatBuildingsRenderBinding.js');
