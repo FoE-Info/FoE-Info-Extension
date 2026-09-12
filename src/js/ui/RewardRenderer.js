@@ -19,19 +19,20 @@ import {
   cityrewards,
   rewardsArmy,
   rewardsCity,
-  rewardsGBG,
-  rewardsGE,
   rewardsGeneric,
-  rewardsOtherPlayer,
 } from '../state/state.js';
 import { translateContainer } from '../utils/i18n.js';
+import { createLogger } from '../utils/logger.js';
 import * as element from './AddElement.js';
+import { addToBucket } from './rewardCategories.js';
+
+const logger = createLogger('RewardRenderer');
 
 let rewardResizeObserver = null;
 let heightRewards = toolOptions.rewardSize;
 
 function setHeight() {
-  console.debug('mouseup', heightRewards);
+  logger.debug('mouseup', heightRewards);
   setRewardSize(heightRewards);
 }
 
@@ -62,90 +63,12 @@ export function rewardObserve() {
   }
 }
 
-export function showReward(reward) {
-  if (!reward || typeof reward !== 'object') return;
-
-  const rawName =
-    reward.name ||
-    reward.blueprint?.name ||
-    reward.subType ||
-    (reward.type === 'blueprint' ? 'Blueprint' : 'Reward');
-  let name =
-    typeof rawName === 'string' ? helper.fRewardShortName(rawName) : 'Reward';
-  const qty = Number(reward.amount) || Number(reward.totalAmount) || 1;
-
-  if (reward.source === 'guildExpedition') {
-    if (!rewardsGE[name]) rewardsGE[name] = 0;
-    rewardsGE[name] += qty;
-    console.debug('rewardsGE:', rewardsGE, reward);
-  } else if (reward.source === 'battlegrounds_conquest') {
-    if (!rewardsGBG[name]) rewardsGBG[name] = 0;
-    rewardsGBG[name] += qty;
-    console.debug('rewardsGBG:', rewardsGBG, reward);
-  } else if (
-    reward.source === 'otherPlayer' ||
-    reward.source === 'pickupProduction'
-  ) {
-    // reward already stored. so just show it
-  } else {
-    if (reward.type === 'resource') {
-      name = helper.fResourceShortName(reward.subType) || name;
-    } else if (
-      reward.type === 'blueprint' ||
-      reward.source === 'greatBuilding'
-    ) {
-      const gbKey =
-        reward.subType ?
-          typeof helper.fGBsname === 'function' ?
-            helper.fGBsname(reward.subType)
-          : reward.subType
-        : '';
-      if (gbKey && name && !name.toLowerCase().includes(gbKey.toLowerCase())) {
-        name = `${gbKey} ${name}`;
-      } else if (!name || name === 'Reward') {
-        name = gbKey ? `${gbKey} BP` : 'Blueprint';
-      }
-      if (
-        (reward.type === 'blueprint' ||
-          (reward.source === 'greatBuilding' &&
-            (reward.name || '').toLowerCase().includes('blueprint'))) &&
-        !name.toLowerCase().includes('bp') &&
-        !name.toLowerCase().includes('blueprint')
-      ) {
-        name = `${name} BP`;
-      }
-    }
-    if (!rewardsGeneric[name]) rewardsGeneric[name] = 0;
-    rewardsGeneric[name] += qty;
-    console.debug('rewardsGeneric:', rewardsGeneric, reward);
-  }
-
-  var text = '';
-  if (Object.keys(rewardsGE).length) {
-    text += '<p><em>GE</em><br>';
-    Object.keys(rewardsGE).forEach((item) => {
-      text += `${rewardsGE[item]} ${item}<br>`;
-    });
-    text += '</p>';
-  }
-  if (Object.keys(rewardsGBG).length) {
-    text += '<p><em>GBG</em><br>';
-    Object.keys(rewardsGBG).forEach((item) => {
-      text += `${rewardsGBG[item]} ${item}<br>`;
-    });
-    text += '</p>';
-  }
+function buildRewardsText() {
+  let text = '';
   if (Object.keys(rewardsGeneric).length) {
     text += '<p><em>Event/City</em><br>';
     Object.keys(rewardsGeneric).forEach((item) => {
       text += `${rewardsGeneric[item]} ${item}<br>`;
-    });
-    text += '</p>';
-  }
-  if (Object.keys(rewardsOtherPlayer).length) {
-    text += '<p><em>Aid/Plunder</em><br>';
-    Object.keys(rewardsOtherPlayer).forEach((item) => {
-      text += `${rewardsOtherPlayer[item]} ${item}<br>`;
     });
     text += '</p>';
   }
@@ -163,136 +86,106 @@ export function showReward(reward) {
     });
     text += '</p>';
   }
+  return text;
+}
 
+function renderRewards() {
   const container =
     (typeof document !== 'undefined' ?
       document.getElementById('cityrewards') ||
       document.getElementById('rewards')
     : null) || cityrewards;
 
-  if (container) {
-    container.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#rewardsText" aria-expanded="${!collapse.collapseRewards}" aria-controls="rewardsText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
+  if (!container) return;
+
+  const text = buildRewardsText();
+  container.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#rewardsText" aria-expanded="${!collapse.collapseRewards}" aria-controls="rewardsText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
   ${element.icon('rewardsicon', 'rewardsText', collapse.collapseRewards)}
 	<strong><span data-i18n="reward">REWARDS:</span></strong></p>
 	${element.close()}
 	<div id="rewardsText" style="height: 400px" class="overflow resize collapse ${
     collapse.collapseRewards ? '' : 'show'
   }">${text}</div></div>`;
-    rewardObserve();
-    const labelEl = document.getElementById('rewardsTextLabel');
-    if (labelEl) {
-      labelEl.addEventListener('click', (e) => {
-        if (
-          e?.target &&
-          typeof e.target.closest === 'function' &&
-          e.target.closest('#rewardsicon')
-        ) {
-          return;
-        }
-        collapse.fCollapseRewards();
-      });
-    }
-    const iconEl = document.getElementById('rewardsicon');
-    if (iconEl && iconEl !== labelEl) {
-      iconEl.addEventListener('click', () => {
-        collapse.fCollapseRewards();
-      });
-    }
+  rewardObserve();
+  const labelEl = document.getElementById('rewardsTextLabel');
+  if (labelEl) {
+    labelEl.addEventListener('click', (e) => {
+      if (
+        e?.target &&
+        typeof e.target.closest === 'function' &&
+        e.target.closest('#rewardsicon')
+      ) {
+        return;
+      }
+      collapse.fCollapseRewards();
+    });
+  }
+  const iconEl = document.getElementById('rewardsicon');
+  if (iconEl && iconEl !== labelEl) {
+    iconEl.addEventListener('click', () => {
+      collapse.fCollapseRewards();
+    });
   }
 }
 
-export function showRewards(rewards) {
-  var text = '';
+/**
+ * Single authority for reward categorization and rendering.
+ *
+ * @param {string} source Explicit reward source, e.g. 'greatBuilding',
+ *   'quest', 'cityProductionArmy', or 'cityProductionCity'.
+ * @param {object} payload Reward item carrying name/subType/amount/type.
+ */
+export function showReward(source, payload) {
+  if (!payload || typeof payload !== 'object') {
+    logger.debug('showReward ignored invalid payload', source);
+    return;
+  }
 
-  rewards.forEach((reward) => {
-    var name = helper.fRewardShortName(reward.name);
-    var qty = reward.amount;
-    if (reward.source === 'autoAid') {
-      if (reward.type === 'resource') {
-        console.debug('autoAid:resource', reward.subType, qty, reward);
-        if (rewardsCity[reward.subType]) rewardsCity[reward.subType] += qty;
-        else rewardsCity[reward.subType] = qty;
-      } else if (reward.type === 'blueprint') {
-        console.debug(
-          'autoAid:resource',
-          helper.fGBsname(reward.subType) + ' ' + name,
-          qty,
-          reward,
-        );
-        const bpKey = helper.fGBsname(reward.subType) + ' ' + name;
-        if (rewardsCity[bpKey]) rewardsCity[bpKey] += qty;
-        else rewardsCity[bpKey] = qty;
-      } else {
-        if (rewardsCity[reward.subType]) rewardsCity[reward.subType] += qty;
-        else rewardsCity[reward.subType] = qty;
-      }
-      console.debug('autoAid:', rewardsCity, reward);
-    } else {
-      if (reward.type === 'resource')
-        name = helper.fResourceShortName(reward.subType);
-      if (!rewardsGeneric[name]) rewardsGeneric[name] = 0;
-      rewardsGeneric[name] += qty;
-      console.debug('rewardsGeneric:', rewardsGeneric, reward);
+  const rawName =
+    payload.name ||
+    payload.blueprint?.name ||
+    payload.subType ||
+    (payload.type === 'blueprint' ? 'Blueprint' : 'Reward');
+  let name =
+    typeof rawName === 'string' ? helper.fRewardShortName(rawName) : 'Reward';
+  const qty = Number(payload.amount) || Number(payload.totalAmount) || 1;
+
+  if (payload.type === 'resource') {
+    name = helper.fResourceShortName(payload.subType) || name;
+  } else if (payload.type === 'blueprint' || source === 'greatBuilding') {
+    const gbKey =
+      payload.subType ?
+        typeof helper.fGBsname === 'function' ?
+          helper.fGBsname(payload.subType)
+        : payload.subType
+      : '';
+    if (gbKey && name && !name.toLowerCase().includes(gbKey.toLowerCase())) {
+      name = `${gbKey} ${name}`;
+    } else if (!name || name === 'Reward') {
+      name = gbKey ? `${gbKey} BP` : 'Blueprint';
     }
-  });
-
-  if (Object.keys(rewardsGE).length) {
-    text += '<p><em>GE</em><br>';
-    Object.keys(rewardsGE).forEach((item) => {
-      text += `${rewardsGE[item]} ${item}<br>`;
-    });
-    text += '</p>';
-  }
-  if (Object.keys(rewardsGBG).length) {
-    text += '<p><em>GBG</em><br>';
-    Object.keys(rewardsGBG).forEach((item) => {
-      text += `${rewardsGBG[item]} ${item}<br>`;
-    });
-    text += '</p>';
-  }
-  if (Object.keys(rewardsGeneric).length) {
-    text += '<p><em>Event/City</em><br>';
-    Object.keys(rewardsGeneric).forEach((item) => {
-      text += `${rewardsGeneric[item]} ${item}<br>`;
-    });
-    text += '</p>';
-  }
-  if (Object.keys(rewardsOtherPlayer).length) {
-    text += '<p><em>Aid/Plunder</em><br>';
-    Object.keys(rewardsOtherPlayer).forEach((item) => {
-      text += `${rewardsOtherPlayer[item]} ${item}<br>`;
-    });
-    text += '</p>';
-  }
-  if (Object.keys(rewardsCity).length) {
-    text += '<p><em>City</em><br>';
-    Object.keys(rewardsCity).forEach((item) => {
-      text += `${rewardsCity[item]} ${item}<br>`;
-    });
-    text += '</p>';
-  }
-  if (Object.keys(rewardsArmy).length) {
-    text += '<p><em>Army</em><br>';
-    Object.keys(rewardsArmy).forEach((item) => {
-      text += `${rewardsArmy[item]} ${item}<br>`;
-    });
-    text += '</p>';
-  }
-
-  if (cityrewards) {
-    cityrewards.innerHTML = `<div class="alert alert-danger alert-dismissible show collapsed"><p id="rewardsTextLabel">
-  ${element.icon('rewardsicon', 'rewardsText', collapse.collapseRewards)}
-	<span data-i18n="reward"><strong>REWARDS:</strong></span></p>
-	${element.close()}
-	<div id="rewardsText" class="overflow resize collapse ${
-    collapse.collapseRewards ? '' : 'show'
-  }">${text}</div></div>`;
-    rewardObserve();
-    const rewardsLabel =
-      document.getElementById('rewardsicon') ||
-      document.getElementById('rewardsTextLabel');
-    if (rewardsLabel) {
-      rewardsLabel.addEventListener('click', collapse.fCollapseRewards);
+    if (
+      (payload.type === 'blueprint' ||
+        (source === 'greatBuilding' &&
+          (payload.name || '').toLowerCase().includes('blueprint'))) &&
+      !name.toLowerCase().includes('bp') &&
+      !name.toLowerCase().includes('blueprint')
+    ) {
+      name = `${name} BP`;
     }
   }
+
+  const bucketKey = addToBucket(
+    { rewardsGeneric, rewardsCity, rewardsArmy },
+    source,
+    name,
+    qty,
+  );
+  if (!bucketKey) {
+    logger.warn('showReward unknown reward source', source);
+    return;
+  }
+
+  logger.debug('reward routed', source, '->', bucketKey, name, qty);
+  renderRewards();
 }
