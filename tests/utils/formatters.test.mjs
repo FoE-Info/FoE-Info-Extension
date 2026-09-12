@@ -9,6 +9,7 @@ import {
   fResourceShortName,
   fRewardShortName,
   fRound,
+  fTitleCase,
 } from '../../src/js/utils/formatters.js';
 
 describe('Formatters Utility Suite', () => {
@@ -91,6 +92,15 @@ describe('Formatters Utility Suite', () => {
       assert.equal(fResourceShortName('unknown_token', {}), 'unknown_token');
     });
 
+    it('falls back to known display aliases when the lookup misses', () => {
+      assert.equal(fResourceShortName('strategy_points', {}), 'Forge Points');
+      assert.equal(fResourceShortName('strategy_point', {}), 'Forge Point');
+      assert.equal(fResourceShortName('money', {}), 'Coins');
+      assert.equal(fResourceShortName('medals', {}), 'Medals');
+      assert.equal(fResourceShortName('premium', {}), 'Diamonds');
+      assert.equal(fResourceShortName('clan_power', {}), 'Guild Power');
+    });
+
     it('resolves one-argument lookups via globalThis.ResourceNames', (t) => {
       const hadOwn = Object.prototype.hasOwnProperty.call(
         globalThis,
@@ -104,6 +114,20 @@ describe('Formatters Utility Suite', () => {
 
       globalThis.ResourceNames = { raw_iron: 'Iron' };
       assert.equal(fResourceShortName('raw_iron'), 'Iron');
+    });
+  });
+
+  describe('fTitleCase', () => {
+    it('converts snake_case ids to Title Case labels', () => {
+      assert.equal(fTitleCase('rogue'), 'Rogue');
+      assert.equal(fTitleCase('imperial_guard'), 'Imperial Guard');
+      assert.equal(fTitleCase('strategy_points'), 'Strategy Points');
+    });
+
+    it('returns empty string for nullish input', () => {
+      assert.equal(fTitleCase(null), '');
+      assert.equal(fTitleCase(undefined), '');
+      assert.equal(fTitleCase(''), '');
     });
   });
 
