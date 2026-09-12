@@ -76,6 +76,23 @@ test('StartupRenderState - reactive publish/subscribe', async (t) => {
     });
   });
 
+  await t.test(
+    'requestCityStatsRepaint re-renders only after a context exists',
+    () => {
+      const state = new StartupRenderState();
+      const channels = [];
+      state.subscribe((snapshot, channel) => channels.push(channel));
+
+      state.requestCityStatsRepaint();
+      assert.deepEqual(channels, []);
+
+      state.setCityStatsContext({ fp: 1 });
+      channels.length = 0;
+      state.requestCityStatsRepaint();
+      assert.deepEqual(channels, ['city-stats']);
+    },
+  );
+
   await t.test('defaults missing payloads to null', () => {
     const state = new StartupRenderState();
     state.setCityStatsContext(undefined);

@@ -7,6 +7,7 @@
  */
 
 const { City } = require('../state/CityState.js');
+const { startupRenderState } = require('../state/StartupRenderState.js');
 const { createLogger } = require('../utils/logger.js');
 
 const logger = createLogger('EmissaryService');
@@ -62,16 +63,7 @@ class EmissaryService {
     City.emissaryUnits = units;
     City.TrazUnits = (City.baseUnits || 0) + (City.emissaryUnits || 0);
 
-    try {
-      if (typeof window !== 'undefined' && typeof document !== 'undefined') {
-        const liveStatsModule = require('../ui/renderLiveCityStats.js');
-        if (typeof liveStatsModule?.renderLiveCityStats === 'function') {
-          liveStatsModule.renderLiveCityStats();
-        }
-      }
-    } catch {
-      // Non-browser or mock testing environment
-    }
+    startupRenderState.requestCityStatsRepaint();
 
     return {
       emissaryFp: fp,
