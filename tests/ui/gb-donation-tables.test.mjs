@@ -67,19 +67,23 @@ test('gbDonationTables UI Suite', async (t) => {
 
       // Place 1 as a potential donor: lock is ceil(800 / 2) = 400 FP.
       // Base reward = 300. Arc boost (90% = 1.9x): 300 * 1.9 = 570 FP.
+      // NET is measured against the lock: 570 - 400 = 170.
       const p1 = getPlaceValues(gbData, 1, topInvestors, rewards, 190, 90);
       assert.equal(p1.remaining, 800);
       assert.equal(p1.donation.toNumber(), 400);
       assert.equal(p1.rewardFP.toNumber(), 570);
       assert.equal(p1.donateCustom.toNumber(), 570);
+      assert.equal(p1.committedCost.toNumber(), 400);
+      assert.equal(p1.net.toNumber(), 170);
       assert.equal(p1.profit, '170');
       assert.equal(p1.profitNum, 170);
       assert.equal(p1.percent.toNumber(), 42);
+      assert.equal(p1.outcome, 'profit');
       assert.equal(p1.band, 'green');
     },
   );
 
-  await t.test('marks a potential donor loss as neutral/red', () => {
+  await t.test('marks a potential donor loss as red', () => {
     const values = getPlaceValues(
       { total: 60011, current: 59488 },
       3,
@@ -91,8 +95,10 @@ test('gbDonationTables UI Suite', async (t) => {
     assert.equal(values.donation.toNumber(), 522);
     assert.equal(values.rewardFP.toNumber(), 520);
     assert.equal(values.donateCustom.toNumber(), 494);
+    assert.equal(values.committedCost.toNumber(), 522);
     assert.equal(values.profitNum, -2);
-    assert.equal(values.band, '');
+    assert.equal(values.outcome, 'loss');
+    assert.equal(values.band, 'red');
   });
 
   await t.test('gbTabSafe renders card markup with alert-success', () => {
