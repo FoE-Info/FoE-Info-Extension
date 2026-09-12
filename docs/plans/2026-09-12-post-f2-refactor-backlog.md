@@ -87,5 +87,6 @@ the F2 reactive-decoupling program closed.
 
 - ✅ `msg/StartupService.js` ungated `console.debug` calls (window/user/i18n
   locale) routed through the scoped `logger.debug` on 2026-09-12.
-- `fn/helper.js:32,38` re-export UI panels (`renderBattlegroundsPanel`,
-  `incidentsPanel`) — split out.
+- ✅ `fn/helper.js:32,38` re-export UI panels (`renderBattlegroundsPanel`,
+  `incidentsPanel`) — decoupled via `IncidentState` / `incidentRenderBinding` and
+  `GuildBattlegroundState.performance` on 2026-09-13.
