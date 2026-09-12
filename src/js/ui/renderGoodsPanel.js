@@ -221,6 +221,11 @@ function renderGoodsPanel(currentResources, context = {}) {
 
   targetDiv.style.display = '';
   targetDiv.classList?.remove('d-none');
+  const wrapperEl = targetDiv.parentElement;
+  if (wrapperEl && wrapperEl.id === 'goodsInventory') {
+    wrapperEl.style.display = '';
+    wrapperEl.classList?.remove('d-none');
+  }
   targetDiv.innerHTML = goodsHTML + goodsText + `</tbody></table></div></div>`;
 
   bindCollapseAndResize(goodsSize);
