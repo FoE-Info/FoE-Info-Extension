@@ -4,6 +4,7 @@
  * Dynamically builds HTML popover content for City Stats:
  * - Daily FP building breakdown with current boost calculation
  * - Total Goods building breakdown
+ * - Daily Units building breakdown
  *
  * Resolves building names dynamically on every invocation so newly resolved
  * CDN entity metadata automatically updates the tooltip content without baking
@@ -14,6 +15,22 @@ let helper = null;
 try {
   helper = require('../../fn/helper.js');
 } catch {}
+
+let logger = null;
+try {
+  const { createLogger } = require('../../utils/logger.js');
+  logger = createLogger('TooltipBuilder');
+} catch {}
+
+function escapeHtml(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 function buildFpTooltipHTML(fpBuildingsList, boost = 0, customHelper = helper) {
   if (
@@ -72,7 +89,7 @@ function buildFpTooltipHTML(fpBuildingsList, boost = 0, customHelper = helper) {
   let html = '';
   for (const item of groupedFpList) {
     const countStr = item.count > 1 ? ` (x${item.count})` : '';
-    html += `${item.totalFp}FP <strong>${item.name}</strong>${countStr}<br>`;
+    html += `${item.totalFp}FP <strong>${escapeHtml(item.name)}</strong>${countStr}<br>`;
   }
 
   if (numBoost > 0) {
@@ -122,7 +139,64 @@ function buildTotalGoodsTooltipHTML(goodsBuildingsList, customHelper = helper) {
   let html = '';
   for (const item of groupedGoodsList) {
     const countStr = item.count > 1 ? ` (x${item.count})` : '';
-    html += `${item.totalGoods} <strong>${item.name}</strong>${countStr}<br>`;
+    html += `${item.totalGoods} <strong>${escapeHtml(item.name)}</strong>${countStr}<br>`;
+  }
+
+  return html;
+}
+
+function buildUnitsTooltipHTML(unitBuildingsList, customHelper = helper) {
+  if (
+    !unitBuildingsList ||
+    !Array.isArray(unitBuildingsList) ||
+    unitBuildingsList.length === 0
+  ) {
+    return '';
+  }
+
+  const h = customHelper || helper;
+  const groupedUnits = {};
+  for (const entry of unitBuildingsList) {
+    if (!entry) continue;
+    const name =
+      (h && typeof h.fEntityNameTrim === 'function' ?
+        h.fEntityNameTrim(entry.id || entry.name)
+      : null) ||
+      entry.name ||
+      entry.id ||
+      'Unknown Building';
+
+    if (!groupedUnits[name]) {
+      groupedUnits[name] = { count: 0, totalUnits: 0 };
+    }
+    const rawAmt = entry.amount ?? entry.units;
+    const unitAmount =
+      Number(
+        rawAmt && typeof rawAmt.toNumber === 'function' ?
+          rawAmt.toNumber()
+        : rawAmt,
+      ) || 0;
+    groupedUnits[name].count++;
+    groupedUnits[name].totalUnits += unitAmount;
+  }
+
+  const groupedUnitsList = Object.keys(groupedUnits).map((name) => ({
+    name,
+    count: groupedUnits[name].count,
+    amount: groupedUnits[name].totalUnits,
+  }));
+
+  groupedUnitsList.sort((a, b) => b.amount - a.amount);
+
+  logger?.debug('Building units tooltip HTML', {
+    buildingCount: unitBuildingsList.length,
+    groupedCount: groupedUnitsList.length,
+  });
+
+  let html = '';
+  for (const item of groupedUnitsList) {
+    const countStr = item.count > 1 ? ` (x${item.count})` : '';
+    html += `${item.amount} <strong>${escapeHtml(item.name)}</strong>${countStr}<br>`;
   }
 
   return html;
@@ -131,5 +205,6 @@ function buildTotalGoodsTooltipHTML(goodsBuildingsList, customHelper = helper) {
 module.exports = {
   buildFpTooltipHTML,
   buildTotalGoodsTooltipHTML,
+  buildUnitsTooltipHTML,
 };
 module.exports.default = module.exports;
