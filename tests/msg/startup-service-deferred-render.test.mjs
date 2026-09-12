@@ -4,6 +4,7 @@ import {
   detectMissingCityEntities,
   scheduleStartupRender,
 } from '../../src/js/msg/StartupRenderOrchestrator.js';
+import '../../src/js/ui/startupMetadataLoadingBinding.js';
 
 describe('StartupRenderOrchestrator - Deferred Startup Render Suite', () => {
   let knownDefs;

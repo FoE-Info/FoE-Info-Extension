@@ -11,13 +11,7 @@ let activeRun = 0;
 let renderPending = false;
 let activeTimer;
 
-let renderMetadataLoadingPlaceholder = null;
-try {
-  const loading = require('../ui/startupMetadataLoading.js');
-  if (typeof loading.renderMetadataLoadingPlaceholder === 'function') {
-    renderMetadataLoadingPlaceholder = loading.renderMetadataLoadingPlaceholder;
-  }
-} catch {}
+const { startupRenderState } = require('../state/StartupRenderState.js');
 
 let yieldToMain = async () => {};
 try {
@@ -75,10 +69,10 @@ function scheduleStartupRender({
 
   if (missing.length > 0 && typeof resolveMissingCityEntities === 'function') {
     renderPending = true;
-    if (citystats && typeof renderMetadataLoadingPlaceholder === 'function') {
-      renderMetadataLoadingPlaceholder(citystats, {
-        loadingText,
-        translateContainer,
+    if (citystats) {
+      startupRenderState.setMetadataLoading({
+        container: citystats,
+        options: { loadingText, translateContainer },
       });
     }
     traceGate('P5g', 'loading placeholder installed; starting resolver');

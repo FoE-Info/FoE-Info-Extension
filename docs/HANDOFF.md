@@ -4,6 +4,19 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 9 — Startup render orchestration decoupling**:
+  - `StartupRenderOrchestrator` no longer lazily requires
+    `ui/startupMetadataLoading.js`; it publishes `{ container, options }` to the
+    `metadata-loading` channel added to `src/js/state/StartupRenderState.js`.
+    New `src/js/ui/startupMetadataLoadingBinding.js` renders the placeholder,
+    registered in the `ui/renderBindings.js` root. Zero direct `../ui/` imports.
+  - Tests: `tests/ui/startup-metadata-loading-binding.test.mjs`; extended
+    `tests/state/startup-render-state.test.mjs`;
+    `startup-render-barrier` / `startup-service-deferred-render`
+    side-effect-load the binding.
+  - **Verification**: `npm run verify` exit 0 — **1,263 tests / 0 fail**,
+    prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
+
 - **F2 Session 8 — Resource / Goods decoupling**:
   - `ResourceService` (305 → 305 L) no longer imports `../ui/`; it publishes to
     the new `src/js/state/ResourceState.js` (`goods` / `fp` / `globals` /
