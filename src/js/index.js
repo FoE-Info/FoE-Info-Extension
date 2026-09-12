@@ -20,6 +20,7 @@ import {
   setupPanelContainers,
   setupPanelHeader,
 } from './ui/containerBinding.js';
+import './ui/renderQuantumPanels.js';
 import { initIndexUiBindings } from './ui/indexUiBindings.js';
 import { escapeHTML } from './utils/formatters.js';
 import { isDebugEnabled, onDebugToggle, toggleDebug } from './utils/logger.js';
