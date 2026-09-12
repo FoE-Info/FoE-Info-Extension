@@ -9,11 +9,8 @@
 const BigNumber = require('bignumber.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 const { renderTreasuryPanel } = require('../ui/panelDispatcher.js');
+const { renderTreasuryLogPanel } = require('../ui/renderTreasuryLogPanel.js');
 
-let element = null;
-let collapse = null;
-let copy = null;
-let helper = null;
 let showOptions = { showTreasury: true };
 
 // Bound accumulated pagination so a full treasury history (tens of thousands
@@ -21,18 +18,6 @@ let showOptions = { showTreasury: true };
 const MAX_TREASURY_LOGS = 2000;
 
 if (typeof __webpack_require__ !== 'undefined') {
-  try {
-    element = require('../fn/AddElement');
-  } catch {}
-  try {
-    collapse = require('../fn/collapse.js');
-  } catch {}
-  try {
-    copy = require('../fn/copy.js');
-  } catch {}
-  try {
-    helper = require('../fn/helper.js');
-  } catch {}
   try {
     const showOptMod = require('../vars/showOptions.js');
     if (showOptMod?.showOptions) showOptions = showOptMod.showOptions;
@@ -183,10 +168,13 @@ class TreasuryService {
     this.lastUpdated = Date.now();
     renderTreasuryLogPanel(
       this.logs,
-      this.totalGoodsDonated,
-      this.totalMedalsDonated,
-      this.totalMedalsSpent,
-      this.totalLogCount,
+      {
+        totalGoodsDonated: this.totalGoodsDonated,
+        totalMedalsDonated: this.totalMedalsDonated,
+        totalMedalsSpent: this.totalMedalsSpent,
+        totalLogCount: this.totalLogCount,
+      },
+      { showTreasury: showOptions?.showTreasury !== false },
     );
 
     return {
@@ -277,86 +265,6 @@ class TreasuryService {
         goodsSpent: new BigNumber(0),
       }
     );
-  }
-}
-
-function renderTreasuryLogPanel(
-  logs,
-  totalGoodsDonated,
-  totalMedalsDonated,
-  totalMedalsSpent,
-  totalLogCount,
-) {
-  if (typeof document === 'undefined') return;
-  const targetEl = document.getElementById('treasuryLog');
-  if (!targetEl) return;
-
-  if (showOptions && showOptions.showTreasury === false) {
-    targetEl.innerHTML = '';
-    return;
-  }
-  targetEl.style.display = '';
-
-  const isCollapsed =
-    collapse?.collapseTreasuryLog !== undefined ?
-      !!collapse.collapseTreasuryLog
-    : true;
-  let html = `<div class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">`;
-  if (element?.close) html += element.close();
-  if (element?.copy)
-    html += element.copy('treasuryLogCopyID', 'info', 'right', isCollapsed);
-  html += `<p id="treasuryLogTextLabel" href="#treasuryLogText" data-bs-toggle="collapse" role="button">`;
-  if (element?.icon)
-    html += element.icon('treasuryLogicon', 'treasuryLogText', isCollapsed);
-  html += `<strong><span data-i18n="treasury_logs">Treasury Logs</span>:</strong>`;
-  html += ` <span class="ms-1 small">(${logs.length}/${totalLogCount ?? logs.length} <span data-i18n="entries">Entries</span>)</span></p>`;
-  html += `<div id="treasuryLogText" class="overflow-y resize collapse ${isCollapsed ? '' : 'show'}">`;
-  html += `<div class="mb-2 small px-2">`;
-  html += `<span data-i18n="goods_donated">Goods Donated</span>: <strong>${totalGoodsDonated.toNumber().toLocaleString()}</strong> | `;
-  html += `<span data-i18n="medals_donated">Medals Donated</span>: <strong>${totalMedalsDonated.toNumber().toLocaleString()}</strong> | `;
-  html += `<span data-i18n="medals_spent">Medals Spent</span>: <strong>${totalMedalsSpent.toNumber().toLocaleString()}</strong>`;
-  html += `</div>`;
-  html += `<table class="table table-sm table-striped align-middle mb-0"><caption class="visually-hidden"><span data-i18n="treasury">Guild Treasury</span></caption><thead><tr>`;
-  html += `<th scope="col" class="text-start"><span data-i18n="player">Player</span></th>`;
-  html += `<th scope="col" class="text-start"><span data-i18n="action">Action</span></th>`;
-  html += `<th scope="col" class="text-start"><span data-i18n="resource">Resource</span></th>`;
-  html += `<th scope="col" class="text-end"><span data-i18n="amount">Amount</span></th>`;
-  html += `</tr></thead><tbody>`;
-
-  for (const entry of logs.slice(0, 50)) {
-    const pName =
-      helper?.escapeHTML ?
-        helper.escapeHTML(entry.playerName || 'Unknown')
-      : entry.playerName || 'Unknown';
-    const rName =
-      helper?.escapeHTML ?
-        helper.escapeHTML(entry.resource || '')
-      : entry.resource;
-    const act =
-      helper?.escapeHTML ? helper.escapeHTML(entry.action || '') : entry.action;
-    const isDonation = entry.isDonation();
-    const amountClass = isDonation ? 'text-success' : 'text-danger';
-    const amountSign = isDonation ? '+' : '-';
-    const amountStr = entry.amount.toNumber().toLocaleString();
-
-    html += `<tr>`;
-    html += `<td class="text-start">${pName}</td>`;
-    html += `<td class="text-start small text-muted">${act}</td>`;
-    html += `<td class="text-start">${rName}</td>`;
-    html += `<td class="text-end ${amountClass}">${amountSign}${amountStr}</td>`;
-    html += `</tr>`;
-  }
-
-  html += `</tbody></table></div></div>`;
-  targetEl.innerHTML = html;
-
-  if (collapse?.fCollapseTreasuryLog) {
-    document
-      .getElementById('treasuryLogTextLabel')
-      ?.addEventListener('click', collapse.fCollapseTreasuryLog);
-  }
-  if (helper?.translateContainer) {
-    helper.translateContainer(targetEl);
   }
 }
 
