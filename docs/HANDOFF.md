@@ -4,6 +4,12 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
 
 ## Current session (2026-09-12)
 
+- **Font Normalization, Guild Overview Restoration & Orchestrator Thinning (3 Tracks Merged)**:
+  - **Track 1 (`feat/opencode-font-normalization`, `8125340`, merged `8cfad22`)**: Purged `font-monospace` and oversized tabular formatting on numeric cells across `renderQuantumPanels.js`, `OutpostService.js`, and `TreasuryService.js`, restoring clean standard sans-serif system font (the style in the Army card and QI Rank column).
+  - **Track 2 (`feat/opencode-guild-overview-fix`, `7af75a1`, merged `ca256a4`)**: Fixed `#guildOverview` parent wrapper visibility in `cardVisibility.js` / `cardVisibility.ts` and `renderGuildPanel.js`, resolving bug where child `#guild` remained invisible when unconstrained or view-switching occurred; passed `renderGuildPanel` explicitly in `index.js` bridge.
+  - **Track 3 (`feat/antigravity-orchestrator-thinning`, `eeaa9e6`, merged `b80cc58`)**: Decomposed monolithic `src/js/index.js` from 566 lines to 159 lines (-407 lines, 72% reduction); extracted `src/js/protocol/rpcLogger.js` (65L), `src/js/protocol/indexBridgeSetup.js` (136L), and `src/js/state/indexEntityDefs.js` (70L); added `bootstrapExtensionUi` in `src/js/ui/indexUiBindings.js`.
+  - **Verification Gate**: Full 5-stage verification gate (`npm run verify`) passed exit 0: **1,001/1,001 tests passing across 97 test suites**, 0 eslint errors, prettier clean, typecheck clean, dev bundle compiled successfully in 5.0s.
+
 - **Multi-Track Modernization & Verification Gate (4 Parallel Tracks Merged)**:
   - **Track 1 (`feat/opencode-rpc-contract`, `86ac5d2`)**: Eliminated 14 duplicate InnoGames RPC registrations across `registerServices.js`, `cityRoutes.js`, and `GuildRaidsService.js`. Triaged `scripts/rpc-contract.config.json` and added `rpc:contract:check` to `verify` pipeline.
   - **Track 2 (`feat/opencode-rewards-routing`, `c4f9e98`)**: Extracted `src/js/ui/rewardCategories.js` (160L), decoupled `CityProductionService.js` and `QuestService.js` from category logic, simplified `RewardRenderer.js` (281 -> 194 lines), and added `tests/ui/reward-routing.test.mjs`.
