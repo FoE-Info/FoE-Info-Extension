@@ -31,10 +31,12 @@ try {
 
 let buildFpTooltipHTML = null;
 let buildTotalGoodsTooltipHTML = null;
+let buildUnitsTooltipHTML = null;
 try {
   ({
     buildFpTooltipHTML,
     buildTotalGoodsTooltipHTML,
+    buildUnitsTooltipHTML,
   } = require('./components/cityStatsTooltipBuilder.js'));
 } catch {}
 
@@ -416,7 +418,13 @@ function renderLiveCityStats(ctx = {}) {
           userTitle: userTitle,
           origin: origin ? origin.toUpperCase() : '',
         },
-        { collapseStats: ctx.lastStartupContext?.collapseStats },
+        {
+          collapseStats: ctx.lastStartupContext?.collapseStats,
+          unitsTooltipHTML:
+            buildUnitsTooltipHTML ?
+              buildUnitsTooltipHTML(calculatedStats.units?.buildings)
+            : '',
+        },
       );
       const renderEnd = performance.now();
       logger?.info(
@@ -437,6 +445,7 @@ module.exports = {
   buildClanGoodsData,
   buildFpTooltipHTML,
   buildTotalGoodsTooltipHTML,
+  buildUnitsTooltipHTML,
   default: {
     renderLiveCityStats,
     fGoodsHTML,
@@ -444,5 +453,6 @@ module.exports = {
     buildClanGoodsData,
     buildFpTooltipHTML,
     buildTotalGoodsTooltipHTML,
+    buildUnitsTooltipHTML,
   },
 };

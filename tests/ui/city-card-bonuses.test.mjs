@@ -12,6 +12,11 @@ function createMockMilitary() {
   };
 }
 
+const DAILY_PRODUCTION_HEADER =
+  '<div class="foe-section-header"><span data-i18n="daily_production">Daily Production</span></div>';
+const COMBAT_BOOSTS_HEADER =
+  '<div class="foe-section-header"><span data-i18n="combat_boosts">Combat Boosts</span></div>';
+
 test('City Card Bonus Lines Suite', async (t) => {
   const baseOwnParams = {
     prefix: 'citystats',
@@ -144,31 +149,121 @@ test('City Card Bonus Lines Suite', async (t) => {
   );
 
   await t.test(
-    'buildVisitedCityCard: has Other Player Information header title, collapse icon, close button, and moves player name into body',
+    'buildOwnCityCard: renders both section headers in order',
+    () => {
+      const html = buildOwnCityCard(baseOwnParams);
+      assert.ok(html.includes(DAILY_PRODUCTION_HEADER));
+      assert.ok(html.includes(COMBAT_BOOSTS_HEADER));
+      assert.ok(
+        html.indexOf(DAILY_PRODUCTION_HEADER) <
+          html.indexOf(COMBAT_BOOSTS_HEADER),
+        'Daily Production section must precede Combat Boosts',
+      );
+    },
+  );
+
+  await t.test(
+    'buildOwnCityCard: renders inline coin and supply boosts',
+    () => {
+      const html = buildOwnCityCard({
+        ...baseOwnParams,
+        exact: true,
+        coins: { total: new BigNumber(25000000), boostPercent: 120 },
+        supplies: { total: new BigNumber(14200000), boostPercent: 85 },
+      });
+      assert.match(
+        html,
+        /stat_daily_coins">Coins<\/span>: 25,000,000 \(\+120%\)/,
+      );
+      assert.match(
+        html,
+        /stat_daily_supplies">Supplies<\/span>: 14,200,000 \(\+85%\)/,
+      );
+    },
+  );
+
+  await t.test('buildOwnCityCard: renders Guild before Score', () => {
+    const html = buildOwnCityCard({
+      ...baseOwnParams,
+      playerInfo: {
+        guild: 'Test Guild',
+        era: 'SpaceAgeTitan',
+        score: 1234567890,
+      },
+    });
+    const guildIdx = html.indexOf('Guild</span>: Test Guild');
+    const scoreIdx = html.indexOf('Score</span>:');
+    assert.ok(guildIdx !== -1, 'Guild line must render');
+    assert.ok(scoreIdx !== -1, 'Score line must render');
+    assert.ok(guildIdx < scoreIdx, 'Guild must appear before Score');
+  });
+
+  await t.test(
+    'buildOwnCityCard: renders crit strike when AO and CC are present',
+    () => {
+      const html = buildOwnCityCard({
+        ...baseOwnParams,
+        spec: {
+          arcPercent: new BigNumber(90),
+          chatBonus: new BigNumber(300),
+          goodsPerQuest: new BigNumber(25),
+          aoCriticalStrike: new BigNumber(33),
+          ccCriticalStrike: new BigNumber(25),
+        },
+      });
+      assert.match(html, /Crit Strike<\/span>: 33% \(AO\), 25% \(CC\)/);
+    },
+  );
+
+  await t.test(
+    'buildVisitedCityCard: is symmetrical with headers, inline boosts, and crit strike',
+    () => {
+      const html = buildVisitedCityCard({
+        ...baseVisitedParams,
+        exact: true,
+        coins: { total: new BigNumber(25000000), boostPercent: 120 },
+        supplies: { total: new BigNumber(14200000), boostPercent: 85 },
+        spec: {
+          arcPercent: new BigNumber(90),
+          chatBonus: new BigNumber(300),
+          goodsPerQuest: new BigNumber(25),
+          aoCriticalStrike: new BigNumber(33),
+          ccCriticalStrike: new BigNumber(25),
+        },
+      });
+      assert.ok(html.includes(DAILY_PRODUCTION_HEADER));
+      assert.ok(html.includes(COMBAT_BOOSTS_HEADER));
+      assert.match(
+        html,
+        /stat_daily_coins">Coins<\/span>: 25,000,000 \(\+120%\)/,
+      );
+      assert.match(
+        html,
+        /stat_daily_supplies">Supplies<\/span>: 14,200,000 \(\+85%\)/,
+      );
+      assert.match(html, /Crit Strike<\/span>: 33% \(AO\), 25% \(CC\)/);
+    },
+  );
+
+  await t.test(
+    'buildVisitedCityCard: header shows player name, copy button, and close button',
     () => {
       const html = buildVisitedCityCard({
         ...baseVisitedParams,
         isCollapsed: false,
       });
-      assert.match(
-        html,
-        /<strong[^>]*data-bs-toggle="collapse"[^>]*><span data-i18n="other_player_information">Other Player Information<\/span><\/strong>/,
-      );
       assert.match(html, /id="visiticon"[^>]*data-bs-toggle="collapse"/);
+      assert.match(html, /id="visit-copy-btn"/);
       assert.match(html, /id="visit-close-btn"/);
 
       const parts = html.split('id="visitText"');
       assert.equal(parts.length, 2);
-      assert.doesNotMatch(
+      assert.match(
         parts[0],
         /VisitedPlayer/,
-        'Header bar must not contain player name',
+        'Header bar must contain player name',
       );
-      assert.match(
-        parts[1],
-        /<strong class="text-primary text-decoration-underline text-truncate">VisitedPlayer<\/strong>/,
-        'Player name must be on line 1 of collapsible body',
-      );
+      assert.doesNotMatch(parts[0], /Other Player Information/);
     },
   );
 
