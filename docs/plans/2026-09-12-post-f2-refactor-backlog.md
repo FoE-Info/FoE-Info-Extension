@@ -30,15 +30,12 @@ the F2 reactive-decoupling program closed.
 
 ### P1 — `cardVisibility` config extraction
 
-- `ui/cardVisibility.js` (739 L) is the only file over the 600-L target.
-  Extract the frozen tables (L41–288, ~248 L: `GAME_CONTEXTS`,
-  `CONTEXT_ALLOWED_PANELS`, `PANEL_PARENT`, `PANEL_OPTION_KEY`,
-  `ALL_15_PANEL_IDS`, `GBG_ALLOWED_PANEL_IDS`, `CITY_HIDDEN_PANEL_IDS`,
-  `optionToElementId`, `SECONDARY_PANEL_IDS`, derived sets, debug-stub sets)
-  into `ui/cardVisibilityConfig.js`; leave runtime/DOM (L293–739) in place.
-- Have **both** `cardVisibility.js` and `cardVisibility.ts` (789 L) re-export
-  the new config to kill the silent-drift vector (they already disagree on
-  debug semantics).
+- ✅ **`.js` done (Batch 18)**: frozen tables moved to
+  `ui/cardVisibilityConfig.js` (272 L); `ui/cardVisibility.js` 739 → 503 L.
+- ⏳ **Remaining**: have `ui/cardVisibility.ts` (789 L) re-export
+  `ui/cardVisibilityConfig.js` instead of duplicating the tables. Blocked on the
+  `.js`/`.ts` canonical-direction decision below because the `PanelId` type is
+  derived from the `ALL_15_PANEL_IDS` literal tuple.
 - Tests: `tests/ui/card-visibility.test.mjs` (375 L),
   `tests/ui/context-view-filtering.test.mjs`.
 
