@@ -42,9 +42,8 @@ the F2 reactive-decoupling program closed.
 ### P2 — dead code
 
 - ✅ Deleted `fn/cityStatsUtils.js` (0 consumers) on 2026-09-12.
-- Decide `ui/cityStatsHtmlBuilder.js` (131 L, production-orphan;
-  `buildCityStatsHTML` has no production importer).
-- Retarget test-only `fn/CityStatsCalculator.js` consumers to `calc/`.
+- ✅ Deleted `ui/cityStatsHtmlBuilder.js` (131 L, production-orphan) on 2026-09-12.
+- ✅ Retargeted `fn/CityStatsCalculator.js` consumers to `calc/` and deleted legacy shim (7 L) on 2026-09-12.
 - **NEW (verified 2026-09-12):** `GbDonationState.setDonationPanel` /
   `getDonationPanel` / the `'donation'` channel are **dead production code**.
   Evidence: the only production caller of the store is
@@ -65,14 +64,14 @@ the F2 reactive-decoupling program closed.
 
 ### P2 — monolith extracts (ranked, all with existing tests)
 
-| File (lines)                          | Extract                                                         | ~Lines |
-| :------------------------------------ | :-------------------------------------------------------------- | -----: |
-| `protocol/MessageDispatcher.js` (434) | ✅ direct-CDN metadata router → `protocol/directMetadata.js`    |    106 |
-| ”                                     | ✅ request `postData` extraction → `protocol/requestPayload.js` |     63 |
-| `msg/GreatBuildingsService.js` (468)  | `fCheckOutput` L368–450 → `ui/gbOutputRepair.js`                |     83 |
-| `ui/containerBinding.js` (571 → 274)  | ✅ `setupPanelContainers` → `ui/panelContainerFactory.js`       |    277 |
-| `fn/collapse.js` (493)                | 27 toggles L143–478 → declarative specs                         |    330 |
-| `ui/indexUiBindings.js` (528)         | storage bootstrap + drop hardcoded jQuery locale map L210–242   |     75 |
+| File (lines)                               | Extract                                                         | ~Lines |
+| :----------------------------------------- | :-------------------------------------------------------------- | -----: |
+| `protocol/MessageDispatcher.js` (434)      | ✅ direct-CDN metadata router → `protocol/directMetadata.js`    |    106 |
+| ”                                          | ✅ request `postData` extraction → `protocol/requestPayload.js` |     63 |
+| `msg/GreatBuildingsService.js` (468 → 386) | ✅ `fCheckOutput` → `ui/gbOutputRepair.js`                      |     83 |
+| `ui/containerBinding.js` (571 → 274)       | ✅ `setupPanelContainers` → `ui/panelContainerFactory.js`       |    277 |
+| `fn/collapse.js` (493)                     | 27 toggles L143–478 → declarative specs                         |    330 |
+| `ui/indexUiBindings.js` (528)              | storage bootstrap + drop hardcoded jQuery locale map L210–242   |     75 |
 
 ### P2 — TS mirror drift ✅ resolved by Phase 0
 
