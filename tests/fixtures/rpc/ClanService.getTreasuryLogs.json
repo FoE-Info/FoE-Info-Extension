@@ -1,0 +1,136 @@
+{
+  "logs": [
+    {
+      "action": "Building production",
+      "resource": "silver_crystals",
+      "amount": 362,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    },
+    {
+      "action": "Building production",
+      "resource": "stel_glyph_circuits",
+      "amount": 1547,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    },
+    {
+      "action": "Building production",
+      "resource": "stel_glyph_circuits",
+      "amount": 3386,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    },
+    {
+      "action": "Building production",
+      "resource": "stel_metamorphic_alloys",
+      "amount": 1547,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    },
+    {
+      "action": "Building production",
+      "resource": "stel_metamorphic_alloys",
+      "amount": 3386,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    },
+    {
+      "action": "Building production",
+      "resource": "stel_psionic_conduits",
+      "amount": 1547,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    },
+    {
+      "action": "Building production",
+      "resource": "stel_psionic_conduits",
+      "amount": 3386,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    },
+    {
+      "action": "Building production",
+      "resource": "stel_resonance_cores",
+      "amount": 1547,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    },
+    {
+      "action": "Building production",
+      "resource": "stel_resonance_cores",
+      "amount": 3386,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    },
+    {
+      "action": "Building production",
+      "resource": "stel_xenocrystals",
+      "amount": 1547,
+      "createdAt": "today at 12:25 am",
+      "player": {
+        "player_id": 525759,
+        "name": "Mike of Macedonia",
+        "avatar": "addon_portrait_id_sinatra",
+        "__class__": "OtherPlayer"
+      },
+      "__class__": "ClanTreasuryLog"
+    }
+  ],
+  "count": 29385,
+  "__class__": "ClanTreasuryLogs"
+}

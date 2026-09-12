@@ -46,6 +46,7 @@
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix",
     "metadata:download": "node scripts/download-offline-metadata.mjs",
+    "metadata:extract-hars": "node scripts/ingest-hars-to-metadata.mjs",
     "metadata:query": "node scripts/query-metadata-store.mjs",
     "package:beta": "npm run verify && node scripts/package-extension.js --env=beta",
     "prepare": "husky",
