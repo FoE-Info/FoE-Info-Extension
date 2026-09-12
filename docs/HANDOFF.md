@@ -4,6 +4,30 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **B5 DOM Decoupling + Structured DevTools Bridge + header cleanup**:
+  - Routed the last residual `src/js/msg/` DOM through `src/js/ui/`
+    (roadmap B5): new `renderTreasuryLogPanel`, `renderCulturalPanel`,
+    `renderBonusPanel`, `renderResourcePanel`, `renderExpeditionPanel`,
+    `renderArmyPanel`, `renderRewardsPanel`, and `renderGbDonationLegacy`.
+    Services keep parsing/state and delegate markup + binding; the public
+    `renderCulturalPanel`/`setShowOptions` (OutpostService) and
+    `renderGbDonationPanel`/`handleNewReward` (GbDonationService) APIs are
+    preserved via re-exports. Added `tests/ui/render-treasury-log-panel.test.mjs`
+    and retargeted the `panel-resize-and-visibility` source-coupled assertion.
+  - Hardened the DevTools panel bridge (STATUS Actionable Item 4): new
+    `src/js/protocol/devtoolsBridge.js` exchanges versioned `postMessage`
+    envelopes (`raw-network-entry`/`request-finished`/`panel-ready`/`host-ping`)
+    with a per-show readiness handshake, replacing the global
+    `window.handleRawNetworkEntry` function attachment between `devtools.js`
+    and `index.js`. `networkListener.js` retains its own `window.handle*`
+    globals for the CDP harness/back-compat. New
+    `tests/protocol/devtools-bridge.test.mjs` (8 tests).
+  - Removed the 13-line copyright comment block from all 20 source files
+    (copyright stays in the repo's dedicated file) and added one-line
+    purpose headers to the 31 `src/js` files lacking one.
+  - **Verification**: `npm run verify` exit 0 — **1,095 tests / 0 fail**,
+    prettier/lint/typecheck clean, i18n/RPC-contract green, dev bundle compiles.
+
 - **Browser control script removed (working tree)**: deleted the tracked
   `scripts/foe-browser-control.mjs` CDP controller and its rule reference. The
   external `foe-browser` launcher is not tracked. Purging it from prior commits
