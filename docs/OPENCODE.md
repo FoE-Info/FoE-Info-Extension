@@ -79,31 +79,30 @@ Formatting excludes existing `docs/antigravity_prompt_*.md` conversation artifac
 
 ## Active Dual-Harness Tasks
 
-- **[READY FOR OPENCODE] Workstream 2: Goods Panel Extraction & Ephemeral Panel Dismissal Lifecycle**:
-  - Plan: [`docs/plans/2026-09-12-context-driven-panel-visibility-engine.md`](plans/2026-09-12-context-driven-panel-visibility-engine.md).
-  - Target Branch: `feat/goods-and-panel-lifecycle` -> `development` (or execute directly on `development` since working tree is 100% clean and no other branches are active).
-  - Background Context:
-    - Workstream 1 merged cleanly in `b9b41e7` (`feat(ui): merge context-driven panel visibility engine`).
-    - The 6-context matrix (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`) is active in `cardVisibility.js` / `cardVisibility.ts`.
-    - Current baseline: 941/941 tests passing across 91 suites, full 5-stage `npm run verify` gate green.
-    - Zero autonomous browser control is mechanically enforced; do not run `foe-browser` or kill chrome.
-  - Tasks to complete:
-    1. **Create `src/js/ui/renderGoodsPanel.js`** ($\le 250$ lines):
-       - Extract goods table rendering and DOM assembly from `src/js/msg/ResourceService.js` (`fshowResources`).
-       - Scope logger with `createLogger('GoodsPanel')`.
-       - Re-export `renderGoodsPanel` from `ResourceService.js` for full backward compatibility.
-    2. **Thin `src/js/msg/ResourceService.js`** (currently 579 lines $\to \le 380$ lines):
-       - Add lifecycle state: `isGoodsPanelUnlocked()`, `unlockGoodsPanel()`, `lockGoodsPanel()`.
-       - When `TradeService` / marketplace or inventory resources arrive, unlock via `unlockGoodsPanel()`.
-       - In `fshowResources`, guard execution: if `!isGoodsPanelUnlocked()` and debug mode is false, suppress rendering and unhiding `#goods`.
-    3. **Ephemeral Close / Dismiss Lifecycle**:
-       - Wire `.btn-close` click listener on `#goods`: clicking `x` calls `lockGoodsPanel()` and clears `#goods.innerHTML`.
-       - Ensure subsequent routine city harvests or background entity syncs in `OWN_CITY` do NOT respawn `#goods` once dismissed.
-    4. **Unit Testing**:
-       - Add unit test `tests/msg/resource-market-trigger.test.mjs` testing unlock on market/trade data, suppression on raw bag events, and locking on dismiss.
-    5. **Verification**:
-       - Run `npm test`, `npm run typecheck`, and full `npm run verify`.
-       - Ensure all modules in `src/js/` remain strictly $\le 600$ lines.
+- **[COMPLETED] Track 2: UI Panels, Layouts, Sizing & Options Reorganization**:
+  - Plan: [`docs/plans/2026-09-12-city-stats-persistence-and-panel-refinements.md`](plans/2026-09-12-city-stats-persistence-and-panel-refinements.md).
+  - Merged & Verified: 1,005/1,005 tests passing, full 5-stage `npm run verify` gate green.
+  - Tasks completed:
+    1. **QI & GBG Contributions & Leaderboard Sizing**:
+       - `src/js/ui/renderQuantumPanels.js`:
+         - QI Contributions: When "show changes only" is OFF (`!isChangesOnly`), bounded height to ~20 players (~480px) with `overflow-y: auto`. When ON (`isChangesOnly`), full natural height (`height: auto`, no scrollbar).
+         - QI Leaderboard: Default height bounded to top 10 guilds (~260px) with `overflow-y: auto`. Expanding/collapsing strictly preserves and restores this height.
+       - `src/js/ui/renderBattlegroundsPanel.js`:
+         - GBG Battlegrounds: When "show changes only" is OFF, bounded height to ~20 players (~480px) with `overflow-y: auto`. When ON, full natural height (`height: auto`, no scrollbar).
+    2. **Guild Overview Panel Redesign**:
+       - `src/js/ui/renderGuildPanel.js`:
+         - Dual Header State:
+           - Collapsed: `[+] Guild: <GuildName> (<count> Guild Members)  [X]`
+           - Expanded: `[-] Guild Overview                              [Copy] [X]` with `<GuildName> • <count> Members` subtitle row.
+         - Flexbox layout: `d-flex align-items-center justify-content-between` so Copy and Close buttons never overlap text regardless of viewport width.
+         - Table container: Wrap member table in `<div class="table-responsive">` with compact column styling.
+    3. **City Info Options Clean-Up & 4 New Settings**:
+       - `src/chrome/options.html`: Clean up "City Info" card to strictly host panel options: `Stats`, `visit`, `army`, `showDailyCoins`, `showDailySupplies`, `showCoinBoost`, `showSupplyBoost`. Move `#incidents`, `#galaxy`, `#guild`, `#bonus`, and `collectionTimes` to their own dedicated cards.
+       - `src/js/options.js` & `src/js/state/showOptions.js`: Register and sync `showDailyCoins`, `showDailySupplies`, `showCoinBoost`, `showSupplyBoost` (all default `true`).
+       - `src/js/ui/templates/ownCityCard.js` & `src/js/ui/templates/visitedCityCard.js`: Render Daily Coins, Daily Supplies, Coin Boost %, Supply Boost % conditionally.
+       - `src/i18n/*.json`: Add localized keys for the 4 new options across all 7 language dictionaries (`npm run i18n:check`).
+    4. **Verification**:
+       - Verified via full 5-stage gate: `npm test`, `npm run i18n:check`, `npm run check`, `npm run lint`, and `npm run verify`.
 
 - **[COMPLETED] Zero Autonomous Browser Control Hardening**:
   - Promoted `.agents/rules/browser-environment-hygiene.md` to `always_on`; updated `.agents/scripts/safety-gate.mjs` to block `foe-browser` and chrome process termination; added automated hook tests (`tests/agents/hooks.test.mjs`). Merged in `6ceb53a`.

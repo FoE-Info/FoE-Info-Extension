@@ -47,6 +47,10 @@ const CHECKBOX_CONFIG = [
   { id: 'quantumContributions', key: 'showQuantum', fallback: true },
   { id: 'quantumLeaderboard', key: 'showQuantumLeaderboard', fallback: true },
   { id: 'showQIChanges', key: 'showQIChanges', fallback: false },
+  { id: 'showDailyCoins', key: 'showDailyCoins', fallback: true },
+  { id: 'showDailySupplies', key: 'showDailySupplies', fallback: true },
+  { id: 'showCoinBoost', key: 'showCoinBoost', fallback: true },
+  { id: 'showSupplyBoost', key: 'showSupplyBoost', fallback: true },
 ];
 
 function readWorldSettingsFromForm() {

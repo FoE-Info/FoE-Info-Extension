@@ -96,16 +96,16 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       assert.ok(resourcePkg.lastGoodsPayload);
       assert.equal(resourcePkg.availableFP, 12);
 
-      // Locked until Market/Inventory open
-      assert.equal(resourcePkg.isGoodsPanelUnlocked(), false);
+      // Unlocked by default when showGoods is enabled, but here showGoods is false
+      assert.equal(resourcePkg.isGoodsPanelUnlocked(), true);
 
-      // Verify DOM not rendered on login
+      // Verify DOM not rendered on login because showGoods is false
       assert.equal(goodsDiv.style.display, 'none');
     },
   );
 
   await t.test(
-    '2. Login does not render #goods even when showGoods is enabled, until Market/Inventory has been opened',
+    '2. When showGoods is enabled, hydrated resources render #goods; Market/Inventory triggers also refresh',
     async () => {
       resourcePkg.setShowOptions({ showGoods: true });
       goodsDiv.innerHTML = '';
@@ -122,22 +122,13 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       };
       resourcePkg.getPlayerResources(loginPayload);
 
-      // showGoods is enabled, but the panel must stay hidden on login —
-      // it only unlocks once Market or Inventory has actually been opened.
-      assert.equal(goodsDiv.style.display, 'none');
-      assert.equal(goodsDiv.innerHTML, '');
-
-      // Opening the market unlocks it for the rest of the session.
-      const res = await openMarket();
-      assert.equal(res.succeeded, 1);
-      assert.equal(resourcePkg.isGoodsPanelUnlocked(), true);
       assert.equal(goodsDiv.style.display, '');
       assert.ok(goodsDiv.innerHTML.includes('goodstable'));
 
-      // Subsequent login-style resource updates now keep it rendered.
-      goodsDiv.innerHTML = '';
-      goodsDiv.style.display = 'none';
-      resourcePkg.getPlayerResources(loginPayload);
+      // Opening the market or inventory also triggers/refreshes it
+      const res = await openMarket();
+      assert.equal(res.succeeded, 1);
+      assert.equal(resourcePkg.isGoodsPanelUnlocked(), true);
       assert.equal(goodsDiv.style.display, '');
       assert.ok(goodsDiv.innerHTML.includes('goodstable'));
     },

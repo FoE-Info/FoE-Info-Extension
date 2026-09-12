@@ -116,13 +116,6 @@ function processCityMapEntities(mapEntities, options = {}) {
     const entityMeta =
       CityEntityDefs[cid] || (metadataStore && metadataStore.getEntity(cid));
     if (entityMeta) {
-      if (Array.isArray(entityMeta.abilities)) {
-        entityMeta.abilities.forEach((ab) => {
-          if (ab?.__class__ === 'RandomUnitOfAgeWhenMotivatedAbility') {
-            City.TrazUnits = (City.TrazUnits || 0) + (ab.amount || 0);
-          }
-        });
-      }
       const eraComp =
         entityMeta.components?.[user.era] || entityMeta.components?.AllAge;
       const allAgeComp = entityMeta.components?.AllAge;
@@ -148,12 +141,12 @@ function processCityMapEntities(mapEntities, options = {}) {
                 lookup?.icon === 'military' ||
                 isChestUnit;
               if (isUnit) {
-                const match = rId.match(/\d+$/);
-                City.TrazUnits =
-                  (City.TrazUnits || 0) +
-                  (product.reward?.amount ||
-                    product.reward?.totalAmount ||
-                    (match ? parseInt(match[0], 10) : lookup?.amount || 1));
+                const amount =
+                  product.reward?.amount ||
+                  product.reward?.totalAmount ||
+                  lookup?.amount ||
+                  1;
+                City.TrazUnits = (City.TrazUnits || 0) + amount;
               }
             } else if (product.type === 'random') {
               const randProducts = product.products || [];
@@ -174,16 +167,13 @@ function processCityMapEntities(mapEntities, options = {}) {
                     lookup?.type === 'unit' ||
                     lookup?.icon === 'military'
                   ) {
-                    const match = rId.match(/\d+$/);
+                    const amount =
+                      inner.reward?.amount ||
+                      inner.reward?.totalAmount ||
+                      lookup?.amount ||
+                      1;
                     City.TrazUnits =
-                      (City.TrazUnits || 0) +
-                      Math.round(
-                        (inner.reward?.amount ||
-                          inner.reward?.totalAmount ||
-                          (match ?
-                            parseInt(match[0], 10)
-                          : lookup?.amount || 1)) * dropChance,
-                      );
+                      (City.TrazUnits || 0) + Math.round(amount * dropChance);
                   }
                 }
               });
