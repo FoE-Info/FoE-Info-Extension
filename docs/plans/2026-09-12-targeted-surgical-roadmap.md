@@ -1,7 +1,7 @@
 # Targeted Surgical Roadmap (Post Quad-Graph Exploration)
 
 **Date**: 2026-09-12
-**Status**: Reconciled 2026-09-12 — Phase A, B2–B5, C1/C2, D1g/D2g shipped; B1 shipped (calc purity); C3/D3g remain open. See `docs/STATUS.md` Actionable Items 1–4 for the current queue.
+**Status**: Reconciled 2026-09-12 — Phase A, B2–B5, C1/C2, D1g/D2g shipped; B1 shipped (calc purity); C3 closed (no longer required); D3g remains open. See `docs/STATUS.md` Actionable Items 1–4 for the current queue.
 **Source**: `graphify-out/foe-info/findings/2026-09-12-quad-graph-executive-synthesis.md`
 (derived from the 4-stream suite in
 [`2026-09-12-quad-graph-exploration-and-comparison.md`](2026-09-12-quad-graph-exploration-and-comparison.md))
@@ -44,7 +44,7 @@
 
 - [x] **C1** Shipped — pure `computeEconomicScore` in `BlueGalaxyCalculator.js` with configurable `fpWeight`/`goodsWeight`/`olderGoodsWeight` and BigNumber precision.
 - [x] **C2** Shipped — `src/js/utils/date.js` uses `Intl` tokens (`MMM`/`MMMM`/`ddd`) + `formatRelativeTime()`; residual `toLocale*` call sites migrated. No moment.js.
-- [ ] **C3** Open — no BG/sniping UX window filter or sortable-control layer found on top of the shipped economic calc.
+- [x] **C3** Closed 2026-09-12 by user directive — sniping UX is already shipped (calculators sorted); BG enhancements may return later but are not a current priority.
 
 ## Phase D — Guardrails & Record (P2)
 
@@ -57,10 +57,11 @@
 ## Recommended immediate next slice
 
 Actionable Item 1 (dedup extraction), Actionable Item 3 (TS mirrors), B1 (calc
-purity), D2g (dispatcher resilience tests), B5 (msg DOM decoupling), and
-Actionable Item 4 (structured DevTools bridge) shipped 2026-09-12. Remaining
-next slices: **C3** (BG/sniping UX controls), then **D3g** (LoW-Tool exclusion
-record), plus the deferred STATUS Actionable Item 2 (reactive subscriber pattern).
+purity), D2g (dispatcher resilience tests), B5 (msg DOM decoupling),
+Actionable Item 4 (structured DevTools bridge), and both Actionable Item 2
+reactive-store slices (QuantumState, StartupRenderState) shipped 2026-09-12.
+C3 was closed by user directive (sniping UX already shipped; BG deferred).
+Only **D3g** (LoW-Tool exclusion record) remains open.
 
 ## Plan premises corrected (do not inherit)
 
