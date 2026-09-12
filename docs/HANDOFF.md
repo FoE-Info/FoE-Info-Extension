@@ -1,8 +1,8 @@
 # FoE-Info Extension — Project Handoff
 
-Updated 2026-09-12 after the City Overview layout redesign (own + visited cards), the third-pass FoE expert audit, the modern-web-guidance Tier 1/2 remediation, the quad-graph exploration suite, the local toolchain setup / residual build-bloat removal, and the GitHub security hardening / CI test-skip fix.
+Updated 2026-09-13 after the post-F2 monolith extractions (MessageDispatcher, containerBinding, collapse, GreatBuildingsService, indexUiBindings, OtherPlayerService), the City Overview layout redesign, and the GitHub security hardening / CI test-skip fix.
 
-## Current session (2026-09-12)
+## Current session (2026-09-12 / 2026-09-13)
 
 - **Post-F2 monolith extractions & modular refactoring batch (all 6 ranked targets complete)**:
   - **Social lists panel & render binding (`OtherPlayerService.js`)**:
