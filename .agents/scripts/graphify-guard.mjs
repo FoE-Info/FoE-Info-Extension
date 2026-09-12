@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '../..');
 
-// shell-quote is a transitive dependency of the repository toolchain.
+// shell-quote is an explicit devDependency of the repository toolchain.
 const { parse: parseShell } = createRequire(import.meta.url)('shell-quote');
 const valueOptions = new Set([
   '-g',

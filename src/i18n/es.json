@@ -236,5 +236,8 @@
   "opt_language": "Idioma",
   "opt_use_browser_language": "Usar idioma del navegador",
   "opt_use_game_language": "Usar idioma del juego",
-  "city_overview": "City Overview"
+  "city_overview": "City Overview",
+  "dev_seed": "Load Dev Fixtures",
+  "dev_seed_done": "Dev fixtures loaded",
+  "dev_seed_failed": "Dev seed failed"
 }
