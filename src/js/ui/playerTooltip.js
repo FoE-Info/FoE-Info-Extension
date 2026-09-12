@@ -106,7 +106,11 @@ function formatPlayerLabel(id) {
     pendingScoreDBFetches.add(key);
     const origin = getScoreDBOrigin();
     if (typeof fetch === 'function') {
-      fetch(`https://foe.scoredb.io/${origin}/Player/${id}`)
+      // scoredb player-name lookup is best-effort enrichment, not required for
+      // rendering the tooltip; keep it off the critical fetch queue.
+      fetch(`https://foe.scoredb.io/${origin}/Player/${id}`, {
+        priority: 'low',
+      })
         .then((res) => {
           if (!res.ok) {
             updatePlayerNameCache(id, null, { notFound: true });

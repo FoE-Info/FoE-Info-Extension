@@ -37,6 +37,14 @@ try {
   logger = createLogger('NetworkListener');
 } catch {}
 
+let postBackgroundTask = (fn) => setTimeout(fn, 0);
+try {
+  const scheduler = require('../utils/scheduler.js');
+  if (typeof scheduler.postBackgroundTask === 'function') {
+    postBackgroundTask = scheduler.postBackgroundTask;
+  }
+} catch {}
+
 let appendGameVersionStatus = null;
 try {
   const versionStatus = require('../ui/gameVersionStatus.js');
@@ -174,30 +182,34 @@ function safeProcessContent(request, processContent) {
       if (!content) {
         setTimeout(() => {
           if (called) return;
-          try {
-            let p;
+          // Defer the retry attempt to a background task so the timer callback
+          // stays lightweight and other main-thread work can interleave.
+          postBackgroundTask(() => {
             try {
-              p = request.getContent();
-            } catch (e) {
-              request.getContent((retryContent, retryEncoding) => {
-                if (retryContent) {
-                  called = true;
-                  processContent(retryContent, retryEncoding);
-                }
-              });
-              return;
-            }
-            if (p && typeof p.then === 'function') {
-              p.then((res) => {
-                const [retryContent, retryEncoding] =
-                  Array.isArray(res) ? res : [res, ''];
-                if (retryContent) {
-                  called = true;
-                  processContent(retryContent, retryEncoding);
-                }
-              }).catch(() => {});
-            }
-          } catch (e) {}
+              let p;
+              try {
+                p = request.getContent();
+              } catch (e) {
+                request.getContent((retryContent, retryEncoding) => {
+                  if (retryContent) {
+                    called = true;
+                    processContent(retryContent, retryEncoding);
+                  }
+                });
+                return;
+              }
+              if (p && typeof p.then === 'function') {
+                p.then((res) => {
+                  const [retryContent, retryEncoding] =
+                    Array.isArray(res) ? res : [res, ''];
+                  if (retryContent) {
+                    called = true;
+                    processContent(retryContent, retryEncoding);
+                  }
+                }).catch(() => {});
+              }
+            } catch (e) {}
+          });
         }, 150);
         return;
       }
