@@ -7,21 +7,35 @@
 const BigNumber = require('bignumber.js');
 const { toBigNumber } = require('../utils/bignumberUtils.js');
 
+let logger = null;
+try {
+  const { createLogger } = require('../../utils/logger.js');
+  logger = createLogger('UnitCalc');
+} catch {}
+
 function createUnitsAccumulator() {
   return {
     dailyUnits: new BigNumber(0),
     trazUnits: new BigNumber(0),
+    buildings: [],
   };
 }
 
 function processEntityUnits({ entity, meta, prodResources, accum }) {
   const entityId = entity?.cityentity_id;
   const level = entity?.level ?? 0;
+  const buildingName = meta?.name || entityId;
 
   if (entity?.state?.current_product?.name === 'penal_unit') {
     const amt = toBigNumber(entity.state.current_product.amount);
     accum.trazUnits = accum.trazUnits.plus(amt);
     accum.dailyUnits = accum.dailyUnits.plus(amt);
+    if (accum.buildings && amt.isGreaterThan(0)) {
+      accum.buildings.push({
+        name: buildingName,
+        amount: amt.toNumber(),
+      });
+    }
   } else if (
     entityId === 'X_ProgressiveEra_Landmark1' ||
     entityId === 'X_LateMiddleAge_Landmark1'
@@ -32,12 +46,32 @@ function processEntityUnits({ entity, meta, prodResources, accum }) {
       const trazAmount = toBigNumber(bonusVal);
       accum.trazUnits = accum.trazUnits.plus(trazAmount);
       accum.dailyUnits = accum.dailyUnits.plus(trazAmount);
+      if (accum.buildings && trazAmount.isGreaterThan(0)) {
+        accum.buildings.push({
+          name: buildingName,
+          amount: trazAmount.toNumber(),
+        });
+      }
     }
   }
 
   if (prodResources?.units) {
-    accum.dailyUnits = accum.dailyUnits.plus(toBigNumber(prodResources.units));
+    const uAmt = toBigNumber(prodResources.units);
+    accum.dailyUnits = accum.dailyUnits.plus(uAmt);
+    if (accum.buildings && uAmt.isGreaterThan(0)) {
+      accum.buildings.push({
+        name: buildingName,
+        amount: uAmt.toNumber(),
+      });
+    }
   }
+
+  logger?.debug('Processed entity units', {
+    entityId,
+    buildingName,
+    dailyUnits: accum.dailyUnits?.toString?.(),
+    trazUnits: accum.trazUnits?.toString?.(),
+  });
 }
 
 function extractSpecialBonuses({ entity, meta, level }) {
@@ -60,11 +94,11 @@ function extractSpecialBonuses({ entity, meta, level }) {
     const bonusVal =
       entity.bonus?.value ?? meta?.entity_levels?.[level]?.bonuses?.[0]?.value;
     if (bonusVal != null) res.aoCritPercent = toBigNumber(bonusVal);
-  } else if (entityId === 'X_OceanicFuture_Landmark1') {
-    // The Kraken
+  } else if (entityId === 'X_SpaceAgeSpaceHub_Landmark2') {
+    // Cosmic Catalyst
     const bonusVal =
       entity.bonus?.value ?? meta?.entity_levels?.[level]?.bonuses?.[0]?.value;
-    if (bonusVal != null) res.krakenCritPercent = toBigNumber(bonusVal);
+    if (bonusVal != null) res.ccCritPercent = toBigNumber(bonusVal);
   }
 
   return res;
