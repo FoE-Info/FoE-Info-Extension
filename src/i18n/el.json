@@ -141,5 +141,6 @@
   "show_changes_only": "show changes only",
   "ap_spent": "AP Spent",
   "no_active_changes": "No active changes since last save",
-  "total_points": "Total Points"
+  "total_points": "Total Points",
+  "safe_net": "Safe"
 }

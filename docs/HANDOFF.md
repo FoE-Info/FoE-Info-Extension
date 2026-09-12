@@ -4,6 +4,17 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
 
 ## Current session (2026-09-12)
 
+- **GB Donation Panel Safe-Spot Selection Fix — Forge-Hammer Parity (`docs/har/network payload of the GB bug workflow.har`)**:
+  - **User report**: Cosmic Catalyst showed correct numbers, but Statue of Zeus showed P2 as unsafe (Add 148) and The Blue Galaxy showed P3 (bakiron) as passable (Add 62), while both those spots were actually locked.
+  - **Root cause**: `src/js/ui/renderGbDonationPanel.js` selected the first place satisfying `spotLock <= remaining`. Because `spotLock = ceil((remaining + occupant) / 2)`, that condition reduces to `occupant <= remaining`. The boundary case `occupant == remaining` is physically locked (a rival would need `occupant + 1 > remaining` FP, which levels the building first), yet it was treated as needing owner FP, and genuinely safe places were never skipped.
+  - **Fix**: Added pure `isPlacePassable(remaining, occupant) => occupant < remaining` to `src/js/calc/GreatBuildingCalculator.js`; the renderer now targets the first passable place. This aligns the displayed panel with the pre-existing `calculateSafeSpots` Forge-Hammer sequential model.
+  - **Payload evidence** (`getConstruction`: entity `28479` Cosmic Catalyst, `19` Statue of Zeus, `34862` Blue Galaxy, owner `7560963`):
+    - Cosmic Catalyst `48328/47470` (858 free), occupancies `2983/1542/130` -> P3, Lock 494, no owner add (unchanged).
+    - Statue of Zeus `19230/17750` (1480 free), occupancies `2960/1480/0` -> P3 (was P2), Lock 740, Add 548.
+    - The Blue Galaxy `9699/9079` (620 free), occupancies `3720/1860/620/0` -> P4 (was P3), Lock 310, Add 316; P3 at `620 == 620` is safe.
+  - **Tests**: Added HAR ground-truth scenarios (expected place + owner safe add) and boundary assertions to `tests/calc/great-building-calculator.test.mjs`.
+  - **Verification Gate**: `npm run verify` exit 0 — 953/953 tests, prettier clean, eslint 0 errors (141 pre-existing warnings), dev build compiles.
+
 - **Mechanical Hardening: Zero Autonomous Browser Control Enforced (`6ceb53a`)**:
   - Promoted `.agents/rules/browser-environment-hygiene.md` from `model_decision` to `always_on`.
   - Updated `.agents/scripts/safety-gate.mjs` to block `foe-browser` invocations and any command matching `(pkill|killall)\s+.*chrome`.
