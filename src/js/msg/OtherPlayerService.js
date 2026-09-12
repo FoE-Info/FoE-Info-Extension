@@ -4,8 +4,6 @@ let collapse;
 let copy;
 let globals;
 let helper;
-let i18n;
-let renderCityStatsPkg;
 let visitedStatsPkg;
 let showOptionsPkg;
 let castleSystemService = null;
@@ -13,6 +11,11 @@ let storage = null;
 
 const { createLogger } = require('../utils/logger.js');
 const logger = createLogger('OtherPlayerService');
+
+let visitedCityState = null;
+try {
+  ({ visitedCityState } = require('../state/VisitedCityState.js'));
+} catch {}
 
 try {
   storage = require('../fn/storage.js');
@@ -32,12 +35,6 @@ try {
 } catch {}
 try {
   helper = require('../fn/helper.js');
-} catch {}
-try {
-  i18n = require('../fn/i18n.js');
-} catch {}
-try {
-  renderCityStatsPkg = require('../fn/renderCityStats.js');
 } catch {}
 try {
   visitedStatsPkg = require('../fn/VisitedCityStatsCalculator.js');
@@ -87,7 +84,6 @@ try {
   }
 } catch {}
 
-const renderCityStats = renderCityStatsPkg?.renderCityStats;
 const visitedCityStatsCalculator = visitedStatsPkg?.visitedCityStatsCalculator;
 const showOptions = showOptionsPkg?.showOptions || {};
 const setFriendsSize = globals?.setFriendsSize || (() => {});
@@ -121,7 +117,7 @@ function otherPlayerService(msg) {
 
   const renderVisit = () => {
     try {
-      if (!visitedCityStatsCalculator || !renderCityStats) return;
+      if (!visitedCityStatsCalculator || !visitedCityState) return;
 
       const calculatedStats =
         visitedCityStatsCalculator.calculateVisitedCityStats({
@@ -132,10 +128,10 @@ function otherPlayerService(msg) {
 
       const inactiveHtml = checkInactivePlunder(friends);
 
-      renderCityStats(
-        'visit',
-        calculatedStats,
-        {
+      visitedCityState.setVisit({
+        containerId: 'visit',
+        stats: calculatedStats,
+        context: {
           isOwnCity: false,
           name: playerName,
           guild: player.clan?.name,
@@ -149,12 +145,8 @@ function otherPlayerService(msg) {
           hofCount: calculatedStats.hofCount,
           inactivePlunderHTML: inactiveHtml,
         },
-        { exactNumbers: true },
-      );
-
-      if (visitContainer && i18n?.translateContainer) {
-        i18n.translateContainer(visitContainer);
-      }
+        options: { exactNumbers: true },
+      });
     } catch (err) {
       console.warn('Visited player stats render error:', err);
     }
