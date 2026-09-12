@@ -8,7 +8,7 @@ Strategy for introducing TypeScript into FoE-Info alongside existing JavaScript 
 
 1. **Dual Extension Support (`.ts` and `.js`)**:
    - Webpack resolves both extensions seamlessly: `resolve: { extensions: ['.ts', '.js', '.mjs'] }`.
-   - Existing JavaScript files import from `.ts` files and vice-versa with standard ES module syntax.
+   - Once a module is migrated (Phase 2+), JavaScript and TypeScript files import each other with standard ES module syntax and explicit relative extensions.
 2. **Zero Runtime Impact**:
    - Transpilation produces standard ES2022 JavaScript bundled into the same distribution chunks.
    - Zero changes to Manifest V3 permissions or background service worker lifecycle.
@@ -21,6 +21,7 @@ Strategy for introducing TypeScript into FoE-Info alongside existing JavaScript 
 ## 2. Infrastructure Setup (Phase 0)
 
 ### Compiler Configuration (`tsconfig.json`)
+
 ```json
 {
   "compilerOptions": {
@@ -40,13 +41,24 @@ Strategy for introducing TypeScript into FoE-Info alongside existing JavaScript 
   "include": ["src/**/*", "tests/**/*"]
 }
 ```
+
 - `allowJs: true`: Allows TypeScript compiler to understand existing JS files.
 - `checkJs: false`: Prevents type errors on untyped legacy JS files during initial migration.
 - `noEmit: true`: Webpack handles bundling; `tsc` is used purely for type-checking (`npm run typecheck`).
 
 ### Build Integration
-- Webpack uses `@babel/preset-typescript` or `ts-loader` with `transpileOnly: true` for lightning-fast dev builds.
+
+- Webpack bundles `.ts` through `ts-loader` with `transpileOnly: true` (configured in `webpack.common.js`) for fast dev builds.
 - Dedicated type-checking script in `package.json`: `"typecheck": "tsc --noEmit"`.
+
+### Test Execution (Node >= 24)
+
+- `npm test` runs `node --test "tests/**/*.test.mjs"`; migrated `.ts` modules execute natively through Node `>=24` type stripping — no `tsx`/`ts-node` dependency (verified on Node 26.8.2).
+- Constraints: **erasable syntax only** (no `enum`, `namespace`, parameter properties, or `import =`) and **explicit relative extensions** on internal imports.
+
+### Phase 0 Outcome
+
+- The 12 dead `.ts` mirrors were deleted in Phase 0, keeping the authoritative `.js` as the single source of truth. Real TypeScript is authored from that `.js` in Phase 2 rather than resurrected from the deleted mirrors.
 
 ---
 
@@ -54,7 +66,7 @@ Strategy for introducing TypeScript into FoE-Info alongside existing JavaScript 
 
 ```text
 Level 0: Type Definitions (Ambient interfaces)
-  └─ src/types/inno-rpc.d.ts (InnoGames JSON-RPC request & response contracts)
+  └─ src/types/foe-rpc.d.ts (InnoGames JSON-RPC request & response contracts)
   └─ src/types/state.d.ts (MetadataStore & in-memory state shapes)
 
 Level 1: Pure Calculation Engines (Zero DOM dependencies)
