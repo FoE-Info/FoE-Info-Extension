@@ -1,7 +1,9 @@
+/** Extension entry point wiring the DevTools network bridge and startup UI. */
 import * as bootstrap from 'bootstrap';
 import browser from 'webextension-polyfill';
 import '../css/main.scss';
 import { rewardObserve, showReward } from './fn/RewardRenderer.js';
+import { installPanelBridge } from './protocol/devtoolsBridge.js';
 import { setupIndexBridge } from './protocol/indexBridgeSetup.js';
 import { messageDispatcher } from './protocol/MessageDispatcher.js';
 import {
@@ -36,8 +38,10 @@ import {
 
 if (typeof window !== 'undefined') {
   window.bootstrap = bootstrap;
-  window.handleRequestFinished = handleRequestFinished;
-  window.handleRawNetworkEntry = handleRawNetworkEntry;
+  installPanelBridge(window, {
+    handleRawNetworkEntry,
+    handleRequestFinished,
+  });
   initEntityDefsLifecycle(window);
 }
 
