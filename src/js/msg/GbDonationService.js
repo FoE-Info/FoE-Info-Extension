@@ -7,8 +7,7 @@
  */
 
 const { calculateSafeSpots } = require('../calc/GreatBuildingCalculator.js');
-const { renderGbDonationPanel } = require('../ui/renderGbDonationLegacy.js');
-const { renderGenericReward } = require('../ui/renderRewardsPanel.js');
+const { gbDonationState } = require('../state/GbDonationState.js');
 
 function extractRankingParams(msg, data, context) {
   const tryExtract = (target) => {
@@ -261,40 +260,37 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
     rewardName = String(data);
   }
 
-  let renderer =
+  const injected =
     deps.RewardRenderer || deps.rewardRenderer || deps.renderer || null;
-  if (!renderer && typeof __webpack_require__ !== 'undefined') {
-    try {
-      renderer = require('../ui/RewardRenderer.js');
-    } catch {
-      try {
-        renderer = require('../fn/RewardRenderer.js');
-      } catch {}
-    }
-  }
-
-  const showRewardFn =
-    (renderer &&
-      typeof renderer.showReward === 'function' &&
-      renderer.showReward) ||
-    (renderer?.default &&
-      typeof renderer.default.showReward === 'function' &&
-      renderer.default.showReward) ||
+  const injectedShowReward =
+    (injected &&
+      typeof injected.showReward === 'function' &&
+      injected.showReward) ||
+    (injected?.default &&
+      typeof injected.default.showReward === 'function' &&
+      injected.default.showReward) ||
     null;
 
-  if (showRewardFn) {
-    showRewardFn('greatBuilding', {
-      name: rewardName,
-      subType: subType || rewardName,
-      amount,
-      totalAmount: amount,
-      type: rewardType,
-    });
-  } else {
-    if (!container) {
-      return { success: false, reason: 'no_container' };
-    }
+  const unifiedArgs = {
+    name: rewardName,
+    subType: subType || rewardName,
+    amount,
+    totalAmount: amount,
+    type: rewardType,
+  };
 
+  if (injectedShowReward) {
+    injectedShowReward('greatBuilding', unifiedArgs);
+    return { success: true, rewardName, amount };
+  }
+
+  if (!container) {
+    return { success: false, reason: 'no_container' };
+  }
+
+  const forceGeneric = 'RewardRenderer' in deps && !injectedShowReward;
+
+  if (forceGeneric) {
     let formattedName = rewardName;
     if (
       rewardType === 'blueprint' ||
@@ -321,7 +317,21 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
       } catch {}
     }
 
-    renderGenericReward(container, amount, formattedName);
+    gbDonationState.setReward({
+      mode: 'generic',
+      container,
+      amount,
+      formattedName,
+      args: unifiedArgs,
+    });
+  } else {
+    gbDonationState.setReward({
+      mode: 'unified',
+      container,
+      amount,
+      formattedName: rewardName,
+      args: unifiedArgs,
+    });
   }
 
   return { success: true, rewardName, amount };
@@ -333,7 +343,6 @@ module.exports = {
   extractRankingParams,
   getSelfContribution,
   handleNewReward,
-  renderGbDonationPanel,
   syncGbSelected,
   updateContributionProgress,
 };

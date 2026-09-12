@@ -105,8 +105,16 @@ const {
   syncGbSelected,
   handleNewReward,
   calculateSafeSpots,
-  renderGbDonationPanel,
 } = gbDonationServicePkg.default || gbDonationServicePkg;
+
+const gbDonationLegacyPkg =
+  await import('../../src/js/ui/renderGbDonationLegacy.js');
+const { renderGbDonationPanel } =
+  gbDonationLegacyPkg.default || gbDonationLegacyPkg;
+
+const gbDonationStatePkg =
+  await import('../../src/js/state/GbDonationState.js');
+const { gbDonationState } = gbDonationStatePkg;
 
 const bridgePkg = await import('../../src/js/protocol/legacyBridge.js');
 const { registerLegacyBridge } = bridgePkg.default || bridgePkg;
@@ -349,7 +357,7 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
   );
 
   await t.test(
-    'handleNewReward updates cityrewards container when showGBRewards is true',
+    'handleNewReward publishes a unified reward payload when showGBRewards is true',
     () => {
       const cityrewards = createMockElement('div', 'cityrewards');
       const rewardMsg = {
@@ -366,18 +374,25 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
         cityrewards,
       );
       assert.equal(res.success, true);
-      assert.match(cityrewards.innerHTML, /The Arc/);
-      assert.match(cityrewards.innerHTML, /2/);
+      const payload = gbDonationState.getReward();
+      assert.equal(payload.mode, 'unified');
+      assert.equal(payload.container, cityrewards);
+      assert.equal(payload.amount, 2);
+      assert.deepEqual(payload.args, {
+        name: 'The Arc',
+        subType: 'The Arc',
+        amount: 2,
+        totalAmount: 2,
+        type: 'blueprint',
+      });
 
       // Disabled
-      cityrewards.innerHTML = '';
       const resDisabled = handleNewReward(
         rewardMsg,
         { showGBRewards: false },
         cityrewards,
       );
       assert.equal(resDisabled.success, false);
-      assert.equal(cityrewards.innerHTML, '');
     },
   );
 
@@ -533,8 +548,8 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
   );
 
   await t.test(
-    'handleNewReward fallback preserves unified rewards structure when renderer is absent',
-    () => {
+    'handleNewReward publishes a generic fallback payload when the renderer is explicitly absent',
+    async () => {
       const cityrewards = createMockElement('div', 'cityrewards');
       const packet = {
         responseData: {
@@ -552,6 +567,14 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
       );
 
       assert.equal(result.success, true);
+      const payload = gbDonationState.getReward();
+      assert.equal(payload.mode, 'generic');
+      assert.equal(payload.formattedName, 'Observatory BP');
+      assert.equal(payload.amount, 1);
+
+      const { renderGenericReward } =
+        await import('../../src/js/ui/renderRewardsPanel.js');
+      renderGenericReward(cityrewards, payload.amount, payload.formattedName);
       assert.match(cityrewards.innerHTML, /alert-danger/);
       assert.match(cityrewards.innerHTML, /REWARDS:/);
       assert.match(cityrewards.innerHTML, /rewardsText/);

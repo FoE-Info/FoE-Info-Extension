@@ -2,9 +2,10 @@
 
 require('./armyRenderBinding.js');
 require('./bonusRenderBinding.js');
+require('./gbDonationRenderBinding.js');
+require('./gbgRenderBinding.js');
 require('./quantumRenderBinding.js');
 require('./startupRenderBinding.js');
 require('./treasuryRenderBinding.js');
-require('./gbgRenderBinding.js');
 
 module.exports = {};
