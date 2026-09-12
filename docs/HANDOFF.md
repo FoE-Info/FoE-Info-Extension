@@ -5,6 +5,8 @@ Updated 2026-09-13 after the post-F2 monolith extractions (MessageDispatcher, co
 ## Current session (2026-09-12 / 2026-09-13)
 
 - **Post-F2 monolith extractions & modular refactoring batch (all 6 ranked targets complete)**:
+  - **Helper UI panel decoupling & reactive Incidents / GBG Performance (`helper.js`)**:
+    Decoupled UI panel re-exports (`renderBattlegroundsPanel`, `incidentsPanel`) from `src/js/fn/helper.js` (204 → 193 L), breaking the last `msg/ → ui/ via fn/` layering violation. Added `performance` reactive channel to `src/js/state/GuildBattlegroundState.js` and wired into `src/js/ui/gbgRenderBinding.js`; decoupled `src/js/msg/GuildBattlegroundService.js` (replaced `helper.fshowBattleground()` with `guildBattlegroundState.setPerformance()`, dropped `helper` import). Created `src/js/state/IncidentState.js` (71 L) and `src/js/ui/incidentRenderBinding.js` (68 L), wired as 15th singleton into `src/js/ui/renderBindings.js`. Decoupled `src/js/msg/HiddenRewardService.js` and `src/js/msg/TimeService.js` to publish to `IncidentState`. New suites `tests/state/incident-state.test.mjs` (79 L) and `tests/ui/incident-render-binding.test.mjs` (51 L); updated `tests/fn/helper-modernization.test.mjs`, `tests/fn/incidents-panel.test.mjs`, `tests/ui/gbg-render-binding.test.mjs`, `tests/ui/render-bindings.test.mjs`, and `tests/msg/guild-battleground-signals.test.mjs`. Merged from worktree `refactor/helper-ui-decoupling`. Verification: `npm run verify` exit 0 — 1,334 tests / 0 fail.
   - **Social lists panel & render binding (`OtherPlayerService.js`)**:
     Extracted DOM rendering and list generation (`checkInactivePlunder`,
     `checkActive`, `getFriendsHTML`, `getPendingFriendsHTML`, ~190 L) from
