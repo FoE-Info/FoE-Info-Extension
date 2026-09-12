@@ -93,6 +93,11 @@ describe('renderQuantumPanels UI Suite', () => {
       assert.match(html, /AP Spent/);
       assert.match(html, /Arthur/);
       assert.match(html, /Lancelot/);
+
+      // Numeric cells use standard proportional font, not monospace
+      assert.match(html, /<td class="text-end">1,250/);
+      assert.match(html, /<td class="text-end">120/);
+      assert.doesNotMatch(html, /<td class="text-end font-monospace">/);
     });
 
     it('renders red diff badges when changes exist', () => {
@@ -171,6 +176,11 @@ describe('renderQuantumPanels UI Suite', () => {
       assert.match(html, /Camelot Defenders/);
       assert.match(html, />2<\/td>/);
       assert.match(html, />38,100<\/td>/);
+
+      // Numeric cells use standard proportional font, not monospace
+      assert.match(html, /<td class="text-end">45,200<\/td>/);
+      assert.match(html, /<td class="text-end">38,100<\/td>/);
+      assert.doesNotMatch(html, /<td class="text-end font-monospace">/);
     });
   });
 });
