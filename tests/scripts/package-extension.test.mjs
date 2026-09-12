@@ -77,8 +77,9 @@ test('package.json - enforces version 0.0.834 and decoupled verify script', () =
   assert.equal(pkg.version, '0.0.834');
   assert.equal(
     pkg.scripts.verify,
-    'npm run lint && npm run typecheck && npm run test && npm run build:dev',
+    'npm run lint && npm run typecheck && npm run rpc:contract:check && npm run test && npm run build:dev',
   );
+  assert.ok(pkg.scripts['rpc:contract:check']);
   assert.ok(pkg.scripts['build:dev']);
   assert.ok(pkg.scripts['build:beta']);
   assert.ok(pkg.scripts['build:prod']);
