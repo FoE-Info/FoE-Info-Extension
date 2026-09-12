@@ -27,16 +27,16 @@ Strategy for introducing TypeScript into FoE-Info alongside existing JavaScript 
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "allowJs": true,
     "checkJs": false,
     "noEmit": true,
     "strict": true,
-    "noImplicitAny": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "types": ["chrome", "webextension-polyfill", "node"]
   },
   "include": ["src/**/*", "tests/**/*"]
 }
@@ -53,7 +53,7 @@ Strategy for introducing TypeScript into FoE-Info alongside existing JavaScript 
 
 ### Test Execution (Node >= 24)
 
-- `npm test` runs `node --test "tests/**/*.test.mjs"`; migrated `.ts` modules execute natively through Node `>=24` type stripping — no `tsx`/`ts-node` dependency (verified on Node 26.8.2).
+- `npm test` runs `node --test tests/**/*.test.mjs`; migrated `.ts` modules execute natively through Node `>=24` type stripping — no `tsx`/`ts-node` dependency (verified on Node 26.8.2).
 - Constraints: **erasable syntax only** (no `enum`, `namespace`, parameter properties, or `import =`) and **explicit relative extensions** on internal imports.
 
 ### Phase 0 Outcome

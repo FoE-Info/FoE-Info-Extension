@@ -50,6 +50,6 @@ For every single slice extracted from any monolith:
    - Replace the legacy block in the monolith with an import and a single delegated function call.
    - Verify `git diff --stat` shows a net reduction in monolith size.
 5. **Verification Gate**:
-   - Run `npm run check && npm test && npm run build:dev`.
-   - Run `foe-browser` and inspect via `npm run inspect:panel` to confirm zero runtime exceptions.
+   - Run `npm run check && npm test && npm run build:dev` (or the full `npm run verify` gate). This headless gate is mandatory for every slice.
+   - Live browser verification (`foe-browser` + `npm run inspect:panel`) runs only on explicit user request; autonomous browser launches or tab reloads violate the Browser Hygiene rule.
    - Sync Knowledge Graph: `npm run graph:foe-info:update`.
