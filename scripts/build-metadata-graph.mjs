@@ -247,6 +247,117 @@ rpcFiles.forEach((f) => {
 });
 console.log(`[graph] Loaded ${rpcFiles.length} RPC payloads`);
 
+// 12b. Captured network payloads (recorded API responses isolated in extracts/)
+// These are the real JSON-RPC responses the extension receives at runtime.
+// Representative <Class>.<Method> payloads keep full data so entity links can
+// be discovered; multi-response domain bundles keep a compact summary plus one
+// sample to bound graph size.
+const EXTRACTS_DIR = path.join(STORE_DIR, 'extracts');
+const CAPTURE_RPC_DIR = path.join(EXTRACTS_DIR, 'rpc');
+const CAPTURE_DOMAIN_DIRS = [
+  'gbg',
+  'qi',
+  'treasury',
+  'greatbuildings',
+  'economy',
+];
+
+function summarizeCaptures(captures) {
+  const rpcKeys = new Set();
+  for (const capture of captures || []) {
+    if (capture?.requestClass && capture?.requestMethod) {
+      rpcKeys.add(`${capture.requestClass}.${capture.requestMethod}`);
+    }
+  }
+  return {
+    captureCount: (captures || []).length,
+    rpcKeys: [...rpcKeys].sort(),
+  };
+}
+
+if (fs.existsSync(CAPTURE_RPC_DIR)) {
+  const rpcCaptureFiles = fs
+    .readdirSync(CAPTURE_RPC_DIR)
+    .filter((f) => f.endsWith('.json') && !f.startsWith('_'));
+  rpcCaptureFiles.forEach((f) => {
+    const data = readJsonSafe(path.join(CAPTURE_RPC_DIR, f));
+    const key = f.replace(/\.json$/, '');
+    addNode(
+      `rpc-capture:${key}`,
+      'NetworkRPCPayload',
+      key,
+      data,
+      `extracts/rpc/${f}`,
+    );
+  });
+  console.log(`[graph] Loaded ${rpcCaptureFiles.length} network RPC payloads`);
+
+  // Bridge captured payloads to their baseline RPC sibling when one exists.
+  for (const id of [...nodes.keys()]) {
+    if (!id.startsWith('rpc-capture:')) continue;
+    const baseline = `rpc:${id.slice('rpc-capture:'.length)}`;
+    if (nodes.has(baseline)) {
+      addLink(id, baseline, 'documents', { source_file: 'extracts' });
+    }
+  }
+}
+
+let payloadBundleCount = 0;
+for (const domain of CAPTURE_DOMAIN_DIRS) {
+  const dir = path.join(EXTRACTS_DIR, domain);
+  if (!fs.existsSync(dir)) continue;
+  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.json'))) {
+    const bundle = readJsonSafe(path.join(dir, f));
+    if (!bundle) continue;
+    const key = `${domain}/${f.replace(/\.json$/, '')}`;
+    const summary = summarizeCaptures(bundle.captures);
+    addNode(
+      `payload-bundle:${key}`,
+      'PayloadBundle',
+      key,
+      {
+        description: bundle.description || '',
+        generatedAt: bundle.generatedAt || '',
+        captureCount: bundle.captureCount ?? summary.captureCount,
+        rpcKeys: summary.rpcKeys,
+        sample: bundle.captures?.[0] || null,
+      },
+      `extracts/${domain}/${f}`,
+    );
+    payloadBundleCount++;
+  }
+}
+console.log(`[graph] Loaded ${payloadBundleCount} payload bundle nodes`);
+
+const CAPTURE_VISITS_DIR = path.join(EXTRACTS_DIR, 'visits');
+if (fs.existsSync(CAPTURE_VISITS_DIR)) {
+  const visitIndex = readJsonSafe(path.join(CAPTURE_VISITS_DIR, '_index.json'));
+  if (Array.isArray(visitIndex)) {
+    visitIndex.forEach((v) => {
+      const relFile = v.file || `visits/visit-${v.safeName}.json`;
+      const payload = readJsonSafe(path.join(EXTRACTS_DIR, relFile));
+      const entityIds = new Set();
+      for (const ent of payload?.city_map?.entities || []) {
+        if (ent?.cityentity_id) entityIds.add(ent.cityentity_id);
+      }
+      addNode(
+        `player-city:${v.safeName}`,
+        'PlayerCitySnapshot',
+        v.playerName || v.safeName,
+        {
+          playerName: v.playerName,
+          era: v.era,
+          entitiesCount: v.entitiesCount,
+          entityIds: [...entityIds],
+          sourceCapture: v.sourceHar,
+        },
+        `extracts/${relFile}`,
+      );
+    });
+    console.log(`[graph] Loaded ${visitIndex.length} player-city nodes`);
+  }
+}
+
 // 13. Generic relationship detection
 // Scan all string values in all nodes for matches to known entity IDs
 console.log('[graph] Detecting relationships via ID scanning...');
@@ -270,6 +381,9 @@ function findMatchingId(value) {
     'entity:',
     'rpc:',
     'dict:',
+    'rpc-capture:',
+    'payload-bundle:',
+    'player-city:',
   ];
   for (const prefix of prefixes) {
     if (entityIdSet.has(prefix + trimmed)) return prefix + trimmed;
@@ -282,12 +396,24 @@ function scanForRelationships(obj, sourceId, depth = 0) {
   if (obj === null || obj === undefined) return;
 
   if (Array.isArray(obj)) {
-    obj.forEach((item) => scanForRelationships(item, sourceId, depth + 1));
+    obj.forEach((item) => {
+      if (typeof item === 'string') {
+        const targetId = findMatchingId(item);
+        if (targetId) addLink(sourceId, targetId, 'list_item');
+      } else {
+        scanForRelationships(item, sourceId, depth + 1);
+      }
+    });
     return;
   }
 
   if (typeof obj === 'object') {
     for (const [key, value] of Object.entries(obj)) {
+      // Skip serializer/enum plumbing: these values are generic type markers
+      // (e.g. value:"copper") that generate false-positive relationships.
+      if (key === '__class__' || key === '__enum__' || key === 'value') {
+        continue;
+      }
       if (typeof value === 'string') {
         const targetId = findMatchingId(value);
         if (targetId) {
