@@ -19,9 +19,8 @@ description: Strict invariant prohibiting autonomous browser launches, restarts,
 ## 2. Hardware Acceleration Flags & Isolated Profile
 - Chromium runs decoupled via `setsid -f` using `--enable-zero-copy`, `--enable-features=AcceleratedVideoEncoder`, and `--disable-session-crashed-bubble` with a dedicated user profile (`~/.config/foe-info-chrome-profile`).
 
-## 3. Remote Debugging Port Connection & CDP Controller
-- Port `9222` is bound with `--remote-debugging-port=9222` and `--remote-debugging-address=0.0.0.0`.
-- The companion CDP controller script (`scripts/foe-browser-control.mjs`) operates passively without closing tabs or forcing reloads unless explicit CLI flags (`--reload`, `--force-navigate`, `--auto-login`) are supplied.
+## 3. Remote Debugging Port Connection
+- Port `9222` is bound with `--remote-debugging-port=9222` and `--remote-debugging-address=0.0.0.0` by the external `foe-browser` launcher, which is not tracked in this repository.
 
 ## 4. Extension Console & Error Inspection Protocol (panel.html Context)
 - **Mandatory Target**: When explicitly requested to inspect live extension output, inspect errors against the extension DevTools panel context (`chrome-extension://.../panel.html`) using `.agents/scripts/inspect-extension.js`.
