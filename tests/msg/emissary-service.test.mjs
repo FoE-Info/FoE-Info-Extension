@@ -60,6 +60,30 @@ test('EmissaryService - handles empty or non-array payloads safely', async () =>
   assert.equal(resultEmpty.emissaryUnits, 0);
 });
 
+test('EmissaryService - requests a reactive city stats repaint', async () => {
+  const statePkg = await import('../../src/js/state/StartupRenderState.js');
+  const { startupRenderState } = statePkg;
+  const emissaryPkg = await import('../../src/js/msg/EmissaryService.js');
+  const { emissaryService } = emissaryPkg.default || emissaryPkg;
+
+  startupRenderState.setCityStatsContext({ marker: true });
+  const channels = [];
+  const off = startupRenderState.subscribe((snapshot, channel) =>
+    channels.push(channel),
+  );
+
+  try {
+    emissaryService({ responseData: [] });
+  } finally {
+    off();
+  }
+
+  assert.ok(
+    channels.includes('city-stats'),
+    'emissary updates must request a city stats repaint',
+  );
+});
+
 test('EmissaryService - registers RPC routes with dispatcher', async () => {
   const emissaryPkg = await import('../../src/js/msg/EmissaryService.js');
   const { EmissaryService } = emissaryPkg.default || emissaryPkg;
