@@ -16,7 +16,12 @@ Antigravity call.
 | `call_mcp_tool`                            | call the MCP tool directly (`<server>_<tool>`)                    |
 | `Workspace: "share"` / `"branch"`          | create a worktree under `.worktrees/<branch>`; set the writer cwd |
 | `ArtifactMetadata` / `<appDataDir>/brain/` | plans in `docs/plans/`; scratch in git-ignored `graphify-out/`    |
-| `PreInvocation` / `Stop` / `force_ask`     | unavailable; see the `writing-opencode-plugins` skill             |
+| `PreInvocation` / `Stop` / `force_ask`     | unavailable; see `writing-hooks/references/opencode-plugins.md`   |
+
+The full dual-harness mapping (subagent dispatch, worktree isolation, rules
+activation, skills/slash, hooks, artifacts) is authored once in
+[`.agents/references/harness-adapters.md`](../../.agents/references/harness-adapters.md);
+load it when a skill step differs by harness.
 
 Known source files carrying these tokens (adapt on load):
 
