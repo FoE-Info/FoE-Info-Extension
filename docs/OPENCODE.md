@@ -79,11 +79,20 @@ Formatting excludes existing `docs/antigravity_prompt_*.md` conversation artifac
 
 ## Active Dual-Harness Tasks
 
-- **[IN PROGRESS] Curated Git History Reconstruction (from `8c681d1` to `HEAD`)**:
+- **[IN PROGRESS] Context-Driven Panel Visibility Engine (OpenCode Stream 1)**:
+  - Plan: [`docs/plans/2026-09-12-context-driven-panel-visibility-engine.md`](plans/2026-09-12-context-driven-panel-visibility-engine.md).
+  - Target Worktree: `.worktrees/feat-context-engine`
+  - Target Branch: `feat/context-view-engine` -> `development`
+  - Mandates:
+    1. Define declarative `CONTEXT_ALLOWED_PANELS` map in `src/js/ui/cardVisibility.js` (and typed mirror `cardVisibility.ts`) for all 6 contexts (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`).
+    2. Wire `setCurrentView(context)` into `combatRoutes.js` (GBG, GE), `quantumRoutes.js` (QI), `cityRoutes.js` (OWN_CITY via `getEntities`, SETTLEMENT/QI via `getCityMap.gridId`), and `socialRoutes.js` (OTHER_PLAYER via `visitPlayer`).
+    3. Transition `panelDispatcher.js` away from destructive `innerHTML = ''` DOM clears to non-destructive delegation to `setCurrentView(context)`.
+    4. Create comprehensive test suite `tests/ui/context-view-filtering.test.mjs`.
+    5. Ensure all 922+ tests pass, `npm run verify` exits 0, and files stay <= 600 lines.
+
+- **[COMPLETED] Curated Git History Reconstruction (from `8c681d1` to `HEAD`)**:
   - Plan: [`docs/plans/2026-09-12-curated-history-reconstruction.md`](plans/2026-09-12-curated-history-reconstruction.md).
-  - Target Branch: `curated-history` -> `development`.
-  - Reconstruct clean, structured 13-commit milestone progression from baseline `8c681d1` to `HEAD`.
-  - Mandate: 0 final code diff against `backup/full-history-2026-09-12`, identical release trees at `v0.0.833` and `v0.0.834`, and 849/849 tests passing.
+  - Reconstructed clean, structured 14-commit milestone progression from baseline `8c681d1` to `HEAD`. Merged into `development`.
 - **[COMPLETED] OpenCode Heavy Lifting Implementation (Tracks 1, 2, 3)**:
   - Plan: [`docs/plans/2026-09-12-opencode-heavy-lifting-plan.md`](plans/2026-09-12-opencode-heavy-lifting-plan.md). All 3 tracks merged cleanly into `development` (`abf9e2a`).
 
