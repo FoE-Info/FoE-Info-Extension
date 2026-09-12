@@ -3,18 +3,120 @@ import { beforeEach, describe, it } from 'node:test';
 import {
   ALL_15_PANEL_IDS,
   applyCardVisibility,
-  CITY_HIDDEN_PANEL_IDS,
-  GBG_ALLOWED_PANEL_IDS,
+  CONTEXT_ALLOWED_PANELS,
+  GAME_CONTEXTS,
   getCurrentView,
   onViewChange,
   setCurrentView,
 } from '../../src/js/ui/cardVisibility.js';
 
+const ALL_KNOWN_PANELS = [
+  ...ALL_15_PANEL_IDS,
+  'citystats',
+  'cityrewards',
+  'bonus',
+  'galaxy',
+  'invested',
+  'greatbuilding',
+  'donation',
+  'donation2',
+  'donation2DIV',
+  'donationDIV2',
+  'guild',
+  'treasuryLog',
+  'goods',
+  'targets',
+  'battleground',
+  'geInternationalSection',
+  'geContributionSection',
+  'quantumContributions',
+  'quantumLeaderboard',
+  'cultural',
+  'visit',
+  'friends',
+  'hood',
+  'overview',
+  'info',
+  'buildings',
+  'leaderboard',
+];
+
+const DISALLOWED_BY_CONTEXT = {
+  OWN_CITY: [
+    'gbgTargetGenerator',
+    'targets',
+    'battlegrounds',
+    'battleground',
+    'gbgLeaderboard',
+    'cultural',
+    'visit',
+    'geContributions',
+    'friends',
+  ],
+  GBG: [
+    'incidents',
+    'gbDonation',
+    'gbInfo',
+    'gbContributors',
+    'geChampionship',
+    'geContributions',
+    'goodsInventory',
+    'guildOverview',
+    'treasury',
+    'cultural',
+    'visit',
+  ],
+  GE: [
+    'incidents',
+    'gbgTargetGenerator',
+    'targets',
+    'battlegrounds',
+    'battleground',
+    'gbgLeaderboard',
+    'quantumContributions',
+    'quantumLeaderboard',
+    'cultural',
+    'visit',
+  ],
+  QI: [
+    'incidents',
+    'gbDonation',
+    'gbgTargetGenerator',
+    'battlegrounds',
+    'gbgLeaderboard',
+    'geChampionship',
+    'geContributions',
+    'cultural',
+    'visit',
+  ],
+  SETTLEMENT: [
+    'army',
+    'rewards',
+    'cityrewards',
+    'gbDonation',
+    'gbgTargetGenerator',
+    'battlegrounds',
+    'gbgLeaderboard',
+    'bonus',
+    'visit',
+  ],
+  OTHER_PLAYER: [
+    'incidents',
+    'army',
+    'rewards',
+    'bonus',
+    'galaxy',
+    'cultural',
+    'gbgLeaderboard',
+    'quantumContributions',
+  ],
+};
+
 function createMockDOM() {
   const elementsById = new Map();
 
   function createElement(tagName) {
-    const el = {
+    return {
       tagName: tagName.toUpperCase(),
       id: '',
       innerHTML: '',
@@ -30,7 +132,6 @@ function createMockDOM() {
         return child;
       },
     };
-    return el;
   }
 
   const doc = {
@@ -60,211 +161,264 @@ function createMockDOM() {
   };
 
   globalThis.document = doc;
-  globalThis.window = {
-    addEventListener: () => {},
-  };
+  globalThis.window = { addEventListener: () => {} };
+
+  for (const id of ALL_KNOWN_PANELS) {
+    doc.getElementById(id).innerHTML = `<span>Content for ${id}</span>`;
+  }
 
   return { doc, elementsById };
 }
 
-describe('Context-Aware View Filtering & Debug Stubs Suite', () => {
+function createMockDispatcher() {
+  const handlers = new Map();
+  return {
+    handlers,
+    register(requestClass, requestMethod, handlerFn) {
+      handlers.set(`${requestClass}.${requestMethod}`, handlerFn);
+      return this;
+    },
+    registerDirectMetadata() {
+      return this;
+    },
+    setDirectMetadataHandler() {
+      return this;
+    },
+    invoke(requestClass, requestMethod, msg = {}, ctx = {}) {
+      const fn = handlers.get(`${requestClass}.${requestMethod}`);
+      assert.ok(
+        fn,
+        `expected a registered handler for ${requestClass}.${requestMethod}`,
+      );
+      return fn(msg, ctx);
+    },
+  };
+}
+
+describe('6-Context Panel Visibility Engine', () => {
   beforeEach(() => {
     createMockDOM();
     setCurrentView(null);
   });
 
-  it('exports correct panel sets and constants', () => {
-    assert.equal(ALL_15_PANEL_IDS.length, 15);
-    assert.equal(GBG_ALLOWED_PANEL_IDS.size, 6);
-    assert.equal(CITY_HIDDEN_PANEL_IDS.size, 3);
+  it('exposes exactly the six canonical game contexts', () => {
+    assert.deepEqual(GAME_CONTEXTS, [
+      'OWN_CITY',
+      'GBG',
+      'GE',
+      'QI',
+      'SETTLEMENT',
+      'OTHER_PLAYER',
+    ]);
 
-    for (const combatId of [
-      'header',
-      'army',
-      'rewards',
-      'gbgTargetGenerator',
-      'battlegrounds',
-      'gbgLeaderboard',
-    ]) {
-      assert.ok(GBG_ALLOWED_PANEL_IDS.has(combatId));
+    for (const context of GAME_CONTEXTS) {
+      assert.ok(
+        Array.isArray(CONTEXT_ALLOWED_PANELS[context]),
+        `CONTEXT_ALLOWED_PANELS.${context} must be an array`,
+      );
+      assert.ok(CONTEXT_ALLOWED_PANELS[context].includes('header'));
     }
 
-    for (const gbgSpecificId of [
-      'gbgTargetGenerator',
-      'battlegrounds',
-      'gbgLeaderboard',
-    ]) {
-      assert.ok(CITY_HIDDEN_PANEL_IDS.has(gbgSpecificId));
-    }
+    assert.ok(CONTEXT_ALLOWED_PANELS.GBG.includes('gbgTargetGenerator'));
+    assert.ok(CONTEXT_ALLOWED_PANELS.GE.includes('geChampionship'));
+    assert.ok(CONTEXT_ALLOWED_PANELS.QI.includes('quantumContributions'));
+    assert.ok(CONTEXT_ALLOWED_PANELS.SETTLEMENT.includes('cultural'));
+    assert.ok(CONTEXT_ALLOWED_PANELS.OTHER_PLAYER.includes('visit'));
   });
 
-  it('GBG Map View: shows ONLY 6 combat panels and hides all 9 non-combat and utility panels', () => {
-    // Populate all 15 panels in DOM
-    for (const id of ALL_15_PANEL_IDS) {
-      const el = document.getElementById(id);
-      el.innerHTML = `<span>Content for ${id}</span>`;
-    }
-    // And utility panels
-    for (const utilId of [
-      'friends',
-      'hood',
-      'overview',
-      'info',
-      'buildings',
-      'bonus',
-      'galaxy',
-      'cultural',
-      'visit',
-    ]) {
-      const el = document.getElementById(utilId);
-      el.innerHTML = `<span>Util ${utilId}</span>`;
-    }
+  it('transitions across all six contexts and ignores duplicate transitions', () => {
+    const transitions = [];
+    const unsubscribe = onViewChange((view) => transitions.push(view));
 
     setCurrentView('GBG');
-    assert.equal(getCurrentView(), 'GBG');
+    setCurrentView('GE');
+    setCurrentView('QI');
+    setCurrentView('SETTLEMENT');
+    setCurrentView('OTHER_PLAYER');
+    setCurrentView('OWN_CITY');
+    setCurrentView('OWN_CITY');
 
-    // 6 combat panels MUST be visible (display !== 'none')
-    for (const combatId of [
-      'header',
-      'army',
-      'rewards',
-      'gbgTargetGenerator',
-      'battlegrounds',
-      'gbgLeaderboard',
-    ]) {
-      const el = document.getElementById(combatId);
-      assert.equal(
-        el.style.display,
-        '',
-        `Combat panel #${combatId} must be visible in GBG view`,
-      );
-    }
-
-    // 9 non-combat panels MUST be hidden (display === 'none')
-    for (const nonCombatId of [
-      'incidents',
-      'gbDonation',
-      'gbInfo',
-      'gbContributors',
-      'geChampionship',
-      'geContributions',
-      'goodsInventory',
-      'guildOverview',
-      'treasury',
-    ]) {
-      const el = document.getElementById(nonCombatId);
-      assert.equal(
-        el.style.display,
-        'none',
-        `Non-combat panel #${nonCombatId} must be hidden in GBG view`,
-      );
-    }
-
-    // Secondary/utility panels MUST be hidden
-    for (const utilId of [
-      'friends',
-      'hood',
-      'overview',
-      'info',
-      'buildings',
-      'bonus',
-      'galaxy',
-      'cultural',
-      'visit',
-    ]) {
-      const el = document.getElementById(utilId);
-      assert.equal(
-        el.style.display,
-        'none',
-        `Utility panel #${utilId} must be hidden in GBG view`,
-      );
-    }
+    assert.deepEqual(transitions, [
+      'GBG',
+      'GE',
+      'QI',
+      'SETTLEMENT',
+      'OTHER_PLAYER',
+      'OWN_CITY',
+    ]);
+    unsubscribe();
   });
 
-  it('City View: hides GBG-specific panels and displays city panels according to options', () => {
-    for (const id of ALL_15_PANEL_IDS) {
-      const el = document.getElementById(id);
-      el.innerHTML = `<span>Content for ${id}</span>`;
-    }
-
+  it('normalizes legacy CITY/MAIN aliases to OWN_CITY', () => {
     setCurrentView('CITY');
-    assert.equal(getCurrentView(), 'CITY');
+    assert.equal(getCurrentView(), 'OWN_CITY');
 
-    // 3 GBG panels MUST be hidden in City view
-    for (const gbgId of [
-      'gbgTargetGenerator',
-      'battlegrounds',
-      'gbgLeaderboard',
-    ]) {
-      const el = document.getElementById(gbgId);
-      assert.equal(
-        el.style.display,
-        'none',
-        `GBG-specific panel #${gbgId} must be hidden in CITY view`,
-      );
-    }
-
-    // Standard city panels must be visible
-    assert.equal(document.getElementById('header').style.display, '');
-    assert.equal(document.getElementById('incidents').style.display, '');
-    assert.equal(document.getElementById('army').style.display, '');
-    assert.equal(document.getElementById('rewards').style.display, '');
-    assert.equal(document.getElementById('gbDonation').style.display, '');
-    assert.equal(document.getElementById('gbInfo').style.display, '');
-    assert.equal(document.getElementById('gbContributors').style.display, '');
-    assert.equal(document.getElementById('geChampionship').style.display, '');
-    assert.equal(document.getElementById('geContributions').style.display, '');
-    assert.equal(document.getElementById('guildOverview').style.display, '');
-    assert.equal(document.getElementById('treasury').style.display, '');
+    setCurrentView('MAIN');
+    assert.equal(getCurrentView(), 'OWN_CITY');
   });
 
-  it('Debug Mode Override: forces ALL 15 panels visible with placeholder stubs when data is absent', () => {
-    // Create empty containers for all 15 panels
+  for (const context of [
+    'OWN_CITY',
+    'GBG',
+    'GE',
+    'QI',
+    'SETTLEMENT',
+    'OTHER_PLAYER',
+  ]) {
+    it(`${context}: reveals allowed panels and hides disallowed panels`, () => {
+      setCurrentView(context);
+      assert.equal(getCurrentView(), context);
+
+      for (const allowedId of CONTEXT_ALLOWED_PANELS[context]) {
+        const el = document.getElementById(allowedId);
+        assert.equal(
+          el.style.display,
+          '',
+          `Allowed panel #${allowedId} must be visible in ${context}`,
+        );
+      }
+
+      for (const blockedId of DISALLOWED_BY_CONTEXT[context]) {
+        const el = document.getElementById(blockedId);
+        assert.equal(
+          el.style.display,
+          'none',
+          `Disallowed panel #${blockedId} must be hidden in ${context}`,
+        );
+      }
+    });
+  }
+
+  it('debug mode override forces every known panel visible with stubs', () => {
     for (const id of ALL_15_PANEL_IDS) {
       const el = document.getElementById(id);
       el.innerHTML = '';
-      el.style.display = 'none'; // Initially hidden
+      el.style.display = 'none';
     }
 
-    // Apply with debug override = true
     applyCardVisibility(null, true);
 
-    // All 15 panels must now have display: '' and contain debug stub
     for (const id of ALL_15_PANEL_IDS) {
       const el = document.getElementById(id);
-      assert.equal(
-        el.style.display,
-        '',
-        `Panel #${id} must be visible in debug override`,
-      );
-      assert.ok(
-        el.innerHTML.includes('debug-stub'),
-        `Panel #${id} must contain debug stub markup`,
-      );
+      assert.equal(el.style.display, '', `Panel #${id} must be visible`);
       assert.ok(
         el.innerHTML.includes(`[DEBUG STUB]</strong> ${id}`),
-        `Panel #${id} stub must display panel ID`,
+        `Panel #${id} must contain a debug stub`,
+      );
+    }
+
+    for (const id of ['cultural', 'visit', 'galaxy', 'quantumContributions']) {
+      assert.equal(
+        document.getElementById(id).style.display,
+        '',
+        `Utility panel #${id} must be visible in debug mode`,
       );
     }
   });
+});
 
-  it('onViewChange subscriber fires on view transitions', () => {
-    const transitions = [];
-    const unsubscribe = onViewChange((v) => transitions.push(v));
+describe('Protocol Route Context Wiring', () => {
+  beforeEach(() => {
+    createMockDOM();
+    setCurrentView(null);
+  });
 
+  it('CityMapService.getEntities restores OWN_CITY after leaving the city', async () => {
     setCurrentView('GBG');
-    setCurrentView('CITY');
-    setCurrentView('GBG');
-    setCurrentView('GBG'); // Same view should not fire duplicate
+    const { registerCityRoutes } =
+      await import('../../src/js/protocol/routes/cityRoutes.js');
 
-    assert.deepEqual(transitions, ['GBG', 'CITY', 'GBG']);
-    unsubscribe();
+    const dispatcher = createMockDispatcher();
+    registerCityRoutes({
+      dispatcher,
+      handlers: { MyInfo: { id: 1, name: 'me' } },
+      gbRegistry: { registerGreatBuilding() {} },
+    });
 
-    setCurrentView('CITY');
-    assert.equal(
-      transitions.length,
-      3,
-      'Unsubscribed listener must not receive further events',
-    );
+    dispatcher.invoke('CityMapService', 'getEntities', { responseData: [] });
+    assert.equal(getCurrentView(), 'OWN_CITY');
+  });
+
+  it('CityMapService.getCityMap maps gridId to SETTLEMENT, QI and OWN_CITY', async () => {
+    const { registerCityRoutes } =
+      await import('../../src/js/protocol/routes/cityRoutes.js');
+
+    const dispatcher = createMockDispatcher();
+    registerCityRoutes({
+      dispatcher,
+      handlers: { MyInfo: { id: 1, name: 'me' } },
+      gbRegistry: { registerGreatBuilding() {} },
+    });
+
+    dispatcher.invoke('CityMapService', 'getCityMap', {
+      responseData: { gridId: 'cultural_outpost' },
+    });
+    assert.equal(getCurrentView(), 'SETTLEMENT');
+
+    dispatcher.invoke('CityMapService', 'getCityMap', {
+      responseData: { gridId: 'guild_raids' },
+    });
+    assert.equal(getCurrentView(), 'QI');
+
+    dispatcher.invoke('CityMapService', 'getCityMap', {
+      responseData: { gridId: 'city' },
+    });
+    assert.equal(getCurrentView(), 'OWN_CITY');
+  });
+
+  it('combat routes switch to GBG and GE', async () => {
+    const { registerCombatRoutes } =
+      await import('../../src/js/protocol/routes/combatRoutes.js');
+
+    const dispatcher = createMockDispatcher();
+    registerCombatRoutes({
+      dispatcher,
+      handlers: {
+        getBattleground: () => {},
+        getState: () => {},
+        guildExpeditionService: () => {},
+      },
+    });
+
+    dispatcher.invoke('GuildBattlegroundService', 'getBattleground', {});
+    assert.equal(getCurrentView(), 'GBG');
+
+    dispatcher.invoke('GuildExpeditionService', 'getOverview', {});
+    assert.equal(getCurrentView(), 'GE');
+  });
+
+  it('quantum routes switch to QI', async () => {
+    const { registerQuantumRoutes } =
+      await import('../../src/js/protocol/routes/quantumRoutes.js');
+
+    const dispatcher = createMockDispatcher();
+    registerQuantumRoutes({ dispatcher });
+
+    dispatcher.invoke('GuildRaidsMapService', 'getOverview', {});
+    assert.equal(getCurrentView(), 'QI');
+  });
+
+  it('OtherPlayerService.visitPlayer switches to OTHER_PLAYER', async () => {
+    const { registerSocialRoutes } =
+      await import('../../src/js/protocol/routes/socialRoutes.js');
+
+    const dispatcher = createMockDispatcher();
+    registerSocialRoutes({
+      dispatcher,
+      handlers: {
+        otherPlayerService: () => {},
+        MyInfo: { id: 1, name: 'me' },
+      },
+      gbRegistry: { registerGreatBuildings() {} },
+      showOptions: { showVisit: true },
+    });
+
+    dispatcher.invoke('OtherPlayerService', 'visitPlayer', {
+      responseData: {
+        other_player: { player_id: 2, name: 'neighbor' },
+        city_map: { entities: [] },
+      },
+    });
+    assert.equal(getCurrentView(), 'OTHER_PLAYER');
   });
 });
