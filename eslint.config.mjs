@@ -44,8 +44,11 @@ export default [
         $: 'readonly',
         jQuery: 'readonly',
         DEV: 'readonly',
+        BETA: 'readonly',
         WEBSTORE: 'readonly',
         EXT_NAME: 'readonly',
+        DEBUG_BUILD: 'readonly',
+        FORCE_FIXTURES: 'readonly',
       },
     },
     rules: {

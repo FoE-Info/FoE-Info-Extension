@@ -373,7 +373,7 @@ export function updatePlayerNameCache(id, name, options = {}) {
 export function toggleDebug() {
   const next = loggerToggleDebug();
   debugEnabled = next;
-  console.debug('toggleDebug', debugEnabled);
+  if (next) console.debug('toggleDebug', debugEnabled);
   return next;
 }
 

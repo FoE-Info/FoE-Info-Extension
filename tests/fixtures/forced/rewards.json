@@ -1,0 +1,22 @@
+[
+  {
+    "source": "greatBuilding",
+    "payload": { "type": "blueprint", "subType": "Zeus", "amount": 1 }
+  },
+  {
+    "source": "greatBuilding",
+    "payload": { "type": "resource", "subType": "medals", "amount": 430 }
+  },
+  {
+    "source": "quest",
+    "payload": { "name": "strategy_points", "amount": 10 }
+  },
+  {
+    "source": "cityProductionCity",
+    "payload": { "name": "strategy_points", "amount": 5 }
+  },
+  {
+    "source": "cityProductionArmy",
+    "payload": { "name": "rogue", "amount": 4 }
+  }
+]
