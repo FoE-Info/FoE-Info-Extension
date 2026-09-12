@@ -3,5 +3,5 @@
  *
  * Re-exports from src/js/utils/storage.js.
  */
-
-export * from '../utils/storage.js';
+module.exports = require('../utils/storage.js');
+module.exports.default = module.exports;
