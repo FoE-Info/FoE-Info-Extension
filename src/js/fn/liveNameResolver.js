@@ -1,3 +1,4 @@
+/** Resolves live entity and player names from the metadata store. */
 const { metadataStore } = require('../state/MetadataStore.js');
 const { onMetadataUpdated } = require('../msg/MetadataService.js');
 
