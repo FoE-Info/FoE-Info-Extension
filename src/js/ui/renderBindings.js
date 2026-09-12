@@ -7,6 +7,7 @@ require('./gbDonationRenderBinding.js');
 require('./gbgRenderBinding.js');
 require('./greatBuildingsRenderBinding.js');
 require('./investedRenderBinding.js');
+require('./outpostRenderBinding.js');
 require('./quantumRenderBinding.js');
 require('./rewardRenderBinding.js');
 require('./startupRenderBinding.js');

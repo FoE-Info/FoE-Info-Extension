@@ -4,6 +4,21 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 7 — Outpost / Cultural decoupling**:
+  - `OutpostService` (321 → 316 L) no longer imports `../ui/`; it publishes the
+    resolved settlement/advancements/costs to the new
+    `src/js/state/OutpostState.js` (`cultural` channel) via a private
+    `publishCulturalPanel()`. `src/js/ui/outpostRenderBinding.js` subscribes and
+    renders, registered in the `ui/renderBindings.js` root.
+  - The `renderCulturalPanel` / `setShowOptions` re-exports were removed; the
+    coupled test imports them from `ui/renderCulturalPanel.js` directly and
+    side-effect-loads the binding.
+  - Tests: `tests/state/outpost-state.test.mjs`,
+    `tests/ui/outpost-render-binding.test.mjs`; `render-bindings` now lists
+    `outpostState`.
+  - **Verification**: `npm run verify` exit 0 — **1,244 tests / 0 fail**,
+    prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
+
 - **F2 Session 6 (slice) — Other Player own-city repaint**:
   - `OtherPlayerService` no longer lazily requires `ui/renderLiveCityStats.js`;
     after persisting a positive self score it calls
