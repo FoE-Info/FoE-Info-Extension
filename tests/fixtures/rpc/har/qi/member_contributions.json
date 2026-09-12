@@ -1,0 +1,3505 @@
+{
+  "description": "Quantum Incursions member activity overview and contributions.",
+  "captures": [
+    {
+      "sourceHar": "opened quantum ranking then member contributions.har",
+      "capturedAt": "2026-09-11T23:42:06.367Z",
+      "requestClass": "GuildRaidsService",
+      "requestMethod": "getMemberActivityOverview",
+      "requestId": 132,
+      "requestData": [],
+      "responseData": {
+        "rows": [
+          {
+            "player": {
+              "player_id": 854712836,
+              "name": "Lexe2k",
+              "avatar": "addon_portrait_id_vik26_3",
+              "era": "TomorrowEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 4602900,
+            "progressContribution": 13120,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8457018,
+              "name": "robinmagister",
+              "avatar": "addon_portrait_id_vik26_2",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 4149900,
+            "progressContribution": 11840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 886532,
+              "name": "Monster Jack",
+              "avatar": "addon_portrait_id_martin",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3536000,
+            "progressContribution": 10080,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8525048,
+              "name": "ivoSF",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3342400,
+            "progressContribution": 9520,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9690393,
+              "name": "lsc.",
+              "avatar": "addon_portrait_id_cop_egyptians_maatkare",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3331000,
+            "progressContribution": 9480,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 710700,
+              "name": "Quicksilver99",
+              "avatar": "addon_portrait_id_fellowship_rogue",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2455300,
+            "progressContribution": 6990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11683032,
+              "name": "Littlestar82",
+              "avatar": "addon_portrait_id_summer_sally",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2436400,
+            "progressContribution": 6940,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12343477,
+              "name": "GreatCatherin",
+              "avatar": "portrait_id_15",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2374300,
+            "progressContribution": 6770,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 737790,
+              "name": "chrisl",
+              "avatar": "addon_portrait_id_arthur26_5",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2358500,
+            "progressContribution": 6720,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 852825413,
+              "name": "Brucey Bruce Bruce",
+              "avatar": "portrait_id_100",
+              "era": "SpaceAgeJupiterMoon",
+              "__class__": "Player"
+            },
+            "actionPoints": 2327100,
+            "progressContribution": 6620,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2290800,
+            "progressContribution": 6520,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9852461,
+              "name": "Komjin1",
+              "avatar": "addon_portrait_id_anni26_3",
+              "era": "ArcticFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 2246900,
+            "progressContribution": 6400,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853946283,
+              "name": "Whirlwind Tom",
+              "avatar": "addon_portrait_id_wild25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2235800,
+            "progressContribution": 6370,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7371343,
+              "name": "Ceren",
+              "avatar": "addon_portrait_id_anni25_1",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2223600,
+            "progressContribution": 6310,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 310382,
+              "name": "Furdie67",
+              "avatar": "addon_portrait_id_hal25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2188400,
+            "progressContribution": 6230,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8221705,
+              "name": "Pippin the Just 345",
+              "avatar": "addon_portrait_id_fall24_2",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2181700,
+            "progressContribution": 6170,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1588645,
+              "name": "-Queenie-",
+              "avatar": "addon_portrait_id_fell25_1",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2159400,
+            "progressContribution": 6150,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851894026,
+              "name": "VirgoAries",
+              "avatar": "addon_portrait_id_celeas",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2112200,
+            "progressContribution": 6000,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12901904,
+              "name": "Lord of the Lozt",
+              "avatar": "addon_portrait_id_pirate_king",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2094100,
+            "progressContribution": 5960,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5495711,
+              "name": "Zeno the Red 170",
+              "avatar": "addon_portrait_id_hanako",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2045700,
+            "progressContribution": 5820,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853900873,
+              "name": "Victoria the Fair 1996",
+              "avatar": "addon_portrait_id_arthur26_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2022100,
+            "progressContribution": 5760,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6426475,
+              "name": "Margusmagi",
+              "avatar": "portrait_id_199",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2005700,
+            "progressContribution": 5710,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 742772,
+              "name": "hp225",
+              "avatar": "addon_portrait_id_jim",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1990600,
+            "progressContribution": 5670,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1312567,
+              "name": "JonSunset",
+              "avatar": "addon_portrait_id_anni25_3",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1986400,
+            "progressContribution": 5660,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 13120485,
+              "name": "kamil.d.1994",
+              "avatar": "addon_portrait_id_castle_system_sibusiso",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1976800,
+            "progressContribution": 5630,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8340825,
+              "name": "TrueBartuk",
+              "avatar": "portrait_id_145",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1940500,
+            "progressContribution": 5510,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 850179865,
+              "name": "jorroalbg",
+              "avatar": "addon_portrait_id_celeas",
+              "era": "ProgressiveEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1925300,
+            "progressContribution": 5480,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1879200,
+            "progressContribution": 5340,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 856410896,
+              "name": "Jhary-a-Conel",
+              "avatar": "addon_portrait_id_vik26_6",
+              "era": "ModernEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1862300,
+            "progressContribution": 5300,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851947020,
+              "name": "anndor",
+              "avatar": "addon_portrait_id_vik26_4",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1821400,
+            "progressContribution": 5180,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5475073,
+              "name": "toadis noctus astras",
+              "avatar": "addon_portrait_id_zombie",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1753400,
+            "progressContribution": 4990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 2529073,
+              "name": "Hipshot",
+              "avatar": "portrait_id_56",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1745600,
+            "progressContribution": 4980,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7113195,
+              "name": "lizzyann13",
+              "avatar": "addon_portrait_id_cop_vikings_freydis",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1732800,
+            "progressContribution": 4930,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9603012,
+              "name": "Val-Halla",
+              "avatar": "portrait_id_145",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1597100,
+            "progressContribution": 4540,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11355594,
+              "name": "LowRider",
+              "avatar": "addon_portrait_id_care26_4",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1568200,
+            "progressContribution": 4460,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9606329,
+              "name": "Apilery",
+              "avatar": "addon_portrait_id_jodido",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1564500,
+            "progressContribution": 4440,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 835624,
+              "name": "Picard359",
+              "avatar": "addon_portrait_id_fell25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1553000,
+            "progressContribution": 4420,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853038205,
+              "name": "FacelesssMan",
+              "avatar": "addon_portrait_id_fell25_6",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1521400,
+            "progressContribution": 4330,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 746455,
+              "name": "Brzi2225",
+              "avatar": "portrait_id_16",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1501200,
+            "progressContribution": 4270,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849463069,
+              "name": "Laureas",
+              "avatar": "addon_portrait_id_caesar",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1487200,
+            "progressContribution": 4230,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1480200,
+            "progressContribution": 4210,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849643793,
+              "name": "Dan.4",
+              "avatar": "portrait_id_201",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1465100,
+            "progressContribution": 4150,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849416321,
+              "name": "Woolie",
+              "avatar": "addon_portrait_id_castle_system_odella",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1420300,
+            "progressContribution": 4040,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 855609491,
+              "name": "Madame Sadie",
+              "avatar": "addon_portrait_id_vik26_4",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1419200,
+            "progressContribution": 4020,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 446829,
+              "name": "PAUL-",
+              "avatar": "addon_portrait_id_castle_system_lothar",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1387400,
+            "progressContribution": 3920,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6639013,
+              "name": "Soturi",
+              "avatar": "addon_portrait_id_care26_4",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1380300,
+            "progressContribution": 3920,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 752274,
+              "name": "-GandAlf-",
+              "avatar": "addon_portrait_id_cop_japanese_shingen",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1360100,
+            "progressContribution": 3850,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8069661,
+              "name": "Xenna.",
+              "avatar": "addon_portrait_id_care25_2",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1354100,
+            "progressContribution": 3840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 861735,
+              "name": "II-IIyPer-79",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1353600,
+            "progressContribution": 3840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851359080,
+              "name": "Edward Invincible 112",
+              "avatar": "addon_portrait_id_cop_pirates_blackbeard",
+              "era": "PostModernEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1333400,
+            "progressContribution": 3790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 850413620,
+              "name": "Victoria Winter",
+              "avatar": "addon_portrait_id_fall26_4",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1322000,
+            "progressContribution": 3760,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 2897406,
+              "name": "kennystones",
+              "avatar": "addon_portrait_id_ninja",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1313600,
+            "progressContribution": 3730,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7022765,
+              "name": "King Bogdan7",
+              "avatar": "addon_portrait_id_cop_japanese_shingen",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1299500,
+            "progressContribution": 3680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851237964,
+              "name": "Freezy the Frizzy",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1295300,
+            "progressContribution": 3680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 854400879,
+              "name": "PEGASUS SPIRIT",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1269100,
+            "progressContribution": 3560,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6978789,
+              "name": "ArtieBucco",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1233400,
+            "progressContribution": 3510,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1056113,
+              "name": "-Jonny Hoob-",
+              "avatar": "portrait_id_16",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1220800,
+            "progressContribution": 3450,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 856159327,
+              "name": "Gumse",
+              "avatar": "portrait_id_169",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1204100,
+            "progressContribution": 3420,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7371009,
+              "name": "Arch1e",
+              "avatar": "addon_portrait_id_fall26_4",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1098900,
+            "progressContribution": 3120,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10539647,
+              "name": "King Ralfs",
+              "avatar": "addon_portrait_id_spring_yoshiro",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1058400,
+            "progressContribution": 3010,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 862919,
+              "name": "SireFox",
+              "avatar": "addon_portrait_id_hal23_3",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1058300,
+            "progressContribution": 3010,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 852060500,
+              "name": "Mrs.T.",
+              "avatar": "addon_portrait_id_cop_vikings_freydis",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1043600,
+            "progressContribution": 2960,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 733038,
+              "name": "crawler1602",
+              "avatar": "addon_portrait_id_479",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 926100,
+            "progressContribution": 2630,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11141251,
+              "name": "Black-lotus",
+              "avatar": "addon_portrait_id_care25_1",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 823700,
+            "progressContribution": 2340,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8489515,
+              "name": "Mel the Merciful",
+              "avatar": "addon_portrait_id_pat26_2",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 476000,
+            "progressContribution": 1350,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 361300,
+            "progressContribution": 990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12008625,
+              "name": "toskica",
+              "avatar": "addon_portrait_id_winter_winnie",
+              "era": "SpaceAgeJupiterMoon",
+              "__class__": "Player"
+            },
+            "actionPoints": 278200,
+            "progressContribution": 790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 4789733,
+              "name": "Waterdaggers",
+              "avatar": "addon_portrait_id_arthur26_7",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 278000,
+            "progressContribution": 790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 4639932,
+              "name": "ahmetd",
+              "avatar": "addon_portrait_id_halloween_harlequin",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 240900,
+            "progressContribution": 680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7560963,
+              "name": "Overlord Negan",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 116200,
+            "progressContribution": 330,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 855955921,
+              "name": "AverageNoob",
+              "avatar": "portrait_id_2",
+              "era": "ProgressiveEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 98100,
+            "progressContribution": 280,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10741908,
+              "name": "Piltar the Powerful",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "__class__": "GuildRaidsMemberActivityRow"
+          }
+        ],
+        "__class__": "GuildRaidsMemberActivityOverview"
+      }
+    },
+    {
+      "sourceHar": "opened quantum ranking then member contributions.har",
+      "capturedAt": "2026-09-11T23:42:28.617Z",
+      "requestClass": "GuildRaidsService",
+      "requestMethod": "getMemberActivityOverview",
+      "requestId": 135,
+      "requestData": [],
+      "responseData": {
+        "rows": [
+          {
+            "player": {
+              "player_id": 854712836,
+              "name": "Lexe2k",
+              "avatar": "addon_portrait_id_vik26_3",
+              "era": "TomorrowEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 4602900,
+            "progressContribution": 13120,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8457018,
+              "name": "robinmagister",
+              "avatar": "addon_portrait_id_vik26_2",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 4149900,
+            "progressContribution": 11840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 886532,
+              "name": "Monster Jack",
+              "avatar": "addon_portrait_id_martin",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3536000,
+            "progressContribution": 10080,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8525048,
+              "name": "ivoSF",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3342400,
+            "progressContribution": 9520,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9690393,
+              "name": "lsc.",
+              "avatar": "addon_portrait_id_cop_egyptians_maatkare",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3331000,
+            "progressContribution": 9480,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 710700,
+              "name": "Quicksilver99",
+              "avatar": "addon_portrait_id_fellowship_rogue",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2455300,
+            "progressContribution": 6990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11683032,
+              "name": "Littlestar82",
+              "avatar": "addon_portrait_id_summer_sally",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2436400,
+            "progressContribution": 6940,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12343477,
+              "name": "GreatCatherin",
+              "avatar": "portrait_id_15",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2374300,
+            "progressContribution": 6770,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 737790,
+              "name": "chrisl",
+              "avatar": "addon_portrait_id_arthur26_5",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2358500,
+            "progressContribution": 6720,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 852825413,
+              "name": "Brucey Bruce Bruce",
+              "avatar": "portrait_id_100",
+              "era": "SpaceAgeJupiterMoon",
+              "__class__": "Player"
+            },
+            "actionPoints": 2327100,
+            "progressContribution": 6620,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2304800,
+            "progressContribution": 6560,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9852461,
+              "name": "Komjin1",
+              "avatar": "addon_portrait_id_anni26_3",
+              "era": "ArcticFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 2246900,
+            "progressContribution": 6400,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853946283,
+              "name": "Whirlwind Tom",
+              "avatar": "addon_portrait_id_wild25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2235800,
+            "progressContribution": 6370,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7371343,
+              "name": "Ceren",
+              "avatar": "addon_portrait_id_anni25_1",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2223600,
+            "progressContribution": 6310,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 310382,
+              "name": "Furdie67",
+              "avatar": "addon_portrait_id_hal25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2188400,
+            "progressContribution": 6230,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8221705,
+              "name": "Pippin the Just 345",
+              "avatar": "addon_portrait_id_fall24_2",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2181700,
+            "progressContribution": 6170,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1588645,
+              "name": "-Queenie-",
+              "avatar": "addon_portrait_id_fell25_1",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2159400,
+            "progressContribution": 6150,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851894026,
+              "name": "VirgoAries",
+              "avatar": "addon_portrait_id_celeas",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2112200,
+            "progressContribution": 6000,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12901904,
+              "name": "Lord of the Lozt",
+              "avatar": "addon_portrait_id_pirate_king",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2094100,
+            "progressContribution": 5960,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5495711,
+              "name": "Zeno the Red 170",
+              "avatar": "addon_portrait_id_hanako",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2045700,
+            "progressContribution": 5820,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853900873,
+              "name": "Victoria the Fair 1996",
+              "avatar": "addon_portrait_id_arthur26_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2022100,
+            "progressContribution": 5760,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6426475,
+              "name": "Margusmagi",
+              "avatar": "portrait_id_199",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2005700,
+            "progressContribution": 5710,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 742772,
+              "name": "hp225",
+              "avatar": "addon_portrait_id_jim",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1990600,
+            "progressContribution": 5670,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1312567,
+              "name": "JonSunset",
+              "avatar": "addon_portrait_id_anni25_3",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1986400,
+            "progressContribution": 5660,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 13120485,
+              "name": "kamil.d.1994",
+              "avatar": "addon_portrait_id_castle_system_sibusiso",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1976800,
+            "progressContribution": 5630,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8340825,
+              "name": "TrueBartuk",
+              "avatar": "portrait_id_145",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1940500,
+            "progressContribution": 5510,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 850179865,
+              "name": "jorroalbg",
+              "avatar": "addon_portrait_id_celeas",
+              "era": "ProgressiveEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1925300,
+            "progressContribution": 5480,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1879200,
+            "progressContribution": 5340,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 856410896,
+              "name": "Jhary-a-Conel",
+              "avatar": "addon_portrait_id_vik26_6",
+              "era": "ModernEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1862300,
+            "progressContribution": 5300,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851947020,
+              "name": "anndor",
+              "avatar": "addon_portrait_id_vik26_4",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1821400,
+            "progressContribution": 5180,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5475073,
+              "name": "toadis noctus astras",
+              "avatar": "addon_portrait_id_zombie",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1753400,
+            "progressContribution": 4990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 2529073,
+              "name": "Hipshot",
+              "avatar": "portrait_id_56",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1745600,
+            "progressContribution": 4980,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7113195,
+              "name": "lizzyann13",
+              "avatar": "addon_portrait_id_cop_vikings_freydis",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1732800,
+            "progressContribution": 4930,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9603012,
+              "name": "Val-Halla",
+              "avatar": "portrait_id_145",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1597100,
+            "progressContribution": 4540,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11355594,
+              "name": "LowRider",
+              "avatar": "addon_portrait_id_care26_4",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1568200,
+            "progressContribution": 4460,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9606329,
+              "name": "Apilery",
+              "avatar": "addon_portrait_id_jodido",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1564500,
+            "progressContribution": 4440,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 835624,
+              "name": "Picard359",
+              "avatar": "addon_portrait_id_fell25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1553000,
+            "progressContribution": 4420,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853038205,
+              "name": "FacelesssMan",
+              "avatar": "addon_portrait_id_fell25_6",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1521400,
+            "progressContribution": 4330,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 746455,
+              "name": "Brzi2225",
+              "avatar": "portrait_id_16",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1501200,
+            "progressContribution": 4270,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849463069,
+              "name": "Laureas",
+              "avatar": "addon_portrait_id_caesar",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1487200,
+            "progressContribution": 4230,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1480200,
+            "progressContribution": 4210,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849643793,
+              "name": "Dan.4",
+              "avatar": "portrait_id_201",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1465100,
+            "progressContribution": 4150,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849416321,
+              "name": "Woolie",
+              "avatar": "addon_portrait_id_castle_system_odella",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1420300,
+            "progressContribution": 4040,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 855609491,
+              "name": "Madame Sadie",
+              "avatar": "addon_portrait_id_vik26_4",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1419200,
+            "progressContribution": 4020,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 446829,
+              "name": "PAUL-",
+              "avatar": "addon_portrait_id_castle_system_lothar",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1387400,
+            "progressContribution": 3920,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6639013,
+              "name": "Soturi",
+              "avatar": "addon_portrait_id_care26_4",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1380300,
+            "progressContribution": 3920,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 752274,
+              "name": "-GandAlf-",
+              "avatar": "addon_portrait_id_cop_japanese_shingen",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1360100,
+            "progressContribution": 3850,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8069661,
+              "name": "Xenna.",
+              "avatar": "addon_portrait_id_care25_2",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1354100,
+            "progressContribution": 3840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 861735,
+              "name": "II-IIyPer-79",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1353600,
+            "progressContribution": 3840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851359080,
+              "name": "Edward Invincible 112",
+              "avatar": "addon_portrait_id_cop_pirates_blackbeard",
+              "era": "PostModernEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1333400,
+            "progressContribution": 3790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 850413620,
+              "name": "Victoria Winter",
+              "avatar": "addon_portrait_id_fall26_4",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1322000,
+            "progressContribution": 3760,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 2897406,
+              "name": "kennystones",
+              "avatar": "addon_portrait_id_ninja",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1313600,
+            "progressContribution": 3730,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7022765,
+              "name": "King Bogdan7",
+              "avatar": "addon_portrait_id_cop_japanese_shingen",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1299500,
+            "progressContribution": 3680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851237964,
+              "name": "Freezy the Frizzy",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1295300,
+            "progressContribution": 3680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 854400879,
+              "name": "PEGASUS SPIRIT",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1269100,
+            "progressContribution": 3560,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6978789,
+              "name": "ArtieBucco",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1233400,
+            "progressContribution": 3510,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1056113,
+              "name": "-Jonny Hoob-",
+              "avatar": "portrait_id_16",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1220800,
+            "progressContribution": 3450,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 856159327,
+              "name": "Gumse",
+              "avatar": "portrait_id_169",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1204100,
+            "progressContribution": 3420,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7371009,
+              "name": "Arch1e",
+              "avatar": "addon_portrait_id_fall26_4",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1098900,
+            "progressContribution": 3120,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10539647,
+              "name": "King Ralfs",
+              "avatar": "addon_portrait_id_spring_yoshiro",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1058400,
+            "progressContribution": 3010,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 862919,
+              "name": "SireFox",
+              "avatar": "addon_portrait_id_hal23_3",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1058300,
+            "progressContribution": 3010,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 852060500,
+              "name": "Mrs.T.",
+              "avatar": "addon_portrait_id_cop_vikings_freydis",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1043600,
+            "progressContribution": 2960,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 733038,
+              "name": "crawler1602",
+              "avatar": "addon_portrait_id_479",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 926100,
+            "progressContribution": 2630,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11141251,
+              "name": "Black-lotus",
+              "avatar": "addon_portrait_id_care25_1",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 823700,
+            "progressContribution": 2340,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8489515,
+              "name": "Mel the Merciful",
+              "avatar": "addon_portrait_id_pat26_2",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 476000,
+            "progressContribution": 1350,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 361300,
+            "progressContribution": 990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12008625,
+              "name": "toskica",
+              "avatar": "addon_portrait_id_winter_winnie",
+              "era": "SpaceAgeJupiterMoon",
+              "__class__": "Player"
+            },
+            "actionPoints": 278200,
+            "progressContribution": 790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 4789733,
+              "name": "Waterdaggers",
+              "avatar": "addon_portrait_id_arthur26_7",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 278000,
+            "progressContribution": 790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 4639932,
+              "name": "ahmetd",
+              "avatar": "addon_portrait_id_halloween_harlequin",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 240900,
+            "progressContribution": 680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7560963,
+              "name": "Overlord Negan",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 116200,
+            "progressContribution": 330,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 855955921,
+              "name": "AverageNoob",
+              "avatar": "portrait_id_2",
+              "era": "ProgressiveEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 98100,
+            "progressContribution": 280,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10741908,
+              "name": "Piltar the Powerful",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "__class__": "GuildRaidsMemberActivityRow"
+          }
+        ],
+        "__class__": "GuildRaidsMemberActivityOverview"
+      }
+    },
+    {
+      "sourceHar": "opened quantum rankings.har",
+      "capturedAt": "2026-09-11T23:42:06.367Z",
+      "requestClass": "GuildRaidsService",
+      "requestMethod": "getMemberActivityOverview",
+      "requestId": 132,
+      "requestData": [],
+      "responseData": {
+        "rows": [
+          {
+            "player": {
+              "player_id": 854712836,
+              "name": "Lexe2k",
+              "avatar": "addon_portrait_id_vik26_3",
+              "era": "TomorrowEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 4602900,
+            "progressContribution": 13120,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8457018,
+              "name": "robinmagister",
+              "avatar": "addon_portrait_id_vik26_2",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 4149900,
+            "progressContribution": 11840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 886532,
+              "name": "Monster Jack",
+              "avatar": "addon_portrait_id_martin",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3536000,
+            "progressContribution": 10080,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8525048,
+              "name": "ivoSF",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3342400,
+            "progressContribution": 9520,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9690393,
+              "name": "lsc.",
+              "avatar": "addon_portrait_id_cop_egyptians_maatkare",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3331000,
+            "progressContribution": 9480,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 710700,
+              "name": "Quicksilver99",
+              "avatar": "addon_portrait_id_fellowship_rogue",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2455300,
+            "progressContribution": 6990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11683032,
+              "name": "Littlestar82",
+              "avatar": "addon_portrait_id_summer_sally",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2436400,
+            "progressContribution": 6940,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12343477,
+              "name": "GreatCatherin",
+              "avatar": "portrait_id_15",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2374300,
+            "progressContribution": 6770,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 737790,
+              "name": "chrisl",
+              "avatar": "addon_portrait_id_arthur26_5",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2358500,
+            "progressContribution": 6720,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 852825413,
+              "name": "Brucey Bruce Bruce",
+              "avatar": "portrait_id_100",
+              "era": "SpaceAgeJupiterMoon",
+              "__class__": "Player"
+            },
+            "actionPoints": 2327100,
+            "progressContribution": 6620,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2290800,
+            "progressContribution": 6520,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9852461,
+              "name": "Komjin1",
+              "avatar": "addon_portrait_id_anni26_3",
+              "era": "ArcticFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 2246900,
+            "progressContribution": 6400,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853946283,
+              "name": "Whirlwind Tom",
+              "avatar": "addon_portrait_id_wild25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2235800,
+            "progressContribution": 6370,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7371343,
+              "name": "Ceren",
+              "avatar": "addon_portrait_id_anni25_1",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2223600,
+            "progressContribution": 6310,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 310382,
+              "name": "Furdie67",
+              "avatar": "addon_portrait_id_hal25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2188400,
+            "progressContribution": 6230,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8221705,
+              "name": "Pippin the Just 345",
+              "avatar": "addon_portrait_id_fall24_2",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2181700,
+            "progressContribution": 6170,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1588645,
+              "name": "-Queenie-",
+              "avatar": "addon_portrait_id_fell25_1",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2159400,
+            "progressContribution": 6150,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851894026,
+              "name": "VirgoAries",
+              "avatar": "addon_portrait_id_celeas",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2112200,
+            "progressContribution": 6000,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12901904,
+              "name": "Lord of the Lozt",
+              "avatar": "addon_portrait_id_pirate_king",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2094100,
+            "progressContribution": 5960,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5495711,
+              "name": "Zeno the Red 170",
+              "avatar": "addon_portrait_id_hanako",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2045700,
+            "progressContribution": 5820,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853900873,
+              "name": "Victoria the Fair 1996",
+              "avatar": "addon_portrait_id_arthur26_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2022100,
+            "progressContribution": 5760,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6426475,
+              "name": "Margusmagi",
+              "avatar": "portrait_id_199",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2005700,
+            "progressContribution": 5710,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 742772,
+              "name": "hp225",
+              "avatar": "addon_portrait_id_jim",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1990600,
+            "progressContribution": 5670,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1312567,
+              "name": "JonSunset",
+              "avatar": "addon_portrait_id_anni25_3",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1986400,
+            "progressContribution": 5660,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 13120485,
+              "name": "kamil.d.1994",
+              "avatar": "addon_portrait_id_castle_system_sibusiso",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1976800,
+            "progressContribution": 5630,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8340825,
+              "name": "TrueBartuk",
+              "avatar": "portrait_id_145",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1940500,
+            "progressContribution": 5510,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 850179865,
+              "name": "jorroalbg",
+              "avatar": "addon_portrait_id_celeas",
+              "era": "ProgressiveEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1925300,
+            "progressContribution": 5480,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1879200,
+            "progressContribution": 5340,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 856410896,
+              "name": "Jhary-a-Conel",
+              "avatar": "addon_portrait_id_vik26_6",
+              "era": "ModernEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1862300,
+            "progressContribution": 5300,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851947020,
+              "name": "anndor",
+              "avatar": "addon_portrait_id_vik26_4",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1821400,
+            "progressContribution": 5180,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5475073,
+              "name": "toadis noctus astras",
+              "avatar": "addon_portrait_id_zombie",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1753400,
+            "progressContribution": 4990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 2529073,
+              "name": "Hipshot",
+              "avatar": "portrait_id_56",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1745600,
+            "progressContribution": 4980,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7113195,
+              "name": "lizzyann13",
+              "avatar": "addon_portrait_id_cop_vikings_freydis",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1732800,
+            "progressContribution": 4930,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9603012,
+              "name": "Val-Halla",
+              "avatar": "portrait_id_145",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1597100,
+            "progressContribution": 4540,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11355594,
+              "name": "LowRider",
+              "avatar": "addon_portrait_id_care26_4",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1568200,
+            "progressContribution": 4460,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9606329,
+              "name": "Apilery",
+              "avatar": "addon_portrait_id_jodido",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1564500,
+            "progressContribution": 4440,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 835624,
+              "name": "Picard359",
+              "avatar": "addon_portrait_id_fell25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1553000,
+            "progressContribution": 4420,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853038205,
+              "name": "FacelesssMan",
+              "avatar": "addon_portrait_id_fell25_6",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1521400,
+            "progressContribution": 4330,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 746455,
+              "name": "Brzi2225",
+              "avatar": "portrait_id_16",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1501200,
+            "progressContribution": 4270,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849463069,
+              "name": "Laureas",
+              "avatar": "addon_portrait_id_caesar",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1487200,
+            "progressContribution": 4230,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1480200,
+            "progressContribution": 4210,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849643793,
+              "name": "Dan.4",
+              "avatar": "portrait_id_201",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1465100,
+            "progressContribution": 4150,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849416321,
+              "name": "Woolie",
+              "avatar": "addon_portrait_id_castle_system_odella",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1420300,
+            "progressContribution": 4040,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 855609491,
+              "name": "Madame Sadie",
+              "avatar": "addon_portrait_id_vik26_4",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1419200,
+            "progressContribution": 4020,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 446829,
+              "name": "PAUL-",
+              "avatar": "addon_portrait_id_castle_system_lothar",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1387400,
+            "progressContribution": 3920,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6639013,
+              "name": "Soturi",
+              "avatar": "addon_portrait_id_care26_4",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1380300,
+            "progressContribution": 3920,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 752274,
+              "name": "-GandAlf-",
+              "avatar": "addon_portrait_id_cop_japanese_shingen",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1360100,
+            "progressContribution": 3850,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8069661,
+              "name": "Xenna.",
+              "avatar": "addon_portrait_id_care25_2",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1354100,
+            "progressContribution": 3840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 861735,
+              "name": "II-IIyPer-79",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1353600,
+            "progressContribution": 3840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851359080,
+              "name": "Edward Invincible 112",
+              "avatar": "addon_portrait_id_cop_pirates_blackbeard",
+              "era": "PostModernEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1333400,
+            "progressContribution": 3790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 850413620,
+              "name": "Victoria Winter",
+              "avatar": "addon_portrait_id_fall26_4",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1322000,
+            "progressContribution": 3760,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 2897406,
+              "name": "kennystones",
+              "avatar": "addon_portrait_id_ninja",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1313600,
+            "progressContribution": 3730,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7022765,
+              "name": "King Bogdan7",
+              "avatar": "addon_portrait_id_cop_japanese_shingen",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1299500,
+            "progressContribution": 3680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851237964,
+              "name": "Freezy the Frizzy",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1295300,
+            "progressContribution": 3680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 854400879,
+              "name": "PEGASUS SPIRIT",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1269100,
+            "progressContribution": 3560,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6978789,
+              "name": "ArtieBucco",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1233400,
+            "progressContribution": 3510,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1056113,
+              "name": "-Jonny Hoob-",
+              "avatar": "portrait_id_16",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1220800,
+            "progressContribution": 3450,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 856159327,
+              "name": "Gumse",
+              "avatar": "portrait_id_169",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1204100,
+            "progressContribution": 3420,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7371009,
+              "name": "Arch1e",
+              "avatar": "addon_portrait_id_fall26_4",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1098900,
+            "progressContribution": 3120,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10539647,
+              "name": "King Ralfs",
+              "avatar": "addon_portrait_id_spring_yoshiro",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1058400,
+            "progressContribution": 3010,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 862919,
+              "name": "SireFox",
+              "avatar": "addon_portrait_id_hal23_3",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1058300,
+            "progressContribution": 3010,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 852060500,
+              "name": "Mrs.T.",
+              "avatar": "addon_portrait_id_cop_vikings_freydis",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1043600,
+            "progressContribution": 2960,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 733038,
+              "name": "crawler1602",
+              "avatar": "addon_portrait_id_479",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 926100,
+            "progressContribution": 2630,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11141251,
+              "name": "Black-lotus",
+              "avatar": "addon_portrait_id_care25_1",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 823700,
+            "progressContribution": 2340,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8489515,
+              "name": "Mel the Merciful",
+              "avatar": "addon_portrait_id_pat26_2",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 476000,
+            "progressContribution": 1350,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 361300,
+            "progressContribution": 990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12008625,
+              "name": "toskica",
+              "avatar": "addon_portrait_id_winter_winnie",
+              "era": "SpaceAgeJupiterMoon",
+              "__class__": "Player"
+            },
+            "actionPoints": 278200,
+            "progressContribution": 790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 4789733,
+              "name": "Waterdaggers",
+              "avatar": "addon_portrait_id_arthur26_7",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 278000,
+            "progressContribution": 790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 4639932,
+              "name": "ahmetd",
+              "avatar": "addon_portrait_id_halloween_harlequin",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 240900,
+            "progressContribution": 680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7560963,
+              "name": "Overlord Negan",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 116200,
+            "progressContribution": 330,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 855955921,
+              "name": "AverageNoob",
+              "avatar": "portrait_id_2",
+              "era": "ProgressiveEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 98100,
+            "progressContribution": 280,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10741908,
+              "name": "Piltar the Powerful",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "__class__": "GuildRaidsMemberActivityRow"
+          }
+        ],
+        "__class__": "GuildRaidsMemberActivityOverview"
+      }
+    },
+    {
+      "sourceHar": "opened quantum settlement scoreboard.har",
+      "capturedAt": "2026-09-11T23:42:06.367Z",
+      "requestClass": "GuildRaidsService",
+      "requestMethod": "getMemberActivityOverview",
+      "requestId": 132,
+      "requestData": [],
+      "responseData": {
+        "rows": [
+          {
+            "player": {
+              "player_id": 854712836,
+              "name": "Lexe2k",
+              "avatar": "addon_portrait_id_vik26_3",
+              "era": "TomorrowEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 4602900,
+            "progressContribution": 13120,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8457018,
+              "name": "robinmagister",
+              "avatar": "addon_portrait_id_vik26_2",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 4149900,
+            "progressContribution": 11840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 886532,
+              "name": "Monster Jack",
+              "avatar": "addon_portrait_id_martin",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3536000,
+            "progressContribution": 10080,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8525048,
+              "name": "ivoSF",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3342400,
+            "progressContribution": 9520,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9690393,
+              "name": "lsc.",
+              "avatar": "addon_portrait_id_cop_egyptians_maatkare",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 3331000,
+            "progressContribution": 9480,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 710700,
+              "name": "Quicksilver99",
+              "avatar": "addon_portrait_id_fellowship_rogue",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2455300,
+            "progressContribution": 6990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11683032,
+              "name": "Littlestar82",
+              "avatar": "addon_portrait_id_summer_sally",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2436400,
+            "progressContribution": 6940,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12343477,
+              "name": "GreatCatherin",
+              "avatar": "portrait_id_15",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2374300,
+            "progressContribution": 6770,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 737790,
+              "name": "chrisl",
+              "avatar": "addon_portrait_id_arthur26_5",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2358500,
+            "progressContribution": 6720,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 852825413,
+              "name": "Brucey Bruce Bruce",
+              "avatar": "portrait_id_100",
+              "era": "SpaceAgeJupiterMoon",
+              "__class__": "Player"
+            },
+            "actionPoints": 2327100,
+            "progressContribution": 6620,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2290800,
+            "progressContribution": 6520,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9852461,
+              "name": "Komjin1",
+              "avatar": "addon_portrait_id_anni26_3",
+              "era": "ArcticFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 2246900,
+            "progressContribution": 6400,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853946283,
+              "name": "Whirlwind Tom",
+              "avatar": "addon_portrait_id_wild25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2235800,
+            "progressContribution": 6370,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7371343,
+              "name": "Ceren",
+              "avatar": "addon_portrait_id_anni25_1",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2223600,
+            "progressContribution": 6310,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 310382,
+              "name": "Furdie67",
+              "avatar": "addon_portrait_id_hal25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2188400,
+            "progressContribution": 6230,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8221705,
+              "name": "Pippin the Just 345",
+              "avatar": "addon_portrait_id_fall24_2",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2181700,
+            "progressContribution": 6170,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1588645,
+              "name": "-Queenie-",
+              "avatar": "addon_portrait_id_fell25_1",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2159400,
+            "progressContribution": 6150,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851894026,
+              "name": "VirgoAries",
+              "avatar": "addon_portrait_id_celeas",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2112200,
+            "progressContribution": 6000,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12901904,
+              "name": "Lord of the Lozt",
+              "avatar": "addon_portrait_id_pirate_king",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2094100,
+            "progressContribution": 5960,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5495711,
+              "name": "Zeno the Red 170",
+              "avatar": "addon_portrait_id_hanako",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 2045700,
+            "progressContribution": 5820,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853900873,
+              "name": "Victoria the Fair 1996",
+              "avatar": "addon_portrait_id_arthur26_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2022100,
+            "progressContribution": 5760,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6426475,
+              "name": "Margusmagi",
+              "avatar": "portrait_id_199",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 2005700,
+            "progressContribution": 5710,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 742772,
+              "name": "hp225",
+              "avatar": "addon_portrait_id_jim",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1990600,
+            "progressContribution": 5670,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1312567,
+              "name": "JonSunset",
+              "avatar": "addon_portrait_id_anni25_3",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1986400,
+            "progressContribution": 5660,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 13120485,
+              "name": "kamil.d.1994",
+              "avatar": "addon_portrait_id_castle_system_sibusiso",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1976800,
+            "progressContribution": 5630,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8340825,
+              "name": "TrueBartuk",
+              "avatar": "portrait_id_145",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1940500,
+            "progressContribution": 5510,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 850179865,
+              "name": "jorroalbg",
+              "avatar": "addon_portrait_id_celeas",
+              "era": "ProgressiveEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1925300,
+            "progressContribution": 5480,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1879200,
+            "progressContribution": 5340,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 856410896,
+              "name": "Jhary-a-Conel",
+              "avatar": "addon_portrait_id_vik26_6",
+              "era": "ModernEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1862300,
+            "progressContribution": 5300,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851947020,
+              "name": "anndor",
+              "avatar": "addon_portrait_id_vik26_4",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1821400,
+            "progressContribution": 5180,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5475073,
+              "name": "toadis noctus astras",
+              "avatar": "addon_portrait_id_zombie",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1753400,
+            "progressContribution": 4990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 2529073,
+              "name": "Hipshot",
+              "avatar": "portrait_id_56",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1745600,
+            "progressContribution": 4980,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7113195,
+              "name": "lizzyann13",
+              "avatar": "addon_portrait_id_cop_vikings_freydis",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1732800,
+            "progressContribution": 4930,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9603012,
+              "name": "Val-Halla",
+              "avatar": "portrait_id_145",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1597100,
+            "progressContribution": 4540,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11355594,
+              "name": "LowRider",
+              "avatar": "addon_portrait_id_care26_4",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1568200,
+            "progressContribution": 4460,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 9606329,
+              "name": "Apilery",
+              "avatar": "addon_portrait_id_jodido",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1564500,
+            "progressContribution": 4440,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 835624,
+              "name": "Picard359",
+              "avatar": "addon_portrait_id_fell25_7",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1553000,
+            "progressContribution": 4420,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 853038205,
+              "name": "FacelesssMan",
+              "avatar": "addon_portrait_id_fell25_6",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1521400,
+            "progressContribution": 4330,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 746455,
+              "name": "Brzi2225",
+              "avatar": "portrait_id_16",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1501200,
+            "progressContribution": 4270,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849463069,
+              "name": "Laureas",
+              "avatar": "addon_portrait_id_caesar",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1487200,
+            "progressContribution": 4230,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1480200,
+            "progressContribution": 4210,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849643793,
+              "name": "Dan.4",
+              "avatar": "portrait_id_201",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1465100,
+            "progressContribution": 4150,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 849416321,
+              "name": "Woolie",
+              "avatar": "addon_portrait_id_castle_system_odella",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1420300,
+            "progressContribution": 4040,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 855609491,
+              "name": "Madame Sadie",
+              "avatar": "addon_portrait_id_vik26_4",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1419200,
+            "progressContribution": 4020,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 446829,
+              "name": "PAUL-",
+              "avatar": "addon_portrait_id_castle_system_lothar",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1387400,
+            "progressContribution": 3920,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6639013,
+              "name": "Soturi",
+              "avatar": "addon_portrait_id_care26_4",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1380300,
+            "progressContribution": 3920,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 752274,
+              "name": "-GandAlf-",
+              "avatar": "addon_portrait_id_cop_japanese_shingen",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1360100,
+            "progressContribution": 3850,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8069661,
+              "name": "Xenna.",
+              "avatar": "addon_portrait_id_care25_2",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1354100,
+            "progressContribution": 3840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 861735,
+              "name": "II-IIyPer-79",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 1353600,
+            "progressContribution": 3840,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851359080,
+              "name": "Edward Invincible 112",
+              "avatar": "addon_portrait_id_cop_pirates_blackbeard",
+              "era": "PostModernEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1333400,
+            "progressContribution": 3790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 850413620,
+              "name": "Victoria Winter",
+              "avatar": "addon_portrait_id_fall26_4",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 1322000,
+            "progressContribution": 3760,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 2897406,
+              "name": "kennystones",
+              "avatar": "addon_portrait_id_ninja",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1313600,
+            "progressContribution": 3730,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7022765,
+              "name": "King Bogdan7",
+              "avatar": "addon_portrait_id_cop_japanese_shingen",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1299500,
+            "progressContribution": 3680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 851237964,
+              "name": "Freezy the Frizzy",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1295300,
+            "progressContribution": 3680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 854400879,
+              "name": "PEGASUS SPIRIT",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 1269100,
+            "progressContribution": 3560,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 6978789,
+              "name": "ArtieBucco",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1233400,
+            "progressContribution": 3510,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 1056113,
+              "name": "-Jonny Hoob-",
+              "avatar": "portrait_id_16",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1220800,
+            "progressContribution": 3450,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 856159327,
+              "name": "Gumse",
+              "avatar": "portrait_id_169",
+              "era": "IndustrialAge",
+              "__class__": "Player"
+            },
+            "actionPoints": 1204100,
+            "progressContribution": 3420,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7371009,
+              "name": "Arch1e",
+              "avatar": "addon_portrait_id_fall26_4",
+              "era": "VirtualFuture",
+              "__class__": "Player"
+            },
+            "actionPoints": 1098900,
+            "progressContribution": 3120,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10539647,
+              "name": "King Ralfs",
+              "avatar": "addon_portrait_id_spring_yoshiro",
+              "era": "SpaceAgeTitan",
+              "__class__": "Player"
+            },
+            "actionPoints": 1058400,
+            "progressContribution": 3010,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 862919,
+              "name": "SireFox",
+              "avatar": "addon_portrait_id_hal23_3",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1058300,
+            "progressContribution": 3010,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 852060500,
+              "name": "Mrs.T.",
+              "avatar": "addon_portrait_id_cop_vikings_freydis",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 1043600,
+            "progressContribution": 2960,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 733038,
+              "name": "crawler1602",
+              "avatar": "addon_portrait_id_479",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 926100,
+            "progressContribution": 2630,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 11141251,
+              "name": "Black-lotus",
+              "avatar": "addon_portrait_id_care25_1",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 823700,
+            "progressContribution": 2340,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 8489515,
+              "name": "Mel the Merciful",
+              "avatar": "addon_portrait_id_pat26_2",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 476000,
+            "progressContribution": 1350,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "era": "SpaceAgeAsteroidBelt",
+              "__class__": "Player"
+            },
+            "actionPoints": 361300,
+            "progressContribution": 990,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 12008625,
+              "name": "toskica",
+              "avatar": "addon_portrait_id_winter_winnie",
+              "era": "SpaceAgeJupiterMoon",
+              "__class__": "Player"
+            },
+            "actionPoints": 278200,
+            "progressContribution": 790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 4789733,
+              "name": "Waterdaggers",
+              "avatar": "addon_portrait_id_arthur26_7",
+              "era": "FutureEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 278000,
+            "progressContribution": 790,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 4639932,
+              "name": "ahmetd",
+              "avatar": "addon_portrait_id_halloween_harlequin",
+              "era": "StellarAgeDiscovery",
+              "__class__": "Player"
+            },
+            "actionPoints": 240900,
+            "progressContribution": 680,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 7560963,
+              "name": "Overlord Negan",
+              "avatar": "addon_portrait_id_anni26_9",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "actionPoints": 116200,
+            "progressContribution": 330,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 855955921,
+              "name": "AverageNoob",
+              "avatar": "portrait_id_2",
+              "era": "ProgressiveEra",
+              "__class__": "Player"
+            },
+            "actionPoints": 98100,
+            "progressContribution": 280,
+            "__class__": "GuildRaidsMemberActivityRow"
+          },
+          {
+            "player": {
+              "player_id": 10741908,
+              "name": "Piltar the Powerful",
+              "avatar": "addon_portrait_id_arthur26_2",
+              "era": "SpaceAgeSpaceHub",
+              "__class__": "Player"
+            },
+            "__class__": "GuildRaidsMemberActivityRow"
+          }
+        ],
+        "__class__": "GuildRaidsMemberActivityOverview"
+      }
+    }
+  ]
+}

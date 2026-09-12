@@ -1,0 +1,278 @@
+{
+  "description": "Guild and social message centre threads.",
+  "captures": [
+    {
+      "sourceHar": "open guild message centre.har",
+      "capturedAt": "2026-09-11T23:34:13.961Z",
+      "requestClass": "ConversationService",
+      "requestMethod": "getOverviewForCategory",
+      "requestId": 127,
+      "requestData": [
+        "guild",
+        5,
+        true,
+        "none"
+      ],
+      "responseData": {
+        "unreadMessagesCategories": [
+          "guild",
+          "social",
+          "system"
+        ],
+        "category": {
+          "type": "guild",
+          "totalTeasers": 26,
+          "teasers": [
+            {
+              "id": 157242,
+              "type": 3,
+              "title": "Guild: Lords of War",
+              "teaserImage": "flag_17",
+              "lastMessage": {
+                "id": 80751900,
+                "conversationId": 157242,
+                "text": "Last season of chilling, boys and girls.\r\rEnjoy the easy ride while it lasts, because after this one we start cooking again.\r\rTime to bring some action back into GBG, make it competitive, make it interesting, and most importantly make it fun again.\r\rRecharge now.\r\rThen we go to work. @LoW style",
+                "date": "yesterday at 3:02 pm",
+                "lastEditedAt": "yesterday at 3:03 pm",
+                "sender": {
+                  "player_id": 7560963,
+                  "name": "Overlord Negan",
+                  "avatar": "addon_portrait_id_anni26_9",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "__class__": "ConversationTeaser"
+            },
+            {
+              "id": 1660442,
+              "type": 7,
+              "title": "🎯🎯 Battleground TARGETS 🎯🎯",
+              "teaserImage": "message_center_image_conversation",
+              "lastMessage": {
+                "id": 80755803,
+                "conversationId": 1660442,
+                "text": "02:04  D4B",
+                "date": "today at 12:33 am",
+                "sender": {
+                  "player_id": 479417,
+                  "name": "bootnreboot",
+                  "avatar": "addon_portrait_id_vik26_8",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "unreadMessages": 25,
+              "isFavorite": true,
+              "__class__": "ConversationTeaser"
+            },
+            {
+              "id": 2982893,
+              "type": 7,
+              "title": "🔒 BE Support All GBs 🔒",
+              "teaserImage": "message_center_image_conversation",
+              "lastMessage": {
+                "id": 80755792,
+                "conversationId": 2982893,
+                "text": "Mike BG 5",
+                "date": "today at 12:30 am",
+                "sender": {
+                  "player_id": 10966491,
+                  "name": "12 Monkeys",
+                  "avatar": "portrait_id_16",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "unreadMessages": 40,
+              "isFavorite": true,
+              "__class__": "ConversationTeaser"
+            },
+            {
+              "id": 1660421,
+              "type": 7,
+              "title": "🎯💬 Battleground CHAT 💬🎯",
+              "teaserImage": "message_center_image_conversation",
+              "lastMessage": {
+                "id": 80755784,
+                "conversationId": 1660421,
+                "text": "rockin' and rollin'....lol 🫡👍👌",
+                "date": "today at 12:29 am",
+                "sender": {
+                  "player_id": 479417,
+                  "name": "bootnreboot",
+                  "avatar": "addon_portrait_id_vik26_8",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "unreadMessages": 12,
+              "isFavorite": true,
+              "__class__": "ConversationTeaser"
+            },
+            {
+              "id": 2981905,
+              "type": 7,
+              "title": "SAD BP's",
+              "teaserImage": "message_center_image_conversation",
+              "lastMessage": {
+                "id": 80755757,
+                "conversationId": 2981905,
+                "text": "12M x",
+                "date": "today at 12:25 am",
+                "sender": {
+                  "player_id": 10966491,
+                  "name": "12 Monkeys",
+                  "avatar": "portrait_id_16",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "unreadMessages": 60,
+              "isImportant": true,
+              "__class__": "ConversationTeaser"
+            }
+          ],
+          "__class__": "ConversationCategory"
+        },
+        "__class__": "ConversationOverview"
+      }
+    },
+    {
+      "sourceHar": "open social message centre.har",
+      "capturedAt": "2026-09-11T23:34:02.208Z",
+      "requestClass": "ConversationService",
+      "requestMethod": "getOverviewForCategory",
+      "requestId": 125,
+      "requestData": [
+        "social",
+        5,
+        true,
+        "none"
+      ],
+      "responseData": {
+        "unreadMessagesCategories": [
+          "guild",
+          "social",
+          "system"
+        ],
+        "category": {
+          "type": "social",
+          "totalTeasers": 40,
+          "teasers": [
+            {
+              "id": 2691132,
+              "type": 2,
+              "title": "🔒 2.0 All Levels🔒 ",
+              "teaserImage": "message_center_image_conversation",
+              "lastMessage": {
+                "id": 80755807,
+                "conversationId": 2691132,
+                "text": "Maximus BG 5 4 3",
+                "date": "today at 12:33 am",
+                "sender": {
+                  "player_id": 853900873,
+                  "name": "Victoria the Fair 1996",
+                  "avatar": "addon_portrait_id_arthur26_7",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "unreadMessages": 135,
+              "isFavorite": true,
+              "__class__": "ConversationTeaser"
+            },
+            {
+              "id": 2964802,
+              "type": 1,
+              "title": "Mel the Merciful",
+              "teaserImage": "addon_portrait_id_pat26_2",
+              "lastMessage": {
+                "id": 80755805,
+                "conversationId": 2964802,
+                "text": "Have you seen Rule #1 and #2?",
+                "date": "today at 12:33 am",
+                "sender": {
+                  "player_id": 7560963,
+                  "name": "Overlord Negan",
+                  "avatar": "addon_portrait_id_anni26_9",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "__class__": "ConversationTeaser"
+            },
+            {
+              "id": 2935147,
+              "type": 2,
+              "title": "⚔️ GBG Leadership Team ⚔️",
+              "teaserImage": "message_center_image_conversation",
+              "lastMessage": {
+                "id": 80755671,
+                "conversationId": 2935147,
+                "text": "x  i'll start, holler if you come in and take it",
+                "date": "today at 12:07 am",
+                "sender": {
+                  "player_id": 479417,
+                  "name": "bootnreboot",
+                  "avatar": "addon_portrait_id_vik26_8",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "unreadMessages": 6,
+              "isFavorite": true,
+              "__class__": "ConversationTeaser"
+            },
+            {
+              "id": 2799793,
+              "type": 2,
+              "title": "2.0  Arcs Below Level 180 All spots",
+              "teaserImage": "message_center_image_conversation",
+              "lastMessage": {
+                "id": 80755612,
+                "conversationId": 2799793,
+                "text": "/",
+                "date": "yesterday at 11:55 pm",
+                "sender": {
+                  "player_id": 525759,
+                  "name": "Mike of Macedonia",
+                  "avatar": "addon_portrait_id_sinatra",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "unreadMessages": 21,
+              "isFavorite": true,
+              "__class__": "ConversationTeaser"
+            },
+            {
+              "id": 2954614,
+              "type": 2,
+              "title": "max global thread 1.9 ",
+              "teaserImage": "message_center_image_conversation",
+              "lastMessage": {
+                "id": 80755610,
+                "conversationId": 2954614,
+                "text": "max93358 Space Carrier P5(10) \rmax93358 Château Frontenac P5(10) \rmax93358 Alcatraz P5(10)",
+                "date": "yesterday at 11:54 pm",
+                "sender": {
+                  "player_id": 525759,
+                  "name": "Mike of Macedonia",
+                  "avatar": "addon_portrait_id_sinatra",
+                  "__class__": "BasePlayer"
+                },
+                "__class__": "ConversationPlayerMessage"
+              },
+              "unreadMessages": 14,
+              "isFavorite": true,
+              "__class__": "ConversationTeaser"
+            }
+          ],
+          "__class__": "ConversationCategory"
+        },
+        "__class__": "ConversationOverview"
+      }
+    }
+  ]
+}

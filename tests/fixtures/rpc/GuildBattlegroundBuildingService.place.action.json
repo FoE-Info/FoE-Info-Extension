@@ -1,0 +1,34 @@
+{
+  "requestSamples": [
+    [
+      7,
+      "barracks_reinforced"
+    ],
+    [
+      7,
+      "barracks_improvised"
+    ],
+    [
+      7,
+      "barracks_reinforced"
+    ],
+    [
+      7,
+      "barracks_improvised"
+    ]
+  ],
+  "responseSamples": [
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    }
+  ]
+}

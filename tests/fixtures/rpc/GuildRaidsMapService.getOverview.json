@@ -1,0 +1,2740 @@
+{
+  "currentNode": "b6",
+  "nodes": [
+    {
+      "id": "b6",
+      "state": {
+        "nodeId": "b6",
+        "state": "finished",
+        "playersCount": 67,
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "__class__": "GuildRaidsMapNodeStart"
+      },
+      "position": {
+        "x": 1,
+        "y": 5,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "e2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 1,
+              "y": 4,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 2,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "__class__": "Position"
+            },
+            {
+              "x": 2,
+              "y": 1,
+              "__class__": "Position"
+            },
+            {
+              "x": 3,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "d6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 2,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "e10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 1,
+              "y": 6,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 8,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 9,
+              "__class__": "Position"
+            },
+            {
+              "x": 2,
+              "y": 9,
+              "__class__": "Position"
+            },
+            {
+              "x": 3,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "e10",
+      "state": {
+        "nodeId": "e10",
+        "state": "open",
+        "currentProgress": 410,
+        "playersCount": 2,
+        "hasTarget": true,
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "high"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "armyType": "attacking",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 4,
+        "y": 9,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "e8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 4,
+              "y": 8,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "b6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 3,
+              "y": 9,
+              "__class__": "Position"
+            },
+            {
+              "x": 2,
+              "y": 9,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 9,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 8,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 6,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 5,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "g2",
+      "state": {
+        "nodeId": "g2",
+        "state": "blocked",
+        "hasTarget": true,
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "medium"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "defending",
+        "fightType": "mini-boss",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 6,
+        "y": 1,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "e2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 5,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 7,
+              "y": 1,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 2,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "j2",
+      "state": {
+        "nodeId": "j2",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "armyType": "defending",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 9,
+        "y": 1,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "g2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 8,
+              "y": 1,
+              "__class__": "Position"
+            },
+            {
+              "x": 7,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "l2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 10,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 9,
+              "y": 2,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 7,
+              "y": 3,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 9,
+              "y": 2,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 4,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "n2",
+      "state": {
+        "nodeId": "n2",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "armyType": "defending",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 13,
+        "y": 1,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "l2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 12,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "p2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 14,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "p2",
+      "state": {
+        "nodeId": "p2",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "armyType": "defending",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 15,
+        "y": 1,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "n2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 14,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "p4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 15,
+              "y": 2,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "n4",
+      "state": {
+        "nodeId": "n4",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 1000000,
+        "armyType": "defending",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 13,
+        "y": 3,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "n6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 13,
+              "y": 4,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "p4",
+      "state": {
+        "nodeId": "p4",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "defending",
+        "fightType": "mini-boss",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 15,
+        "y": 3,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "p2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 15,
+              "y": 2,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "l2",
+      "state": {
+        "nodeId": "l2",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "defending",
+        "fightType": "garrison",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 11,
+        "y": 1,
+        "__class__": "Position"
+      },
+      "mapEffects": {
+        "effectActiveAfterFinish": {
+          "boosts": [
+            {
+              "type": "att_def_boost_attacker",
+              "value": 50,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            },
+            {
+              "type": "att_def_boost_defender",
+              "value": 50,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            }
+          ],
+          "__class__": "GuildRaidsMapPlayerEffect"
+        },
+        "__class__": "GuildRaidsMapEffects"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "j2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 10,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "n2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 12,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "l6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 11,
+              "y": 2,
+              "__class__": "Position"
+            },
+            {
+              "x": 11,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 11,
+              "y": 4,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "e4",
+      "state": {
+        "nodeId": "e4",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "avoid"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "defending",
+        "fightType": "stronghold",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 4,
+        "y": 3,
+        "__class__": "Position"
+      },
+      "mapEffects": {
+        "effectActiveBeforeFinish": {
+          "boosts": [
+            {
+              "type": "att_def_boost_attacker",
+              "value": 100,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            },
+            {
+              "type": "att_def_boost_defender",
+              "value": 100,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            }
+          ],
+          "affectedNodeIds": [
+            "n6",
+            "l6"
+          ],
+          "__class__": "GuildRaidsMapNodeEffect"
+        },
+        "__class__": "GuildRaidsMapEffects"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "e2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 4,
+              "y": 2,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 5,
+              "y": 3,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "g4",
+      "state": {
+        "nodeId": "g4",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "avoid"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "defending",
+        "fightType": "stronghold",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 6,
+        "y": 3,
+        "__class__": "Position"
+      },
+      "mapEffects": {
+        "effectActiveBeforeFinish": {
+          "boosts": [
+            {
+              "type": "att_def_boost_attacker",
+              "value": 100,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            },
+            {
+              "type": "att_def_boost_defender",
+              "value": 100,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            }
+          ],
+          "affectedNodeIds": [
+            "n6",
+            "l6"
+          ],
+          "__class__": "GuildRaidsMapNodeEffect"
+        },
+        "__class__": "GuildRaidsMapEffects"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "g2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 2,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "e4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 5,
+              "y": 3,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 7,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 2,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 7,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 4,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "f6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 4,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "h6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 4,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 4,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 6,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "d6",
+      "state": {
+        "nodeId": "d6",
+        "state": "open",
+        "currentProgress": 80,
+        "playersCount": 1,
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "type": "resources",
+        "__class__": "GuildRaidsMapNodeDonation"
+      },
+      "position": {
+        "x": 3,
+        "y": 5,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "b6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 2,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "f6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 4,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "h6",
+      "state": {
+        "nodeId": "h6",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "type": "resources",
+        "__class__": "GuildRaidsMapNodeDonation"
+      },
+      "position": {
+        "x": 7,
+        "y": 5,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "g4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 4,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "f6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 6,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 8,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "p6",
+      "state": {
+        "nodeId": "p6",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 1000000,
+        "type": "resources",
+        "__class__": "GuildRaidsMapNodeDonation"
+      },
+      "position": {
+        "x": 15,
+        "y": 5,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "n6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 14,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "f6",
+      "state": {
+        "nodeId": "f6",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "type": "goods",
+        "__class__": "GuildRaidsMapNodeDonation"
+      },
+      "position": {
+        "x": 5,
+        "y": 5,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "d6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 4,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 4,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "h6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 6,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "j6",
+      "state": {
+        "nodeId": "j6",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "type": "goods",
+        "__class__": "GuildRaidsMapNodeDonation"
+      },
+      "position": {
+        "x": 9,
+        "y": 5,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "j2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 9,
+              "y": 4,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 2,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 9,
+              "y": 4,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 7,
+              "y": 3,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "h6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 8,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "l6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 10,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 9,
+              "y": 6,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 7,
+              "y": 7,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 9,
+              "y": 6,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 8,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "l6",
+      "state": {
+        "nodeId": "l6",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 1100,
+        "armyType": "defending",
+        "fightType": "final-boss",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 11,
+        "y": 5,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "l2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 11,
+              "y": 4,
+              "__class__": "Position"
+            },
+            {
+              "x": 11,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 11,
+              "y": 2,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 10,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "n6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 12,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "l10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 11,
+              "y": 6,
+              "__class__": "Position"
+            },
+            {
+              "x": 11,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 11,
+              "y": 8,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "n6",
+      "state": {
+        "nodeId": "n6",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 1100,
+        "armyType": "attacking",
+        "fightType": "final-boss",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 13,
+        "y": 5,
+        "__class__": "Position"
+      },
+      "isMapFinalNode": true,
+      "connectedNodes": [
+        {
+          "targetNodeId": "n4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 13,
+              "y": 4,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "l6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 12,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "p6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 14,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "n8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 13,
+              "y": 6,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "e8",
+      "state": {
+        "nodeId": "e8",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "avoid"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "attacking",
+        "fightType": "stronghold",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 4,
+        "y": 7,
+        "__class__": "Position"
+      },
+      "mapEffects": {
+        "effectActiveBeforeFinish": {
+          "boosts": [
+            {
+              "type": "att_def_boost_attacker",
+              "value": 100,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            },
+            {
+              "type": "att_def_boost_defender",
+              "value": 100,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            }
+          ],
+          "affectedNodeIds": [
+            "n6",
+            "l6"
+          ],
+          "__class__": "GuildRaidsMapNodeEffect"
+        },
+        "__class__": "GuildRaidsMapEffects"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "g8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 5,
+              "y": 7,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "e10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 4,
+              "y": 8,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "g8",
+      "state": {
+        "nodeId": "g8",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "avoid"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "attacking",
+        "fightType": "stronghold",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 6,
+        "y": 7,
+        "__class__": "Position"
+      },
+      "mapEffects": {
+        "effectActiveBeforeFinish": {
+          "boosts": [
+            {
+              "type": "att_def_boost_attacker",
+              "value": 100,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            },
+            {
+              "type": "att_def_boost_defender",
+              "value": 100,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            }
+          ],
+          "affectedNodeIds": [
+            "n6",
+            "l6"
+          ],
+          "__class__": "GuildRaidsMapNodeEffect"
+        },
+        "__class__": "GuildRaidsMapEffects"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "g4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 6,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 4,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "f6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 6,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "h6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 6,
+              "__class__": "Position"
+            },
+            {
+              "x": 6,
+              "y": 5,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "e8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 5,
+              "y": 7,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 7,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 6,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 7,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 8,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 8,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "n8",
+      "state": {
+        "nodeId": "n8",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 1000000,
+        "armyType": "attacking",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 13,
+        "y": 7,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "n6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 13,
+              "y": 6,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "j10",
+      "state": {
+        "nodeId": "j10",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "armyType": "attacking",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 9,
+        "y": 9,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "j6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 9,
+              "y": 8,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 6,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 9,
+              "y": 8,
+              "__class__": "Position"
+            },
+            {
+              "x": 9,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 7,
+              "y": 7,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 8,
+              "y": 9,
+              "__class__": "Position"
+            },
+            {
+              "x": 7,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "l10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 10,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "n10",
+      "state": {
+        "nodeId": "n10",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "armyType": "attacking",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 13,
+        "y": 9,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "l10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 12,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "p10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 14,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "p10",
+      "state": {
+        "nodeId": "p10",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "armyType": "attacking",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 15,
+        "y": 9,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "p8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 15,
+              "y": 8,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "n10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 14,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "p8",
+      "state": {
+        "nodeId": "p8",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "attacking",
+        "fightType": "mini-boss",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 15,
+        "y": 7,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "p10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 15,
+              "y": 8,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "g10",
+      "state": {
+        "nodeId": "g10",
+        "state": "blocked",
+        "hasTarget": true,
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "high"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "attacking",
+        "fightType": "mini-boss",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 6,
+        "y": 9,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "g8",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 6,
+              "y": 8,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "e10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 5,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 7,
+              "y": 9,
+              "__class__": "Position"
+            },
+            {
+              "x": 8,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "l10",
+      "state": {
+        "nodeId": "l10",
+        "state": "blocked",
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "none"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 900,
+        "armyType": "attacking",
+        "fightType": "garrison",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 11,
+        "y": 9,
+        "__class__": "Position"
+      },
+      "mapEffects": {
+        "effectActiveAfterFinish": {
+          "boosts": [
+            {
+              "type": "att_def_boost_attacker",
+              "value": 50,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            },
+            {
+              "type": "att_def_boost_defender",
+              "value": 50,
+              "targetedFeature": "all",
+              "__class__": "BoostHint"
+            }
+          ],
+          "__class__": "GuildRaidsMapPlayerEffect"
+        },
+        "__class__": "GuildRaidsMapEffects"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "l6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 11,
+              "y": 8,
+              "__class__": "Position"
+            },
+            {
+              "x": 11,
+              "y": 7,
+              "__class__": "Position"
+            },
+            {
+              "x": 11,
+              "y": 6,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "j10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 10,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "n10",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 12,
+              "y": 9,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    },
+    {
+      "id": "e2",
+      "state": {
+        "nodeId": "e2",
+        "state": "open",
+        "currentProgress": 30,
+        "playersCount": 2,
+        "hasTarget": true,
+        "indicator": {
+          "__enum__": "GuildRaidsNodeIndicator",
+          "value": "low"
+        },
+        "__class__": "GuildRaidsMapNodeState"
+      },
+      "type": {
+        "requiredProgress": 700,
+        "armyType": "defending",
+        "fightType": "regular",
+        "__class__": "GuildRaidsMapNodeFight"
+      },
+      "position": {
+        "x": 4,
+        "y": 1,
+        "__class__": "Position"
+      },
+      "connectedNodes": [
+        {
+          "targetNodeId": "b6",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 3,
+              "y": 1,
+              "__class__": "Position"
+            },
+            {
+              "x": 2,
+              "y": 1,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 1,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 2,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 3,
+              "__class__": "Position"
+            },
+            {
+              "x": 1,
+              "y": 4,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "g2",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 5,
+              "y": 1,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        },
+        {
+          "targetNodeId": "e4",
+          "movementCost": {
+            "resources": {
+              "guild_raids_action_points": 100
+            },
+            "__class__": "Resources"
+          },
+          "pathTiles": [
+            {
+              "x": 4,
+              "y": 2,
+              "__class__": "Position"
+            }
+          ],
+          "__class__": "GuildRaidsMapNodeConnection"
+        }
+      ],
+      "preferredUnits": [],
+      "preferredResources": [],
+      "__class__": "GuildRaidsMapNode"
+    }
+  ],
+  "choiceNodeRoutes": [],
+  "__class__": "GuildRaidsMapOverview"
+}

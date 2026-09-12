@@ -16,6 +16,10 @@ let copy = null;
 let helper = null;
 let showOptions = { showTreasury: true };
 
+// Bound accumulated pagination so a full treasury history (tens of thousands
+// of entries) cannot exhaust memory in the DevTools panel.
+const MAX_TREASURY_LOGS = 2000;
+
 if (typeof __webpack_require__ !== 'undefined') {
   try {
     element = require('../fn/AddElement');
@@ -40,9 +44,10 @@ class TreasuryLogEntry {
     this.action = raw.action || '';
     this.resource = raw.resource || '';
     this.amount = new BigNumber(raw.amount || 0);
-    this.playerId = raw.player?.id || 0;
+    this.playerId = raw.player?.player_id ?? raw.player?.id ?? 0;
     this.playerName = raw.player?.name || '';
-    this.date = raw.date || raw.time || 0;
+    this.avatar = raw.player?.avatar || '';
+    this.date = raw.createdAt || raw.date || raw.time || 0;
     this.raw = raw;
   }
 
@@ -66,6 +71,8 @@ class TreasuryService {
   constructor() {
     this.reserves = new Map();
     this.logs = [];
+    this.logsByIndex = new Map();
+    this.totalLogCount = 0;
     this.totalMedalsDonated = new BigNumber(0);
     this.totalMedalsSpent = new BigNumber(0);
     this.totalGoodsDonated = new BigNumber(0);
@@ -152,7 +159,47 @@ class TreasuryService {
       : Array.isArray(msg?.responseData) ? msg.responseData
       : [];
 
-    this.logs = rawLogs.map((l) => new TreasuryLogEntry(l));
+    // Real ClanService.getTreasuryLogs requestData is [clanId, offset, bagType].
+    const offset =
+      Array.isArray(msg?.requestData) && msg.requestData.length > 1 ?
+        Number(msg.requestData[1]) || 0
+      : Number(msg?.offset) || 0;
+
+    // A fresh offset-0 request starts a new scan; later offsets append.
+    if (offset === 0) this.logsByIndex.clear();
+
+    rawLogs.forEach((raw, index) => {
+      this.logsByIndex.set(offset + index, new TreasuryLogEntry(raw));
+    });
+
+    this.logs = [...this.logsByIndex.entries()]
+      .sort((a, b) => a[0] - b[0])
+      .slice(0, MAX_TREASURY_LOGS)
+      .map(([, entry]) => entry);
+
+    this.totalLogCount = Number(msg?.responseData?.count) || this.logs.length;
+
+    this.recomputeTotals();
+    this.lastUpdated = Date.now();
+    renderTreasuryLogPanel(
+      this.logs,
+      this.totalGoodsDonated,
+      this.totalMedalsDonated,
+      this.totalMedalsSpent,
+      this.totalLogCount,
+    );
+
+    return {
+      success: true,
+      totalLogs: this.logs.length,
+      totalLogCount: this.totalLogCount,
+      totalMedalsDonated: this.totalMedalsDonated,
+      totalMedalsSpent: this.totalMedalsSpent,
+      totalGoodsDonated: this.totalGoodsDonated,
+    };
+  }
+
+  recomputeTotals() {
     this.totalMedalsDonated = new BigNumber(0);
     this.totalMedalsSpent = new BigNumber(0);
     this.totalGoodsDonated = new BigNumber(0);
@@ -191,21 +238,6 @@ class TreasuryService {
         }
       }
     }
-    this.lastUpdated = Date.now();
-    renderTreasuryLogPanel(
-      this.logs,
-      this.totalGoodsDonated,
-      this.totalMedalsDonated,
-      this.totalMedalsSpent,
-    );
-
-    return {
-      success: true,
-      totalLogs: this.logs.length,
-      totalMedalsDonated: this.totalMedalsDonated,
-      totalMedalsSpent: this.totalMedalsSpent,
-      totalGoodsDonated: this.totalGoodsDonated,
-    };
   }
 
   getReserve(resourceId) {
@@ -218,6 +250,10 @@ class TreasuryService {
 
   getLogs() {
     return this.logs;
+  }
+
+  getTotalLogCount() {
+    return this.totalLogCount;
   }
 
   getTotalMedalsDonated() {
@@ -249,6 +285,7 @@ function renderTreasuryLogPanel(
   totalGoodsDonated,
   totalMedalsDonated,
   totalMedalsSpent,
+  totalLogCount,
 ) {
   if (typeof document === 'undefined') return;
   const targetEl = document.getElementById('treasuryLog');
@@ -272,7 +309,7 @@ function renderTreasuryLogPanel(
   if (element?.icon)
     html += element.icon('treasuryLogicon', 'treasuryLogText', isCollapsed);
   html += `<strong><span data-i18n="treasury_logs">Treasury Logs</span>:</strong>`;
-  html += ` <span class="ms-1 small">(${logs.length} <span data-i18n="entries">Entries</span>)</span></p>`;
+  html += ` <span class="ms-1 small">(${logs.length}/${totalLogCount ?? logs.length} <span data-i18n="entries">Entries</span>)</span></p>`;
   html += `<div id="treasuryLogText" class="overflow-y resize collapse ${isCollapsed ? '' : 'show'}">`;
   html += `<div class="mb-2 small px-2">`;
   html += `<span data-i18n="goods_donated">Goods Donated</span>: <strong>${totalGoodsDonated.toNumber().toLocaleString()}</strong> | `;

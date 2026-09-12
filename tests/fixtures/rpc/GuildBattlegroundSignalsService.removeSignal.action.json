@@ -1,0 +1,288 @@
+{
+  "requestSamples": [
+    [
+      26
+    ],
+    [
+      12
+    ],
+    [
+      27
+    ],
+    [
+      29
+    ],
+    [
+      30
+    ],
+    [
+      15
+    ],
+    [
+      5
+    ],
+    [
+      15
+    ],
+    [
+      5
+    ],
+    [
+      0
+    ],
+    [
+      3
+    ],
+    [
+      26
+    ],
+    [
+      12
+    ],
+    [
+      27
+    ],
+    [
+      29
+    ],
+    [
+      30
+    ],
+    [
+      15
+    ],
+    [
+      5
+    ],
+    [
+      15
+    ],
+    [
+      5
+    ],
+    [
+      0
+    ],
+    [
+      3
+    ],
+    [
+      26
+    ],
+    [
+      12
+    ],
+    [
+      27
+    ]
+  ],
+  "responseSamples": [
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    }
+  ]
+}

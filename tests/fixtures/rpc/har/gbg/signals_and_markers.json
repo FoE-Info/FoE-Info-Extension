@@ -1,0 +1,1910 @@
+{
+  "description": "GBG focus markers and stop sign set/remove signal actions.",
+  "captures": [
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:37:46.762Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 36,
+      "requestData": [
+        15,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:37:48.090Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 37,
+      "requestData": [
+        5,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:37:49.814Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 38,
+      "requestData": [
+        12,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:37:51.504Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 39,
+      "requestData": [
+        27,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:37:54.956Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 40,
+      "requestData": [
+        26,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:37:58.750Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 41,
+      "requestData": [
+        30,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:10.325Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 42,
+      "requestData": [
+        26
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:11.561Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 43,
+      "requestData": [
+        12
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:12.791Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 44,
+      "requestData": [
+        27
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:14.467Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 45,
+      "requestData": [
+        29
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:15.754Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 46,
+      "requestData": [
+        30
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:16.882Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 47,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:17.914Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 48,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:26.095Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 49,
+      "requestData": [
+        5,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:27.747Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 50,
+      "requestData": [
+        15,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:29.181Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 51,
+      "requestData": [
+        0,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:30.793Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 52,
+      "requestData": [
+        3,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:43.042Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 53,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:44.157Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 54,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:45.257Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 55,
+      "requestData": [
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:38:46.514Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 56,
+      "requestData": [
+        3
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:37:46.762Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 36,
+      "requestData": [
+        15,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:37:48.090Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 37,
+      "requestData": [
+        5,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:37:49.814Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 38,
+      "requestData": [
+        12,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:37:51.504Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 39,
+      "requestData": [
+        27,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:37:54.956Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 40,
+      "requestData": [
+        26,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:37:58.750Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 41,
+      "requestData": [
+        30,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:10.325Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 42,
+      "requestData": [
+        26
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:11.561Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 43,
+      "requestData": [
+        12
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:12.791Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 44,
+      "requestData": [
+        27
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:14.467Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 45,
+      "requestData": [
+        29
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:15.754Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 46,
+      "requestData": [
+        30
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:16.882Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 47,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:17.914Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 48,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:26.095Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 49,
+      "requestData": [
+        5,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:27.747Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 50,
+      "requestData": [
+        15,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:29.181Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 51,
+      "requestData": [
+        0,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:30.793Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 52,
+      "requestData": [
+        3,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:43.042Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 53,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:44.157Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 54,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:45.257Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 55,
+      "requestData": [
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:38:46.514Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 56,
+      "requestData": [
+        3
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:37:46.762Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 36,
+      "requestData": [
+        15,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:37:48.090Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 37,
+      "requestData": [
+        5,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:37:49.814Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 38,
+      "requestData": [
+        12,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:37:51.504Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 39,
+      "requestData": [
+        27,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:37:54.956Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 40,
+      "requestData": [
+        26,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:37:58.750Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 41,
+      "requestData": [
+        30,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:10.325Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 42,
+      "requestData": [
+        26
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:11.561Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 43,
+      "requestData": [
+        12
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:12.791Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 44,
+      "requestData": [
+        27
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:14.467Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 45,
+      "requestData": [
+        29
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:15.754Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 46,
+      "requestData": [
+        30
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:16.882Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 47,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:17.914Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 48,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:26.095Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 49,
+      "requestData": [
+        5,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:27.747Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 50,
+      "requestData": [
+        15,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:29.181Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 51,
+      "requestData": [
+        0,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:30.793Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 52,
+      "requestData": [
+        3,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:43.042Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 53,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:44.157Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 54,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:45.257Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 55,
+      "requestData": [
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:38:46.514Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 56,
+      "requestData": [
+        3
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:37:46.762Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 36,
+      "requestData": [
+        15,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:37:48.090Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 37,
+      "requestData": [
+        5,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:37:49.814Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 38,
+      "requestData": [
+        12,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:37:51.504Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 39,
+      "requestData": [
+        27,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:37:54.956Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 40,
+      "requestData": [
+        26,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:37:58.750Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 41,
+      "requestData": [
+        30,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:10.325Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 42,
+      "requestData": [
+        26
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:11.561Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 43,
+      "requestData": [
+        12
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:12.791Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 44,
+      "requestData": [
+        27
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:14.467Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 45,
+      "requestData": [
+        29
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:15.754Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 46,
+      "requestData": [
+        30
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:16.882Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 47,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:17.914Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 48,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:26.095Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 49,
+      "requestData": [
+        5,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:27.747Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 50,
+      "requestData": [
+        15,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:29.181Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 51,
+      "requestData": [
+        0,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:30.793Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 52,
+      "requestData": [
+        3,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:43.042Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 53,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:44.157Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 54,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:45.257Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 55,
+      "requestData": [
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:38:46.514Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 56,
+      "requestData": [
+        3
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed multiple markers on the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:46.762Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 36,
+      "requestData": [
+        15,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed multiple markers on the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:48.090Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 37,
+      "requestData": [
+        5,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed multiple markers on the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:49.814Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 38,
+      "requestData": [
+        12,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed multiple markers on the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:51.504Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 39,
+      "requestData": [
+        27,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed multiple markers on the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:54.956Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 40,
+      "requestData": [
+        26,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed multiple markers on the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:58.750Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 41,
+      "requestData": [
+        30,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:46.762Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 36,
+      "requestData": [
+        15,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:48.090Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 37,
+      "requestData": [
+        5,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:49.814Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 38,
+      "requestData": [
+        12,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:51.504Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 39,
+      "requestData": [
+        27,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:54.956Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 40,
+      "requestData": [
+        26,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:58.750Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 41,
+      "requestData": [
+        30,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:10.325Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 42,
+      "requestData": [
+        26
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:11.561Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 43,
+      "requestData": [
+        12
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:12.791Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 44,
+      "requestData": [
+        27
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:14.467Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 45,
+      "requestData": [
+        29
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:15.754Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 46,
+      "requestData": [
+        30
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:16.882Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 47,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:17.914Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 48,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:26.095Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 49,
+      "requestData": [
+        5,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:27.747Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 50,
+      "requestData": [
+        15,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:29.181Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 51,
+      "requestData": [
+        0,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "placed stop signs on multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:30.793Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 52,
+      "requestData": [
+        3,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:46.762Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 36,
+      "requestData": [
+        15,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:48.090Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 37,
+      "requestData": [
+        5,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:49.814Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 38,
+      "requestData": [
+        12,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:51.504Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 39,
+      "requestData": [
+        27,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:54.956Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 40,
+      "requestData": [
+        26,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:37:58.750Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 41,
+      "requestData": [
+        30,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:38:10.325Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 42,
+      "requestData": [
+        26
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:38:11.561Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 43,
+      "requestData": [
+        12
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:38:12.791Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 44,
+      "requestData": [
+        27
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:38:14.467Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 45,
+      "requestData": [
+        29
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:38:15.754Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 46,
+      "requestData": [
+        30
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:38:16.882Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 47,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed markers from the GBG Map.har",
+      "capturedAt": "2026-09-11T23:38:17.914Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 48,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:46.762Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 36,
+      "requestData": [
+        15,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:48.090Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 37,
+      "requestData": [
+        5,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:49.814Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 38,
+      "requestData": [
+        12,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:51.504Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 39,
+      "requestData": [
+        27,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:54.956Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 40,
+      "requestData": [
+        26,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:37:58.750Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 41,
+      "requestData": [
+        30,
+        "focus"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:10.325Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 42,
+      "requestData": [
+        26
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:11.561Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 43,
+      "requestData": [
+        12
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:12.791Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 44,
+      "requestData": [
+        27
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:14.467Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 45,
+      "requestData": [
+        29
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:15.754Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 46,
+      "requestData": [
+        30
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:16.882Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 47,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:17.914Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 48,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:26.095Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 49,
+      "requestData": [
+        5,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:27.747Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 50,
+      "requestData": [
+        15,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:29.181Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 51,
+      "requestData": [
+        0,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:30.793Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "setSignal",
+      "requestId": 52,
+      "requestData": [
+        3,
+        "ignore"
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:43.042Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 53,
+      "requestData": [
+        15
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:44.157Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 54,
+      "requestData": [
+        5
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:45.257Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 55,
+      "requestData": [
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "removed stop signs from multiple sectors.har",
+      "capturedAt": "2026-09-11T23:38:46.514Z",
+      "requestClass": "GuildBattlegroundSignalsService",
+      "requestMethod": "removeSignal",
+      "requestId": 56,
+      "requestData": [
+        3
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    }
+  ]
+}

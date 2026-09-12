@@ -1,0 +1,6338 @@
+{
+  "id": 1370,
+  "name": "Lords of War",
+  "membersNum": 73,
+  "flag": "flag_17",
+  "description": "Who Are We?\rWe are LoW!\rResistance is Futile!.\rNot a relic of the past, but a storm of the present! We dominated GvG like no other, holding Top 1 for 2013 days. Throughout our history, we set major milestones – creating the 1st level 80 Arc in FoE and becoming the 1st guild where every member had a level 80 Arc.\rOur cause is simple – to be the best of the best.\r\rWhat Do We Offer?\rStability – We've been here since 2012, and LoW isn’t going anywhere.\rExcellence – We represent the finest players on EN7 who keep raising the bar.\rTeamwork – We work as one and always have each other's backs.\rGrowth – An environment where newbies, intermediates, and veterans can learn, grow, and level up.\rEquality – Every member matters – everyone contributes to our success.\rBenefits – We offer BE GB support, Arc leveling incentives, and as a level 100 guild, the best daily FP, construction, and recruitment bonuses.\rInnovation – We stay ahead of the game, sharing knowledge and improving as a team.\r\rRequirements:\rEra: We accept players from All Era's except LMA\rArc: Level 80 minimum (ideally Arc 100; we have a BE for All GB's thread and 2.0 for Arcs thread)\rGuild Goods: Must be working toward:\rIndy/PE/ME: 2000/day\rFE, AF, OF, VF: 2500/day\rSAM, SAAB, SAV, SAJM: 3000/day\rSAT: 3500/day\rGE: Level 80 is a must on competitive weeks\rGBG: We do not care how active you are on off seasons, only on competitive matches where we expect you to step up and be maximally active\rQI: Minimum 4000 points\r\rHow to Apply:\rIf you wanna join Lords of War, create a thread and send a group message to everyone with a Crown & a Star.",
+  "level": 100,
+  "points": 795124527,
+  "rank": 2,
+  "prestige": 9620564,
+  "members": [
+    {
+      "player_id": 479417,
+      "name": "bootnreboot",
+      "avatar": "addon_portrait_id_vik26_8",
+      "score": 14402209775,
+      "rank": 1,
+      "is_guild_member": true,
+      "profile_text": "started on September 9,2012 🥳👍",
+      "city_name": "bootnreboot's",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1878703,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1527536865,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1490013396,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "curse_seven_seas",
+            "name": "Curse of the Seven Seas",
+            "descriptionTemplate": "Finish %s/%s Pirate Settlements",
+            "descriptionCityTooltip": "Finish %s Pirate Settlement",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 11,
+              "obtainedAt": 1776629231,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 11,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "permissions": 127,
+      "title": "Chair",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 1588645,
+      "name": "-Queenie-",
+      "avatar": "addon_portrait_id_fell25_1",
+      "score": 13778168582,
+      "rank": 2,
+      "is_guild_member": true,
+      "profile_text": "Started playing FoE  26 January 2014",
+      "city_name": "Ethel Ville",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1765549,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "home_sweet_home",
+            "name": "Home Sweet Home",
+            "descriptionTemplate": "Construct %s/%s Residentials",
+            "descriptionCityTooltip": "Construct %s residentials",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 250,
+              "obtainedAt": 1515173598,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 250,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1516833735,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "splendid_empire",
+            "name": "Splendid Empire",
+            "descriptionTemplate": "Finish %s/%s Mughal Empire Settlements",
+            "descriptionCityTooltip": "Finish %s Mughal Empire Settlements",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 10,
+              "obtainedAt": 1657546103,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 10,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 96,
+      "title": "GBG & QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 1312567,
+      "name": "JonSunset",
+      "avatar": "addon_portrait_id_anni25_3",
+      "score": 11495944582,
+      "rank": 3,
+      "is_guild_member": true,
+      "profile_text": "Press the Aid button please . It will be returned .",
+      "city_name": "Manetheren ",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1276015,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "good_god",
+            "name": "Good God",
+            "descriptionTemplate": "Collect %s/%s goods",
+            "descriptionCityTooltip": "Collect %s goods",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000000,
+              "obtainedAt": 1641142512,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 32,
+      "title": "QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 886532,
+      "name": "Monster Jack",
+      "avatar": "addon_portrait_id_martin",
+      "score": 10720409213,
+      "rank": 4,
+      "is_guild_member": true,
+      "profile_text": "          ",
+      "city_name": "Make me HAPPY",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1140789,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "StellarAgeDiscovery",
+      "permissions": 127,
+      "title": "Chair",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 5495711,
+      "name": "Zeno the Red 170",
+      "avatar": "addon_portrait_id_hanako",
+      "score": 10387806722,
+      "rank": 5,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "wolf hall",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1801538,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1589589848,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "boo",
+            "name": "Boo!",
+            "descriptionTemplate": "Finish the main questline of the Halloween Event. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the main questline of the Halloween Event. Completions: %s",
+            "currentLevel": {
+              "level": 6,
+              "requiredProgress": 6,
+              "obtainedAt": 1668585924,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 6,
+              "progress": 7,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "very_dangerous_i_go_first",
+            "name": "Very dangerous... I'll go first.",
+            "descriptionTemplate": "Finish the fourth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fourth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1552122263,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "permissions": 32,
+      "title": "QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 853946283,
+      "name": "Whirlwind Tom",
+      "avatar": "addon_portrait_id_wild25_7",
+      "score": 9743647546,
+      "rank": 6,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "🌪️ Whirlwind",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 626559,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "thats_a_great_building",
+            "name": "That's a Great Building!",
+            "descriptionTemplate": "Have %s/%s Great Buildings",
+            "descriptionCityTooltip": "Have %s great buildings",
+            "currentLevel": {
+              "level": 3,
+              "requiredProgress": 20,
+              "obtainedAt": 1713698447,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 3,
+              "progress": 30,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "veni_vidi_vici",
+            "name": "Veni Vidi Vici",
+            "descriptionTemplate": "Acquire %s/%s provinces",
+            "descriptionCityTooltip": "Acquire %s provinces",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 250,
+              "obtainedAt": 1728233027,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 250,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "pop_master",
+            "name": "Pop Master",
+            "descriptionTemplate": "Pop %s/%s color blocks during the Wildlife Event!",
+            "descriptionCityTooltip": "Pop %s color blocks during the Wildlife Event!",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 10000,
+              "obtainedAt": 1706765415,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 10000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 64,
+      "title": "GBG",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 8221705,
+      "name": "Pippin the Just 345",
+      "avatar": "addon_portrait_id_fall24_2",
+      "score": 9102729489,
+      "rank": 7,
+      "is_guild_member": true,
+      "profile_text": "Join Our Guild! We’re all about good vibes, teamwork, and having fun together. Whether you’re a seasoned player or just starting out, come enhance your experience with us — all-round fun guaranteed!",
+      "city_name": "Pippin's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1041938,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1638289136,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "good_god",
+            "name": "Good God",
+            "descriptionTemplate": "Collect %s/%s goods",
+            "descriptionCityTooltip": "Collect %s goods",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000000,
+              "obtainedAt": 1647621314,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "great_commander",
+            "name": "Great Commander",
+            "descriptionTemplate": "Win %s/%s battles in the PvP Arena",
+            "descriptionCityTooltip": "Win %s battles in the PvP Arena",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1500,
+              "obtainedAt": 1704037829,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 9690393,
+      "name": "lsc.",
+      "avatar": "addon_portrait_id_cop_egyptians_maatkare",
+      "score": 8950171366,
+      "rank": 8,
+      "is_guild_member": true,
+      "profile_text": "jagster",
+      "city_name": "City of the lsc",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1238153,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "forward_to_the_future",
+            "name": "Forward to the Future",
+            "descriptionTemplate": "Reach %s/%s ages",
+            "descriptionCityTooltip": "Reach %s ages",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 15,
+              "obtainedAt": 1618484721,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 15,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1654670911,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "friend_of_the_vikings",
+            "name": "Friend of the Vikings",
+            "descriptionTemplate": "Finish %s/%s Viking Settlements",
+            "descriptionCityTooltip": "Finish %s Viking Settlements",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 15,
+              "obtainedAt": 1594359561,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 15,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 64,
+      "title": "GBG",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 12901904,
+      "name": "Lord of the Lozt",
+      "avatar": "addon_portrait_id_pirate_king",
+      "score": 8236085160,
+      "rank": 9,
+      "is_guild_member": true,
+      "profile_text": "Friend of Freedom (and coffee)",
+      "city_name": "Loztopia",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 916601,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "StellarAgeDiscovery",
+      "permissions": 96,
+      "title": "GBG & QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 710700,
+      "name": "Quicksilver99",
+      "avatar": "addon_portrait_id_fellowship_rogue",
+      "score": 8214696894,
+      "rank": 10,
+      "is_guild_member": true,
+      "profile_text": "So twice five miles of fertile ground, With walls and towers were girdled round; And there were gardens bright with sinuous rills, Where blossomed many an incense-bearing tree; And here were forests ancient as the hills, Enfolding sunny spots of greenery.",
+      "city_name": "Xanadu",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 985652,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "heavy_medal",
+            "name": "Heavy Medal!",
+            "descriptionTemplate": "Collect %s/%s medals",
+            "descriptionCityTooltip": "Collect %s medals",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000000,
+              "obtainedAt": 1511337338,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1560637128,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1490012594,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "permissions": 16,
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 310382,
+      "name": "Furdie67",
+      "avatar": "addon_portrait_id_hal25_7",
+      "score": 8077384812,
+      "rank": 11,
+      "is_guild_member": true,
+      "profile_text": " Started to play FoE 03/Sep/2012",
+      "city_name": "Jahlanda",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1144995,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1582710600,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "a_little_help_for_your_friends",
+            "name": "A Little Help for your Friends",
+            "descriptionTemplate": "Polish or motivate %s/%s buildings in other players' cities",
+            "descriptionCityTooltip": "Polish or motivate %s buildings in other player's cities",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100000,
+              "obtainedAt": 1572730873,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "great_commander",
+            "name": "Great Commander",
+            "descriptionTemplate": "Win %s/%s battles in the PvP Arena",
+            "descriptionCityTooltip": "Win %s battles in the PvP Arena",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1500,
+              "obtainedAt": 1629120830,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 7371343,
+      "name": "Ceren",
+      "avatar": "addon_portrait_id_anni25_1",
+      "score": 7633412996,
+      "rank": 12,
+      "is_guild_member": true,
+      "profile_text": "Enjoy ❤️",
+      "city_name": "Cerendipity",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 931967,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1644236075,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "one_of_many_faces",
+            "name": "One of many faces",
+            "descriptionTemplate": "Sit in %s/%s Friend Taverns.",
+            "descriptionCityTooltip": "Sit in %s Friend Taverns.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 20000,
+              "obtainedAt": 1574623467,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 20000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "impressive_defender",
+            "name": "Impressive Defender",
+            "descriptionTemplate": "Finish the fifth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fifth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1720869654,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "permissions": 126,
+      "title": "Leader",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 12343477,
+      "name": "GreatCatherin",
+      "avatar": "portrait_id_15",
+      "score": 7468450210,
+      "rank": 13,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "GreatCatherin's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 871986,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "StellarAgeDiscovery",
+      "permissions": 96,
+      "title": "GBG & QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 752274,
+      "name": "-GandAlf-",
+      "avatar": "addon_portrait_id_cop_japanese_shingen",
+      "score": 6739741254,
+      "rank": 14,
+      "is_guild_member": true,
+      "profile_text": "Started FOE 14/12/2012                                            Greetings. Aid please and I will return the favour.",
+      "city_name": "Bella Rose",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 894747,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "forward_to_the_future",
+            "name": "Forward to the Future",
+            "descriptionTemplate": "Reach %s/%s ages",
+            "descriptionCityTooltip": "Reach %s ages",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 15,
+              "obtainedAt": 1489589958,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 15,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1573747495,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1490013134,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 96,
+      "title": "GBG & QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 742772,
+      "name": "hp225",
+      "avatar": "addon_portrait_id_jim",
+      "score": 6736351679,
+      "rank": 15,
+      "is_guild_member": true,
+      "profile_text": "Welcome to my humble abode ;-)",
+      "city_name": "SHRINE (K)",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 804324,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "veni_vidi_vici",
+            "name": "Veni Vidi Vici",
+            "descriptionTemplate": "Acquire %s/%s provinces",
+            "descriptionCityTooltip": "Acquire %s provinces",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 250,
+              "obtainedAt": 1520466075,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 250,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1490009145,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "very_dangerous_i_go_first",
+            "name": "Very dangerous... I'll go first.",
+            "descriptionTemplate": "Finish the fourth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fourth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1582486513,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 32,
+      "title": "QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 7113195,
+      "name": "lizzyann13",
+      "avatar": "addon_portrait_id_cop_vikings_freydis",
+      "score": 6671625837,
+      "rank": 16,
+      "is_guild_member": true,
+      "profile_text": " LOW  the  \" Allround Winner Longterm\".  Go for it !!!  Ask for an invite you will find a good fit here .                Fight for points.  Plunder?  If you plunder me.    Friends request welcome.           ",
+      "city_name": "lizzyann13's Ct",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 738262,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "throw_me_the_idol",
+            "name": "Throw me the Idol!",
+            "descriptionTemplate": "Collect %s/%s uncommon relics.",
+            "descriptionCityTooltip": "Collect %s uncommon relics.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 200,
+              "obtainedAt": 1565110930,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 200,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "it_belongs_in_a_museum",
+            "name": "It Belongs in a Museum!",
+            "descriptionTemplate": "Collect %s/%s rare relics.",
+            "descriptionCityTooltip": "Collect %s rare relics.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1591408280,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "very_dangerous_i_go_first",
+            "name": "Very dangerous... I'll go first.",
+            "descriptionTemplate": "Finish the fourth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fourth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1600653387,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 2897406,
+      "name": "kennystones",
+      "avatar": "addon_portrait_id_ninja",
+      "score": 6652722461,
+      "rank": 17,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "nebuchadnezzar",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 759814,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "hammer_time",
+            "name": "Hammer Time",
+            "descriptionTemplate": "Collect %s/%s supplies",
+            "descriptionCityTooltip": "Collect %s supplies",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 500000000,
+              "obtainedAt": 1532177262,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 500000000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "one_for_the_piggy_bank",
+            "name": "One for the Piggy Bank",
+            "descriptionTemplate": "Collect %s/%s coins",
+            "descriptionCityTooltip": "Collect %s coins",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 500000000,
+              "obtainedAt": 1507538000,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 500000000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "good_god",
+            "name": "Good God",
+            "descriptionTemplate": "Collect %s/%s goods",
+            "descriptionCityTooltip": "Collect %s goods",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000000,
+              "obtainedAt": 1646752431,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 5889510,
+      "name": "bakiron",
+      "avatar": "portrait_id_220",
+      "score": 6602311853,
+      "rank": 18,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "bakiron's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 848136,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1609892032,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "one_team_one_dream",
+            "name": "One Team, One Dream",
+            "descriptionTemplate": "Win %s/%s tournament matches in the Soccer Cup event!",
+            "descriptionCityTooltip": "Win %s tournament matches in the Soccer Cup event!",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1623271439,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "great_commander",
+            "name": "Great Commander",
+            "descriptionTemplate": "Win %s/%s battles in the PvP Arena",
+            "descriptionCityTooltip": "Win %s battles in the PvP Arena",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1500,
+              "obtainedAt": 1630533591,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 853038205,
+      "name": "FacelesssMan",
+      "avatar": "addon_portrait_id_fell25_6",
+      "score": 6542547341,
+      "rank": 19,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "FacelessM City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 737904,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "thats_a_great_building",
+            "name": "That's a Great Building!",
+            "descriptionTemplate": "Have %s/%s Great Buildings",
+            "descriptionCityTooltip": "Have %s great buildings",
+            "currentLevel": {
+              "level": 2,
+              "requiredProgress": 10,
+              "obtainedAt": 1685204817,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 3,
+              "progress": 20,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "he_chose_wisely",
+            "name": "He chose... wisely.",
+            "descriptionTemplate": "Solve %s/%s encounters by negotiating.",
+            "descriptionCityTooltip": "Solve %s encounters by negotiating.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1000,
+              "obtainedAt": 1721121652,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "great_commander",
+            "name": "Great Commander",
+            "descriptionTemplate": "Win %s/%s battles in the PvP Arena",
+            "descriptionCityTooltip": "Win %s battles in the PvP Arena",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1500,
+              "obtainedAt": 1685002069,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 64,
+      "title": "GBG",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 5475073,
+      "name": "toadis noctus astras",
+      "avatar": "addon_portrait_id_zombie",
+      "score": 6459962703,
+      "rank": 20,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "donk hall",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1012854,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeTitan",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 861735,
+      "name": "II-IIyPer-79",
+      "avatar": "addon_portrait_id_anni26_9",
+      "score": 6325013547,
+      "rank": 21,
+      "is_neighbor": true,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "II-IIyPer-79's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 838671,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeSpaceHub",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 7560963,
+      "name": "Overlord Negan",
+      "avatar": "addon_portrait_id_anni26_9",
+      "score": 6249698209,
+      "rank": 22,
+      "is_friend": true,
+      "is_neighbor": true,
+      "is_guild_member": true,
+      "is_self": true,
+      "profile_text": "I am Negan. We are ALL Negan. Ok so... bow to your overlord before i start handing out Lucille taxes!",
+      "city_name": "Sanctuary",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 841734,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "hey_big_spender",
+            "name": "Hey, Big Spender!",
+            "descriptionTemplate": "Spend %s/%s Forge Points in a day",
+            "descriptionCityTooltip": "Spend %s forge points in a day",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000,
+              "obtainedAt": 1536186477,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1584522480,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1630781825,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "permissions": 127,
+      "title": "Chair",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 6639013,
+      "name": "Soturi",
+      "avatar": "addon_portrait_id_care26_4",
+      "score": 6240981133,
+      "rank": 23,
+      "is_guild_member": true,
+      "profile_text": "Enjoy helping the guild and learning more about how to ge better.",
+      "city_name": "!",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 655204,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1628023942,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "impressive_defender",
+            "name": "Impressive Defender",
+            "descriptionTemplate": "Finish the fifth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fifth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1725482152,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "space_age_titan",
+            "name": "Titan Independence",
+            "descriptionTemplate": "Grant independence to your Titan colony.",
+            "descriptionCityTooltip": "Grant independence to your Titan colony.",
+            "currentLevel": {
+              "level": 1,
+              "requiredProgress": 22,
+              "obtainedAt": 1728636595,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 2,
+              "progress": 22,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 10741908,
+      "name": "Piltar the Powerful",
+      "avatar": "addon_portrait_id_arthur26_2",
+      "score": 5873221997,
+      "rank": 24,
+      "is_guild_member": true,
+      "profile_text": "🇨🇦",
+      "city_name": "Piltarville",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 806685,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeSpaceHub",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 13120485,
+      "name": "kamil.d.1994",
+      "avatar": "addon_portrait_id_castle_system_sibusiso",
+      "score": 5548963368,
+      "rank": 25,
+      "is_guild_member": true,
+      "profile_text": "Gimme the loot, gimme the loot ",
+      "city_name": "Guess Whos back",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 1030375,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "home_sweet_home",
+            "name": "Home Sweet Home",
+            "descriptionTemplate": "Construct %s/%s Residentials",
+            "descriptionCityTooltip": "Construct %s residentials",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 250,
+              "obtainedAt": 1598115207,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 250,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "billy_the_kid",
+            "name": "Outlaw",
+            "descriptionTemplate": "Plunder %s/%s buildings",
+            "descriptionCityTooltip": "Plunder %s buildings",
+            "currentLevel": {
+              "level": 2,
+              "requiredProgress": 250,
+              "obtainedAt": 1596040793,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 3,
+              "progress": 1500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "throw_me_the_idol",
+            "name": "Throw me the Idol!",
+            "descriptionTemplate": "Collect %s/%s uncommon relics.",
+            "descriptionCityTooltip": "Collect %s uncommon relics.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 200,
+              "obtainedAt": 1632412475,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 200,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 733038,
+      "name": "crawler1602",
+      "avatar": "addon_portrait_id_479",
+      "score": 5015330515,
+      "rank": 26,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "P-M-H-D (Plana)",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 509437,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1490017264,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "one_team_one_dream",
+            "name": "One Team, One Dream",
+            "descriptionTemplate": "Win %s/%s tournament matches in the Soccer Cup event!",
+            "descriptionCityTooltip": "Win %s tournament matches in the Soccer Cup event!",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1654676325,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "pop_master",
+            "name": "Pop Master",
+            "descriptionTemplate": "Pop %s/%s color blocks during the Wildlife Event!",
+            "descriptionCityTooltip": "Pop %s color blocks during the Wildlife Event!",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 10000,
+              "obtainedAt": 1683999917,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 10000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 737790,
+      "name": "chrisl",
+      "avatar": "addon_portrait_id_arthur26_5",
+      "score": 4984898442,
+      "rank": 27,
+      "is_guild_member": true,
+      "profile_text": "Started FOE 15/12/2012",
+      "city_name": "Apocalypse Rule",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 391226,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "hey_big_spender",
+            "name": "Hey, Big Spender!",
+            "descriptionTemplate": "Spend %s/%s Forge Points in a day",
+            "descriptionCityTooltip": "Spend %s forge points in a day",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000,
+              "obtainedAt": 1489040731,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "veni_vidi_vici",
+            "name": "Veni Vidi Vici",
+            "descriptionTemplate": "Acquire %s/%s provinces",
+            "descriptionCityTooltip": "Acquire %s provinces",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 250,
+              "obtainedAt": 1520924579,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 250,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1490014885,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 32,
+      "title": "QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 853900873,
+      "name": "Victoria the Fair 1996",
+      "avatar": "addon_portrait_id_arthur26_7",
+      "score": 4923937774,
+      "rank": 28,
+      "is_guild_member": true,
+      "profile_text": "Have a dark day 😈",
+      "city_name": "Battle Bitch",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 662355,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1724973219,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "veni_vidi_vici",
+            "name": "Veni Vidi Vici",
+            "descriptionTemplate": "Acquire %s/%s provinces",
+            "descriptionCityTooltip": "Acquire %s provinces",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 250,
+              "obtainedAt": 1739431496,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 250,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "great_commander",
+            "name": "Great Commander",
+            "descriptionTemplate": "Win %s/%s battles in the PvP Arena",
+            "descriptionCityTooltip": "Win %s battles in the PvP Arena",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1500,
+              "obtainedAt": 1730061562,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 525759,
+      "name": "Mike of Macedonia",
+      "avatar": "addon_portrait_id_sinatra",
+      "score": 4914206833,
+      "rank": 29,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "New Skopje",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 462592,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "social_network",
+            "name": "The Social Network",
+            "descriptionTemplate": "Have %s/%s friends",
+            "descriptionCityTooltip": "Have %s friends",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1592683436,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "soccer",
+            "name": "Goooooaal!",
+            "descriptionTemplate": "Finish the Soccer Cup event questline. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the Soccer Cup event questline. Completions: %s",
+            "currentLevel": {
+              "level": 5,
+              "requiredProgress": 5,
+              "obtainedAt": 1655853003,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 6,
+              "progress": 5,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "one_team_one_dream",
+            "name": "One Team, One Dream",
+            "descriptionTemplate": "Win %s/%s tournament matches in the Soccer Cup event!",
+            "descriptionCityTooltip": "Win %s tournament matches in the Soccer Cup event!",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1623551027,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 862919,
+      "name": "SireFox",
+      "avatar": "addon_portrait_id_hal23_3",
+      "score": 4870005397,
+      "rank": 30,
+      "is_guild_member": true,
+      "profile_text": " Thanks for dropping by.  ",
+      "city_name": "Foxapolis",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 598660,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "veni_vidi_vici",
+            "name": "Veni Vidi Vici",
+            "descriptionTemplate": "Acquire %s/%s provinces",
+            "descriptionCityTooltip": "Acquire %s provinces",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 250,
+              "obtainedAt": 1521742315,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 250,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1490022761,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "very_dangerous_i_go_first",
+            "name": "Very dangerous... I'll go first.",
+            "descriptionTemplate": "Finish the fourth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fourth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1576013945,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 96,
+      "title": "GBG & QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 2529073,
+      "name": "Hipshot",
+      "avatar": "portrait_id_56",
+      "score": 4800959549,
+      "rank": 31,
+      "is_guild_member": true,
+      "profile_text": "Have a Good Day!",
+      "city_name": "Hipshot G",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 739459,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "social_network",
+            "name": "The Social Network",
+            "descriptionTemplate": "Have %s/%s friends",
+            "descriptionCityTooltip": "Have %s friends",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1498355549,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 11355594,
+      "name": "LowRider",
+      "avatar": "addon_portrait_id_care26_4",
+      "score": 4408493990,
+      "rank": 32,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "Lowdown",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 450188,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "splendid_empire",
+            "name": "Splendid Empire",
+            "descriptionTemplate": "Finish %s/%s Mughal Empire Settlements",
+            "descriptionCityTooltip": "Finish %s Mughal Empire Settlements",
+            "currentLevel": {
+              "level": 2,
+              "requiredProgress": 4,
+              "obtainedAt": 1747649003,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 3,
+              "progress": 7,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "space_age_venus",
+            "name": "Venus Independence",
+            "descriptionTemplate": "Grant independence to your Venus colony.",
+            "descriptionCityTooltip": "Grant independence to your Venus colony.",
+            "currentLevel": {
+              "level": 1,
+              "requiredProgress": 20,
+              "obtainedAt": 1666854881,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 2,
+              "progress": 20,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "tropical_islands",
+            "name": "Tropical Islands",
+            "descriptionTemplate": "Finish %s/%s Polynesian Settlements",
+            "descriptionCityTooltip": "Finish %s Polynesian Settlements",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 13,
+              "obtainedAt": 1741365093,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 13,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 11683032,
+      "name": "Littlestar82",
+      "avatar": "addon_portrait_id_summer_sally",
+      "score": 4322367589,
+      "rank": 33,
+      "is_guild_member": true,
+      "profile_text": "22/07/2019",
+      "city_name": "Littlestar82's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 494108,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "billy_the_kid",
+            "name": "Outlaw",
+            "descriptionTemplate": "Plunder %s/%s buildings",
+            "descriptionCityTooltip": "Plunder %s buildings",
+            "currentLevel": {
+              "level": 3,
+              "requiredProgress": 1500,
+              "obtainedAt": 1657784301,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 3,
+              "progress": 3000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "very_dangerous_i_go_first",
+            "name": "Very dangerous... I'll go first.",
+            "descriptionTemplate": "Finish the fourth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fourth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1611343484,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "journeys_end",
+            "name": "Journey's End",
+            "descriptionTemplate": "Finish the main questline of the Fellowship Event. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the main questline of the Fellowship Event. Completions: %s",
+            "currentLevel": {
+              "level": 1,
+              "requiredProgress": 1,
+              "obtainedAt": 1660741380,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 2,
+              "progress": 1,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 6426475,
+      "name": "Margusmagi",
+      "avatar": "portrait_id_199",
+      "score": 4270633440,
+      "rank": 34,
+      "is_friend": true,
+      "is_guild_member": true,
+      "profile_text": "Im friendly until you plunder me! Dont step on wolfs tail! ",
+      "city_name": "Wolfs DeN",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 535771,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "a_little_help_for_your_friends",
+            "name": "A Little Help for your Friends",
+            "descriptionTemplate": "Polish or motivate %s/%s buildings in other players' cities",
+            "descriptionCityTooltip": "Polish or motivate %s buildings in other player's cities",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100000,
+              "obtainedAt": 1580300429,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "friend_of_the_vikings",
+            "name": "Friend of the Vikings",
+            "descriptionTemplate": "Finish %s/%s Viking Settlements",
+            "descriptionCityTooltip": "Finish %s Viking Settlements",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 15,
+              "obtainedAt": 1574870973,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 15,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "arthur_sword_in_the_stone",
+            "name": "Sword in the Stone!",
+            "descriptionTemplate": "Finish the main quests and the Excalibur Reforged questline in King Arthur's Return.",
+            "descriptionCityTooltip": "Finish the main quests and the Excalibur Reforged questline in King Arthur's Return.",
+            "currentLevel": {
+              "level": 1,
+              "requiredProgress": 2,
+              "obtainedAt": 1784499919,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 2,
+              "progress": 2,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 64,
+      "title": "GBG",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 4639932,
+      "name": "ahmetd",
+      "avatar": "addon_portrait_id_halloween_harlequin",
+      "score": 4259594580,
+      "rank": 35,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "ahmetd's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 702380,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 8340825,
+      "name": "TrueBartuk",
+      "avatar": "portrait_id_145",
+      "score": 4247059804,
+      "rank": 36,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "TrueBartuk's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 720292,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "very_dangerous_i_go_first",
+            "name": "Very dangerous... I'll go first.",
+            "descriptionTemplate": "Finish the fourth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fourth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1558886126,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "one_team_one_dream",
+            "name": "One Team, One Dream",
+            "descriptionTemplate": "Win %s/%s tournament matches in the Soccer Cup event!",
+            "descriptionCityTooltip": "Win %s tournament matches in the Soccer Cup event!",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1593707753,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "great_commander",
+            "name": "Great Commander",
+            "descriptionTemplate": "Win %s/%s battles in the PvP Arena",
+            "descriptionCityTooltip": "Win %s battles in the PvP Arena",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1500,
+              "obtainedAt": 1629566037,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "permissions": 32,
+      "title": "QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 9603012,
+      "name": "Val-Halla",
+      "avatar": "portrait_id_145",
+      "score": 4083682855,
+      "rank": 37,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "Asgard",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 467115,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 835624,
+      "name": "Picard359",
+      "avatar": "addon_portrait_id_fell25_7",
+      "score": 4079074612,
+      "rank": 38,
+      "is_guild_member": true,
+      "profile_text": "LoW - Currently Recruiting for Active Players",
+      "city_name": "Picard359",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 293700,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "a_little_help_for_your_friends",
+            "name": "A Little Help for your Friends",
+            "descriptionTemplate": "Polish or motivate %s/%s buildings in other players' cities",
+            "descriptionCityTooltip": "Polish or motivate %s buildings in other player's cities",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100000,
+              "obtainedAt": 1637221915,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "social_network",
+            "name": "The Social Network",
+            "descriptionTemplate": "Have %s/%s friends",
+            "descriptionCityTooltip": "Have %s friends",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1513191799,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "very_dangerous_i_go_first",
+            "name": "Very dangerous... I'll go first.",
+            "descriptionTemplate": "Finish the fourth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fourth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1569592969,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 851894026,
+      "name": "VirgoAries",
+      "avatar": "addon_portrait_id_celeas",
+      "score": 3640217029,
+      "rank": 39,
+      "is_guild_member": true,
+      "profile_text": "I don't plunder. If I attack you it is purely for quest, HC, or points. Don't take it personally 🙂",
+      "city_name": "VirgoAries",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 560964,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1674292350,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "up_it_goes",
+            "name": "Up It Goes",
+            "descriptionTemplate": "Activate %s/%s boosts from your Friends Tavern.",
+            "descriptionCityTooltip": "Activate %s boosts from your Friends Tavern.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 500,
+              "obtainedAt": 1692749500,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "great_commander",
+            "name": "Great Commander",
+            "descriptionTemplate": "Win %s/%s battles in the PvP Arena",
+            "descriptionCityTooltip": "Win %s battles in the PvP Arena",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1500,
+              "obtainedAt": 1685790494,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "permissions": 127,
+      "title": "Chair",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 849643793,
+      "name": "Dan.4",
+      "avatar": "portrait_id_201",
+      "score": 3561368642,
+      "rank": 40,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "Dan.4's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 488631,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeTitan",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 9606329,
+      "name": "Apilery",
+      "avatar": "addon_portrait_id_jodido",
+      "score": 3542667328,
+      "rank": 41,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "Apilery's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 504516,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "hey_big_spender",
+            "name": "Hey, Big Spender!",
+            "descriptionTemplate": "Spend %s/%s Forge Points in a day",
+            "descriptionCityTooltip": "Spend %s forge points in a day",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000,
+              "obtainedAt": 1572036066,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "hammer_time",
+            "name": "Hammer Time",
+            "descriptionTemplate": "Collect %s/%s supplies",
+            "descriptionCityTooltip": "Collect %s supplies",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 500000000,
+              "obtainedAt": 1582980272,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 500000000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "veni_vidi_vici",
+            "name": "Veni Vidi Vici",
+            "descriptionTemplate": "Acquire %s/%s provinces",
+            "descriptionCityTooltip": "Acquire %s provinces",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 250,
+              "obtainedAt": 1611236343,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 250,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 8525048,
+      "name": "ivoSF",
+      "avatar": "addon_portrait_id_anni26_9",
+      "score": 2890683536,
+      "rank": 42,
+      "is_guild_member": true,
+      "profile_text": "Resources exist to be consumed. And consumed they will be, if not by this generation then by some future. By what right does this forgotten future seek to deny us our birthright? None I say! Let us take what is ours, chew and eat our fill.      CEO Nwabudike Morgan \"The Ethics of Greed\"",
+      "city_name": "ivoSF's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 296828,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "a_little_help_for_your_friends",
+            "name": "A Little Help for your Friends",
+            "descriptionTemplate": "Polish or motivate %s/%s buildings in other players' cities",
+            "descriptionCityTooltip": "Polish or motivate %s buildings in other player's cities",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100000,
+              "obtainedAt": 1599564290,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "tiki_taka",
+            "name": "Tiki-taka",
+            "descriptionTemplate": "Score a goal by only passing the shortest distances",
+            "descriptionCityTooltip": "Move the ball across the field by only choosing the shortest distance passes, and then score a goal!",
+            "currentLevel": {
+              "level": 1,
+              "requiredProgress": 1,
+              "obtainedAt": 1560935604,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 2,
+              "progress": 2,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "dig_deeper",
+            "name": "Archaeologist",
+            "descriptionTemplate": "Finish the main questline of the Archaeology Event. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the main questline of the Archaeology Event. Completions: %s",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 4,
+              "obtainedAt": 1653217786,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 4,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 10134162,
+      "name": "Maximus Vorenus",
+      "avatar": "addon_portrait_id_carnival_green",
+      "score": 2760285178,
+      "rank": 43,
+      "is_guild_member": true,
+      "profile_text": "🇨🇦",
+      "city_name": "🇨🇦 🍁 🇨🇦 ",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 453816,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeAsteroidBelt",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 746455,
+      "name": "Brzi2225",
+      "avatar": "portrait_id_16",
+      "score": 2722420721,
+      "rank": 44,
+      "is_guild_member": true,
+      "profile_text": "First polish then motivate.tnx",
+      "city_name": "Darkwood",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 273539,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 852825413,
+      "name": "Brucey Bruce Bruce",
+      "avatar": "portrait_id_100",
+      "score": 2691406584,
+      "rank": 45,
+      "is_guild_member": true,
+      "profile_text": "Welcome.",
+      "city_name": "Brucey Bruce Br",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 705866,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "social_network",
+            "name": "The Social Network",
+            "descriptionTemplate": "Have %s/%s friends",
+            "descriptionCityTooltip": "Have %s friends",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1665150690,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "innkeeper",
+            "name": "Innkeeper",
+            "descriptionTemplate": "Have %s/%s chairs in your Friends Tavern.",
+            "descriptionCityTooltip": "Have %s chairs in your Friends Tavern.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 16,
+              "obtainedAt": 1668724485,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 16,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "up_it_goes",
+            "name": "Up It Goes",
+            "descriptionTemplate": "Activate %s/%s boosts from your Friends Tavern.",
+            "descriptionCityTooltip": "Activate %s boosts from your Friends Tavern.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 500,
+              "obtainedAt": 1709796436,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 500,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeJupiterMoon",
+      "permissions": 64,
+      "title": "GBG",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 446829,
+      "name": "PAUL-",
+      "avatar": "addon_portrait_id_castle_system_lothar",
+      "score": 2241638507,
+      "rank": 46,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "Tavulia",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 322410,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeSpaceHub",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 1056113,
+      "name": "-Jonny Hoob-",
+      "avatar": "portrait_id_16",
+      "score": 2213781958,
+      "rank": 47,
+      "is_guild_member": true,
+      "profile_text": "Please Polish and Motivate me. Please dont plunder, i dont plunder as a rule so please show respect and repay that.  Thank you kindly in advance for your Help..",
+      "city_name": "Hoobville",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 244322,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "boo",
+            "name": "Boo!",
+            "descriptionTemplate": "Finish the main questline of the Halloween Event. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the main questline of the Halloween Event. Completions: %s",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 4,
+              "obtainedAt": 1668583151,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 5,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "touchdown",
+            "name": "Touchdown!",
+            "descriptionTemplate": "Finish the main questline of the Forge Bowl event. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the main questline of the Forge Bowl Event. Completions: %s",
+            "currentLevel": {
+              "level": 5,
+              "requiredProgress": 5,
+              "obtainedAt": 1644251809,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 6,
+              "progress": 5,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "soccer",
+            "name": "Goooooaal!",
+            "descriptionTemplate": "Finish the Soccer Cup event questline. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the Soccer Cup event questline. Completions: %s",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 4,
+              "obtainedAt": 1655871586,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 4,
+              "progress": 5,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "StellarAgeDiscovery",
+      "permissions": 16,
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 851947020,
+      "name": "anndor",
+      "avatar": "addon_portrait_id_vik26_4",
+      "score": 1862289687,
+      "rank": 48,
+      "is_guild_member": true,
+      "profile_text": "                     ❤️‍🔥Flaming heart ❤️‍🔥",
+      "city_name": "anndor's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 523328,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "a_little_help_for_your_friends",
+            "name": "A Little Help for your Friends",
+            "descriptionTemplate": "Polish or motivate %s/%s buildings in other players' cities",
+            "descriptionCityTooltip": "Polish or motivate %s buildings in other player's cities",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100000,
+              "obtainedAt": 1687824475,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "one_of_many_faces",
+            "name": "One of many faces",
+            "descriptionTemplate": "Sit in %s/%s Friend Taverns.",
+            "descriptionCityTooltip": "Sit in %s Friend Taverns.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 20000,
+              "obtainedAt": 1667766495,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 20000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "pop_master",
+            "name": "Pop Master",
+            "descriptionTemplate": "Pop %s/%s color blocks during the Wildlife Event!",
+            "descriptionCityTooltip": "Pop %s color blocks during the Wildlife Event!",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 10000,
+              "obtainedAt": 1684144947,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 10000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "VirtualFuture",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 8457018,
+      "name": "robinmagister",
+      "avatar": "addon_portrait_id_vik26_2",
+      "score": 1820760684,
+      "rank": 49,
+      "is_friend": true,
+      "is_guild_member": true,
+      "profile_text": "coucou",
+      "city_name": "New Bern",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 224318,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1608494788,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "purple_heart",
+            "name": "Nice Try",
+            "descriptionTemplate": "Lose %s/%s battles",
+            "descriptionCityTooltip": "Lose %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 550,
+              "obtainedAt": 1587501848,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 550,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "let_it_snow",
+            "name": "Let It Snow",
+            "descriptionTemplate": "Finish the main questline of the Winter Event. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the main questline of the Winter Event. Completions: %s",
+            "currentLevel": {
+              "level": 3,
+              "requiredProgress": 3,
+              "obtainedAt": 1609641477,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 4,
+              "progress": 4,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeSpaceHub",
+      "permissions": 126,
+      "title": "Leader",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 852060500,
+      "name": "Mrs.T.",
+      "avatar": "addon_portrait_id_cop_vikings_freydis",
+      "score": 1627494357,
+      "rank": 50,
+      "is_guild_member": true,
+      "profile_text": "Mrs.Theo 1963 🇨🇦 🇺🇦 🇬🇧 ",
+      "city_name": "Mrs.Theo 1963 ",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 257557,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "StellarAgeDiscovery",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 12008625,
+      "name": "toskica",
+      "avatar": "addon_portrait_id_winter_winnie",
+      "score": 1484410759,
+      "rank": 51,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "Ritorno",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 349057,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "one_team_one_dream",
+            "name": "One Team, One Dream",
+            "descriptionTemplate": "Win %s/%s tournament matches in the Soccer Cup event!",
+            "descriptionCityTooltip": "Win %s tournament matches in the Soccer Cup event!",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1654769637,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeJupiterMoon",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 849416321,
+      "name": "Woolie",
+      "avatar": "addon_portrait_id_castle_system_odella",
+      "score": 1483858486,
+      "rank": 52,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "Woolie's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 372490,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeAsteroidBelt",
+      "permissions": 16,
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 8069661,
+      "name": "Xenna.",
+      "avatar": "addon_portrait_id_care25_2",
+      "score": 1396235524,
+      "rank": 53,
+      "is_guild_member": true,
+      "profile_text": "                          08/08 VF",
+      "city_name": " ",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 662673,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "VirtualFuture",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 10966491,
+      "name": "12 Monkeys",
+      "avatar": "portrait_id_16",
+      "score": 1278977575,
+      "rank": 54,
+      "is_guild_member": true,
+      "profile_text": "Monkey See,   Monkey Do",
+      "city_name": "12 Monkeys's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 300393,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeAsteroidBelt",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 850179865,
+      "name": "jorroalbg",
+      "avatar": "addon_portrait_id_celeas",
+      "score": 1199831846,
+      "rank": 55,
+      "is_guild_member": true,
+      "profile_text": "PE",
+      "city_name": "Jo City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 716970,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1676066894,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "foe_fanclub",
+            "name": "FoE Fan Club",
+            "descriptionTemplate": "Play Forge of Empires for %s/%s days",
+            "descriptionCityTooltip": "Play %s days of Forge of Empires",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 1460,
+              "obtainedAt": 1734193825,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 1460,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "impressive_penacho",
+            "name": "Impressive Penacho",
+            "descriptionTemplate": "Collect %s/%s avatar of the Expedition.",
+            "descriptionCityTooltip": "Collect %s avatar of the Expedition.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 18,
+              "obtainedAt": 1722731431,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 18,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "ProgressiveEra",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 7022765,
+      "name": "King Bogdan7",
+      "avatar": "addon_portrait_id_cop_japanese_shingen",
+      "score": 1168261160,
+      "rank": 56,
+      "is_guild_member": true,
+      "profile_text": "Timisoara Romania",
+      "city_name": "King Bogdan7's ",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 286470,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "hey_big_spender",
+            "name": "Hey, Big Spender!",
+            "descriptionTemplate": "Spend %s/%s Forge Points in a day",
+            "descriptionCityTooltip": "Spend %s forge points in a day",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000,
+              "obtainedAt": 1551228138,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "thats_a_great_building",
+            "name": "That's a Great Building!",
+            "descriptionTemplate": "Have %s/%s Great Buildings",
+            "descriptionCityTooltip": "Have %s great buildings",
+            "currentLevel": {
+              "level": 3,
+              "requiredProgress": 20,
+              "obtainedAt": 1555510448,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 3,
+              "progress": 30,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "a_little_help_for_your_friends",
+            "name": "A Little Help for your Friends",
+            "descriptionTemplate": "Polish or motivate %s/%s buildings in other players' cities",
+            "descriptionCityTooltip": "Polish or motivate %s buildings in other player's cities",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100000,
+              "obtainedAt": 1547325576,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeAsteroidBelt",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 849463069,
+      "name": "Laureas",
+      "avatar": "addon_portrait_id_caesar",
+      "score": 1147605961,
+      "rank": 57,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "Laureas's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 450090,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "FutureEra",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 11141251,
+      "name": "Black-lotus",
+      "avatar": "addon_portrait_id_care25_1",
+      "score": 1108515979,
+      "rank": 58,
+      "is_guild_member": true,
+      "profile_text": "🇮🇪",
+      "city_name": "yeooo",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 514042,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "FutureEra",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 8489515,
+      "name": "Mel the Merciful",
+      "avatar": "addon_portrait_id_pat26_2",
+      "score": 1031994883,
+      "rank": 59,
+      "is_guild_member": true,
+      "profile_text": "BOO!",
+      "city_name": "Mel the Merciful's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 240418,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeAsteroidBelt",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 10539647,
+      "name": "King Ralfs",
+      "avatar": "addon_portrait_id_spring_yoshiro",
+      "score": 1028002732,
+      "rank": 60,
+      "is_guild_member": true,
+      "profile_text": "Hello from Bulgaria :)",
+      "city_name": "New age",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 278479,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "medal_of_honor",
+            "name": "Victory!",
+            "descriptionTemplate": "Win %s/%s battles",
+            "descriptionCityTooltip": "Win %s battles",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50000,
+              "obtainedAt": 1648206783,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "friend_of_the_vikings",
+            "name": "Friend of the Vikings",
+            "descriptionTemplate": "Finish %s/%s Viking Settlements",
+            "descriptionCityTooltip": "Finish %s Viking Settlements",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 15,
+              "obtainedAt": 1573109737,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 15,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "cop_japanese",
+            "name": "The Last Samurai",
+            "descriptionTemplate": "Finish %s/%s Feudal Japanese Settlements",
+            "descriptionCityTooltip": "Finish %s Feudal Japanese Settlements",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 13,
+              "obtainedAt": 1586319414,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 13,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "SpaceAgeTitan",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 854400879,
+      "name": "PEGASUS SPIRIT",
+      "avatar": "addon_portrait_id_arthur26_2",
+      "score": 662929344,
+      "rank": 61,
+      "is_guild_member": true,
+      "profile_text": "Μην κρυφοκοιτάζετε καν! Επανεκκίνηση στις 6 Ιουνίου 2024",
+      "city_name": "PEGASUS SPIRIT's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 147593,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "SpaceAgeAsteroidBelt",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 850413620,
+      "name": "Victoria Winter",
+      "avatar": "addon_portrait_id_fall26_4",
+      "score": 515748674,
+      "rank": 62,
+      "is_guild_member": true,
+      "profile_text": "Fighters come and join Lords of War. ⚔️🥂 DM a Leader (or me) if interested      25/06/26 180 Arc",
+      "city_name": "Prosecco ninja",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 116329,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "FutureEra",
+      "permissions": 96,
+      "title": "GBG & QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 854712836,
+      "name": "Lexe2k",
+      "avatar": "addon_portrait_id_vik26_3",
+      "score": 511555401,
+      "rank": 63,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "Pandemonium",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 114482,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "TomorrowEra",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 4789733,
+      "name": "Waterdaggers",
+      "avatar": "addon_portrait_id_arthur26_7",
+      "score": 449052696,
+      "rank": 64,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "Waterdaggers's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 170192,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "FutureEra",
+      "permissions": 32,
+      "title": "QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 851359080,
+      "name": "Edward Invincible 112",
+      "avatar": "addon_portrait_id_cop_pirates_blackbeard",
+      "score": 428829664,
+      "rank": 65,
+      "is_guild_member": true,
+      "profile_text": "Feel free to add to GBs at 1.9 rates ONLY. Burgundy tablecloth in my tavern!  City founded August 24, 2021.",
+      "city_name": "Ed's Greifental",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 149075,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "luckoftheirish",
+            "name": "Luck Of The Irish!",
+            "descriptionTemplate": "Finish the main questline of the St Patrick's Day event. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the main questline of the St Patrick's Day event. Completions: %s",
+            "currentLevel": {
+              "level": 5,
+              "requiredProgress": 5,
+              "obtainedAt": 1773619558,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 6,
+              "progress": 6,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "overtherainbow",
+            "name": "Over the Rainbow",
+            "descriptionTemplate": "Progress through %s/%s towns in the St. Patrick's Day Event",
+            "descriptionCityTooltip": "Progress through %s towns in the St. Patrick's Day Event",
+            "currentLevel": {
+              "level": 5,
+              "requiredProgress": 50,
+              "obtainedAt": 1771810291,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "tropical_islands",
+            "name": "Tropical Islands",
+            "descriptionTemplate": "Finish %s/%s Polynesian Settlements",
+            "descriptionCityTooltip": "Finish %s Polynesian Settlements",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 13,
+              "obtainedAt": 1775051915,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 13,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "PostModernEra",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 9852461,
+      "name": "Komjin1",
+      "avatar": "addon_portrait_id_anni26_3",
+      "score": 320161844,
+      "rank": 66,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "Komjin1",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 68038,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "home_sweet_home",
+            "name": "Home Sweet Home",
+            "descriptionTemplate": "Construct %s/%s Residentials",
+            "descriptionCityTooltip": "Construct %s residentials",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 250,
+              "obtainedAt": 1577017346,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 250,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "executive_producer",
+            "name": "Executive Producer",
+            "descriptionTemplate": "Construct %s/%s Production Buildings",
+            "descriptionCityTooltip": "Construct %s production buildings",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1611139537,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "social_network",
+            "name": "The Social Network",
+            "descriptionTemplate": "Have %s/%s friends",
+            "descriptionCityTooltip": "Have %s friends",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1782192922,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "ArcticFuture",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 855955921,
+      "name": "AverageNoob",
+      "avatar": "portrait_id_2",
+      "score": 309890364,
+      "rank": 67,
+      "is_guild_member": true,
+      "profile_text": "Leader in LoW. Top guild in world for over 2000 days and still highly competitive. PM me if you need a guild that can win rewards every season.                                                                            Restarted October 21st 2025, Cherry October 29th 2025, LoW November 11th 2025, 100 attrition December 28th 2025, HAU Jan 5th 2026, 150 attrition Jan 7th 2026, hit 100mil points Jan 29 2026, Trial 50 100 attrition Feb 07 2026 arc 180 April 7th 2026",
+      "city_name": "NoobVille",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 76425,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "hey_big_spender",
+            "name": "Hey, Big Spender!",
+            "descriptionTemplate": "Spend %s/%s Forge Points in a day",
+            "descriptionCityTooltip": "Spend %s forge points in a day",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000,
+              "obtainedAt": 1761232614,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "heavy_medal",
+            "name": "Heavy Medal!",
+            "descriptionTemplate": "Collect %s/%s medals",
+            "descriptionCityTooltip": "Collect %s medals",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 2000000,
+              "obtainedAt": 1763918735,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 2000000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "urbanisation",
+            "name": "Urbanization",
+            "descriptionTemplate": "Have %s/%s expansions",
+            "descriptionCityTooltip": "Have %s expansions",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 150,
+              "obtainedAt": 1769478015,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 150,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "ProgressiveEra",
+      "permissions": 126,
+      "title": "Leader",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 856159327,
+      "name": "Gumse",
+      "avatar": "portrait_id_169",
+      "score": 276831569,
+      "rank": 68,
+      "is_guild_member": true,
+      "profile_text": "I am a Lover Not a Hater. If you betray my trust you will fell my resentment",
+      "city_name": "Home sweet home",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 66583,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "IndustrialAge",
+      "permissions": 32,
+      "title": "QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 7371009,
+      "name": "Arch1e",
+      "avatar": "addon_portrait_id_fall26_4",
+      "score": 240783338,
+      "rank": 69,
+      "is_guild_member": true,
+      "profile_text": "You can customize your profile text.",
+      "city_name": "Arch1e's City",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 57139,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "VirtualFuture",
+      "permissions": 32,
+      "title": "QI",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 856410896,
+      "name": "Jhary-a-Conel",
+      "avatar": "addon_portrait_id_vik26_6",
+      "score": 224919815,
+      "rank": 70,
+      "is_guild_member": true,
+      "profile_text": "My pet winged cat Whiskers comes with me wherever I go.",
+      "city_name": " Tanelorn",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 46257,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "a_little_help_for_your_friends",
+            "name": "A Little Help for your Friends",
+            "descriptionTemplate": "Polish or motivate %s/%s buildings in other players' cities",
+            "descriptionCityTooltip": "Polish or motivate %s buildings in other player's cities",
+            "currentLevel": {
+              "level": 2,
+              "requiredProgress": 10000,
+              "obtainedAt": 1782997907,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 3,
+              "progress": 50000,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "social_network",
+            "name": "The Social Network",
+            "descriptionTemplate": "Have %s/%s friends",
+            "descriptionCityTooltip": "Have %s friends",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 100,
+              "obtainedAt": 1780169758,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 100,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "friend_of_the_vikings",
+            "name": "Friend of the Vikings",
+            "descriptionTemplate": "Finish %s/%s Viking Settlements",
+            "descriptionCityTooltip": "Finish %s Viking Settlements",
+            "currentLevel": {
+              "level": 2,
+              "requiredProgress": 5,
+              "obtainedAt": 1784236351,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 3,
+              "progress": 10,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "ModernEra",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 6978789,
+      "name": "ArtieBucco",
+      "avatar": "addon_portrait_id_arthur26_2",
+      "score": 197978131,
+      "rank": 71,
+      "is_guild_member": true,
+      "profile_text": "",
+      "city_name": "Gaff",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 66453,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "IndustrialAge",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 851237964,
+      "name": "Freezy the Frizzy",
+      "avatar": "addon_portrait_id_arthur26_2",
+      "score": 134972404,
+      "rank": 72,
+      "is_guild_member": true,
+      "profile_text": "Founded Sept 2021 in the twilight of autumn",
+      "city_name": "Greithorpe",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 62056,
+      "has_great_building": true,
+      "is_active": true,
+      "topAchievements": [
+        {
+          "slot": 2,
+          "achievement": {
+            "id": "very_dangerous_i_go_first",
+            "name": "Very dangerous... I'll go first.",
+            "descriptionTemplate": "Finish the fourth difficulty level of the expedition %s/%s times.",
+            "descriptionCityTooltip": "Finish the fourth difficulty level of the expedition %s times.",
+            "currentLevel": {
+              "level": 4,
+              "requiredProgress": 50,
+              "obtainedAt": 1732513226,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 5,
+              "progress": 50,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 1,
+          "achievement": {
+            "id": "cop_japanese",
+            "name": "The Last Samurai",
+            "descriptionTemplate": "Finish %s/%s Feudal Japanese Settlements",
+            "descriptionCityTooltip": "Finish %s Feudal Japanese Settlements",
+            "currentLevel": {
+              "level": 1,
+              "requiredProgress": 1,
+              "obtainedAt": 1656283110,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 2,
+              "progress": 5,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        },
+        {
+          "slot": 3,
+          "achievement": {
+            "id": "anniversary_questline",
+            "name": "Merging is the key to success!",
+            "descriptionTemplate": "Finish the main questline of the Anniversary Event. Completions: %s/%s",
+            "descriptionCityTooltip": "Finish the main questline of the Anniversary Event. Completions: %s",
+            "currentLevel": {
+              "level": 1,
+              "requiredProgress": 1,
+              "obtainedAt": 1776720162,
+              "__class__": "AchievementLevel"
+            },
+            "nextLevel": {
+              "level": 2,
+              "progress": 2,
+              "__class__": "AchievementLevel"
+            },
+            "__class__": "UpgradableAchievement"
+          },
+          "__class__": "TopAchievement"
+        }
+      ],
+      "era": "IndustrialAge",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    },
+    {
+      "player_id": 855609491,
+      "name": "Madame Sadie",
+      "avatar": "addon_portrait_id_vik26_4",
+      "score": 81911862,
+      "rank": 73,
+      "is_guild_member": true,
+      "profile_text": "Est 29/4/26 - turrets 🐢🐢🐢🐢 in Indy Era",
+      "city_name": "TheFarawayTree",
+      "clan_id": 1370,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "description": "",
+        "settings": {
+          "join": "invitation",
+          "__class__": "ClanSettings"
+        },
+        "treasury_id": 2248,
+        "__class__": "Clan"
+      },
+      "won_battles": 33346,
+      "has_great_building": true,
+      "is_active": true,
+      "era": "IndustrialAge",
+      "title": "",
+      "activity": 2,
+      "__class__": "ClanMember"
+    }
+  ],
+  "flags_bought": [],
+  "level_configs": [
+    {
+      "medals": 10,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 60,
+      "support_bonus": 10,
+      "prestige_bonus": 25,
+      "recruitment_acceleration": 2,
+      "medals": 10,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 450,
+      "support_bonus": 30,
+      "prestige_bonus": 50,
+      "recruitment_acceleration": 2,
+      "construction_reduction": 1,
+      "medals": 10,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 1500,
+      "support_bonus": 50,
+      "prestige_bonus": 75,
+      "recruitment_acceleration": 2,
+      "daily_strategypoint_bonus": 1,
+      "construction_reduction": 1,
+      "medals": 20,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 3560,
+      "support_bonus": 80,
+      "prestige_bonus": 100,
+      "recruitment_acceleration": 4,
+      "daily_strategypoint_bonus": 1,
+      "construction_reduction": 1,
+      "medals": 30,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 7030,
+      "support_bonus": 110,
+      "prestige_bonus": 125,
+      "recruitment_acceleration": 4,
+      "daily_strategypoint_bonus": 1,
+      "construction_reduction": 2,
+      "medals": 40,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 12340,
+      "support_bonus": 150,
+      "prestige_bonus": 150,
+      "recruitment_acceleration": 4,
+      "daily_strategypoint_bonus": 2,
+      "construction_reduction": 2,
+      "medals": 60,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 19960,
+      "support_bonus": 190,
+      "prestige_bonus": 175,
+      "recruitment_acceleration": 6,
+      "daily_strategypoint_bonus": 2,
+      "construction_reduction": 2,
+      "medals": 80,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 30390,
+      "support_bonus": 230,
+      "prestige_bonus": 200,
+      "recruitment_acceleration": 6,
+      "daily_strategypoint_bonus": 2,
+      "construction_reduction": 3,
+      "medals": 100,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 44180,
+      "support_bonus": 280,
+      "prestige_bonus": 225,
+      "recruitment_acceleration": 6,
+      "daily_strategypoint_bonus": 3,
+      "construction_reduction": 3,
+      "medals": 140,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 61920,
+      "support_bonus": 340,
+      "prestige_bonus": 250,
+      "recruitment_acceleration": 8,
+      "daily_strategypoint_bonus": 3,
+      "construction_reduction": 3,
+      "medals": 170,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 84230,
+      "support_bonus": 400,
+      "prestige_bonus": 275,
+      "recruitment_acceleration": 8,
+      "daily_strategypoint_bonus": 3,
+      "construction_reduction": 4,
+      "medals": 210,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 111790,
+      "support_bonus": 470,
+      "prestige_bonus": 300,
+      "recruitment_acceleration": 8,
+      "daily_strategypoint_bonus": 4,
+      "construction_reduction": 4,
+      "medals": 260,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 145320,
+      "support_bonus": 540,
+      "prestige_bonus": 325,
+      "recruitment_acceleration": 10,
+      "daily_strategypoint_bonus": 4,
+      "construction_reduction": 4,
+      "medals": 310,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 185570,
+      "support_bonus": 610,
+      "prestige_bonus": 350,
+      "recruitment_acceleration": 10,
+      "daily_strategypoint_bonus": 4,
+      "construction_reduction": 5,
+      "medals": 380,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 233350,
+      "support_bonus": 690,
+      "prestige_bonus": 375,
+      "recruitment_acceleration": 10,
+      "daily_strategypoint_bonus": 5,
+      "construction_reduction": 5,
+      "medals": 440,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 289500,
+      "support_bonus": 770,
+      "prestige_bonus": 400,
+      "recruitment_acceleration": 12,
+      "daily_strategypoint_bonus": 5,
+      "construction_reduction": 5,
+      "medals": 520,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 354920,
+      "support_bonus": 860,
+      "prestige_bonus": 425,
+      "recruitment_acceleration": 12,
+      "daily_strategypoint_bonus": 5,
+      "construction_reduction": 6,
+      "medals": 600,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 430550,
+      "support_bonus": 960,
+      "prestige_bonus": 450,
+      "recruitment_acceleration": 12,
+      "daily_strategypoint_bonus": 6,
+      "construction_reduction": 6,
+      "medals": 700,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 517380,
+      "support_bonus": 1060,
+      "prestige_bonus": 475,
+      "recruitment_acceleration": 14,
+      "daily_strategypoint_bonus": 6,
+      "construction_reduction": 6,
+      "medals": 800,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 616430,
+      "support_bonus": 1160,
+      "prestige_bonus": 500,
+      "recruitment_acceleration": 14,
+      "daily_strategypoint_bonus": 6,
+      "construction_reduction": 7,
+      "medals": 910,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 728790,
+      "support_bonus": 1270,
+      "prestige_bonus": 525,
+      "recruitment_acceleration": 14,
+      "daily_strategypoint_bonus": 7,
+      "construction_reduction": 7,
+      "medals": 1030,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 855590,
+      "support_bonus": 1380,
+      "prestige_bonus": 550,
+      "recruitment_acceleration": 16,
+      "daily_strategypoint_bonus": 7,
+      "construction_reduction": 7,
+      "medals": 1160,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 998010,
+      "support_bonus": 1500,
+      "prestige_bonus": 575,
+      "recruitment_acceleration": 16,
+      "daily_strategypoint_bonus": 7,
+      "construction_reduction": 8,
+      "medals": 1300,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 1157270,
+      "support_bonus": 1620,
+      "prestige_bonus": 600,
+      "recruitment_acceleration": 16,
+      "daily_strategypoint_bonus": 8,
+      "construction_reduction": 8,
+      "medals": 1500,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 1334650,
+      "support_bonus": 1750,
+      "prestige_bonus": 625,
+      "recruitment_acceleration": 18,
+      "daily_strategypoint_bonus": 8,
+      "construction_reduction": 8,
+      "medals": 1600,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 1531470,
+      "support_bonus": 1880,
+      "prestige_bonus": 650,
+      "recruitment_acceleration": 18,
+      "daily_strategypoint_bonus": 8,
+      "construction_reduction": 9,
+      "medals": 1800,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 1749100,
+      "support_bonus": 2020,
+      "prestige_bonus": 675,
+      "recruitment_acceleration": 18,
+      "daily_strategypoint_bonus": 9,
+      "construction_reduction": 9,
+      "medals": 2000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 1988970,
+      "support_bonus": 2160,
+      "prestige_bonus": 700,
+      "recruitment_acceleration": 20,
+      "daily_strategypoint_bonus": 9,
+      "construction_reduction": 9,
+      "medals": 2200,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 2252560,
+      "support_bonus": 2310,
+      "prestige_bonus": 725,
+      "recruitment_acceleration": 20,
+      "daily_strategypoint_bonus": 9,
+      "construction_reduction": 10,
+      "medals": 2400,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 2541380,
+      "support_bonus": 2460,
+      "prestige_bonus": 750,
+      "recruitment_acceleration": 20,
+      "daily_strategypoint_bonus": 10,
+      "construction_reduction": 10,
+      "medals": 2600,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 2857020,
+      "support_bonus": 2620,
+      "prestige_bonus": 775,
+      "recruitment_acceleration": 22,
+      "daily_strategypoint_bonus": 10,
+      "construction_reduction": 10,
+      "medals": 2900,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 3201100,
+      "support_bonus": 2780,
+      "prestige_bonus": 800,
+      "recruitment_acceleration": 22,
+      "daily_strategypoint_bonus": 10,
+      "construction_reduction": 11,
+      "medals": 3100,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 3575300,
+      "support_bonus": 2940,
+      "prestige_bonus": 825,
+      "recruitment_acceleration": 22,
+      "daily_strategypoint_bonus": 11,
+      "construction_reduction": 11,
+      "medals": 3400,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 3981350,
+      "support_bonus": 3110,
+      "prestige_bonus": 850,
+      "recruitment_acceleration": 24,
+      "daily_strategypoint_bonus": 11,
+      "construction_reduction": 11,
+      "medals": 3700,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 4421030,
+      "support_bonus": 3290,
+      "prestige_bonus": 875,
+      "recruitment_acceleration": 24,
+      "daily_strategypoint_bonus": 11,
+      "construction_reduction": 12,
+      "medals": 4000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 4896180,
+      "support_bonus": 3470,
+      "prestige_bonus": 900,
+      "recruitment_acceleration": 24,
+      "daily_strategypoint_bonus": 12,
+      "construction_reduction": 12,
+      "medals": 4300,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 5408680,
+      "support_bonus": 3660,
+      "prestige_bonus": 925,
+      "recruitment_acceleration": 26,
+      "daily_strategypoint_bonus": 12,
+      "construction_reduction": 12,
+      "medals": 4700,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 5960470,
+      "support_bonus": 3850,
+      "prestige_bonus": 950,
+      "recruitment_acceleration": 26,
+      "daily_strategypoint_bonus": 12,
+      "construction_reduction": 13,
+      "medals": 5000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 6553550,
+      "support_bonus": 4040,
+      "prestige_bonus": 975,
+      "recruitment_acceleration": 26,
+      "daily_strategypoint_bonus": 13,
+      "construction_reduction": 13,
+      "medals": 5400,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 7189960,
+      "support_bonus": 4240,
+      "prestige_bonus": 1000,
+      "recruitment_acceleration": 28,
+      "daily_strategypoint_bonus": 13,
+      "construction_reduction": 13,
+      "medals": 5800,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 7871800,
+      "support_bonus": 4440,
+      "prestige_bonus": 1025,
+      "recruitment_acceleration": 28,
+      "daily_strategypoint_bonus": 13,
+      "construction_reduction": 14,
+      "medals": 6200,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 8601230,
+      "support_bonus": 4650,
+      "prestige_bonus": 1050,
+      "recruitment_acceleration": 28,
+      "daily_strategypoint_bonus": 14,
+      "construction_reduction": 14,
+      "medals": 6600,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 9380450,
+      "support_bonus": 4870,
+      "prestige_bonus": 1075,
+      "recruitment_acceleration": 30,
+      "daily_strategypoint_bonus": 14,
+      "construction_reduction": 14,
+      "medals": 7100,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 10211720,
+      "support_bonus": 5090,
+      "prestige_bonus": 1100,
+      "recruitment_acceleration": 30,
+      "daily_strategypoint_bonus": 14,
+      "construction_reduction": 15,
+      "medals": 7500,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 11097360,
+      "support_bonus": 5310,
+      "prestige_bonus": 1125,
+      "recruitment_acceleration": 30,
+      "daily_strategypoint_bonus": 15,
+      "construction_reduction": 15,
+      "medals": 8000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 12039740,
+      "support_bonus": 5540,
+      "prestige_bonus": 1150,
+      "recruitment_acceleration": 32,
+      "daily_strategypoint_bonus": 15,
+      "construction_reduction": 15,
+      "medals": 9000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 13041280,
+      "support_bonus": 5770,
+      "prestige_bonus": 1175,
+      "recruitment_acceleration": 32,
+      "daily_strategypoint_bonus": 15,
+      "construction_reduction": 16,
+      "medals": 9000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 14104460,
+      "support_bonus": 6010,
+      "prestige_bonus": 1200,
+      "recruitment_acceleration": 32,
+      "daily_strategypoint_bonus": 16,
+      "construction_reduction": 16,
+      "medals": 10000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 15231810,
+      "support_bonus": 6250,
+      "prestige_bonus": 1225,
+      "recruitment_acceleration": 34,
+      "daily_strategypoint_bonus": 16,
+      "construction_reduction": 16,
+      "medals": 10000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 16425930,
+      "support_bonus": 6500,
+      "prestige_bonus": 1250,
+      "recruitment_acceleration": 34,
+      "daily_strategypoint_bonus": 16,
+      "construction_reduction": 17,
+      "medals": 11000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 17689460,
+      "support_bonus": 6690,
+      "prestige_bonus": 1275,
+      "recruitment_acceleration": 34,
+      "daily_strategypoint_bonus": 17,
+      "construction_reduction": 17,
+      "medals": 11000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 19025100,
+      "support_bonus": 6880,
+      "prestige_bonus": 1300,
+      "recruitment_acceleration": 36,
+      "daily_strategypoint_bonus": 17,
+      "construction_reduction": 17,
+      "medals": 12000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 20435610,
+      "support_bonus": 7060,
+      "prestige_bonus": 1325,
+      "recruitment_acceleration": 36,
+      "daily_strategypoint_bonus": 17,
+      "construction_reduction": 18,
+      "medals": 13000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 21923800,
+      "support_bonus": 7230,
+      "prestige_bonus": 1350,
+      "recruitment_acceleration": 36,
+      "daily_strategypoint_bonus": 18,
+      "construction_reduction": 18,
+      "medals": 14000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 23492540,
+      "support_bonus": 7400,
+      "prestige_bonus": 1375,
+      "recruitment_acceleration": 38,
+      "daily_strategypoint_bonus": 18,
+      "construction_reduction": 18,
+      "medals": 14000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 25144750,
+      "support_bonus": 7550,
+      "prestige_bonus": 1400,
+      "recruitment_acceleration": 38,
+      "daily_strategypoint_bonus": 18,
+      "construction_reduction": 19,
+      "medals": 15000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 26883410,
+      "support_bonus": 7690,
+      "prestige_bonus": 1425,
+      "recruitment_acceleration": 38,
+      "daily_strategypoint_bonus": 19,
+      "construction_reduction": 19,
+      "medals": 16000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 28711570,
+      "support_bonus": 7830,
+      "prestige_bonus": 1450,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 19,
+      "construction_reduction": 19,
+      "medals": 17000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 30632310,
+      "support_bonus": 7960,
+      "prestige_bonus": 1475,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 19,
+      "construction_reduction": 20,
+      "medals": 17000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 32648790,
+      "support_bonus": 8090,
+      "prestige_bonus": 1500,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 20,
+      "medals": 18000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 34764220,
+      "support_bonus": 8210,
+      "prestige_bonus": 1525,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 21,
+      "medals": 19000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 36981860,
+      "support_bonus": 8320,
+      "prestige_bonus": 1550,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 22,
+      "medals": 20000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 39305040,
+      "support_bonus": 8430,
+      "prestige_bonus": 1575,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 23,
+      "medals": 21000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 41737130,
+      "support_bonus": 8540,
+      "prestige_bonus": 1600,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 24,
+      "medals": 22000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 44281580,
+      "support_bonus": 8640,
+      "prestige_bonus": 1625,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 23000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 46941880,
+      "support_bonus": 8740,
+      "prestige_bonus": 1650,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 24000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 49721580,
+      "support_bonus": 8840,
+      "prestige_bonus": 1675,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 30000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 52624300,
+      "support_bonus": 8930,
+      "prestige_bonus": 1700,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 30000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 55653710,
+      "support_bonus": 9020,
+      "prestige_bonus": 1725,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 30000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 58813530,
+      "support_bonus": 9110,
+      "prestige_bonus": 1750,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 30000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 62107550,
+      "support_bonus": 9190,
+      "prestige_bonus": 1775,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 30000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 65539620,
+      "support_bonus": 9270,
+      "prestige_bonus": 1800,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 30000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 69113650,
+      "support_bonus": 9350,
+      "prestige_bonus": 1825,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 30000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 72833590,
+      "support_bonus": 9430,
+      "prestige_bonus": 1850,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 30000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 76703470,
+      "support_bonus": 9510,
+      "prestige_bonus": 1875,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 40000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 80727380,
+      "support_bonus": 9580,
+      "prestige_bonus": 1900,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 40000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 84909450,
+      "support_bonus": 9650,
+      "prestige_bonus": 1925,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 40000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 89253880,
+      "support_bonus": 9720,
+      "prestige_bonus": 1950,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 40000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 93764930,
+      "support_bonus": 9790,
+      "prestige_bonus": 1975,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 40000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 98446920,
+      "support_bonus": 9850,
+      "prestige_bonus": 2000,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 40000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 103304230,
+      "support_bonus": 9920,
+      "prestige_bonus": 2025,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 40000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 108341300,
+      "support_bonus": 9980,
+      "prestige_bonus": 2050,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 50000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 113562630,
+      "support_bonus": 10040,
+      "prestige_bonus": 2075,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 50000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 118972780,
+      "support_bonus": 10110,
+      "prestige_bonus": 2100,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 50000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 124576360,
+      "support_bonus": 10160,
+      "prestige_bonus": 2125,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 50000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 130378060,
+      "support_bonus": 10220,
+      "prestige_bonus": 2150,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 50000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 136382610,
+      "support_bonus": 10280,
+      "prestige_bonus": 2175,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 50000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 142594820,
+      "support_bonus": 10340,
+      "prestige_bonus": 2200,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 60000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 149019550,
+      "support_bonus": 10390,
+      "prestige_bonus": 2225,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 155661720,
+      "support_bonus": 10440,
+      "prestige_bonus": 2250,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 162526310,
+      "support_bonus": 10500,
+      "prestige_bonus": 2275,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 169618360,
+      "support_bonus": 10550,
+      "prestige_bonus": 2300,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 176942980,
+      "support_bonus": 10600,
+      "prestige_bonus": 2325,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 184505340,
+      "support_bonus": 10650,
+      "prestige_bonus": 2350,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 192310660,
+      "support_bonus": 10700,
+      "prestige_bonus": 2375,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 200364230,
+      "support_bonus": 10750,
+      "prestige_bonus": 2400,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 208671400,
+      "support_bonus": 10790,
+      "prestige_bonus": 2425,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 217237580,
+      "support_bonus": 10840,
+      "prestige_bonus": 2450,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 226068250,
+      "support_bonus": 10890,
+      "prestige_bonus": 2475,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    },
+    {
+      "points": 235168940,
+      "support_bonus": 10930,
+      "prestige_bonus": 2500,
+      "recruitment_acceleration": 40,
+      "daily_strategypoint_bonus": 20,
+      "construction_reduction": 25,
+      "medals": 100000,
+      "__class__": "ClanLevelConfig"
+    }
+  ],
+  "settings": {
+    "join": "invitation",
+    "__class__": "ClanSettings"
+  },
+  "treasury_id": 2248,
+  "trophies": {
+    "guild_championship_trophy_gold": 473,
+    "gex_contribution_trophy_gold": 77,
+    "guild_championship_trophy_silver": 45,
+    "gex_contribution_trophy_silver": 13,
+    "guild_championship_trophy_bronze": 4,
+    "gex_contribution_trophy_bronze": 4
+  },
+  "league": {
+    "id": "diamond",
+    "name": "Diamond League",
+    "rating": 1000,
+    "__class__": "GuildBattlegroundLeague"
+  },
+  "gbgStatistics": [
+    {
+      "leagueId": "diamond",
+      "participationCount": 128,
+      "wonCount": 96,
+      "__class__": "GuildBattlegroundStatistics"
+    }
+  ],
+  "__class__": "Clan"
+}

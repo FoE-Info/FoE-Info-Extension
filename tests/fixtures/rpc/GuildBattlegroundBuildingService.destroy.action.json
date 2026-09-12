@@ -1,0 +1,62 @@
+{
+  "requestSamples": [
+    [
+      7,
+      1
+    ],
+    [
+      7,
+      0
+    ],
+    [
+      7,
+      1
+    ],
+    [
+      7,
+      0
+    ],
+    [
+      7,
+      1
+    ],
+    [
+      7,
+      0
+    ],
+    [
+      7,
+      1
+    ],
+    [
+      7,
+      0
+    ]
+  ],
+  "responseSamples": [
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    }
+  ]
+}
