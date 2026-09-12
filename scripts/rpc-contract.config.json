@@ -27,7 +27,6 @@
     "CityMapService.getNextId",
     "ConversationService.markMessageRead",
     "ConversationService.sendMessage",
-    "GreatBuildingsService.getAvailablePackageForgePoints",
     "GuildBattlegroundBuildingService.destroy",
     "GuildBattlegroundBuildingService.instantFinish",
     "GuildBattlegroundBuildingService.place",

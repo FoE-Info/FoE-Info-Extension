@@ -13,6 +13,7 @@ try {
 } catch {}
 
 const { DedupCache } = require('./dedupCache.js');
+const { shouldLogUnhandledRpc } = require('./rpcScope.js');
 
 const combinedHandlerMembers = new WeakMap();
 
@@ -306,7 +307,9 @@ class MessageDispatcher {
       return await this.globalFallback(msg, context);
     }
 
-    logger?.debug(`Unhandled RPC service method: ${key}`);
+    if (shouldLogUnhandledRpc(requestClass)) {
+      logger?.debug(`Unhandled RPC service method: ${key}`);
+    }
     return { unhandled: true, requestClass, requestMethod };
   }
 
