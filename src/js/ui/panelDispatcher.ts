@@ -235,82 +235,27 @@ export function clearElement(
   }
 }
 
-export function clearVisitPlayer(containers: PanelContainers = {}): void {
-  const seq = ++renderSequence;
-  logger.debug('UI clear & re-render triggered: VisitPlayer', {
-    seq,
-    timestamp: Date.now(),
-  });
-  clearElement(containers.cityinvested);
-  clearElement(containers.output);
-  clearElement(containers.overview);
-  clearElement(containers.donationDIV);
-  clearElement(containers.donation2DIV);
-  clearElement(containers.donationDIV2);
-  clearElement(containers.greatbuilding);
-  clearElement(containers.gbInfoDIV);
-  clearElement(containers.guild);
-  clearElement(containers.debug);
-  clearElement(containers.info);
-  clearElement(containers.cultural, true);
-  clearElement(containers.friendsDiv);
-  clearElement(containers.treasury);
-  clearElement(containers.treasuryLog);
+export function clearVisitPlayer(): void {
+  setCurrentView('OTHER_PLAYER');
 }
 
-export function clearExpedition(containers: PanelContainers = {}): void {
-  clearElement(containers.cityinvested);
-  clearElement(containers.overview);
-  clearElement(containers.alerts);
-  clearElement(containers.donationDIV);
-  clearElement(containers.incidents);
-  clearElement(containers.donation2DIV);
-  clearElement(containers.donationDIV2);
-  clearElement(containers.greatbuilding);
-  clearElement(containers.gbInfoDIV);
-  clearElement(containers.guild);
-  clearElement(containers.debug);
-  clearElement(containers.info);
-  clearElement(containers.visitstats, true);
-  clearElement(containers.cultural, true);
-  clearElement(containers.friendsDiv);
-  clearElement(containers.treasury);
-  clearElement(containers.treasuryLog);
+export function clearExpedition(): void {
+  setCurrentView('GE');
 }
 
-export function clearForBattleground(containers: PanelContainers = {}): void {
+export function clearForBattleground(): void {
   setCurrentView('GBG');
-  clearExpedition(containers);
 }
 
-export function clearForMainCity(containers: PanelContainers = {}): void {
-  setCurrentView('CITY');
-  const seq = ++renderSequence;
-  logger.debug('UI clear & re-render triggered: MainCity', {
-    seq,
-    timestamp: Date.now(),
-  });
-  clearElement(containers.incidents);
-  clearElement(containers.donation2DIV);
-  clearElement(containers.donationDIV2);
-  clearElement(containers.greatbuilding);
-  clearElement(containers.gbInfoDIV);
-  clearElement(containers.targets);
-  clearElement(containers.guild);
-  clearElement(containers.debug);
-  clearElement(containers.info);
-  clearElement(containers.donationDIV);
-  clearElement(containers.visitstats, true);
-  clearElement(containers.cultural, true);
-  clearElement(containers.treasury);
-  clearElement(containers.treasuryLog);
+export function clearForMainCity(): void {
+  setCurrentView('OWN_CITY');
 }
 
 export function clearStartup(
   containers: PanelContainers = {},
   resetState: ResettableState = {},
 ): void {
-  setCurrentView('CITY');
+  setCurrentView('OWN_CITY');
   const seq = ++renderSequence;
   logger.debug('UI clear & re-render triggered: Startup', {
     seq,
@@ -361,23 +306,8 @@ export function clearStartup(
   }
 }
 
-export function clearCultural(containers: PanelContainers = {}): void {
-  clearElement(containers.cityinvested);
-  clearElement(containers.overview);
-  clearElement(containers.donationDIV);
-  clearElement(containers.incidents);
-  clearElement(containers.donation2DIV);
-  clearElement(containers.donationDIV2);
-  clearElement(containers.greatbuilding);
-  clearElement(containers.gbInfoDIV);
-  clearElement(containers.guild);
-  clearElement(containers.debug);
-  clearElement(containers.info);
-  clearElement(containers.visitstats, true);
-  clearElement(containers.friendsDiv);
-  clearElement(containers.armyDIV);
-  clearElement(containers.treasury);
-  clearElement(containers.treasuryLog);
+export function clearCultural(): void {
+  setCurrentView('SETTLEMENT');
 }
 
 export function clearForTreasury(containers: PanelContainers = {}): void {
