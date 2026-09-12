@@ -15,6 +15,8 @@ const CONSTRUCTION = loadBundle('construction.json');
 const CONTRIBUTE = loadBundle('contribute_forge_points.json');
 const CITY_ENTITY = loadBundle('other_player_city_map_entity.json');
 const PACKAGES = loadBundle('available_package_forge_points.json');
+const RANKING = loadBundle('construction_ranking.json');
+const BLUEPRINT_REWARD = loadBundle('blueprint_reward.json');
 
 test('HAR ground truth: Great Buildings overview & construction', async (t) => {
   await t.test('getOtherPlayerOverview returns contribution rows', () => {
@@ -111,6 +113,112 @@ test('HAR ground truth: Great Buildings contributions', async (t) => {
           : capture.responseData;
         assert.equal(typeof value, 'number');
         assert.ok(value >= 0);
+      }
+    },
+  );
+});
+
+test('HAR ground truth: GB sniping construction rankings', async (t) => {
+  await t.test(
+    'getConstructionRanking request is [entityId, playerId, level]',
+    () => {
+      assert.ok(RANKING.captures.length >= 1);
+      for (const capture of RANKING.captures) {
+        const req = capture.requestData;
+        assert.ok(Array.isArray(req) && req.length === 3);
+        for (const value of req) assert.equal(typeof value, 'number');
+      }
+    },
+  );
+
+  await t.test('ranking captures expose cumulative rank rewards', () => {
+    assert.ok(RANKING.captures.length >= 100);
+    let rewarded = 0;
+    for (const capture of RANKING.captures) {
+      const rows = capture.responseData;
+      assert.ok(Array.isArray(rows));
+      const ranked = rows.filter((r) => typeof r.rank === 'number');
+      assert.ok(
+        ranked.length >= 5,
+        `expected at least 5 ranked rows, got ${ranked.length}`,
+      );
+      for (const row of ranked) {
+        assert.ok(row.player);
+        if (row.reward) {
+          assert.equal(typeof row.reward.blueprints, 'number');
+          assert.equal(typeof row.reward.resources.medals, 'number');
+          if (row.reward.strategy_point_amount !== undefined) {
+            assert.equal(typeof row.reward.strategy_point_amount, 'number');
+            rewarded++;
+          }
+        }
+      }
+    }
+    assert.ok(rewarded > 0);
+  });
+
+  await t.test('rank reward value decreases monotonically from rank 1', () => {
+    for (const capture of RANKING.captures) {
+      const rewardRows = capture.responseData
+        .filter(
+          (r) =>
+            typeof r.rank === 'number' &&
+            r.reward &&
+            typeof r.reward.strategy_point_amount === 'number',
+        )
+        .sort((a, b) => a.rank - b.rank);
+      for (let i = 1; i < rewardRows.length; i++) {
+        assert.ok(
+          rewardRows[i].reward.strategy_point_amount <=
+            rewardRows[i - 1].reward.strategy_point_amount,
+          `reward must not increase at rank ${rewardRows[i].rank}`,
+        );
+      }
+    }
+  });
+});
+
+test('HAR ground truth: GB level-closing rewards', async (t) => {
+  await t.test(
+    'BlueprintService.newReward returns medals plus blueprint pieces',
+    () => {
+      assert.ok(BLUEPRINT_REWARD.captures.length >= 30);
+      const buildingIds = new Set();
+      for (const capture of BLUEPRINT_REWARD.captures) {
+        const data = capture.responseData;
+        assert.ok(data.resources, 'missing resources');
+        assert.equal(typeof data.resources.medals, 'number');
+        assert.ok(data.resources.medals >= 0);
+
+        const blueprints = data.blueprints;
+        assert.ok(blueprints, 'missing blueprints');
+        assert.equal(typeof blueprints.buildingId, 'string');
+        assert.ok(Array.isArray(blueprints.blueprints));
+        assert.ok(blueprints.blueprints.length > 0);
+        for (const piece of blueprints.blueprints) {
+          assert.equal(typeof piece.building_id, 'string');
+          assert.equal(typeof piece.amount, 'number');
+          assert.equal(
+            piece.tier.__enum__,
+            'GreatBuildingTier',
+            'unexpected blueprint tier',
+          );
+        }
+        buildingIds.add(blueprints.buildingId);
+      }
+      assert.ok(
+        buildingIds.size > 1,
+        'level-closing must span multiple Great Buildings',
+      );
+    },
+  );
+
+  await t.test(
+    'blueprint building ids use the city-entity landmark namespace',
+    () => {
+      for (const capture of BLUEPRINT_REWARD.captures) {
+        const id = capture.responseData.blueprints.buildingId;
+        assert.match(id, /^X_[A-Za-z]+_Landmark\d+$/);
       }
     },
   );
