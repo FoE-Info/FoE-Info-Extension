@@ -212,26 +212,6 @@ class GuildRaidsService {
       rankings,
     };
   }
-
-  /**
-   * Registers RPC handlers on the MessageDispatcher.
-   * @param {Object} dispatcher
-   */
-  register(dispatcher) {
-    if (!dispatcher || typeof dispatcher.register !== 'function') return;
-
-    dispatcher.register(
-      'GuildRaidsService',
-      'getMemberActivityOverview',
-      (msg) => this.handleMemberActivityOverview(msg),
-    );
-
-    dispatcher.register('RankingService', 'searchRanking', (msg) =>
-      this.handleSearchRanking(msg),
-    );
-
-    logger?.debug('GuildRaidsService RPC routes registered on dispatcher');
-  }
 }
 
 const guildRaidsService = new GuildRaidsService();
