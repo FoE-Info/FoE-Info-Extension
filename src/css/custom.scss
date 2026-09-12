@@ -736,6 +736,46 @@ hr {
   background: #555;
 }
 
+// Standard (non-WebKit) scrollbar styling. Chromium 121+ and Firefox honor
+// these; older engines keep the ::-webkit-scrollbar fallback above.
+:root {
+  scrollbar-width: thin;
+  scrollbar-color: $gray-600 $gray-100;
+}
+
+// Higher-contrast scrollbars when the OS/browser requests more contrast.
+@media (prefers-contrast: more) {
+  :root {
+    scrollbar-color: $black $white;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $white;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $black;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: $gray-800;
+  }
+}
+
+// Respect the user's reduced-motion preference. Using 0.01ms (rather than 0)
+// keeps transitionend firing so Bootstrap's collapse state machine still
+// completes correctly.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @font-face {
   font-family: 'Material Icons Outlined';
   font-style: normal;
