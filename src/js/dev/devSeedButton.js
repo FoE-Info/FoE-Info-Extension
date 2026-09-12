@@ -60,5 +60,13 @@ function mountDevSeedButton(onClick, targetDocument = document) {
   return wrapper;
 }
 
-module.exports = { mountDevSeedButton };
+function unmountDevSeedButton() {
+  if (mounted && mounted.parentNode) {
+    mounted.parentNode.removeChild(mounted);
+  }
+  mounted = null;
+  logger.debug('Unmounted dev seed button');
+}
+
+module.exports = { mountDevSeedButton, unmountDevSeedButton };
 module.exports.default = module.exports;
