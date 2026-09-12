@@ -240,7 +240,7 @@ test('City Card Bonus Lines Suite', async (t) => {
   );
 
   await t.test(
-    'buildVisitedCityCard: header shows player name, copy button, and close button',
+    'buildVisitedCityCard: header shows City Overview title and buttons; player name in body',
     () => {
       const html = buildVisitedCityCard({
         ...baseVisitedParams,
@@ -249,15 +249,26 @@ test('City Card Bonus Lines Suite', async (t) => {
       assert.match(html, /id="visiticon"[^>]*data-bs-toggle="collapse"/);
       assert.match(html, /id="visit-copy-btn"/);
       assert.match(html, /id="visit-close-btn"/);
+      assert.doesNotMatch(html, /data-bs-toggle="popover"/);
+      assert.doesNotMatch(html, /data-bs-toggle="tooltip"/);
 
       const parts = html.split('id="visitText"');
       assert.equal(parts.length, 2);
       assert.match(
         parts[0],
-        /VisitedPlayer/,
-        'Header bar must contain player name',
+        /data-i18n="city_overview"/,
+        'Header bar must show the City Overview title',
       );
-      assert.doesNotMatch(parts[0], /Other Player Information/);
+      assert.doesNotMatch(
+        parts[0],
+        /VisitedPlayer/,
+        'Header bar must not contain the player name',
+      );
+      assert.match(
+        parts[1],
+        /VisitedPlayer/,
+        'Body must contain the player name',
+      );
     },
   );
 
