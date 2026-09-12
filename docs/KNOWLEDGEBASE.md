@@ -92,7 +92,7 @@ sequenceDiagram
    - Hybrid rounding: Half-up (`ROUND_HALF_UP`) for investor Arc boost rewards; ceiling (`ROUND_CEIL`) for owner safe-spot locks.
 6. **UI Rendering & Card Visibility (`ui/`)**:
    - `containerBinding.js` mounts containers into `panel.html`.
-   - `cardVisibility.ts` applies declarative 6-context matrix (`City`, `VisitedCity`, `QuantumIncursions`, `GuildBattlegrounds`, `GuildExpedition`, `Settlement`).
+   - `cardVisibility.js` applies declarative 6-context matrix (`City`, `VisitedCity`, `QuantumIncursions`, `GuildBattlegrounds`, `GuildExpedition`, `Settlement`).
    - `formatters.js` escapes all HTML before DOM injection to prevent XSS.
 
 ---
@@ -169,7 +169,7 @@ sequenceDiagram
 
 - `containerBinding.js`: Dynamic DOM container mounting in `panel.html`.
 - `indexUiBindings.js`: DevTools panel lifecycle and UI event binding.
-- `cardVisibility.ts`: Declarative 6-context card visibility engine.
+- `cardVisibility.js`: Declarative 6-context card visibility engine.
 - `optionsForm.js`: Settings UI serialization and deserialization.
 - `renderLiveCityStats.js`: Primary city statistics panel renderer.
 - `renderQuantumPanels.js`: Quantum Incursions contributions and leaderboard cards.
