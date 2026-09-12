@@ -4,12 +4,13 @@
  * HTML template generator for player's own city card.
  */
 
-const BigNumber = require('bignumber.js');
 const {
   formatStatNumber,
   formatPercent,
   formatEraName,
   escapeHtml,
+  formatCritStrikeHTML,
+  formatUnitsHTML,
 } = require('../components/statFormatters.js');
 
 let showOptions = {};
@@ -73,6 +74,7 @@ function buildOwnCityCard({
     spec.chatBonus && !spec.chatBonus.isZero() ?
       `<div>CF <span data-i18n="bonus">Bonus</span>: ${formatPercent(spec.chatBonus)} (${formatStatNumber(spec.goodsPerQuest)} <span data-i18n="goods">Goods</span>)</div>`
     : '';
+  const critStrikeHTML = formatCritStrikeHTML(spec);
   const coinBoostVal = coins?.boostPercent ? Number(coins.boostPercent) : 0;
   const supplyBoostVal =
     supplies?.boostPercent ? Number(supplies.boostPercent) : 0;
@@ -83,21 +85,19 @@ function buildOwnCityCard({
 
   const dailyCoinsHTML =
     showDailyCoins ?
-      `<div><span data-i18n="stat_daily_coins">Coins</span>: ${formatStatNumber(coins?.total ?? 0, { exact, comma: true })}</div>`
+      `<div><span data-i18n="stat_daily_coins">Coins</span>: ${formatStatNumber(coins?.total ?? 0, { exact, comma: true })}${showCoinBoost && coinBoostVal > 0 ? ` (+${coins.boostPercent}%)` : ''}</div>`
     : '';
   const dailySuppliesHTML =
     showDailySupplies ?
-      `<div><span data-i18n="stat_daily_supplies">Supplies</span>: ${formatStatNumber(supplies?.total ?? 0, { exact, comma: true })}</div>`
+      `<div><span data-i18n="stat_daily_supplies">Supplies</span>: ${formatStatNumber(supplies?.total ?? 0, { exact, comma: true })}${showSupplyBoost && supplyBoostVal > 0 ? ` (+${supplies.boostPercent}%)` : ''}</div>`
     : '';
-  const coinBonusHTML =
-    showCoinBoost && coinBoostVal > 0 ?
-      `<div><span data-i18n="stat_coin_boost">Coins Bonus</span>: ${formatPercent(coins.boostPercent)}</div>`
-    : '';
-  const supplyBonusHTML =
-    showSupplyBoost && supplyBoostVal > 0 ?
-      `<div><span data-i18n="stat_supply_boost">Supplies Bonus</span>: ${formatPercent(supplies.boostPercent)}</div>`
-    : '';
-  const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}${coinBonusHTML}${supplyBonusHTML}`;
+  const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}${critStrikeHTML}`;
+  const unitsHTML = formatUnitsHTML(
+    { ...stats, units },
+    playerInfo,
+    prefix,
+    exact,
+  );
 
   return `
 <div id="${prefix}-panel" class="foe-original-card">
@@ -119,15 +119,17 @@ function buildOwnCityCard({
   <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'}">
     <div class="foe-panel-body">
       ${safeGuild ? `<div><span data-i18n="guild">Guild</span>: ${safeGuild}</div>` : ''}
-      ${playerEra ? `<div><span data-i18n="age">Age</span>: ${formatEraName(playerEra)}</div>` : ''}
       ${playerScore ? `<div><span data-i18n="score">Score</span>: ${playerScore}</div>` : ''}
+      ${playerEra ? `<div><span data-i18n="age">Age</span>: ${formatEraName(playerEra)}</div>` : ''}
       ${specBonusesHTML}
-      <div>${fpHTML}</div>
+      <div class="foe-section-header"><span data-i18n="daily_production">Daily Production</span></div>
       ${dailyCoinsHTML}
       ${dailySuppliesHTML}
+      <div>${fpHTML}</div>
       ${goodsHTML ? `<div>${goodsHTML}</div>` : `<div><span data-i18n="stat_daily_goods">Daily Goods</span>: ${goodsDisplay || '0'}${goodsBoostText}</div>`}
       ${clanGoodsHTML ? `<div>${clanGoodsHTML}</div>` : ''}
-      <div><span data-i18n="stat_daily_units">Daily Units</span>: ${formatStatNumber(units.daily || units.traz, { exact })}</div>
+      <div>${unitsHTML}</div>
+      <div class="foe-section-header"><span data-i18n="combat_boosts">Combat Boosts</span></div>
       <div><span data-i18n="attackers">Attackers</span>: ${formatPercent(mil.red.base.att, true)} Att, ${formatPercent(mil.red.base.def, true)} Def</div>
       <div><span data-i18n="defenders">Defenders</span>: ${formatPercent(mil.blue.base.att, true)} Att, ${formatPercent(mil.blue.base.def, true)} Def</div>
       <div><span data-i18n="gbg-attackers">GBG Attackers</span>: ${formatPercent(mil.red.gbg.att, true)} Att, ${formatPercent(mil.red.gbg.def, true)} Def</div>
