@@ -59,6 +59,8 @@ test('optionsForm - readWorldSettingsFromForm and readGlobalSettingsFromForm', (
   assert.strictEqual(worldSettings.showOptions.showGuildPosition, true);
   assert.strictEqual(worldSettings.showOptions.showGalaxy, true);
   assert.strictEqual(worldSettings.showOptions.clipboard, true);
+  assert.strictEqual(worldSettings.showOptions.showQuantum, true);
+  assert.strictEqual(worldSettings.showOptions.showQuantumLeaderboard, true);
   assert.strictEqual(worldSettings.showOptions.GBGtimeMode, 'server');
 
   // Test reading 'local'
@@ -111,6 +113,8 @@ test('optionsForm - populateForm binds settings to DOM', () => {
         showInternationalExpedition: false,
         showGuildPosition: false,
         showGalaxy: false,
+        showQuantum: false,
+        showQuantumLeaderboard: false,
         GBGtimeMode: 'local',
       },
       donation: {
@@ -134,6 +138,8 @@ test('optionsForm - populateForm binds settings to DOM', () => {
   assert.strictEqual(elements['InternationalExpedition'].checked, false);
   assert.strictEqual(elements['donationGuildPosition'].checked, false);
   assert.strictEqual(elements['showGalaxy'].checked, false);
+  assert.strictEqual(elements['quantumContributions'].checked, false);
+  assert.strictEqual(elements['quantumLeaderboard'].checked, false);
   assert.strictEqual(elements['GBGtimeMode'].value, 'local');
   assert.strictEqual(elements['donationPercent'].value, 195);
   assert.strictEqual(elements['donationSuffix'].value, ' FP');

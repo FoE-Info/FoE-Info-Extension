@@ -10,6 +10,7 @@ a changelog. See `docs/README.md` for the full hub.
 
 ## In progress
 
+| Universal World Defaults & QI Panel Options Toggles | Done | Aligned default settings across all worlds to user specification (Goods Inventory enabled by default, Language defaulting to "Use Game Language" (`game`), QI Member Activity and Leaderboard toggles added, `mergeWithWorldDefaults` hydration in `worldStorage.js`). All 5-stage verification checks passing (`npm run verify`, 1,002/1,002 tests). |
 | Orchestrator Thinning (`src/js/index.js` Decomposition) | Done | Decomposed `src/js/index.js` from 566 to 159 lines (-407 lines, 72% reduction); extracted `rpcLogger.js` (65L), `indexBridgeSetup.js` (136L), and `indexEntityDefs.js` (70L); added `bootstrapExtensionUi` to `indexUiBindings.js`. Merged in `b80cc58`. |
 | Guild Overview Panel Restoration (OpenCode Session 2) | Done | Fixed `#guildOverview` parent container visibility and wrapper unhiding in `cardVisibility.js` / `cardVisibility.ts` and `renderGuildPanel.js`; passed `renderGuildPanel` explicitly in `index.js` bridge. Merged in `ca256a4`. |
 | Number Font Normalization to Standard Sans-Serif (OpenCode Session 1) | Done | Purged `font-monospace` and oversized tabular formatting on numeric cells in `renderQuantumPanels.js`, `OutpostService.js`, and `TreasuryService.js` to match standard sans-serif system font (orange style). Merged in `8cfad22`. |

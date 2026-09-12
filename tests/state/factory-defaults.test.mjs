@@ -72,7 +72,7 @@ test('all showOptions keys are present with correct boolean defaults', () => {
     showVisit: true,
     showSettlement: true,
     showArmy: true,
-    showGoods: false,
+    showGoods: true,
     showGuildOverview: true,
     showLeaderboard: false,
     showGBGrewards: true,
@@ -89,6 +89,9 @@ test('all showOptions keys are present with correct boolean defaults', () => {
     buildingCosts: false,
     collectionTimes: false,
     clipboard: true,
+    showQuantum: true,
+    showQuantumLeaderboard: true,
+    showQIChanges: false,
   };
 
   assert.deepStrictEqual(
@@ -121,7 +124,7 @@ test('createFreshGlobalSettings returns an unfrozen clone', () => {
   fresh.knownWorlds.push('en7');
   fresh.lastActiveWorld = 'en7';
 
-  assert.strictEqual(FACTORY_GLOBAL_SETTINGS.language, 'en');
+  assert.strictEqual(FACTORY_GLOBAL_SETTINGS.language, 'game');
   assert.deepStrictEqual(FACTORY_GLOBAL_SETTINGS.knownWorlds, []);
   assert.strictEqual(FACTORY_GLOBAL_SETTINGS.lastActiveWorld, null);
 });

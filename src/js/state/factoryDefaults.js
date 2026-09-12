@@ -25,7 +25,7 @@ const FACTORY_WORLD_SETTINGS = Object.freeze({
     showVisit: true,
     showSettlement: true,
     showArmy: true,
-    showGoods: false,
+    showGoods: true,
     showGuildOverview: true,
     showLeaderboard: false,
     showGBGrewards: true,
@@ -42,6 +42,9 @@ const FACTORY_WORLD_SETTINGS = Object.freeze({
     buildingCosts: false,
     collectionTimes: false,
     clipboard: true,
+    showQuantum: true,
+    showQuantumLeaderboard: true,
+    showQIChanges: false,
   }),
   donation: Object.freeze({
     percent: 190,
@@ -73,7 +76,7 @@ const FACTORY_WORLD_SETTINGS = Object.freeze({
 });
 
 const FACTORY_GLOBAL_SETTINGS = Object.freeze({
-  language: 'en',
+  language: 'game',
   knownWorlds: Object.freeze([]),
   lastActiveWorld: null,
   timeFormatting: Object.freeze({

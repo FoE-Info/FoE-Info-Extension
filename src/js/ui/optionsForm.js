@@ -28,15 +28,15 @@ const CHECKBOX_CONFIG = [
   { id: 'visit', key: 'showVisit' },
   { id: 'settlement', key: 'showSettlement' },
   { id: 'army', key: 'showArmy' },
-  { id: 'goods', key: 'showGoods' },
+  { id: 'goods', key: 'showGoods', fallback: true },
   { id: 'leaderboard', key: 'showLeaderboard' },
   { id: 'GBGrewards', key: 'showGBGrewards' },
   { id: 'GBGprovinceTime', key: 'GBGprovinceTime' },
   { id: 'GBGshowSC', key: 'GBGshowSC' },
   { id: 'GErewards', key: 'showGErewards' },
   { id: 'rewards', key: 'showRewards' },
-  { id: 'logs', key: 'showLogs' },
-  { id: 'contributions', key: 'showContributions' },
+  { id: 'logs', key: 'showLogs', fallback: true },
+  { id: 'contributions', key: 'showContributions', fallback: true },
   { id: 'donationGuildPosition', key: 'showGuildPosition' },
   { id: 'hideUnsafe', key: 'hideUnsafe' },
   { id: 'buildingCosts', key: 'buildingCosts' },
@@ -44,6 +44,9 @@ const CHECKBOX_CONFIG = [
   { id: 'showGalaxy', key: 'showGalaxy', fallback: true },
   { id: 'showGuildOverview', key: 'showGuildOverview', fallback: true },
   { id: 'clipboard', key: 'clipboard', fallback: true },
+  { id: 'quantumContributions', key: 'showQuantum', fallback: true },
+  { id: 'quantumLeaderboard', key: 'showQuantumLeaderboard', fallback: true },
+  { id: 'showQIChanges', key: 'showQIChanges', fallback: false },
 ];
 
 function readWorldSettingsFromForm() {
@@ -122,7 +125,7 @@ function readGlobalSettingsFromForm() {
   }
 
   return {
-    language: langEl?.value || 'en',
+    language: langEl?.value || 'game',
     timeFormatting: {
       dateFormat,
       timeFormat,
@@ -194,8 +197,8 @@ function populateForm(worldSettings = {}, globalSettings = {}) {
   }
 
   const langEl = document.getElementById('language');
-  if (langEl && globalSettings?.language) {
-    langEl.value = globalSettings.language;
+  if (langEl) {
+    langEl.value = globalSettings?.language || 'game';
   }
 
   const dateTimeFormatEl = document.getElementById('dateTimeFormat');
