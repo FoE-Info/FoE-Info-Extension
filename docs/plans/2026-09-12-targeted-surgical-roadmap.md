@@ -1,7 +1,7 @@
 # Targeted Surgical Roadmap (Post Quad-Graph Exploration)
 
 **Date**: 2026-09-12
-**Status**: Reconciled 2026-09-12 — Phase A, B2–B4, C1/C2, D1g/D2g shipped; B1 shipped (calc purity); B5/C3/D3g remain open. See `docs/STATUS.md` Actionable Items 1–4 for the current queue.
+**Status**: Reconciled 2026-09-12 — Phase A, B2–B5, C1/C2, D1g/D2g shipped; B1 shipped (calc purity); C3/D3g remain open. See `docs/STATUS.md` Actionable Items 1–4 for the current queue.
 **Source**: `graphify-out/foe-info/findings/2026-09-12-quad-graph-executive-synthesis.md`
 (derived from the 4-stream suite in
 [`2026-09-12-quad-graph-exploration-and-comparison.md`](2026-09-12-quad-graph-exploration-and-comparison.md))
@@ -38,7 +38,7 @@
 - [x] **B2 (D5)** Shipped — `npm run typecheck` (`tsc --noEmit`) wired into the `verify` pipeline.
 - [x] **B3** Shipped — `CityMapEntityProcessor.js` 657 -> 244 L; harvest logic extracted to `src/js/calc/entities/CityEntityHarvestCalculator.js`.
 - [x] **B4** Shipped — `legacyBridge.js` 831 -> 62 L with per-domain route tables under `src/js/protocol/routes/` behind the `registerLegacyBridge` facade.
-- [ ] **B5** Partially open — DOM still written directly in `msg/` (`TreasuryService`, `OutpostService`, `GbDonationService`, `BonusService`, `ResourceService`, `GuildExpeditionService`, `ArmyUnitManagementService`); not yet routed through `src/js/ui/`.
+- [x] **B5** Shipped 2026-09-12 — residual `msg/` DOM routed through `src/js/ui/` (`renderTreasuryLogPanel`, `renderCulturalPanel`, `renderBonusPanel`, `renderResourcePanel`, `renderExpeditionPanel`, `renderArmyPanel`, `renderRewardsPanel`, `renderGbDonationLegacy`); services keep state/parsing and delegate markup+binding.
 
 ## Phase C — Differentiated Feature Parity (P1–P2)
 
@@ -57,10 +57,10 @@
 ## Recommended immediate next slice
 
 Actionable Item 1 (dedup extraction), Actionable Item 3 (TS mirrors), B1 (calc
-purity), and D2g (dispatcher resilience tests) shipped 2026-09-12. Remaining
-next slices: **B5** (route residual `msg/` DOM through `src/js/ui/`), then
-**Actionable Item 4** (structured `devtools.js` ↔ `index.js` bridge), then
-**C3** (BG/sniping UX controls) and **D3g** (LoW-Tool exclusion record).
+purity), D2g (dispatcher resilience tests), B5 (msg DOM decoupling), and
+Actionable Item 4 (structured DevTools bridge) shipped 2026-09-12. Remaining
+next slices: **C3** (BG/sniping UX controls), then **D3g** (LoW-Tool exclusion
+record), plus the deferred STATUS Actionable Item 2 (reactive subscriber pattern).
 
 ## Plan premises corrected (do not inherit)
 
