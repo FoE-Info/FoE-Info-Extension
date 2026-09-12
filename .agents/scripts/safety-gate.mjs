@@ -18,6 +18,8 @@ export const DANGEROUS_PATTERNS = [
   /git\s+push\s+.*\s:(?:refs\/heads\/)?development\b/i,
   /git\s+stash\s+(drop|clear)\b/i,
   /rm\s+(-[a-z]*r[a-z]*f[a-z]*|-[a-z]*f[a-z]*r[a-z]*|-r\s+-f|-f\s+-r)\s+.*(src|\.agents|tests|\/|\*|\.\/)/i,
+  /\bfoe-browser\b/i,
+  /\b(pkill|killall)\s+.*chrome/i,
 ];
 
 export function isDangerousCommand(cmd) {

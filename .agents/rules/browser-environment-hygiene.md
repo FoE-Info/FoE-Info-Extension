@@ -1,6 +1,6 @@
 ---
-trigger: model_decision
-description: Apply when launching Chromium instances, setting browser automation flags, or debugging extension DevTools and panel.html via CDP.
+trigger: always_on
+description: Strict invariant prohibiting autonomous browser launches, restarts, focus-stealing, or tab manipulation without user permission.
 ---
 
 # Browser Environment Hygiene Rule
