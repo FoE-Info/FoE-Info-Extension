@@ -3,9 +3,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import startupPkg from '../../src/js/state/StartupRenderState.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURES_DIR = path.resolve(__dirname, '../fixtures/visits');
+const otherPlayerSrc = fs.readFileSync(
+  path.resolve(__dirname, '../../src/js/msg/OtherPlayerService.js'),
+  'utf8',
+);
 
 test('OtherPlayerService Protocol & Lifecycle Suite', async (t) => {
   // Setup minimal DOM mock
@@ -101,4 +106,37 @@ test('OtherPlayerService Protocol & Lifecycle Suite', async (t) => {
       assert.ok(Array.isArray(hoodlist));
     },
   );
+
+  await t.test(
+    'own-city score repaint routes through StartupRenderState, not ui',
+    () => {
+      const { startupRenderState } = startupPkg;
+      startupRenderState.setCityStatsContext({ marker: true });
+
+      let repaints = 0;
+      const off = startupRenderState.subscribe((snapshot, channel) => {
+        if (channel === 'city-stats') repaints += 1;
+      });
+
+      otherPlayerServiceUpdateActions({
+        responseData: {
+          members: [{ is_self: true, player_id: 1, name: 'Me', score: 4242 }],
+        },
+      });
+      off();
+
+      assert.ok(
+        repaints >= 1,
+        'a positive self score must request a city-stats repaint',
+      );
+    },
+  );
+
+  await t.test('service has no direct ui import (F2 invariant)', () => {
+    assert.doesNotMatch(otherPlayerSrc, /\.\.\/ui\//);
+    assert.match(
+      otherPlayerSrc,
+      /startupRenderState\.requestCityStatsRepaint\(\)/,
+    );
+  });
 });
