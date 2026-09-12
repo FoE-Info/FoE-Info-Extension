@@ -15,15 +15,15 @@
  */
 
 const { createLogger } = require('../utils/logger.js');
-const { translateContainer } = require('../fn/i18n.js');
 const { escapeHTML } = require('../utils/formatters.js');
 const { applyCardVisibility } = require('../ui/cardVisibility.js');
-const {
-  initStorageListeners,
-  handleReceiveStorage,
-} = require('../state/storageListener.js');
+const { initStorageListeners } = require('../state/storageListener.js');
 const { initNetworkListeners } = require('../protocol/networkListener.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
+const {
+  initStorageBootstrap,
+  logStorageUsage,
+} = require('./storageBootstrap.js');
 
 const logger = createLogger('IndexUiBindings');
 
@@ -44,24 +44,6 @@ function resolveDep(config, key, loader, exportName) {
   if (!mod) return undefined;
   if (exportName) return mod[exportName] ?? mod.default?.[exportName];
   return mod.default ?? mod;
-}
-
-function logStorageUsage(browserObj) {
-  if (
-    browserObj &&
-    browserObj.storage &&
-    browserObj.storage.local &&
-    typeof browserObj.storage.local.getBytesInUse === 'function'
-  ) {
-    try {
-      browserObj.storage.local
-        .getBytesInUse(null)
-        .then((size) => logger.debug('getBytesInUse', size))
-        .catch((err) => logger.warn('getBytesInUse error:', err));
-    } catch (e) {
-      logger.warn('getBytesInUse exception:', e);
-    }
-  }
 }
 
 function bindOptionsButton(targetDocument, browserObj, win) {
@@ -172,82 +154,6 @@ function buildStorageDeps(config = {}) {
     playerNameCache: state?.playerNameCache,
     browser: config.browser,
   };
-}
-
-function initStorageBootstrap(config = {}, storageDeps) {
-  const browserObj = config.browser;
-  if (!browserObj?.storage?.local?.get) return;
-
-  Promise.resolve(true)
-    .then(() => {
-      logStorageUsage(browserObj);
-
-      browserObj.storage.local
-        .get(null)
-        .then((stored) => {
-          handleReceiveStorage(stored, storageDeps);
-
-          if (
-            typeof process !== 'undefined' &&
-            process.env?.NODE_ENV === 'development'
-          ) {
-            if (typeof $ !== 'undefined' && $.i18n) $.i18n.debug = true;
-          }
-
-          const language =
-            typeof config.getLanguage === 'function' ?
-              config.getLanguage()
-            : 'auto';
-          if (typeof $ === 'undefined' || typeof $.i18n !== 'function') {
-            logger.debug('jQuery i18n unavailable; skipping translation load');
-            return;
-          }
-
-          if (language != 'auto') {
-            $.i18n({ locale: language });
-          }
-          logger.debug(language, $.i18n().locale, $.i18n.debug);
-          $.i18n()
-            .load({
-              de: {
-                load: 'Laden Sie das Spiel, um Ihre Stadtstatistiken anzuzeigen',
-              },
-              sv: {
-                load: 'Ladda spelet för att se din stadsstatistik',
-              },
-              fi: {
-                load: 'Lataa peli nähdäksesi kaupunkitilastot',
-              },
-              pt: {
-                load: 'Carregue o jogo para ver as estatísticas da sua cidade',
-              },
-              nl: {
-                load: 'Laad het spel om je stadsstatistieken te zien',
-              },
-              sr: {
-                load: 'Учитајте игру да бисте видели статистику града',
-              },
-              ru: {
-                load: 'Слава Украине!',
-              },
-              ua: {
-                load: 'Слава Україні!',
-              },
-              en: 'i18n/en.json',
-              es: 'i18n/es.json',
-              fr: 'i18n/fr.json',
-              el: 'i18n/el.json',
-              gr: 'i18n/gr.json',
-              it: 'i18n/it.json',
-            })
-            .done(function () {
-              translateContainer(config.document?.body);
-              logger.debug('i18n.load OK');
-            });
-        })
-        .catch((err) => logger.warn('storage bootstrap failed:', err));
-    })
-    .catch((err) => logger.warn('storage bootstrap promise failed:', err));
 }
 
 function bindStorageListeners(storageDeps) {
