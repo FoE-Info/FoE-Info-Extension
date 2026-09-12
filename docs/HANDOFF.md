@@ -4,6 +4,67 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **Post-F2 monolith extractions & modular refactoring batch (all 6 ranked targets complete)**:
+  - **Social lists panel & render binding (`OtherPlayerService.js`)**:
+    Extracted DOM rendering and list generation (`checkInactivePlunder`,
+    `checkActive`, `getFriendsHTML`, `getPendingFriendsHTML`, ~190 L) from
+    `src/js/msg/OtherPlayerService.js` (594 → 477 L) into new
+    `src/js/ui/renderSocialListsPanel.js` (250 L, scoped
+    `createLogger('RenderSocialListsPanel')`) and created
+    `src/js/ui/socialRenderBinding.js` (60 L). Moved `formatShieldCountdown`
+    into `src/js/utils/formatters.js` (40 L). Subscribed to `SocialState`
+    `'lists'` channel; `OtherPlayerService` now publishes parsed social lists
+    instead of directly mutating DOM. New unit test suites
+    `tests/ui/render-social-lists-panel.test.mjs` (141 L) and
+    `tests/ui/social-render-binding.test.mjs` (44 L).
+  - **Storage bootstrap & canonical i18n (`indexUiBindings.js`)**:
+    Extracted `initStorageBootstrap` and `logStorageUsage` (~95 L) from
+    `src/js/ui/indexUiBindings.js` (529 → 434 L) into new
+    `src/js/ui/storageBootstrap.js` (138 L, scoped
+    `createLogger('StorageBootstrap')`, `CANONICAL_LOCALES`,
+    `initStorageBootstrap`, `logStorageUsage`). Replaced inline hardcoded
+    German/Swedish/Finnish/Dutch/Serbian/Russian/Ukrainian translation map
+    with `CANONICAL_LOCALES` mapped to `i18n/<locale>.json`; fixed missing
+    German translation for `"load"` key in `src/i18n/de.json`. New
+    `tests/ui/storage-bootstrap.test.mjs` (5 tests).
+  - **Collapse toggle runner extraction (`collapse.js`)**:
+    Extracted 28 imperative collapse toggles (L143–478) and 90-line switch-case
+    in `src/js/fn/collapse.js` (494 → 448 L) into declarative specs and
+    extracted the DOM/tooltip/icon/persistence runner into new
+    `src/js/ui/collapseToggleRunner.js` (172 L, scoped
+    `createLogger('CollapseToggleRunner')`, `executeToggle`, `createToggle`,
+    `hideAllTooltips`). Preserved 100% public API and live bindings. New
+    `tests/ui/collapse-toggle-runner.test.mjs` (8 tests).
+  - **Great Buildings fCheckOutput extraction (`GreatBuildingsService.js`)**:
+    Extracted `fCheckOutput` (83 L of direct DOM mutations) from
+    `src/js/msg/GreatBuildingsService.js` (468 → 386 L) into new
+    `src/js/ui/gbOutputRepair.js` (`repairGbOutput`, scoped
+    `createLogger('GbOutputRepair')`). Replaced inline DOM manipulation in
+    `GreatBuildingsService.js` with a comment delegate; wired reactive output
+    repair into `src/js/ui/greatBuildingsRenderBinding.js`. New
+    `tests/ui/gb-output-repair.test.mjs` (5 tests).
+  - **Dead code cleanup (`cityStatsHtmlBuilder` & `CityStatsCalculator` shim)**:
+    Deleted production-orphan `src/js/ui/cityStatsHtmlBuilder.js` (131 L) and
+    its suite `tests/ui/city-stats-html-builder.test.mjs` (78 L); deleted legacy
+    shim `src/js/fn/CityStatsCalculator.js` (7 L) and retargeted
+    `tests/fn/city-stats-calculator.test.mjs` to `src/js/calc/CityStatsCalculator.js`.
+  - **Panel container factory extraction (`containerBinding.js`)**:
+    Extracted `setupPanelContainers` (~277 L) from `src/js/ui/containerBinding.js`
+    (571 → 274 L) into new `src/js/ui/panelContainerFactory.js`
+    (`ensureContainerMounted`, `mountOrAdopt`, container creation, and canonical
+    15-panel mount hierarchy). Behavior preserved 1:1. New
+    `tests/ui/panel-container-factory.test.mjs` (16 tests).
+  - **Direct metadata router & request payload (`MessageDispatcher.js`)**:
+    Extracted direct-CDN metadata router (`isDirectMetadataUrl`,
+    `parseMetadataUrlContext`, `routeDirectMetadata`, ~106 L) into new
+    `src/js/protocol/directMetadata.js` (new `tests/protocol/direct-metadata.test.mjs`,
+    7 tests) and request-payload parser (`extractRequestPayload`, ~63 L) into new pure
+    `src/js/protocol/requestPayload.js` (new `tests/protocol/request-payload.test.mjs`,
+    8 tests). Reduced `MessageDispatcher.js` from 586 → 434 L.
+  - **Verification**: `npm test` — **1,327 tests / 0 fail across 96 suites**;
+    `npm run verify` exit 0 (100% i18n parity across 235 keys × 7 languages,
+    0 ESLint errors, Prettier clean, webpack dev bundle compiles).
+
 - **GitHub security hardening + CI test fix**:
   - Configured repo security via `gh`: ruleset **"Protect development"**
     (id `23061337`) on `refs/heads/development` blocks deletion and
