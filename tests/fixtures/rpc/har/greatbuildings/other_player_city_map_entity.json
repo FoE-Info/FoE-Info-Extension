@@ -1,0 +1,275 @@
+{
+  "description": "Foreign Great Building city-map entities with invested/level-up state.",
+  "captures": [
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:49:41.361Z",
+      "requestClass": "OtherPlayerService",
+      "requestMethod": "getOtherPlayerCityMapEntity",
+      "requestId": 15,
+      "requestData": [
+        34862,
+        7560963
+      ],
+      "responseData": {
+        "id": 34862,
+        "player_id": 7560963,
+        "cityentity_id": "X_OceanicFuture_Landmark3",
+        "type": "greatbuilding",
+        "x": 48,
+        "y": 57,
+        "connected": 1,
+        "state": {
+          "next_state_transition_in": 2147483647,
+          "next_state_transition_at": 2147483647,
+          "invested_forge_points": 8211,
+          "forge_points_for_level_up": 9699,
+          "current_product": {
+            "name": "medals",
+            "asset_name": "medals",
+            "product": {
+              "resources": {
+                "medals": 2447
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "CityEntityProductionProduct"
+          },
+          "__class__": "ProductionFinishedState"
+        },
+        "level": 95,
+        "max_level": 400,
+        "bonus": {
+          "value": 71,
+          "type": "double_collection",
+          "amount": 15,
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "__class__": "GreatBuildingCityMapBonus"
+        },
+        "bonuses": [],
+        "__class__": "CityMapEntity"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:51:40.592Z",
+      "requestClass": "OtherPlayerService",
+      "requestMethod": "getOtherPlayerCityMapEntity",
+      "requestId": 36,
+      "requestData": [
+        19,
+        7560963
+      ],
+      "responseData": {
+        "id": 19,
+        "player_id": 7560963,
+        "cityentity_id": "X_BronzeAge_Landmark2",
+        "type": "greatbuilding",
+        "x": 50,
+        "y": 22,
+        "connected": 1,
+        "state": {
+          "next_state_transition_in": 2147483647,
+          "next_state_transition_at": 2147483647,
+          "invested_forge_points": 18743,
+          "forge_points_for_level_up": 18761,
+          "__class__": "IdleState"
+        },
+        "level": 155,
+        "max_level": 400,
+        "bonus": {
+          "value": 102.5,
+          "type": "military_boost",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "bonuses": [],
+        "__class__": "CityMapEntity"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:51:45.887Z",
+      "requestClass": "OtherPlayerService",
+      "requestMethod": "getOtherPlayerCityMapEntity",
+      "requestId": 42,
+      "requestData": [
+        19,
+        7560963
+      ],
+      "responseData": {
+        "id": 19,
+        "player_id": 7560963,
+        "cityentity_id": "X_BronzeAge_Landmark2",
+        "type": "greatbuilding",
+        "x": 50,
+        "y": 22,
+        "connected": 1,
+        "state": {
+          "next_state_transition_in": 2147483647,
+          "next_state_transition_at": 2147483647,
+          "forge_points_for_level_up": 19230,
+          "__class__": "IdleState"
+        },
+        "level": 156,
+        "max_level": 400,
+        "bonus": {
+          "value": 103,
+          "type": "military_boost",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "bonuses": [],
+        "__class__": "CityMapEntity"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:13.076Z",
+      "requestClass": "OtherPlayerService",
+      "requestMethod": "getOtherPlayerCityMapEntity",
+      "requestId": 48,
+      "requestData": [
+        19,
+        7560963
+      ],
+      "responseData": {
+        "id": 19,
+        "player_id": 7560963,
+        "cityentity_id": "X_BronzeAge_Landmark2",
+        "type": "greatbuilding",
+        "x": 50,
+        "y": 22,
+        "connected": 1,
+        "state": {
+          "next_state_transition_in": 2147483647,
+          "next_state_transition_at": 2147483647,
+          "invested_forge_points": 6655,
+          "forge_points_for_level_up": 19230,
+          "__class__": "IdleState"
+        },
+        "level": 156,
+        "max_level": 400,
+        "bonus": {
+          "value": 103,
+          "type": "military_boost",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "bonuses": [],
+        "__class__": "CityMapEntity"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:17.222Z",
+      "requestClass": "OtherPlayerService",
+      "requestMethod": "getOtherPlayerCityMapEntity",
+      "requestId": 54,
+      "requestData": [
+        19,
+        7560963
+      ],
+      "responseData": {
+        "id": 19,
+        "player_id": 7560963,
+        "cityentity_id": "X_BronzeAge_Landmark2",
+        "type": "greatbuilding",
+        "x": 50,
+        "y": 22,
+        "connected": 1,
+        "state": {
+          "next_state_transition_in": 2147483647,
+          "next_state_transition_at": 2147483647,
+          "invested_forge_points": 13310,
+          "forge_points_for_level_up": 19230,
+          "__class__": "IdleState"
+        },
+        "level": 156,
+        "max_level": 400,
+        "bonus": {
+          "value": 103,
+          "type": "military_boost",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "bonuses": [],
+        "__class__": "CityMapEntity"
+      }
+    },
+    {
+      "sourceHar": "leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har",
+      "capturedAt": "2026-09-12T00:52:53.267Z",
+      "requestClass": "OtherPlayerService",
+      "requestMethod": "getOtherPlayerCityMapEntity",
+      "requestId": 69,
+      "requestData": [
+        28376,
+        7560963
+      ],
+      "responseData": {
+        "id": 28376,
+        "player_id": 7560963,
+        "cityentity_id": "X_SpaceAgeSpaceHub_Landmark1",
+        "type": "greatbuilding",
+        "x": 54,
+        "y": 20,
+        "connected": 1,
+        "state": {
+          "next_state_transition_in": 2147483647,
+          "next_state_transition_at": 2147483647,
+          "invested_forge_points": 61484,
+          "forge_points_for_level_up": 61512,
+          "current_product": {
+            "name": "penal_unit",
+            "production_time": 86400,
+            "asset_name": "penal_unit",
+            "requirements": {
+              "cost": {
+                "resources": [],
+                "__class__": "Resources"
+              },
+              "__class__": "CityEntityRequirements"
+            },
+            "amount": 136,
+            "__class__": "CityEntityMilitaryProduct"
+          },
+          "__class__": "ProducingState"
+        },
+        "level": 68,
+        "max_level": 70,
+        "bonus": {
+          "value": 340,
+          "type": "advanced_tactics",
+          "bonusCategory": {
+            "__enum__": "GreatBuildingBonusCategory",
+            "value": "passiveBonus"
+          },
+          "targetedFeature": "all",
+          "__class__": "GreatBuildingUnitBonus"
+        },
+        "bonuses": [],
+        "__class__": "CityMapEntity"
+      }
+    }
+  ]
+}

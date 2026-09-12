@@ -1,0 +1,192 @@
+{
+  "next_passive_bonus": {
+    "value": 345,
+    "type": "advanced_tactics",
+    "bonusCategory": {
+      "__enum__": "GreatBuildingBonusCategory",
+      "value": "passiveBonus"
+    },
+    "targetedFeature": "all",
+    "__class__": "GreatBuildingUnitBonus"
+  },
+  "next_production_bonus": {
+    "value": 138,
+    "type": "penal_unit",
+    "amount": -1,
+    "bonusCategory": {
+      "__enum__": "GreatBuildingBonusCategory",
+      "value": "productionBonus"
+    },
+    "__class__": "GreatBuildingCityMapBonus"
+  },
+  "ownerEra": "SpaceAgeSpaceHub",
+  "rankings": [
+    {
+      "player": {
+        "player_id": 7560963,
+        "name": "Overlord Negan",
+        "avatar": "addon_portrait_id_anni26_9",
+        "is_self": true,
+        "__class__": "OtherPlayer"
+      },
+      "forge_points": 56189,
+      "__class__": "GreatBuildingRankingRow"
+    },
+    {
+      "rank": 1,
+      "player": {
+        "player_id": 850179865,
+        "name": "jorroalbg",
+        "avatar": "addon_portrait_id_celeas",
+        "__class__": "OtherPlayer"
+      },
+      "forge_points": 3040,
+      "reward": {
+        "blueprints": 14,
+        "blueprintRewards": [
+          {
+            "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+            "amount": 14,
+            "tier": {
+              "__enum__": "GreatBuildingTier",
+              "value": "copper"
+            },
+            "__class__": "GreatBuildingBlueprint"
+          }
+        ],
+        "strategy_point_amount": 1600,
+        "resources": {
+          "medals": 139294,
+          "__class__": "CityResource"
+        },
+        "__class__": "GreatBuildingRankingRowReward"
+      },
+      "__class__": "GreatBuildingRankingRow"
+    },
+    {
+      "rank": 2,
+      "player": {
+        "player_id": 856159327,
+        "name": "Gumse",
+        "avatar": "portrait_id_169",
+        "__class__": "OtherPlayer"
+      },
+      "forge_points": 1600,
+      "reward": {
+        "blueprints": 10,
+        "blueprintRewards": [
+          {
+            "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+            "amount": 10,
+            "tier": {
+              "__enum__": "GreatBuildingTier",
+              "value": "copper"
+            },
+            "__class__": "GreatBuildingBlueprint"
+          }
+        ],
+        "strategy_point_amount": 800,
+        "resources": {
+          "medals": 69647,
+          "__class__": "CityResource"
+        },
+        "__class__": "GreatBuildingRankingRowReward"
+      },
+      "__class__": "GreatBuildingRankingRow"
+    },
+    {
+      "rank": 3,
+      "player": {
+        "player_id": 479417,
+        "name": "bootnreboot",
+        "avatar": "addon_portrait_id_vik26_8",
+        "__class__": "OtherPlayer"
+      },
+      "forge_points": 530,
+      "reward": {
+        "blueprints": 8,
+        "blueprintRewards": [
+          {
+            "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+            "amount": 8,
+            "tier": {
+              "__enum__": "GreatBuildingTier",
+              "value": "copper"
+            },
+            "__class__": "GreatBuildingBlueprint"
+          }
+        ],
+        "strategy_point_amount": 265,
+        "resources": {
+          "medals": 34824,
+          "__class__": "CityResource"
+        },
+        "__class__": "GreatBuildingRankingRowReward"
+      },
+      "__class__": "GreatBuildingRankingRow"
+    },
+    {
+      "rank": 4,
+      "player": {
+        "player_id": 853149026,
+        "name": "nikola09",
+        "avatar": "portrait_id_92",
+        "__class__": "OtherPlayer"
+      },
+      "forge_points": 95,
+      "reward": {
+        "blueprints": 6,
+        "blueprintRewards": [
+          {
+            "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+            "amount": 6,
+            "tier": {
+              "__enum__": "GreatBuildingTier",
+              "value": "copper"
+            },
+            "__class__": "GreatBuildingBlueprint"
+          }
+        ],
+        "strategy_point_amount": 65,
+        "resources": {
+          "medals": 13929,
+          "__class__": "CityResource"
+        },
+        "__class__": "GreatBuildingRankingRowReward"
+      },
+      "__class__": "GreatBuildingRankingRow"
+    },
+    {
+      "rank": 5,
+      "player": {
+        "player_id": 854712836,
+        "name": "Lexe2k",
+        "avatar": "addon_portrait_id_vik26_3",
+        "__class__": "OtherPlayer"
+      },
+      "forge_points": 30,
+      "reward": {
+        "blueprints": 5,
+        "blueprintRewards": [
+          {
+            "building_id": "X_SpaceAgeSpaceHub_Landmark1",
+            "amount": 5,
+            "tier": {
+              "__enum__": "GreatBuildingTier",
+              "value": "copper"
+            },
+            "__class__": "GreatBuildingBlueprint"
+          }
+        ],
+        "strategy_point_amount": 15,
+        "resources": {
+          "medals": 6965,
+          "__class__": "CityResource"
+        },
+        "__class__": "GreatBuildingRankingRowReward"
+      },
+      "__class__": "GreatBuildingRankingRow"
+    }
+  ],
+  "__class__": "GreatBuildingConstruction"
+}

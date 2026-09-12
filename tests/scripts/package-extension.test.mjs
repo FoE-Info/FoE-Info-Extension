@@ -13,7 +13,7 @@ test('webpack.config.js - generates 3 distinct target configurations', async () 
 
   const devConfig = configFn({ target: 'dev' });
   assert.equal(devConfig.mode, 'development');
-  assert.equal(devConfig.output.path, path.resolve(root, 'build/FoE-Info-Dev'));
+  assert.equal(devConfig.output.path, path.resolve(root, 'build/FoE-Info-DEV'));
 
   const betaConfig = configFn({ target: 'beta' });
   assert.equal(betaConfig.mode, 'production');

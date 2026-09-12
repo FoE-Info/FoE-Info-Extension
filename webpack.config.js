@@ -18,7 +18,7 @@ module.exports = (env = {}, argv = {}) => {
   let isBeta = false;
 
   if (target === 'dev') {
-    outputDir = path.resolve(__dirname, 'build/FoE-Info-Dev');
+    outputDir = path.resolve(__dirname, 'build/FoE-Info-DEV');
     extName = 'FoE-Info (DEV)';
     isDev = true;
   } else if (target === 'beta') {
