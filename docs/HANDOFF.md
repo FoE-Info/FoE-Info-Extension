@@ -911,7 +911,7 @@ options)` builder moved into `ui/expeditionTables.js`;
   - `forge-hammer-kg-explorer`, `low-tool-kg-explorer`, `foe-info-original-kg-explorer` — standalone explorers, treat the peer graph as their own project (no comparisons; findings saved to matching `graphify-out/<peer>/findings/`).
   - All have canonical `.agents/agents/*.md` and thin `.opencode/agents/*.md` shims.
 - **Ecosystem count updates**:
-  - 31→36 subagents, 5→6 MCP servers, 51→53 skills in AGENTS.md, `.agents/rules/graphify.md`, `.agents/rules/workspace-structure.md`, `antigravity-interop` skill, `.opencode/instructions/guardrail.md`, `pre-invocation-reminder.mjs`, `docs/STATUS.md`, `docs/COORDINATION.md`, `docs/OPENCODE.md`, `tests/agents/agent-config.test.mjs`.
+  - 31→36 subagents, 5→7 MCP servers (github-mcp added post-ecosystem-sync), 51→53 skills in AGENTS.md, `.agents/rules/graphify.md`, `.agents/rules/workspace-structure.md`, `antigravity-interop` skill, `.opencode/instructions/guardrail.md`, `pre-invocation-reminder.mjs`, `docs/STATUS.md`, `docs/COORDINATION.md`, `docs/OPENCODE.md`, `tests/agents/agent-config.test.mjs`.
   - Antigravity FoE-Info project grants: +10 `mcp(graphify-low-tool/*)`, 79 total, 0 bare MCP wildcards.
   - `graphify-guard` `GRAPHIFY_QUERY_TOOLS` regex and MCP prompt message updated with `low-tool` in both harnesses.
 - **Graph generation status**: Completed 2026-09-11 via `npm run graph:low-tool:reindex` and `npm run graph:foe-info-original:reindex`; both `../LoW-Tool/graphify-out/graph.json` and `../FoE-Info-Extension-original/graphify-out/graph.json` are generated and available for MCP queries.
