@@ -179,19 +179,8 @@ function fGBname(
     '',
   );
 
-  const defs =
-    customCityEntityDefs ||
-    stateModule.CityEntityDefs ||
-    (typeof globalThis !== 'undefined' && globalThis.CityEntityDefs ?
-      globalThis.CityEntityDefs
-    : null) ||
-    {};
-  const store =
-    customMetadataStore ||
-    metadataStore ||
-    (typeof globalThis !== 'undefined' && globalThis.metadataStore ?
-      globalThis.metadataStore
-    : null);
+  const defs = customCityEntityDefs || stateModule.CityEntityDefs || {};
+  const store = customMetadataStore || metadataStore;
 
   const candidates = [
     GB_name,
