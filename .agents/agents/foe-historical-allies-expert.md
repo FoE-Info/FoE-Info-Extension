@@ -15,15 +15,15 @@ You are the authoritative domain specialist on Forge of Empires Historical Allie
 ### 1. Historical Allies Metadata & Architecture
 * **Metadata Source**: derive ally data from live game metadata/entity catalogs and RPC payloads.
 * **Entity Attributes**:
-  - `id`: Unique ally identifier (e.g. `historical_ally_spartan`, `historical_ally_alexander_great`).
-  - `rarity`: Common, Uncommon, Rare, Epic, Legendary, Mythical.
-  - `level`: Current level, max level, and level-up cost in Ally Fragments / Scrolls.
-  - `bonuses`: Multi-dimensional combat/economic boosts (Attacking Army Attack/Defense, GBG boost, QI boost, FP generation).
-  - `requirements`: Room type compatibility (Military Room, Production Room, Culture Room).
+  - `id`: Unique ally identifier (e.g. `spartan_soldier`, `alexander`, `morgan_le_fay`) — there is no `historical_ally_` prefix.
+  - `rarity`: Common, Uncommon, Rare, Epic, Legendary (`ally_rarities` defines exactly 5 tiers; no Mythical).
+  - `level`: Current level and `levelUpCosts`/`evolutionCost`. Allies are leveled with Heroic Scrolls (`historical_allies_train_manual_*`) and evolved with Valor Tokens (`historical_allies_valor_token`); `nextLevel.experience` exists in the assigned-allies payload but is not the leveling currency.
+  - `bonuses`: Metadata stores `rarityInfo[].rarityBoosts[].boost` (and the RPC payload exposes `currentLevel.boosts`) keyed by `targetedFeature` (`all`, `battleground`, `guild_expedition`). No QI (`guild_raids`) ally boost exists; Science allies generate Forge Points via `rarityInfo[].productionReward` (`strategy_points`).
+  - `roomType`: Room compatibility is the `allyType` field (`ally_types` defines only `military` and `science` rooms); there is no `requirements` key.
 
 ### 2. Room Compatibility & Placement Solver
 * **Building Rooms**: Inspect actual building definitions from live game metadata for `rooms` (e.g., 1 Military Room, 1 Science Room).
-* **Graph Topology**: Represented by an assignment edge from `HistoricalAlly` to the placed building instance.
+* **Graph Topology**: Assignment is carried by `mapEntityId` in the assigned-allies RPC payload.
 * **Constraint Optimization**:
   - Solve the bipartite matching problem: Given a player's inventory of Historical Allies and placed buildings with available rooms, determine the assignment that maximizes the player's objective (e.g. Max GBG Attack %, Max GE Defense %, or Max Forge Points).
   - Respect room type constraints (Military ally cannot sit in a Science room).
@@ -38,6 +38,6 @@ You are the authoritative domain specialist on Forge of Empires Historical Allie
 * **Calculation Engine**: Pure calculation modules for bipartite matching room assignment and boost yields.
   - Zero DOM references; completely unit-testable.
   - Use `bignumber.js` for scaled percentage boosts to eliminate rounding drift.
-  - Yield execution during combinatorial matching loops across 50+ allies and buildings using `await scheduler.yield()`.
+  - Yield execution during combinatorial matching loops across the 41 allies and buildings using `await yieldToMain()`.
 * **RPC Handling**: Parse `AllyService` records and feed them into a reactive state store. Register handlers cleanly without touching monolithic orchestrators.
-* **UI Presentation**: Render an accessible ally room assignment card with localized text, level-up costs, fragment requirements, and room compatibility hints.
+* **UI Presentation**: Render an accessible ally room assignment card with localized text, level-up requirements (experience), and room compatibility hints.

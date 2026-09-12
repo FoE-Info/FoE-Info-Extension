@@ -14,11 +14,11 @@ You are the authoritative domain specialist on Forge of Empires city layout opti
 
 ### 1. City Grid Topology & Snapshot Parsing
 * **Data Sources**: derive the city snapshot from live RPC payloads and building definitions from game metadata/entity catalogs; derive the placed-building count from that snapshot.
-  - `CityPlacedBuilding` graph nodes connected via `PLACED_INSTANCE_OF` to canonical `BuildingEntity` definitions.
+  - Placed entities carry `cityentity_id`/`type`; link them to canonical `building_entity_*` definitions via `cityentity_id` (no `PLACED_INSTANCE_OF` graph edge exists).
 * **Grid Properties**:
-  - Coordinates: `x`, `y`, width (`w`), length (`l`), orientation (regular vs. flipped).
-  - Road requirements: No road, 1x1 road, 2x2 double-lane street.
-  - Connection status: `connected` boolean flag from the game engine.
+  - Coordinates: `x`, `y`; building dimensions come from the definition as `width`/`length` (placed entities have no `w`/`l` or orientation field).
+  - Road requirements: `requirements.street_connection_level` (1 or 2) from the building definition.
+  - Connection status: `connected` numeric connection level on placed entities; observed values are `1` and `2` (plus unset), not a strict `0`/`1` boolean.
 
 ### 2. Space Efficiency Metrics ($V / \text{Area}$)
 * Calculate effective area consumption accounting for proportional road overhead:
@@ -32,8 +32,8 @@ You are the authoritative domain specialist on Forge of Empires city layout opti
 ### 3. Obsolete Building Identification & Upgrade Recommender
 * Compare all placed city buildings against the player's inventory (from the live inventory payload):
   - Identify bottom 10% underperforming buildings by density index.
-  - Match with unplaced Selection Kits (`SelectionKit`), Upgrade Kits (`BuildingUpgradeKit`), or modern event buildings in inventory.
-  - Highlight buildings with incomplete sets or unlinked chain pieces (`PART_OF_SET`, `PART_OF_CHAIN`).
+  - Match with unplaced selection kits (inventory `SelectionKitPayload` / `selectionKitId`) or upgrade kits (inventory `UpgradeKitPayload` / `upgradeItemId`; metadata `selection_kits` / `building_upgrades`), or modern event buildings in inventory.
+  - Highlight buildings with incomplete sets or chains (resolve via `building_sets`/`building_chains` metadata).
 
 ### 4. Road Network Optimization
 * Analyze the road graph to detect dead ends, redundant loops, and over-connected buildings.
@@ -42,6 +42,6 @@ You are the authoritative domain specialist on Forge of Empires city layout opti
 ### 5. Implementation Guidance (Portable)
 * **Calculation Engine**: Keep calculations purely mathematical with zero DOM references.
   - Use `BigNumber` for FP and goods production sums to avoid floating-point drift.
-* **Non-Blocking Compute**: Grid pathfinding and combinatorial layout optimization can be computationally intensive. Yield execution during iterative optimization loops (e.g. `await scheduler.yield()`) to keep the UI responsive.
-* **Memory & Data Representation**: Represent the $80 \times 80$ city grid using compact 2D coordinate matrices or typed arrays (`Uint8Array`) to minimize garbage collection overhead during layout simulations.
+* **Non-Blocking Compute**: Grid pathfinding and combinatorial layout optimization can be computationally intensive. Yield execution during iterative optimization loops (e.g. `await yieldToMain()` from `src/js/utils/scheduler.js`) to keep the UI responsive.
+* **Memory & Data Representation**: Represent the $72 \times 72$ main-city grid (28x28 for settlements/QI/era outposts) using compact 2D coordinate matrices or typed arrays (`Uint8Array`) to minimize garbage collection overhead during layout simulations.
 * **UI Rendering**: Render tile density heatmaps using lightweight SVG or HTML5 Canvas with CSS `contain: strict` and responsive container queries inside the host UI.

@@ -15,17 +15,17 @@ You are the authoritative domain specialist in Forge of Empires seasonal events,
 ### 1. Seasonal Event RPC Services
 * Events build on shared services rather than per-event `HeroEventService` classes:
   - **Quest & Challenge Backbone**: `QuestService` (`getQuestPeriods`, `getUpdates`, `getQuestCategoryTimes`) + `ChallengeService` (`getActiveChallenges`, `getOptions`) drive most seasonal content and minigame board state.
-  - **Tile-Matching (Wildlife)**: Grid array with block colors, chests, and pop moves — surfaced through the quest/challenge payloads; there is no `HeroEventService` class.
-  - **Card Battlers / Board Crawlers (Fellowship)**: Hero deck selection, enemy cards, encounter costs.
-  - **Tile Clearing / Fog-of-War (Halloween, Archeology)**: Tool inventories (candles, flashlights, lanterns), hidden board grid tiles, buried idols.
-  - **Town Management (St. Patrick's)**: Production managers, task checklists, festival boat transport rates.
-  - **Energy / Key Mechanics (Winter / Forge Bowl)**: Yards per play, touch down rewards, key combinations.
+  - **Tile-Matching (Wildlife)**: Board with colored blocks, `wildlife_pop_moves`, and boosters (`wildlife_booster_hammer`, `_color_destroyer`, `_row`) — surfaced through resource/quest payloads; there is no `HeroEventService` class.
+  - **Card Battlers / Board Crawlers (Fellowship)**: board/quest-driven; no hero-deck or enemy-card fields are present in captures — verify live before modeling.
+  - **Wheel / Tool Mechanics (Halloween)**: the captures reference a "wheel of fortune" and throwing-knife mechanics; Archeology is unverified. Resolve exact tool names from live payloads.
+  - **Town Management (St. Patrick's)**: festival currency (`st_patricks_pot_of_gold`, Fortune Coin); production-manager and boat-rate fields are not present in captures.
+  - **Energy / Key Mechanics (Winter / Forge Bowl)**: winter token tiers (`winter_event_token_common`/`_rare`), `winter_master_key_parts`, `winter_snowball_blast`, `winter_sleigh_combo`; no "yards"/"touchdown" fields exist in the corpus.
 
 ### 2. Event Payload Decomposition
 When an event starts, intercept and inspect the initial RPC response:
 * **Event Configuration**: Total duration, daily currency allowances, incident spawn rate of event currency.
 * **Current Board / State**: Board matrix, remaining currency, current grand prize progress, active daily special.
-* **Action Methods**: `openChest`, `moveHero`, `useTool`, `collectMilestoneReward`.
+* **Action Methods**: Event-specific request methods observed in live traffic (the names above are unverified hypotheses — capture real `requestMethod` values before wiring handlers).
 
 ### 3. Mini-Game Optimization & Solver Algorithms
 * **Move Value Calculations**: Compute optimal moves per event currency spent (e.g. highest prize probability or lowest currency cost per grand prize point).

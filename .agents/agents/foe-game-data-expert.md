@@ -13,30 +13,42 @@ You are the authoritative domain specialist on the Forge of Empires (FoE) game e
 ## Core Focus Areas
 
 ### 1. InnoGames RPC Protocol & Envelope Structure
-InnoGames uses a consistent RPC array envelope for both XHR and WebSocket traffic. Every communication is an array of server/client request objects:
+InnoGames uses a consistent RPC array envelope for both XHR and WebSocket traffic. Client→server messages are `ServerRequest` objects; server→client messages are `ServerResponse` objects:
 ```json
 [
   {
     "__class__": "ServerRequest",
     "requestClass": "<ServiceName>",
     "requestMethod": "<MethodName>",
-    "responseData": { ... }
+    "requestData": [ ... ],
+    "requestId": 42
   }
 ]
 ```
+```json
+[
+  {
+    "__class__": "ServerResponse",
+    "requestData": null,
+    "responseData": { ... },
+    "requestId": 42
+  }
+]
+```
+Note: `responseData` belongs to `ServerResponse`; a `ServerRequest` carries `requestData` (not `responseData`).
 Verified service classes (observed in real network captures of the live game client):
-* **City & Production**: `CityProductionService`, `CityMapService` (city grid, road connections, incident placements).
-* **Great Buildings**: `GreatBuildingsService`, `GbDonationService` (levels, forge points, contribution ranks, player investments).
-* **Combat & Guilds**: `GuildBattlegroundService` + `GuildBattlegroundStateService` (GBG; signals are `setSignal`/`removeSignal` methods on `GuildBattleground*` classes), `GuildExpeditionService` (also handles `ChampionshipService` for International Expedition), `ArmyUnitManagementService`, `BoostService.getAllBoosts` (1000+ combat boosts).
+* **City & Production**: `CityProductionService`, `CityMapService` (city grid, road connections). Incidents arrive via `HiddenRewardService.getOverview` (`type: incident_*`), not CityMapService.
+* **Great Buildings**: `GreatBuildingsService` (levels, forge points, contribution ranks, player investments). `GbDonationService` is a local domain engine, not an RPC class.
+* **Combat & Guilds**: `GuildBattlegroundService` + `GuildBattlegroundStateService` (GBG; signals are `setSignal`/`removeSignal` on `GuildBattlegroundSignalsService`), `GuildExpeditionService` (also handles `ChampionshipService` for International Expedition — both are runtime-registered but uncaptured), `ArmyUnitManagementService` (runtime source, not an RPC capture), `BoostService.getAllBoosts` (1,005 records, ~874 combat).
 * **Cultural Settlements**: `OutpostService` (`getAll`, `startEraOutpost`) + `EmissaryService.getAssigned`. No `SettlementService`/`CulturalSettlementService` class exists.
-* **Antiques Dealer**: `ItemExchangeService.getConfig` (exchange times, output +5%/20%/25% modifiers, slot unlock counts) + `InventoryService.getItems`. No `AntiquesDealerService` class exists.
-* **Guild Treasury**: `ClanService.getTreasury` / `getTreasuryBag` / `getTreasuryLogs` / `getOwnClanData`.
+* **Antiques Dealer**: `ItemExchangeService.getConfig` (exchange times 2h/8h/24h with `outputModifier` 1.0/1.25/1.5 → +0%/+25%/+50%, slot unlock counts) + `InventoryService.getItems`. No `AntiquesDealerService` class exists.
+* **Guild Treasury**: `ClanService.getTreasury` (registered in `TreasuryService.js`, not present as a capture) / `getTreasuryBag` / `getTreasuryLogs` / `getOwnClanData`.
 * **Economy & Progression**: `InventoryService`, `ItemShopService`, `ItemStoreService`, `QuestService`, `ChallengeService`, `CampaignService`, `ResearchService`, `StaticDataService.getMetadata` (40 metadata records), `AnnouncementsService.fetchAllAnnouncements`.
-* **Login Flow**: `StartupService.getData` returns a batch of ~54 batched responses covering the boot-time services above. Verify any service against live captures of the target client before wiring a handler.
+* **Login Flow**: `StartupService.getData` returns a single `Startup` object (keys include `city_map`, `user_data`, `settings`, `goodsList`, `unit_slots`, `buildingRelations`), not a batch of responses. Verify any service against live captures of the target client before wiring a handler.
 
 ### 2. Dynamic Metadata Introspection (Future-Proof Architecture)
-* **Never Hardcode Entity Stats**: InnoGames frequently rebalances or introduces buildings, eras, and goods. Building attributes, dimensions, eras, and production formulas reside in the game's startup metadata dictionary (`StartupService`, `city_entities`, `great_buildings`) served over dynamic CDN/RPC payloads.
-* **Dynamic Resolution**: Always inspect or look up raw entity keys (e.g. `main_building_bronzeage`, `X_AllEra_Expedition1`) from the live game metadata rather than assuming fixed parameters.
+* **Never Hardcode Entity Stats**: InnoGames frequently rebalances or introduces buildings, eras, and goods. Building attributes, dimensions, eras, and production formulas reside in the game's `StaticDataService.getMetadata` dictionary (identifiers such as `building_entity_lookup`, `building_upgrades`, `great_building_tiers`, `grid`) served over dynamic CDN/RPC payloads.
+* **Dynamic Resolution**: Always inspect or look up raw entity keys (e.g. `H_BronzeAge_Townhall`, `X_AllAge_Expedition`) from the live game metadata rather than assuming fixed parameters.
 * **Graceful Fallbacks**: When encountering unknown entities from an unreleased event or era, gracefully render placeholder representations and log the raw payload structure for analysis.
 
 ### 3. Numeric Precision & BigNumber Arithmetic

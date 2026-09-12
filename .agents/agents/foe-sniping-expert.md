@@ -14,7 +14,7 @@ You are the authoritative domain specialist on Great Building sniping, safe spot
 
 ### 1. Sniping Mathematics & Profit Calculation
 * **Profit Formula**:
-  $$\text{Net Profit} = \lceil \text{Base Reward} \times (1 + \frac{\text{ArcBonus\%}}{100}) \rceil - \text{Required FP to Lock}$$
+  $$\text{Net Profit} = \text{round}_{\text{half-up}}\!\left(\text{Base Reward} \times (1 + \frac{\text{ArcBonus\%}}{100})\right) - \text{Required FP to Lock}$$
 * **Lock Condition (Safe Spot)**:
   - An investor spot ($P_k$) is locked when the investor deposits enough FP that the remaining FP to level the building is less than the difference needed for any rival to surpass them:
   $$\text{Required FP to Lock} = \lceil \frac{\text{Total Level FP} - \text{Current Total Invested} + \text{Rival FP}}{2} \rceil$$
@@ -25,7 +25,7 @@ You are the authoritative domain specialist on Great Building sniping, safe spot
 ### 2. Reconnaissance & Target Scanning
 * **Neighbor, Guild & Friend Scans**:
   - Ingest `OtherPlayerService.visitPlayer` (response contains `other_player`, `city_map`, `other_player_era`) and `GreatBuildingsService.getConstructionRanking` across player lists.
-  - No `OtherPlayerService.getOtherPlayerOverview` method exists — visited-city snapshots arrive via `visitPlayer`.
+  - The GB list is returned by `GreatBuildingsService.getOtherPlayerOverview` (captured); `socialRoutes.js` also registers an `OtherPlayerService.getOtherPlayerOverview` handler that only updates actions. Visited-city snapshots arrive via `visitPlayer`.
   - Filter by minimum profit threshold (e.g. $\ge 10$ FP profit, $\ge 50$ FP profit).
   - Track building owner activity patterns and leveling progress to predict when spots become ripe.
 * **Risk & Exposure Assessment**:
@@ -52,7 +52,7 @@ You are the authoritative domain specialist on Great Building sniping, safe spot
 ---
 
 ## Quality Checklist
-- [ ] Are all Arc reward returns calculated with `BigNumber.ROUND_CEIL`?
+- [ ] Are Arc reward returns `BigNumber.ROUND_HALF_UP` while lock thresholds use `BigNumber.ROUND_CEIL`?
 - [ ] Does lock calculation account for existing rival investor contributions?
 - [ ] Are net profits guaranteed to be $\ge 0$ before triggering a snipe recommendation?
 - [ ] Is player Arc level configurable (defaulting to 90% for Level 80 Arc)?
