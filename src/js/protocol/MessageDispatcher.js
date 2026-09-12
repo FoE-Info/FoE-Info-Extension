@@ -12,6 +12,8 @@ try {
   logger = createLogger('Dispatcher');
 } catch {}
 
+const { DedupCache } = require('./dedupCache.js');
+
 const combinedHandlerMembers = new WeakMap();
 
 class MessageDispatcher {
@@ -31,7 +33,10 @@ class MessageDispatcher {
       typeof options.dedupWindowMs === 'number' ? options.dedupWindowMs : 1000;
     this.maxCacheSize =
       typeof options.maxCacheSize === 'number' ? options.maxCacheSize : 500;
-    this._dedupCache = new Map();
+    this.dedupCache = new DedupCache({
+      windowMs: this.dedupWindowMs,
+      maxSize: this.maxCacheSize,
+    });
     this.priorities = new Map();
   }
 
@@ -226,43 +231,14 @@ class MessageDispatcher {
    * @returns {boolean}
    */
   isDuplicate(reqUrl, textBody, requestPayload = null, now = Date.now()) {
-    if (!reqUrl || !textBody) return false;
-    if (typeof requestPayload === 'number') {
-      now = requestPayload;
-      requestPayload = null;
-    }
-    const len = typeof textBody === 'string' ? textBody.length : 0;
-    const sample =
-      typeof textBody === 'string' ?
-        textBody.length > 200 ?
-          `${textBody.slice(0, 100)}:${textBody.slice(-100)}`
-        : textBody
-      : '';
-    const reqSample =
-      typeof requestPayload === 'string' ? requestPayload.slice(0, 120)
-      : requestPayload ? JSON.stringify(requestPayload).slice(0, 120)
-      : '';
-    const key = `${reqUrl}:${len}:${sample}:${reqSample}`;
-
-    if (this._dedupCache.has(key)) {
-      const lastTime = this._dedupCache.get(key);
-      if (now - lastTime < this.dedupWindowMs) {
-        return true;
-      }
-    }
-    this._dedupCache.set(key, now);
-    if (this._dedupCache.size > this.maxCacheSize) {
-      const firstKey = this._dedupCache.keys().next().value;
-      this._dedupCache.delete(firstKey);
-    }
-    return false;
+    return this.dedupCache.isDuplicate(reqUrl, textBody, requestPayload, now);
   }
 
   /**
    * Clear the deduplication cache.
    */
   clearDedupCache() {
-    this._dedupCache.clear();
+    this.dedupCache.clear();
   }
 
   /**
