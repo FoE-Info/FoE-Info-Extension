@@ -156,6 +156,11 @@
         "all_proxy": ""
       },
       "enabled": true
+    },
+    "github-mcp": {
+      "type": "local",
+      "command": ["bash", ".agents/scripts/run-github-mcp.sh"],
+      "enabled": true
     }
   },
   "permission": {

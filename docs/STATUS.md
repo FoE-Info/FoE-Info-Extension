@@ -228,7 +228,7 @@ a changelog. See `docs/README.md` for the full hub.
   built + live-verified; `stop-guard` logs a warning plugin (no `fullyIdle`
   equivalent).
 - **opencode takeover** — RESOLVED. `opencode.json` (17 rules as instructions,
-  6 MCP servers), 36 shims in `.opencode/agents/`, 4 hook plugins live-verified.
+  7 MCP servers), 36 shims in `.opencode/agents/`, 4 hook plugins live-verified.
   Codex/Claude compatibility layer decommissioned 2026-09-09; opencode is the
   sole coding host.
 
