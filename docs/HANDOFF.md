@@ -4,6 +4,13 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
 
 ## Current session (2026-09-12)
 
+- **Multi-Track Modernization & Verification Gate (4 Parallel Tracks Merged)**:
+  - **Track 1 (`feat/opencode-rpc-contract`, `86ac5d2`)**: Eliminated 14 duplicate InnoGames RPC registrations across `registerServices.js`, `cityRoutes.js`, and `GuildRaidsService.js`. Triaged `scripts/rpc-contract.config.json` and added `rpc:contract:check` to `verify` pipeline.
+  - **Track 2 (`feat/opencode-rewards-routing`, `c4f9e98`)**: Extracted `src/js/ui/rewardCategories.js` (160L), decoupled `CityProductionService.js` and `QuestService.js` from category logic, simplified `RewardRenderer.js` (281 -> 194 lines), and added `tests/ui/reward-routing.test.mjs`.
+  - **Track 3 (`feat/opencode-ts-mirrors`, `72561d6`)**: Reconciled `BlueGalaxyCalculator.ts` and `GreatBuildingCalculator.ts` with runtime JS; wired `npm run typecheck` into `package.json` verify pipeline and updated package test suite.
+  - **Track 4 (`feat/antigravity-gb-fp-packages`, `07a478b`)**: Added pure `calculateLevelClosingProfit` to `GreatBuildingCalculator.js`; registered `GreatBuildingsService.getAvailablePackageForgePoints` in `buildingRoutes.js` and `GreatBuildingsService.js`; wired FP packages balance badge, level-closing profit alert (`level-closing-badge`), and owner self-leveling warning in `renderGbDonationPanel.js`.
+  - **Verification Gate**: Full 5-stage verification gate (`npm run verify`) passed exit 0: **999/999 tests passing across 97 test suites**, 0 eslint errors, prettier clean, typecheck clean, dev bundle compiled successfully in 5.6s.
+
 - **Payload-Driven Architecture Analysis & RPC Contract Gate (report mode)**:
   - Added [`docs/specs/2026-09-12-payload-driven-architecture-improvements.md`](specs/2026-09-12-payload-driven-architecture-improvements.md): architecture-level companion to the panel-focused spec. Tours the metadata graph (5,499 nodes / 46,623 edges / 383 communities; 103 `NetworkRPCPayload`, 27 `PayloadBundle`, 13 `PlayerCitySnapshot`), documents its limits (identity/provenance index, not formula authority; flat arrays expand, nested collapse; 103 vs 70 duplicate provenance; stale `GRAPH_SUMMARY.md`), and maps each pipeline layer to a concrete payload-driven improvement.
   - Landed `scripts/rpc-contract.mjs` + `scripts/rpc-contract.config.json` + `tests/agents/rpc-contract.test.mjs` + `tests/fixtures/rpc/captured-rpcs.json` (103 keys) + `npm run rpc:contract`. Drives the real `registerAllServices`/`registerLegacyBridge` path against a fake dispatcher to capture the exact runtime registered set (99) and diff it against the captured universe.
