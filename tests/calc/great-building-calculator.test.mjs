@@ -7,6 +7,8 @@ import {
   calculateSafeSpots,
   calculateSpotLock,
   calculateSuggestedDonation,
+  getSafePlaces,
+  isPlacePassable,
 } from '../../src/js/calc/GreatBuildingCalculator.js';
 
 describe('GreatBuildingCalculator Pure Math Engine', () => {
@@ -16,7 +18,11 @@ describe('GreatBuildingCalculator Pure Math Engine', () => {
         spotLock: 606,
         costs: 594,
         donorReward: 660,
+        donorRankCost: 606,
+        net: 54,
         donorProfit: 54,
+        outcome: 'profit',
+        band: 'green',
         guaranteedProfit: false,
       });
     });
@@ -26,7 +32,11 @@ describe('GreatBuildingCalculator Pure Math Engine', () => {
         spotLock: 39,
         costs: 36,
         donorReward: 40,
+        donorRankCost: 39,
+        net: 1,
         donorProfit: 1,
+        outcome: 'profit',
+        band: 'green',
         guaranteedProfit: false,
       });
     });
@@ -36,14 +46,22 @@ describe('GreatBuildingCalculator Pure Math Engine', () => {
         spotLock: 2360,
         costs: 1890,
         donorReward: 2100,
+        donorRankCost: 2360,
+        net: -260,
         donorProfit: -260,
+        outcome: 'loss',
+        band: 'red',
         guaranteedProfit: false,
       });
       assert.deepEqual(calculateDonorOutcome(4218, 501, 1050, 100, 190), {
         spotLock: 2360,
         costs: 1995,
         donorReward: 2100,
+        donorRankCost: 2360,
+        net: -260,
         donorProfit: -260,
+        outcome: 'loss',
+        band: 'red',
         guaranteedProfit: false,
       });
     });
@@ -54,19 +72,37 @@ describe('GreatBuildingCalculator Pure Math Engine', () => {
         spotLock: 522,
         costs: 494,
         donorReward: 520,
+        donorRankCost: 522,
+        net: -2,
         donorProfit: -2,
+        outcome: 'loss',
+        band: 'red',
         guaranteedProfit: false,
       });
     });
 
-    it('marks a lock at or below costs as guaranteed profit', () => {
+    it('measures NET against the lock, not the suggested rate', () => {
+      // Lock 5, suggested 494, gross 520 -> NET is measured against the lock.
       assert.deepEqual(calculateDonorOutcome(10, 0, 260, 100, 190), {
         spotLock: 5,
         costs: 494,
         donorReward: 520,
+        donorRankCost: 5,
+        net: 515,
         donorProfit: 515,
+        outcome: 'profit',
+        band: 'green',
         guaranteedProfit: true,
       });
+    });
+
+    it('treats a zero NET as safe (break-even), never a loss', () => {
+      // Zeus P2 from the captured payload: lock 1480, suggested 1406, gross 1480.
+      const outcome = calculateDonorOutcome(1480, 1480, 740, 100, 190);
+      assert.equal(outcome.donorRankCost, 1480);
+      assert.equal(outcome.net, 0);
+      assert.equal(outcome.outcome, 'safe');
+      assert.equal(outcome.band, 'green');
     });
   });
 
@@ -259,5 +295,194 @@ describe('GreatBuildingCalculator Pure Math Engine', () => {
       assert.equal(spots[0].donateCustom, 2983);
       assert.equal(spots[0].lockFP, 29641);
     });
+  });
+
+  describe('owner target place (HAR ground truth)', () => {
+    const scenarios = [
+      {
+        name: 'Cosmic Catalyst (level 68)',
+        total: 48328,
+        current: 47470,
+        investeds: [2983, 1542, 130, 0, 0],
+        rewards: [1570, 785, 260, 65, 15],
+        expectedPlace: 3,
+        expectedOwnerAdd: 0,
+      },
+      {
+        name: 'Statue of Zeus (level 157)',
+        total: 19230,
+        current: 17750,
+        investeds: [2960, 1480, 0, 0, 0],
+        rewards: [1480, 740, 245, 60, 10],
+        expectedPlace: 3,
+        expectedOwnerAdd: 548,
+      },
+      {
+        name: 'The Blue Galaxy (level 96)',
+        total: 9699,
+        current: 9079,
+        investeds: [3720, 1860, 620, 0, 0],
+        rewards: [1860, 930, 310, 80, 15],
+        expectedPlace: 4,
+        expectedOwnerAdd: 316,
+      },
+    ];
+
+    for (const s of scenarios) {
+      it(`${s.name}: targets the first passable place, not a locked one`, () => {
+        const remaining = s.total - s.current;
+        let target = 0;
+        for (let i = 0; i < s.investeds.length; i++) {
+          if (isPlacePassable(remaining, s.investeds[i])) {
+            target = i + 1;
+            break;
+          }
+        }
+        assert.equal(target, s.expectedPlace);
+
+        const donateCustom = calculateSuggestedDonation(
+          s.rewards[s.expectedPlace - 1],
+          190,
+        );
+        assert.equal(
+          calculateOwnerSafeAdd(
+            remaining,
+            s.investeds[s.expectedPlace - 1],
+            donateCustom,
+          ),
+          s.expectedOwnerAdd,
+        );
+      });
+    }
+
+    it('treats an occupant holding the whole remaining pool as locked', () => {
+      // Zeus P2: 1480 invested, 1480 remaining -> cannot be overtaken.
+      assert.equal(isPlacePassable(1480, 1480), false);
+      // Blue Galaxy P3: 620 invested, 620 remaining -> cannot be overtaken.
+      assert.equal(isPlacePassable(620, 620), false);
+      // One FP short is still overtakeable by leveling the building.
+      assert.equal(isPlacePassable(1480, 1479), true);
+    });
+  });
+
+  describe('Forge-Hammer SafePlaces parity', () => {
+    // Test-only oracle ported from forge-hammer/js/web/part-calc/js/part-calc.js
+    // (defaults: LockExistingPlaces=true, TrustExistingPlaces=false).
+    const forgeHammer = (
+      total,
+      current,
+      rewards,
+      occupancies,
+      arcPercent = 90,
+    ) => {
+      let Rest = total - current;
+      const FP = rewards.map((r) => Math.round(r * (1 + arcPercent / 100)));
+      const Eigens = new Array(5).fill(0);
+      const LevelT = new Array(5).fill(false);
+      const Danger = new Array(5).fill(0);
+      const Available = new Array(5).fill(false);
+      const M = [...occupancies].sort((a, b) => b - a);
+      while (M.length < 5) M.push(0);
+      for (let i = 0; i < 5; i++) {
+        if (FP[i] <= M[i] || Rest <= M[i]) {
+          const Next = M[i + 1] !== undefined ? M[i + 1] : 0;
+          Eigens[i] = Math.max(Math.ceil(Rest + Next - M[i]), 0);
+          Rest -= Eigens[i];
+          continue;
+        }
+        const ceilRaw = Math.ceil(Rest + M[i] - 2 * FP[i]);
+        if (ceilRaw < 0) {
+          Danger[i] = Math.floor(-ceilRaw / 2);
+          Eigens[i] = 0;
+        } else {
+          Eigens[i] = ceilRaw;
+        }
+        if (FP[i] >= Rest) LevelT[i] = true;
+        for (let j = M.length - 1; j >= i; j--) {
+          if (M[j] > 0) M[j + 1] = M[j];
+        }
+        M[i] = Math.min(FP[i], Rest);
+        Available[i] = true;
+        Rest -= Eigens[i] + M[i];
+      }
+      const SafePlaces = [];
+      for (let i = 0; i < 5; i++) {
+        if (Eigens[i] > 0) break;
+        if (Available[i]) SafePlaces.push(i + 1);
+      }
+      return { Eigens, LevelT, Danger, SafePlaces };
+    };
+
+    const cases = [
+      {
+        name: 'Cosmic Catalyst',
+        total: 48328,
+        current: 47470,
+        rewards: [1570, 785, 260, 65, 15],
+        occ: [2983, 1542, 130, 0, 0],
+      },
+      {
+        name: 'Statue of Zeus',
+        total: 19230,
+        current: 17750,
+        rewards: [1480, 740, 245, 60, 10],
+        occ: [2960, 1480, 0, 0, 0],
+      },
+      {
+        name: 'The Blue Galaxy',
+        total: 9699,
+        current: 9079,
+        rewards: [1860, 930, 310, 80, 15],
+        occ: [3720, 1860, 620, 0, 0],
+      },
+      {
+        name: 'crafted over-donation',
+        total: 1000,
+        current: 500,
+        rewards: [400, 200, 80, 20, 10],
+        occ: [100, 0, 0, 0, 0],
+      },
+      {
+        name: 'crafted P6 donor (no position reward, still P5 next occupant)',
+        total: 1000,
+        current: 555,
+        rewards: [50, 40, 30, 10, 5],
+        occ: [200, 150, 100, 50, 30, 25],
+      },
+    ];
+
+    for (const c of cases) {
+      it(`${c.name}: matches owner adds, level warning, danger and SafePlaces`, () => {
+        const rankings = c.occ.map((fp, i) => ({
+          rank: i + 1,
+          forge_points: fp,
+          reward: { strategy_point_amount: c.rewards[i] },
+        }));
+        const spots = calculateSafeSpots(
+          { total: c.total, current: c.current, rewards: c.rewards },
+          rankings,
+          90,
+          190,
+        );
+        const fh = forgeHammer(c.total, c.current, c.rewards, c.occ, 90);
+
+        assert.deepEqual(
+          spots.map((s) => s.ownerAdd),
+          fh.Eigens,
+          'owner adds',
+        );
+        assert.deepEqual(
+          spots.filter((s) => s.levelWarning).map((s) => s.place - 1),
+          fh.LevelT.map((v, i) => (v ? i : -1)).filter((i) => i >= 0),
+          'level warnings',
+        );
+        assert.deepEqual(
+          spots.map((s) => s.danger),
+          fh.Danger,
+          'danger',
+        );
+        assert.deepEqual(getSafePlaces(spots), fh.SafePlaces, 'safe places');
+      });
+    }
   });
 });

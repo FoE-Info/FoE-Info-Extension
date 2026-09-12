@@ -45,11 +45,17 @@ export interface GreatBuildingCalculationInput {
   [key: string]: unknown;
 }
 
+export type DonorOutcome = 'profit' | 'safe' | 'loss';
+
 export interface GreatBuildingDonorOutcome {
   spotLock: number;
   donorReward: number;
   costs: number;
+  donorRankCost: number;
+  net: number;
   donorProfit: number;
+  outcome: DonorOutcome;
+  band: 'green' | 'red';
   guaranteedProfit: boolean;
 }
 
@@ -155,12 +161,26 @@ export function calculateDonorOutcome(
   const spotLock = calculateSpotLock(remaining, spotInvested);
   const donorReward = calculateArcReward(baseReward, arcBonusPercent);
   const costs = calculateSuggestedDonation(baseReward, standardPercent);
+  // NET is measured against the break-even = the Arc-boosted reward. The
+  // invested FP is the lock (safe amount); the suggested rate (1.9x) is only
+  // used for the "Add ... to make safe" line, never for the profit/loss.
+  const donorRankCost = spotLock;
+  const donorProfit = new BigNumber(donorReward).minus(spotLock).toNumber();
+  const outcome: DonorOutcome =
+    donorProfit > 0 ? 'profit'
+    : donorProfit === 0 ? 'safe'
+    : 'loss';
+  const band = outcome === 'loss' ? 'red' : 'green';
   return {
     spotLock,
     donorReward,
     costs,
-    donorProfit: new BigNumber(donorReward).minus(spotLock).toNumber(),
-    guaranteedProfit: spotLock <= costs,
+    donorRankCost,
+    net: donorProfit,
+    donorProfit,
+    outcome,
+    band,
+    guaranteedProfit: costs >= spotLock,
   };
 }
 
@@ -214,7 +234,22 @@ export function calculateSafeSpots(
   const investedByPlace = rankingsByPlace.map((ranking) =>
     typeof ranking === 'number' ? ranking : (ranking?.forge_points ?? 0),
   );
-  const workingInvestments = [...investedByPlace].sort((a, b) => b - a);
+  // All ranked contributors (P1..P5 plus P6+ who earn no position reward) feed
+  // the sequential pool, so a P6 donor is still P5's next occupant. Self/owner
+  // and deleted (rank < 1) entries are excluded.
+  const workingInvestments = (
+    hasRankedEntries ?
+      rankings
+        .filter(
+          (ranking): ranking is GreatBuildingRankingItem =>
+            typeof ranking === 'object' &&
+            ranking !== null &&
+            typeof ranking.rank === 'number' &&
+            ranking.rank >= 1,
+        )
+        .map((ranking) => Number(ranking.forge_points) || 0)
+    : [...investedByPlace]).sort((a, b) => b - a);
+  let bestProfit = -Infinity;
 
   for (let place = 1; place <= 5; place++) {
     const idx = place - 1;
@@ -239,32 +274,48 @@ export function calculateSafeSpots(
     const rewardFP = calculateArcReward(baseReward, arcBonusPercent);
     const donateCustom = calculateSuggestedDonation(baseReward, customPercent);
     const workingInvested = workingInvestments[idx] ?? 0;
+    const remainingBefore = remaining;
     const alreadySafe =
       donateCustom <= workingInvested ||
       remaining.isLessThanOrEqualTo(workingInvested);
     let lockFP: number;
+    let rawOwnerAdd: BigNumber;
+    let safeToDonate = false;
+    let levelWarning = false;
+    let danger = 0;
 
     if (alreadySafe) {
       const nextInvested = workingInvestments[idx + 1] ?? 0;
-      lockFP = BigNumber.maximum(
-        0,
-        remaining.plus(nextInvested).minus(workingInvested),
-      )
+      rawOwnerAdd = remaining.plus(nextInvested).minus(workingInvested);
+      lockFP = BigNumber.maximum(0, rawOwnerAdd)
         .integerValue(BigNumber.ROUND_CEIL)
         .toNumber();
       remaining = remaining.minus(lockFP);
     } else {
-      lockFP = calculateOwnerSafeAdd(remaining, workingInvested, donateCustom);
+      rawOwnerAdd = remaining
+        .plus(workingInvested)
+        .minus(new BigNumber(donateCustom).multipliedBy(2));
+      const ceilOwnerAdd = rawOwnerAdd
+        .integerValue(BigNumber.ROUND_CEIL)
+        .toNumber();
+      lockFP = Math.max(0, ceilOwnerAdd);
+      danger = ceilOwnerAdd < 0 ? Math.floor(-ceilOwnerAdd / 2) : 0;
+      levelWarning = new BigNumber(donateCustom).isGreaterThanOrEqualTo(
+        remainingBefore,
+      );
       workingInvestments.splice(
         idx,
         0,
         Math.min(donateCustom, remaining.toNumber()),
       );
       remaining = remaining.minus(lockFP).minus(workingInvestments[idx]);
+      safeToDonate = lockFP === 0;
     }
 
     const isSafe = alreadySafe && lockFP === 0;
     const profit = rewardFP - lockFP;
+    const worseProfit = profit <= bestProfit;
+    if (profit > bestProfit) bestProfit = profit;
 
     spots.push({
       place,
@@ -273,12 +324,54 @@ export function calculateSafeSpots(
       rewardFP,
       donateCustom,
       lockFP,
+      ownerAdd: lockFP,
       isSafe,
+      safeToDonate,
+      levelWarning,
+      danger,
       profit,
+      worseProfit,
     });
   }
 
   return spots;
+}
+
+/**
+ * Derives the leading "safe to donate" places from a calculateSafeSpots result.
+ * Matches Forge-Hammer's SafePlaces: scan P1..P5 in order, stop at the first
+ * place that needs an owner top-up, and keep the claimable places needing none.
+ *
+ * @param spots Result of calculateSafeSpots
+ * @returns 1-based place numbers that need no owner top-up
+ */
+export function getSafePlaces(spots: GreatBuildingSpot[] = []): number[] {
+  const safePlaces: number[] = [];
+  for (const spot of spots) {
+    if ((spot?.ownerAdd ?? spot?.lockFP ?? 0) > 0) break;
+    if (spot?.safeToDonate) safePlaces.push(spot.place);
+  }
+  return safePlaces;
+}
+
+/**
+ * Determines whether a place can still be overtaken by a rival donor.
+ * A rival can pass the occupant while they can add at least occupant + 1 FP
+ * without exceeding the remaining pool, i.e. occupant < remaining.
+ * Once occupant >= remaining the place is locked/safe (adding enough to pass
+ * would level the building before the overtake succeeds).
+ *
+ * @param remaining Remaining FP to level up the GB
+ * @param occupantInvested FP already placed on that spot
+ * @returns True when the place is still unsafe/passable
+ */
+export function isPlacePassable(
+  remaining: NumericValue,
+  occupantInvested: NumericValue = 0,
+): boolean {
+  return new BigNumber(occupantInvested || 0).isLessThan(
+    new BigNumber(remaining || 0),
+  );
 }
 
 export default {
@@ -288,4 +381,6 @@ export default {
   calculateSuggestedDonation,
   calculateDonorOutcome,
   calculateSafeSpots,
+  getSafePlaces,
+  isPlacePassable,
 };
