@@ -1,19 +1,9 @@
-/*
- * ________________________________________________________________
- * Copyright (C) 2022 FoE-Info - All Rights Reserved
- * this source-code uses a copy-left license
- *
- * you are welcome to contribute changes here:
- * https://github.com/FoE-Info/FoE-Info-Extension
- *
- * AGPL license info:
- * https://github.com/FoE-Info/FoE-Info-Extension/master/LICENSE.md
- * or else visit https://www.gnu.org/licenses/#AGPL
- * ________________________________________________________________
- */
-
-import * as element from '../fn/AddElement';
-import * as collapse from '../fn/collapse.js';
+/** Server boost RPC service surfacing limited and city-wide bonuses. */
+import {
+  renderBonusSummary,
+  updateBonusAmount,
+  updateDailyForgePoints,
+} from '../ui/renderBonusPanel.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
 import { Bonus } from '../vars/state.js';
@@ -29,33 +19,27 @@ export function getLimitedBonuses(msg) {
     msg.responseData.length
   ) {
     var bonusHTML = '';
-    var bonus =
-      typeof document !== 'undefined' ? document.getElementById('bonus') : null;
     logger.debug('Limited bonuses received:', msg.responseData);
 
     msg.responseData.forEach((entry) => {
       if (entry.type == 'spoils_of_war') {
         Bonus.spoils = entry.amount;
-        if (document.getElementById('spoilsID'))
-          document.getElementById('spoilsID').textContent = entry.amount;
+        updateBonusAmount('spoilsID', entry.amount);
         if (entry.amount)
           bonusHTML += `Spoils <span id="spoilsID">${Bonus.spoils}</span> `;
       } else if (entry.type == 'diplomatic_gifts') {
         Bonus.diplomatic = entry.amount;
-        if (document.getElementById('diplomaticID'))
-          document.getElementById('diplomaticID').textContent = entry.amount;
+        updateBonusAmount('diplomaticID', entry.amount);
         if (entry.amount)
           bonusHTML += `Dip <span id="diplomaticID">${Bonus.diplomatic}</span> `;
       } else if (entry.type == 'first_strike') {
         Bonus.strike = entry.amount;
-        if (document.getElementById('firststrikeID'))
-          document.getElementById('firststrikeID').textContent = entry.amount;
+        updateBonusAmount('firststrikeID', entry.amount);
         if (entry.amount)
           bonusHTML += `Strike <span id="firststrikeID">${Bonus.strike}</span> `;
       } else if (entry.type == 'aid_goods') {
         Bonus.aid = entry.amount;
-        if (document.getElementById('aidID'))
-          document.getElementById('aidID').textContent = entry.amount;
+        updateBonusAmount('aidID', entry.amount);
         if (entry.amount)
           bonusHTML += `Aid <span id="aidID">${Bonus.aid}</span> `;
       } else if (entry.type == 'double_collection') {
@@ -67,45 +51,15 @@ export function getLimitedBonuses(msg) {
       ) {
         const fp = entry.value ?? entry.amount ?? 0;
         City.ForgePoints += fp;
-        const fpSpan = document.getElementById('fp');
-        if (fpSpan)
-          fpSpan.innerHTML = `<span data-i18n="daily">Daily</span>: ${City.ForgePoints}FP`;
+        updateDailyForgePoints(City.ForgePoints);
       }
     });
-    // console.debug(bonusHTML);
-    if (
-      bonus &&
-      bonus.innerHTML == `` &&
-      (Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
-    ) {
-      bonus.innerHTML = `<div id="bonusTip" class="alert alert-light alert-dismissible" role="status" aria-live="polite">
-            <p id="bonusTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#bonusText" aria-expanded="${!collapse.collapseBonus}" aria-controls="bonusText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-      ${element.icon('bonusicon', 'bonusText', collapse.collapseBonus)}
-			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
-            ${element.close()}
-            <div id="bonusText" class="alert-light collapse"><p><strong>Legend:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
-      const labelEl = document.getElementById('bonusTextLabel');
-      if (labelEl) {
-        labelEl.addEventListener('click', (e) => {
-          if (
-            e?.target &&
-            typeof e.target.closest === 'function' &&
-            e.target.closest('#bonusicon')
-          ) {
-            return;
-          }
-          collapse.fCollapseBonus();
-        });
-      }
-      const iconEl = document.getElementById('bonusicon');
-      if (iconEl && iconEl !== labelEl) {
-        iconEl.addEventListener('click', collapse.fCollapseBonus);
-      }
-    } else if (
-      bonus &&
-      !(Bonus.aid || Bonus.spoils || Bonus.diplomatic || Bonus.strike)
-    ) {
-      bonus.innerHTML = ``;
-    }
+
+    renderBonusSummary(bonusHTML, {
+      aid: Bonus.aid,
+      spoils: Bonus.spoils,
+      diplomatic: Bonus.diplomatic,
+      strike: Bonus.strike,
+    });
   }
 }

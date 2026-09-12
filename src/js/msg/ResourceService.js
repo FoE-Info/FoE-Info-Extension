@@ -30,6 +30,11 @@ try {
 const { createLogger, isDebugEnabled } = require('../utils/logger.js');
 const logger = createLogger('ResourceService');
 const goodsRenderer = require('../ui/renderGoodsPanel.js');
+const {
+  setAvailableForgePoints,
+  clearGoodsPanel,
+  goodsCopy,
+} = require('../ui/renderResourcePanel.js');
 
 const ResourceDefs = defaultState?.ResourceDefs || [];
 const ResourceNames = defaultState?.ResourceNames || {};
@@ -140,12 +145,7 @@ function getPlayerResources(msg) {
     }
   } catch {}
 
-  if (
-    typeof document !== 'undefined' &&
-    document.getElementById('availableFPID')
-  ) {
-    document.getElementById('availableFPID').textContent = availablePacksFP;
-  }
+  setAvailableForgePoints(availablePacksFP);
 
   lastGoodsPayload = msg;
   renderGoodsPanel(Resources);
@@ -166,14 +166,7 @@ function unlockGoodsPanel() {
 function lockGoodsPanel() {
   goodsPanelDismissed = true;
   goodsPanelUnlocked = false;
-  if (typeof document !== 'undefined') {
-    const targetDiv = document.getElementById('goods');
-    if (targetDiv) {
-      targetDiv.innerHTML = '';
-      targetDiv.style.display = 'none';
-      targetDiv.classList?.add('d-none');
-    }
-  }
+  clearGoodsPanel();
   logger.debug('goods panel locked/dismissed');
   return false;
 }
@@ -240,48 +233,6 @@ const getPlayerResourceBag = getPlayerResources;
 function setResources(resource, needed = 0) {
   if (Resources[`${resource}`]) needed -= Resources[`${resource}`];
   return needed;
-}
-
-async function goodsCopy() {
-  if (typeof document === 'undefined') return;
-  const table = document.getElementById('goodstable');
-  if (!table) return;
-
-  let currentEra = '';
-  const lines = [];
-  table.querySelectorAll('tr').forEach((row) => {
-    const eraHeader = row.querySelector(
-      '.goods-era-header, .special-goods-header',
-    );
-    if (eraHeader) {
-      currentEra = eraHeader.textContent.trim();
-      return;
-    }
-
-    const cells = row.querySelectorAll('td');
-    if (cells.length === 2 && cells[0].textContent.trim()) {
-      lines.push(
-        `${currentEra}\t${cells[0].textContent.trim()}\t${cells[1].textContent.trim()}`,
-      );
-    }
-  });
-
-  const tsvText = lines.join('\n');
-
-  try {
-    if (navigator?.clipboard?.writeText) {
-      await navigator.clipboard.writeText(tsvText);
-    } else {
-      const temp = document.createElement('textarea');
-      document.body.appendChild(temp);
-      temp.value = tsvText;
-      temp.select();
-      document.execCommand('copy');
-      temp.remove();
-    }
-  } catch (err) {
-    logger.warn('goodsCopy clipboard write failed:', err);
-  }
 }
 
 function setGlobals(g) {
