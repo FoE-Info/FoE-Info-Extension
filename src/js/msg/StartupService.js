@@ -4,7 +4,7 @@ import {
   buildClanGoodsData as buildClanGoodsDataImpl,
   fGoodsHTML,
 } from '../calc/goodsTooltipFormatter.js';
-import * as element from '../fn/AddElement';
+import * as element from '../fn/AddElement.js';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
 import * as helper from '../fn/helper.js';
