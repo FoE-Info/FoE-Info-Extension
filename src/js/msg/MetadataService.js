@@ -1,3 +1,4 @@
+/** Fetches, resolves, and ingests live game metadata payloads. */
 const { metadataStore } = require('../state/MetadataStore.js');
 const {
   ingestBattlegroundMapMetadata,
