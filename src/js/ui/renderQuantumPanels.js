@@ -49,11 +49,6 @@ try {
   worldStorage = require('../utils/worldStorage.js');
 } catch {}
 
-let quantumState = null;
-try {
-  quantumState = require('../state/QuantumState.js').quantumState;
-} catch {}
-
 const QI_CONTRIBUTIONS_BOUNDED_HEIGHT = 480;
 const QI_LEADERBOARD_BOUNDED_HEIGHT = 260;
 
@@ -378,27 +373,8 @@ function renderQuantumLeaderboardCard(rankings) {
   });
 }
 
-/**
- * Subscribe the QI cards to the reactive QuantumState. Members and leaderboard
- * are repainted independently so a member update never clears the leaderboard.
- */
-function bindQuantumState(state = quantumState) {
-  if (!state || typeof state.subscribe !== 'function') return () => {};
-  return state.subscribe((snapshot, changed) => {
-    if (changed === 'members' || changed === 'all') {
-      renderQuantumContributionsCard(snapshot.members, snapshot.lastSaved);
-    }
-    if (changed === 'leaderboard' || changed === 'all') {
-      renderQuantumLeaderboardCard(snapshot.leaderboard);
-    }
-  });
-}
-
-bindQuantumState();
-
 module.exports = {
   renderQuantumContributionsCard,
   renderQuantumLeaderboardCard,
-  bindQuantumState,
 };
 module.exports.default = module.exports;
