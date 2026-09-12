@@ -75,13 +75,13 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
     'Services include resize classes on collapsible panel containers',
     () => {
       const armySrc = fs.readFileSync(
-        path.resolve('src/js/msg/ArmyUnitManagementService.js'),
+        path.resolve('src/js/ui/renderArmyPanel.js'),
         'utf8',
       );
       assert.match(
         armySrc,
         /id="armyText"[^>]*class="[^"]*resize[^"]*"/,
-        'ArmyUnitManagementService must contain resize on #armyText',
+        'renderArmyPanel must contain resize on #armyText',
       );
 
       const otherPlayerSrc = fs.readFileSync(
