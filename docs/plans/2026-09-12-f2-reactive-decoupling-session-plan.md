@@ -655,13 +655,20 @@ counts and exit code. Do not commit. Depends on Sessions 9 and 10.
 
 ## Program Definition of Done
 
-- [ ] `src/js/ui/renderBindings.js` is the single composition root; `index.js`
+- [x] `src/js/ui/renderBindings.js` is the single composition root; `index.js`
       has no bare `./ui/*RenderBinding.js` imports.
-- [ ] Every session's store + binding has a passing `tests/state/*` and
-      `tests/ui/*` suite.
-- [ ] `grep -rnE "from '\.\./ui/|require\('\.\./ui/" src/js/msg/` returns only
+- [x] Every session's store + binding has a passing `tests/state/*` and
+      `tests/ui/*` suite. (Session 5 shipped a shared `RewardState` instead of
+      separate `CityProductionState`/`QuestState`; documented in STATUS.)
+- [x] `grep -rnE "from '\.\./ui/|require\('\.\./ui/" src/js/msg/` returns only
       `ConversationService.js → ui/AddElement.js`.
-- [ ] Production `msg/ → ui/` static import edges = 0 (graphify).
-- [ ] `calc/` purity guard (`tests/calc/calc-purity.test.mjs`) still green.
-- [ ] `npm run verify` exit 0 with all test counts reported per session.
-- [ ] `docs/STATUS.md` + `docs/HANDOFF.md` updated for each shipped batch.
+- [x] Production `msg/ → ui/` static import edges = 0 (grep-verified; AST
+      refreshed via `npm run graph:foe-info:ast`, exit 0; recorded in
+      `graphify-out/foe-info/findings/2026-09-12-reactive-store-migration-audit.md`).
+- [x] `calc/` purity guard (`tests/calc/calc-purity.test.mjs`) still green.
+- [x] `npm run verify` exit 0 with all test counts reported per session.
+- [x] `docs/STATUS.md` + `docs/HANDOFF.md` updated for each shipped batch.
+
+**Deferred (no `msg → ui` edge):** Session 6's `VisitedCityState.js` +
+`visitedCityRenderBinding.js` were not built; the visited-player card still
+renders via the legacy `fn/renderCityStats.js` → `ui/renderCityStats.js` shim.
