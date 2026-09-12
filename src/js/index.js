@@ -52,7 +52,7 @@ onDebugToggle((enabled) => {
 });
 export var darkMode = browser?.devtools?.panels?.themeName;
 export var title = setupPanelHeader({ darkMode, onToggleDebug: toggleDebug });
-export var content = document.createElement('div');
+export var content = document.createElement('main');
 document.body.appendChild(content);
 content.id = 'content';
 if (darkMode === 'dark') content.className = 'text-light bg-dark';
