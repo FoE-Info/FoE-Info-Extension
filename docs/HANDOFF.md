@@ -14,6 +14,11 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
     `indexBridgeSetup`/`socialRoutes`), `ui/renderGalaxyPanel.js`
     (`showGalaxy`/`updateGalaxy`), `ui/renderLiveCityStats.js`
     (`buildClanGoodsData`/`fGoodsHTML`).
+  - **Final tail planned**: [`docs/plans/2026-09-12-f2-startup-service-final-decouple.md`](plans/2026-09-12-f2-startup-service-final-decouple.md)
+    defines Slice A (tooltip context + `playerTooltip` helpers via an
+    `ignore-list` store channel) and Slice B (galaxy wiring via `blueGalaxyState`
+    - clan-goods aggregation move) to drive production `msg/ → ui/` edges to just
+      `ConversationService.js → ui/AddElement.js`.
   - **Verification**: `npm run verify` exit 0 — **1,264 tests / 0 fail**,
     prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
 
