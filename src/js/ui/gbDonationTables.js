@@ -369,9 +369,9 @@ function gbTabSafe(...args) {
         <caption class="visually-hidden"><span data-i18n="donation">GB Donation</span></caption>
         <thead><tr>
         <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
-        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Lock</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark"><span data-i18n="lock">Lock</span></th>
         <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">${cfg.currentPercent / 100}</th>
-        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Reward</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark"><span data-i18n="reward">Reward</span></th>
         </tr></thead>
         <tbody><tr>
         <td><strong>${placeString}</strong></td>
@@ -426,9 +426,9 @@ function gbTabNotSafe(...args) {
         <caption class="visually-hidden"><span data-i18n="donation">GB Donation</span></caption>
         <thead><tr>
         <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
-        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Lock</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark"><span data-i18n="lock">Lock</span></th>
         <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">${cfg.currentPercent / 100}</th>
-        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Reward</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark"><span data-i18n="reward">Reward</span></th>
         </tr></thead>
         <tbody><tr>
         <td><strong>${placeString}</strong></td>
@@ -470,9 +470,9 @@ function gbTabEmpty(...args) {
         <caption class="visually-hidden"><span data-i18n="donation">GB Donation</span></caption>
         <thead><tr>
         <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">#</th>
-        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Lock</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark"><span data-i18n="lock">Lock</span></th>
         <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">${cfg.currentPercent / 100}</th>
-        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark">Reward</th>
+        <th scope="col" class="border border-top-0 border-left-0 border-right-0 border-dark"><span data-i18n="reward">Reward</span></th>
         </tr></thead>
         <tbody><tr>
         <td><strong>-</strong></td>

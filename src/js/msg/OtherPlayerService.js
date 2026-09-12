@@ -24,6 +24,9 @@ let showOptionsPkg;
 let castleSystemService = null;
 let storage = null;
 
+const { createLogger } = require('../utils/logger.js');
+const logger = createLogger('OtherPlayerService');
+
 try {
   storage = require('../fn/storage.js');
 } catch {}
@@ -265,7 +268,9 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
           try {
             const { setMyScore } = require('../state/state.js');
             if (typeof setMyScore === 'function') setMyScore(scoreNum);
-          } catch {}
+          } catch (err) {
+            logger.warn('setMyScore failed', err);
+          }
           if (storage && typeof storage.set === 'function') {
             storage.set('playerScore', scoreNum);
           }
@@ -278,7 +283,9 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
             if (worldId && storage?.set) {
               storage.set(`world:${worldId}.playerScore`, scoreNum);
             }
-          } catch {}
+          } catch (err) {
+            logger.warn('world score persist failed', err);
+          }
           try {
             const {
               renderLiveCityStats,
@@ -286,7 +293,9 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
             if (typeof renderLiveCityStats === 'function') {
               renderLiveCityStats();
             }
-          } catch {}
+          } catch (err) {
+            logger.warn('score re-render failed', err);
+          }
         }
       }
     });

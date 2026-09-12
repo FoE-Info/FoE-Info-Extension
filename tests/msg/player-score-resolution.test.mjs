@@ -148,25 +148,132 @@ test('Player score resolution and persistence', async (t) => {
   });
 
   await t.test(
-    'storage cache fallback populates score when user_data has 0 score',
+    'resolvePlayerScore falls back to sync storage cache when user_data has 0 score',
     () => {
+      const {
+        resolvePlayerScore,
+      } = require('../../src/js/state/playerScoreResolver.js');
+
       storage.set('playerScore', 87654321);
       const parsedUser = parseUserAccount({
         user_name: 'TestHero',
         player_id: 42,
         score: 0,
       });
-      if (!parsedUser.score || parsedUser.score === 0) {
-        const cached = storage.getSync('playerScore');
-        if (cached && Number(cached) > 0) {
-          parsedUser.score = Number(cached);
-        }
-      }
+
+      resolvePlayerScore(
+        parsedUser,
+        { player_id: 42 },
+        {
+          getSync: (key) => storage.getSync(key),
+          get: (_key, cb) => cb(null, null),
+          setMyScore,
+        },
+      );
+
       assert.equal(
         parsedUser.score,
         87654321,
-        'storage cache should populate player score',
+        'storage cache should populate player score via resolver',
       );
+    },
+  );
+
+  await t.test(
+    'resolvePlayerScore consults world-scoped cache key after the global key',
+    () => {
+      const {
+        resolvePlayerScore,
+      } = require('../../src/js/state/playerScoreResolver.js');
+      const keys = [];
+
+      const parsedUser = parseUserAccount({
+        user_name: 'WorldHero',
+        player_id: 43,
+        score: 0,
+      });
+      resolvePlayerScore(
+        parsedUser,
+        { world_id: 'en7' },
+        {
+          getSync: (key) => {
+            keys.push(key);
+            return null;
+          },
+          get: () => {},
+        },
+      );
+
+      assert.deepEqual(keys, ['playerScore', 'world:en7.playerScore']);
+    },
+  );
+
+  await t.test(
+    'resolvePlayerScore applies async cache fallback and triggers re-render',
+    () => {
+      const {
+        resolvePlayerScore,
+      } = require('../../src/js/state/playerScoreResolver.js');
+      const parsedUser = parseUserAccount({
+        user_name: 'AsyncHero',
+        player_id: 44,
+        score: 0,
+      });
+      let scored = 0;
+      let rendered = 0;
+
+      resolvePlayerScore(
+        parsedUser,
+        { player_id: 44 },
+        {
+          getSync: () => null,
+          get: (_key, cb) => cb(null, 4242),
+          setMyScore: (value) => {
+            scored = value;
+          },
+          renderLiveCityStats: () => {
+            rendered++;
+          },
+        },
+      );
+
+      assert.equal(scored, 4242, 'setMyScore should receive cached score');
+      assert.equal(rendered, 1, 'resolver should re-render once');
+      assert.equal(parsedUser.score, 4242, 'parsed score should be updated');
+    },
+  );
+
+  await t.test(
+    'resolvePlayerScore ignores non-positive async cache values',
+    () => {
+      const {
+        resolvePlayerScore,
+      } = require('../../src/js/state/playerScoreResolver.js');
+      const parsedUser = parseUserAccount({
+        user_name: 'ZeroHero',
+        player_id: 45,
+        score: 0,
+      });
+      let scored = -1;
+
+      resolvePlayerScore(
+        parsedUser,
+        { player_id: 45 },
+        {
+          getSync: () => null,
+          get: (_key, cb) => cb(null, 0),
+          setMyScore: (value) => {
+            scored = value;
+          },
+        },
+      );
+
+      assert.equal(
+        scored,
+        -1,
+        'setMyScore must not be called for invalid value',
+      );
+      assert.equal(parsedUser.score, 0, 'parsed score stays 0');
     },
   );
 

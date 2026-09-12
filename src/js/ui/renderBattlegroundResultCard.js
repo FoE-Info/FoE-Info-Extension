@@ -116,9 +116,9 @@ function buildBattlegroundResultCardHTML(responseData = {}, options = {}) {
     copyBtn +
     `<div id="battlegroundTextCollapse" class="table-responsive resize-both collapse ${
       isCollapsed ? '' : 'show'
-    }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table w-100"><caption class="visually-hidden"><span data-i18n="battles">Battles</span></caption><thead><tr><th scope="col" class="text-center">Rank</th><th scope="col" class="text-start">Member</th><th scope="col" class="text-center">Negs</th><th scope="col" class="text-center">Fights</th><th scope="col" class="text-center">Attrition</th></tr></thead><tbody>` +
+    }"><div class="overflow-y" id="battlegroundText"><table id="gbg-table" class="gbg-table w-100"><caption class="visually-hidden"><span data-i18n="member_activity">Member Activity</span></caption><thead><tr><th scope="col" class="text-center"><span data-i18n="rank">Rank</span></th><th scope="col" class="text-start"><span data-i18n="member">Member</span></th><th scope="col" class="text-center"><span data-i18n="neg">Negs</span></th><th scope="col" class="text-center"><span data-i18n="fights">Fights</span></th><th scope="col" class="text-center"><span data-i18n="attrition">Attrition</span></th></tr></thead><tbody>` +
     rowsHTML +
-    `</tbody><tfoot><tr><th scope="col"></th><th scope="col" class="text-start">Guild Total</th><th scope="col" class="text-center">${totalNegs}</th><th scope="col" class="text-center">${totalFights}</th><th scope="col"></th></tr></tfoot></table></div></div></div>`
+    `</tbody><tfoot><tr><th scope="col"></th><th scope="col" class="text-start"><span data-i18n="guild_total">Guild Total</span></th><th scope="col" class="text-center">${totalNegs}</th><th scope="col" class="text-center">${totalFights}</th><th scope="col"></th></tr></tfoot></table></div></div></div>`
   );
 }
 

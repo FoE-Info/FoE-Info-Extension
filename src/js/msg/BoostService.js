@@ -8,6 +8,8 @@
 
 const BigNumber = require('bignumber.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
+const { createLogger } = require('../utils/logger.js');
+const logger = createLogger('BoostService');
 
 const KNOWN_FEATURES = [
   'all',
@@ -271,7 +273,9 @@ class BoostService {
       for (const listener of this.listeners) {
         try {
           listener(msg, this);
-        } catch {}
+        } catch (err) {
+          logger.warn('boost update listener failed', err);
+        }
       }
     }
 
