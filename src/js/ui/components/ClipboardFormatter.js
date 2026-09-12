@@ -6,17 +6,23 @@
 
 function formatStatsText(card, prefix) {
   if (!card) return '';
-  const strong = card.querySelector('strong');
-  const rows = Array.from(card.querySelectorAll(`#${prefix}Text > div > div`));
-  const lines = [];
+  const body = card.querySelector(`#${prefix}Text .foe-panel-body`);
+  if (!body) return '';
 
-  if (strong?.textContent?.trim()) {
-    lines.push(strong.textContent.trim());
+  const lines = [];
+  for (const row of Array.from(body.children)) {
+    if (row.classList?.contains('foe-section-header')) {
+      const label = row.textContent?.trim();
+      if (label) lines.push('', `${label}:`);
+      continue;
+    }
+    const clone = row.cloneNode(true);
+    clone
+      .querySelectorAll('.material-icons-outlined, .material-symbols-outlined')
+      .forEach((icon) => icon.remove());
+    const text = clone.textContent?.trim();
+    if (text) lines.push(text);
   }
-  rows.forEach((r) => {
-    const t = r.textContent?.trim();
-    if (t) lines.push(t);
-  });
 
   return lines.join('\n');
 }

@@ -216,6 +216,26 @@ p,
   margin: 0.25rem 0 0.5rem;
 }
 
+// Collapsed cards show the player identity in the header instead of the
+// static "City Overview" title. The body still renders the identity row;
+// only the visible header label/icon swaps with the collapse state.
+.foe-title-collapsed,
+.foe-header-info {
+  display: none;
+}
+
+.foe-original-card:has(> .collapse:not(.show)) .foe-title-expanded {
+  display: none;
+}
+
+.foe-original-card:has(> .collapse:not(.show)) .foe-title-collapsed {
+  display: inline;
+}
+
+.foe-original-card:has(> .collapse:not(.show)) .foe-header-info {
+  display: inline-flex;
+}
+
 .foe-copy-btn {
   cursor: pointer;
   user-select: none;

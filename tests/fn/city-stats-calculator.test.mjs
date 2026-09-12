@@ -283,7 +283,7 @@ test('renderCityStats - Dashboard UI Rendering & Unblurred Parity', async (t) =>
       // Title toggles collapse; player identity renders in the card body
       assert.match(
         html,
-        /<strong[^>]*data-bs-toggle="collapse"[^>]*><span data-i18n="city_overview">City Overview<\/span><\/strong>/,
+        /<strong[^>]*data-bs-toggle="collapse"[^>]*><span class="foe-title-expanded"><span data-i18n="city_overview">City Overview<\/span><\/span>/,
       );
       assert.ok(html.includes('[EN7] TestCommander'));
       assert.ok(
