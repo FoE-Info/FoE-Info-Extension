@@ -17,6 +17,12 @@ label {
   display: block;
 }
 
+input[type='checkbox']:not(.form-check-input),
+input[type='radio']:not(.form-check-input) {
+  accent-color: var(--bs-primary);
+  color-scheme: light;
+}
+
 div.card {
   margin: 12px auto 16px auto;
 }
