@@ -11,11 +11,10 @@
  * or else visit https://www.gnu.org/licenses/#AGPL
  * ________________________________________________________________
  */
-import * as helper from '../fn/helper.js';
 import { showReward } from '../fn/RewardRenderer.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
-import { MilitaryDefs, rewardsArmy, rewardsCity } from '../vars/state.js';
+import { MilitaryDefs } from '../vars/state.js';
 import { updateGalaxy } from './StartupService.js';
 
 const logger = createLogger('CityProductionService');
@@ -24,59 +23,63 @@ export function pickupProduction(msg) {
   const resp = msg?.responseData;
   if (!resp) return;
 
+  const rewardsEnabled = showOptions.showRewards;
+
   if (Array.isArray(resp.militaryProducts) && resp.militaryProducts.length) {
-    const units = resp.militaryProducts;
-    units.forEach((unit) => {
+    resp.militaryProducts.forEach((unit) => {
       if (!unit) return;
       const unitId = unit.unitTypeId;
       const name =
         (unitId && MilitaryDefs[unitId]?.name) || unitId || 'Unknown Unit';
       logger.debug('Military unit pickup:', unitId, name);
-      if (rewardsArmy[name]) rewardsArmy[name]++;
-      else rewardsArmy[name] = 1;
+      if (rewardsEnabled) {
+        showReward('cityProductionArmy', { name, amount: 1, type: 'unit' });
+      }
     });
   }
+
   if (Array.isArray(resp.updatedEntities) && resp.updatedEntities.length) {
-    const rewards = resp.updatedEntities;
-    rewards.forEach((reward) => {
+    resp.updatedEntities.forEach((reward) => {
       if (!reward) return;
       updateGalaxy(reward);
+
       const resources = reward.state?.current_product?.product?.resources;
       if (resources && typeof resources === 'object') {
         Object.keys(resources).forEach((resource) => {
-          const name = helper.fResourceShortName(resource);
           const amt = Number(resources[resource]) || 0;
-          if (rewardsCity[name]) rewardsCity[name] += amt;
-          else rewardsCity[name] = amt;
+          if (amt && rewardsEnabled) {
+            showReward('cityProductionCity', {
+              subType: resource,
+              type: 'resource',
+              amount: amt,
+            });
+          }
         });
       }
-      if (
-        reward.state &&
-        reward.state.productionOption &&
-        reward.state.productionOption.products
-      ) {
+
+      if (reward.state?.productionOption?.products) {
         const prodList =
           Array.isArray(reward.state.productionOption.products) ?
             reward.state.productionOption.products
           : reward.state.productionOption.products.array || [];
 
         prodList.forEach((element) => {
-          if (
-            element &&
-            element.playerResources &&
-            element.playerResources.resources
-          ) {
+          if (element?.playerResources?.resources) {
             Object.keys(element.playerResources.resources).forEach(
               (resource) => {
-                const name = helper.fResourceShortName(resource);
                 const resQty =
                   element.playerResources.resources[resource] ??
                   reward.state?.current_product?.product?.resources?.[
                     resource
                   ] ??
                   0;
-                if (rewardsCity[name]) rewardsCity[name] += resQty;
-                else rewardsCity[name] = resQty;
+                if (resQty && rewardsEnabled) {
+                  showReward('cityProductionCity', {
+                    subType: resource,
+                    type: 'resource',
+                    amount: resQty,
+                  });
+                }
               },
             );
           }
@@ -84,14 +87,6 @@ export function pickupProduction(msg) {
       }
     });
   }
-  logger.debug('Rewards city updated:', rewardsCity);
-  var reward = {
-    source: 'pickupProduction',
-    name: '',
-    amount: 0,
-  };
 
-  if (showOptions.showRewards) {
-    showReward(reward);
-  }
+  logger.debug('City production pickup routed through showReward');
 }
