@@ -1,0 +1,451 @@
+{
+  "requestSamples": [
+    [
+      "e2",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "low"
+      }
+    ],
+    [
+      "g2",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "medium"
+      }
+    ],
+    [
+      "g4",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "high"
+      }
+    ],
+    [
+      "e4",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "avoid"
+      }
+    ],
+    [
+      "e10",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "low"
+      }
+    ],
+    [
+      "e8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "medium"
+      }
+    ],
+    [
+      "g8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "medium"
+      }
+    ],
+    [
+      "g8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "none"
+      }
+    ],
+    [
+      "g8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "high"
+      }
+    ],
+    [
+      "g10",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "avoid"
+      }
+    ],
+    [
+      "g10",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "none"
+      }
+    ],
+    [
+      "g10",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "high"
+      }
+    ],
+    [
+      "e10",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "high"
+      }
+    ],
+    [
+      "g4",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "avoid"
+      }
+    ],
+    [
+      "e8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "avoid"
+      }
+    ],
+    [
+      "g8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "avoid"
+      }
+    ],
+    [
+      "e2",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "low"
+      }
+    ],
+    [
+      "g2",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "medium"
+      }
+    ],
+    [
+      "g4",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "high"
+      }
+    ],
+    [
+      "e4",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "avoid"
+      }
+    ],
+    [
+      "e10",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "low"
+      }
+    ],
+    [
+      "e8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "medium"
+      }
+    ],
+    [
+      "g8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "medium"
+      }
+    ],
+    [
+      "g8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "none"
+      }
+    ],
+    [
+      "g8",
+      {
+        "__enum__": "GuildRaidsNodeIndicator",
+        "value": "high"
+      }
+    ]
+  ],
+  "responseSamples": [
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    },
+    {
+      "__class__": "Success"
+    }
+  ]
+}

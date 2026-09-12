@@ -3,6 +3,7 @@
 **Date**: 2026-09-12  
 **Harness**: OpenCode Execution Task  
 **Delegation Target**: OpenCode Multi-Domain Squad  
+**Status**: Executed — Phase 1 & 2 complete; Phase 3 architecture complete (implementation pending). See the [execution record](#6-execution-record-2026-09-12) and [`2026-09-12-quantum-incursions-architecture.md`](2026-09-12-quantum-incursions-architecture.md).  
 **Safety Invariant**: `docs/har/*.har` must **NEVER** be committed to Git (`.gitignore` strictly enforced).
 
 ---
@@ -198,3 +199,34 @@ flowchart TD
    ```bash
    npm run verify
    ```
+
+---
+
+## 6. Execution Record (2026-09-12)
+
+**Phase 1 — Ingestion (complete).** `scripts/ingest-hars-to-metadata.mjs`
+(`npm run metadata:extract-hars`) streamed all 39 captures (5,644 entries,
+1,468 game RPC responses, 88 unique RPCs) into `../metadata-store/extracts/`
+(18 domain bundles, 13 visited cities, 31 MB) in ~101 s. Baseline
+`entities/`, `rpc/`, `manifest.json`, and `raw_rpc_capture.json` were untouched
+and `git ls-files docs/har` = 0. Fixtures mirrored non-destructively to
+`tests/fixtures/visits/` and `tests/fixtures/rpc/har/`.
+
+**Phase 2 — Ground truth (complete).**
+
+| Track                                         | Outcome                                                                                                                     | Regression                                   |
+| :-------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
+| 2.1 GBG construction/destruction/rushed camps | Payload shapes and `readyAt` timers confirmed; `gainAttritionChance` rush promotion correct                                 | `tests/msg/har-gbg-ground-truth.test.mjs`    |
+| 2.2 GBG focus markers / stop signs            | `setSignal=[provinceId,"focus"\|"ignore"]`, `removeSignal=[provinceId]` confirmed                                           | same suite                                   |
+| 2.3 Treasury 10-page donations                | **Bug fixed**: pages overwrote each other (real `count` 29,385); now accumulates by offset + parses `player_id`/`createdAt` | `tests/msg/har-treasury-pagination.test.mjs` |
+| 2.4 13 visited cities                         | Deterministic, no-throw parsing                                                                                             | `tests/fn/har-visited-cities.test.mjs`       |
+| 2.5 Marketplace / inventory                   | Payloads extracted (`economy/`) — deeper audit deferred                                                                     | —                                            |
+
+**Phase 3 — QI architecture (complete).** Protocol contracts and the Slice 1–3
+module roadmap are captured in
+[`2026-09-12-quantum-incursions-architecture.md`](2026-09-12-quantum-incursions-architecture.md);
+no QI `src/` code has been written yet.
+
+**Verification.** `npm run verify` exit 0 — 871/871 tests, prettier clean,
+eslint 0 errors, dev build compiles. Metadata graph rebuilt and relabeled with
+the DeepSeek backend (748 communities, 0 placeholders).

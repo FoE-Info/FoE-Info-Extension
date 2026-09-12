@@ -1,0 +1,823 @@
+{
+  "updatedEntities": [
+    {
+      "id": 39639,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 512,
+      "y": 500,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39640,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 514,
+      "y": 500,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39642,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 512,
+      "y": 502,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39643,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 514,
+      "y": 502,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39645,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 512,
+      "y": 504,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39646,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 514,
+      "y": 504,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39648,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 512,
+      "y": 506,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39649,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 514,
+      "y": 506,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39652,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 514,
+      "y": 508,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39653,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 514,
+      "y": 510,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39654,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 512,
+      "y": 510,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39657,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 512,
+      "y": 512,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39658,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 514,
+      "y": 512,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39660,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 512,
+      "y": 514,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39663,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 512,
+      "y": 516,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39664,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 514,
+      "y": 516,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39665,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 510,
+      "y": 518,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39666,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 512,
+      "y": 518,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    },
+    {
+      "id": 39667,
+      "player_id": 7560963,
+      "cityentity_id": "W_GuildRaidsLateMiddleAge_Residential1",
+      "type": "generic_building",
+      "x": 514,
+      "y": 518,
+      "state": {
+        "next_state_transition_in": 36000,
+        "next_state_transition_at": 1789206102,
+        "productionOption": {
+          "asset": "production_icon_guild_raids_residential_1_money",
+          "name": "Quantum Coins",
+          "time": 36000,
+          "products": [
+            {
+              "type": "resources",
+              "flags": [],
+              "playerResources": {
+                "resources": {
+                  "guild_raids_money": 3750,
+                  "guild_raids_chrono_alloy": 10
+                },
+                "__class__": "Resources"
+              },
+              "__class__": "ResourceProduct"
+            }
+          ],
+          "instantFinishAllowed": true,
+          "instantFinishCost": {
+            "resources": {
+              "guild_raids_currency": 50
+            },
+            "__class__": "Resources"
+          },
+          "__class__": "ProductionOption"
+        },
+        "__class__": "ProducingState"
+      },
+      "level": 22,
+      "bonuses": [],
+      "__class__": "CityMapEntity"
+    }
+  ],
+  "militaryProducts": [],
+  "__class__": "CityProductionResult"
+}

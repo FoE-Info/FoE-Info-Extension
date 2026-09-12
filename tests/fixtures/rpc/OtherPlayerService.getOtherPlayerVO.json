@@ -1,0 +1,27 @@
+{
+  "player_id": 849336010,
+  "name": "Plaristocrates",
+  "avatar": "addon_portrait_id_hal25_3",
+  "score": 15901555473,
+  "rank": 2,
+  "profile_text": "Shiver me timbers.... Take a gander at ma trades",
+  "city_name": "Clacker Central",
+  "clan_id": 26891,
+  "clan": {
+    "id": 26891,
+    "name": "FightClub⚔️👊😎☕",
+    "membersNum": 71,
+    "flag": "premium_flag_6",
+    "description": "Are you the next top Greifental fighter? \n\rJoin the best bruisers this world has seen to find out! 👊😉\r\rTo become a Clubber, you need to be:\r\r* Future Era upwards\r* An active and insatiable fighting machine \r* Always wanting to grow and strive to be the best\r* Keen to be part of a dynamic team\r\rAnd you should have:\r\r* Arc level 80 (preferably level 100+)\r* At least two guild-goods GBs as well as Arc\r(e.g. Obs; AIC; Hydra) or be willing to build and level up\r\rPlus you should be able to:\r\r* Complete GE 4 (and GE 5 if possible - because \rthe Forgotten Temple is REALLY worth having!)\r* Step up during GbG seasons and Quantum Incursions and give it your all!\r\rThe FightClub⚔️ perks:\r\r* Guidance, support and a wealth of knowledge\rfrom some of the best FoE players\r* Full Arc Boost (Break Even) thread for all GBs\r(70% of our players have Arc 180)\r* A Blitz (Power Levelling) thread\r* Trade and Mud threads\r* External 1.9 thread available if desired\r* The legendary FightClub⚔️ atmosphere 😁\r\rIf you think you have what it takes and are...\rAged 18+ with a SoH (Sense of Humour)\r(because we are a naughty bunch 😛) then…\r\rPlease contact one of our founders or leaders, or request to join via Application. \r\r⚜️We all have potential within us, some more than others, but no one is born a champion. To become a champion - of anything - requires commitment, training, strength, education, dedication and massive effort.⚜️\r\rWe Are FightClub⚔️\rWe Fight For FC \rFor Fun & Carnage!🗡️😜\n\nFounded from scratch by the one and only Boa in March 2022, followed by the cat, the faithful dog, the viking and the panda.\nRebooted: December 2022",
+    "settings": {
+      "join": "application",
+      "__class__": "ClanSettings"
+    },
+    "treasury_id": 994771,
+    "__class__": "Clan"
+  },
+  "has_great_building": true,
+  "is_active": true,
+  "era": "SpaceAgeSpaceHub",
+  "__class__": "Player"
+}

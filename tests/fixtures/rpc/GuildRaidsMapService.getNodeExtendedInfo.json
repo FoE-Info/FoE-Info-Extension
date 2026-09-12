@@ -1,0 +1,126 @@
+{
+  "actionProgress": 10,
+  "reward": {
+    "reward": {
+      "type": "chest",
+      "subType": "",
+      "amount": 1,
+      "id": "normal_node_middle_ages_raid5_10",
+      "name": "Normal Node Reward",
+      "iconAssetName": "guild_raids_banner_reward_chest",
+      "flags": [],
+      "boostValue": 1,
+      "possible_rewards": [
+        {
+          "drop_chance": 5,
+          "reward": {
+            "type": "resource",
+            "subType": "guild_raids_money",
+            "amount": 26000,
+            "id": "resource#guild_raids_money#26000",
+            "name": "26,000 Quantum Coins",
+            "description": "Quantum Coins can be gained from the Quantum Settlement and as Node Rewards. They will reset after every Quantum Incursion season.",
+            "iconAssetName": "guild_raids_money",
+            "flags": [],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "__class__": "GenericChestReward"
+        },
+        {
+          "drop_chance": 5,
+          "reward": {
+            "type": "resource",
+            "subType": "guild_raids_supplies",
+            "amount": 26000,
+            "id": "resource#guild_raids_supplies#26000",
+            "name": "26,000 Quantum Supplies",
+            "description": "Quantum Supplies can be gained from the Quantum Settlement and as Node Rewards. They will reset after every Quantum Incursion season.",
+            "iconAssetName": "guild_raids_supplies",
+            "flags": [],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "__class__": "GenericChestReward"
+        },
+        {
+          "drop_chance": 15,
+          "reward": {
+            "type": "resource",
+            "subType": "guild_raids_currency",
+            "amount": 25,
+            "id": "resource#guild_raids_currency#25",
+            "name": "25 Quantum Shards",
+            "description": "Quantum Shards can be gained from the Quantum Pass. This special resource is used for special actions like skipping production times. Quantum Shards will reset after a Quantum Championship.",
+            "iconAssetName": "guild_raids_currency",
+            "flags": [],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "__class__": "GenericChestReward"
+        },
+        {
+          "drop_chance": 10,
+          "reward": {
+            "type": "resource",
+            "subType": "guild_raids_medals",
+            "amount": 5000,
+            "id": "resource#guild_raids_medals#5000",
+            "name": "5,000 Quantum Medals",
+            "description": "Quantum Medals can be obtained as rewards in Quantum Incursions. Use them to buy Quantum Expansions for your City.",
+            "iconAssetName": "guild_raids_medals",
+            "flags": [],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "__class__": "GenericChestReward"
+        },
+        {
+          "drop_chance": 20,
+          "reward": {
+            "type": "resource",
+            "subType": "strategy_points",
+            "amount": 20,
+            "id": "resource#strategy_points#20",
+            "name": "20 Forge Points",
+            "description": "Use Forge Points to research technologies or contribute them to Great Buildings.",
+            "iconAssetName": "forgepoints",
+            "flags": [],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "__class__": "GenericChestReward"
+        },
+        {
+          "drop_chance": 45,
+          "reward": {
+            "type": "resource",
+            "subType": "guild_raids_lunar_coin",
+            "amount": 1050,
+            "id": "resource#guild_raids_lunar_coin#1050",
+            "name": "1,050 Lunar Coins",
+            "description": "Collect Lunar Coins as a reward in the Quantum Incursions. This currency does not expire.",
+            "iconAssetName": "guild_raids_lunar_coin",
+            "flags": [],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "__class__": "GenericChestReward"
+        }
+      ],
+      "__class__": "GenericChest"
+    },
+    "rewardChance": 40,
+    "__class__": "GuildRaidsMapNodeReward"
+  },
+  "contributorsCount": 1,
+  "preferredUnitIds": [],
+  "preferredUnitMultiplier": 1,
+  "cost": {
+    "resources": {
+      "guild_raids_action_points": 3500
+    },
+    "__class__": "Resources"
+  },
+  "__class__": "GuildRaidsMapNodeExtendedFightInfo"
+}

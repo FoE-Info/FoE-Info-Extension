@@ -1,0 +1,2824 @@
+{
+  "description": "GBG building destruction actions and resulting sector snapshots.",
+  "captures": [
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:39:01.442Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 57,
+      "requestData": [
+        9
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165111,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789175966,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 2893,
+                "stel_glyph_circuits": 2,
+                "dark_energy_battery": 5
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "platinum_crystals": 1965,
+                "cryptocash": 675,
+                "nickel": 2560
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "silver_crystals": 2483,
+                "stel_resonance_cores": 1840,
+                "stel_xenocrystals": 2677
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "deep_space_data": 1170,
+                "oxygen_pills": 808,
+                "stel_resonance_cores": 822
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "compound_fluid": 4729,
+                "stel_glyph_circuits": 165,
+                "textiles": 106
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "compressed_matter_capsule": 5476,
+                "red_algae": 170,
+                "stel_metamorphic_alloys": 1154
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "nanites": 28,
+                "textiles": 412,
+                "deep_space_data": 60
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "deep_space_data": 66,
+                "stel_metamorphic_alloys": 434
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 212,
+                "oxygen_pills": 1702,
+                "superalloys": 1086
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "silver_crystals": 4269,
+                "red_algae": 1459,
+                "deep_space_data": 72
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 7658,
+                "hypersleep_modules": 950,
+                "bromine": 1792
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 8141,
+                "stel_glyph_circuits": 1147,
+                "stel_metamorphic_alloys": 4712
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 9,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:39:05.204Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 61,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165953,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789176793,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:39:09.934Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 65,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165953,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789176793,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:39:15.589Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "destroy",
+      "requestId": 68,
+      "requestData": [
+        7,
+        1
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:39:16.858Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "destroy",
+      "requestId": 69,
+      "requestData": [
+        7,
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "built 2 buildings in empty sector.har",
+      "capturedAt": "2026-09-11T23:39:28.441Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 71,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "freeSlots": 2,
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:39:01.442Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 57,
+      "requestData": [
+        9
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165111,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789175966,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 2893,
+                "stel_glyph_circuits": 2,
+                "dark_energy_battery": 5
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "platinum_crystals": 1965,
+                "cryptocash": 675,
+                "nickel": 2560
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "silver_crystals": 2483,
+                "stel_resonance_cores": 1840,
+                "stel_xenocrystals": 2677
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "deep_space_data": 1170,
+                "oxygen_pills": 808,
+                "stel_resonance_cores": 822
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "compound_fluid": 4729,
+                "stel_glyph_circuits": 165,
+                "textiles": 106
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "compressed_matter_capsule": 5476,
+                "red_algae": 170,
+                "stel_metamorphic_alloys": 1154
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "nanites": 28,
+                "textiles": 412,
+                "deep_space_data": 60
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "deep_space_data": 66,
+                "stel_metamorphic_alloys": 434
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 212,
+                "oxygen_pills": 1702,
+                "superalloys": 1086
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "silver_crystals": 4269,
+                "red_algae": 1459,
+                "deep_space_data": 72
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 7658,
+                "hypersleep_modules": 950,
+                "bromine": 1792
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 8141,
+                "stel_glyph_circuits": 1147,
+                "stel_metamorphic_alloys": 4712
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 9,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:39:05.204Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 61,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165953,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789176793,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:39:09.934Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 65,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165953,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789176793,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:39:15.589Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "destroy",
+      "requestId": 68,
+      "requestData": [
+        7,
+        1
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:39:16.858Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "destroy",
+      "requestId": 69,
+      "requestData": [
+        7,
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:39:28.441Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 71,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "freeSlots": 2,
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "camps rushed with diamonds by me (not sure if this is logged in network).har",
+      "capturedAt": "2026-09-11T23:40:00.110Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 77,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789180780,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789177181,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:39:01.442Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 57,
+      "requestData": [
+        9
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165111,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789175966,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 2893,
+                "stel_glyph_circuits": 2,
+                "dark_energy_battery": 5
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "platinum_crystals": 1965,
+                "cryptocash": 675,
+                "nickel": 2560
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "silver_crystals": 2483,
+                "stel_resonance_cores": 1840,
+                "stel_xenocrystals": 2677
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "deep_space_data": 1170,
+                "oxygen_pills": 808,
+                "stel_resonance_cores": 822
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "compound_fluid": 4729,
+                "stel_glyph_circuits": 165,
+                "textiles": 106
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "compressed_matter_capsule": 5476,
+                "red_algae": 170,
+                "stel_metamorphic_alloys": 1154
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "nanites": 28,
+                "textiles": 412,
+                "deep_space_data": 60
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "deep_space_data": 66,
+                "stel_metamorphic_alloys": 434
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 212,
+                "oxygen_pills": 1702,
+                "superalloys": 1086
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "silver_crystals": 4269,
+                "red_algae": 1459,
+                "deep_space_data": 72
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 7658,
+                "hypersleep_modules": 950,
+                "bromine": 1792
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 8141,
+                "stel_glyph_circuits": 1147,
+                "stel_metamorphic_alloys": 4712
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 9,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:39:05.204Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 61,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165953,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789176793,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:39:09.934Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 65,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165953,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789176793,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:39:15.589Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "destroy",
+      "requestId": 68,
+      "requestData": [
+        7,
+        1
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "destroyed 2 GBG Buildings.har",
+      "capturedAt": "2026-09-11T23:39:16.858Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "destroy",
+      "requestId": 69,
+      "requestData": [
+        7,
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:39:01.442Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 57,
+      "requestData": [
+        9
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165111,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789175966,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 2893,
+                "stel_glyph_circuits": 2,
+                "dark_energy_battery": 5
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "platinum_crystals": 1965,
+                "cryptocash": 675,
+                "nickel": 2560
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "silver_crystals": 2483,
+                "stel_resonance_cores": 1840,
+                "stel_xenocrystals": 2677
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "deep_space_data": 1170,
+                "oxygen_pills": 808,
+                "stel_resonance_cores": 822
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "compound_fluid": 4729,
+                "stel_glyph_circuits": 165,
+                "textiles": 106
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "compressed_matter_capsule": 5476,
+                "red_algae": 170,
+                "stel_metamorphic_alloys": 1154
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "nanites": 28,
+                "textiles": 412,
+                "deep_space_data": 60
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "deep_space_data": 66,
+                "stel_metamorphic_alloys": 434
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 212,
+                "oxygen_pills": 1702,
+                "superalloys": 1086
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "silver_crystals": 4269,
+                "red_algae": 1459,
+                "deep_space_data": 72
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 7658,
+                "hypersleep_modules": 950,
+                "bromine": 1792
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 8141,
+                "stel_glyph_circuits": 1147,
+                "stel_metamorphic_alloys": 4712
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 9,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:39:05.204Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 61,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165953,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789176793,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:39:09.934Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 65,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [
+          {
+            "id": "barracks_reinforced",
+            "readyAt": 1789165953,
+            "__class__": "GuildBattlegroundBuilding"
+          },
+          {
+            "id": "barracks_improvised",
+            "slotId": 1,
+            "readyAt": 1789176793,
+            "__class__": "GuildBattlegroundBuilding"
+          }
+        ],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:39:15.589Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "destroy",
+      "requestId": 68,
+      "requestData": [
+        7,
+        1
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:39:16.858Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "destroy",
+      "requestId": 69,
+      "requestData": [
+        7,
+        0
+      ],
+      "responseData": {
+        "__class__": "Success"
+      }
+    },
+    {
+      "sourceHar": "opened a empty sector with no buildings in it.har",
+      "capturedAt": "2026-09-11T23:39:28.441Z",
+      "requestClass": "GuildBattlegroundBuildingService",
+      "requestMethod": "getBuildings",
+      "requestId": 71,
+      "requestData": [
+        7
+      ],
+      "responseData": {
+        "placedBuildings": [],
+        "availableBuildings": [
+          {
+            "buildingId": "guild_command_post_improvised",
+            "costs": {
+              "resources": {
+                "topological_records": 2465,
+                "bromine": 420,
+                "isolated_molecules": 15
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_forward",
+            "costs": {
+              "resources": {
+                "stel_metamorphic_alloys": 2884,
+                "oxygen_pills": 431,
+                "coke": 1885
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "guild_command_post_fortified",
+            "costs": {
+              "resources": {
+                "deep_space_data": 4478,
+                "dark_energy_battery": 1408,
+                "semiconductors": 1114
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_improvised",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 571,
+                "compound_fluid": 1616,
+                "tinplate": 613
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks",
+            "costs": {
+              "resources": {
+                "stel_psionic_conduits": 2755,
+                "hypersleep_modules": 2245
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "barracks_reinforced",
+            "costs": {
+              "resources": {
+                "hypersleep_modules": 876,
+                "stel_xenocrystals": 2115,
+                "stel_metamorphic_alloys": 3809
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "watchtower",
+            "costs": {
+              "resources": {
+                "stel_glyph_circuits": 325,
+                "experimental_data": 175
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "decoys",
+            "costs": {
+              "resources": {
+                "cryptocash": 330,
+                "golden_rice": 13,
+                "stel_psionic_conduits": 157
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "traps",
+            "costs": {
+              "resources": {
+                "superconductors": 360,
+                "stel_resonance_cores": 2288,
+                "stel_psionic_conduits": 352
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "basic_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "stel_resonance_cores": 4034,
+                "nanowire": 1627,
+                "oxygen_pills": 139
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "regular_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "liquid_binder": 1677,
+                "stel_psionic_conduits": 4243,
+                "biogeochemical_data": 4480
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          },
+          {
+            "buildingId": "advanced_field_outpost_diamond",
+            "costs": {
+              "resources": {
+                "textiles": 940,
+                "compound_fluid": 2552,
+                "explosives": 10508
+              },
+              "__class__": "Resources"
+            },
+            "__class__": "GuildBattlegroundBuildingCost"
+          }
+        ],
+        "freeSlots": 2,
+        "provinceId": 7,
+        "__class__": "GuildBattlegroundProvinceBuildings"
+      }
+    }
+  ]
+}

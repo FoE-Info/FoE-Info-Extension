@@ -5,9 +5,11 @@
  * Centralizes the near-duplicate data/context extraction previously inlined in
  * GuildBattlegroundService.setSignal, removeSignal, and updateSignal.
  */
-import { createLogger } from '../utils/logger.js';
-
-const logger = createLogger('GbgSignalPayloadHandler');
+let logger = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('GbgSignalPayloadHandler');
+} catch {}
 
 function resolveRequestPayloadItems(context) {
   if (Array.isArray(context?.requestPayload)) return context.requestPayload;
@@ -38,7 +40,7 @@ function resolvePostText(context) {
  * @param {string} requestMethod RPC method used to match postData request items
  * @returns {Array} resolved data array (never null)
  */
-export function resolveSignalData(msg, payload, context, requestMethod) {
+function resolveSignalData(msg, payload, context, requestMethod) {
   let data =
     Array.isArray(payload) && payload.length > 0 ? payload
     : Array.isArray(msg?.requestData) && msg.requestData.length > 0 ?
@@ -121,7 +123,7 @@ function resolveCandidateObject(msg, payload) {
  * Resolves provinceId and signal type from the data array or an object payload.
  * @returns {{provinceId: (number|undefined), signalType: (string|undefined)}}
  */
-export function resolveSignalTarget(msg, payload, data) {
+function resolveSignalTarget(msg, payload, data) {
   let provinceId = Array.isArray(data) ? data[0] : undefined;
   let signalType = Array.isArray(data) ? data[1] : undefined;
 
@@ -150,7 +152,7 @@ export function resolveSignalTarget(msg, payload, data) {
  * Applies a focus/ignore signal change to a signals list.
  * @returns {Array} updated signals list
  */
-export function applySignalToList(signals, provinceId, signalType) {
+function applySignalToList(signals, provinceId, signalType) {
   const list = Array.isArray(signals) ? signals : [];
 
   if (signalType === 'ignore') {
@@ -185,9 +187,17 @@ export function applySignalToList(signals, provinceId, signalType) {
  * Removes a province from a signals list.
  * @returns {Array} updated signals list
  */
-export function removeSignalFromList(signals, provinceId) {
+function removeSignalFromList(signals, provinceId) {
   const list = Array.isArray(signals) ? signals : [];
   return list.filter(
     (p) => Number(p.id !== undefined ? p.id : p.provinceId) !== provinceId,
   );
 }
+
+module.exports = {
+  resolveSignalData,
+  resolveSignalTarget,
+  applySignalToList,
+  removeSignalFromList,
+};
+module.exports.default = module.exports;

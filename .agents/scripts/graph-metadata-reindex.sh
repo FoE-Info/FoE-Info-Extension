@@ -17,8 +17,22 @@ elif ! command -v graphify >/dev/null 2>&1; then
   uv tool install "graphifyy[mcp,openai,watch,svg]" --force
 fi
 
-# Ensure local AI backend (llama-swap) is running and will clean up on exit
-source "${SCRIPT_DIR}/llama-swap-lifecycle.sh"
+# Source .env for backend configuration and keys (git-ignored)
+ENV_FILE="${WORKSPACE_ROOT}/.env"
+if [ -f "$ENV_FILE" ]; then
+  set -a
+  . "$ENV_FILE"
+  set +a
+fi
+
+USE_DEEPSEEK=0
+if [ -n "${DEEPSEEK_API_KEY:-}" ] || [ "${GRAPHIFY_BACKEND:-}" = "deepseek" ]; then
+  USE_DEEPSEEK=1
+  echo "==> Using DeepSeek API backend for Metadata Graphify reindex."
+else
+  # Ensure local AI backend (llama-swap) is running and will clean up on exit
+  source "${SCRIPT_DIR}/llama-swap-lifecycle.sh"
+fi
 
 LABEL_ARGS=()
 for arg in "$@"; do
@@ -39,17 +53,22 @@ cd "${WORKSPACE_ROOT}"
 export GRAPHIFY_OUT="${METADATA_STORE_DIR}/graphify-out"
 node scripts/build-metadata-graph.mjs
 
-echo "==> Step 2: Clustering and Labeling Metadata Graph with Local LLM..."
+echo "==> Step 2: Clustering and Labeling Metadata Graph with LLM..."
 cd "$METADATA_STORE_DIR"
 graphify cluster-only .
-graphify label . \
-  --backend openai \
-  --model qwen2.5-vl-7b \
-  --max-concurrency 1 \
-  "${LABEL_ARGS[@]}"
-
-# Tasks needing local AI backend are complete: unload model and stop llama-swap now
-stop_llama_swap
+if [ "$USE_DEEPSEEK" -eq 1 ]; then
+  graphify label . \
+    --backend deepseek \
+    --max-concurrency 2 \
+    "${LABEL_ARGS[@]}"
+else
+  graphify label . \
+    --backend openai \
+    --model qwen2.5-vl-7b \
+    --max-concurrency 1 \
+    "${LABEL_ARGS[@]}"
+  stop_llama_swap
+fi
 
 echo "==> Step 3: Exporting Visualizations and Docs..."
 graphify export wiki

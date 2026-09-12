@@ -20,8 +20,22 @@ elif ! command -v graphify >/dev/null 2>&1; then
   uv tool install "graphifyy[mcp,openai,watch,svg]" --force
 fi
 
-# Ensure local AI backend (llama-swap) is running and will clean up on exit
-source "${SCRIPT_DIR}/llama-swap-lifecycle.sh"
+# Source .env for backend configuration and keys (git-ignored)
+ENV_FILE="${WORKSPACE_ROOT}/.env"
+if [ -f "$ENV_FILE" ]; then
+  set -a
+  . "$ENV_FILE"
+  set +a
+fi
+
+USE_DEEPSEEK=0
+if [ -n "${DEEPSEEK_API_KEY:-}" ] || [ "${GRAPHIFY_BACKEND:-}" = "deepseek" ]; then
+  USE_DEEPSEEK=1
+  echo "==> Using DeepSeek API backend for Graphify reindex."
+else
+  # Ensure local AI backend (llama-swap) is running and will clean up on exit
+  source "${SCRIPT_DIR}/llama-swap-lifecycle.sh"
+fi
 
 EXTRACT_ARGS=()
 LABEL_ARGS=()
@@ -42,16 +56,21 @@ graphify extract . \
   --max-concurrency 1 \
   "${EXTRACT_ARGS[@]}"
 
-# 2. Label extension graph communities using local LLM
+# 2. Label extension graph communities using configured LLM
 echo "==> Step 2: Labeling Graph Communities..."
-graphify label . \
-  --backend openai \
-  --model qwen2.5-vl-7b \
-  --max-concurrency 1 \
-  "${LABEL_ARGS[@]}"
-
-# Tasks needing local AI backend are complete: unload model and stop llama-swap now
-stop_llama_swap
+if [ "$USE_DEEPSEEK" -eq 1 ]; then
+  graphify label . \
+    --backend deepseek \
+    --max-concurrency 2 \
+    "${LABEL_ARGS[@]}"
+else
+  graphify label . \
+    --backend openai \
+    --model qwen2.5-vl-7b \
+    --max-concurrency 1 \
+    "${LABEL_ARGS[@]}"
+  stop_llama_swap
+fi
 
 # 3. Generate export artifacts inside graphify-out/ (no LLM required)
 echo "==> Step 3: Exporting Visualizations and Docs..."

@@ -13,10 +13,11 @@ something here goes stale rather than letting it drift.
 - **Antigravity** — the MAIN agent. Owns and canonicalizes `.agents/` (36 subagent
   personas, 17 rules, 53 skills, 5 lifecycle hooks). User has an Ultra package that
   refreshes roughly every 2 days.
-- **opencode** — the primary CLI agent, running against a local LLM via
-  `llama-swap` (see `.agents/scripts/llama-swap-lifecycle.sh` and the llama-swap
-  `config.yaml`) or a cloud fallback. Adapts Antigravity's canonical setup
-  (`.agents/`) through its own `.opencode/` directory and `docs/OPENCODE.md`.
+- **opencode** — the primary CLI agent. Runs against the local `llama-swap`
+  backend (see `.agents/scripts/llama-swap-lifecycle.sh`) or a configured cloud
+  backend such as DeepSeek (`.env` → `DEEPSEEK_API_KEY`). Adapts Antigravity's
+  canonical setup (`.agents/`) through its own `.opencode/` directory and
+  `docs/OPENCODE.md`.
 - **The user** — coordinates activity from outside the repo (browser-based team
   chat, console logs, screenshots, bug reports) and turns observations into scoped
   prompts for whichever agent is active. The user does the external coordination a
@@ -47,10 +48,14 @@ something here goes stale rather than letting it drift.
    session, never use mouse/keyboard browser automation for testing — an ambiguous
    "cold login" instruction previously caused a real account logout and wasted a
    large amount of token budget.
-8. **Graphify semantic extraction (and any agent's own local-LLM calls) must use
-   the local `llama-swap` backend only, never a cloud/paid API.** See
-   `.agents/scripts/llama-swap-lifecycle.sh` for the env vars
-   (`OPENAI_BASE_URL`, `OPENAI_API_KEY`, `GRAPHIFY_BACKEND`, `OPENAI_MODEL`).
+8. **Graphify semantic extraction/labeling must not consume local VRAM unless
+   intended.** Prefer the DeepSeek cloud backend when it is configured:
+   `DEEPSEEK_API_KEY` (or `GRAPHIFY_BACKEND=deepseek`) is sourced from the
+   git-ignored `.env`, and the reindex scripts then call
+   `graphify label . --backend deepseek`. Fall back to the local `llama-swap`
+   backend only when no DeepSeek key is configured. Never call an unconfigured
+   or third-party paid API. See `.agents/scripts/graph-*-reindex.sh` and
+   [`graphify-local.md`](graphify-local.md).
 
 ## Current status
 

@@ -1,0 +1,383 @@
+[
+  {
+    "rank": 1,
+    "provinces": 37,
+    "victoryPointsHourly": 7550,
+    "victoryPointsTotal": 257312,
+    "clan": {
+      "id": 26891,
+      "name": "FightClub⚔️👊😎☕",
+      "membersNum": 71,
+      "flag": "premium_flag_6",
+      "__class__": "BaseClan"
+    },
+    "reward": {
+      "playerRewards": [
+        {
+          "type": "consumable",
+          "subType": "fragment",
+          "amount": 3000,
+          "id": "fragment#selection_kit_GBG26E#3000",
+          "name": "3000 Fragments of Steamworks Depot Selection Kit",
+          "description": "Collect enough fragments to assemble Steamworks Depot Selection Kit",
+          "iconAssetName": "icon_fragment",
+          "flags": [],
+          "boostValue": 1,
+          "assembledReward": {
+            "type": "consumable",
+            "subType": "selection_kit",
+            "amount": 1,
+            "id": "selection_kit_GBG26E",
+            "name": "Steamworks Depot Selection Kit",
+            "description": "Choose between an upgrade kit or the base building for the Steamworks Depot ",
+            "iconAssetName": "selection_kit_GBG26E",
+            "flags": [
+              "epic"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "requiredAmount": 7500,
+          "__class__": "FragmentReward"
+        },
+        {
+          "type": "consumable",
+          "subType": "fragment",
+          "amount": 1500,
+          "id": "fragment#selection_kit_GBG26F#1500",
+          "name": "1500 Fragments of Rail Howitzer Selection Kit",
+          "description": "Collect enough fragments to assemble Rail Howitzer Selection Kit",
+          "iconAssetName": "icon_fragment",
+          "flags": [],
+          "boostValue": 1,
+          "assembledReward": {
+            "type": "consumable",
+            "subType": "selection_kit",
+            "amount": 1,
+            "id": "selection_kit_GBG26F",
+            "name": "Rail Howitzer Selection Kit",
+            "description": "Choose between an upgrade kit or the base building for the Rail Howitzer",
+            "iconAssetName": "selection_kit_GBG26F",
+            "flags": [
+              "epic"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "requiredAmount": 500,
+          "__class__": "FragmentReward"
+        },
+        {
+          "type": "resource",
+          "subType": "gbg_gold_coin",
+          "amount": 50000,
+          "id": "resource#gbg_gold_coin#50000",
+          "name": "50,000 Battleground Gold Coins",
+          "description": "Collect Gold Coins as a reward in Guild Battlegrounds. This currency does not expire.",
+          "iconAssetName": "gbg_gold_coin",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        },
+        {
+          "type": "resource",
+          "subType": "gbg_platinum_coin",
+          "amount": 25000,
+          "id": "resource#gbg_platinum_coin#25000",
+          "name": "25,000 Battleground Platinum Coins",
+          "description": "Collect Platinum Coins as a reward in Guild Battlegrounds. This currency does not expire.",
+          "iconAssetName": "gbg_platinum_coin",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "guildReward": {
+        "guildPower": 546000,
+        "__class__": "GuildBattlegroundLeaderboardGuildReward"
+      },
+      "__class__": "GuildBattlegroundLeaderboardReward"
+    },
+    "ratingChange": 25,
+    "__class__": "GuildBattlegroundLeaderboardEntry"
+  },
+  {
+    "rank": 2,
+    "provinces": 22,
+    "victoryPointsHourly": 4828,
+    "victoryPointsTotal": 217192,
+    "clan": {
+      "id": 1370,
+      "name": "Lords of War",
+      "membersNum": 73,
+      "flag": "flag_17",
+      "__class__": "BaseClan"
+    },
+    "reward": {
+      "playerRewards": [
+        {
+          "type": "consumable",
+          "subType": "fragment",
+          "amount": 1000,
+          "id": "fragment#selection_kit_GBG26E#1000",
+          "name": "1000 Fragments of Steamworks Depot Selection Kit",
+          "description": "Collect enough fragments to assemble Steamworks Depot Selection Kit",
+          "iconAssetName": "icon_fragment",
+          "flags": [],
+          "boostValue": 1,
+          "assembledReward": {
+            "type": "consumable",
+            "subType": "selection_kit",
+            "amount": 1,
+            "id": "selection_kit_GBG26E",
+            "name": "Steamworks Depot Selection Kit",
+            "description": "Choose between an upgrade kit or the base building for the Steamworks Depot ",
+            "iconAssetName": "selection_kit_GBG26E",
+            "flags": [
+              "epic"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "requiredAmount": 7500,
+          "__class__": "FragmentReward"
+        },
+        {
+          "type": "consumable",
+          "subType": "fragment",
+          "amount": 1000,
+          "id": "fragment#selection_kit_GBG26F#1000",
+          "name": "1000 Fragments of Rail Howitzer Selection Kit",
+          "description": "Collect enough fragments to assemble Rail Howitzer Selection Kit",
+          "iconAssetName": "icon_fragment",
+          "flags": [],
+          "boostValue": 1,
+          "assembledReward": {
+            "type": "consumable",
+            "subType": "selection_kit",
+            "amount": 1,
+            "id": "selection_kit_GBG26F",
+            "name": "Rail Howitzer Selection Kit",
+            "description": "Choose between an upgrade kit or the base building for the Rail Howitzer",
+            "iconAssetName": "selection_kit_GBG26F",
+            "flags": [
+              "epic"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "requiredAmount": 500,
+          "__class__": "FragmentReward"
+        },
+        {
+          "type": "resource",
+          "subType": "gbg_gold_coin",
+          "amount": 40000,
+          "id": "resource#gbg_gold_coin#40000",
+          "name": "40,000 Battleground Gold Coins",
+          "description": "Collect Gold Coins as a reward in Guild Battlegrounds. This currency does not expire.",
+          "iconAssetName": "gbg_gold_coin",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        },
+        {
+          "type": "resource",
+          "subType": "gbg_platinum_coin",
+          "amount": 20000,
+          "id": "resource#gbg_platinum_coin#20000",
+          "name": "20,000 Battleground Platinum Coins",
+          "description": "Collect Platinum Coins as a reward in Guild Battlegrounds. This currency does not expire.",
+          "iconAssetName": "gbg_platinum_coin",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "guildReward": {
+        "guildPower": 478200,
+        "__class__": "GuildBattlegroundLeaderboardGuildReward"
+      },
+      "__class__": "GuildBattlegroundLeaderboardReward"
+    },
+    "ratingChange": 25,
+    "__class__": "GuildBattlegroundLeaderboardEntry"
+  },
+  {
+    "rank": 3,
+    "provinces": 1,
+    "victoryPointsHourly": 1000,
+    "victoryPointsTotal": 59168,
+    "clan": {
+      "id": 21502,
+      "name": "FRIENDS",
+      "membersNum": 75,
+      "flag": "flag_12",
+      "__class__": "BaseClan"
+    },
+    "reward": {
+      "playerRewards": [
+        {
+          "type": "consumable",
+          "subType": "fragment",
+          "amount": 500,
+          "id": "fragment#selection_kit_GBG26E#500",
+          "name": "500 Fragments of Steamworks Depot Selection Kit",
+          "description": "Collect enough fragments to assemble Steamworks Depot Selection Kit",
+          "iconAssetName": "icon_fragment",
+          "flags": [],
+          "boostValue": 1,
+          "assembledReward": {
+            "type": "consumable",
+            "subType": "selection_kit",
+            "amount": 1,
+            "id": "selection_kit_GBG26E",
+            "name": "Steamworks Depot Selection Kit",
+            "description": "Choose between an upgrade kit or the base building for the Steamworks Depot ",
+            "iconAssetName": "selection_kit_GBG26E",
+            "flags": [
+              "epic"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "requiredAmount": 7500,
+          "__class__": "FragmentReward"
+        },
+        {
+          "type": "consumable",
+          "subType": "fragment",
+          "amount": 500,
+          "id": "fragment#selection_kit_GBG26F#500",
+          "name": "500 Fragments of Rail Howitzer Selection Kit",
+          "description": "Collect enough fragments to assemble Rail Howitzer Selection Kit",
+          "iconAssetName": "icon_fragment",
+          "flags": [],
+          "boostValue": 1,
+          "assembledReward": {
+            "type": "consumable",
+            "subType": "selection_kit",
+            "amount": 1,
+            "id": "selection_kit_GBG26F",
+            "name": "Rail Howitzer Selection Kit",
+            "description": "Choose between an upgrade kit or the base building for the Rail Howitzer",
+            "iconAssetName": "selection_kit_GBG26F",
+            "flags": [
+              "epic"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "requiredAmount": 500,
+          "__class__": "FragmentReward"
+        },
+        {
+          "type": "resource",
+          "subType": "gbg_gold_coin",
+          "amount": 35000,
+          "id": "resource#gbg_gold_coin#35000",
+          "name": "35,000 Battleground Gold Coins",
+          "description": "Collect Gold Coins as a reward in Guild Battlegrounds. This currency does not expire.",
+          "iconAssetName": "gbg_gold_coin",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        },
+        {
+          "type": "resource",
+          "subType": "gbg_platinum_coin",
+          "amount": 17500,
+          "id": "resource#gbg_platinum_coin#17500",
+          "name": "17,500 Battleground Platinum Coins",
+          "description": "Collect Platinum Coins as a reward in Guild Battlegrounds. This currency does not expire.",
+          "iconAssetName": "gbg_platinum_coin",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "guildReward": {
+        "guildPower": 432200,
+        "__class__": "GuildBattlegroundLeaderboardGuildReward"
+      },
+      "__class__": "GuildBattlegroundLeaderboardReward"
+    },
+    "ratingChange": 25,
+    "__class__": "GuildBattlegroundLeaderboardEntry"
+  },
+  {
+    "rank": 4,
+    "provinces": 1,
+    "victoryPointsHourly": 1000,
+    "victoryPointsTotal": 50312,
+    "clan": {
+      "id": 10007,
+      "name": "ARJ 🗡 🥷",
+      "membersNum": 24,
+      "flag": "flag_28_R",
+      "__class__": "BaseClan"
+    },
+    "reward": {
+      "playerRewards": [
+        {
+          "type": "consumable",
+          "subType": "fragment",
+          "amount": 300,
+          "id": "fragment#selection_kit_GBG26F#300",
+          "name": "300 Fragments of Rail Howitzer Selection Kit",
+          "description": "Collect enough fragments to assemble Rail Howitzer Selection Kit",
+          "iconAssetName": "icon_fragment",
+          "flags": [],
+          "boostValue": 1,
+          "assembledReward": {
+            "type": "consumable",
+            "subType": "selection_kit",
+            "amount": 1,
+            "id": "selection_kit_GBG26F",
+            "name": "Rail Howitzer Selection Kit",
+            "description": "Choose between an upgrade kit or the base building for the Rail Howitzer",
+            "iconAssetName": "selection_kit_GBG26F",
+            "flags": [
+              "epic"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "requiredAmount": 500,
+          "__class__": "FragmentReward"
+        },
+        {
+          "type": "resource",
+          "subType": "gbg_gold_coin",
+          "amount": 30000,
+          "id": "resource#gbg_gold_coin#30000",
+          "name": "30,000 Battleground Gold Coins",
+          "description": "Collect Gold Coins as a reward in Guild Battlegrounds. This currency does not expire.",
+          "iconAssetName": "gbg_gold_coin",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        },
+        {
+          "type": "resource",
+          "subType": "gbg_platinum_coin",
+          "amount": 15000,
+          "id": "resource#gbg_platinum_coin#15000",
+          "name": "15,000 Battleground Platinum Coins",
+          "description": "Collect Platinum Coins as a reward in Guild Battlegrounds. This currency does not expire.",
+          "iconAssetName": "gbg_platinum_coin",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "guildReward": {
+        "guildPower": 407400,
+        "__class__": "GuildBattlegroundLeaderboardGuildReward"
+      },
+      "__class__": "GuildBattlegroundLeaderboardReward"
+    },
+    "ratingChange": 25,
+    "__class__": "GuildBattlegroundLeaderboardEntry"
+  }
+]
