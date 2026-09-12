@@ -4,6 +4,26 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
 
 ## Current session (2026-09-12)
 
+- **Quantum Incursions (QI) UX & Modernization Parallel Integration (Antigravity & OpenCode)**:
+  - **Stream 1 — QI UX (Antigravity)**:
+    - Implemented `src/js/msg/GuildRaidsService.js` (243L) handling `GuildRaidsService.getMemberActivityOverview` and `RankingService.searchRanking` (`guild_raids` category).
+    - Tracks member progress contributions and action points spent, computing diffs against `world:<id>.qiPerformance`.
+    - Created `src/js/ui/renderQuantumPanels.js` (335L) implementing:
+      1. `renderQuantumContributionsCard`: Table with Member, Progress (+diff badge), AP Spent (+diff badge), "show changes only" checkbox filter, Last Saved timestamp, and clipboard copy button.
+      2. `renderQuantumLeaderboardCard`: 3-column championship guild leaderboard (`Guild | Rank | Total Points`) matching the user-provided screenshot.
+    - Bound `#quantumContributions` and `#quantumLeaderboard` into `src/js/ui/containerBinding.js`, `cardVisibility.js`, and `collapse.js`.
+    - Added 6 new translation keys across all 7 language dictionaries in `src/i18n/` with 100% key parity.
+    - Added unit test suites `tests/msg/guild-raids-service.test.mjs` and `tests/ui/render-quantum-panels.test.mjs`.
+  - **Stream 2 — Modernization DOM Decoupling, Trade Economy & Formula Parity (OpenCode)**:
+    - Roadmap B5: Extracted inline DOM manipulations from `networkListener.js`, `StartupRenderOrchestrator.js`, `StartupService.js`, and `GuildBattlegroundService.js` into decoupled UI helpers (`gameVersionStatus.js`, `startupMetadataLoading.js`).
+    - Track 2.5: Implemented `src/js/msg/TradeService.js` parsing live marketplace trades and fair trade ratios (1:1 same era, 1:2 adjacent era) against real 7.8MB capture fixture `marketplace_trades.json` (`tests/msg/trade-service.test.mjs`).
+    - Roadmap D1g: Created `tests/math/formula-parity-pinning.test.mjs` pinning BigNumber half-up Arc rewards, ceiling spot locking, and owner safe adds against LoW-Tool / Forge-Hammer lineage formulas.
+  - **Verification Gate**:
+    - **922/922 tests passing** across 90 suites with 0 failures (expanded from 871 tests).
+    - Full 5-stage verification gate (`npm run verify`) passed exit 0 (prettier check, eslint 0 errors, i18n check, 922 tests, webpack dev build).
+    - Knowledge Graph AST refreshed cleanly (`npm run graph:foe-info:ast`).
+    - Temporary git worktrees pruned cleanly.
+
 - **Live HAR Ingestion, Multi-Domain Verification & QI Architecture (OpenCode)**:
   - **Phase 1 — isolated ingestion**: Added `scripts/ingest-hars-to-metadata.mjs` (`npm run metadata:extract-hars`), a string-aware streaming scanner that walks every `log.entries[]` object without loading a whole `.har` (up to 231 MB) via `JSON.parse`. It ingested the 39 captures in `docs/har/` (2.0 GB, git-ignored) in ~101 s into sibling `../metadata-store/extracts/`: 5,644 entries scanned, 1,468 game RPC responses, 88 unique RPCs (`rpc/<Class>.<Method>.json`), 18 domain bundles (`gbg/`, `qi/`, `treasury/`, `economy/`), 13 visited-city payloads, `raw_rpc_capture.json` ledger, and `meta.json`. Baseline `entities/`, `rpc/`, `manifest.json`, and `raw_rpc_capture.json` were not modified; `git ls-files docs/har` = 0.
   - **Fixtures**: Non-destructive mirrors into `tests/fixtures/visits/visit-<name>.json` (13) and `tests/fixtures/rpc/har/**` (18 bundles), plus 6 `<GbgAction>.action.json` request-payload fixtures. Existing fixtures were never overwritten.
