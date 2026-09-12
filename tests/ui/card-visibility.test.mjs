@@ -304,4 +304,72 @@ test('Card Visibility Suite - Decoupling GBG from GB Donation', async (t) => {
       assert.equal(guildEl.style.display, 'none');
     },
   );
+
+  await t.test(
+    'showQuantum and showQuantumLeaderboard control QI panels in unconstrained and QI contexts',
+    () => {
+      const contribEl = globalThis.document.getElementById(
+        'quantumContributions',
+      );
+      const lbEl = globalThis.document.getElementById('quantumLeaderboard');
+
+      // 1. Unconstrained view with showQuantum: false
+      applyCardVisibility({
+        showQuantum: false,
+        showQuantumLeaderboard: true,
+      });
+      assert.equal(
+        contribEl.style.display,
+        'none',
+        '#quantumContributions must be hidden when showQuantum is false',
+      );
+      assert.equal(
+        lbEl.style.display,
+        '',
+        '#quantumLeaderboard must remain visible when showQuantumLeaderboard is true',
+      );
+
+      // 2. Unconstrained view with showQuantumLeaderboard: false
+      applyCardVisibility({
+        showQuantum: true,
+        showQuantumLeaderboard: false,
+      });
+      assert.equal(
+        contribEl.style.display,
+        '',
+        '#quantumContributions must be visible when showQuantum is true',
+      );
+      assert.equal(
+        lbEl.style.display,
+        'none',
+        '#quantumLeaderboard must be hidden when showQuantumLeaderboard is false',
+      );
+
+      // 3. In QI context with showQuantum: false
+      applyCardVisibility(
+        { showQuantum: false, showQuantumLeaderboard: true },
+        false,
+        'QI',
+      );
+      assert.equal(
+        contribEl.style.display,
+        'none',
+        '#quantumContributions must be hidden in QI context when showQuantum is false',
+      );
+      assert.equal(
+        lbEl.style.display,
+        '',
+        '#quantumLeaderboard must remain visible in QI context when showQuantumLeaderboard is true',
+      );
+
+      // 4. In QI context with both true
+      applyCardVisibility(
+        { showQuantum: true, showQuantumLeaderboard: true },
+        false,
+        'QI',
+      );
+      assert.equal(contribEl.style.display, '');
+      assert.equal(lbEl.style.display, '');
+    },
+  );
 });
