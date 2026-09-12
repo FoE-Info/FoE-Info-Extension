@@ -106,6 +106,11 @@ export {
 };
 export * from './vars/state.js';
 export * from './state/indexEntityDefs.js';
+export {
+  processMetadataEntry,
+  processMetadataData,
+} from './msg/MetadataService.js';
+export { renderTreasuryPanel as processTreasuryData } from './ui/panelDispatcher.js';
 
 let lastStartupMsg = null;
 let pendingStartupMsg = null;
