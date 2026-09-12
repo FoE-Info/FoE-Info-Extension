@@ -12,7 +12,7 @@ Automated on-demand lifecycle manager for local LLM inference via `llama-swap`. 
 Running local LLMs consumes GPU VRAM according to the configured model and quantization. Leaving a model loaded in `llama-server` behind `llama-swap` can block other GPU workloads; inspect the local configuration rather than assuming a GPU model or memory footprint.
 
 This skill provides an **automated sourcing & ephemeral lifecycle pattern**:
-1. **Auto-Sourced by Graphify Scripts**: `.agents/scripts/graph-foe-info-reindex.sh`, `graph-metadata-reindex.sh`, and `graph-forge-hammer-reindex.sh` source `llama-swap-lifecycle.sh`. Their npm runners are `graph:foe-info:reindex`, `graph:metadata:reindex`, and `graph:forge-hammer:reindex`.
+1. **Auto-Sourced by Graphify Scripts**: every `graph-<repo>-reindex.sh` (`foe-info`, `foe-info-original`, `forge-hammer`, `low-tool`, `metadata`) sources `llama-swap-lifecycle.sh`. Their npm runners are `graph:<repo>:reindex`.
 2. **Probe**: Checks if `http://127.0.0.1:8081/v1/models` (vision-instance `llama-swap`) is already responding.
 3. **On-Demand Spawn**: If inactive, spawns `llama-swap --config ~/.config/llama-swap/config-vision.yaml` in the background and waits for HTTP readiness.
 4. **Execute**: Runs the requested `graphify` extraction and labeling commands.
