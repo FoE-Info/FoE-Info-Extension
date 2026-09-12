@@ -1,0 +1,244 @@
+[
+  {
+    "rank": 1,
+    "player": {
+      "player_id": 851883122,
+      "name": "Trapavko",
+      "avatar": "portrait_id_72",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 4400,
+    "reward": {
+      "blueprints": 24,
+      "blueprintRewards": [
+        {
+          "building_id": "X_ProgressiveEra_Landmark2",
+          "amount": 24,
+          "tier": {
+            "__enum__": "GreatBuildingTier",
+            "value": "copper"
+          },
+          "__class__": "GreatBuildingBlueprint"
+        }
+      ],
+      "strategy_point_amount": 2145,
+      "resources": {
+        "medals": 18471,
+        "__class__": "CityResource"
+      },
+      "__class__": "GreatBuildingRankingRowReward"
+    },
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 2,
+    "player": {
+      "player_id": 854193104,
+      "name": "helhel",
+      "avatar": "portrait_id_219",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 3350,
+    "reward": {
+      "blueprints": 17,
+      "blueprintRewards": [
+        {
+          "building_id": "X_ProgressiveEra_Landmark2",
+          "amount": 17,
+          "tier": {
+            "__enum__": "GreatBuildingTier",
+            "value": "copper"
+          },
+          "__class__": "GreatBuildingBlueprint"
+        }
+      ],
+      "strategy_point_amount": 1075,
+      "resources": {
+        "medals": 9236,
+        "__class__": "CityResource"
+      },
+      "__class__": "GreatBuildingRankingRowReward"
+    },
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 3,
+    "player": {
+      "player_id": 856331204,
+      "name": "Lu Long",
+      "avatar": "addon_portrait_id_arthur26_2",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 2550,
+    "reward": {
+      "blueprints": 13,
+      "blueprintRewards": [
+        {
+          "building_id": "X_ProgressiveEra_Landmark2",
+          "amount": 13,
+          "tier": {
+            "__enum__": "GreatBuildingTier",
+            "value": "copper"
+          },
+          "__class__": "GreatBuildingBlueprint"
+        }
+      ],
+      "strategy_point_amount": 360,
+      "resources": {
+        "medals": 4618,
+        "__class__": "CityResource"
+      },
+      "__class__": "GreatBuildingRankingRowReward"
+    },
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 4,
+    "player": {
+      "player_id": 8713936,
+      "name": "Tiny Tino",
+      "avatar": "portrait_id_100",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 1850,
+    "reward": {
+      "blueprints": 11,
+      "blueprintRewards": [
+        {
+          "building_id": "X_ProgressiveEra_Landmark2",
+          "amount": 11,
+          "tier": {
+            "__enum__": "GreatBuildingTier",
+            "value": "copper"
+          },
+          "__class__": "GreatBuildingBlueprint"
+        }
+      ],
+      "strategy_point_amount": 90,
+      "resources": {
+        "medals": 1847,
+        "__class__": "CityResource"
+      },
+      "__class__": "GreatBuildingRankingRowReward"
+    },
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 5,
+    "player": {
+      "player_id": 3384646,
+      "name": "mainNhastings",
+      "avatar": "addon_portrait_id_wolfman",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 1594,
+    "reward": {
+      "blueprints": 9,
+      "blueprintRewards": [
+        {
+          "building_id": "X_ProgressiveEra_Landmark2",
+          "amount": 9,
+          "tier": {
+            "__enum__": "GreatBuildingTier",
+            "value": "copper"
+          },
+          "__class__": "GreatBuildingBlueprint"
+        }
+      ],
+      "strategy_point_amount": 20,
+      "resources": {
+        "medals": 924,
+        "__class__": "CityResource"
+      },
+      "__class__": "GreatBuildingRankingRowReward"
+    },
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "player": {
+      "player_id": 5779173,
+      "name": "Cuboom",
+      "avatar": "addon_portrait_id_winter_willy",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 1577,
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 6,
+    "player": {
+      "player_id": 864610,
+      "name": "pujson",
+      "avatar": "addon_portrait_id_johnson",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 1400,
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 7,
+    "player": {
+      "player_id": 850780507,
+      "name": "Tim of Pacifica",
+      "avatar": "addon_portrait_id_258",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 1100,
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 8,
+    "player": {
+      "player_id": 5253028,
+      "name": "Holly Gump",
+      "avatar": "addon_portrait_id_pat_pathfinder",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 1020,
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 9,
+    "player": {
+      "player_id": 12440031,
+      "name": "Blues0001",
+      "avatar": "portrait_id_107",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 404,
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 10,
+    "player": {
+      "player_id": 853720754,
+      "name": "BONEGILLA",
+      "avatar": "portrait_id_204",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 400,
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 11,
+    "player": {
+      "player_id": 872505,
+      "name": "Cake Apricot",
+      "avatar": "addon_portrait_id_483",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 200,
+    "__class__": "GreatBuildingRankingRow"
+  },
+  {
+    "rank": 12,
+    "player": {
+      "player_id": 851863768,
+      "name": "Barrie9",
+      "avatar": "portrait_id_205",
+      "__class__": "OtherPlayer"
+    },
+    "forge_points": 100,
+    "__class__": "GreatBuildingRankingRow"
+  }
+]
