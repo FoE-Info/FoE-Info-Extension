@@ -22,6 +22,13 @@ This skill documents the dual-harness contract so work hands off seamlessly betw
 
 **Rule**: `.agents/` is canonical. `.opencode/` mirrors only what the host requires. When updating configs, always write the `.agents/` version first, then mirror.
 
+### Terminology: two unrelated meanings of "plugin"
+
+- **Antigravity plugin**: a shareable bundle at `plugins/<name>/plugin.json` that packages skills, rules, hooks, and MCP configs (see the `agy-customizations` skill). This workspace ships **no** Antigravity plugin bundles.
+- **opencode plugin**: the module form of a lifecycle hook, `.opencode/plugins/*.mjs`, registered in `opencode.json` `plugin[]`. It is the opencode implementation of the Antigravity `hooks.json` handlers, not an Antigravity plugin.
+
+So the interop table row `Hooks -> .opencode/plugins/*.mjs` maps *hooks*, not *plugins*. Never call `.opencode/plugins/*.mjs` an "Antigravity plugin".
+
 ---
 
 ## 2. Portable MCP Configuration

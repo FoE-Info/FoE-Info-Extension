@@ -10,6 +10,7 @@ description: Strict invariant prohibiting autonomous browser launches, restarts,
 - **Never Auto-Spawn in Background**: Background MCP servers (such as `chrome-devtools`) must remain strictly passive; they must never spawn a browser window or launch `foe-browser` when port 9222 is offline.
 - **Zero Tab Termination & Non-Destructive Operation**: Scripts must NEVER close existing browser tabs or force-navigate away from an active game session. Deduplication and destructive reloads are strictly forbidden.
 - **Default to Headless Verification**: All standard verification, testing, and checks must use headless CLI tools (`npm test`, `npm run verify`).
+- **Global Plugin Neutralization**: Global opencode plugins that can spawn or attach to a browser (e.g. `opencode-browser` from `~/.config/opencode/opencode.json`) must not be relied on while this invariant is in force. Use only the passive `chrome-devtools` MCP server for inspection, and disable any global browser-automation plugin that violates this rule.
 
 ## 1. Subshell & Terminal Environment Isolation
 - NEVER launch development browser instances directly inside terminal emulator subshells (e.g. Ghostty, Kitty) or subagent environments without stripping environment variables.
