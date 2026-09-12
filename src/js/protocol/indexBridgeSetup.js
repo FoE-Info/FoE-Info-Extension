@@ -7,7 +7,7 @@
 
 import * as helper from '../fn/helper.js';
 import { armyUnitManagementService } from '../msg/ArmyUnitManagementService.js';
-import { getBonuses, getLimitedBonuses } from '../msg/BonusService.js';
+import { getLimitedBonuses } from '../msg/BonusService.js';
 import { pickupProduction } from '../msg/CityProductionService.js';
 import {
   conversationService,
@@ -118,7 +118,6 @@ export function setupIndexBridge(dispatcher, options = {}) {
     conversationService,
     getConversation,
     getNewMessage,
-    getBonuses,
     getLimitedBonuses,
     updateIgnoreListUI,
     boostService,
