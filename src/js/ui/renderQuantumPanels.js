@@ -152,12 +152,12 @@ function renderQuantumContributionsCard(members, lastSavedTimestamp) {
 
       cardHTML += `<tr>
         <td class="text-start">${m.name}</td>
-        <td class="text-end font-monospace">${progressFormatted}${
+        <td class="text-end">${progressFormatted}${
           m.progressDiff ?
             ` <span class="badge bg-danger ms-1">+${m.progressDiff.toLocaleString()}</span>`
           : ''
         }</td>
-        <td class="text-end font-monospace">${apFormatted}${
+        <td class="text-end">${apFormatted}${
           m.actionPointsDiff ?
             ` <span class="badge bg-danger ms-1">+${m.actionPointsDiff.toLocaleString()}</span>`
           : ''
@@ -282,7 +282,7 @@ function renderQuantumLeaderboardCard(rankings) {
       cardHTML += `<tr>
         <td class="text-start">${r.clanName}</td>
         <td class="text-center">${r.rank}</td>
-        <td class="text-end font-monospace">${pointsFormatted}</td>
+        <td class="text-end">${pointsFormatted}</td>
       </tr>`;
     }
   }
