@@ -492,7 +492,12 @@ function bootstrapExtensionUi(options = {}) {
         const safeVersion = escapeHTML(newVersion);
         const safeName = escapeHTML(tool.name || 'FoE-Info');
         const safeToolVersion = escapeHTML(tool.version || '');
-        citystats.innerHTML += `<div><span data-i18n="gameversion">Game Version</span>: ${safeVersion}<br>${safeName}: ${safeToolVersion}</div>`;
+        const html = `<div><span data-i18n="gameversion">Game Version</span>: ${safeVersion}<br>${safeName}: ${safeToolVersion}</div>`;
+        if (typeof citystats.insertAdjacentHTML === 'function') {
+          citystats.insertAdjacentHTML('beforeend', html);
+        } else {
+          citystats.innerHTML = `${citystats.innerHTML}${html}`;
+        }
       }
     },
   });

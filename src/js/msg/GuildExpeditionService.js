@@ -18,6 +18,29 @@ const {
 let cachedInternationalEntries = null;
 let cachedContributionEntries = null;
 
+// Single long-lived observer reused across renders. `attachTableHandlers`
+// disconnects it before re-observing the freshly rendered nodes, so detached
+// panels are never retained.
+let expeditionResizeObserver = null;
+
+function getExpeditionResizeObserver() {
+  if (typeof ResizeObserver === 'undefined') return null;
+  if (!expeditionResizeObserver) {
+    expeditionResizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.contentRect?.height) {
+          try {
+            require('../fn/globals.js')?.setExpeditionSize?.(
+              entry.contentRect.height,
+            );
+          } catch {}
+        }
+      }
+    });
+  }
+  return expeditionResizeObserver;
+}
+
 function resetExpeditionCache() {
   cachedInternationalEntries = null;
   cachedContributionEntries = null;
@@ -143,22 +166,12 @@ function attachTableHandlers(container) {
     'geContributionCollapse',
   );
 
-  if (typeof ResizeObserver !== 'undefined') {
+  const observer = getExpeditionResizeObserver();
+  if (observer) {
+    if (typeof observer.disconnect === 'function') observer.disconnect();
     const observeEl = (id) => {
       const el = document.getElementById(id);
-      if (el) {
-        new ResizeObserver((entries) => {
-          for (const entry of entries) {
-            if (entry.contentRect?.height) {
-              try {
-                require('../fn/globals.js')?.setExpeditionSize?.(
-                  entry.contentRect.height,
-                );
-              } catch {}
-            }
-          }
-        }).observe(el);
-      }
+      if (el) observer.observe(el);
     };
     observeEl('expeditionText');
     observeEl('geChampionshipText');

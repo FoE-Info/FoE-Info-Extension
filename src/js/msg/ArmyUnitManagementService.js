@@ -64,6 +64,14 @@ try {
 let ArmyUnits = {};
 let lastArmyMsg = null;
 
+// Single long-lived fallback observer reused across renders. The primary path
+// binds through panelResize.bindResizableCollapse; this observer only exists
+// when that binder is unavailable, and is disconnected before re-observing to
+// avoid retaining detached panel nodes.
+let armyResizeObserver = null;
+let armyResizeTarget = null;
+let armyResizeHandler = null;
+
 const ERA_LEVELS = {
   BronzeAge: 1,
   IronAge: 2,
@@ -337,21 +345,29 @@ function armyUnitManagementService(msg, deps = {}) {
               ResizeObserverClass: deps.ResizeObserver,
             });
           } else if (typeof ResizeObserver !== 'undefined') {
-            const resizeObserver = new ResizeObserver((entries) => {
-              if (
-                armyDiv.classList?.contains('collapsing') ||
-                (armyDiv.classList && !armyDiv.classList.contains('show'))
-              ) {
-                return;
-              }
-              for (const entry of entries) {
-                const height = entry.contentRect?.height;
-                if (height && height >= 50 && setArmySizeFn) {
-                  setArmySizeFn(height);
+            armyResizeTarget = armyDiv;
+            armyResizeHandler = setArmySizeFn;
+            if (!armyResizeObserver) {
+              armyResizeObserver = new ResizeObserver((entries) => {
+                for (const entry of entries) {
+                  const target = entry.target || armyResizeTarget;
+                  if (
+                    target?.classList?.contains('collapsing') ||
+                    (target?.classList && !target.classList.contains('show'))
+                  ) {
+                    continue;
+                  }
+                  const height = entry.contentRect?.height;
+                  if (height && height >= 50 && armyResizeHandler) {
+                    armyResizeHandler(height);
+                  }
                 }
-              }
-            });
-            resizeObserver.observe(armyDiv);
+              });
+            }
+            if (typeof armyResizeObserver.disconnect === 'function') {
+              armyResizeObserver.disconnect();
+            }
+            armyResizeObserver.observe(armyDiv);
           }
         }
 

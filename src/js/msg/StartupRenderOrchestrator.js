@@ -19,6 +19,14 @@ try {
   }
 } catch {}
 
+let yieldToMain = async () => {};
+try {
+  const scheduler = require('../utils/scheduler.js');
+  if (typeof scheduler.yieldToMain === 'function') {
+    yieldToMain = scheduler.yieldToMain;
+  }
+} catch {}
+
 function renderWhenStartupReady(render) {
   if (!renderPending) return render();
 }
@@ -160,7 +168,7 @@ function subscribeMetadataRenders({
   let metadataRenderTimer = null;
   return metadataStore.subscribe(() => {
     if (metadataRenderTimer) return;
-    metadataRenderTimer = setTimeout(() => {
+    metadataRenderTimer = setTimeout(async () => {
       metadataRenderTimer = null;
       if (typeof isDebugEnabled === 'function' && isDebugEnabled()) {
         logger?.info(
@@ -175,11 +183,16 @@ function subscribeMetadataRenders({
           err,
         );
       }
+      // Yield between heavy renders so each one lands in its own task and the
+      // panel can service input/paint between steps. Final DOM and ordering
+      // are unchanged.
+      await yieldToMain();
       try {
         onRenderGalaxy();
       } catch (err) {
         console.error('[FoEInfo] Failed to re-render galaxy:', err);
       }
+      await yieldToMain();
       try {
         onRenderLiveCityStats();
       } catch (err) {
