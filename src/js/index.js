@@ -20,6 +20,7 @@ import {
   setupPanelContainers,
   setupPanelHeader,
 } from './ui/containerBinding.js';
+import './ui/armyRenderBinding.js';
 import './ui/bonusRenderBinding.js';
 import './ui/quantumRenderBinding.js';
 import './ui/startupRenderBinding.js';

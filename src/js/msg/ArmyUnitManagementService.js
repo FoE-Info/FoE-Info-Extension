@@ -26,7 +26,7 @@ if (typeof __webpack_require__ !== 'undefined') {
 
 const { createLogger } = require('../utils/logger.js');
 const logger = createLogger('ArmyUnitManagementService');
-const { renderArmyPanel } = require('../ui/renderArmyPanel.js');
+const { armyState } = require('../state/ArmyState.js');
 
 let metadataStore = null;
 try {
@@ -226,7 +226,7 @@ function armyUnitManagementService(msg, deps = {}) {
     const armySize =
       typeof rawArmySize === 'number' && rawArmySize >= 50 ? rawArmySize : 185;
 
-    renderArmyPanel({
+    armyState.setArmyPanel({
       rogues,
       allUnits,
       diff,
