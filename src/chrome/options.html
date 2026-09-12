@@ -18,15 +18,18 @@
               class="btn btn-primary"
               id="save"
               aria-label="Save Settings"
+              data-i18n-aria-label="save_settings"
             >
-              Save
+              <span data-i18n="opt_save">Save</span>
             </button>
           </div>
           <div class="card bg-light mb-3" id="world-card">
             <div class="card-body py-2">
               <div class="d-flex align-items-center gap-2 flex-wrap">
                 <label for="worldSelector" class="fw-bold mb-0 text-nowrap"
-                  >Active Server / World:</label
+                  ><span data-i18n="opt_active_world"
+                    >Active Server / World:</span
+                  ></label
                 >
                 <select
                   id="worldSelector"
@@ -39,8 +42,9 @@
                   class="btn btn-sm btn-outline-danger ms-auto"
                   id="resetWorldBtn"
                   title="Reset this world's settings to fresh install defaults"
+                  data-i18n-title="opt_reset_world_title"
                 >
-                  Reset World
+                  <span data-i18n="opt_reset_world">Reset World</span>
                 </button>
               </div>
               <div
@@ -51,27 +55,35 @@
                 aria-atomic="true"
                 style="display: none"
               >
-                Settings saved automatically.
+                <span data-i18n="opt_settings_saved"
+                  >Settings saved automatically.</span
+                >
               </div>
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">City Info</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_city_info">City Info</span>
+            </h6>
             <div class="card-body">
               <label for="Stats">
-                Show Your City Stats
+                <span data-i18n="opt_show_city_stats"
+                  >Show Your City Stats</span
+                >
                 <input type="checkbox" id="Stats" name="Stats" />
               </label>
               <label for="visit">
-                Show Other Player Stats
+                <span data-i18n="opt_show_other_stats"
+                  >Show Other Player Stats</span
+                >
                 <input type="checkbox" id="visit" name="visit" />
               </label>
               <label for="army">
-                Show Daily Units
+                <span data-i18n="opt_show_daily_units">Show Daily Units</span>
                 <input type="checkbox" id="army" name="army" />
               </label>
               <label for="showDailyCoins">
-                Show Daily Coins
+                <span data-i18n="opt_show_daily_coins">Show Daily Coins</span>
                 <input
                   type="checkbox"
                   id="showDailyCoins"
@@ -79,7 +91,9 @@
                 />
               </label>
               <label for="showDailySupplies">
-                Show Daily Supplies
+                <span data-i18n="opt_show_daily_supplies"
+                  >Show Daily Supplies</span
+                >
                 <input
                   type="checkbox"
                   id="showDailySupplies"
@@ -87,7 +101,7 @@
                 />
               </label>
               <label for="showCoinBoost">
-                Show Coin Boost
+                <span data-i18n="opt_show_coin_boost">Show Coin Boost</span>
                 <input
                   type="checkbox"
                   id="showCoinBoost"
@@ -95,7 +109,7 @@
                 />
               </label>
               <label for="showSupplyBoost">
-                Show Supply Boost
+                <span data-i18n="opt_show_supply_boost">Show Supply Boost</span>
                 <input
                   type="checkbox"
                   id="showSupplyBoost"
@@ -105,28 +119,42 @@
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Current Bonus / Boosts</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_current_bonus">Current Bonus / Boosts</span>
+            </h6>
             <div class="card-body">
               <label for="bonus">
-                Show Current Bonus/Boosts
+                <span data-i18n="opt_show_current_bonus"
+                  >Show Current Bonus/Boosts</span
+                >
                 <input type="checkbox" id="bonus" name="bonus" />
               </label>
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">City Incidents</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_city_incidents">City Incidents</span>
+            </h6>
             <div class="card-body">
               <label for="Incidents">
-                Show City Incidents
+                <span data-i18n="opt_show_city_incidents"
+                  >Show City Incidents</span
+                >
                 <input type="checkbox" id="Incidents" name="Incidents" />
               </label>
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Building Collection Times</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_building_collection_times"
+                >Building Collection Times</span
+              >
+            </h6>
             <div class="card-body">
               <label for="collectionTimes">
-                Show Building Collection Times
+                <span data-i18n="opt_show_collection_times"
+                  >Show Building Collection Times</span
+                >
                 <input
                   type="checkbox"
                   id="collectionTimes"
@@ -136,19 +164,27 @@
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Blue Galaxy Helper</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_blue_galaxy_helper">Blue Galaxy Helper</span>
+            </h6>
             <div class="card-body">
               <label for="showGalaxy">
-                Show Blue Galaxy Helper
+                <span data-i18n="opt_show_blue_galaxy"
+                  >Show Blue Galaxy Helper</span
+                >
                 <input type="checkbox" id="showGalaxy" name="showGalaxy" />
               </label>
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Guild Overview</h6>
+            <h6 class="card-header">
+              <span data-i18n="guild_overview">Guild Overview</span>
+            </h6>
             <div class="card-body">
               <label for="showGuildOverview">
-                Show Guild Overview
+                <span data-i18n="opt_show_guild_overview"
+                  >Show Guild Overview</span
+                >
                 <input
                   type="checkbox"
                   id="showGuildOverview"
@@ -158,15 +194,19 @@
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">GB Info</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_gb_info">GB Info</span>
+            </h6>
             <div class="card-body">
               <div class="card-text">
                 <label for="Donation">
-                  Show GB Donation Helper
+                  <span data-i18n="opt_show_gb_donation"
+                    >Show GB Donation Helper</span
+                  >
                   <input type="checkbox" id="Donation" name="Donation" />
                 </label>
                 <label for="donationGuildPosition">
-                  Prefix with Guild #
+                  <span data-i18n="opt_prefix_guild">Prefix with Guild #</span>
                   <input
                     type="checkbox"
                     id="donationGuildPosition"
@@ -174,7 +214,7 @@
                   />
                 </label>
                 <label for="donationSuffix">
-                  Suffix with this text
+                  <span data-i18n="opt_suffix_text">Suffix with this text</span>
                   <input
                     type="text"
                     class="form-control"
@@ -185,11 +225,11 @@
                   />
                 </label>
                 <label for="hideUnsafe">
-                  Hide Unsafe Spots
+                  <span data-i18n="opt_hide_unsafe">Hide Unsafe Spots</span>
                   <input type="checkbox" id="hideUnsafe" name="hideUnsafe" />
                 </label>
                 <label for="donationPercent">
-                  Donation %
+                  <span data-i18n="opt_donation_percent">Donation %</span>
                   <input
                     class="form-control"
                     type="number"
@@ -204,37 +244,51 @@
                   />
                 </label>
                 <label for="GBRewards">
-                  Show GB Rewards
+                  <span data-i18n="opt_show_gb_rewards">Show GB Rewards</span>
                   <input type="checkbox" id="GBRewards" name="GBRewards" />
                 </label>
                 <label for="GBDonors">
-                  Show Current Donors
+                  <span data-i18n="opt_show_current_donors"
+                    >Show Current Donors</span
+                  >
                   <input type="checkbox" id="GBDonors" name="GBDonors" />
                 </label>
                 <label for="Invested">
-                  Show Total FP Invested
+                  <span data-i18n="opt_show_total_fp"
+                    >Show Total FP Invested</span
+                  >
                   <input type="checkbox" id="Invested" name="Invested" />
                 </label>
                 <label for="GBInfo">
-                  Show Current Level
+                  <span data-i18n="opt_show_current_level"
+                    >Show Current Level</span
+                  >
                   <input type="checkbox" id="GBInfo" name="GBInfo" />
                 </label>
               </div>
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Guild Battlegrounds</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_guild_battlegrounds"
+                >Guild Battlegrounds</span
+              >
+            </h6>
             <div class="card-body">
               <label for="Battleground">
-                Show Member Activity
+                <span data-i18n="opt_show_member_activity"
+                  >Show Member Activity</span
+                >
                 <input type="checkbox" id="Battleground" name="Battleground" />
               </label>
               <label for="leaderboard">
-                Show Leaderboard
+                <span data-i18n="opt_show_leaderboard">Show Leaderboard</span>
                 <input type="checkbox" id="leaderboard" name="leaderboard" />
               </label>
               <label for="buildingCosts">
-                Show Building Costs
+                <span data-i18n="opt_show_building_costs"
+                  >Show Building Costs</span
+                >
                 <input
                   type="checkbox"
                   id="buildingCosts"
@@ -242,15 +296,17 @@
                 />
               </label>
               <label for="GBGrewards">
-                Show Rewards
+                <span data-i18n="opt_show_rewards">Show Rewards</span>
                 <input type="checkbox" id="GBGrewards" name="GBGrewards" />
               </label>
               <label for="GBGshowSC">
-                Show # Siege Camps
+                <span data-i18n="opt_show_siege_camps">Show # Siege Camps</span>
                 <input type="checkbox" id="GBGshowSC" name="GBGshowSC" />
               </label>
               <label for="GBGprovinceTime">
-                Show Province Opening Time
+                <span data-i18n="opt_show_province_time"
+                  >Show Province Opening Time</span
+                >
                 <input
                   type="checkbox"
                   id="GBGprovinceTime"
@@ -258,18 +314,26 @@
                 />
               </label>
               <label for="GBGtimeMode">
-                Target Generator Time Mode
+                <span data-i18n="opt_time_mode"
+                  >Target Generator Time Mode</span
+                >
                 <select
                   class="form-control"
                   id="GBGtimeMode"
                   name="GBGtimeMode"
                 >
-                  <option value="server">Server Time</option>
-                  <option value="local">Local Time</option>
+                  <option value="server" data-i18n="opt_server_time">
+                    Server Time
+                  </option>
+                  <option value="local" data-i18n="opt_local_time">
+                    Local Time
+                  </option>
                 </select>
               </label>
               <label for="targetText">
-                Add text to target generator
+                <span data-i18n="opt_target_text"
+                  >Add text to target generator</span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -280,7 +344,9 @@
                 />
               </label>
               <label for="targets">
-                Search message topics for targets
+                <span data-i18n="opt_target_search"
+                  >Search message topics for targets</span
+                >
                 <input
                   type="text"
                   class="form-control"
@@ -293,10 +359,14 @@
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Guild Expedition</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_guild_expedition">Guild Expedition</span>
+            </h6>
             <div class="card-body">
               <label for="InternationalExpedition">
-                Show GE Championship
+                <span data-i18n="opt_show_ge_championship"
+                  >Show GE Championship</span
+                >
                 <input
                   type="checkbox"
                   id="InternationalExpedition"
@@ -304,20 +374,26 @@
                 />
               </label>
               <label for="Expedition">
-                Show GE Leaderboard
+                <span data-i18n="opt_show_ge_leaderboard"
+                  >Show GE Leaderboard</span
+                >
                 <input type="checkbox" id="Expedition" name="Expedition" />
               </label>
               <label for="GErewards">
-                Show Rewards
+                <span data-i18n="opt_show_rewards">Show Rewards</span>
                 <input type="checkbox" id="GErewards" name="GErewards" />
               </label>
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Quantum Incursions</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_quantum_incursions">Quantum Incursions</span>
+            </h6>
             <div class="card-body">
               <label for="quantumContributions">
-                Show Member Activity
+                <span data-i18n="opt_show_member_activity"
+                  >Show Member Activity</span
+                >
                 <input
                   type="checkbox"
                   id="quantumContributions"
@@ -325,7 +401,7 @@
                 />
               </label>
               <label for="quantumLeaderboard">
-                Show Leaderboard
+                <span data-i18n="opt_show_leaderboard">Show Leaderboard</span>
                 <input
                   type="checkbox"
                   id="quantumLeaderboard"
@@ -335,48 +411,62 @@
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Other Info:</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_other_info">Other Info:</span>
+            </h6>
             <div class="card-body">
               <label for="settlement">
-                Show Cultural Settlement
+                <span data-i18n="opt_show_settlement"
+                  >Show Cultural Settlement</span
+                >
                 <input type="checkbox" id="settlement" name="settlement" />
               </label>
               <label for="rewards">
-                Show Rewards
+                <span data-i18n="opt_show_rewards">Show Rewards</span>
                 <input type="checkbox" id="rewards" name="rewards" />
               </label>
               <label for="goods">
-                Show Goods Inventory
+                <span data-i18n="opt_show_goods_inventory"
+                  >Show Goods Inventory</span
+                >
                 <input type="checkbox" id="goods" name="goods" />
               </label>
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">List of players when game launches</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_players_on_launch"
+                >List of players when game launches</span
+              >
+            </h6>
             <div class="card-body">
               <label for="Friends">
-                Show Friends
+                <span data-i18n="opt_show_friends">Show Friends</span>
                 <input type="checkbox" id="Friends" name="Friends" />
               </label>
               <label for="Guild">
-                Show Guild
+                <span data-i18n="opt_show_guild">Show Guild</span>
                 <input type="checkbox" id="Guild" name="Guild" />
               </label>
               <label for="Hood">
-                Show Hood
+                <span data-i18n="opt_show_hood">Show Hood</span>
                 <input type="checkbox" id="Hood" name="Hood" />
               </label>
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Guild Admin</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_guild_admin">Guild Admin</span>
+            </h6>
             <div class="card-body">
               <label for="Treasury">
-                Show Treasury
+                <span data-i18n="opt_show_treasury">Show Treasury</span>
                 <input type="checkbox" id="Treasury" name="Treasury" />
               </label>
               <label for="contributions">
-                Show Treasury Contributions
+                <span data-i18n="opt_show_treasury_contributions"
+                  >Show Treasury Contributions</span
+                >
                 <input
                   type="checkbox"
                   id="contributions"
@@ -384,16 +474,22 @@
                 />
               </label>
               <label for="logs">
-                Show Treasury Logs
+                <span data-i18n="opt_show_treasury_logs"
+                  >Show Treasury Logs</span
+                >
                 <input type="checkbox" id="logs" name="logs" />
               </label>
             </div>
           </div>
           <div class="card bg-light" id="urlDiv">
-            <h6 class="card-header">Post to Guild Discord</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_post_discord">Post to Guild Discord</span>
+            </h6>
             <div class="card-body">
               <label for="discordTargetURL">
-                Discord Webhook URL - GBG Targets
+                <span data-i18n="opt_discord_webhook"
+                  >Discord Webhook URL - GBG Targets</span
+                >
                 <input
                   type="password"
                   class="form-control"
@@ -405,7 +501,9 @@
                 />
               </label>
               <label for="sheetGuildURL" style="display: none">
-                Google Sheet URL - Guild Info
+                <span data-i18n="opt_google_sheet_guild"
+                  >Google Sheet URL - Guild Info</span
+                >
                 <input
                   type="url"
                   class="form-control"
@@ -433,10 +531,14 @@
           <!--     </div> -->
           <!-- </div> -->
           <div class="card bg-light">
-            <h6 class="card-header">Other settings</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_other_settings">Other settings</span>
+            </h6>
             <div class="card-body">
               <label for="minSize">
-                Minimum panel height
+                <span data-i18n="opt_min_panel_height"
+                  >Minimum panel height</span
+                >
                 <input
                   class="form-control"
                   type="number"
@@ -452,9 +554,17 @@
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Date &amp; Time formatting</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_date_time_formatting"
+                >Date &amp; Time formatting</span
+              >
+            </h6>
             <div class="card-body">
-              <label for="dateTimeFormat">Date &amp; Time Format</label>
+              <label for="dateTimeFormat"
+                ><span data-i18n="opt_date_time_format"
+                  >Date &amp; Time Format</span
+                ></label
+              >
               <select
                 class="form-control"
                 id="dateTimeFormat"
@@ -469,12 +579,16 @@
                 <option value="MM/DD/YYYY hh:mm:ss A">
                   US 12h (09/07/2026 03:05:00 PM)
                 </option>
-                <option value="custom">Custom Format...</option>
+                <option value="custom" data-i18n="opt_custom_format">
+                  Custom Format...
+                </option>
               </select>
               <div id="customPatternDiv" class="mt-2" style="display: none">
                 <label for="customDateTimePattern"
-                  >Custom Pattern (tokens: YYYY, MM, DD, HH, hh, mm, ss,
-                  A)</label
+                  ><span data-i18n="opt_custom_pattern"
+                    >Custom Pattern (tokens: YYYY, MM, DD, HH, hh, mm, ss,
+                    A)</span
+                  ></label
                 >
                 <input
                   type="text"
@@ -487,11 +601,17 @@
             </div>
           </div>
           <div class="card bg-light">
-            <h6 class="card-header">Language settings</h6>
+            <h6 class="card-header">
+              <span data-i18n="opt_language_settings">Language settings</span>
+            </h6>
             <div class="card-body">
-              <label for="language">Language</label>
+              <label for="language"
+                ><span data-i18n="opt_language">Language</span></label
+              >
               <select class="form-control" id="language" name="language">
-                <option value="auto">Use Browser Language</option>
+                <option value="auto" data-i18n="opt_use_browser_language">
+                  Use Browser Language
+                </option>
                 <option value="en">English</option>
                 <option value="nl">Dutch</option>
                 <option value="fi">Finnish</option>
@@ -501,7 +621,9 @@
                 <option value="it">Italian</option>
                 <option value="es">Spanish</option>
                 <option value="sv">Swedish</option>
-                <option value="game" selected>Use Game Language</option>
+                <option value="game" selected data-i18n="opt_use_game_language">
+                  Use Game Language
+                </option>
               </select>
             </div>
           </div>
