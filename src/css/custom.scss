@@ -186,6 +186,20 @@ p,
   }
 }
 
+.foe-section-header {
+  font-weight: 600;
+  font-size: 0.78em;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 4px 6px 3px 6px;
+  margin: 6px 0 4px 0;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
+  user-select: none;
+}
+
 // #guildMemberTable, #geChampionshipTable, and #geContributionTable reuse .goods-table's base styling,
 // but their columns hold short strings and names rather than the long descriptive
 // labels .goods-table's word-break was designed for. In a narrow sidebar those columns
