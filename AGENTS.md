@@ -38,18 +38,17 @@ FoE-Info-Extension/
 
 Run all commands directly from the workspace root (`/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension`):
 
-| Pipeline Stage         | Command                                             | Purpose / Verification Standard                                                   |
-| :--------------------- | :-------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| **Verification Gate**  | `npm run verify`                                    | Full 5-stage gate: formatting, linting, i18n completeness, unit tests, dev build. |
-| **Unit Testing**       | `npm test` / `npm run test:watch`                   | Run fast Node.js tests (`tests/**/*.test.mjs`, including hook suite).             |
-| **Formatting & Lint**  | `npm run format` / `npm run check` / `npm run lint` | Prettier write/check; ESLint runs through `lint`.                                 |
-| **i18n Parity**        | `npm run i18n:check` / `npm run i18n:fix`           | Check/fix key parity across all 7 language dictionaries.                          |
-| **Builds & Watch**     | `npm run build:dev` / `npm run dev`                 | Webpack development bundle, watch mode, or production bundle.                     |
-| **CDP Runtime**        | `foe-browser` (`--restart`)                         | Launch isolated Chromium (port 9222) / monitor panel exceptions.                  |
-| **Metadata Ingestion** | `npm run metadata:download` / `:query`              | Ingest live entity datasets / query offline database.                             |
-| **Graphify FoE-Info**  | `npm run graph:foe-info:ast` / `:update`            | Fast AST refresh / update & export / full reindex via `llama-swap`.               |
-| **Graphify Metadata**  | `npm run graph:metadata:update`                     | Rebuild offline entity graph, cluster, label, and export.                         |
-| **Graphify Hammer**    | `npm run graph:forge-hammer:update`                 | Refresh competitor extension architecture graph.                                  |
+| Pipeline Stage           | Command                                             | Purpose / Verification Standard                                                                                         |
+| :----------------------- | :-------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| **Verification Gate**    | `npm run verify`                                    | Full 5-stage gate: formatting, linting, i18n completeness, unit tests, dev build.                                       |
+| **Unit Testing**         | `npm test` / `npm run test:watch`                   | Run fast Node.js tests (`tests/**/*.test.mjs`, including hook suite).                                                   |
+| **Formatting & Lint**    | `npm run format` / `npm run check` / `npm run lint` | Prettier write/check; ESLint runs through `lint`.                                                                       |
+| **i18n Parity**          | `npm run i18n:check` / `npm run i18n:fix`           | Check/fix key parity across all 7 language dictionaries.                                                                |
+| **Builds & Watch**       | `npm run build:dev` / `npm run dev`                 | Webpack development bundle, watch mode, or production bundle.                                                           |
+| **CDP Runtime**          | `foe-browser` (`--restart`)                         | Launch isolated Chromium (port 9222) / monitor panel exceptions.                                                        |
+| **Metadata Ingestion**   | `npm run metadata:download` / `:query`              | Ingest live entity datasets / query offline database.                                                                   |
+| **Graphify Code Graphs** | `graph:<repo>:ast` / `:update` / `:reindex`         | 3-tier contract (`ast` → `update` → `reindex`); `<repo>` = `foe-info`, `foe-info-original`, `forge-hammer`, `low-tool`. |
+| **Graphify Metadata**    | `graph:metadata:update` / `:reindex`                | Rebuild offline entity graph, cluster, label, and export (no AST tier; entity-JSON source).                             |
 
 ---
 

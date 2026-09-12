@@ -14,7 +14,10 @@ variables are removed from the child environment. Other applications' credential
 are not changed. The lifecycle still starts/stops the model for explicit reindex
 jobs; MCP and AST updates do not allocate GPU memory.
 
-`npm run graph:foe-info:ast` performs one AST update. Its upstream log prefix is
+`npm run graph:foe-info:ast` performs one AST update. Every code graph exposes
+the same `:ast` tier (`graph:foe-info-original:ast`, `graph:forge-hammer:ast`,
+`graph:low-tool:ast`); the generated metadata graph has no AST tier. The upstream
+log prefix is
 `[graphify watch]`, but this does not mean a watcher daemon is running.
 `npm run graph:foe-info:watch` starts an actual foreground watcher when requested.
 Both write routine stdout/stderr to `~/.cache/foe-info/graphify-watch.log`;
