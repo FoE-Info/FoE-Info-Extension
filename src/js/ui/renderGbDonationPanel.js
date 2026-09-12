@@ -264,36 +264,6 @@ function renderGbDonationPanel(params = {}) {
   }
   olddonationHTML += checkInactive();
 
-  const remainingTotal = Math.max(
-    0,
-    (GBselected.total || 0) - (GBselected.current || 0),
-  );
-  const p1Base = GBrewards[0] || 0;
-  const arcBonus = City?.ArcBonus ?? 90;
-  const p1Reward =
-    typeof GreatBuildingCalculator.calculateArcReward === 'function' ?
-      GreatBuildingCalculator.calculateArcReward(p1Base, arcBonus)
-    : Math.round(p1Base * (1 + arcBonus / 100));
-
-  let levelClosingHtml = '';
-  if (
-    remainingTotal > 0 &&
-    typeof GreatBuildingCalculator.calculateLevelClosingProfit === 'function'
-  ) {
-    const closingProfit = GreatBuildingCalculator.calculateLevelClosingProfit(
-      remainingTotal,
-      p1Reward,
-      0,
-    );
-    const isOwnGb = Boolean(
-      PlayerName && MyInfo?.name && PlayerName === MyInfo.name,
-    );
-    if (closingProfit.isProfitable && !isOwnGb) {
-      levelClosingHtml = `<div class="alert alert-success py-1 px-2 mb-2 level-closing-badge"><small><strong>Level-Closing:</strong> Close for ${closingProfit.cost} FP (Reward: ${p1Reward} FP, Net: +${closingProfit.netProfit} FP)</small></div>`;
-    }
-  }
-  if (levelClosingHtml) olddonationHTML += levelClosingHtml;
-
   if (donationDIV) {
     donationDIV.innerHTML = '';
     donationDIV.style.display = 'block';
