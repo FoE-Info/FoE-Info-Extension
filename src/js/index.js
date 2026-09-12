@@ -20,7 +20,7 @@ import {
   setupPanelContainers,
   setupPanelHeader,
 } from './ui/containerBinding.js';
-import './ui/renderQuantumPanels.js';
+import './ui/quantumRenderBinding.js';
 import './ui/startupRenderBinding.js';
 import { initIndexUiBindings } from './ui/indexUiBindings.js';
 import { escapeHTML } from './utils/formatters.js';
