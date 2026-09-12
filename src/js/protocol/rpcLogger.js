@@ -6,6 +6,7 @@
  */
 
 import { createLogger, isDebugEnabled } from '../utils/logger.js';
+import { isIgnoredRpcClass, shouldLogUnhandledRpc } from './rpcScope.js';
 
 const rpcLogger = createLogger('RPC');
 
@@ -19,13 +20,18 @@ export function logRpcMessage(msg, isHandled) {
   const reqClass = msg.requestClass || msg.__class__ || 'Metadata/Unknown';
   const reqMethod = msg.requestMethod || 'N/A';
   const debug = isDebugEnabled();
+  const handled = !!isHandled;
+  const ignored = !handled && isIgnoredRpcClass(reqClass);
+
+  if (ignored && !shouldLogUnhandledRpc(reqClass)) return;
 
   const entry = {
     timestamp: new Date().toISOString(),
     requestClass: reqClass,
     requestMethod: reqMethod,
     requestId: msg.requestId ?? null,
-    handled: !!isHandled,
+    handled,
+    ignored,
     responseData:
       debug ?
         msg.responseData !== undefined ?
@@ -39,10 +45,13 @@ export function logRpcMessage(msg, isHandled) {
     rpcLog.shift();
   }
 
-  const tag = isHandled ? '[HANDLED]' : '[UNHANDLED]';
+  const tag =
+    handled ? '[HANDLED]'
+    : ignored ? '[IGNORED]'
+    : '[UNHANDLED]';
   const style =
-    isHandled ?
-      'color: #2e7d32; font-weight: bold;'
+    handled ? 'color: #2e7d32; font-weight: bold;'
+    : ignored ? 'color: #f57c00; font-weight: bold;'
     : 'color: #d32f2f; font-weight: bold;';
 
   if (debug) {

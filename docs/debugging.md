@@ -74,7 +74,31 @@ To isolate logs from specific subsystems, type any of these tags into the DevToo
 
 ---
 
-## 4. Architecture & Technical Design
+## 4. Out-of-Scope RPC Log Filtering
+
+Unhandled responses from 21 out-of-scope service classes (storefront, telemetry,
+tutorial, research, recruitment, etc. — see `IGNORED_RPC_CLASSES` in
+`src/js/protocol/rpcScope.js`) are **hidden by default** from both the
+`[FoE-Info:RPC]` console groups and the `window.foeRpcLog` buffer, so the debug
+console stays focused on in-domain traffic. In-domain unhandled RPCs (the
+`allowedUnhandled` keys in `scripts/rpc-contract.config.json`) remain visible as
+red `[UNHANDLED]` entries so they stay candidates for handling.
+
+Bring the hidden entries back at runtime when you need to inspect them:
+
+```js
+window.foeShowIgnoredRpc(true); // show ignored classes (tagged [IGNORED], amber)
+window.foeShowIgnoredRpc(false); // hide again (default)
+window.foeShowIgnoredRpc(); // toggle
+```
+
+The choice persists across reloads in `chrome.storage.local` under
+`showIgnoredRpc`. The runtime class list is guarded against drift from the
+contract policy by `tests/protocol/rpc-scope.test.mjs`.
+
+---
+
+## 5. Architecture & Technical Design
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
