@@ -3,17 +3,11 @@
  *
  * InnoGames JSON-RPC service handler for GreatBuildingsService.getContributions.
  * Decoupled from GreatBuildingsService monolith, computing invested returns
- * with Arc boost calculations and delegating rendering to renderInvestedPanel.
+ * with Arc boost calculations and publishing them to InvestedState.
  */
 
 const { calculateInvestments } = require('../calc/InvestedCalculator.js');
-
-let renderInvestedPanel;
-try {
-  ({ renderInvestedPanel } = require('../ui/renderInvestedPanel.js'));
-} catch (e) {
-  renderInvestedPanel = () => {};
-}
+const { investedState } = require('../state/InvestedState.js');
 
 let City;
 try {
@@ -26,7 +20,7 @@ try {
  * Modernized handler for GreatBuildingsService.getContributions RPC.
  * Calculates total FP invested across other players' Great Buildings,
  * computes expected returns with Arc multiplier using InnoGames ceiling rounding (BigNumber.ROUND_CEIL),
- * tallies net profit/loss, and delegates rendering to renderInvestedPanel.
+ * tallies net profit/loss, and publishes to InvestedState.
  *
  * @param {Object|Array} msg ServerRequest packet or contributions array
  * @param {number|string|Object} [arcBonusOverride] Optional Arc bonus percentage override
@@ -63,11 +57,7 @@ function getContributions(msg, arcBonusOverride) {
     : City?.ArcBonus !== undefined ? City.ArcBonus
     : 90;
 
-  if (typeof renderInvestedPanel === 'function') {
-    try {
-      renderInvestedPanel(list, arcBonusPercent);
-    } catch (e) {}
-  }
+  investedState.setContributions({ list, arcBonusPercent });
 
   const calc = calculateInvestments(list, arcBonusPercent);
   return {

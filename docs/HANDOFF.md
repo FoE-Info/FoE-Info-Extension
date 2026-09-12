@@ -4,6 +4,25 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 5 — City Production / Invested / Quest decoupling**:
+  - New shared `src/js/state/RewardState.js` (`reward` channel) plus
+    `src/js/ui/rewardRenderBinding.js` route City/Quest rewards through the
+    unified `showReward` with a single subscription, avoiding the double-render
+    risk the plan flags for the shared renderer. New
+    `src/js/state/InvestedState.js` (`contributions` channel) +
+    `src/js/ui/investedRenderBinding.js`; both registered in the
+    `ui/renderBindings.js` root.
+  - `CityProductionService` dropped its `fn/RewardRenderer` shim import and
+    publishes `{ source, payload }` entries; `QuestService` replaced the
+    `rewardRenderer` injection with `deps.rewardState` and removed
+    `resolveRewardRenderer`; `InvestedService` publishes list + Arc bonus.
+    All three now have zero `../ui/` imports.
+  - Tests: `tests/state/{reward,invested}-state.test.mjs`,
+    `tests/ui/{reward,invested}-render-binding.test.mjs`; `reward-routing`
+    migrated to the store, `render-bindings` now lists both new stores.
+  - **Verification**: `npm run verify` exit 0 — **1,232 tests / 0 fail**,
+    prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
+
 - **F2 Session 4 — Guild Expedition decoupling**:
   - `src/js/msg/GuildExpeditionService.js` (138 → 60 L) no longer imports
     `../ui/`; it parses inbound payloads and publishes to the new
