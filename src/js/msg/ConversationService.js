@@ -17,14 +17,16 @@ try {
   const bs = require('bootstrap');
   Alert = bs.Alert;
 } catch {}
-let dayjs;
-try {
-  dayjs = require('dayjs');
-} catch {}
 let dateUtils = {};
 try {
   dateUtils = require('../utils/date.js');
 } catch {}
+
+function formatTimeSafe(value) {
+  return typeof dateUtils?.formatTime === 'function' ?
+      dateUtils.formatTime(value)
+    : '';
+}
 let element = { close: () => '', post: () => '', icon: () => '' };
 try {
   element = require('../ui/AddElement.js');
@@ -162,20 +164,13 @@ function renderTargetMessage(message) {
       );
 
   const rawDate = message?.lastMessage?.date || message?.date;
-  let formattedDate = '';
+  let formattedDate;
   if (typeof rawDate === 'number') {
-    formattedDate =
-      typeof dateUtils.formatTime === 'function' ? dateUtils.formatTime(rawDate)
-      : dayjs ? dayjs(rawDate * 1000).format('HH:mm:ss')
-      : '';
+    formattedDate = formatTimeSafe(rawDate);
   } else if (rawDate) {
     formattedDate = String(rawDate);
   } else {
-    formattedDate =
-      typeof dateUtils.formatTime === 'function' ?
-        dateUtils.formatTime(Math.floor(Date.now() / 1000))
-      : dayjs ? dayjs().format('HH:mm:ss')
-      : '';
+    formattedDate = formatTimeSafe(Math.floor(Date.now() / 1000));
   }
   const safeDate =
     typeof helper?.escapeHTML === 'function' ?
@@ -197,11 +192,7 @@ function renderTargetMessage(message) {
       element.icon('targeticon', 'targetText', collapse.collapseTarget)
     : '';
 
-  const alertTime =
-    typeof dateUtils.formatTime === 'function' ?
-      dateUtils.formatTime(Math.floor(Date.now() / 1000))
-    : dayjs ? dayjs().format('HH:mm:ss')
-    : '';
+  const alertTime = formatTimeSafe(Math.floor(Date.now() / 1000));
 
   targetsGBG.innerHTML =
     targetsHTML +

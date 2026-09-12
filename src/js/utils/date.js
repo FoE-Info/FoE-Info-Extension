@@ -72,7 +72,8 @@ function getEffectiveFormat(type = 'dateTime') {
 function resolveDate(input) {
   if (!input) return null;
   if (input instanceof Date) {
-    return isNaN(input.getTime()) ? null : input;
+    // Return a clone so callers cannot mutate the resolved Date's source.
+    return isNaN(input.getTime()) ? null : new Date(input.getTime());
   }
   if (typeof input === 'number') {
     if (input <= 0 || isNaN(input)) return null;

@@ -29,7 +29,11 @@ import {
 import { renderBattlegroundResultCard } from '../ui/renderBattlegroundResultCard.js';
 import { renderGbgLeaderboardPanel } from '../ui/renderBattlegroundsPanel.js';
 import { renderTargetGeneratorPanel } from '../ui/renderTargetGeneratorCard.js';
-import { formatDateTime, formatInTimeZone } from '../utils/date.js';
+import {
+  formatDateTime,
+  formatInTimeZone,
+  resolveDate,
+} from '../utils/date.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
 import {
@@ -410,15 +414,8 @@ export function timeGBG(
     options = origin;
     origin = typeof GameOrigin !== 'undefined' ? GameOrigin : '';
   }
-  let d;
-  if (date instanceof Date) {
-    d = date;
-  } else if (typeof date === 'number') {
-    d = date < 1e11 ? new Date(date * 1000) : new Date(date);
-  } else {
-    d = new Date(date);
-  }
-  if (isNaN(d.getTime())) return '';
+  const d = resolveDate(date);
+  if (!d) return '';
 
   const timeMode =
     options?.GBGtimeMode ||

@@ -12,6 +12,7 @@ const {
   formatTargetToken,
   getAttritionReduction,
 } = require('../calc/GbgCalculator.js');
+const { resolveDate, formatInTimeZone } = require('../utils/date.js');
 
 let signals = [];
 
@@ -221,15 +222,8 @@ function timeGBG(
     origin =
       typeof globalThis.GameOrigin !== 'undefined' ? globalThis.GameOrigin : '';
   }
-  let d;
-  if (date instanceof Date) {
-    d = date;
-  } else if (typeof date === 'number') {
-    d = date < 1e11 ? new Date(date * 1000) : new Date(date);
-  } else {
-    d = new Date(date);
-  }
-  if (isNaN(d.getTime())) return '';
+  const d = resolveDate(date);
+  if (!d) return '';
 
   const timeMode =
     options?.GBGtimeMode ||
@@ -266,14 +260,11 @@ function timeGBG(
     hour12: false,
   };
 
-  const formatted = d
-    .toLocaleTimeString(config.locale, {
-      timeZone: config.timeZone,
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: config.hour12,
-    })
-    .replace(/\u202f/g, ' ');
+  const formatted = formatInTimeZone(d, {
+    locale: config.locale,
+    timeZone: config.timeZone,
+    hour12: config.hour12,
+  });
 
   return `@ ${formatted}`;
 }
