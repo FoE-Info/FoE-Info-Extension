@@ -32,7 +32,7 @@ class StartupRenderState {
   }
 
   /**
-   * @param {'city-stats'|'building-collection'|'metadata-loading'|'all'} channel
+   * @param {'city-stats'|'building-collection'|'metadata-loading'|'ignore-list'|'all'} channel
    */
   notify(channel = 'all') {
     for (const fn of this.subscribers) {
@@ -81,6 +81,14 @@ class StartupRenderState {
 
   getMetadataLoading() {
     return this.metadataLoading;
+  }
+
+  /**
+   * Signal the UI to refresh the ignore-list popover from current state.
+   * Carries no payload; the popover renderer owns the data.
+   */
+  requestIgnoreListRefresh() {
+    this.notify('ignore-list');
   }
 }
 
