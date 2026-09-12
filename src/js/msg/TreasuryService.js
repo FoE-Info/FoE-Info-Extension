@@ -8,8 +8,7 @@
 
 const BigNumber = require('bignumber.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
-const { renderTreasuryPanel } = require('../ui/panelDispatcher.js');
-const { renderTreasuryLogPanel } = require('../ui/renderTreasuryLogPanel.js');
+const { treasuryState } = require('../state/TreasuryState.js');
 
 let showOptions = { showTreasury: true };
 
@@ -96,7 +95,7 @@ class TreasuryService {
         this.reserves.set(key, new BigNumber(val || 0));
       }
       this.lastUpdated = Date.now();
-      renderTreasuryPanel(this.reserves);
+      treasuryState.setReserves(this.reserves);
     }
 
     return {
@@ -129,7 +128,7 @@ class TreasuryService {
       }
     }
     this.lastUpdated = Date.now();
-    renderTreasuryPanel(this.reserves);
+    treasuryState.setReserves(this.reserves);
 
     return {
       success: true,
@@ -166,7 +165,7 @@ class TreasuryService {
 
     this.recomputeTotals();
     this.lastUpdated = Date.now();
-    renderTreasuryLogPanel(
+    treasuryState.setLogs(
       this.logs,
       {
         totalGoodsDonated: this.totalGoodsDonated,
@@ -274,7 +273,6 @@ module.exports = {
   TreasuryService,
   TreasuryLogEntry,
   treasuryService,
-  renderTreasuryPanel,
   getTreasuryLogs: treasuryService.getTreasuryLogs,
   getTreasuryBag: treasuryService.getTreasuryBag,
 };

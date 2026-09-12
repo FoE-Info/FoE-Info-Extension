@@ -3,12 +3,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import BigNumber from 'bignumber.js';
-import TreasuryPkg from '../../src/js/msg/TreasuryService.js';
 import factoryDefaultsPkg from '../../src/js/state/factoryDefaults.js';
+import panelDispatcherPkg from '../../src/js/ui/panelDispatcher.js';
 
 const { createFreshWorldSettings, FACTORY_WORLD_SETTINGS } = factoryDefaultsPkg;
 
-const { renderTreasuryPanel } = TreasuryPkg;
+const { renderTreasuryPanel } = panelDispatcherPkg;
 
 test('Panel Resize & Visibility Defaults Suite', async (t) => {
   await t.test('createFreshWorldSettings defaults showGoods to true', () => {
