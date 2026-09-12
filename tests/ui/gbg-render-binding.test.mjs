@@ -147,6 +147,27 @@ test('gbgRenderBinding - renders published payloads', async (t) => {
     assert.deepEqual(calls, [payload]);
   });
 
+  await t.test(
+    'forwards the performance payload to the performance renderer',
+    () => {
+      const state = new GuildBattlegroundState();
+      const calls = [];
+      const off = bindGuildBattlegroundPanels(state, {
+        renderPerformance: (payload) => calls.push(payload),
+      });
+
+      const payload = {
+        performance: [{ name: 'Player1', wonBattles: 5 }],
+        gameOrigin: 'https://en7.forgeofempires.com',
+      };
+      state.setPerformance(payload);
+      off();
+      state.setPerformance({ performance: [] });
+
+      assert.deepEqual(calls, [payload]);
+    },
+  );
+
   await t.test('skips render when no payload exists', () => {
     const state = new GuildBattlegroundState();
     let called = 0;
