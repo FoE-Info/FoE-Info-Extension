@@ -4,6 +4,24 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **Browser control script removed (working tree)**: deleted the tracked
+  `scripts/foe-browser-control.mjs` CDP controller and its rule reference. The
+  external `foe-browser` launcher is not tracked. Purging it from prior commits
+  still needs a history rewrite + force-push (not yet done).
+
+- **Debug stubs, panel visibility, Town Hall removal, Galaxy gating**:
+  - Debug stubs are kept live by a `MutationObserver`, injected inside each
+    panel's card, and limited to visible non-empty topmost panels; Lists stamps
+    `friendsText`/`guildText`/`hoodText`, GE stamps `geChampionshipCard`/
+    `geContributionCard`, QI stamps `quantumContributions`/`quantumLeaderboard`.
+  - `friends` added to `OWN_CITY`; `geContributionSection`/`geInternationalSection`
+    mapped to `donationDIV2`; the `goodsInventory` wrapper is revealed on render.
+  - Removed the Town Hall/beta debug panel and its RPC/FX wiring; `getBonuses`
+    is now allowed-unhandled. Removed the GB donation level-closing badge.
+  - `renderGalaxyPanel` is context-gated (hidden outside OWN_CITY).
+  - Verification: `npm run verify` exit 0 — 1,082 tests / 0 fail, RPC contract
+    0 unhandled, 139 eslint warnings / 0 errors, dev bundle compiles.
+
 - **RPC Log Filtering, Checkbox Theming, Debug Stubs, Reward Labels**:
   - Added reversible out-of-scope RPC log filtering (`src/js/protocol/rpcScope.js`
     - `rpcLogger.js` + `MessageDispatcher.js`); hidden by default, restored with
