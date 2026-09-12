@@ -1,6 +1,6 @@
 ---
 name: foe-pvp-expert
-description: PvP Arena and neighborhood warfare specialist for matchmaking, defense towers, attempt economies, and plundering math.
+description: PvP Arena and neighborhood warfare specialist for matchmaking, attempt economies, and plundering math.
 mode: subagent
 ---
 

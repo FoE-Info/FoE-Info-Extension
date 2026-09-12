@@ -6,7 +6,7 @@ The canonical skills, role descriptions, rules, scripts, and Antigravity registr
 
 1. Read `docs/README.md` (coordination hub), `AGENTS.md`, and `docs/STATUS.md` (live work/todos), then inspect `git status` and current source before executing an old plan; `docs/HANDOFF.md` holds verified state and resume-safely notes.
 2. Read `.agents/rules/` entries marked `always_on` and the scoped rules applicable to the task. Antigravity frontmatter is not automatic rule activation in opencode; all 17 rules are injected as instructions (`opencode.json` `instructions` glob, `.agents/rules/*.md`) and the agent decides applicability per task.
-3. Use the workspace skill path from the available-skills catalog. Several global/plugin skills have identical names; prefer the repository runbook for repository work.
+3. Use the workspace skill path from the available-skills catalog. Several global `~/.agents/skills/` skills share names with repository skills; the project copy wins (verified in `<available_skills>`), but prefer the repository runbook for repository work and avoid adding new name collisions. To force only the canonical 53, set `OPENCODE_DISABLE_EXTERNAL_SKILLS=1`.
 4. Query the host graph before broad source searches. The `graphify-guard` plugin enforces this mechanically (see Hooks below).
 5. Run `npm run verify` and `npm run typecheck` before claiming an implementation verified. A passing unit suite is not a browser behavior test.
 
@@ -71,14 +71,15 @@ Not wired: Antigravity's `force_ask` semantics (opencode permission system asks/
 - Routine logger debug/info messages are gated by Debug Mode. Warnings and errors remain visible locally in the DevTools panel console for diagnosis. Legacy direct console calls are not all migrated.
 - Global file caps describe the target architecture; existing oversized modules are baseline debt. Do not add inline feature logic to monoliths or repeat completed extractions based only on line counts.
 
-## opencode-only skill and instruction layer
+## Dual-harness adapter and opencode instruction layer
 
-Two opencode-hosted artifacts close the remaining skill-layer handoff gaps without editing canonical Antigravity content:
+The harness-neutral workflow skills point at one shared adapter instead of duplicating host details inline:
 
-- `.opencode/instructions/antigravity-tool-translation.md` maps the Antigravity tool tokens found in canonical skills/rules/agents to their opencode equivalents, and lists the files that carry them.
-- `.opencode/skills/writing-opencode-plugins/SKILL.md` is the opencode counterpart to the Antigravity-only `writing-hooks` skill: `.opencode/plugins/*.mjs`, the hook surface, and the no-`PreInvocation`/no-`Stop`/no-`force_ask` limits.
+- `.agents/references/harness-adapters.md` is the single source for tool mappings, subagent dispatch, worktree isolation, rules activation, skill/slash invocation, hooks, and plans/artifacts across both hosts. It does not live under `.agents/skills/`, so the canonical 53-skill count is unaffected.
+- `.opencode/instructions/antigravity-tool-translation.md` is the always-injected bootstrap token map; it links to the adapter and lists the canonical files that still carry Antigravity tokens.
+- Per-skill opencode authoring deltas live in `references/opencode.md` (or `opencode-plugins.md` for hooks) inside `writing-skills`, `writing-agents`, `writing-rules`, and `writing-hooks`. These are loaded only when authoring for opencode.
 
-`.agents/` stays canonical; the `.opencode/` skill is opencode-only because Antigravity does not execute plugins, and it is not counted among the 53 canonical skills.
+`.agents/` stays canonical. The former standalone `.opencode/skills/writing-opencode-plugins` was absorbed into `writing-hooks/references/opencode-plugins.md` so hook authoring is one skill with two references instead of two skills.
 
 ## Verification environment
 
