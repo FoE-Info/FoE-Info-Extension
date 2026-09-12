@@ -65,3 +65,14 @@ FoE-Info is actively transitioning to native DOM and modern Web APIs:
 2. [ ] All event handlers cleanly detached on component teardown or using modern `AbortSignal` listeners.
 3. [ ] Event delegation correctly uses `e.target.closest(selector)`.
 4. [ ] Run `npm test` and `npm run check` to verify linting and tests pass.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `js/`, `ui-behaviors/`, `ui-atoms/`.
+Uphold:
+- prefer native popover/`<dialog>`/`<details>`
+- batch DOM writes (no `innerHTML +=`)
+- route timestamps through `resolveDate()`

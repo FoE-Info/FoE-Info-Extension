@@ -56,3 +56,15 @@ You are the authoritative specialist in Chrome Extension Architecture with deep 
 - [ ] Are DOM elements generated safely without vulnerable `innerHTML` interpolation?
 - [ ] Does the manifest omit unnecessary host permissions?
 - [ ] Is diagnostic logging cleanly gated to stay silent in standard operation?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `html/`, `forms/`, `security/`.
+Uphold in this domain:
+- `color-scheme` meta on every HTML entry
+- `<form id="optionsForm">` semantics with native constraints and `:user-invalid`
+- CSP-compliant message/context boundaries
+- no static game metadata in `src/`

@@ -6,12 +6,35 @@
  */
 
 const BigNumber = require('bignumber.js');
+const { createLogger } = require('../utils/logger.js');
+const logger = createLogger('StartupBoostCoordinator');
 let Popover = null;
 try {
   const bootstrap = require('bootstrap');
   Popover = bootstrap.Popover;
 } catch {}
 const { applyBoostsToCity } = require('./BoostService.js');
+
+/**
+ * Wire the BoostService live-update stream to a callback. Keeps the
+ * department wiring out of the StartupService monolith.
+ *
+ * @param {Function} onUpdate - Handler invoked with each getAllBoosts payload
+ * @returns {boolean} true when a subscription was registered
+ */
+function subscribeBoostUpdates(onUpdate) {
+  if (typeof onUpdate !== 'function') return false;
+  try {
+    const { boostService } = require('./BoostService.js');
+    if (boostService && typeof boostService.onBoostsUpdated === 'function') {
+      boostService.onBoostsUpdated(onUpdate);
+      return true;
+    }
+  } catch (err) {
+    logger.warn('failed to subscribe to live boost updates', err);
+  }
+  return false;
+}
 
 /**
  * Handles BoostService.getAllBoosts payload by applying boosts to City,
@@ -99,5 +122,6 @@ function handleBoostServiceAllBoosts({
 
 module.exports = {
   handleBoostServiceAllBoosts,
+  subscribeBoostUpdates,
 };
 module.exports.default = module.exports;

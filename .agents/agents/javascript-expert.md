@@ -54,3 +54,15 @@ You are the authoritative JavaScript and Node.js language specialist. You govern
 - [ ] Is arbitrary precision arithmetic strictly preserved across critical calculations?
 - [ ] Are file line limits ($\le 600$ lines) respected?
 - [ ] Is diagnostic logging cleanly gated to stay silent in standard operation?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `js/`, `performance/`.
+Uphold in this domain:
+- route timestamps through `src/js/utils/date.js` `resolveDate()` (game payloads are Unix seconds)
+- never raw `toLocale*` for dates and do not reintroduce `dayjs`
+- defer with `src/js/utils/scheduler.js` (`yieldToMain`/`postBackgroundTask`) instead of bare `setTimeout`
+- batch DOM writes (no `innerHTML +=`)

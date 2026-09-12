@@ -53,3 +53,16 @@ You are the authoritative frontend UI, design system, and styling specialist. Gr
 - [ ] Are touch/click target sizes at least 24×24px (WCAG 2.2)?
 - [ ] Are popovers and tooltips cleanly disposed of upon component removal to prevent detached DOM leaks?
 - [ ] Are view modules instrumented with structured diagnostics for debug mode?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `css/`, `visual-design/`, `ui-behaviors/`, `ui-atoms/`, `html/`.
+Uphold in this domain:
+- `color-scheme` + `light-dark()`/`[data-bs-theme]` tokens over class toggling
+- honor `prefers-reduced-motion` and `prefers-contrast`
+- container queries (`@container`) for resizable docked panels
+- native `<dialog>`/popover + `inert` for overlays
+- `<caption>` and `<th scope>` on data tables

@@ -20,6 +20,16 @@ try {
   helper = require('../fn/helper.js');
 } catch {}
 
+let i18nModule = null;
+try {
+  i18nModule = require('../utils/i18n.js');
+} catch {}
+
+function tr(key, fallback) {
+  const value = i18nModule?.t?.(key);
+  return value && value !== key ? value : fallback;
+}
+
 let renderCityStats = null;
 try {
   ({ renderCityStats } = require('./renderCityStats.js'));
@@ -152,7 +162,7 @@ function buildClanGoodsData(
         (helper?.fEntityNameTrim &&
           helper.fEntityNameTrim(entry.id || entry.name)) ||
         entry.name ||
-        'Unknown Building';
+        tr('unknown_building', 'Unknown Building');
       const eraSuffix =
         entry.era ?
           ' ' +

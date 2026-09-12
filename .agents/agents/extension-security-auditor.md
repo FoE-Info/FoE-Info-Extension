@@ -57,3 +57,15 @@ You are the authoritative security and privacy auditor for browser extensions. G
 - [ ] Are webhook URLs and API tokens masked and protected from log leakage?
 - [ ] Does the codebase contain zero occurrences of `eval()`, `new Function()`, or string-based `setTimeout()`?
 - [ ] Does `manifest.json` omit unnecessary permissions or broad `<all_urls>` wildcards?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `security/`, `privacy/`.
+Uphold in this domain:
+- MV3 CSP `script-src 'self'; object-src 'none'; base-uri 'none'`
+- no `eval`/`new Function`
+- render untrusted/AI text with `textContent`
+- avoid plaintext secrets and minimize host permissions

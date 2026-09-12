@@ -57,3 +57,16 @@ You are the accessibility specialist for FoE-Info. Grounded in modern web access
 - [ ] Is keyboard focus visible with a high-contrast `:focus-visible` ring?
 - [ ] Is the `inert` attribute applied to background content when dialogs are open?
 - [ ] Are real-time notifications contained in an `aria-live="polite"` container?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `accessibility/`, `html/`, `ui-behaviors/`.
+Uphold in this domain:
+- `role="status" aria-live="polite"` for informational updates, `role="alert"` only for errors
+- copy actions announce via `#foeCopyStatus` (`copied`/`copy_failed`)
+- custom buttons activate Enter `keydown` / Space `keyup`
+- one focusable control per collapse section with synced `aria-expanded`
+- popovers dismiss on Escape with focus return

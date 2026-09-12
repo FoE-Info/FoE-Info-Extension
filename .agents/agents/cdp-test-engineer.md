@@ -43,3 +43,14 @@ You are the test automation and quality assurance specialist for browser extensi
 - [ ] Does the test runner monitor `Runtime.exceptionThrown` and fail on uncaught errors?
 - [ ] Are CDP connections gracefully closed with appropriate timeouts?
 - [ ] Are screenshots captured automatically upon test assertion failure?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `accessibility/`, `performance/`.
+Uphold in this domain:
+- assert `role="status"` live regions and table semantics in the panel DOM
+- watch for detached observers/render regressions
+- measure render timing after scheduler changes

@@ -53,3 +53,14 @@ Browser extensions require compiling distinct execution contexts with strict bou
 - [ ] Does the build pipeline compile cleanly with hybrid `.ts` and `.js` modules?
 - [ ] Are all static assets properly copied or bundled into the build output directory?
 - [ ] Does production bundling produce an uncorrupted, store-compliant distribution package?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `performance/`.
+Uphold in this domain:
+- keep MV3 CSP-compatible output (no `eval`, no inline scripts)
+- prefer module/asset handling that respects the `performance/optimize-script-priority.md` guidance
+- avoid shipping unused polyfills

@@ -77,7 +77,7 @@ describe('renderBattlegroundResultCard Suite', () => {
     assert.match(html, /id="battlegroundCopyID"/);
     assert.match(
       html,
-      /<th scope="col" class="text-center">Rank<\/th><th scope="col" class="text-start">Member<\/th><th scope="col" class="text-center">Negs<\/th><th scope="col" class="text-center">Fights<\/th><th scope="col" class="text-center">Attrition<\/th>/,
+      /<th scope="col" class="text-center"><span data-i18n="rank">Rank<\/span><\/th><th scope="col" class="text-start"><span data-i18n="member">Member<\/span><\/th><th scope="col" class="text-center"><span data-i18n="neg">Negs<\/span><\/th><th scope="col" class="text-center"><span data-i18n="fights">Fights<\/span><\/th><th scope="col" class="text-center"><span data-i18n="attrition">Attrition<\/span><\/th>/,
     );
     assert.equal(targetEl.innerHTML, html);
   });
@@ -101,7 +101,10 @@ describe('renderBattlegroundResultCard Suite', () => {
       helper: { escapeHTML },
     });
 
-    assert.match(html, /<th scope="col" class="text-start">Guild Total<\/th>/);
+    assert.match(
+      html,
+      /<th scope="col" class="text-start"><span data-i18n="guild_total">Guild Total<\/span><\/th>/,
+    );
     assert.match(
       html,
       /<th scope="col" class="text-center">3<\/th><th scope="col" class="text-center">14<\/th>/,

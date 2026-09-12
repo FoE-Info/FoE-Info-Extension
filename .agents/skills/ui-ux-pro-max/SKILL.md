@@ -372,3 +372,15 @@ This skill is applicable to execute the workflow or actions described in the ove
 - Use this skill only when the task clearly matches the scope described above.
 - Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
 - Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `css/`, `visual-design/`, `ui-behaviors/`.
+Uphold:
+- `color-scheme` + `light-dark()`/Bootstrap `[data-bs-theme]` over class toggling
+- honor `prefers-reduced-motion`/`prefers-contrast`
+- standard `scrollbar-color` over webkit-only
+- container queries for docked panels

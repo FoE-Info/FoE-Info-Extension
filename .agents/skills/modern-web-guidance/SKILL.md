@@ -7,6 +7,8 @@ description: "Research modern Web standards, APIs, and Baseline features."
 
 Comprehensive reference library of 141 offline best-practice guides developed by the Google Chrome team for modern web standards, Baseline features, and Web APIs.
 
+> **Read first:** the FoE-Info overlay [`references/project-conventions.md`](references/project-conventions.md) records the conventions this project has already enforced (a11y live regions, `color-scheme`/`light-dark()`, options form validation, `scheduler.js` deferral, `resolveDate()` timestamps, MV3 CSP), the Baseline policy, and a concern-to-folder routing table. Apply a guide only after checking it for an existing project convention.
+
 ---
 
 ## 1. When to Use

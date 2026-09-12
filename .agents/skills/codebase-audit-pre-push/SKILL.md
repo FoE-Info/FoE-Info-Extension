@@ -239,3 +239,14 @@ Overall: 9/10
 - Use this skill only when the task clearly matches the scope described above.
 - Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
 - Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `performance/`, `accessibility/`, `security/`.
+Uphold:
+- audit against the overlay conventions before push
+- require `npm run verify`
+- check CSP and no static game metadata

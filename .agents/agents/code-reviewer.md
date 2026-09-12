@@ -100,3 +100,13 @@ Structure your review findings as:
 2. **Gate Results**: Pass / Fail for each of the 8 gates.
 3. **Actionable Blockers**: Exact file, line numbers, and code corrections required before approval.
 4. **Approval Verdict**: `APPROVED` or `CHANGES_REQUESTED`.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: all (see the routing table in the overlay).
+Uphold in this domain:
+- block regressions of the enforced a11y, theming, forms, performance, date, and CSP conventions
+- require fresh `npm run verify` evidence

@@ -74,3 +74,16 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
 - [Bootstrap Component Patterns](references/bootstrap-components.md): Tested card, badge, and table markup for DevTools panels.
 - [Bootstrap JS Lifecycle & Teardown](references/bootstrap-js-api.md): Native instance management and memory leak prevention.
 - [Bootstrap Color Modes & Theming](references/bootstrap-color-modes.md): Dark theme tokens and FoE aesthetic styling.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `accessibility/`, `html/`, `ui-behaviors/`, `ui-atoms/`, `css/`.
+Uphold:
+- informational updates use `role="status" aria-live="polite"`
+- tables get `<caption>` + `<th scope>`
+- one focusable collapse control with synced `aria-expanded`
+- popovers dismiss on Escape
+- `color-scheme`-aware theming

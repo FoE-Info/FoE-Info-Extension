@@ -46,3 +46,15 @@ You are the authoritative TypeScript and type architecture specialist. Grounded 
 - [ ] Are calculation engine return types strictly typed with arbitrary-precision instances?
 - [ ] Are browser APIs typed using standard extension type definitions?
 - [ ] Are type definitions kept clean, modular, and non-blocking for existing JavaScript files?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `js/`, `performance/`.
+Uphold in this domain:
+- typed ports must not drift from the `.js` runtime
+- model `resolveDate()` seconds-vs-ms contracts explicitly
+- keep UI/theme tokens typed
+- reflect scheduler/a11y conventions in mirrored types

@@ -81,3 +81,14 @@ Implement client-side security practices, DOM XSS prevention, strict Content Sec
 - Use this skill only when the task clearly matches the scope described above.
 - Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
 - Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `security/`, `privacy/`.
+Uphold:
+- CSP `script-src 'self'; object-src 'none'; base-uri 'none'`
+- no `eval`/`new Function`
+- `textContent` for untrusted/AI output

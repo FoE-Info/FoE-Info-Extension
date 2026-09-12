@@ -79,3 +79,14 @@ Before claiming any feature or bugfix is complete:
    - Zero `Runtime.exceptionThrown` events.
    - Zero console errors in `panel.html`.
    - Successful RPC message interception.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `accessibility/`, `performance/`.
+Uphold:
+- assert live regions/roles and table semantics
+- check for detached observers
+- measure render timing after scheduler changes

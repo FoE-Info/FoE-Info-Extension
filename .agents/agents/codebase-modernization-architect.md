@@ -43,3 +43,13 @@ You do NOT rush into writing features. You plan, sequence, and verify foundation
 - **Monolith Containment**: Never add new features to monoliths during refactoring.
 - **BigNumber Precision**: All calculation logic migrated to TypeScript must retain strict `bignumber.js` arithmetic with `BigNumber.ROUND_CEIL`.
 - **Pure Calc Separation**: All calculation modules must remain pure (zero DOM references, zero jQuery, zero browser globals).
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `js/`, `css/`, `ui-behaviors/`.
+Uphold in this domain:
+- modernize toward the overlay conventions without regressing them
+- sequence native popover/anchor-positioning and `light-dark()` adoption conservatively with fallbacks

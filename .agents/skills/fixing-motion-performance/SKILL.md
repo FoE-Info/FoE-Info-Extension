@@ -159,3 +159,14 @@ requestAnimationFrame(() => { el.style.transition = 'transform 0.3s'; el.style.t
 - Use this skill only when the task clearly matches its upstream source and local project context.
 - Verify commands, generated code, dependencies, credentials, and external service behavior before applying changes.
 - Do not treat examples as a substitute for environment-specific tests, security review, or user approval for destructive or costly actions.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `ui-behaviors/`, `css/`.
+Uphold:
+- honor `prefers-reduced-motion`
+- use `@starting-style` + `transition-behavior: allow-discrete` for entry/exit
+- avoid layout thrash

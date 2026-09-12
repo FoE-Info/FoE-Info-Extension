@@ -122,3 +122,12 @@ Not all violations are equal. Use judgment:
 - It does not enforce code style — that's the linter's job.
 - It does not decide *what* to test — only *how* to test it.
 - It does not flag pre-existing violations in files you're not touching, unless asked to audit.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `accessibility/`, `performance/`.
+Uphold:
+- tests must assert the enforced conventions (status roles, captions/scope, scheduler deferral) rather than tautologies

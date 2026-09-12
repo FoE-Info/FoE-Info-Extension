@@ -104,3 +104,14 @@ npx memlab analyze snapshot --snapshot /tmp/target.heapsnapshot
    foe-browser
    ```
 3. Confirm memory stabilizes under repeated cycles.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `performance/`.
+Uphold:
+- one long-lived `ResizeObserver` (disconnect before re-observe)
+- watch `innerHTML +=` re-serialization
+- batch DOM writes

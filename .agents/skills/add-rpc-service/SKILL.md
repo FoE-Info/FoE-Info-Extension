@@ -90,3 +90,14 @@ Audit the new service contract across every pipeline stage using the `cross-plat
    ```bash
    npm run graph:foe-info:update
    ```
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `js/`, `performance/`.
+Uphold:
+- parse seconds/ms via `resolveDate()`
+- defer rendering via `scheduler.js`
+- keep handlers DOM-free and delegate rendering

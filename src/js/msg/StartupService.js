@@ -23,6 +23,7 @@ import { parseUserAccount } from '../parsers/accountParser.js';
 import { blueGalaxyState } from '../state/BlueGalaxyState.js';
 import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
+import { resolvePlayerScore } from '../state/playerScoreResolver.js';
 import {
   appendBetaText,
   ensureBetaContainer,
@@ -77,7 +78,10 @@ import {
 import { clearArmyUnits } from './ArmyUnitManagementService.js';
 import { resolveMissingCityEntities } from './MetadataService.js';
 import { availableFP, ResourceDefs } from './ResourceService.js';
-import { handleBoostServiceAllBoosts } from './StartupBoostCoordinator.js';
+import {
+  handleBoostServiceAllBoosts,
+  subscribeBoostUpdates,
+} from './StartupBoostCoordinator.js';
 import { aggregateCityStats } from './StartupCityStatsAggregator.js';
 import {
   renderWhenStartupReady,
@@ -157,36 +161,10 @@ export function startupService(msg) {
     return;
   }
   const parsedUser = parseUserAccount(user);
-  if (!parsedUser.score || parsedUser.score === 0) {
-    try {
-      const storagePkg = require('../utils/storage.js');
-      const cached =
-        storagePkg?.getSync ?
-          storagePkg.getSync('playerScore') ||
-          (user?.world_id ?
-            storagePkg.getSync(`world:${user.world_id}.playerScore`)
-          : null)
-        : null;
-      if (cached && Number(cached) > 0) {
-        parsedUser.score = Number(cached);
-      } else if (typeof storagePkg?.get === 'function') {
-        storagePkg.get('playerScore', (err, val) => {
-          const num = Number(val);
-          if (Number.isFinite(num) && num > 0) {
-            setMyScore(num);
-            try {
-              const {
-                renderLiveCityStats,
-              } = require('../ui/renderLiveCityStats.js');
-              if (typeof renderLiveCityStats === 'function') {
-                renderLiveCityStats();
-              }
-            } catch {}
-          }
-        });
-      }
-    } catch {}
-  }
+  resolvePlayerScore(parsedUser, user, {
+    setMyScore,
+    renderLiveCityStats: () => renderLiveCityStats(),
+  });
   user.score = parsedUser.score;
   setMyInfo(
     parsedUser.name,
@@ -497,14 +475,7 @@ export function boostServiceAllBoosts(msg) {
   });
 }
 
-try {
-  const { boostService } = require('./BoostService.js');
-  if (boostService && typeof boostService.onBoostsUpdated === 'function') {
-    boostService.onBoostsUpdated((msg) => {
-      boostServiceAllBoosts(msg);
-    });
-  }
-} catch {}
+subscribeBoostUpdates(boostServiceAllBoosts);
 
 export { fArcname, showGalaxy, updateGalaxy };
 

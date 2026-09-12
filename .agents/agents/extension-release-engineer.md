@@ -50,3 +50,13 @@ Before triggering a production build or packaging release archives, verify all q
 - [ ] Does the verification gate pass with 100% clean exit codes?
 - [ ] Are all test, agent, and source files excluded from production release archives?
 - [ ] Does the manifest declare only minimal necessary permissions?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `html/`, `performance/`.
+Uphold in this domain:
+- confirm `color-scheme` meta and CSP `base-uri 'none'` in packaged HTML/manifest
+- require `npm run verify` green before packaging

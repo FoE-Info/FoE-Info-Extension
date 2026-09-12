@@ -52,3 +52,12 @@ Deep reference manuals from `ChromeDevTools/chrome-devtools-mcp`:
 - [`design-principles.md`](references/design-principles.md): MCP tool design philosophy.
 - [`slim-tool-reference.md`](references/slim-tool-reference.md): Slim 3-tool minimal footprint mode.
 - [`troubleshooting.md`](../chrome-devtools-troubleshooting/references/troubleshooting.md): Port binding, connection timeout, and profile debugging.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `accessibility/`, `performance/`.
+Uphold:
+- inspect the a11y tree for `role`/`aria-*`, use Perf insights for long tasks/INP

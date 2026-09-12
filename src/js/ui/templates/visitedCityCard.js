@@ -21,6 +21,16 @@ try {
   if (showOptionsPkg?.showOptions) showOptions = showOptionsPkg.showOptions;
 } catch {}
 
+let i18nModule = null;
+try {
+  i18nModule = require('../../utils/i18n.js');
+} catch {}
+
+function tr(key, fallback) {
+  const value = i18nModule?.t?.(key);
+  return value && value !== key ? value : fallback;
+}
+
 function buildVisitedCityCard({
   prefix,
   playerName,
@@ -68,7 +78,9 @@ function buildVisitedCityCard({
     stats.userTooltipHTML ||
     ''
   ).replace(/"/g, '&quot;');
-  const userTitle = escapeHtml(playerInfo.userTitle || 'Player Information');
+  const userTitle = escapeHtml(
+    playerInfo.userTitle || tr('player_information', 'Player Information'),
+  );
 
   const arcBonusHTML =
     spec.arcPercent && !spec.arcPercent.isZero() ?
@@ -89,11 +101,11 @@ function buildVisitedCityCard({
 
   const dailyCoinsHTML =
     showDailyCoins ?
-      `<div><span data-i18n="stat_daily_coins">Coins</span>: ${formatStatNumber(coins?.total ?? 0, { exact, comma: true })}${showCoinBoost && coinBoostVal > 0 ? ` (+${coins.boostPercent}%)` : ''}</div>`
+      `<div><span data-i18n="stat_coins">Coins</span>: ${formatStatNumber(coins?.total ?? 0, { exact, comma: true })}${showCoinBoost && coinBoostVal > 0 ? ` (+${coins.boostPercent}%)` : ''}</div>`
     : '';
   const dailySuppliesHTML =
     showDailySupplies ?
-      `<div><span data-i18n="stat_daily_supplies">Supplies</span>: ${formatStatNumber(supplies?.total ?? 0, { exact, comma: true })}${showSupplyBoost && supplyBoostVal > 0 ? ` (+${supplies.boostPercent}%)` : ''}</div>`
+      `<div><span data-i18n="stat_supplies">Supplies</span>: ${formatStatNumber(supplies?.total ?? 0, { exact, comma: true })}${showSupplyBoost && supplyBoostVal > 0 ? ` (+${supplies.boostPercent}%)` : ''}</div>`
     : '';
   const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}${critStrikeHTML}`;
   const unitsHTML = formatUnitsHTML(
@@ -116,7 +128,7 @@ function buildVisitedCityCard({
       <strong class="text-primary text-truncate cursor-pointer user-select-none" role="button" tabindex="0" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text"
         aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" style="cursor: pointer; user-select: none;">${originPrefix}${safePlayerName}</strong>
       <span id="${prefix}-user" class="pop d-inline-flex align-items-center flex-shrink-0 ms-1" role="button" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true"
-        data-bs-title="${userTitle}" data-bs-content='${userTooltip || '<p class="pop"><em>None</em></p>'}'>
+        data-bs-title="${userTitle}" data-bs-content='${userTooltip || `<p class="pop"><em>${tr('none', 'None')}</em></p>`}'>
         <span class="material-icons-outlined info-icon" id="${prefix}-info-icon" style="font-size: 14px; line-height: 1; vertical-align: middle; cursor: pointer; color: #6c757d;">info</span>
       </span>
     </div>

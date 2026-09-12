@@ -119,3 +119,15 @@ The HTML document itself takes too long to arrive.
 - **Emulation**: Lab measurements differ from real-world experience. Use `emulate` to test under constraints:
   - `emulate` with `networkConditions: "Fast 3G"` and `cpuThrottlingRate: 4`.
   - This surfaces issues visible only on slower connections/devices.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `performance/`.
+Uphold:
+- `scheduler.js` yielding
+- `content-visibility` on safe selectors
+- low-priority enrichment fetches
+- cached `Intl.NumberFormat`

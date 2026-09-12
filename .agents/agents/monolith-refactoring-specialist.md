@@ -76,3 +76,14 @@ Eradicate legacy jQuery during slice extractions using native platform primitive
    - Verify `git diff --stat` shows a net reduction in the monolith.
 5. **Verify Gate**:
    - Run `npm test && npm run build:dev`.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `js/`, `performance/`.
+Uphold in this domain:
+- preserve a11y semantics (live regions, captions/scope) when extracting renderers
+- keep timestamp handling on `resolveDate()`
+- defer extracted work via `scheduler.js`

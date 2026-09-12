@@ -60,15 +60,49 @@ test('i18n - translateContainer DOM scanner', () => {
 
   const mockContainer = {
     getAttribute: () => null,
-    querySelectorAll: (selector) => {
-      if (selector === '[data-i18n]') return children;
-      return [];
-    },
+    querySelectorAll: (selector) =>
+      selector.includes('[data-i18n]') ? children : [],
   };
 
   translateContainer(mockContainer);
   assert.equal(children[0].textContent, 'Load Game');
   assert.equal(children[1].textContent, 'Rewards');
+});
+
+test('i18n - translateContainer applies title, aria-label and placeholder', () => {
+  setLocale('en');
+  loadTranslations('en', {
+    close: 'Close',
+    search: 'Search',
+    copy: 'Copy',
+  });
+
+  function makeEl(attrs) {
+    return {
+      textContent: '',
+      attributes: { ...attrs },
+      getAttribute(k) {
+        return this.attributes[k] ?? null;
+      },
+      setAttribute(k, v) {
+        this.attributes[k] = v;
+      },
+    };
+  }
+
+  const titleEl = makeEl({ 'data-i18n-title': 'close' });
+  const ariaEl = makeEl({ 'data-i18n-aria-label': 'copy' });
+  const placeholderEl = makeEl({ 'data-i18n-placeholder': 'search' });
+
+  const mockContainer = {
+    getAttribute: () => null,
+    querySelectorAll: () => [titleEl, ariaEl, placeholderEl],
+  };
+
+  translateContainer(mockContainer);
+  assert.equal(titleEl.getAttribute('title'), 'Close');
+  assert.equal(ariaEl.getAttribute('aria-label'), 'Copy');
+  assert.equal(placeholderEl.getAttribute('placeholder'), 'Search');
 });
 
 test('i18n - Legacy jQuery bridge shim', async () => {

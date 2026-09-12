@@ -154,6 +154,25 @@ try {
   loggerModule = require('../utils/logger.js');
 } catch {}
 
+let i18nModule = null;
+try {
+  i18nModule = require('../utils/i18n.js');
+} catch {}
+
+let debugToggleModule = null;
+try {
+  debugToggleModule = require('./components/debugToggle.js');
+} catch {}
+
+function tr(key, fallback) {
+  try {
+    const value = i18nModule?.t?.(key);
+    return value && value !== key ? value : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 function setupPanelHeader({
   darkMode = false,
   extName = '',
@@ -193,62 +212,10 @@ function setupPanelHeader({
     ) {
       currentLogo.parentNode.removeChild(currentLogo);
     }
-    if (enabled) {
-      currentLogo = targetDocument.createElement('span');
-      currentLogo.className = 'material-icons-outlined';
-      currentLogo.id = 'logo';
-      currentLogo.textContent = 'bug_report';
-      currentLogo.style = currentLogo.style || {};
-      currentLogo.style.cursor = 'pointer';
-      currentLogo.style.fontSize = '24px';
-      currentLogo.style.verticalAlign = 'middle';
-      if (currentLogo.setAttribute) {
-        currentLogo.setAttribute('role', 'button');
-        currentLogo.setAttribute('tabindex', '0');
-        currentLogo.setAttribute('aria-pressed', 'true');
-        currentLogo.setAttribute('aria-label', 'FoE-Info debug mode');
-        currentLogo.setAttribute('title', 'FoE-Info Debug Mode (Enabled)');
-      }
-    } else {
-      currentLogo = targetDocument.createElement('img');
-      currentLogo.src = '/icons/Icon48.png';
-      currentLogo.width = '24';
-      currentLogo.height = '24';
-      currentLogo.id = 'logo';
-      currentLogo.alt = 'FoE-Info';
-      currentLogo.style = currentLogo.style || {};
-      currentLogo.style.cursor = 'pointer';
-      currentLogo.style.verticalAlign = 'middle';
-      if (currentLogo.setAttribute) {
-        currentLogo.setAttribute('role', 'button');
-        currentLogo.setAttribute('tabindex', '0');
-        currentLogo.setAttribute('aria-pressed', 'false');
-        currentLogo.setAttribute('aria-label', 'FoE-Info debug mode');
-        currentLogo.setAttribute(
-          'title',
-          'FoE-Info (Click to enable debug mode)',
-        );
-      }
-    }
-    if (typeof onToggleDebug === 'function') {
-      currentLogo.addEventListener('click', onToggleDebug);
-      currentLogo.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          if (e.repeat) return;
-          e.preventDefault();
-          onToggleDebug(e);
-        } else if (e.key === ' ' || e.key === 'Spacebar') {
-          // Space activates on keyup to match native button semantics.
-          e.preventDefault();
-        }
-      });
-      currentLogo.addEventListener('keyup', (e) => {
-        if (e.key === ' ' || e.key === 'Spacebar') {
-          e.preventDefault();
-          onToggleDebug(e);
-        }
-      });
-    }
+    currentLogo =
+      debugToggleModule?.createDebugLogo?.(targetDocument, enabled) || null;
+    if (!currentLogo) return null;
+    debugToggleModule?.bindDebugToggle?.(currentLogo, onToggleDebug);
     logoDiv.appendChild(currentLogo);
     return currentLogo;
   }
@@ -278,7 +245,7 @@ function setupPanelHeader({
 
   const optionsBtn = targetDocument.createElement('button');
   optionsBtn.type = 'button';
-  optionsBtn.setAttribute('aria-label', 'Open Settings');
+  optionsBtn.setAttribute('aria-label', tr('open_settings', 'Open Settings'));
   optionsBtn.className = 'btn btn-link p-2 text-decoration-none border-0';
   optionsBtn.innerHTML =
     '<span class="material-icons-outlined md-18 options-icon">settings</span>';

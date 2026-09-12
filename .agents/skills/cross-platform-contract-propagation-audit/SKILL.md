@@ -149,3 +149,14 @@ older-client and explicit-null compatibility remain unverified.
 - `@api-analyzer` - Validate the correctness of an individual API request.
 - `@spec-to-code-compliance` - Compare formal blockchain specifications with implementations.
 - `@technical-change-tracker` - Record implementation progress and handoff state across sessions.
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `js/`, `accessibility/`.
+Uphold:
+- audit `resolveDate()` seconds/ms contracts across call sites
+- audit `role`/`aria-live` contracts across renderers
+- flag drift between `.js` and `.ts` mirrors

@@ -48,3 +48,16 @@ You are the authoritative performance, Core Web Vitals (CWV), and memory diagnos
 - [ ] Do off-screen panels leverage `content-visibility: auto` for deferred rendering?
 - [ ] Are all event listeners bound with `AbortSignal` for clean teardown?
 - [ ] Do heap snapshot comparisons confirm 0 accumulating detached DOM nodes after updates?
+
+---
+
+## Modern Web Guidance (Project Overlay)
+
+Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Primary reference categories: `performance/`.
+Uphold in this domain:
+- defer via `scheduler.js` and yield between heavy renders
+- low-priority `fetch(..., { priority: 'low' })` for enrichment
+- one long-lived `ResizeObserver` with disconnect
+- cache `Intl.NumberFormat`
+- apply `content-visibility`/containment only where a safe selector exists
