@@ -24,11 +24,6 @@ import { blueGalaxyState } from '../state/BlueGalaxyState.js';
 import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
 import { resolvePlayerScore } from '../state/playerScoreResolver.js';
-import {
-  appendBetaText,
-  ensureBetaContainer,
-  resetBetaPanel,
-} from '../ui/betaDebugPanel.js';
 import { buildCityStatsHTML } from '../ui/cityStatsHtmlBuilder.js';
 import { showTooltips } from '../ui/cityStatsTooltips.js';
 import {
@@ -194,9 +189,6 @@ export function startupService(msg) {
   fpBuildings = [];
   goodsBuildings = [];
   clanGoodsBuildings = [];
-  if (DEV && checkDebug()) {
-    resetBetaPanel();
-  }
 
   City.ForgePoints = 0;
   City.baseBoostableFp = 0;
@@ -229,9 +221,7 @@ export function startupService(msg) {
   console.debug(language, $.i18n().locale, $.i18n.debug);
 
   // console.log('checkBeta:', users.checkBeta());
-  if (DEV) {
-    ensureBetaContainer();
-  } else {
+  if (!DEV) {
     removeDebug();
   }
   var diamonds = 0;
@@ -260,7 +250,6 @@ export function startupService(msg) {
       helper,
       formatLiveName,
       checkDebug,
-      appendBetaText,
       debugEnabled,
       DEV,
       debugEl: typeof debug !== 'undefined' ? debug : null,

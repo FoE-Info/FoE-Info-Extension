@@ -95,7 +95,6 @@ function processCityMapEntities(mapEntities, options = {}) {
     helper,
     formatLiveName,
     checkDebug: options.checkDebug,
-    appendBetaText: options.appendBetaText,
     debugEnabled,
     DEV: options.DEV,
     accum,

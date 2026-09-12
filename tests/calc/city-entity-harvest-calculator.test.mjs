@@ -23,7 +23,6 @@ function makeContext(overrides = {}) {
     },
     formatLiveName: (id, fallback) => fallback,
     checkDebug: () => false,
-    appendBetaText: () => {},
     debugEnabled: false,
     DEV: false,
     accum: createHarvestAccumulator(),
