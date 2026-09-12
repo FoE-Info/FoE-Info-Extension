@@ -19,7 +19,8 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
     returns only `ConversationService.js → ui/AddElement.js` (deliberately
     retained element factory). **F2 remediation DoD met.**
   - **Verification**: `npm run verify` exit 0 — **1,269 tests / 0 fail**,
-    calc purity guard green, webpack dev bundle compiles.
+    calc purity guard green, webpack dev bundle compiles. AST refreshed via
+    `npm run graph:foe-info:ast` (exit 0).
 
 - **F2 Slice A — `StartupService` tooltip + player-helper edges removed**:
   - `buildTotalGoodsTooltipHTML` no longer runs in `StartupService`; the live

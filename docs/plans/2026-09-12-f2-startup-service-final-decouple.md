@@ -1,7 +1,7 @@
 # F2 Final Decoupling — StartupService (Sessions 10–11 remainder)
 
 **Date**: 2026-09-12
-**Status**: Planned — the last remaining `src/js/msg/ → src/js/ui/` static edges.
+**Status**: Complete (2026-09-12) — both slices landed; F2 `msg/ → ui/` DoD met.
 **Parent program**: [`2026-09-12-f2-reactive-decoupling-session-plan.md`](2026-09-12-f2-reactive-decoupling-session-plan.md)
 **Evidence**: `graphify-out/foe-info/findings/2026-09-12-reactive-store-migration-audit.md`
 
@@ -99,9 +99,11 @@ value imports and the re-export) from `StartupService`.
 
 ## Program Definition of Done (F2)
 
-- [ ] Only `ConversationService.js → ui/AddElement.js` remains in `src/js/msg/`.
-- [ ] Production `msg/ → ui/` static edges = 0 (graphify).
-- [ ] `ui/renderBindings.js` remains the single composition root; every new
+- [x] Only `ConversationService.js → ui/AddElement.js` remains in `src/js/msg/`.
+- [x] Production `msg/ → ui/` static edges = 0 (grep-verified; AST refreshed via
+      `npm run graph:foe-info:ast`, exit 0).
+- [x] `ui/renderBindings.js` remains the single composition root; every new
       binding registered and covered by `tests/ui/render-bindings.test.mjs`.
-- [ ] Store + binding suites per slice; `calc/` purity guard green.
-- [ ] `npm run verify` exit 0; `docs/STATUS.md` + `docs/HANDOFF.md` updated.
+- [x] Store + binding suites per slice; `calc/` purity guard green.
+- [x] `npm run verify` exit 0 (1,269 tests / 0 fail); `docs/STATUS.md` +
+      `docs/HANDOFF.md` updated.
