@@ -32,7 +32,10 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
     `extractInternationalExpeditionEntries`) moved to
     `src/js/parsers/expeditionParser.js`; full GE decouple deferred (its
     cache-busted tests assert synchronous DOM).
-  - **Verification**: `npm run verify` exit 0 — **1,139 tests / 0 fail**.
+  - **F2 batch 3** — `BonusService` publishes to new `state/BonusState.js` via
+    `ui/bonusRenderBinding.js`; also drops its `StartupService` import (uses
+    `blueGalaxyState.setCharges`). `msg/ → ui/` static edges 29 → 23.
+  - **Verification**: `npm run verify` exit 0 — **1,149 tests / 0 fail**.
 
 - **Reactive stores for msg→ui decoupling (Actionable Item 2) + scope closures**:
   - Slice 1 — `src/js/state/QuantumState.js` publish/subscribe store
