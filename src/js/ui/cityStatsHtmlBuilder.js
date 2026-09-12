@@ -43,7 +43,7 @@ function buildCityStatsHTML({
     .replace(/'/g, '&#39;')
     .replace(/"/g, '&quot;');
 
-  const fpHTML = `<span id="fp" class="pop" tabindex="0" data-bs-container="#fp" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${
+  const fpHTML = `<span id="fp" class="pop" role="button" tabindex="0" aria-haspopup="true" data-bs-container="#fp" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily FP" data-bs-content="${
     tooltipHTML.fp
   }"><span data-i18n="daily">Daily</span>: ${City.ForgePoints ? City.ForgePoints : 0}FP</span>`;
 
@@ -51,14 +51,14 @@ function buildCityStatsHTML({
 
   const userHTML = `<strong>${worldBadge} ${
     MyInfo.name
-  }</strong><span id="user" class="pop" tabindex="0" data-bs-container="#user" data-bs-toggle="popover" data-bs-placement="bottom"
+  }</strong><span id="user" class="pop" role="button" tabindex="0" aria-haspopup="true" data-bs-container="#user" data-bs-toggle="popover" data-bs-placement="bottom"
         title="Playing <strong>FoE</strong> since<br>${formatDate(MyInfo.createdAt)}"
         data-bs-content='${userTooltipHTMLEscaped}'>
         <span class="material-icons-outlined md-12 info-icon" id="infoIcon">info</span></span>`;
 
-  const clanGoodsHTML = `<span id="clanGoods" class="pop" tabindex="0" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
+  const clanGoodsHTML = `<span id="clanGoods" class="pop" role="button" tabindex="0" aria-haspopup="true" data-bs-container="#clanGoods" data-bs-toggle="popover" data-bs-placement="bottom" title="Guild Goods" data-bs-content="${tooltipHTML.clanGoods}"><span data-i18n="guildgoods">Guild Goods</span>: ${clanGoods}</span>`;
 
-  const totalGoodsHTML = `<span id="citystats_goods" class="pop" tabindex="0" data-bs-container="#citystats_goods" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
+  const totalGoodsHTML = `<span id="citystats_goods" class="pop" role="button" tabindex="0" aria-haspopup="true" data-bs-container="#citystats_goods" data-bs-toggle="popover" data-bs-placement="bottom" title="Daily Goods" data-bs-content="${tooltipHTML.totalGoods}"><span data-i18n="goods">Goods</span>:</span> ${goodsHTML}`;
 
   let html = `<p>`;
   html += element.icon('citystatsicon', 'citystatsText', collapseStats);

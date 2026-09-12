@@ -70,6 +70,14 @@ function initPopovers(container, customBs = null) {
         let hideTimer = null;
         let isSelecting = false;
 
+        if (typeof el.setAttribute === 'function') {
+          if (!el.getAttribute || !el.getAttribute('role')) {
+            el.setAttribute('role', 'button');
+          }
+          el.setAttribute('aria-haspopup', 'true');
+          el.setAttribute('aria-expanded', 'false');
+        }
+
         const getTip = () => {
           try {
             if (popover.tip) return popover.tip;
@@ -91,6 +99,9 @@ function initPopovers(container, customBs = null) {
             showTimer = setTimeout(() => {
               showTimer = null;
               popover.show();
+              if (typeof el.setAttribute === 'function') {
+                el.setAttribute('aria-expanded', 'true');
+              }
               bindPopoverBox();
             }, 80);
           }
@@ -107,6 +118,9 @@ function initPopovers(container, customBs = null) {
             const tip = getTip();
             if (tip && tip.matches(':hover')) return;
             popover.hide();
+            if (typeof el.setAttribute === 'function') {
+              el.setAttribute('aria-expanded', 'false');
+            }
           }, 350);
         };
 
@@ -136,6 +150,12 @@ function initPopovers(container, customBs = null) {
           }
         });
 
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            hidePopover();
+          }
+        });
+
         const bindPopoverBox = () => {
           const tip = getTip();
           if (tip && !tip._hoverBound) {
@@ -144,6 +164,13 @@ function initPopovers(container, customBs = null) {
               if (hideTimer) {
                 clearTimeout(hideTimer);
                 hideTimer = null;
+              }
+            });
+            tip.addEventListener('keydown', (e) => {
+              if (e.key === 'Escape') {
+                e.stopPropagation();
+                hidePopover();
+                if (typeof el.focus === 'function') el.focus();
               }
             });
             tip.addEventListener('mouseleave', (e) => {

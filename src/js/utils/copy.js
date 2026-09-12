@@ -16,6 +16,61 @@ try {
   debug = require('../state/state.js').debug;
 } catch {}
 
+let i18n = null;
+try {
+  i18n = require('./i18n.js');
+} catch {}
+
+let copyLiveRegion = null;
+
+function translateCopy(key, fallbackKey) {
+  const translate = typeof i18n?.t === 'function' ? i18n.t : null;
+  if (!translate) return '';
+  const value = translate(key);
+  if (value && value !== key) return value;
+  return translate(fallbackKey);
+}
+
+function getCopyLiveRegion() {
+  if (typeof document === 'undefined' || !document.body) return null;
+  if (copyLiveRegion && copyLiveRegion.isConnected) return copyLiveRegion;
+  const existing =
+    typeof document.getElementById === 'function' ?
+      document.getElementById('foeCopyStatus')
+    : null;
+  if (existing) {
+    copyLiveRegion = existing;
+    return existing;
+  }
+  if (typeof document.createElement !== 'function') return null;
+  const region = document.createElement('div');
+  region.id = 'foeCopyStatus';
+  region.className = 'visually-hidden';
+  if (typeof region.setAttribute === 'function') {
+    region.setAttribute('role', 'status');
+    region.setAttribute('aria-live', 'polite');
+    region.setAttribute('aria-atomic', 'true');
+  }
+  document.body.appendChild(region);
+  copyLiveRegion = region;
+  return region;
+}
+
+function announceCopy(message) {
+  if (!message) return;
+  const region = getCopyLiveRegion();
+  if (!region) return;
+  // Clear before setting so repeated identical messages are re-announced.
+  region.textContent = '';
+  region.textContent = message;
+}
+
+function execCopyCommand() {
+  const ok = document.execCommand('copy');
+  announceCopy(translateCopy(ok === false ? 'copy_failed' : 'copied', 'copy'));
+  return ok;
+}
+
 function fClipboardCopy() {
   copyToClipboard('div#clipboardText');
 }
@@ -47,7 +102,7 @@ function DonationCopy() {
   var range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand('copy');
+  execCopyCommand();
 }
 
 function fCityStatsCopy() {
@@ -65,7 +120,7 @@ function fCityStatsCopy() {
   debug.innerHTML = cityStatsHTML;
   range.selectNode(debug);
   selection.addRange(range);
-  document.execCommand('copy');
+  execCopyCommand();
   debug.innerHTML = '';
 }
 
@@ -80,7 +135,7 @@ function fFriendsCopy() {
   var range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand('copy');
+  execCopyCommand();
 }
 
 function fGuildCopy() {
@@ -94,7 +149,7 @@ function fGuildCopy() {
   var range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand('copy');
+  execCopyCommand();
 }
 
 function fHoodCopy() {
@@ -108,7 +163,7 @@ function fHoodCopy() {
   var range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand('copy');
+  execCopyCommand();
 }
 
 function BattlegroundCopy() {
@@ -129,7 +184,7 @@ function ExpeditionCopy(targetId = 'geContributionText') {
   var range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
-  document.execCommand('copy');
+  execCopyCommand();
 }
 
 async function TreasuryCopy() {
@@ -173,7 +228,9 @@ async function TreasuryCopy() {
       document.execCommand('copy');
       temp.remove();
     }
+    announceCopy(translateCopy('copied', 'copy'));
   } catch (err) {
+    announceCopy(translateCopy('copy_failed', 'copy'));
     console.error('TreasuryCopy clipboard write failed:', err);
   }
 }
@@ -200,7 +257,9 @@ async function copyToClipboard(element) {
       document.execCommand('copy');
       temp.remove();
     }
+    announceCopy(translateCopy('copied', 'copy'));
   } catch (err) {
+    announceCopy(translateCopy('copy_failed', 'copy'));
     console.error('Clipboard write failed:', err);
   }
 }
@@ -214,7 +273,11 @@ function addToClipboard(element, html) {
     content.appendChild(clipboard);
   }
 
-  clipboard.innerHTML += '<br>' + html;
+  if (typeof clipboard.insertAdjacentHTML === 'function') {
+    clipboard.insertAdjacentHTML('beforeend', '<br>' + html);
+  } else {
+    clipboard.innerHTML = (clipboard.innerHTML || '') + '<br>' + html;
+  }
 }
 
 function copyNode(node) {
@@ -224,7 +287,7 @@ function copyNode(node) {
   let select = window.getSelection();
   select.removeAllRanges();
   select.addRange(range);
-  document.execCommand('copy');
+  execCopyCommand();
 }
 
 module.exports = {

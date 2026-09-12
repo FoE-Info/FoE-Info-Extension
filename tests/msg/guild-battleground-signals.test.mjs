@@ -894,7 +894,7 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
       );
       assert.match(
         resultCardSource,
-        /<th class="text-center">Rank<\/th><th class="text-start">Member<\/th><th class="text-center">Negs<\/th><th class="text-center">Fights<\/th><th class="text-center">Attrition<\/th>/,
+        /<th scope="col" class="text-center">Rank<\/th><th scope="col" class="text-start">Member<\/th><th scope="col" class="text-center">Negs<\/th><th scope="col" class="text-center">Fights<\/th><th scope="col" class="text-center">Attrition<\/th>/,
         'GBG table must render centered headers with capitalized Attrition',
       );
       assert.match(

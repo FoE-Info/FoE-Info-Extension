@@ -124,7 +124,7 @@ function renderGbDonorsCard(params = {}) {
       )
     : '';
 
-  const outputHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">
+  const outputHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="status" aria-live="polite">
       ${closeBtn}
       <p id="donorTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#donorText" aria-expanded="${!depCollapse?.collapseGBDonors}" aria-controls="donorText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconHtml}
