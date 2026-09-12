@@ -7,8 +7,9 @@
  *    declare the panels they permit via CONTEXT_ALLOWED_PANELS. Panels absent
  *    from the active context are hidden (display: none) rather than wiped, so
  *    DOM listeners and scroll state survive context switches.
- * 2. Debug Mode Override (isDebug === true) forces every known panel visible
- *    and seeds placeholder stubs when content is absent.
+ * 2. Debug Mode Override (isDebug === true) respects the active context/options
+ *    visibility and annotates each visible panel with a stub carrying its raw
+ *    rendered content for inspection.
  * 3. Active world showOptions gate the panels a context permits.
  *
  * Dual CJS/ESM compatible.
@@ -307,6 +308,53 @@ function setElementDisplay(id, displayVal) {
   }
 }
 
+/** Escape a value for safe inclusion inside the debug stub markup. */
+function escapeDebugData(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/** Strip any previously injected debug stub from a panel's innerHTML. */
+function stripDebugStubs(html) {
+  return String(html || '')
+    .replace(/<div class="[^"]*debug-stub[^"]*">.*?<\/div>/gs, '')
+    .trim();
+}
+
+/** Remove every debug stub currently present in the document. */
+function removeDebugStubs() {
+  if (typeof document.querySelectorAll !== 'function') return;
+  const stubs = document.querySelectorAll('.debug-stub') || [];
+  for (const stub of stubs) {
+    if (stub?.parentNode?.removeChild) {
+      stub.parentNode.removeChild(stub);
+    }
+  }
+}
+
+/**
+ * Prepend a debug stub to a visible panel, embedding a raw (escaped) dump of
+ * the panel's current rendered content so it can be inspected directly.
+ */
+function insertDebugStub(el, panelId) {
+  const data = stripDebugStubs(el.innerHTML);
+  const body =
+    data ?
+      `<details><summary>data</summary><pre class="m-0" style="white-space: pre-wrap; word-break: break-word;">${escapeDebugData(
+        data,
+      )}</pre></details>`
+    : '<span class="fst-italic">empty</span>';
+  const stub = `<div class="alert alert-secondary p-2 mb-2 font-monospace small debug-stub"><strong>[DEBUG STUB]</strong> ${panelId} ${body}</div>`;
+  if (typeof el.insertAdjacentHTML === 'function') {
+    el.insertAdjacentHTML('afterbegin', stub);
+  } else {
+    el.innerHTML = stub + el.innerHTML;
+  }
+}
+
 /** Expand a context whitelist to include every permitted panel's wrappers. */
 function getAllowedPanelsForView(view) {
   const list = CONTEXT_ALLOWED_PANELS[view];
@@ -372,41 +420,25 @@ function applyCardVisibility(
   }
 
   // --- 1. DEBUG MODE OVERRIDE (isDebug === true) ---
+  // Respect the active context/options visibility, then annotate every visible
+  // panel with a stub carrying its raw rendered content.
   if (isDebug) {
+    if (activeView && CONTEXT_ALLOWED_PANELS[activeView]) {
+      applyContextVisibility(opts, activeView);
+    } else {
+      applyUnconstrainedVisibility(opts);
+    }
+    removeDebugStubs();
     for (const panelId of ALL_15_PANEL_IDS) {
       const el = document.getElementById(panelId);
-      if (el) {
-        el.style.display = '';
-        // Check if real content is absent (ignoring whitespace and debug-stub)
-        const cleanContent = el.innerHTML
-          .replace(/<div class="[^"]*debug-stub[^"]*">.*?<\/div>/gs, '')
-          .trim();
-        if (!cleanContent) {
-          el.innerHTML = `<div class="alert alert-secondary p-2 mb-2 font-monospace small debug-stub"><strong>[DEBUG STUB]</strong> ${panelId}</div>`;
-        }
-      }
-    }
-
-    // Force every known panel (including legacy aliases) visible.
-    for (const panelId of ALL_KNOWN_PANEL_IDS) {
-      setElementDisplay(panelId, '');
+      if (!el || el.style.display === 'none') continue;
+      insertDebugStub(el, panelId);
     }
     return;
   }
 
   // --- Remove any debug stubs if debug mode is inactive ---
-  if (typeof document.querySelectorAll === 'function') {
-    const stubs = document.querySelectorAll('.debug-stub') || [];
-    for (const stub of stubs) {
-      if (
-        stub &&
-        stub.parentNode &&
-        typeof stub.parentNode.removeChild === 'function'
-      ) {
-        stub.parentNode.removeChild(stub);
-      }
-    }
-  }
+  removeDebugStubs();
 
   // --- 2. CONTEXT-CONSTRAINED VIEW ---
   if (activeView && CONTEXT_ALLOWED_PANELS[activeView]) {
@@ -415,6 +447,14 @@ function applyCardVisibility(
   }
 
   // --- 3. UNCONSTRAINED DEFAULT (activeView === null) ---
+  applyUnconstrainedVisibility(opts);
+}
+
+/**
+ * Apply unconstrained visibility (no active context): options gates for every
+ * configured panel plus the special-cased wrappers.
+ */
+function applyUnconstrainedVisibility(opts) {
   // Apply standard options across all configured panels
   for (const [optKey, elemId] of Object.entries(optionToElementId)) {
     const el = document.getElementById(elemId);
