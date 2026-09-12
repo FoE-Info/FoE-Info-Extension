@@ -11,12 +11,12 @@ This document defines the workspace architecture, command runners, multi-graph k
 - **Strictly Agentic Environment**: Never generate IDE configs (`.vscode/`, `.idea/`, `launch.json`). Task execution relies exclusively on `package.json` runners and Antigravity tooling.
 - **Antigravity Version Context**: Electron Antigravity 2.0+ started the agentic work; Antigravity CLI did the most recent work (grant rebuilds, MCP portability); Antigravity-IDE base is barely used. OpenCode continues when Antigravity runs out — see `antigravity-interop` skill for handoff protocol.
 - **FoE Expert Caveat**: Many FoE custom expert/subagent claims were AI-inferred by Antigravity from inspecting the codebase (which was broken at the time) + live network/RPCs. Some claims may be inaccurate (GB calculations was wrong). Treat expert claims as hypotheses — always verify against source code.
-- **Git Boundaries & Worktrees**: Worktrees reside in `.worktrees/<branch>`. Core configurations (`.agents/`, `AGENTS.md`) are tracked in Git, ensuring new worktrees instantly inherit all 36 subagents, 17 rules, and 53 skills (53 on-demand runbooks and procedures).
+- **Git Boundaries & Worktrees**: Worktrees reside in `.worktrees/<branch>`. Core configurations (`.agents/`, `AGENTS.md`) are tracked in Git, ensuring new worktrees instantly inherit all 36 subagents, 17 rules, and 55 skills (55 on-demand runbooks and procedures).
 - **Artifact Boundaries**: Never pass `ArtifactMetadata` when modifying repository files. It is reserved exclusively for `<appDataDir>/brain/<conversation-id>/` artifacts.
 
 ```text
 FoE-Info-Extension/
-├── .agents/                 # Antigravity root: 36 subagents, 17 rules, 53 skills, hooks, MCP
+├── .agents/                 # Antigravity root: 36 subagents, 17 rules, 55 skills, hooks, MCP
 ├── graphify-out/            # Knowledge graphs (foe-info/, metadata symlink -> ../metadata-store/graphify-out)
 ├── src/
 │   ├── chrome/              # MV3 manifests, panel.html, options.html
@@ -85,15 +85,15 @@ Canonical personas live in [`.agents/agents/`](.agents/agents/) (opencode shims 
 
 ---
 
-## 6. Skills & Runbooks Taxonomy (53 Skills)
+## 6. Skills & Runbooks Taxonomy (55 Skills)
 
-53 on-demand runbooks and procedures discovered from [`.agents/skills/`](.agents/skills/) (consult `<skills>` catalog for triggers):
+55 on-demand runbooks and procedures discovered from [`.agents/skills/`](.agents/skills/) (consult `<skills>` catalog for triggers):
 
 - **FoE Domain (7)**: RPC handlers, UI panel scaffolding, metadata ingestion, reverse engineering.
 - **Code Quality (13)**: Monolith decomposition, TDD, systematic debugging, complexity cuts, audits.
 - **Browser Diagnostics (10)**: CDP test harness, memory leaks, DevTools, rendering performance.
 - **Localization & Release (8)**: i18n audits, a11y, supply chain security, packaging.
-- **Multi-Agent Orchestration (15)**: Superpowers, planning, git worktrees, rule/skill/agent authoring.
+- **Multi-Agent Orchestration (17)**: Superpowers, planning, git worktrees, rule/skill/agent authoring.
 
 ---
 
