@@ -36,12 +36,13 @@ class HiddenReward {
 
 let defaultState = null;
 let defaultHelper = null;
+let incidentState = null;
+try {
+  ({ incidentState } = require('../state/IncidentState.js'));
+} catch {}
 if (typeof __webpack_require__ !== 'undefined') {
   try {
     defaultState = require('../vars/state.js');
-  } catch {}
-  try {
-    defaultHelper = require('../fn/helper.js');
   } catch {}
 }
 
@@ -109,6 +110,8 @@ class HiddenRewardService {
     if (targetState && typeof targetState.setHiddenRewards === 'function') {
       targetState.setHiddenRewards(rawRewards);
     }
+
+    incidentState?.setIncidents?.(this.incidents);
 
     const targetHelper = this.helper || defaultHelper;
     if (targetHelper && typeof targetHelper.fShowIncidents === 'function') {

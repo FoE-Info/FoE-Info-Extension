@@ -1,7 +1,7 @@
 /** Guild Battlegrounds RPC service for map, state, and leaderboards. */
 import browser from 'webextension-polyfill';
 import { getAttritionReduction } from '../calc/GbgCalculator.js';
-import * as helper from '../fn/helper.js';
+import { translateContainer } from '../fn/i18n.js';
 import * as storage from '../fn/storage.js';
 import { guildBattlegroundState } from '../state/GuildBattlegroundState.js';
 import {
@@ -97,9 +97,12 @@ export function getPlayerLeaderboard(msg) {
         });
         console.debug('save GBG', GameOrigin, BattlegroundPerformance);
         storage.set(GameOrigin, BattlegroundPerformance);
-        helper.fshowBattleground();
+        guildBattlegroundState.setPerformance({
+          performance: BattlegroundPerformance,
+          gameOrigin: GameOrigin,
+        });
       });
-    if (donationDIV) helper.translateContainer(donationDIV);
+    if (donationDIV) translateContainer(donationDIV);
   }
 }
 
