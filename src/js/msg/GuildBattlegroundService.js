@@ -1,22 +1,9 @@
 /** Guild Battlegrounds RPC service for map, state, and leaderboards. */
-import { Alert, Popover, Tooltip } from 'bootstrap';
 import browser from 'webextension-polyfill';
 import { getAttritionReduction } from '../calc/GbgCalculator.js';
-import * as element from '../fn/AddElement';
-import * as collapse from '../fn/collapse.js';
-import * as copy from '../fn/copy.js';
-import { setBuildingCostSize, toolOptions } from '../fn/globals.js';
 import * as helper from '../fn/helper.js';
-import * as post_webstore from '../fn/post.js';
 import * as storage from '../fn/storage.js';
-import {
-  buildBuildingCostsTableHTML,
-  buildingCostCopy,
-  renderBuildingCostCard,
-} from '../ui/gbgProvinceView.js';
-import { renderBattlegroundResultCard } from '../ui/renderBattlegroundResultCard.js';
-import { renderGbgLeaderboardPanel } from '../ui/renderBattlegroundsPanel.js';
-import { renderTargetGeneratorPanel } from '../ui/renderTargetGeneratorCard.js';
+import { guildBattlegroundState } from '../state/GuildBattlegroundState.js';
 import {
   formatDateTime,
   formatInTimeZone,
@@ -25,20 +12,16 @@ import {
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
 import {
-  battlegroundDIV,
   BattlegroundPerformance,
   BGtime,
   BuildingDefs,
-  content,
   donationDIV,
   EpocTime,
   GameOrigin,
   GBGdata,
   GuildMembers,
   setBGtime,
-  targets,
   targetText,
-  url,
   VolcanoProvinceDefs,
   WaterfallProvinceDefs,
 } from '../vars/state.js';
@@ -121,9 +104,7 @@ export function getPlayerLeaderboard(msg) {
 }
 
 export function getLeaderboard(msg) {
-  renderGbgLeaderboardPanel(msg?.responseData, {
-    translateContainer: helper?.translateContainer,
-  });
+  guildBattlegroundState.setLeaderboard({ leaderboard: msg?.responseData });
 }
 
 export function getState(msg) {
@@ -135,21 +116,8 @@ export function getState(msg) {
     BattlegroundPerformance.length = 0;
     GBGdata.length = 0;
 
-    const targetEl =
-      (typeof document !== 'undefined' &&
-        document.getElementById('battleground')) ||
-      battlegroundDIV ||
-      donationDIV;
-
-    renderBattlegroundResultCard(msg.responseData, {
-      targetEl,
-      collapseState: collapse.collapseBattleground,
-      helper,
-      element,
-      collapse,
-      copy,
-      url,
-      post_webstore,
+    guildBattlegroundState.setResult({
+      responseData: msg.responseData,
       onRow: (row) => {
         BattlegroundPerformance.push([
           row.rank,
@@ -453,8 +421,7 @@ function attritionReduction(building) {
 }
 
 function checkProvinces() {
-  renderTargetGeneratorPanel({
-    targetsContainer: targets,
+  guildBattlegroundState.setTargets({
     map,
     signals,
     provinceDefs: ProvinceDefs,
@@ -463,45 +430,17 @@ function checkProvinces() {
     currentParticipantId,
     mapName,
     epocTime: EpocTime,
-    showOptions,
     gameOrigin: typeof GameOrigin !== 'undefined' ? GameOrigin : '',
     targetText,
-    element,
-    collapse,
-    helper,
-    url,
-    post_webstore,
-    targetPost: post_webstore.postTargetGenToDiscord,
-    Tooltip,
     formatTime: timeGBG,
   });
 }
 
 function showBuildingCost(msg) {
-  var costsDiv = document.createElement('div');
-  if (document.getElementById('costs')) {
-    costsDiv = document.getElementById('costs');
-  } else {
-    costsDiv.id = 'costs';
-    content.appendChild(costsDiv);
-  }
-  const costsHTML = buildBuildingCostsTableHTML({
+  guildBattlegroundState.setProvince({
     map,
-    ProvinceDefs,
+    provinceDefs: ProvinceDefs,
     mapName,
-    BuildingDefs,
-    helper,
-  });
-  renderBuildingCostCard({
-    costsDiv,
-    costsHTML,
-    collapse,
-    buildingCostCopy,
-    toolOptions,
-    setBuildingCostSize,
-    helper,
-    element,
-    ResizeObserverClass:
-      typeof ResizeObserver !== 'undefined' ? ResizeObserver : null,
+    buildingDefs: BuildingDefs,
   });
 }

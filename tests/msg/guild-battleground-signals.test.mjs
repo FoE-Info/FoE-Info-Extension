@@ -824,6 +824,10 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         path.join(ROOT_DIR, 'src/js/msg/GuildBattlegroundService.js'),
         'utf8',
       );
+      const gbgBindingSource = fs.readFileSync(
+        path.join(ROOT_DIR, 'src/js/ui/gbgRenderBinding.js'),
+        'utf8',
+      );
       const resultCardSource = fs.readFileSync(
         path.join(ROOT_DIR, 'src/js/ui/renderBattlegroundResultCard.js'),
         'utf8',
@@ -851,21 +855,34 @@ test('GuildBattleground Signals and Target Generation Suite', async (t) => {
         'renderBattlegroundsPanel.js fshowBattleground must null-guard battlegroundicon click listener',
       );
 
-      // Verify GuildBattlegroundService.js imports and delegates to UI renderers
+      // Verify GuildBattlegroundService publishes to the reactive store instead
+      // of importing the UI renderers directly (F2 decoupling).
       assert.match(
         gbgServiceSource,
+        /guildBattlegroundState\.setLeaderboard/,
+        'GuildBattlegroundService.getLeaderboard must publish to the reactive store',
+      );
+      assert.doesNotMatch(
+        gbgServiceSource,
+        /from '\.\.\/ui\//,
+        'GuildBattlegroundService must not import UI renderers directly',
+      );
+
+      // Verify gbgRenderBinding.js owns the renderer wiring and container targeting
+      assert.match(
+        gbgBindingSource,
         /battlegroundDIV/,
-        'GuildBattlegroundService.js must import battlegroundDIV',
+        'gbgRenderBinding.js must target the dedicated battleground container',
       );
       assert.match(
-        gbgServiceSource,
+        gbgBindingSource,
         /renderGbgLeaderboardPanel/,
-        'GuildBattlegroundService.js getLeaderboard must delegate to renderBattlegroundsPanel.js',
+        'gbgRenderBinding.js must delegate the leaderboard to renderBattlegroundsPanel.js',
       );
       assert.match(
-        gbgServiceSource,
+        gbgBindingSource,
         /document\.getElementById\(['"]battleground['"]\)[\s\S]*?battlegroundDIV/,
-        'GuildBattlegroundService.js getState must target dedicated battleground container',
+        'gbgRenderBinding.js must resolve the dedicated battleground container',
       );
       assert.match(
         rendererSource,
