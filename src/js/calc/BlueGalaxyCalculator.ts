@@ -10,6 +10,7 @@
  */
 
 import BigNumber from 'bignumber.js';
+import { toBigNumber } from './utils/bignumberUtils.js';
 
 let logger: { debug?: (...args: unknown[]) => void } | null = null;
 try {
@@ -221,13 +222,10 @@ export function computeEconomicScore(
 ): BigNumber {
   const weights =
     resolveEconomicWeights(economicWeights) || DEFAULT_ECONOMIC_WEIGHTS;
-  const fp = new BigNumber(candidate?.fp ?? 0);
-  const goods = new BigNumber(candidate?.goods ?? 0);
-  const olderGoods = new BigNumber(candidate?.olderGoods ?? 0);
-  return fp
+  return toBigNumber(candidate?.fp)
     .times(weights.fpWeight)
-    .plus(goods.times(weights.goodsWeight))
-    .plus(olderGoods.times(weights.olderGoodsWeight));
+    .plus(toBigNumber(candidate?.goods).times(weights.goodsWeight))
+    .plus(toBigNumber(candidate?.olderGoods).times(weights.olderGoodsWeight));
 }
 
 export function filterAndSortGalaxyCandidates(
