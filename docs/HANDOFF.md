@@ -1,8 +1,39 @@
 # FoE-Info Extension — Project Handoff
 
-Updated 2026-09-12 after the City Overview layout redesign (own + visited cards), the third-pass FoE expert audit, the modern-web-guidance Tier 1/2 remediation, and the quad-graph exploration suite.
+Updated 2026-09-12 after the City Overview layout redesign (own + visited cards), the third-pass FoE expert audit, the modern-web-guidance Tier 1/2 remediation, the quad-graph exploration suite, and the local toolchain setup / residual build-bloat removal.
 
 ## Current session (2026-09-12)
+
+- **Local toolchain setup, webpack build cleanup & residual bloat removal (working tree)**:
+  - **Toolchain pinning**: `.mise.toml` now pins `node = 26.8.2` under `[tools]`, drops the
+    linuxbrew `PATH` entry, and adds a `setup` task (`npm ci`); generated `mise.lock`.
+    Added `.npmrc` with `legacy-peer-deps=true` (required because `typescript-eslint@8`
+    peers `typescript <6.1` while the project runs `typescript@^7`).
+  - **Webpack consolidation**: deleted the `webpack.dev.js`/`webpack.prod.js` thin
+    delegators; the dynamic `webpack.config.js` is now the single build entry. Removed
+    `postcss-loader` (no PostCSS config), `webpack-bundle-analyzer`,
+    `webpack-extension-manifest-plugin`, and `zip-webpack-plugin` (packaging is
+    `scripts/package-extension.js` + system `zip`). Added `acorn`/`acorn-walk` for
+    `tests/msg/startup-hot-path-logging.test.mjs`. Moved the dev filesystem cache into
+    the shared config and removed the invalid `HtmlWebpackPlugin.manifest` option.
+  - **Polyfill bundling**: dropped the `browser-polyfill.js` CopyPlugin patterns and the
+    HTML `<script src="browser-polyfill.js">` tags; the polyfill is bundled through
+    `ProvidePlugin`/direct imports and the manifest only loads `xhrInterceptor.js` and
+    `contentBridge.js`. `.graphifyignore` now excludes all of `tests/` (keeps the 45 MB
+    RPC fixtures out of the AST).
+  - **Residual bloat removed**: deleted orphaned `src/chrome/manifest_firefox.json`
+    (empty template, no `browser_specific_settings`, unreferenced), removed the unused
+    `path` require in `webpack.common.js`, repointed stale `webpack.dev.js`/`webpack.prod.js`
+    cases in `tests/agents/hooks.test.mjs` to the live config files, and fixed the stale
+    `build/FoE-Info_WEBSTORE/manifest.json` path in the `package-release` skill to
+    `build/FoE-Info-Prod/`.
+  - **Lesson**: a false-positive `shell-quote` removal was reverted — `rg` skips hidden
+    dirs by default, so the `.agents/scripts/graphify-guard.mjs` consumer was missed.
+    Use `rg --hidden` when auditing `.agents/` references.
+  - **Verification**: `npm test` 1,158/1,158, eslint 0 errors (137 warnings),
+    `tsc --noEmit` clean, `build:dev` compiles, i18n 235 keys x 7, RPC contract 0
+    duplicates. `npm run verify` remains red only on the untracked F2 plan doc's
+    Prettier check.
 
 - **Graph audit of the reactive-store migration + F6 fix**:
   - Refreshed the FoE-Info AST and audited Actionable Item 2: the stores
@@ -38,7 +69,22 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
   - **F2 batch 4** — `ArmyUnitManagementService` publishes to new
     `state/ArmyState.js` via `ui/armyRenderBinding.js`; DOM test migrated to load
     the binding. `msg/ → ui/` static edges → 21.
-  - **Verification**: `npm run verify` exit 0 — **1,158 tests / 0 fail**.
+  - **F7 (Session 0)** — added `ui/renderBindings.js` as the single side-effect
+    composition root; `index.js` imports it once in place of the five bare
+    `*RenderBinding` imports. Regression: `tests/ui/render-bindings.test.mjs`.
+  - **F7 root-cause fix (sideEffects)** — the barrel (and, at HEAD, the five
+    direct `*RenderBinding` imports) were being tree-shaken out of the built
+    bundle: `package.json` declared `"sideEffects": ["*.css","*.scss"]`, marking
+    every `.js` file side-effect-free, so webpack dropped the side-effect-only
+    binding wiring. Confirmed empirically — a HEAD-state `build:dev` contained
+    `setupIndexBridge` but no `armyRenderBinding`/`renderArmyPanel`, i.e. the
+    reactive `msg → ui` bindings never shipped. Added
+    `src/js/ui/renderBindings.js` and `src/js/ui/*RenderBinding.js` to
+    `sideEffects`; a clean build now emits all six modules and the binding
+    functions. Guarded by the sideEffects contract test in
+    `tests/ui/render-bindings.test.mjs`.
+  - **Verification**: `npm run verify` exit 0 — **1,163 tests / 0 fail**, dev
+    bundle retains the binding wiring.
 
 - **Reactive stores for msg→ui decoupling (Actionable Item 2) + scope closures**:
   - Slice 1 — `src/js/state/QuantumState.js` publish/subscribe store
