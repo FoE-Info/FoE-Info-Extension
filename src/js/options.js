@@ -43,6 +43,36 @@ const {
   saveWorldSettings,
   setWorld,
 } = require('./utils/storage.js');
+const { loadAll, setLocale, translateContainer } = require('./utils/i18n.js');
+
+const SUPPORTED_LOCALES = new Set(['en', 'de', 'el', 'es', 'fr', 'gr', 'it']);
+
+function resolveOptionsLocale(language) {
+  let code = String(language || 'en').toLowerCase();
+  if (code === 'game') return 'en';
+  if (code === 'auto') {
+    const browserLang =
+      typeof navigator !== 'undefined' && navigator.language ?
+        navigator.language
+      : 'en';
+    code = browserLang.slice(0, 2).toLowerCase();
+  }
+  return SUPPORTED_LOCALES.has(code) ? code : 'en';
+}
+
+async function initOptionsI18n(globals) {
+  try {
+    const locale = resolveOptionsLocale(globals?.language);
+    const map = { en: 'i18n/en.json' };
+    if (locale !== 'en') map[locale] = `i18n/${locale}.json`;
+    await loadAll(map);
+    setLocale(locale);
+    translateContainer(document.body);
+    logger.debug(`options i18n loaded: ${locale}`);
+  } catch (err) {
+    logger.warn('options i18n bootstrap failed:', err);
+  }
+}
 
 let activeWorld = 'en7';
 let autoSaveTimer = null;
@@ -280,6 +310,7 @@ async function initOptions() {
   const t0 = performance.now();
   await initStorage();
   const globals = await getGlobalSettings();
+  await initOptionsI18n(globals);
 
   // 1. Immediately determine active world from URL, active game tab, or stored globals
   const initialWorld = await detectActiveWorld(globals);

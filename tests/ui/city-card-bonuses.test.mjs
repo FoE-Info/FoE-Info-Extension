@@ -171,13 +171,10 @@ test('City Card Bonus Lines Suite', async (t) => {
         coins: { total: new BigNumber(25000000), boostPercent: 120 },
         supplies: { total: new BigNumber(14200000), boostPercent: 85 },
       });
+      assert.match(html, /stat_coins">Coins<\/span>: 25,000,000 \(\+120%\)/);
       assert.match(
         html,
-        /stat_daily_coins">Coins<\/span>: 25,000,000 \(\+120%\)/,
-      );
-      assert.match(
-        html,
-        /stat_daily_supplies">Supplies<\/span>: 14,200,000 \(\+85%\)/,
+        /stat_supplies">Supplies<\/span>: 14,200,000 \(\+85%\)/,
       );
     },
   );
@@ -233,13 +230,10 @@ test('City Card Bonus Lines Suite', async (t) => {
       });
       assert.ok(html.includes(DAILY_PRODUCTION_HEADER));
       assert.ok(html.includes(COMBAT_BOOSTS_HEADER));
+      assert.match(html, /stat_coins">Coins<\/span>: 25,000,000 \(\+120%\)/);
       assert.match(
         html,
-        /stat_daily_coins">Coins<\/span>: 25,000,000 \(\+120%\)/,
-      );
-      assert.match(
-        html,
-        /stat_daily_supplies">Supplies<\/span>: 14,200,000 \(\+85%\)/,
+        /stat_supplies">Supplies<\/span>: 14,200,000 \(\+85%\)/,
       );
       assert.match(html, /Crit Strike<\/span>: 33% \(AO\), 25% \(CC\)/);
     },
