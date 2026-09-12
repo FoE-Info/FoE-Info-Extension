@@ -5,9 +5,7 @@ import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
 import * as helper from '../fn/helper.js';
 import * as GreatBuildingRegistry from '../state/GreatBuildingRegistry.js';
-import { renderGbDonorsCard } from '../ui/gbOverviewCard.js';
-import { renderGbDonationPanel } from '../ui/renderGbDonationPanel.js';
-import { renderGbInfoPanel } from '../ui/renderGbInfoPanel.js';
+import { greatBuildingsState } from '../state/GreatBuildingsState.js';
 import { showOptions } from '../vars/showOptions.js';
 import {
   cityrewards,
@@ -31,7 +29,6 @@ import { getContributions } from './InvestedService.js';
 import { City } from './StartupService.js';
 
 export { getContributions } from './InvestedService.js';
-export { renderGbDonationPanel } from '../ui/renderGbDonationPanel.js';
 
 var Top = [0, 0, 0, 0, 0, 0];
 var GBrewards = [0, 0, 0, 0, 0];
@@ -207,7 +204,7 @@ export function showGreatBuldingDonation() {
     rankings = [];
   }
 
-  renderGbDonorsCard({
+  greatBuildingsState.setDonors({
     GBselected,
     rankings,
     showOptions,
@@ -225,9 +222,14 @@ export function showGreatBuldingDonation() {
     copy,
     calculateArcReward,
   });
-  renderGbInfoPanel(gbInfoDIV, GBselected, PlayerName, showOptions);
+  greatBuildingsState.setInfo({
+    targetEl: gbInfoDIV,
+    gbData: GBselected,
+    playerName: PlayerName,
+    showOptions,
+  });
 
-  renderGbDonationPanel({
+  greatBuildingsState.setDonation({
     GBselected,
     showOptions,
     donationDIV,
