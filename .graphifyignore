@@ -3,7 +3,9 @@
 AGENTS.md
 .gemini/
 .superpowers/
-tests/agents/
+
+# Tests & Captured Fixtures (mirror src/, 45MB RPC payloads)
+tests/
 
 # Graphify Outputs & Offline Indexes (prevent self-indexing)
 graphify-out/
