@@ -12,6 +12,7 @@
  * ________________________________________________________________
  */
 import { showReward } from '../fn/RewardRenderer.js';
+import { fTitleCase } from '../utils/formatters.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
 import { MilitaryDefs } from '../vars/state.js';
@@ -30,7 +31,9 @@ export function pickupProduction(msg) {
       if (!unit) return;
       const unitId = unit.unitTypeId;
       const name =
-        (unitId && MilitaryDefs[unitId]?.name) || unitId || 'Unknown Unit';
+        (unitId && MilitaryDefs[unitId]?.name) ||
+        (unitId ? fTitleCase(unitId) : '') ||
+        'Unknown Unit';
       logger.debug('Military unit pickup:', unitId, name);
       if (rewardsEnabled) {
         showReward('cityProductionArmy', { name, amount: 1, type: 'unit' });

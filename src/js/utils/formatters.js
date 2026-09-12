@@ -34,6 +34,24 @@ function formatEntityId(id) {
 }
 
 /**
+ * Canonical display labels for core resource ids. Runtime names from
+ * `ResourceService.getResourceDefinitions` take precedence; these cover the
+ * window before definitions load and non-defined reward currencies.
+ */
+const KNOWN_RESOURCE_ALIASES = {
+  strategy_points: 'Forge Points',
+  strategy_point: 'Forge Point',
+  forge_points: 'Forge Points',
+  money: 'Coins',
+  supplies: 'Supplies',
+  medals: 'Medals',
+  premium: 'Diamonds',
+  tavern_silver: 'Tavern Silver',
+  clan_power: 'Guild Power',
+  guild_power: 'Guild Power',
+};
+
+/**
  * Returns a human-friendly short name for in-game resource keys.
  * @param {string} name - Resource identifier.
  * @param {Record<string, string>} [lookup] - Optional lookup dictionary.
@@ -52,7 +70,25 @@ function fResourceShortName(name, lookup = null) {
   if (dict && dict[name]) {
     return dict[name];
   }
+  if (KNOWN_RESOURCE_ALIASES[name]) {
+    return KNOWN_RESOURCE_ALIASES[name];
+  }
   return name;
+}
+
+/**
+ * Converts an internal snake_case identifier into a spaced Title Case label.
+ * Defensive fallback used when a localized entity name is unavailable.
+ * @param {*} value - Raw identifier.
+ * @returns {string} Title-cased label, or '' for nullish input.
+ */
+function fTitleCase(value) {
+  if (value === null || value === undefined) return '';
+  return String(value)
+    .replace(/_/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (ch) => ch.toUpperCase());
 }
 
 /**
@@ -212,6 +248,7 @@ module.exports = {
   formatEntityId,
   fResourceShortName,
   fRewardShortName,
+  fTitleCase,
   fRound,
   fNumber,
   fFormatNumber,
