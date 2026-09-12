@@ -23,6 +23,7 @@ const { registerCityRoutes } = require('./routes/cityRoutes.js');
 const { registerBuildingRoutes } = require('./routes/buildingRoutes.js');
 const { registerSocialRoutes } = require('./routes/socialRoutes.js');
 const { registerCombatRoutes } = require('./routes/combatRoutes.js');
+const { registerQuantumRoutes } = require('./routes/quantumRoutes.js');
 
 function registerLegacyBridge(dispatcher, handlers = {}) {
   if (!dispatcher || typeof dispatcher.register !== 'function') return;
@@ -48,6 +49,7 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
   registerBuildingRoutes(ctx);
   registerSocialRoutes(ctx);
   registerCombatRoutes(ctx);
+  registerQuantumRoutes(ctx);
 
   logger.debug('Legacy bridge routes registered');
 
