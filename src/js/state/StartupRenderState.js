@@ -6,11 +6,18 @@
  * and repaint, matching the BlueGalaxyState / QuantumState notify() pattern.
  */
 
+let logger = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('StartupRenderState');
+} catch {}
+
 class StartupRenderState {
-  constructor() {
+  constructor({ logger: log = logger } = {}) {
     this.subscribers = new Set();
     this.cityStatsContext = null;
     this.buildingCollectionOptions = null;
+    this.logger = log;
   }
 
   subscribe(fn) {
@@ -30,7 +37,12 @@ class StartupRenderState {
     for (const fn of this.subscribers) {
       try {
         fn(this, channel);
-      } catch {}
+      } catch (err) {
+        this.logger?.error?.('Reactive subscriber failed', {
+          channel,
+          error: err?.message || String(err),
+        });
+      }
     }
   }
 

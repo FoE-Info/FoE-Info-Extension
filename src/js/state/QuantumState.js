@@ -6,12 +6,19 @@
  * mirroring the BlueGalaxyState notify() pattern.
  */
 
+let logger = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('QuantumState');
+} catch {}
+
 class QuantumState {
-  constructor() {
+  constructor({ logger: log = logger } = {}) {
     this.members = [];
     this.leaderboard = [];
     this.lastSaved = null;
     this.subscribers = new Set();
+    this.logger = log;
   }
 
   subscribe(fn) {
@@ -31,7 +38,12 @@ class QuantumState {
     for (const fn of this.subscribers) {
       try {
         fn(this, changed);
-      } catch {}
+      } catch (err) {
+        this.logger?.error?.('Reactive subscriber failed', {
+          changed,
+          error: err?.message || String(err),
+        });
+      }
     }
   }
 
