@@ -66,6 +66,7 @@ function registerSocialRoutes(ctx) {
       'getSocialList',
       'getFriendsList',
       'getClanMemberList',
+      'getNeighborList',
       'getNeighbourList',
     ]) {
       dispatcher.register('OtherPlayerService', method, (msg) => {
