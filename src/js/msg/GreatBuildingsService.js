@@ -372,7 +372,7 @@ export function fCheckOutput() {
   // Invariant order: 1. GB Donation panel, 2. GB Info, 3. GB contributors
   if (greatbuilding) {
     greatbuilding.id = 'greatbuilding';
-    if (!contentEl.contains(greatbuilding)) {
+    if (!document.body.contains(greatbuilding)) {
       contentEl.appendChild(greatbuilding);
     }
     if (
@@ -381,13 +381,20 @@ export function fCheckOutput() {
     ) {
       greatbuilding.style.display = '';
     }
+    const parent = greatbuilding.parentElement;
+    if (
+      parent &&
+      parent.id === 'gbContributors' &&
+      showOptions?.showGBDonors !== false &&
+      parent.style.display === 'none'
+    ) {
+      parent.style.display = '';
+    }
   }
 
   if (gbInfoDIV) {
     gbInfoDIV.id = 'gbInfo';
-    if (greatbuilding && contentEl.contains(greatbuilding)) {
-      contentEl.insertBefore(gbInfoDIV, greatbuilding);
-    } else if (!contentEl.contains(gbInfoDIV)) {
+    if (!document.body.contains(gbInfoDIV)) {
       contentEl.appendChild(gbInfoDIV);
     }
     if (
@@ -398,15 +405,9 @@ export function fCheckOutput() {
     }
   }
 
-  const gbAnchor =
-    (gbInfoDIV && contentEl.contains(gbInfoDIV) ? gbInfoDIV : null) ||
-    (greatbuilding && contentEl.contains(greatbuilding) ? greatbuilding : null);
-
   if (donation2DIV) {
     donation2DIV.id = 'donation2';
-    if (gbAnchor && gbAnchor !== donation2DIV) {
-      contentEl.insertBefore(donation2DIV, gbAnchor);
-    } else if (!contentEl.contains(donation2DIV)) {
+    if (!document.body.contains(donation2DIV)) {
       contentEl.appendChild(donation2DIV);
     }
     if (
@@ -415,13 +416,20 @@ export function fCheckOutput() {
     ) {
       donation2DIV.style.display = '';
     }
+    const parent = donation2DIV.parentElement;
+    if (
+      parent &&
+      parent.id === 'gbDonation' &&
+      showOptions?.showDonation !== false &&
+      parent.style.display === 'none'
+    ) {
+      parent.style.display = '';
+    }
   }
 
   if (donationDIV) {
     donationDIV.id = 'donation';
-    if (gbAnchor && gbAnchor !== donationDIV) {
-      contentEl.insertBefore(donationDIV, gbAnchor);
-    } else if (!contentEl.contains(donationDIV)) {
+    if (!document.body.contains(donationDIV)) {
       contentEl.appendChild(donationDIV);
     }
     if (
@@ -434,7 +442,7 @@ export function fCheckOutput() {
 
   if (cityrewards) {
     cityrewards.id = 'cityrewards';
-    if (!contentEl.contains(cityrewards)) {
+    if (!document.body.contains(cityrewards)) {
       contentEl.appendChild(cityrewards);
     }
   }
