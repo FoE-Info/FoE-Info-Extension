@@ -366,87 +366,8 @@ export function getAvailablePackageFp() {
 }
 
 export function fCheckOutput() {
-  const contentEl =
-    typeof document !== 'undefined' ? document.getElementById('content') : null;
-  if (!contentEl) return;
-
-  // Invariant order: 1. GB Donation panel, 2. GB Info, 3. GB contributors
-  if (greatbuilding) {
-    greatbuilding.id = 'greatbuilding';
-    if (!document.body.contains(greatbuilding)) {
-      contentEl.appendChild(greatbuilding);
-    }
-    if (
-      showOptions?.showGBDonors !== false &&
-      greatbuilding.style.display === 'none'
-    ) {
-      greatbuilding.style.display = '';
-    }
-    const parent = greatbuilding.parentElement;
-    if (
-      parent &&
-      parent.id === 'gbContributors' &&
-      showOptions?.showGBDonors !== false &&
-      parent.style.display === 'none'
-    ) {
-      parent.style.display = '';
-    }
-  }
-
-  if (gbInfoDIV) {
-    gbInfoDIV.id = 'gbInfo';
-    if (!document.body.contains(gbInfoDIV)) {
-      contentEl.appendChild(gbInfoDIV);
-    }
-    if (
-      showOptions?.showGBInfo !== false &&
-      gbInfoDIV.style.display === 'none'
-    ) {
-      gbInfoDIV.style.display = '';
-    }
-  }
-
-  if (donation2DIV) {
-    donation2DIV.id = 'donation2';
-    if (!document.body.contains(donation2DIV)) {
-      contentEl.appendChild(donation2DIV);
-    }
-    if (
-      showOptions?.showDonation !== false &&
-      donation2DIV.style.display === 'none'
-    ) {
-      donation2DIV.style.display = '';
-    }
-    const parent = donation2DIV.parentElement;
-    if (
-      parent &&
-      parent.id === 'gbDonation' &&
-      showOptions?.showDonation !== false &&
-      parent.style.display === 'none'
-    ) {
-      parent.style.display = '';
-    }
-  }
-
-  if (donationDIV) {
-    donationDIV.id = 'donation';
-    if (!document.body.contains(donationDIV)) {
-      contentEl.appendChild(donationDIV);
-    }
-    if (
-      showOptions?.showDonation !== false &&
-      donationDIV.style.display === 'none'
-    ) {
-      donationDIV.style.display = '';
-    }
-  }
-
-  if (cityrewards) {
-    cityrewards.id = 'cityrewards';
-    if (!document.body.contains(cityrewards)) {
-      contentEl.appendChild(cityrewards);
-    }
-  }
+  // Output repair and container safeguard are handled reactively
+  // in src/js/ui/greatBuildingsRenderBinding.js via gbOutputRepair.js.
 }
 
 export function setCurrentPercent(percent) {

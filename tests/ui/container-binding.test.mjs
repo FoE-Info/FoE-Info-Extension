@@ -210,10 +210,14 @@ test('Container Binding & DOM Lifecycle Suite', async (t) => {
   );
 
   await t.test(
-    'src/js/msg/GreatBuildingsService.js exports fCheckOutput and safeguards donation2DIV',
+    'src/js/ui/gbOutputRepair.js and GreatBuildingsService export fCheckOutput and safeguard donation2DIV',
     () => {
       const gbSource = fs.readFileSync(
         path.join(ROOT_DIR, 'src/js/msg/GreatBuildingsService.js'),
+        'utf8',
+      );
+      const repairSource = fs.readFileSync(
+        path.join(ROOT_DIR, 'src/js/ui/gbOutputRepair.js'),
         'utf8',
       );
 
@@ -223,14 +227,14 @@ test('Container Binding & DOM Lifecycle Suite', async (t) => {
         'GreatBuildingsService.js must export fCheckOutput function',
       );
       assert.match(
-        gbSource,
-        /donation2DIV\.id\s*=\s*['"]donation2['"]/,
-        'fCheckOutput must safeguard donation2DIV.id = "donation2"',
+        repairSource,
+        /resolvedDonation2\.id\s*=\s*['"]donation2['"]/,
+        'gbOutputRepair must safeguard donation2DIV.id = "donation2"',
       );
       assert.match(
-        gbSource,
-        /contentEl\.appendChild\(donation2DIV\)/,
-        'fCheckOutput must safeguard contentEl.appendChild(donation2DIV)',
+        repairSource,
+        /contentEl\.appendChild\(resolvedDonation2\)/,
+        'gbOutputRepair must safeguard contentEl.appendChild(donation2DIV)',
       );
     },
   );
