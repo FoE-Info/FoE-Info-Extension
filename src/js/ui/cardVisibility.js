@@ -1,17 +1,15 @@
 /**
  * cardVisibility.js
  *
- * Toggles visibility of panel cards based on:
- * 1. Dynamic Context View Filtering:
- *    - GBG Map View (currentView === 'GBG'): Show ONLY 6 combat-essential panels
- *      (#header, #army, #rewards, #gbgTargetGenerator, #battlegrounds, #gbgLeaderboard).
- *      Explicitly block/hide all non-combat panels (Lists, #treasury, #incidents,
- *      GB Suite, GE Suite, Goods Inventory, Guild Overview, City Utilities).
- *    - City View (currentView === 'CITY'): Hide GBG-specific panels
- *      (#gbgTargetGenerator, #battlegrounds, #gbgLeaderboard).
- *    - Debug Mode Override (isDebug === true): Override all view gates and force
- *      ALL 15 panels visible simultaneously with placeholder stubs when data is absent.
- * 2. Active world showOptions.
+ * Declarative context-driven panel visibility engine.
+ *
+ * 1. Six game contexts (OWN_CITY, GBG, GE, QI, SETTLEMENT, OTHER_PLAYER) each
+ *    declare the panels they permit via CONTEXT_ALLOWED_PANELS. Panels absent
+ *    from the active context are hidden (display: none) rather than wiped, so
+ *    DOM listeners and scroll state survive context switches.
+ * 2. Debug Mode Override (isDebug === true) forces every known panel visible
+ *    and seeds placeholder stubs when content is absent.
+ * 3. Active world showOptions gate the panels a context permits.
  *
  * Dual CJS/ESM compatible.
  */
@@ -39,6 +37,129 @@ try {
   }
 } catch {}
 
+const GAME_CONTEXTS = Object.freeze([
+  'OWN_CITY',
+  'GBG',
+  'GE',
+  'QI',
+  'SETTLEMENT',
+  'OTHER_PLAYER',
+]);
+
+/**
+ * Canonical whitelist of panels per game context. Ancestor wrapper containers
+ * are resolved automatically by getAllowedPanelsForView(), so listing a nested
+ * panel (e.g. #goods) keeps its wrapper (#goodsInventory) visible too.
+ */
+const CONTEXT_ALLOWED_PANELS = Object.freeze({
+  OWN_CITY: Object.freeze([
+    'header',
+    'citystats',
+    'incidents',
+    'army',
+    'rewards',
+    'cityrewards',
+    'bonus',
+    'galaxy',
+    'invested',
+    'greatbuilding',
+    'gbInfo',
+    'donation',
+    'donation2',
+    'donationDIV2',
+    'guild',
+    'treasury',
+    'treasuryLog',
+    'goods',
+  ]),
+  GBG: Object.freeze([
+    'header',
+    'army',
+    'rewards',
+    'targets',
+    'gbgTargetGenerator',
+    'battleground',
+    'battlegrounds',
+    'gbgLeaderboard',
+  ]),
+  GE: Object.freeze([
+    'header',
+    'army',
+    'rewards',
+    'geChampionship',
+    'geContributions',
+    'geInternationalSection',
+    'geContributionSection',
+  ]),
+  QI: Object.freeze([
+    'header',
+    'army',
+    'rewards',
+    'quantumContributions',
+    'quantumLeaderboard',
+  ]),
+  SETTLEMENT: Object.freeze(['header', 'cultural']),
+  OTHER_PLAYER: Object.freeze([
+    'header',
+    'visit',
+    'donation',
+    'gbInfo',
+    'greatbuilding',
+  ]),
+});
+
+/** Parent wrapper container for each nested panel. */
+const PANEL_PARENT = Object.freeze({
+  citystats: 'header',
+  cityrewards: 'rewards',
+  donation2: 'gbDonation',
+  donation2DIV: 'gbDonation',
+  donation: 'gbDonation',
+  greatbuilding: 'gbContributors',
+  targets: 'gbgTargetGenerator',
+  battleground: 'battlegrounds',
+  donationDIV2: 'geChampionship',
+  goods: 'goodsInventory',
+  guild: 'guildOverview',
+  treasuryLog: 'treasury',
+  leaderboard: 'gbgLeaderboard',
+});
+
+/** showOptions key gating each panel (absent means "always permitted"). */
+const PANEL_OPTION_KEY = Object.freeze({
+  header: 'showStats',
+  citystats: 'showStats',
+  incidents: 'showIncidents',
+  army: 'showArmy',
+  rewards: 'showGBRewards',
+  cityrewards: 'showGBRewards',
+  bonus: 'showBonus',
+  galaxy: 'showGalaxy',
+  invested: 'showInvested',
+  greatbuilding: 'showGBDonors',
+  gbInfo: 'showGBInfo',
+  donation: 'showDonation',
+  donation2: 'showDonation',
+  guild: 'showGuildOverview',
+  guildOverview: 'showGuildOverview',
+  treasury: 'showTreasury',
+  treasuryLog: 'showTreasury',
+  goodsInventory: 'showGoods',
+  gbgTargetGenerator: 'showBattleground',
+  targets: 'showBattleground',
+  battlegrounds: 'showBattleground',
+  battleground: 'showBattleground',
+  gbgLeaderboard: 'showLeaderboard',
+  leaderboard: 'showLeaderboard',
+  quantumContributions: 'showQuantum',
+  quantumLeaderboard: 'showQuantumLeaderboard',
+  cultural: 'showSettlement',
+  visit: 'showVisit',
+  geContributions: 'showExpedition',
+  geContributionSection: 'showExpedition',
+  geInternationalSection: 'showInternationalExpedition',
+});
+
 const ALL_15_PANEL_IDS = [
   'header',
   'incidents',
@@ -57,14 +178,7 @@ const ALL_15_PANEL_IDS = [
   'treasury',
 ];
 
-const GBG_ALLOWED_PANEL_IDS = new Set([
-  'header',
-  'army',
-  'rewards',
-  'gbgTargetGenerator',
-  'battlegrounds',
-  'gbgLeaderboard',
-]);
+const GBG_ALLOWED_PANEL_IDS = new Set(CONTEXT_ALLOWED_PANELS.GBG);
 
 const CITY_HIDDEN_PANEL_IDS = new Set([
   'gbgTargetGenerator',
@@ -95,19 +209,75 @@ const optionToElementId = {
   showQuantumLeaderboard: 'quantumLeaderboard',
 };
 
-let currentView = null; // 'CITY' | 'GBG' | null (null means unconstrained default)
+const SECONDARY_PANEL_IDS = [
+  'donation2DIV',
+  'leaderboard',
+  'friends',
+  'hood',
+  'overview',
+  'info',
+  'buildings',
+  'goodsInventory',
+  'guildOverview',
+  'gbDonation',
+  'gbContributors',
+  'bonus',
+  'galaxy',
+  'invested',
+  'citystats',
+  'cityrewards',
+  'donation',
+  'donation2',
+  'donationDIV2',
+  'greatbuilding',
+  'targets',
+  'battleground',
+  'guild',
+  'treasuryLog',
+  'goods',
+  'geInternationalSection',
+  'geContributionSection',
+];
+
+const CONTEXT_PANEL_IDS = new Set();
+for (const list of Object.values(CONTEXT_ALLOWED_PANELS)) {
+  for (const id of list) CONTEXT_PANEL_IDS.add(id);
+}
+
+const ALL_KNOWN_PANEL_IDS = Array.from(
+  new Set([
+    ...ALL_15_PANEL_IDS,
+    ...CONTEXT_PANEL_IDS,
+    ...Object.values(optionToElementId),
+    ...SECONDARY_PANEL_IDS,
+  ]),
+);
+
+let currentView = null; // one of GAME_CONTEXTS or null (unconstrained default)
 const viewListeners = new Set();
+
+/**
+ * Resolve a raw view value into a canonical context.
+ * @returns {string|null|undefined} context, null for "unconstrained", or
+ *   undefined when the value is not a recognised context.
+ */
+function normalizeContext(view) {
+  if (view === null || view === undefined) return null;
+  const text = String(view).toUpperCase().trim();
+  if (text === '') return null;
+  if (text === 'CITY' || text === 'MAIN' || text === 'OWN_CITY') {
+    return 'OWN_CITY';
+  }
+  return GAME_CONTEXTS.includes(text) ? text : undefined;
+}
 
 function getCurrentView() {
   return currentView;
 }
 
 function setCurrentView(view) {
-  const normalized =
-    view === null || view === undefined ? null
-    : String(view).toUpperCase() === 'GBG' ? 'GBG'
-    : 'CITY';
-
+  const normalized = normalizeContext(view);
+  if (normalized === undefined) return;
   if (currentView === normalized) return;
   currentView = normalized;
   for (const fn of viewListeners) {
@@ -132,6 +302,50 @@ function setElementDisplay(id, displayVal) {
   }
 }
 
+/** Expand a context whitelist to include every permitted panel's wrappers. */
+function getAllowedPanelsForView(view) {
+  const list = CONTEXT_ALLOWED_PANELS[view];
+  if (!list) return null;
+  const allowed = new Set();
+  for (const id of list) {
+    let cursor = id;
+    while (cursor && !allowed.has(cursor)) {
+      allowed.add(cursor);
+      cursor = PANEL_PARENT[cursor] || null;
+    }
+  }
+  return allowed;
+}
+
+/** Hide every non-permitted panel and reveal permitted panels obeying options. */
+function applyContextVisibility(opts, activeView) {
+  const allowed = getAllowedPanelsForView(activeView);
+  if (!allowed) return false;
+
+  for (const id of ALL_KNOWN_PANEL_IDS) {
+    if (!allowed.has(id)) {
+      setElementDisplay(id, 'none');
+      continue;
+    }
+    const optionKey = PANEL_OPTION_KEY[id];
+    if (optionKey && opts[optionKey] === false) {
+      setElementDisplay(id, 'none');
+      continue;
+    }
+    if (id === 'goods') {
+      const goodsEl =
+        typeof document !== 'undefined' ?
+          document.getElementById('goods')
+        : null;
+      const hasGoodsContent = (goodsEl?.innerHTML || '').trim() !== '';
+      setElementDisplay('goods', hasGoodsContent ? '' : 'none');
+      continue;
+    }
+    setElementDisplay(id, '');
+  }
+  return true;
+}
+
 function applyCardVisibility(
   optionsOverride = null,
   debugOverride = null,
@@ -143,11 +357,14 @@ function applyCardVisibility(
     debugOverride !== null && debugOverride !== undefined ?
       Boolean(debugOverride)
     : isDebugEnabledGlobal();
-  const activeView =
-    viewOverride !== null && viewOverride !== undefined ?
-      viewOverride ? String(viewOverride).toUpperCase()
-      : null
-    : currentView;
+
+  let activeView = currentView;
+  if (viewOverride !== null && viewOverride !== undefined) {
+    const normalizedOverride = normalizeContext(viewOverride);
+    if (normalizedOverride !== undefined) {
+      activeView = normalizedOverride;
+    }
+  }
 
   // --- 1. DEBUG MODE OVERRIDE (isDebug === true) ---
   if (isDebug) {
@@ -165,20 +382,10 @@ function applyCardVisibility(
       }
     }
 
-    // Force legacy aliases visible as well
-    setElementDisplay('citystats', '');
-    setElementDisplay('cityrewards', '');
-    setElementDisplay('donation2', '');
-    setElementDisplay('donation', '');
-    setElementDisplay('greatbuilding', '');
-    setElementDisplay('targets', '');
-    setElementDisplay('battleground', '');
-    setElementDisplay('donationDIV2', '');
-    setElementDisplay('goods', '');
-    setElementDisplay('guild', '');
-    setElementDisplay('treasuryLog', '');
-    setElementDisplay('geInternationalSection', '');
-    setElementDisplay('geContributionSection', '');
+    // Force every known panel (including legacy aliases) visible.
+    for (const panelId of ALL_KNOWN_PANEL_IDS) {
+      setElementDisplay(panelId, '');
+    }
     return;
   }
 
@@ -196,161 +403,13 @@ function applyCardVisibility(
     }
   }
 
-  // --- 2. GBG MAP VIEW (activeView === 'GBG') ---
-  if (activeView === 'GBG') {
-    // Show ONLY 6 combat panels (governed by showOptions)
-    const showHeader = opts.showStats !== false;
-    setElementDisplay('header', showHeader ? '' : 'none');
-    setElementDisplay('citystats', showHeader ? '' : 'none');
-
-    const showArmy = opts.showArmy !== false;
-    setElementDisplay('army', showArmy ? '' : 'none');
-
-    const showRewards = opts.showGBRewards !== false;
-    setElementDisplay('rewards', showRewards ? '' : 'none');
-    setElementDisplay('cityrewards', showRewards ? '' : 'none');
-
-    const showTargets = opts.showBattleground !== false;
-    setElementDisplay('gbgTargetGenerator', showTargets ? '' : 'none');
-    setElementDisplay('targets', showTargets ? '' : 'none');
-
-    const showBattlegrounds = opts.showBattleground !== false;
-    setElementDisplay('battlegrounds', showBattlegrounds ? '' : 'none');
-    setElementDisplay('battleground', showBattlegrounds ? '' : 'none');
-
-    const showLeaderboard = opts.showLeaderboard !== false;
-    setElementDisplay('gbgLeaderboard', showLeaderboard ? '' : 'none');
-    setElementDisplay('leaderboard', showLeaderboard ? '' : 'none');
-
-    // Explicitly block/hide all non-combat panels
-    // 9 Non-combat panels from 15:
-    setElementDisplay('incidents', 'none');
-    setElementDisplay('gbDonation', 'none');
-    setElementDisplay('donation2', 'none');
-    setElementDisplay('donation', 'none');
-    setElementDisplay('gbInfo', 'none');
-    setElementDisplay('gbContributors', 'none');
-    setElementDisplay('greatbuilding', 'none');
-    setElementDisplay('invested', 'none');
-    setElementDisplay('geChampionship', 'none');
-    setElementDisplay('donationDIV2', 'none');
-    setElementDisplay('geInternationalSection', 'none');
-    setElementDisplay('geContributions', 'none');
-    setElementDisplay('geContributionSection', 'none');
-    setElementDisplay('goodsInventory', 'none');
-    setElementDisplay('goods', 'none');
-    setElementDisplay('guildOverview', 'none');
-    setElementDisplay('guild', 'none');
-    setElementDisplay('treasury', 'none');
-    setElementDisplay('treasuryLog', 'none');
-    setElementDisplay('quantumContributions', 'none');
-    setElementDisplay('quantumLeaderboard', 'none');
-
-    // City Utilities & Lists
-    setElementDisplay('friends', 'none');
-    setElementDisplay('hood', 'none');
-    setElementDisplay('overview', 'none');
-    setElementDisplay('info', 'none');
-    setElementDisplay('buildings', 'none');
-    setElementDisplay('bonus', 'none');
-    setElementDisplay('galaxy', 'none');
-    setElementDisplay('cultural', 'none');
-    setElementDisplay('visit', 'none');
+  // --- 2. CONTEXT-CONSTRAINED VIEW ---
+  if (activeView && CONTEXT_ALLOWED_PANELS[activeView]) {
+    applyContextVisibility(opts, activeView);
     return;
   }
 
-  // --- 3. CITY VIEW (activeView === 'CITY') ---
-  if (activeView === 'CITY') {
-    // Explicitly hide GBG-specific panels
-    setElementDisplay('gbgTargetGenerator', 'none');
-    setElementDisplay('targets', 'none');
-    setElementDisplay('battlegrounds', 'none');
-    setElementDisplay('battleground', 'none');
-    setElementDisplay('gbgLeaderboard', 'none');
-    setElementDisplay('leaderboard', 'none');
-
-    // City panels obey showOptions
-    const showHeader = opts.showStats !== false;
-    setElementDisplay('header', showHeader ? '' : 'none');
-    setElementDisplay('citystats', showHeader ? '' : 'none');
-
-    setElementDisplay('incidents', opts.showIncidents !== false ? '' : 'none');
-    setElementDisplay('army', opts.showArmy !== false ? '' : 'none');
-
-    const showRewards = opts.showGBRewards !== false;
-    setElementDisplay('rewards', showRewards ? '' : 'none');
-    setElementDisplay('cityrewards', showRewards ? '' : 'none');
-
-    const showDonation = opts.showDonation !== false;
-    setElementDisplay('gbDonation', showDonation ? '' : 'none');
-    setElementDisplay('donation2', showDonation ? '' : 'none');
-    setElementDisplay('donation', showDonation ? '' : 'none');
-
-    setElementDisplay('gbInfo', opts.showGBInfo !== false ? '' : 'none');
-
-    const showGBDonors = opts.showGBDonors !== false;
-    setElementDisplay('gbContributors', showGBDonors ? '' : 'none');
-    setElementDisplay('greatbuilding', showGBDonors ? '' : 'none');
-    setElementDisplay('invested', opts.showInvested !== false ? '' : 'none');
-
-    const showGeChamp =
-      opts.showExpedition !== false ||
-      opts.showInternationalExpedition !== false;
-    setElementDisplay('geChampionship', showGeChamp ? '' : 'none');
-    setElementDisplay('donationDIV2', showGeChamp ? '' : 'none');
-    setElementDisplay('donation2DIV', showGeChamp ? '' : 'none');
-    setElementDisplay(
-      'geInternationalSection',
-      opts.showInternationalExpedition !== false ? '' : 'none',
-    );
-    setElementDisplay(
-      'geContributions',
-      opts.showExpedition !== false ? '' : 'none',
-    );
-    setElementDisplay(
-      'geContributionSection',
-      opts.showExpedition !== false ? '' : 'none',
-    );
-
-    const goodsEl = document.getElementById('goods');
-    const goodsInvEl = document.getElementById('goodsInventory');
-    if (opts.showGoods === false) {
-      if (goodsEl) goodsEl.style.display = 'none';
-      if (goodsInvEl) goodsInvEl.style.display = 'none';
-    } else {
-      const hasGoodsContent =
-        (goodsEl?.innerHTML || goodsInvEl?.innerHTML || '').trim() !== '';
-      const displayStyle = hasGoodsContent ? '' : 'none';
-      if (goodsEl) goodsEl.style.display = displayStyle;
-      if (goodsInvEl) goodsInvEl.style.display = displayStyle;
-    }
-
-    const showGuild = opts.showGuildOverview !== false;
-    setElementDisplay('guildOverview', showGuild ? '' : 'none');
-    setElementDisplay('guild', showGuild ? '' : 'none');
-
-    const showTreasury = opts.showTreasury !== false;
-    setElementDisplay('treasury', showTreasury ? '' : 'none');
-    setElementDisplay('treasuryLog', showTreasury ? '' : 'none');
-
-    setElementDisplay('bonus', opts.showBonus !== false ? '' : 'none');
-    setElementDisplay('visit', opts.showVisit !== false ? '' : 'none');
-    setElementDisplay('cultural', opts.showSettlement !== false ? '' : 'none');
-    setElementDisplay('friends', opts.showFriends !== false ? '' : 'none');
-    setElementDisplay('hood', opts.showHood !== false ? '' : 'none');
-    setElementDisplay('galaxy', opts.showGalaxy !== false ? '' : 'none');
-    setElementDisplay(
-      'quantumContributions',
-      opts.showQuantum !== false ? '' : 'none',
-    );
-    setElementDisplay(
-      'quantumLeaderboard',
-      opts.showQuantumLeaderboard !== false ? '' : 'none',
-    );
-    return;
-  }
-
-  // --- 4. UNCONSTRAINED DEFAULT (activeView === null) ---
+  // --- 3. UNCONSTRAINED DEFAULT (activeView === null) ---
   // Apply standard options across all configured panels
   for (const [optKey, elemId] of Object.entries(optionToElementId)) {
     const el = document.getElementById(elemId);
@@ -434,7 +493,13 @@ module.exports = {
   getCurrentView,
   setCurrentView,
   onViewChange,
+  normalizeContext,
+  getAllowedPanelsForView,
+  GAME_CONTEXTS,
+  CONTEXT_ALLOWED_PANELS,
+  PANEL_PARENT,
   ALL_15_PANEL_IDS,
+  ALL_KNOWN_PANEL_IDS,
   GBG_ALLOWED_PANEL_IDS,
   CITY_HIDDEN_PANEL_IDS,
   optionToElementId,
