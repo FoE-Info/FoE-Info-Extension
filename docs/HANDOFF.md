@@ -14,9 +14,12 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
     emit `logger.error('Reactive subscriber failed', …)`. Added logger
     regression tests.
   - Findings: `graphify-out/foe-info/findings/2026-09-12-reactive-store-migration-audit.md`.
-    Next queue: **F5** (standardize binding convention), **F3** (ui→msg
-    inversions), **F2** (batch-migrate 14 services), **F7** (explicit bootstrap).
-  - **Verification**: `npm run verify` exit 0 — **1,116 tests / 0 fail**.
+  - **F5 resolved** — standardized on dedicated `ui/<domain>RenderBinding.js`
+    modules (`bindX(state, { renderers })`), loaded for side effect by
+    `index.js`; render modules stay pure. Refactored slice 1 to match via new
+    `ui/quantumRenderBinding.js`. Next queue: **F3** (ui→msg inversions),
+    **F2** (batch-migrate 14 services), **F7** (explicit bootstrap).
+  - **Verification**: `npm run verify` exit 0 — **1,119 tests / 0 fail**.
 
 - **Reactive stores for msg→ui decoupling (Actionable Item 2) + scope closures**:
   - Slice 1 — `src/js/state/QuantumState.js` publish/subscribe store
