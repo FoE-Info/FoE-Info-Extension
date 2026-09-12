@@ -17,6 +17,9 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
     plus `fTitleCase` for unit ids (`rogue` -> Rogue).
   - Verification: `npm run verify` exit 0 — 1,091 tests / 0 fail, prettier/lint/
     typecheck/RPC-contract/i18n green, dev bundle compiles.
+  - Pending: live visual confirmation in the DEV build (checkbox theming, reward
+    labels, RPC console noise, debug stubs). Code-verified only; the browser was
+    not launched per the no-autonomous-browser rule.
 
 - **Parallel Open-Items Execution & Dev Seeder Debug Gating**:
   - Four disjoint parallel subagent tasks shipped and reconciled to verified
