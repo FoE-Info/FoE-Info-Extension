@@ -9,7 +9,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import BigNumber from 'bignumber.js';
-import calculatorPkg from '../../src/js/fn/CityStatsCalculator.js';
+import calculatorPkg from '../../src/js/calc/CityStatsCalculator.js';
 import { MetadataStore } from '../../src/js/state/MetadataStore.js';
 
 const { CityStatsCalculator } = calculatorPkg;
