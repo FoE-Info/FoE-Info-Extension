@@ -4,6 +4,24 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 10 (partial) — StartupService dead-code decoupling**:
+  - Removed the `buildCityStatsHTML(...)` call whose result was assigned to
+    `citystatsHTML` and never read, dropping the `ui/cityStatsHtmlBuilder.js`
+    edge. Also removed the unused `buildFpTooltipHTML` and `GameOrigin` imports
+    and the orphaned `diamonds`/`goodsHTML` locals; `aggregateCityStats` is now
+    called for its side effects only.
+  - **Still coupled (Session 10-11 follow-up)**: `ui/cityStatsTooltips.js`
+    (`showTooltips`), `ui/components/cityStatsTooltipBuilder.js`
+    (`buildTotalGoodsTooltipHTML`), `ui/playerTooltip.js` (used + re-exported to
+    `indexBridgeSetup`/`socialRoutes`), `ui/renderGalaxyPanel.js`
+    (`renderGalaxyPanel`/`showGalaxy`/`updateGalaxy`), and
+    `ui/renderLiveCityStats.js` (`buildClanGoodsData`/`fGoodsHTML`/`fGoodsText`).
+    These need the city-stats context/tooltip responsibilities pushed into
+    `startupRenderBinding` — a larger, higher-risk refactor to tackle as a
+    dedicated pass.
+  - **Verification**: `npm run verify` exit 0 — **1,263 tests / 0 fail**,
+    prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
+
 - **F2 Session 9 — Startup render orchestration decoupling**:
   - `StartupRenderOrchestrator` no longer lazily requires
     `ui/startupMetadataLoading.js`; it publishes `{ container, options }` to the
