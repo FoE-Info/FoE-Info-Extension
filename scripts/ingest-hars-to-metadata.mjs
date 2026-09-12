@@ -110,6 +110,10 @@ const DOMAIN_ROUTES = new Map([
     ['greatbuildings/construction.json'],
   ],
   [
+    'GreatBuildingsService.getConstructionRanking',
+    ['greatbuildings/construction_ranking.json'],
+  ],
+  [
     'GreatBuildingsService.contributeForgePoints',
     ['greatbuildings/contribute_forge_points.json'],
   ],
@@ -122,6 +126,8 @@ const DOMAIN_ROUTES = new Map([
     ['greatbuildings/other_player_city_map_entity.json'],
   ],
   ['CityMapService.updateEntity', ['greatbuildings/city_map_updates.json']],
+  // Antiques Dealer auctions
+  ['ItemAuctionService.getAuction', ['economy/antiques_auction.json']],
 ]);
 
 const DOMAIN_DESCRIPTIONS = {
@@ -154,10 +160,13 @@ const DOMAIN_DESCRIPTIONS = {
   'economy/marketplace_trades.json': 'Marketplace trade offers.',
   'economy/inventory.json': 'Inventory items and Great Building inventory.',
   'economy/conversations.json': 'Guild and social message centre threads.',
+  'economy/antiques_auction.json': 'Antiques Dealer auction payloads.',
   'greatbuildings/other_player_overview.json':
     'Per-player Great Building contribution overview rows.',
   'greatbuildings/construction.json':
     'Great Building construction state: next bonuses and ranking rows.',
+  'greatbuildings/construction_ranking.json':
+    'Per-GB construction rankings with rank rewards (sniping ground truth).',
   'greatbuildings/contribute_forge_points.json':
     'Great Building Forge Point donation actions and resulting rankings.',
   'greatbuildings/available_package_forge_points.json':
@@ -189,6 +198,7 @@ const FIXTURE_RPC_KEYS = new Set([
   'OtherPlayerService.getOtherPlayerVO',
   'GreatBuildingsService.getOtherPlayerOverview',
   'GreatBuildingsService.getConstruction',
+  'GreatBuildingsService.getConstructionRanking',
   'GreatBuildingsService.getAvailablePackageForgePoints',
   'OtherPlayerService.getOtherPlayerCityMapEntity',
 ]);
