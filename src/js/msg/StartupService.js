@@ -13,7 +13,6 @@ import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
 import { resolvePlayerScore } from '../state/playerScoreResolver.js';
 import { startupRenderState } from '../state/StartupRenderState.js';
-import { showTooltips } from '../ui/cityStatsTooltips.js';
 import { buildTotalGoodsTooltipHTML } from '../ui/components/cityStatsTooltipBuilder.js';
 import {
   formatPlayerLabel,
@@ -21,15 +20,10 @@ import {
   getUserTooltipHTML,
   updateIgnoreListUI,
 } from '../ui/playerTooltip.js';
-import {
-  renderGalaxyPanel,
-  showGalaxy,
-  updateGalaxy,
-} from '../ui/renderGalaxyPanel.js';
+import { showGalaxy, updateGalaxy } from '../ui/renderGalaxyPanel.js';
 import {
   buildClanGoodsData as buildClanGoodsDataImpl,
   fGoodsHTML,
-  fGoodsText,
 } from '../ui/renderLiveCityStats.js';
 import { formatDate, formatDateTime } from '../utils/date.js';
 import { createLogger, isDebugEnabled } from '../utils/logger.js';
@@ -342,7 +336,6 @@ export function startupService(msg) {
           .getElementById('citystatsCopyID')
           ?.addEventListener('click', copy.fCityStatsCopy);
       }
-      showTooltips();
       translateContainer(document.body);
     },
     resolveMissingCityEntities,
@@ -360,7 +353,6 @@ export function startupService(msg) {
             .getElementById('citystatsCopyID')
             ?.addEventListener('click', copy.fCityStatsCopy);
         }
-        showTooltips();
         translateContainer(document.body);
       }
     },

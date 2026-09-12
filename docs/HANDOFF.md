@@ -4,6 +4,19 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 10 (continued) — StartupService tooltip binding move**:
+  - `showTooltips` moved from `StartupService` into `ui/startupRenderBinding.js`,
+    which now binds tooltips after every city-stats paint (injected seam,
+    regression test added). The `ui/cityStatsTooltips.js` edge is gone, along
+    with the unused `renderGalaxyPanel` and `fGoodsText` named imports.
+  - **Still coupled (dedicated follow-up)**: `ui/components/cityStatsTooltipBuilder.js`
+    (`buildTotalGoodsTooltipHTML`), `ui/playerTooltip.js` (used + re-exported to
+    `indexBridgeSetup`/`socialRoutes`), `ui/renderGalaxyPanel.js`
+    (`showGalaxy`/`updateGalaxy`), `ui/renderLiveCityStats.js`
+    (`buildClanGoodsData`/`fGoodsHTML`).
+  - **Verification**: `npm run verify` exit 0 — **1,264 tests / 0 fail**,
+    prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
+
 - **F2 Session 10 (partial) — StartupService dead-code decoupling**:
   - Removed the `buildCityStatsHTML(...)` call whose result was assigned to
     `citystatsHTML` and never read, dropping the `ui/cityStatsHtmlBuilder.js`
