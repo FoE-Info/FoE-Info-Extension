@@ -73,6 +73,7 @@ test('renderBindings composition root wires every shared store', async (t) => {
       const modules = [
         ['armyState', '../../src/js/state/ArmyState.js'],
         ['bonusState', '../../src/js/state/BonusState.js'],
+        ['expeditionState', '../../src/js/state/ExpeditionState.js'],
         ['gbDonationState', '../../src/js/state/GbDonationState.js'],
         [
           'guildBattlegroundState',

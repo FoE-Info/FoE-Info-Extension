@@ -128,6 +128,46 @@ function attachSubpanelToggle(toggleId, iconId, collapseId) {
   });
 }
 
+function buildExpeditionContentHtml(
+  internationalEntries = [],
+  contributionEntries = [],
+  options = {},
+) {
+  const showInternational = options.showInternationalExpedition !== false;
+  const showContribution = options.showExpedition !== false;
+
+  const hasInternational =
+    showInternational &&
+    Array.isArray(internationalEntries) &&
+    internationalEntries.length > 0;
+  const hasContribution =
+    showContribution &&
+    Array.isArray(contributionEntries) &&
+    contributionEntries.length > 0;
+
+  let content = '';
+  if (hasInternational) {
+    content += buildSubpanel(
+      'International',
+      'ge_championship',
+      'Championship',
+      buildInternationalTable(internationalEntries),
+    );
+  }
+  if (hasContribution) {
+    content += buildSubpanel(
+      'Contribution',
+      'ge_member_contributions',
+      'Member Contributions',
+      buildContributionTable(
+        contributionEntries,
+        expeditionParser.extractTrialLevel,
+      ),
+    );
+  }
+  return content;
+}
+
 function extractTrialLevel(entry) {
   return expeditionParser.extractTrialLevel(entry);
 }
@@ -144,6 +184,7 @@ module.exports = {
   buildSubpanel,
   buildContributionTable,
   buildInternationalTable,
+  buildExpeditionContentHtml,
   attachSubpanelToggle,
   extractTrialLevel,
   extractInternationalExpeditionEntries,

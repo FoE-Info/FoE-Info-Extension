@@ -4,6 +4,25 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 4 — Guild Expedition decoupling**:
+  - `src/js/msg/GuildExpeditionService.js` (138 → 60 L) no longer imports
+    `../ui/`; it parses inbound payloads and publishes to the new
+    `src/js/state/ExpeditionState.js` (`international` / `contribution`
+    channels, plus `reset()`). `ui/expeditionRenderBinding.js` subscribes and
+    renders, registered in the `ui/renderBindings.js` composition root.
+  - The combined `buildExpeditionContentHtml(intlEntries, contribEntries,
+options)` builder moved into `ui/expeditionTables.js`;
+    `../parsers/expeditionParser.js` remains the parser. `resetExpeditionCache()`
+    now delegates to `expeditionState.reset()`.
+  - Tests: `tests/state/expedition-state.test.mjs` (6),
+    `tests/ui/expedition-render-binding.test.mjs` (3);
+    `tests/msg/guild-expedition-trial.test.mjs` dropped its `?t=` cache-buster
+    and resets the singleton in `beforeEach`; `tests/ui/render-bindings.test.mjs`
+    now lists `expeditionState`. Also dropped the unused service re-exports
+    (`buildContributionTable`/`buildInternationalTable`/legacy table wrappers).
+  - **Verification**: `npm run verify` exit 0 — **1,212 tests / 0 fail**,
+    prettier/lint/typecheck/i18n/RPC-contract green, dev bundle compiles.
+
 - **Local toolchain setup, webpack build cleanup & residual bloat removal (working tree)**:
   - **Toolchain pinning**: `.mise.toml` now pins `node = 26.8.2` under `[tools]`, drops the
     linuxbrew `PATH` entry, and adds a `setup` task (`npm ci`); generated `mise.lock`.

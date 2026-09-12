@@ -1,5 +1,14 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
+import statePkg from '../../src/js/state/ExpeditionState.js';
+import '../../src/js/ui/expeditionRenderBinding.js';
+import {
+  guildExpeditionService,
+  resetExpeditionCache,
+} from '../../src/js/msg/GuildExpeditionService.js';
+import { buildExpeditionContentHtml } from '../../src/js/ui/expeditionTables.js';
+
+const { expeditionState } = statePkg;
 
 function createMockDOM() {
   const elementsById = new Map();
@@ -68,6 +77,7 @@ function createMockDOM() {
 
 describe('GuildExpeditionService with Trial Levels', () => {
   beforeEach(() => {
+    expeditionState.reset();
     const mock = createMockDOM();
     global.window = {
       location: { origin: 'https://en16.forgeofempires.com' },
@@ -82,9 +92,6 @@ describe('GuildExpeditionService with Trial Levels', () => {
   });
 
   it('renders Member, Trial, Points, and Encounters columns in GE scoreboard', async () => {
-    const { guildExpeditionService } = await import(
-      `../../src/js/msg/GuildExpeditionService.js?t=${Date.now()}`
-    );
     const donationDIV2 = document.getElementById('donationDIV2');
 
     assert.ok(donationDIV2, 'donationDIV2 should exist');
@@ -141,9 +148,6 @@ describe('GuildExpeditionService with Trial Levels', () => {
   });
 
   it('renders International Guild Expedition leaderboard when Trophy button data arrives', async () => {
-    const { guildExpeditionService, resetExpeditionCache } = await import(
-      `../../src/js/msg/GuildExpeditionService.js?t=${Date.now()}`
-    );
     resetExpeditionCache();
     const donationDIV2 = document.getElementById('donationDIV2');
 
@@ -201,9 +205,6 @@ describe('GuildExpeditionService with Trial Levels', () => {
   });
 
   it('allows both International and Member Contribution sub-panels to co-exist at the same time', async () => {
-    const { guildExpeditionService, resetExpeditionCache } = await import(
-      `../../src/js/msg/GuildExpeditionService.js?t=${Date.now()}`
-    );
     resetExpeditionCache();
     const donationDIV2 = document.getElementById('donationDIV2');
 
@@ -276,9 +277,6 @@ describe('GuildExpeditionService with Trial Levels', () => {
   });
 
   it('preserves existing table when empty or status-only payload arrives', async () => {
-    const { guildExpeditionService, resetExpeditionCache } = await import(
-      `../../src/js/msg/GuildExpeditionService.js?t=${Date.now()}`
-    );
     resetExpeditionCache();
     const donationDIV2 = document.getElementById('donationDIV2');
 
@@ -354,13 +352,6 @@ describe('GuildExpeditionService with Trial Levels', () => {
   });
 
   it('respects showInternationalExpedition and showExpedition options toggles', async () => {
-    const {
-      guildExpeditionService,
-      buildExpeditionContentHtml,
-      resetExpeditionCache,
-    } = await import(
-      `../../src/js/msg/GuildExpeditionService.js?t=${Date.now()}`
-    );
     resetExpeditionCache();
 
     // Ingest both
@@ -387,35 +378,54 @@ describe('GuildExpeditionService with Trial Levels', () => {
       ],
     });
 
+    const internationalEntries = expeditionState.getInternationalEntries();
+    const contributionEntries = expeditionState.getContributionEntries();
+
     // Both visible with default options
-    const htmlAll = buildExpeditionContentHtml({
-      showInternationalExpedition: true,
-      showExpedition: true,
-    });
+    const htmlAll = buildExpeditionContentHtml(
+      internationalEntries,
+      contributionEntries,
+      {
+        showInternationalExpedition: true,
+        showExpedition: true,
+      },
+    );
     assert.ok(htmlAll.includes('geInternationalSection'));
     assert.ok(htmlAll.includes('geContributionSection'));
 
     // Turn off International
-    const htmlNoInt = buildExpeditionContentHtml({
-      showInternationalExpedition: false,
-      showExpedition: true,
-    });
+    const htmlNoInt = buildExpeditionContentHtml(
+      internationalEntries,
+      contributionEntries,
+      {
+        showInternationalExpedition: false,
+        showExpedition: true,
+      },
+    );
     assert.ok(!htmlNoInt.includes('geInternationalSection'));
     assert.ok(htmlNoInt.includes('geContributionSection'));
 
     // Turn off Contribution
-    const htmlNoContrib = buildExpeditionContentHtml({
-      showInternationalExpedition: true,
-      showExpedition: false,
-    });
+    const htmlNoContrib = buildExpeditionContentHtml(
+      internationalEntries,
+      contributionEntries,
+      {
+        showInternationalExpedition: true,
+        showExpedition: false,
+      },
+    );
     assert.ok(htmlNoContrib.includes('geInternationalSection'));
     assert.ok(!htmlNoContrib.includes('geContributionSection'));
 
     // Turn off both -> empty string
-    const htmlNone = buildExpeditionContentHtml({
-      showInternationalExpedition: false,
-      showExpedition: false,
-    });
+    const htmlNone = buildExpeditionContentHtml(
+      internationalEntries,
+      contributionEntries,
+      {
+        showInternationalExpedition: false,
+        showExpedition: false,
+      },
+    );
     assert.strictEqual(htmlNone, '');
   });
 });
