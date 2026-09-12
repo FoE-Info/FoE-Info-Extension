@@ -315,6 +315,30 @@ function isPlacePassable(remaining, occupantInvested = 0) {
   );
 }
 
+/**
+ * Calculates the profit/loss of closing a Great Building level to claim 1st place reward.
+ *
+ * @param {number|string|BigNumber} remaining Remaining FP to level up the GB (cost to close)
+ * @param {number|string|BigNumber} rewardFp 1st place reward FP (boosted by viewer's Arc)
+ * @param {number|string|BigNumber} [currentDeposit=0] Existing investment already contributed by the viewer
+ * @returns {{ cost: number, netProfit: number, isProfitable: boolean }}
+ */
+function calculateLevelClosingProfit(remaining, rewardFp, currentDeposit = 0) {
+  const remBN = new BigNumber(remaining || 0);
+  const rewardBN = new BigNumber(rewardFp || 0);
+  const depositBN = new BigNumber(currentDeposit || 0);
+
+  const costBN = BigNumber.maximum(0, remBN);
+  const totalCostBN = depositBN.plus(costBN);
+  const netProfitBN = rewardBN.minus(totalCostBN);
+
+  const cost = costBN.toNumber();
+  const netProfit = netProfitBN.toNumber();
+  const isProfitable = netProfit > 0;
+
+  return { cost, netProfit, isProfitable };
+}
+
 module.exports = {
   calculateOwnerSafeAdd,
   calculateSpotLock,
@@ -324,4 +348,5 @@ module.exports = {
   calculateSafeSpots,
   getSafePlaces,
   isPlacePassable,
+  calculateLevelClosingProfit,
 };
