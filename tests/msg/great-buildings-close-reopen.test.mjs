@@ -97,13 +97,29 @@ test('Great Buildings Close -> Reopen Lifecycle & Static Invariants Suite', asyn
         'utf8',
       );
 
-      // 1. fCheckOutput must be called before renderGbDonorsCard
+      // 1. fCheckOutput must be called before the donors render is published
       const fCheckIdx = source.indexOf('fCheckOutput();');
-      const renderDonorsIdx = source.indexOf('renderGbDonorsCard({');
+      const publishDonorsIdx = source.indexOf('greatBuildingsState.setDonors(');
       assert.ok(fCheckIdx !== -1, 'fCheckOutput must be called');
       assert.ok(
-        fCheckIdx < renderDonorsIdx,
-        'fCheckOutput must be invoked before renderGbDonorsCard in showGreatBuldingDonation',
+        fCheckIdx < publishDonorsIdx,
+        'fCheckOutput must be invoked before setDonors in showGreatBuldingDonation',
+      );
+      assert.doesNotMatch(
+        source,
+        /from\s+['"]\.\.\/ui\//,
+        'GreatBuildingsService.js must not import ../ui/ renderers directly',
+      );
+
+      // 1b. The reactive binding owns the donors renderer wiring
+      const bindingSource = fs.readFileSync(
+        path.join(ROOT_DIR, 'src/js/ui/greatBuildingsRenderBinding.js'),
+        'utf8',
+      );
+      assert.match(
+        bindingSource,
+        /renderDonors\s*=\s*renderGbDonorsCard/,
+        'binding must wire renderGbDonorsCard as the donors renderer',
       );
 
       // 2. Rankings must fallback to empty array

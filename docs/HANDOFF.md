@@ -35,6 +35,26 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
     duplicates. `npm run verify` remains red only on the untracked F2 plan doc's
     Prettier check.
 
+- **F2 Session 2 — Great Buildings info decoupling (worktree `feat/f2-gb-info-decoupling`, base `afe08b3`)**:
+  - `src/js/msg/GreatBuildingsService.js` no longer imports `../ui/` (0 edges).
+    Added `src/js/state/GreatBuildingsState.js` (channels `donors` / `info` /
+    `donation`) and `src/js/ui/greatBuildingsRenderBinding.js`, registered in the
+    `src/js/ui/renderBindings.js` composition root.
+  - `showGreatBuldingDonation()` still calls `fCheckOutput()` first, then
+    publishes the three prepared payloads in render order (donors → info →
+    donation). The donors renderer fills `Top`/`GBrewards`/`Reward` in place via
+    the published references, so the donation payload reads the same arrays as
+    before. The unused `export { renderGbDonationPanel }` re-export was dropped
+    (no consumers).
+  - The source-coupled close/reopen assertion now checks that `fCheckOutput()`
+    precedes `greatBuildingsState.setDonors(`, that the service has no `../ui/`
+    import, and that the binding wires `renderGbDonorsCard`.
+  - Tests: `tests/state/great-buildings-state.test.mjs`,
+    `tests/ui/great-buildings-render-binding.test.mjs`; `tests/ui/render-bindings.test.mjs`
+    extended with the new store.
+  - **Verification**: `npm run verify` exit 0 — **1,201 tests / 0 fail**,
+    prettier/lint/typecheck/RPC-contract/i18n green, dev bundle compiles.
+
 - **F2 Session 3 — Guild Battlegrounds decoupling + F7 composition root**:
   - **F7 (Session 0 prerequisite)**: added `src/js/ui/renderBindings.js`, the
     single side-effect-only composition root for the reactive bindings.
