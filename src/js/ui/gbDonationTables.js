@@ -36,15 +36,10 @@ try {
   helper = { fGBsname: (s) => s, escapeHTML: (s) => s };
 }
 
-let OtherPlayerService;
+let socialState = null;
 try {
-  OtherPlayerService = require('../msg/OtherPlayerService.js');
-} catch (e) {
-  OtherPlayerService = {};
-}
-const hoodlist = OtherPlayerService.hoodlist || [];
-const friends = OtherPlayerService.friends || [];
-const guildMembers = OtherPlayerService.guildMembers || [];
+  ({ socialState } = require('../state/SocialState.js'));
+} catch {}
 
 let showOptionsModule;
 try {
@@ -120,15 +115,13 @@ function inactiveHTML(members = [], playerId) {
   return '';
 }
 
-function checkInactive(
-  playerId,
-  hood = hoodlist,
-  fr = friends,
-  gm = guildMembers,
-) {
-  let html = inactiveHTML(hood, playerId);
-  if (!html) html = inactiveHTML(fr, playerId);
-  if (!html) html = inactiveHTML(gm, playerId);
+function checkInactive(playerId, hood, fr, gm) {
+  const hoodList = hood || socialState?.getHoodlist?.() || [];
+  const friendList = fr || socialState?.getFriends?.() || [];
+  const guildList = gm || socialState?.getGuildMembers?.() || [];
+  let html = inactiveHTML(hoodList, playerId);
+  if (!html) html = inactiveHTML(friendList, playerId);
+  if (!html) html = inactiveHTML(guildList, playerId);
   return html;
 }
 

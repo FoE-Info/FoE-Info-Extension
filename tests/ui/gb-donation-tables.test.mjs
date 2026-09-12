@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { socialState } from '../../src/js/state/SocialState.js';
 import gbDonationPkg from '../../src/js/ui/gbDonationTables.js';
 
 const {
@@ -8,6 +9,7 @@ const {
   getPlayerLink,
   getDonations_new,
   getPlaceValues,
+  checkInactive,
   gbTabSafe,
   gbTabNotSafe,
   gbTabEmpty,
@@ -190,4 +192,16 @@ test('gbDonationTables UI Suite', async (t) => {
     assert.match(html, /Himeji Castle \[51\]/);
     assert.match(html, />-<\/strong>/);
   });
+
+  await t.test(
+    'checkInactive reads the live social lists from SocialState',
+    () => {
+      socialState.setLists({
+        hoodlist: [{ player_id: 42, is_active: false, is_self: false }],
+      });
+
+      assert.match(checkInactive(42), /INACTIVE/);
+      assert.doesNotMatch(checkInactive(999), /INACTIVE/);
+    },
+  );
 });
