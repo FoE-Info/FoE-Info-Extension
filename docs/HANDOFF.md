@@ -38,7 +38,25 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
   - **F2 batch 4** — `ArmyUnitManagementService` publishes to new
     `state/ArmyState.js` via `ui/armyRenderBinding.js`; DOM test migrated to load
     the binding. `msg/ → ui/` static edges → 21.
-  - **Verification**: `npm run verify` exit 0 — **1,158 tests / 0 fail**.
+  - **F7 foundation** — added `src/js/ui/renderBindings.js` as the single
+    composition root (a `require` barrel of the render bindings, CJS so Node can
+    consume it); `index.js` now imports it once instead of the individual
+    bindings. New `tests/ui/render-bindings.test.mjs`.
+  - **F2 batch 5** (`feat/f2-gb-donation-rewards`) — `GbDonationService` publishes
+    to new `state/GbDonationState.js` (`donation`/`reward` channels) rendered by
+    `ui/gbDonationRenderBinding.js`; the `renderGbDonationLegacy` /
+    `renderRewardsPanel` imports and the function-scoped `RewardRenderer` require
+    are gone, with the `deps.RewardRenderer` injection seam preserved. The
+    `renderGbDonationPanel` re-export was dropped (unused by production callers)
+    and its two test consumers import `ui/renderGbDonationLegacy.js` directly;
+    `handleNewReward` DOM tests now assert the store payload. Zero `../ui/`
+    imports remain in the service.
+  - **Verification** (batch 5 branch `feat/f2-gb-donation-rewards`):
+    `npm run verify` exit 0 — **1,171 tests / 0 fail**, prettier/lint/
+    typecheck/RPC-contract/i18n clean, dev bundle compiles. Worktree note: a
+    local `npm ci --legacy-peer-deps` was required because the shared root
+    `node_modules` had already dropped `postcss-loader` while this branch's
+    committed webpack config still referenced it.
 
 - **Reactive stores for msg→ui decoupling (Actionable Item 2) + scope closures**:
   - Slice 1 — `src/js/state/QuantumState.js` publish/subscribe store
