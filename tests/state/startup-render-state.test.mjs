@@ -102,6 +102,21 @@ test('StartupRenderState - reactive publish/subscribe', async (t) => {
     assert.equal(state.getBuildingCollectionOptions(), null);
   });
 
+  await t.test(
+    'stores the metadata loading payload and notifies its channel',
+    () => {
+      const state = new StartupRenderState();
+      const channels = [];
+      state.subscribe((snapshot, channel) => channels.push(channel));
+
+      const payload = { container: { innerHTML: '' }, options: {} };
+      state.setMetadataLoading(payload);
+
+      assert.deepEqual(channels, ['metadata-loading']);
+      assert.equal(state.getMetadataLoading(), payload);
+    },
+  );
+
   await t.test('singleton exposes shared reactive state', () => {
     assert.ok(startupRenderState instanceof StartupRenderState);
     assert.equal(typeof startupRenderState.subscribe, 'function');
