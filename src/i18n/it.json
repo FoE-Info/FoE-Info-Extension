@@ -235,5 +235,6 @@
   "opt_language_settings": "Impostazioni lingua",
   "opt_language": "Lingua",
   "opt_use_browser_language": "Usa lingua del browser",
-  "opt_use_game_language": "Usa lingua del gioco"
+  "opt_use_game_language": "Usa lingua del gioco",
+  "city_overview": "City Overview"
 }
