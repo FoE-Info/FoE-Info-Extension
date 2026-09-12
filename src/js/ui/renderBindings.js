@@ -4,6 +4,7 @@ require('./armyRenderBinding.js');
 require('./bonusRenderBinding.js');
 require('./gbDonationRenderBinding.js');
 require('./gbgRenderBinding.js');
+require('./greatBuildingsRenderBinding.js');
 require('./quantumRenderBinding.js');
 require('./startupRenderBinding.js');
 require('./treasuryRenderBinding.js');
