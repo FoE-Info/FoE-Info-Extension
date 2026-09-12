@@ -189,10 +189,10 @@ try {
   defaultSetTreasurySize = null;
 }
 try {
-  const resModule = require('../msg/ResourceService.js') as {
+  const stateModule = require('../state/state.js') as {
     ResourceDefs?: ResourceDef[];
   };
-  defaultResourceDefs = resModule.ResourceDefs ?? null;
+  defaultResourceDefs = stateModule.ResourceDefs ?? null;
 } catch {
   defaultResourceDefs = null;
 }
@@ -426,16 +426,6 @@ export function renderTreasuryPanel(
 
   let rssDefs =
     (deps.ResourceDefs as ResourceDef[] | null) || defaultResourceDefs;
-  if (!rssDefs || rssDefs.length === 0) {
-    try {
-      const resModule = require('../msg/ResourceService.js') as {
-        ResourceDefs?: ResourceDef[];
-      };
-      rssDefs = resModule.ResourceDefs ?? null;
-    } catch {
-      rssDefs = null;
-    }
-  }
   if (!rssDefs || rssDefs.length === 0) {
     try {
       const stateModule = require('../state/state.js') as {

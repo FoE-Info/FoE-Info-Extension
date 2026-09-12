@@ -15,17 +15,20 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
     regression tests.
   - Findings: `graphify-out/foe-info/findings/2026-09-12-reactive-store-migration-audit.md`.
   - **F5 resolved** — standardized on dedicated `ui/<domain>RenderBinding.js`
-    modules (`bindX(state, { renderers })`), loaded for side effect by
-    `index.js`; render modules stay pure. Refactored slice 1 to match via new
-    `ui/quantumRenderBinding.js`. Next queue: **F3** (ui→msg inversions),
-    **F2** (batch-migrate 14 services), **F7** (explicit bootstrap).
-  - **Verification**: `npm run verify` exit 0 — **1,119 tests / 0 fail**.
+    modules (`bindX(state, { renderers })`), loaded for side effect by `index.js`;
+    render modules stay pure. Refactored slice 1 to match via new
+    `ui/quantumRenderBinding.js`.
+  - **F3 resolved** — `panelDispatcher.js`/`.ts` read `ResourceDefs` from
+    `state/state.js`; `indexUiBindings.js` msg requires moved to lazy
+    `resolveDep` injection. Refreshed AST: 0 production `ui/ → msg/` static
+    edges. Next: **F2** (batch-migrate 14 services), **F7** (explicit bootstrap).
+  - **Verification**: `npm run verify` exit 0 — **1,120 tests / 0 fail**.
 
 - **Reactive stores for msg→ui decoupling (Actionable Item 2) + scope closures**:
   - Slice 1 — `src/js/state/QuantumState.js` publish/subscribe store
     (`notify(changed)`); `GuildRaidsService` publishes member-activity and
     leaderboard data instead of importing `renderQuantumPanels`;
-    `renderQuantumPanels` self-subscribes and repaints only the changed card.
+    `quantumRenderBinding.js` subscribes and repaints only the changed card.
   - Slice 2 — `src/js/state/StartupRenderState.js` channeled
     `city-stats`/`building-collection` store; `StartupService` publishes render
     context instead of importing the UI renderers; new
