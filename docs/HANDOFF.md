@@ -4,6 +4,19 @@ Updated 2026-09-12 after the City Overview layout redesign (own + visited cards)
 
 ## Current session (2026-09-12)
 
+- **F2 Session 6 completion — visited-city reactive store**:
+  - New `state/VisitedCityState.js` (`visit` channel) + `ui/visitedCityRenderBinding.js`
+    (registered in `ui/renderBindings.js`). `OtherPlayerService.renderVisit` now
+    publishes `{ containerId, stats, context, options }` instead of calling
+    `fn/renderCityStats.js` + `i18n.translateContainer` directly; the binding
+    performs the DOM render and translation. The service no longer imports
+    `fn/renderCityStats.js` or `fn/i18n.js`.
+  - New suites `tests/state/visited-city-state.test.mjs` and
+    `tests/ui/visited-city-render-binding.test.mjs`; `other-player-service` test
+    side-effect loads the binding. Closes the last deferred F2 plan item.
+  - **Verification**: `npm run verify` exit 0 — **1,278 tests / 0 fail**,
+    calc purity guard green, dev bundle compiles.
+
 - **F2 Slice B + program DoD — `StartupService` fully decoupled from `ui/`**:
   - **Galaxy**: new `ui/galaxyRenderBinding.js` owns
     `blueGalaxyState.setRenderCallback(showGalaxy)` and is registered in
