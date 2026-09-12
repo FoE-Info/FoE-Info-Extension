@@ -60,6 +60,15 @@ class StartupRenderState {
     return this.cityStatsContext;
   }
 
+  /**
+   * Re-render city stats using the last published context. No-op until a
+   * context has been published (e.g. before startup completes).
+   */
+  requestCityStatsRepaint() {
+    if (!this.cityStatsContext) return;
+    this.notify('city-stats');
+  }
+
   getBuildingCollectionOptions() {
     return this.buildingCollectionOptions;
   }
