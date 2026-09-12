@@ -26,6 +26,12 @@ const {
   formatClanGoodsHTML,
   formatFpHTML,
 } = require('./components/statFormatters.js');
+let buildUnitsTooltipHTML = null;
+try {
+  ({
+    buildUnitsTooltipHTML,
+  } = require('./components/cityStatsTooltipBuilder.js'));
+} catch {}
 
 function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
   const isOwnCity = !!playerInfo.isOwnCity;
@@ -80,7 +86,7 @@ function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
       actions: 0,
     },
     aoCriticalStrike: 0,
-    krakenCriticalStrike: 0,
+    ccCriticalStrike: 0,
   };
 
   const goodsBoostPercent =
@@ -108,13 +114,21 @@ function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
     exact,
   );
 
+  const unitsTooltipHTML =
+    options.unitsTooltipHTML ||
+    stats.unitsTooltipHTML ||
+    (typeof buildUnitsTooltipHTML === 'function' ?
+      buildUnitsTooltipHTML(stats.units?.buildings)
+    : '');
+  const effectiveStats = { ...stats, unitsTooltipHTML };
+
   const html =
     isOwnCity ?
       buildOwnCityCard({
         prefix,
         playerName,
         playerInfo,
-        stats,
+        stats: effectiveStats,
         isCollapsed,
         fpHTML,
         coins,
@@ -147,6 +161,7 @@ function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
         units,
         mil,
         isCollapsed,
+        stats: effectiveStats,
       });
 
   if (typeof document !== 'undefined') {
