@@ -55,6 +55,7 @@ module.exports = (env = {}, argv = {}) => {
   const config = {
     mode: isProdMode ? 'production' : 'development',
     devtool: isProdMode ? 'source-map' : 'cheap-module-source-map',
+    cache: isProdMode ? false : { type: 'filesystem' },
     output: {
       path: outputDir,
     },
@@ -65,7 +66,6 @@ module.exports = (env = {}, argv = {}) => {
           use: [
             MiniCssExtractPlugin.loader,
             'css-loader',
-            'postcss-loader',
             {
               loader: 'sass-loader',
               options: {
@@ -140,7 +140,6 @@ module.exports = (env = {}, argv = {}) => {
     config.entry = {
       app: ['./src/js/index.js', './src/js/dev/forcedStateBootstrap.js'],
     };
-    config.cache = { type: 'filesystem' };
     config.plugins.push(
       new CopyPlugin({
         patterns: [
