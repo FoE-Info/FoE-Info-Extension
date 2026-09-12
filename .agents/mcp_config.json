@@ -6,7 +6,7 @@
     },
     "graphify-foe-info": {
       "command": "graphify-mcp",
-      "args": ["graphify-out/foe-info/graph.json"],
+      "args": ["/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/graphify-out/foe-info/graph.json"],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -33,7 +33,7 @@
     },
     "graphify-forge-hammer": {
       "command": "graphify-mcp",
-      "args": ["../forge-hammer/graphify-out/graph.json"],
+      "args": ["/var/home/kronikpillow/Projects/FoE-Info/forge-hammer/graphify-out/graph.json"],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -60,7 +60,7 @@
     },
     "graphify-foe-info-original": {
       "command": "graphify-mcp",
-      "args": ["../FoE-Info-Extension-original/graphify-out/graph.json"],
+      "args": ["/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension-original/graphify-out/graph.json"],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -87,7 +87,7 @@
     },
     "graphify-low-tool": {
       "command": "graphify-mcp",
-      "args": ["../LoW-Tool/graphify-out/graph.json"],
+      "args": ["/var/home/kronikpillow/Projects/FoE-Info/LoW-Tool/graphify-out/graph.json"],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -114,7 +114,7 @@
     },
     "graphify-metadata-store": {
       "command": "graphify-mcp",
-      "args": ["../metadata-store/graphify-out/graph.json"],
+      "args": ["/var/home/kronikpillow/Projects/FoE-Info/metadata-store/graphify-out/graph.json"],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
