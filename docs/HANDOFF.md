@@ -4,24 +4,52 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
 
 ## Current session (2026-09-12)
 
-- **Great Buildings (GB) Panel Rendering Regression & Own GB Workflow Ingestion**:
+- **Mechanical Hardening: Zero Autonomous Browser Control Enforced (`6ceb53a`)**:
+  - Promoted `.agents/rules/browser-environment-hygiene.md` from `model_decision` to `always_on`.
+  - Updated `.agents/scripts/safety-gate.mjs` to block `foe-browser` invocations and any command matching `(pkill|killall)\s+.*chrome`.
+  - Added automated test coverage in `tests/agents/hooks.test.mjs` ensuring safety gate rejects unauthorized browser spawns or terminations.
+  - Invariant: Zero autonomous browser execution, zero tab reloads, zero window focus stealing. All verification strictly headless CLI (`npm test`, `npm run verify`).
+
+- **Workstream 1 Complete: Declarative 6-Context Panel Visibility Engine (`b9b41e7`, `6ceaf8f`)**:
+  - Implemented declarative `CONTEXT_ALLOWED_PANELS` map in `src/js/ui/cardVisibility.js` and typed twin `cardVisibility.ts` supporting 6 game contexts:
+    - `OWN_CITY`: City stats, production, army, rewards, incidents, GB suite, Blue Galaxy, guild overview, treasury.
+    - `GBG`: Header, army, rewards, target generator, battlegrounds changes, GBG leaderboard.
+    - `GE`: Header, army, rewards, GE championship, GE contributions.
+    - `QI`: Quantum contributions, quantum leaderboard.
+    - `SETTLEMENT`: Cultural settlement panel only.
+    - `OTHER_PLAYER`: Visited city stats, visited GB lock helper (`#donation2`).
+  - Wired `setCurrentView(context)` transitions into protocol routes:
+    - `src/js/protocol/routes/combatRoutes.js`: `GuildBattlegroundService` -> `GBG`, `GuildExpeditionService` -> `GE`.
+    - `src/js/protocol/routes/quantumRoutes.js`: `GuildRaidsService` -> `QI`.
+    - `src/js/protocol/routes/cityRoutes.js`: `CityMapService.getEntities` -> `OWN_CITY`, `CityMapService.getCityMap` (`cultural_outpost` -> `SETTLEMENT`, `guild_raids` -> `QI`, `main`/`city` -> `OWN_CITY`).
+    - `src/js/protocol/routes/socialRoutes.js`: `OtherPlayerService.visitPlayer` -> `OTHER_PLAYER`.
+  - Transitioned `src/js/ui/panelDispatcher.js` from destructive `innerHTML = ''` DOM clears to non-destructive delegation to `setCurrentView(context)`.
+  - Added unit test suite `tests/ui/context-view-filtering.test.mjs` (10 assertions). All 941 unit tests green.
+  - Worktree `.worktrees/feat-context-engine` pruned and branch `feat/context-view-engine` merged into `development`.
+
+- **Great Buildings (GB) Panel Rendering Regression & Own GB Workflow Ingestion (`b08402b`)**:
   - **Live Bug Diagnosed & Fixed**: User reported Great Building panels (`#donation2`, `#gbInfo`, `#greatbuilding`) failed to render when opening GBs.
     1. _Root Cause A_: `fCheckOutput()` in `GreatBuildingsService.js` called `contentEl.insertBefore(gbInfoDIV, greatbuilding)`. Because `setupPanelContainers` wrapped `greatbuilding` inside `#gbContributors`, `greatbuilding.parentNode` was `#gbContributors`, not `contentEl`. This threw an uncaught native DOM `NotFoundError: The node before which the new node is to be inserted is not a child of this node` on every GB open/contribution, aborting `getConstruction` and `contributeForgePoints`. Replaced with non-destructive presence checks and unhiding `#gbDonation` / `#gbContributors`.
     2. _Root Cause B_: In `webpack.config.js`, `target === 'dev'` output to `build/FoE-Info-Dev` (lowercase `ev`), whereas Chrome profile preferences, `foe-browser`, and test scripts load from `build/FoE-Info-DEV` (all-caps `DEV`), which on Linux led to Chrome running a frozen stale bundle. Corrected `outputDir` to `build/FoE-Info-DEV` and updated test expectation in `package-extension.test.mjs`.
     3. _Root Cause C_: In `cardVisibility.js` and `cardVisibility.ts`, `setElementDisplay('donation2DIV', showGeChamp ? '' : 'none')` erroneously bound the GB donation container (`donation2DIV`) to Guild Expedition Championship visibility (`showGeChamp`), causing it to be hidden when GE was closed.
   - **Live Verification via CDP (port 9222)**:
-    - Restarted browser with clean dev bundle (`foe-browser --restart`).
-    - Dispatched real game packets for The Blue Galaxy (entity 34862) and Zeus (entity 19).
     - Verified all 3 panels render completely: `#donation2` (1382 chars, spot locks, copy text), `#gbInfo` (982 chars, level math, remaining FP), and `#greatbuilding` (1336 chars, contributor table).
   - **Own GB Workflow & HAR Ingestion**:
     - Reviewed extracted captures `docs/har/open own GB list.har` and `docs/har/leveled zeus and sw that was full, prepared P3 galaxy safe and P1 2 Zeus safe at 2.0.har`.
     - Traced full InnoGames RPC chain: `GreatBuildingsService.getOtherPlayerOverview` (retrieving all own GB progress rows for player ID 7560963) -> `OtherPlayerService.getOtherPlayerCityMapEntity` (retrieving entity state) -> `GreatBuildingsService.getConstruction` (retrieving donor rankings & bonuses) -> `GreatBuildingsService.contributeForgePoints` (updating ranking & city map entity) -> `ConversationService.sendMessage` (posting 2.0 safe threads).
-  - **Verification Gate**: `npm run verify` passed exit 0 (931/931 tests, prettier clean, eslint 0 errors, i18n parity 100%).
+  - **Verification Gate**: `npm run verify` passed exit 0 (941/941 tests, prettier clean, eslint 0 errors, i18n parity 100%).
 
-- **Context-Driven Panel Visibility Engine & Ephemeral Lifecycle (Parallel Execution: OpenCode & Antigravity)**:
+- **Handoff to OpenCode: Workstream 2 (Goods Panel Extraction & Ephemeral Panel Dismissal Lifecycle)**:
   - **Plan**: [`docs/plans/2026-09-12-context-driven-panel-visibility-engine.md`](plans/2026-09-12-context-driven-panel-visibility-engine.md).
-  - **Stream 1 (OpenCode)**: Worktree `.worktrees/feat-context-engine` on branch `feat/context-view-engine`. Declarative 6-context visibility matrix (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`) in `cardVisibility.js` / `cardVisibility.ts`, route transitions in `combatRoutes.js`, `quantumRoutes.js`, `cityRoutes.js`, `socialRoutes.js`, non-destructive `panelDispatcher.js` refactoring, and test suite `tests/ui/context-view-filtering.test.mjs`.
-  - **Stream 2 (Antigravity)**: Worktree `.worktrees/feat-goods-lifecycle` on branch `feat/goods-and-panel-lifecycle`. Extract `renderGoodsPanel.js` (<=250L) from `ResourceService.js` (dropping 580 -> <=380L), wire `.btn-close` dismiss/lock lifecycle, and prevent unwanted goods respawns on harvests/reloads.
+  - **Worktree**: Can be executed directly on `development` (no other active branches/worktrees) or in worktree `.worktrees/feat-goods-lifecycle`.
+  - **Target Deliverables**:
+    1. Extract `src/js/ui/renderGoodsPanel.js` ($\le 250$ lines, `createLogger('GoodsPanel')`) from `src/js/msg/ResourceService.js`.
+    2. Thin `src/js/msg/ResourceService.js` from 579 lines to $\le 380$ lines.
+    3. Implement ephemeral lock state: `isGoodsPanelUnlocked()`, `lockGoodsPanel()`, `unlockGoodsPanel()`.
+    4. Bind `.btn-close` dismiss listener on `#goods`: clicking dismiss calls `lockGoodsPanel()` and clears `#goods.innerHTML`.
+    5. Guard `fshowResources`: suppress rendering if `!isGoodsPanelUnlocked()` unless in debug mode, preventing unwanted popups on city entity harvests.
+    6. Add unit test `tests/msg/resource-market-trigger.test.mjs`.
+  - **Fresh Verification Baseline**: 941/941 tests passing across 91 suites, `npm run verify` green.
 
 - **Quantum Incursions (QI) UX & Modernization Parallel Integration (Antigravity & OpenCode)**:
   - **Stream 1 — QI UX (Antigravity)**:

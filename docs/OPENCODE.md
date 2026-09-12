@@ -79,16 +79,41 @@ Formatting excludes existing `docs/antigravity_prompt_*.md` conversation artifac
 
 ## Active Dual-Harness Tasks
 
-- **[IN PROGRESS] Context-Driven Panel Visibility Engine (OpenCode Stream 1)**:
+- **[READY FOR OPENCODE] Workstream 2: Goods Panel Extraction & Ephemeral Panel Dismissal Lifecycle**:
   - Plan: [`docs/plans/2026-09-12-context-driven-panel-visibility-engine.md`](plans/2026-09-12-context-driven-panel-visibility-engine.md).
-  - Target Worktree: `.worktrees/feat-context-engine`
-  - Target Branch: `feat/context-view-engine` -> `development`
-  - Mandates:
-    1. Define declarative `CONTEXT_ALLOWED_PANELS` map in `src/js/ui/cardVisibility.js` (and typed mirror `cardVisibility.ts`) for all 6 contexts (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`).
-    2. Wire `setCurrentView(context)` into `combatRoutes.js` (GBG, GE), `quantumRoutes.js` (QI), `cityRoutes.js` (OWN_CITY via `getEntities`, SETTLEMENT/QI via `getCityMap.gridId`), and `socialRoutes.js` (OTHER_PLAYER via `visitPlayer`).
-    3. Transition `panelDispatcher.js` away from destructive `innerHTML = ''` DOM clears to non-destructive delegation to `setCurrentView(context)`.
-    4. Create comprehensive test suite `tests/ui/context-view-filtering.test.mjs`.
-    5. Ensure all 922+ tests pass, `npm run verify` exits 0, and files stay <= 600 lines.
+  - Target Branch: `feat/goods-and-panel-lifecycle` -> `development` (or execute directly on `development` since working tree is 100% clean and no other branches are active).
+  - Background Context:
+    - Workstream 1 merged cleanly in `b9b41e7` (`feat(ui): merge context-driven panel visibility engine`).
+    - The 6-context matrix (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`) is active in `cardVisibility.js` / `cardVisibility.ts`.
+    - Current baseline: 941/941 tests passing across 91 suites, full 5-stage `npm run verify` gate green.
+    - Zero autonomous browser control is mechanically enforced; do not run `foe-browser` or kill chrome.
+  - Tasks to complete:
+    1. **Create `src/js/ui/renderGoodsPanel.js`** ($\le 250$ lines):
+       - Extract goods table rendering and DOM assembly from `src/js/msg/ResourceService.js` (`fshowResources`).
+       - Scope logger with `createLogger('GoodsPanel')`.
+       - Re-export `renderGoodsPanel` from `ResourceService.js` for full backward compatibility.
+    2. **Thin `src/js/msg/ResourceService.js`** (currently 579 lines $\to \le 380$ lines):
+       - Add lifecycle state: `isGoodsPanelUnlocked()`, `unlockGoodsPanel()`, `lockGoodsPanel()`.
+       - When `TradeService` / marketplace or inventory resources arrive, unlock via `unlockGoodsPanel()`.
+       - In `fshowResources`, guard execution: if `!isGoodsPanelUnlocked()` and debug mode is false, suppress rendering and unhiding `#goods`.
+    3. **Ephemeral Close / Dismiss Lifecycle**:
+       - Wire `.btn-close` click listener on `#goods`: clicking `x` calls `lockGoodsPanel()` and clears `#goods.innerHTML`.
+       - Ensure subsequent routine city harvests or background entity syncs in `OWN_CITY` do NOT respawn `#goods` once dismissed.
+    4. **Unit Testing**:
+       - Add unit test `tests/msg/resource-market-trigger.test.mjs` testing unlock on market/trade data, suppression on raw bag events, and locking on dismiss.
+    5. **Verification**:
+       - Run `npm test`, `npm run typecheck`, and full `npm run verify`.
+       - Ensure all modules in `src/js/` remain strictly $\le 600$ lines.
+
+- **[COMPLETED] Zero Autonomous Browser Control Hardening**:
+  - Promoted `.agents/rules/browser-environment-hygiene.md` to `always_on`; updated `.agents/scripts/safety-gate.mjs` to block `foe-browser` and chrome process termination; added automated hook tests (`tests/agents/hooks.test.mjs`). Merged in `6ceb53a`.
+
+- **[COMPLETED] Workstream 1: Context-Driven Panel Visibility Engine**:
+  - Plan: [`docs/plans/2026-09-12-context-driven-panel-visibility-engine.md`](plans/2026-09-12-context-driven-panel-visibility-engine.md).
+  - Merged into `development` (`b9b41e7`, `6ceaf8f`). Declarative 6-context visibility matrix (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`), route wiring, non-destructive `panelDispatcher.js` delegation, `donation2` added to `OTHER_PLAYER`. All 941 tests passing.
+
+- **[COMPLETED] Great Buildings Panel DOM Crash Fix**:
+  - Replaced fatal DOM `insertBefore` crash in `GreatBuildingsService.js` (`b08402b`) with container presence checks; fixed webpack dev output casing to `build/FoE-Info-DEV`; added HAR ground-truth test suite `tests/msg/har-great-buildings-ground-truth.test.mjs`. Merged in `b08402b`.
 
 - **[COMPLETED] Curated Git History Reconstruction (from `8c681d1` to `HEAD`)**:
   - Plan: [`docs/plans/2026-09-12-curated-history-reconstruction.md`](plans/2026-09-12-curated-history-reconstruction.md).
