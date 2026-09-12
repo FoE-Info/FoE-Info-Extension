@@ -15,9 +15,6 @@ test('Great Buildings Close -> Reopen Lifecycle & Static Invariants Suite', asyn
   const gbInfoPkg = await import('../../src/js/ui/renderGbInfoPanel.js');
   const { renderGbInfoPanel } = gbInfoPkg.default || gbInfoPkg;
 
-  const gbDonationPkg = await import('../../src/js/msg/GbDonationService.js');
-  const { renderGbDonationPanel } = gbDonationPkg.default || gbDonationPkg;
-
   await t.test(
     'renderGbDonorsCard renders valid card even with 0 rankings and handles showGBDonors !== false',
     () => {
