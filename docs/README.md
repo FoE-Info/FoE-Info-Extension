@@ -6,17 +6,18 @@ status, handoff state, plans, specs, and host-specific wiring.
 
 Ground-truth layout:
 
-| Artifact                     | Location                                | What it holds                                                                                                                         |
-| :--------------------------- | :-------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ |
-| **Live work & todos**        | `docs/STATUS.md`                        | In-progress threads, open todos, recently-completed work. Update this file when something changes.                                    |
-| **Project handoff**          | `docs/HANDOFF.md`                       | Dowser takeover history, verified fixes, decisions/corrections, remaining product work, resume-safely notes. Supersedes stale labels. |
-| **Cross-agent rules**        | `docs/COORDINATION.md`                  | Roster, standing rules for every agent every session, status-by-thread summaries.                                                     |
-| **Implementation plans**     | `docs/plans/`                           | `YYYY-MM-DD-<feature>.md` step plans with checkbox tracking.                                                                          |
-| **Design specs**             | `docs/specs/`                           | `YYYY-MM-DD-<topic>-design.md` validated design documents.                                                                            |
-| **Host wiring (opencode)**   | `docs/OPENCODE.md`                      | opencode ↔ Antigravity coexistence, tool mapping, hook/plugin enforcement limits.                                                     |
-| **Debugging guide**          | `docs/debugging.md`                     | Debug Mode usage and diagnostic conventions.                                                                                          |
-| **Graphify local execution** | `docs/graphify-local.md`                | Local graphify launcher, backend env vars, watch/update flows.                                                                        |
-| **Ecosystem audit ledger**   | `docs/archive/agent-ecosystem-audit.md` | Audit findings and change ledger for `.agents/` counts and references.                                                                |
+| Artifact                     | Location                                | What it holds                                                                                                                                                          |
+| :--------------------------- | :-------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Live work & todos**        | `docs/STATUS.md`                        | In-progress threads, open todos, recently-completed work. Update this file when something changes.                                                                     |
+| **Project handoff**          | `docs/HANDOFF.md`                       | Dowser takeover history, verified fixes, decisions/corrections, remaining product work, resume-safely notes. Supersedes stale labels.                                  |
+| **Cross-agent rules**        | `docs/COORDINATION.md`                  | Roster, standing rules for every agent every session, status-by-thread summaries.                                                                                      |
+| **Implementation plans**     | `docs/plans/`                           | `YYYY-MM-DD-<feature>.md` step plans with checkbox tracking.                                                                                                           |
+| **Live HAR captures**        | `docs/har/` (git-ignored)               | 39 Chrome DevTools `.har` recordings used as ground truth. Extracted into sibling `../metadata-store/extracts/` with `npm run metadata:extract-hars`; never committed. |
+| **Design specs**             | `docs/specs/`                           | `YYYY-MM-DD-<topic>-design.md` validated design documents.                                                                                                             |
+| **Host wiring (opencode)**   | `docs/OPENCODE.md`                      | opencode ↔ Antigravity coexistence, tool mapping, hook/plugin enforcement limits.                                                                                      |
+| **Debugging guide**          | `docs/debugging.md`                     | Debug Mode usage and diagnostic conventions.                                                                                                                           |
+| **Graphify local execution** | `docs/graphify-local.md`                | Local graphify launcher, backend env vars, watch/update flows.                                                                                                         |
+| **Ecosystem audit ledger**   | `docs/archive/agent-ecosystem-audit.md` | Audit findings and change ledger for `.agents/` counts and references.                                                                                                 |
 
 ## Session start protocol (every host)
 

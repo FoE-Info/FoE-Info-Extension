@@ -1,0 +1,1515 @@
+{
+  "description": "Paginated guild treasury donation history (ClanService.getTreasuryLogs).",
+  "captures": [
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:32.773Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 18,
+      "requestData": [
+        10,
+        0,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 18,
+            "createdAt": "today at 12:36 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 18,
+            "createdAt": "today at 12:36 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 18,
+            "createdAt": "today at 12:36 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 18,
+            "createdAt": "today at 12:36 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 18,
+            "createdAt": "today at 12:36 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 280,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 280,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 280,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 280,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 280,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    },
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:35.161Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 19,
+      "requestData": [
+        10,
+        10,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 362,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 362,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 362,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 362,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 362,
+            "createdAt": "today at 12:35 am",
+            "player": {
+              "player_id": 5889510,
+              "name": "bakiron",
+              "avatar": "portrait_id_220",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Battlegrounds: Place Building",
+            "resource": "compound_fluid",
+            "amount": -1616,
+            "createdAt": "today at 12:33 am",
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Battlegrounds: Place Building",
+            "resource": "stel_resonance_cores",
+            "amount": -571,
+            "createdAt": "today at 12:33 am",
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Battlegrounds: Place Building",
+            "resource": "tinplate",
+            "amount": -613,
+            "createdAt": "today at 12:33 am",
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "artificial_scales",
+            "amount": 28,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "biolight",
+            "amount": 28,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    },
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:35.473Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 20,
+      "requestData": [
+        10,
+        20,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "biotech_crops",
+            "amount": 119,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "bromine",
+            "amount": 1944,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "compound_fluid",
+            "amount": 1944,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "corals",
+            "amount": 28,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "cryptocash",
+            "amount": 135,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "data_crystals",
+            "amount": 135,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "fusion_reactors",
+            "amount": 119,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "golden_rice",
+            "amount": 135,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "lubricants",
+            "amount": 119,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "mars_microbes",
+            "amount": 119,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    },
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:35.807Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 21,
+      "requestData": [
+        10,
+        30,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "nanites",
+            "amount": 135,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "nickel",
+            "amount": 1944,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "pearls",
+            "amount": 28,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "plankton",
+            "amount": 28,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "platinum_crystals",
+            "amount": 1944,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "processed_material",
+            "amount": 1944,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "superalloys",
+            "amount": 119,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "tea_silk",
+            "amount": 135,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "bromine",
+            "amount": 76,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "compound_fluid",
+            "amount": 76,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    },
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:36.078Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 22,
+      "requestData": [
+        10,
+        40,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "nickel",
+            "amount": 76,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "platinum_crystals",
+            "amount": 76,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "processed_material",
+            "amount": 76,
+            "createdAt": "today at 12:27 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Battlegrounds: Place Building",
+            "resource": "bio_creatures",
+            "amount": -2398,
+            "createdAt": "today at 12:26 am",
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Battlegrounds: Place Building",
+            "resource": "oxygen_pills",
+            "amount": -198,
+            "createdAt": "today at 12:26 am",
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Battlegrounds: Place Building",
+            "resource": "stel_resonance_cores",
+            "amount": -204,
+            "createdAt": "today at 12:26 am",
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "dark_energy_battery",
+            "amount": 362,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "deep_space_data",
+            "amount": 362,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "hypersleep_modules",
+            "amount": 362,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "oxygen_pills",
+            "amount": 362,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    },
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:36.343Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 23,
+      "requestData": [
+        10,
+        50,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "silver_crystals",
+            "amount": 362,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 1547,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 3386,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 1547,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 3386,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 1547,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 3386,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 1547,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 3386,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 1547,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    },
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:36.595Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 24,
+      "requestData": [
+        10,
+        60,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 3386,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 200,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 200,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 200,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 200,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 200,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 320,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 320,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 320,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 320,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    },
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:36.824Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 25,
+      "requestData": [
+        10,
+        70,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 320,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 160,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 160,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 160,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 160,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 160,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 640,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 640,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 640,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 640,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    },
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:37.207Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 26,
+      "requestData": [
+        10,
+        80,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 640,
+            "createdAt": "today at 12:25 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Battlegrounds: Place Building",
+            "resource": "processed_material",
+            "amount": -1095,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Battlegrounds: Place Building",
+            "resource": "stel_metamorphic_alloys",
+            "amount": -1705,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 479417,
+              "name": "bootnreboot",
+              "avatar": "addon_portrait_id_vik26_8",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_glyph_circuits",
+            "amount": 160,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_metamorphic_alloys",
+            "amount": 160,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_psionic_conduits",
+            "amount": 160,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_resonance_cores",
+            "amount": 160,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "stel_xenocrystals",
+            "amount": 160,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 525759,
+              "name": "Mike of Macedonia",
+              "avatar": "addon_portrait_id_sinatra",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "biotech_crops",
+            "amount": 190,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "bromine",
+            "amount": 650,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    },
+    {
+      "sourceHar": "open Guild Overview - then members - then treasury - then 10 pages of guild contributions to treasury.har",
+      "capturedAt": "2026-09-11T23:36:37.636Z",
+      "requestClass": "ClanService",
+      "requestMethod": "getTreasuryLogs",
+      "requestId": 27,
+      "requestData": [
+        10,
+        90,
+        {
+          "__enum__": "ResourceBagType",
+          "value": "ClanMain"
+        }
+      ],
+      "responseData": {
+        "logs": [
+          {
+            "action": "Building production",
+            "resource": "bromine",
+            "amount": 598,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "compound_fluid",
+            "amount": 650,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "compound_fluid",
+            "amount": 598,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "cryptocash",
+            "amount": 84,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "data_crystals",
+            "amount": 84,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "fusion_reactors",
+            "amount": 190,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "golden_rice",
+            "amount": 84,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "lubricants",
+            "amount": 190,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "mars_microbes",
+            "amount": 190,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          },
+          {
+            "action": "Building production",
+            "resource": "nanites",
+            "amount": 84,
+            "createdAt": "today at 12:24 am",
+            "player": {
+              "player_id": 10966491,
+              "name": "12 Monkeys",
+              "avatar": "portrait_id_16",
+              "__class__": "OtherPlayer"
+            },
+            "__class__": "ClanTreasuryLog"
+          }
+        ],
+        "count": 29385,
+        "__class__": "ClanTreasuryLogs"
+      }
+    }
+  ]
+}

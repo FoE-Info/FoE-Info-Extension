@@ -1,0 +1,879 @@
+{
+  "league": {
+    "id": "diamond",
+    "name": "Diamond League",
+    "rating": 1000,
+    "isBattleOfTheBeast": true,
+    "__class__": "GuildBattlegroundLeague"
+  },
+  "map": {
+    "id": "waterfall_archipelago",
+    "pendingUpdate": {
+      "updateAt": 1789175631,
+      "provinceIds": [
+        19
+      ],
+      "__class__": "GuildBattlegroundPendingUpdate"
+    },
+    "provinces": [
+      {
+        "victoryPoints": 300,
+        "victoryPointsBonus": 600,
+        "ownerId": 104381,
+        "lockedUntil": 1789182492,
+        "conquestProgress": [],
+        "totalBuildingSlots": 3,
+        "usedBuildingSlots": 3,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 1,
+        "victoryPoints": 191,
+        "victoryPointsBonus": 382,
+        "ownerId": 104381,
+        "lockedUntil": 1789182627,
+        "conquestProgress": [],
+        "totalBuildingSlots": 3,
+        "usedBuildingSlots": 3,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 2,
+        "victoryPoints": 177,
+        "victoryPointsBonus": 177,
+        "ownerId": 104382,
+        "lockedUntil": 1789182642,
+        "conquestProgress": [],
+        "totalBuildingSlots": 3,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 3,
+        "victoryPoints": 177,
+        "victoryPointsBonus": 354,
+        "ownerId": 104381,
+        "lockedUntil": 1789182528,
+        "conquestProgress": [],
+        "totalBuildingSlots": 3,
+        "usedBuildingSlots": 3,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 4,
+        "victoryPoints": 195,
+        "victoryPointsBonus": 195,
+        "ownerId": 104382,
+        "lockedUntil": 1789183594,
+        "conquestProgress": [],
+        "totalBuildingSlots": 3,
+        "usedBuildingSlots": 2,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 5,
+        "victoryPoints": 176,
+        "victoryPointsBonus": 352,
+        "ownerId": 104381,
+        "lockedUntil": 1789182463,
+        "conquestProgress": [],
+        "totalBuildingSlots": 3,
+        "usedBuildingSlots": 3,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 6,
+        "victoryPoints": 200,
+        "victoryPointsBonus": 200,
+        "ownerId": 104382,
+        "lockedUntil": 1789183002,
+        "conquestProgress": [],
+        "totalBuildingSlots": 3,
+        "usedBuildingSlots": 2,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 7,
+        "victoryPoints": 102,
+        "victoryPointsBonus": 102,
+        "ownerId": 104382,
+        "lockedUntil": 1789183984,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 8,
+        "victoryPoints": 111,
+        "victoryPointsBonus": 111,
+        "ownerId": 104381,
+        "lockedUntil": 1789182835,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 9,
+        "victoryPoints": 109,
+        "victoryPointsBonus": 109,
+        "ownerId": 104382,
+        "lockedUntil": 1789183158,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 10,
+        "victoryPoints": 111,
+        "victoryPointsBonus": 111,
+        "ownerId": 104382,
+        "lockedUntil": 1789183944,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 11,
+        "victoryPoints": 107,
+        "victoryPointsBonus": 107,
+        "ownerId": 104382,
+        "lockedUntil": 1789183205,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 12,
+        "victoryPoints": 117,
+        "victoryPointsBonus": 117,
+        "ownerId": 104381,
+        "lockedUntil": 1789182663,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 13,
+        "victoryPoints": 109,
+        "victoryPointsBonus": 109,
+        "ownerId": 104382,
+        "lockedUntil": 1789182672,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 14,
+        "victoryPoints": 109,
+        "victoryPointsBonus": 109,
+        "ownerId": 104382,
+        "lockedUntil": 1789183047,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 15,
+        "victoryPoints": 104,
+        "victoryPointsBonus": 104,
+        "ownerId": 104381,
+        "lockedUntil": 1789183985,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 16,
+        "victoryPoints": 120,
+        "victoryPointsBonus": 120,
+        "ownerId": 104381,
+        "lockedUntil": 1789183274,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 40,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 17,
+        "victoryPoints": 104,
+        "victoryPointsBonus": 104,
+        "ownerId": 104381,
+        "lockedUntil": 1789182904,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 40,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 18,
+        "victoryPoints": 107,
+        "victoryPointsBonus": 107,
+        "ownerId": 104381,
+        "lockedUntil": 1789182696,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 19,
+        "victoryPoints": 78,
+        "victoryPointsBonus": 78,
+        "ownerId": 104382,
+        "lockedUntil": 1789182822,
+        "conquestProgress": [
+          {
+            "participantId": 104384,
+            "progress": 13,
+            "maxProgress": 130,
+            "__class__": "GuildBattlegroundConquestProgress"
+          }
+        ],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 20,
+        "victoryPoints": 70,
+        "victoryPointsBonus": 70,
+        "ownerId": 104382,
+        "lockedUntil": 1789182756,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 21,
+        "victoryPoints": 67,
+        "victoryPointsBonus": 67,
+        "ownerId": 104381,
+        "lockedUntil": 1789182766,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 22,
+        "victoryPoints": 79,
+        "victoryPointsBonus": 79,
+        "ownerId": 104381,
+        "lockedUntil": 1789183709,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 40,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 23,
+        "victoryPoints": 73,
+        "victoryPointsBonus": 73,
+        "ownerId": 104382,
+        "lockedUntil": 1789182860,
+        "conquestProgress": [
+          {
+            "participantId": 104383,
+            "progress": 39,
+            "maxProgress": 100,
+            "__class__": "GuildBattlegroundConquestProgress"
+          }
+        ],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 24,
+        "victoryPoints": 78,
+        "victoryPointsBonus": 78,
+        "ownerId": 104382,
+        "lockedUntil": 1789182939,
+        "conquestProgress": [
+          {
+            "participantId": 104383,
+            "progress": 32,
+            "maxProgress": 160,
+            "__class__": "GuildBattlegroundConquestProgress"
+          }
+        ],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 25,
+        "victoryPoints": 77,
+        "victoryPointsBonus": 77,
+        "ownerId": 104382,
+        "lockedUntil": 1789183561,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 26,
+        "victoryPoints": 77,
+        "victoryPointsBonus": 77,
+        "ownerId": 104381,
+        "lockedUntil": 1789182936,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 27,
+        "victoryPoints": 69,
+        "victoryPointsBonus": 69,
+        "ownerId": 104381,
+        "lockedUntil": 1789182872,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 28,
+        "victoryPoints": 78,
+        "victoryPointsBonus": 78,
+        "ownerId": 104382,
+        "lockedUntil": 1789182552,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 29,
+        "victoryPoints": 78,
+        "victoryPointsBonus": 78,
+        "ownerId": 104381,
+        "lockedUntil": 1789171466,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 30,
+        "victoryPoints": 74,
+        "victoryPointsBonus": 96,
+        "ownerId": 104381,
+        "lockedUntil": 1789183304,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 31,
+        "victoryPoints": 72,
+        "victoryPointsBonus": 72,
+        "ownerId": 104381,
+        "lockedUntil": 1789183580,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 100,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 32,
+        "victoryPoints": 71,
+        "victoryPointsBonus": 71,
+        "ownerId": 104381,
+        "lockedUntil": 1789183550,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 100,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 33,
+        "victoryPoints": 69,
+        "victoryPointsBonus": 69,
+        "ownerId": 104381,
+        "lockedUntil": 1789183828,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 100,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 34,
+        "victoryPoints": 74,
+        "victoryPointsBonus": 74,
+        "ownerId": 104381,
+        "lockedUntil": 1789183399,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 35,
+        "victoryPoints": 70,
+        "victoryPointsBonus": 70,
+        "ownerId": 104381,
+        "lockedUntil": 1789182969,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 40,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 36,
+        "victoryPoints": 69,
+        "victoryPointsBonus": 69,
+        "ownerId": 104382,
+        "lockedUntil": 1789183484,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 37,
+        "victoryPointsBonus": 1000,
+        "ownerId": 104384,
+        "isSpawnSpot": true,
+        "conquestProgress": [],
+        "totalBuildingSlots": 1,
+        "usedBuildingSlots": 1,
+        "gainAttritionChance": 40,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 38,
+        "victoryPoints": 32,
+        "victoryPointsBonus": 32,
+        "ownerId": 104382,
+        "lockedUntil": 1789183109,
+        "conquestProgress": [
+          {
+            "participantId": 104384,
+            "progress": 22,
+            "maxProgress": 100,
+            "__class__": "GuildBattlegroundConquestProgress"
+          }
+        ],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 39,
+        "victoryPoints": 34,
+        "victoryPointsBonus": 34,
+        "ownerId": 104381,
+        "lockedUntil": 1789183150,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 40,
+        "victoryPoints": 34,
+        "victoryPointsBonus": 34,
+        "ownerId": 104382,
+        "lockedUntil": 1789183413,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 41,
+        "victoryPoints": 30,
+        "victoryPointsBonus": 30,
+        "ownerId": 104381,
+        "lockedUntil": 1789183945,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 100,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 42,
+        "victoryPoints": 38,
+        "victoryPointsBonus": 38,
+        "ownerId": 104382,
+        "lockedUntil": 1789182899,
+        "conquestProgress": [
+          {
+            "participantId": 104383,
+            "progress": 33,
+            "maxProgress": 100,
+            "__class__": "GuildBattlegroundConquestProgress"
+          }
+        ],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 43,
+        "victoryPointsBonus": 1000,
+        "ownerId": 104383,
+        "isSpawnSpot": true,
+        "conquestProgress": [],
+        "totalBuildingSlots": 1,
+        "usedBuildingSlots": 1,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 44,
+        "victoryPoints": 40,
+        "victoryPointsBonus": 40,
+        "ownerId": 104381,
+        "lockedUntil": 1789183490,
+        "conquestProgress": [
+          {
+            "participantId": 104383,
+            "progress": 30,
+            "maxProgress": 130,
+            "__class__": "GuildBattlegroundConquestProgress"
+          }
+        ],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 45,
+        "victoryPoints": 39,
+        "victoryPointsBonus": 39,
+        "ownerId": 104381,
+        "lockedUntil": 1789183522,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 46,
+        "victoryPoints": 31,
+        "victoryPointsBonus": 31,
+        "ownerId": 104381,
+        "lockedUntil": 1789183191,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 47,
+        "victoryPoints": 35,
+        "victoryPointsBonus": 35,
+        "ownerId": 104381,
+        "lockedUntil": 1789183236,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 100,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 48,
+        "victoryPoints": 39,
+        "victoryPointsBonus": 39,
+        "ownerId": 104381,
+        "lockedUntil": 1789183994,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 49,
+        "victoryPointsBonus": 1000,
+        "ownerId": 104382,
+        "isSpawnSpot": true,
+        "conquestProgress": [],
+        "totalBuildingSlots": 1,
+        "usedBuildingSlots": 1,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 50,
+        "victoryPoints": 28,
+        "victoryPointsBonus": 28,
+        "ownerId": 104382,
+        "lockedUntil": 1789183252,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 51,
+        "victoryPoints": 37,
+        "victoryPointsBonus": 37,
+        "ownerId": 104381,
+        "lockedUntil": 1789183343,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 100,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 52,
+        "victoryPoints": 39,
+        "victoryPointsBonus": 39,
+        "ownerId": 104381,
+        "lockedUntil": 1789183747,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 100,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 53,
+        "victoryPoints": 34,
+        "victoryPointsBonus": 34,
+        "ownerId": 104381,
+        "lockedUntil": 1789183774,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 100,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 54,
+        "victoryPoints": 37,
+        "victoryPointsBonus": 37,
+        "ownerId": 104381,
+        "lockedUntil": 1789183803,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 100,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 55,
+        "victoryPointsBonus": 1000,
+        "ownerId": 104381,
+        "isSpawnSpot": true,
+        "conquestProgress": [],
+        "totalBuildingSlots": 1,
+        "usedBuildingSlots": 1,
+        "gainAttritionChance": 100,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 56,
+        "victoryPoints": 32,
+        "victoryPointsBonus": 32,
+        "ownerId": 104381,
+        "lockedUntil": 1789183666,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 57,
+        "victoryPoints": 40,
+        "victoryPointsBonus": 40,
+        "ownerId": 104382,
+        "lockedUntil": 1789183348,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 58,
+        "victoryPoints": 34,
+        "victoryPointsBonus": 34,
+        "ownerId": 104381,
+        "lockedUntil": 1789183121,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 59,
+        "victoryPoints": 34,
+        "victoryPointsBonus": 34,
+        "ownerId": 104381,
+        "lockedUntil": 1789183093,
+        "conquestProgress": [],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 40,
+        "isAttackBattleType": true,
+        "__class__": "GuildBattlegroundProvince"
+      },
+      {
+        "id": 60,
+        "victoryPoints": 40,
+        "victoryPointsBonus": 40,
+        "ownerId": 104381,
+        "lockedUntil": 1789183864,
+        "conquestProgress": [
+          {
+            "participantId": 104384,
+            "progress": 10,
+            "maxProgress": 130,
+            "__class__": "GuildBattlegroundConquestProgress"
+          }
+        ],
+        "totalBuildingSlots": 2,
+        "usedBuildingSlots": 2,
+        "gainAttritionChance": 20,
+        "__class__": "GuildBattlegroundProvince"
+      }
+    ],
+    "__class__": "GuildBattlegroundMap"
+  },
+  "battlegroundParticipants": [
+    {
+      "participantId": 104381,
+      "clan": {
+        "id": 26891,
+        "name": "FightClub⚔️👊😎☕",
+        "membersNum": 71,
+        "flag": "premium_flag_6",
+        "__class__": "BaseClan"
+      },
+      "colour": "red",
+      "victoryPoints": 257312,
+      "__class__": "GuildBattlegroundParticipant"
+    },
+    {
+      "participantId": 104382,
+      "clan": {
+        "id": 1370,
+        "name": "Lords of War",
+        "membersNum": 73,
+        "flag": "flag_17",
+        "__class__": "BaseClan"
+      },
+      "colour": "green",
+      "victoryPoints": 217192,
+      "signals": [
+        {
+          "provinceId": 29,
+          "signal": "focus",
+          "__class__": "GuildBattlegroundProvinceSignal"
+        }
+      ],
+      "__class__": "GuildBattlegroundParticipant"
+    },
+    {
+      "participantId": 104383,
+      "clan": {
+        "id": 21502,
+        "name": "FRIENDS",
+        "membersNum": 75,
+        "flag": "flag_12",
+        "__class__": "BaseClan"
+      },
+      "colour": "yellow",
+      "victoryPoints": 59168,
+      "__class__": "GuildBattlegroundParticipant"
+    },
+    {
+      "participantId": 104384,
+      "clan": {
+        "id": 10007,
+        "name": "ARJ 🗡 🥷",
+        "membersNum": 24,
+        "flag": "flag_28_R",
+        "__class__": "BaseClan"
+      },
+      "colour": "teal",
+      "victoryPoints": 50312,
+      "__class__": "GuildBattlegroundParticipant"
+    }
+  ],
+  "currentPlayerParticipant": {
+    "activeTrial": 1,
+    "attrition": {
+      "negotiationMultiplier": 1,
+      "__class__": "GuildBattlegroundAttrition"
+    },
+    "__class__": "GuildBattlegroundPlayerParticipant"
+  },
+  "endsAt": 1789974000,
+  "currentParticipantId": 104382,
+  "activeTrial": 1,
+  "storeId": "gbg_championship_store_autumn2026",
+  "__class__": "GuildBattleground"
+}

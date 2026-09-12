@@ -1,0 +1,162 @@
+{
+  "placedBuildings": [
+    {
+      "id": "barracks_reinforced",
+      "readyAt": 1789165111,
+      "__class__": "GuildBattlegroundBuilding"
+    },
+    {
+      "id": "barracks_improvised",
+      "slotId": 1,
+      "readyAt": 1789175966,
+      "__class__": "GuildBattlegroundBuilding"
+    }
+  ],
+  "availableBuildings": [
+    {
+      "buildingId": "guild_command_post_improvised",
+      "costs": {
+        "resources": {
+          "stel_resonance_cores": 2893,
+          "stel_glyph_circuits": 2,
+          "dark_energy_battery": 5
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "guild_command_post_forward",
+      "costs": {
+        "resources": {
+          "platinum_crystals": 1965,
+          "cryptocash": 675,
+          "nickel": 2560
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "guild_command_post_fortified",
+      "costs": {
+        "resources": {
+          "silver_crystals": 2483,
+          "stel_resonance_cores": 1840,
+          "stel_xenocrystals": 2677
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "barracks_improvised",
+      "costs": {
+        "resources": {
+          "deep_space_data": 1170,
+          "oxygen_pills": 808,
+          "stel_resonance_cores": 822
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "barracks",
+      "costs": {
+        "resources": {
+          "compound_fluid": 4729,
+          "stel_glyph_circuits": 165,
+          "textiles": 106
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "barracks_reinforced",
+      "costs": {
+        "resources": {
+          "compressed_matter_capsule": 5476,
+          "red_algae": 170,
+          "stel_metamorphic_alloys": 1154
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "watchtower",
+      "costs": {
+        "resources": {
+          "nanites": 28,
+          "textiles": 412,
+          "deep_space_data": 60
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "decoys",
+      "costs": {
+        "resources": {
+          "deep_space_data": 66,
+          "stel_metamorphic_alloys": 434
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "traps",
+      "costs": {
+        "resources": {
+          "stel_metamorphic_alloys": 212,
+          "oxygen_pills": 1702,
+          "superalloys": 1086
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "basic_field_outpost_diamond",
+      "costs": {
+        "resources": {
+          "silver_crystals": 4269,
+          "red_algae": 1459,
+          "deep_space_data": 72
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "regular_field_outpost_diamond",
+      "costs": {
+        "resources": {
+          "stel_metamorphic_alloys": 7658,
+          "hypersleep_modules": 950,
+          "bromine": 1792
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    },
+    {
+      "buildingId": "advanced_field_outpost_diamond",
+      "costs": {
+        "resources": {
+          "hypersleep_modules": 8141,
+          "stel_glyph_circuits": 1147,
+          "stel_metamorphic_alloys": 4712
+        },
+        "__class__": "Resources"
+      },
+      "__class__": "GuildBattlegroundBuildingCost"
+    }
+  ],
+  "provinceId": 9,
+  "__class__": "GuildBattlegroundProvinceBuildings"
+}
