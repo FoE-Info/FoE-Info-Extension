@@ -87,6 +87,7 @@ export const CONTEXT_ALLOWED_PANELS: Readonly<
   ],
   GBG: [
     'header',
+    'citystats',
     'army',
     'rewards',
     'targets',
@@ -97,6 +98,7 @@ export const CONTEXT_ALLOWED_PANELS: Readonly<
   ],
   GE: [
     'header',
+    'citystats',
     'army',
     'rewards',
     'geChampionship',
@@ -106,14 +108,16 @@ export const CONTEXT_ALLOWED_PANELS: Readonly<
   ],
   QI: [
     'header',
+    'citystats',
     'army',
     'rewards',
     'quantumContributions',
     'quantumLeaderboard',
   ],
-  SETTLEMENT: ['header', 'cultural'],
+  SETTLEMENT: ['header', 'citystats', 'cultural'],
   OTHER_PLAYER: [
     'header',
+    'citystats',
     'visit',
     'donation',
     'donation2',

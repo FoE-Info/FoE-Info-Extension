@@ -55,6 +55,8 @@ class QuestService {
     this.lastUpdated = null;
     this.rewardRenderer = deps.rewardRenderer || null;
     this.rewardedQuestIds = new Set();
+    this.suppressStartupQuests = deps.suppressStartupQuests === true;
+    this.hasProcessedInitial = false;
 
     this.getUpdates = this.getUpdates.bind(this);
     this.getQuestPeriods = this.getQuestPeriods.bind(this);
@@ -133,11 +135,18 @@ class QuestService {
       : Array.isArray(msg?.responseData?.quests) ? msg.responseData.quests
       : [];
 
+    const isInitialBatch =
+      this.suppressStartupQuests && !this.hasProcessedInitial;
+
     this.quests.clear();
     for (const q of rawList) {
       const quest = new Quest(q);
       this.quests.set(quest.id, quest);
+      if (isInitialBatch && quest.isCompleted()) {
+        this.rewardedQuestIds.add(quest.id);
+      }
     }
+    this.hasProcessedInitial = true;
     this.lastUpdated = Date.now();
 
     this.routeCompletedRewards();
@@ -205,7 +214,7 @@ class QuestService {
   }
 }
 
-const questService = new QuestService();
+const questService = new QuestService({ suppressStartupQuests: true });
 
 module.exports = {
   QuestService,

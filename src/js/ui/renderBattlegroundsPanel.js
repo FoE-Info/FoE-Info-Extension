@@ -213,7 +213,7 @@ export function fshowBattleground() {
       battlegroundDiv.style.maxHeight = 'none';
       battlegroundDiv.style.overflowY = 'visible';
     } else {
-      const DEFAULT_RESTRICTED_GBG_HEIGHT = 400;
+      const DEFAULT_RESTRICTED_GBG_HEIGHT = 480;
       const restrictedHeight =
         toolOptions.battlegroundsSize && toolOptions.battlegroundsSize > 250 ?
           toolOptions.battlegroundsSize

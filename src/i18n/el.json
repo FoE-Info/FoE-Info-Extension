@@ -142,5 +142,10 @@
   "ap_spent": "AP Spent",
   "no_active_changes": "No active changes since last save",
   "total_points": "Total Points",
-  "safe_net": "Safe"
+  "safe_net": "Safe",
+  "guild_overview": "Guild Overview",
+  "stat_daily_coins": "Coins",
+  "stat_daily_supplies": "Supplies",
+  "stat_coin_boost": "Coins Bonus",
+  "stat_supply_boost": "Supplies Bonus"
 }

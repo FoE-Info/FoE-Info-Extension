@@ -74,6 +74,7 @@ const CONTEXT_ALLOWED_PANELS = Object.freeze({
   ]),
   GBG: Object.freeze([
     'header',
+    'citystats',
     'army',
     'rewards',
     'targets',
@@ -84,6 +85,7 @@ const CONTEXT_ALLOWED_PANELS = Object.freeze({
   ]),
   GE: Object.freeze([
     'header',
+    'citystats',
     'army',
     'rewards',
     'geChampionship',
@@ -93,14 +95,16 @@ const CONTEXT_ALLOWED_PANELS = Object.freeze({
   ]),
   QI: Object.freeze([
     'header',
+    'citystats',
     'army',
     'rewards',
     'quantumContributions',
     'quantumLeaderboard',
   ]),
-  SETTLEMENT: Object.freeze(['header', 'cultural']),
+  SETTLEMENT: Object.freeze(['header', 'citystats', 'cultural']),
   OTHER_PLAYER: Object.freeze([
     'header',
+    'citystats',
     'visit',
     'donation',
     'donation2',

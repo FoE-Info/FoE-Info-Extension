@@ -106,30 +106,41 @@ function renderGuildPanel(clanData, deps = {}) {
     </tr>`;
   }
 
-  const html = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">
-    ${closeBtn}
-    <p id="guildOverviewTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildOverviewText" aria-expanded="${!isCollapsed}" aria-controls="guildOverviewText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-      ${iconHtml}
-      <strong><span data-i18n="guild">Guild</span>: ${escapeFn(clanName)}</strong>
-      <span class="small text-muted">(${rawMembers.length} <span data-i18n="members">members</span>)</span>
-    </p>
-    ${copyBtn}
+  const html = `<div id="guildOverviewCard" class="alert alert-success alert-dismissible show collapsed" role="alert">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <p id="guildOverviewTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildOverviewText" aria-expanded="${!isCollapsed}" aria-controls="guildOverviewText" class="cursor-pointer user-select-none mb-0 d-flex align-items-center gap-1 flex-grow-1 text-truncate" style="cursor: pointer; user-select: none;">
+        ${iconHtml}
+        <strong class="text-dark text-truncate">
+          <span id="guildOverviewCollapsedTitle" class="${isCollapsed ? '' : 'd-none'}"><span data-i18n="guild">Guild</span>: ${escapeFn(clanName)} <span class="small text-muted">(${rawMembers.length} <span data-i18n="members">members</span>)</span></span>
+          <span id="guildOverviewExpandedTitle" class="${isCollapsed ? 'd-none' : ''}"><span data-i18n="guild_overview">Guild Overview</span></span>
+        </strong>
+      </p>
+      <div class="d-flex align-items-center gap-1 flex-shrink-0">
+        ${copyBtn}
+        ${closeBtn}
+      </div>
+    </div>
+    <div id="guildOverviewSubtitle" class="small text-muted mt-1 ${isCollapsed ? 'd-none' : ''}">
+      ${escapeFn(clanName)} • ${rawMembers.length} <span data-i18n="members">members</span>
+    </div>
     <div id="guildOverviewText" class="overflow-y resize collapse ${isCollapsed ? '' : 'show'}">
-      <table id="guildMemberTable" class="goods-table w-100">
-        <thead>
-          <tr>
-            <th class="text-start">#</th>
-            <th class="text-start"><span data-i18n="name">Name</span></th>
-            <th class="text-start"><span data-i18n="title">Title</span></th>
-            <th class="text-start"><span data-i18n="era">Era</span></th>
-            <th class="text-end"><span data-i18n="battles">Battles</span></th>
-            <th class="text-end"><span data-i18n="points">Points</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rowsHtml}
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table id="guildMemberTable" class="goods-table table-sm w-100 align-middle">
+          <thead>
+            <tr>
+              <th class="text-start">#</th>
+              <th class="text-start"><span data-i18n="name">Name</span></th>
+              <th class="text-start"><span data-i18n="title">Title</span></th>
+              <th class="text-start"><span data-i18n="era">Era</span></th>
+              <th class="text-end"><span data-i18n="battles">Battles</span></th>
+              <th class="text-end"><span data-i18n="points">Points</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>`;
 
@@ -205,6 +216,41 @@ function renderGuildPanel(clanData, deps = {}) {
     iconEl.addEventListener('click', () => {
       depCollapse.fCollapseGuild();
     });
+  }
+
+  const guildCollapseEl =
+    targetContainer.querySelector?.('#guildOverviewText') ||
+    doc?.getElementById?.('guildOverviewText');
+  if (
+    guildCollapseEl &&
+    typeof guildCollapseEl.addEventListener === 'function'
+  ) {
+    const applyHeaderState = (collapsed) => {
+      const collapsedTitle =
+        targetContainer.querySelector?.('#guildOverviewCollapsedTitle') ||
+        doc?.getElementById?.('guildOverviewCollapsedTitle');
+      const expandedTitle =
+        targetContainer.querySelector?.('#guildOverviewExpandedTitle') ||
+        doc?.getElementById?.('guildOverviewExpandedTitle');
+      const subtitle =
+        targetContainer.querySelector?.('#guildOverviewSubtitle') ||
+        doc?.getElementById?.('guildOverviewSubtitle');
+      if (collapsedTitle?.classList) {
+        collapsedTitle.classList.toggle('d-none', !collapsed);
+      }
+      if (expandedTitle?.classList) {
+        expandedTitle.classList.toggle('d-none', collapsed);
+      }
+      if (subtitle?.classList) {
+        subtitle.classList.toggle('d-none', collapsed);
+      }
+    };
+    guildCollapseEl.addEventListener('show.bs.collapse', () =>
+      applyHeaderState(false),
+    );
+    guildCollapseEl.addEventListener('hide.bs.collapse', () =>
+      applyHeaderState(true),
+    );
   }
 
   if (typeof depHelper.translateContainer === 'function') {

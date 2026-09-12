@@ -137,6 +137,8 @@ function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
         fpTooltipEscaped,
         fp,
         exact,
+        coins,
+        supplies,
         goodsDisplay,
         goodsBoostText,
         goodsHTML,

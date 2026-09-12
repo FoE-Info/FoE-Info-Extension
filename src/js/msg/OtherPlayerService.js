@@ -22,6 +22,11 @@ let renderCityStatsPkg;
 let visitedStatsPkg;
 let showOptionsPkg;
 let castleSystemService = null;
+let storage = null;
+
+try {
+  storage = require('../fn/storage.js');
+} catch {}
 
 try {
   element = require('../fn/AddElement');
@@ -69,10 +74,13 @@ try {
     if (state.PlayerName !== undefined) PlayerName = state.PlayerName;
     if (state.CityProtections) CityProtections = state.CityProtections;
     if (state.PlayerID !== undefined) PlayerID = state.PlayerID;
+    if (state.MyInfo) MyInfo = state.MyInfo;
   }
 } catch {
   // Graceful fallback when state.js is an ES module outside of bundler
 }
+
+let MyInfo = null;
 
 let resolveMissingCityEntities = () => {};
 try {
@@ -223,6 +231,40 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
           updatePlayerNameCache(id, name);
         } catch {
           // Ignore in headless/test environments
+        }
+      }
+
+      const isSelf =
+        p?.is_self === true ||
+        (MyInfo?.id && id === MyInfo.id) ||
+        (PlayerID && id === PlayerID);
+      if (isSelf && p?.score !== undefined && p?.score !== null) {
+        const scoreNum = Number(p.score);
+        if (Number.isFinite(scoreNum) && scoreNum > 0) {
+          if (MyInfo) {
+            MyInfo.score = scoreNum;
+          }
+          if (globals?.MyInfo) {
+            globals.MyInfo.score = scoreNum;
+          }
+          if (storage && typeof storage.set === 'function') {
+            storage.set('playerScore', scoreNum);
+          }
+          try {
+            const worldId =
+              globals?.worldId || globals?.world || globals?.World;
+            if (worldId && storage?.set) {
+              storage.set(`world:${worldId}.playerScore`, scoreNum);
+            }
+          } catch {}
+          try {
+            const {
+              renderLiveCityStats,
+            } = require('../ui/renderLiveCityStats.js');
+            if (typeof renderLiveCityStats === 'function') {
+              renderLiveCityStats();
+            }
+          } catch {}
         }
       }
     });
