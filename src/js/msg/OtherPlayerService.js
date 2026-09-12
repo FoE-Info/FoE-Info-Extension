@@ -1,11 +1,7 @@
 /** Social RPC service for friends/guild/hood lists and visited players. */
-let element;
-let collapse;
-let copy;
 let globals;
 let helper;
 let visitedStatsPkg;
-let showOptionsPkg;
 let castleSystemService = null;
 let storage = null;
 
@@ -22,19 +18,15 @@ try {
   ({ socialState } = require('../state/SocialState.js'));
 } catch {}
 
+let formatShieldCountdown = () => '';
+try {
+  ({ formatShieldCountdown } = require('../utils/formatters.js'));
+} catch {}
+
 try {
   storage = require('../fn/storage.js');
 } catch {}
 
-try {
-  element = require('../fn/AddElement.js');
-} catch {}
-try {
-  collapse = require('../fn/collapse.js');
-} catch {}
-try {
-  copy = require('../fn/copy.js');
-} catch {}
 try {
   globals = require('../fn/globals.js');
 } catch {}
@@ -46,17 +38,6 @@ try {
 } catch {}
 try {
   ({ castleSystemService } = require('./CastleSystemService.js'));
-} catch {}
-try {
-  showOptionsPkg = require('../vars/showOptions.js');
-} catch {}
-
-let resolveDate = () => null;
-try {
-  const dateUtils = require('../utils/date.js');
-  if (typeof dateUtils?.resolveDate === 'function') {
-    resolveDate = dateUtils.resolveDate;
-  }
 } catch {}
 
 let setPlayerName = () => {};
@@ -90,9 +71,6 @@ try {
 } catch {}
 
 const visitedCityStatsCalculator = visitedStatsPkg?.visitedCityStatsCalculator;
-const showOptions = showOptionsPkg?.showOptions || {};
-const setFriendsSize = globals?.setFriendsSize || (() => {});
-const toolOptions = globals?.toolOptions || { friendsSize: 300 };
 
 let friends = [];
 let guildMembers = [];
@@ -283,197 +261,7 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
     } catch {
       // Ignore in headless/test environments
     }
-
-    if (options.autoExpandGuild && collapse) {
-      collapse.collapseLists = false;
-      collapse.collapseGuild = false;
-    }
-
-    if (
-      typeof document !== 'undefined' &&
-      element &&
-      collapse &&
-      copy &&
-      (showOptions.showGuild || showOptions.showHood || showOptions.showFriends)
-    ) {
-      let friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="listTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#listsText" aria-expanded="${!collapse.collapseLists}" aria-controls="listsText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-      ${element.icon('listsicon', 'listsText', collapse.collapseLists)}
-				<strong>Lists:</strong></p>
-				${element.close()}
-				<div id="listsText" class="collapse ${collapse.collapseLists ? '' : 'show'} resize-both">`;
-
-      if (showOptions.showFriends) {
-        friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert">
-          <div class="d-flex flex-row justify-content-between align-items-center mb-0">
-            <p id="friendsTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#friendsText" aria-expanded="${!collapse.collapseFriends}" aria-controls="friendsText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-              ${element.icon('friendsicon', 'friendsText', collapse.collapseFriends)}
-              <strong>Friends</strong>
-            </p>
-            <span id="friendsCopyID" role="button" tabindex="0" class="badge rounded-pill bg-success cursor-pointer me-1" style="display: ${
-              collapse.collapseFriends ? 'none' : 'inline-block'
-            }" data-i18n="copy">Copy</span>
-          </div>
-          <div id="friendsText" class="resize-both collapse ${
-            collapse.collapseFriends ? '' : 'show'
-          }"><table id="friendsText2">`;
-        friendsHTML += getFriendsHTML(friends);
-        friendsHTML += `</table></div></div>`;
-      }
-      if (showOptions.showGuild) {
-        friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert">
-          <div class="d-flex flex-row justify-content-between align-items-center mb-0">
-            <p id="guildTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildText" aria-expanded="${!collapse.collapseGuild}" aria-controls="guildText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-              ${element.icon('guildicon', 'guildText', collapse.collapseGuild)}
-              <strong>Guild</strong>
-            </p>
-            <span id="guildCopyID" role="button" tabindex="0" class="badge rounded-pill bg-success cursor-pointer me-1" style="display: ${
-              collapse.collapseGuild ? 'none' : 'inline-block'
-            }" data-i18n="copy">Copy</span>
-          </div>
-          <div id="guildText" class="resize-both collapse ${
-            collapse.collapseGuild ? '' : 'show'
-          }"><table id="guildText2">`;
-        friendsHTML += getFriendsHTML(guildMembers);
-        friendsHTML += `</table></div></div>`;
-      }
-      if (showOptions.showHood) {
-        friendsHTML += `<div class="alert alert-success show collapsed nopadding" role="alert">
-          <div class="d-flex flex-row justify-content-between align-items-center mb-0">
-            <p id="hoodTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#hoodText" aria-expanded="${!collapse.collapseHood}" aria-controls="hoodText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-              ${element.icon('hoodicon', 'hoodText', collapse.collapseHood)}
-              <strong>Hood</strong>
-            </p>
-            <span id="hoodCopyID" role="button" tabindex="0" class="badge rounded-pill bg-success cursor-pointer me-1" style="display: ${
-              collapse.collapseHood ? 'none' : 'inline-block'
-            }" data-i18n="copy">Copy</span>
-          </div>
-          <div id="hoodText" class="resize-both collapse ${
-            collapse.collapseHood ? '' : 'show'
-          }"><table id="hoodText2">`;
-        friendsHTML += getFriendsHTML(hoodlist);
-        friendsHTML += `</table></div></div>`;
-      }
-      friendsHTML += `</div></div>`;
-
-      const friendsID = document.getElementById('friends');
-      if (friendsID) {
-        if (options.autoExpandGuild) {
-          friendsID.style.display = '';
-          if (friendsID.classList?.contains('d-none')) {
-            friendsID.classList.remove('d-none');
-          }
-        }
-        friendsID.innerHTML = friendsHTML;
-        const friendsDiv = document.getElementById('friendsText');
-        if (friendsDiv && friendsDiv.offsetHeight > toolOptions.friendsSize) {
-          friendsDiv.style.height = toolOptions.friendsSize + 'px';
-        }
-        if (showOptions.showFriends) {
-          document
-            .getElementById('friendsCopyID')
-            ?.addEventListener('click', copy.fFriendsCopy);
-          document
-            .getElementById('friendsicon')
-            ?.addEventListener('click', collapse.fCollapseFriends);
-        }
-        if (showOptions.showGuild) {
-          document
-            .getElementById('guildCopyID')
-            ?.addEventListener('click', copy.fGuildCopy);
-          document
-            .getElementById('guildicon')
-            ?.addEventListener('click', collapse.fCollapseGuild);
-        }
-        if (showOptions.showHood) {
-          document
-            .getElementById('hoodCopyID')
-            ?.addEventListener('click', copy.fHoodCopy);
-          document
-            .getElementById('hoodicon')
-            ?.addEventListener('click', collapse.fCollapseHood);
-        }
-        document
-          .getElementById('listsicon')
-          ?.addEventListener('click', collapse.fCollapseLists);
-        if (friendsDiv && typeof ResizeObserver !== 'undefined') {
-          const resizeObserver = new ResizeObserver((entries) => {
-            for (const entry of entries) {
-              if (entry.contentRect && entry.contentRect.height) {
-                setFriendsSize(entry.contentRect.height);
-              }
-            }
-          });
-          resizeObserver.observe(friendsDiv);
-        }
-      }
-    }
   }
-}
-
-/**
- * Formats a city-protection expiry as a compact shield countdown.
- * InnoGames RPC payloads express `expireTime` as a Unix timestamp in seconds;
- * `resolveDate` also tolerates millisecond values defensively.
- *
- * @param {number} expireTime Unix timestamp in seconds (or milliseconds)
- * @param {number} [nowMs] Current time in milliseconds (test seam)
- * @returns {string} Compact countdown, or '' when unparseable
- */
-function formatShieldCountdown(expireTime, nowMs = Date.now()) {
-  const expiry = resolveDate(expireTime);
-  if (!expiry) return '';
-
-  const diff = Math.abs((expiry.getTime() - nowMs) / 1000);
-  let diffText = '';
-  const days = Math.floor(diff / 86400);
-  if (days) diffText += `${days} ${days > 1 ? 'Days' : 'Day'} `;
-  const hours = Math.floor(diff / 3600) % 24;
-  diffText += `${hours}:`;
-  const minutes = Math.floor(diff / 60) % 60;
-  if (!days) diffText += `${minutes}:`;
-  const seconds = Math.floor(diff) % 60;
-  if (!days && !hours) diffText += `${seconds}`;
-  return diffText;
-}
-
-function getFriendsHTML(list) {
-  let htmlFriends = '';
-  if (!Array.isArray(list)) return htmlFriends;
-
-  list.forEach((entry) => {
-    let html = '';
-    const safeName = helper ? helper.escapeHTML(entry.name) : entry.name;
-    if (Object.hasOwn(entry, 'is_self') && entry.__class__ !== 'ClanMember') {
-      // Self non-guild-member, skip
-    } else if (entry.is_friend === false && entry.accepted === false) {
-      // Pending friend request
-    } else if (Object.hasOwn(entry, 'canSabotage')) {
-      html += `<tr><td>${safeName}</td><td>Plunder</td></tr>`;
-    } else if (Object.hasOwn(entry, 'is_neighbor')) {
-      if (Array.isArray(CityProtections) && CityProtections.length) {
-        let match = false;
-        CityProtections.forEach((city) => {
-          if (city.playerId === entry.player_id && city.expireTime > 0) {
-            match = true;
-            const diffText = formatShieldCountdown(city.expireTime);
-            html += `<tr><td>${safeName}</td><td><span data-i18n="shield">Shield</span>: ${diffText}</td></tr>`;
-          }
-        });
-        if (!match) html += `<tr><td>${safeName}</td></tr>`;
-      } else {
-        html += `<tr><td>${safeName}</td></tr>`;
-      }
-    } else if (!Object.hasOwn(entry, 'is_active')) {
-      html += `<tr><td>${safeName}</td><td>INACTIVE</td></tr>`;
-    } else if (
-      Object.hasOwn(entry, 'is_friend') ||
-      Object.hasOwn(entry, 'is_guild_member')
-    ) {
-      html += `<tr><td>${safeName}</td></tr>`;
-    }
-    htmlFriends += html;
-  });
-  return htmlFriends;
 }
 
 function checkInactivePlunder(friendsList = []) {

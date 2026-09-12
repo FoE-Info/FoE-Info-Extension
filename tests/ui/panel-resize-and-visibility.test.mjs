@@ -85,29 +85,29 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
         'renderArmyPanel must contain resize on #armyText',
       );
 
-      const otherPlayerSrc = fs.readFileSync(
-        path.resolve('src/js/msg/OtherPlayerService.js'),
+      const socialListsSrc = fs.readFileSync(
+        path.resolve('src/js/ui/renderSocialListsPanel.js'),
         'utf8',
       );
       assert.match(
-        otherPlayerSrc,
+        socialListsSrc,
         /id="listsText"[^>]*resize-both/,
-        'OtherPlayerService must contain resize-both on #listsText',
+        'renderSocialListsPanel must contain resize-both on #listsText',
       );
       assert.match(
-        otherPlayerSrc,
+        socialListsSrc,
         /id="friendsText"[^>]*resize-both/,
-        'OtherPlayerService must contain resize-both on #friendsText',
+        'renderSocialListsPanel must contain resize-both on #friendsText',
       );
       assert.match(
-        otherPlayerSrc,
+        socialListsSrc,
         /id="guildText"[^>]*resize-both/,
-        'OtherPlayerService must contain resize-both on #guildText',
+        'renderSocialListsPanel must contain resize-both on #guildText',
       );
       assert.match(
-        otherPlayerSrc,
+        socialListsSrc,
         /id="hoodText"[^>]*resize-both/,
-        'OtherPlayerService must contain resize-both on #hoodText',
+        'renderSocialListsPanel must contain resize-both on #hoodText',
       );
 
       const gbgResultCardSrc = fs.readFileSync(

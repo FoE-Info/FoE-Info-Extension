@@ -250,9 +250,49 @@ function fAgestring(ageKey) {
   return raw.replace(/([a-z0-9])([A-Z])/g, '$1 $2');
 }
 
+let resolveDate = () => null;
+try {
+  const dateUtils = require('./date.js');
+  if (typeof dateUtils?.resolveDate === 'function') {
+    resolveDate = dateUtils.resolveDate;
+  }
+} catch {}
+
+/**
+ * Formats a city-protection expiry as a compact shield countdown.
+ *
+ * @param {number} expireTime Unix timestamp in seconds (or milliseconds)
+ * @param {number} [nowMs] Current time in milliseconds
+ * @returns {string} Compact countdown, or '' when unparseable
+ */
+function formatShieldCountdown(expireTime, nowMs = Date.now()) {
+  if (!expireTime || typeof expireTime !== 'number' || expireTime <= 0) {
+    return '';
+  }
+
+  const expiry =
+    typeof resolveDate === 'function' ?
+      resolveDate(expireTime)
+    : new Date(expireTime * 1000);
+  if (!expiry || Number.isNaN(expiry.getTime())) return '';
+
+  const diff = Math.abs((expiry.getTime() - nowMs) / 1000);
+  let diffText = '';
+  const days = Math.floor(diff / 86400);
+  if (days) diffText += `${days} ${days > 1 ? 'Days' : 'Day'} `;
+  const hours = Math.floor(diff / 3600) % 24;
+  diffText += `${hours}:`;
+  const minutes = Math.floor(diff / 60) % 60;
+  if (!days) diffText += `${minutes}:`;
+  const seconds = Math.floor(diff) % 60;
+  if (!days && !hours) diffText += `${seconds}`;
+  return diffText;
+}
+
 module.exports = {
   escapeHTML,
   formatEntityId,
+  formatShieldCountdown,
   fResourceShortName,
   fRewardShortName,
   fTitleCase,
