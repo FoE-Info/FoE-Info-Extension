@@ -87,8 +87,8 @@ test('Agent Config - validates skill definitions', () => {
 
   assert.equal(
     skillDirs.length,
-    53,
-    'Expected exactly 53 skills in .agents/skills',
+    55,
+    'Expected exactly 55 skills in .agents/skills',
   );
 
   for (const dir of skillDirs) {
@@ -249,9 +249,9 @@ test('Agent Config - validates AGENTS.md integrity and internal links', () => {
   );
 
   // Exact counts
-  assert.match(agentsMd, /36 subagents, 17 rules, and 53 skills/);
-  assert.match(agentsMd, /53 on-demand runbooks and procedures/);
-  assert.match(agentsMd, /Skills & Runbooks Taxonomy \(53 Skills\)/);
+  assert.match(agentsMd, /36 subagents, 17 rules, and 55 skills/);
+  assert.match(agentsMd, /55 on-demand runbooks and procedures/);
+  assert.match(agentsMd, /Skills & Runbooks Taxonomy \(55 Skills\)/);
 
   // Link validation
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
