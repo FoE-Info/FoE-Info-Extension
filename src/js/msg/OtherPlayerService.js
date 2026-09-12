@@ -59,6 +59,14 @@ try {
   showOptionsPkg = require('../vars/showOptions.js');
 } catch {}
 
+let resolveDate = () => null;
+try {
+  const dateUtils = require('../utils/date.js');
+  if (typeof dateUtils?.resolveDate === 'function') {
+    resolveDate = dateUtils.resolveDate;
+  }
+} catch {}
+
 let setPlayerName = () => {};
 let updatePlayerNameCache = () => {};
 let PlayerName = '';
@@ -415,6 +423,32 @@ function otherPlayerServiceUpdateActions(msg, options = {}) {
   }
 }
 
+/**
+ * Formats a city-protection expiry as a compact shield countdown.
+ * InnoGames RPC payloads express `expireTime` as a Unix timestamp in seconds;
+ * `resolveDate` also tolerates millisecond values defensively.
+ *
+ * @param {number} expireTime Unix timestamp in seconds (or milliseconds)
+ * @param {number} [nowMs] Current time in milliseconds (test seam)
+ * @returns {string} Compact countdown, or '' when unparseable
+ */
+function formatShieldCountdown(expireTime, nowMs = Date.now()) {
+  const expiry = resolveDate(expireTime);
+  if (!expiry) return '';
+
+  const diff = Math.abs((expiry.getTime() - nowMs) / 1000);
+  let diffText = '';
+  const days = Math.floor(diff / 86400);
+  if (days) diffText += `${days} ${days > 1 ? 'Days' : 'Day'} `;
+  const hours = Math.floor(diff / 3600) % 24;
+  diffText += `${hours}:`;
+  const minutes = Math.floor(diff / 60) % 60;
+  if (!days) diffText += `${minutes}:`;
+  const seconds = Math.floor(diff) % 60;
+  if (!days && !hours) diffText += `${seconds}`;
+  return diffText;
+}
+
 function getFriendsHTML(list) {
   let htmlFriends = '';
   if (!Array.isArray(list)) return htmlFriends;
@@ -434,18 +468,7 @@ function getFriendsHTML(list) {
         CityProtections.forEach((city) => {
           if (city.playerId === entry.player_id && city.expireTime > 0) {
             match = true;
-            let finish = new Date(city.expireTime);
-            let diffText = '';
-            finish -= Date.now() / 1000;
-            const diff = Math.abs(finish);
-            const days = Math.floor(diff / 86400);
-            if (days) diffText += `${days} ${days > 1 ? 'Days' : 'Day'} `;
-            const hours = Math.floor(diff / 3600) % 24;
-            diffText += `${hours}:`;
-            const minutes = Math.floor(diff / 60) % 60;
-            if (!days) diffText += `${minutes}:`;
-            const seconds = Math.floor(diff) % 60;
-            if (!days && !hours) diffText += `${seconds}`;
+            const diffText = formatShieldCountdown(city.expireTime);
             html += `<tr><td>${safeName}</td><td><span data-i18n="shield">Shield</span>: ${diffText}</td></tr>`;
           }
         });
@@ -482,6 +505,7 @@ function checkInactivePlunder(friendsList = []) {
 module.exports = {
   otherPlayerService,
   otherPlayerServiceUpdateActions,
+  formatShieldCountdown,
   friends,
   guildMembers,
   hoodlist,
