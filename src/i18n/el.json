@@ -150,5 +150,7 @@
   "stat_supply_boost": "Supplies Bonus",
   "daily_production": "Daily Production",
   "combat_boosts": "Combat Boosts",
-  "crit_strike": "Crit Strike"
+  "crit_strike": "Crit Strike",
+  "copied": "Copied",
+  "copy_failed": "Copy failed"
 }

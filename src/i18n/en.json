@@ -49,6 +49,8 @@
   "total": "Total",
   "remaining": "Remaining",
   "copy": "Copy",
+  "copied": "Copied",
+  "copy_failed": "Copy failed",
   "post": "Post",
   "needed": "Goods Needed",
   "now": "Available Now",

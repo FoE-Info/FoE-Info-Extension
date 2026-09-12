@@ -301,7 +301,7 @@ function renderTreasuryLogPanel(
     collapse?.collapseTreasuryLog !== undefined ?
       !!collapse.collapseTreasuryLog
     : true;
-  let html = `<div class="alert alert-info alert-dismissible show collapsed" role="alert">`;
+  let html = `<div class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">`;
   if (element?.close) html += element.close();
   if (element?.copy)
     html += element.copy('treasuryLogCopyID', 'info', 'right', isCollapsed);
@@ -316,11 +316,11 @@ function renderTreasuryLogPanel(
   html += `<span data-i18n="medals_donated">Medals Donated</span>: <strong>${totalMedalsDonated.toNumber().toLocaleString()}</strong> | `;
   html += `<span data-i18n="medals_spent">Medals Spent</span>: <strong>${totalMedalsSpent.toNumber().toLocaleString()}</strong>`;
   html += `</div>`;
-  html += `<table class="table table-sm table-striped align-middle mb-0"><thead><tr>`;
-  html += `<th class="text-start"><span data-i18n="player">Player</span></th>`;
-  html += `<th class="text-start"><span data-i18n="action">Action</span></th>`;
-  html += `<th class="text-start"><span data-i18n="resource">Resource</span></th>`;
-  html += `<th class="text-end"><span data-i18n="amount">Amount</span></th>`;
+  html += `<table class="table table-sm table-striped align-middle mb-0"><caption class="visually-hidden"><span data-i18n="treasury">Guild Treasury</span></caption><thead><tr>`;
+  html += `<th scope="col" class="text-start"><span data-i18n="player">Player</span></th>`;
+  html += `<th scope="col" class="text-start"><span data-i18n="action">Action</span></th>`;
+  html += `<th scope="col" class="text-start"><span data-i18n="resource">Resource</span></th>`;
+  html += `<th scope="col" class="text-end"><span data-i18n="amount">Amount</span></th>`;
   html += `</tr></thead><tbody>`;
 
   for (const entry of logs.slice(0, 50)) {

@@ -382,7 +382,7 @@ function renderCulturalPanel(
   const unlockedAdv = advancements.filter((a) => a.isUnlocked).length;
   const pct = totalAdv > 0 ? Math.round((unlockedAdv / totalAdv) * 100) : 0;
 
-  let html = `<div class="alert alert-secondary alert-dismissible show collapsed" role="alert">`;
+  let html = `<div class="alert alert-secondary alert-dismissible show collapsed" role="status" aria-live="polite">`;
   if (element?.close) html += element.close();
   html += `<p id="culturalTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#culturalText" aria-expanded="${!isCollapsed}" aria-controls="culturalText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
   if (element?.icon)
@@ -408,9 +408,9 @@ function renderCulturalPanel(
   const costKeys = Object.keys(remainingCosts);
   if (costKeys.length > 0) {
     html += `<div class="px-2 small mb-1 fw-bold"><span data-i18n="remaining_cultural_goods">Remaining Goods Required</span>:</div>`;
-    html += `<table class="table table-sm table-striped align-middle mb-0"><thead><tr>`;
-    html += `<th class="text-start"><span data-i18n="resource">Resource</span></th>`;
-    html += `<th class="text-end"><span data-i18n="required">Required</span></th>`;
+    html += `<table class="table table-sm table-striped align-middle mb-0"><caption class="visually-hidden"><span data-i18n="cultural">Cultural Settlement</span></caption><thead><tr>`;
+    html += `<th scope="col" class="text-start"><span data-i18n="resource">Resource</span></th>`;
+    html += `<th scope="col" class="text-end"><span data-i18n="required">Required</span></th>`;
     html += `</tr></thead><tbody>`;
 
     for (const res of costKeys) {
