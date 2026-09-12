@@ -17,6 +17,7 @@ class StartupRenderState {
     this.subscribers = new Set();
     this.cityStatsContext = null;
     this.buildingCollectionOptions = null;
+    this.metadataLoading = null;
     this.logger = log;
   }
 
@@ -31,7 +32,7 @@ class StartupRenderState {
   }
 
   /**
-   * @param {'city-stats'|'building-collection'|'all'} channel
+   * @param {'city-stats'|'building-collection'|'metadata-loading'|'all'} channel
    */
   notify(channel = 'all') {
     for (const fn of this.subscribers) {
@@ -71,6 +72,15 @@ class StartupRenderState {
 
   getBuildingCollectionOptions() {
     return this.buildingCollectionOptions;
+  }
+
+  setMetadataLoading(payload) {
+    this.metadataLoading = payload || null;
+    this.notify('metadata-loading');
+  }
+
+  getMetadataLoading() {
+    return this.metadataLoading;
   }
 }
 
