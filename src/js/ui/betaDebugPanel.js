@@ -125,5 +125,23 @@ function resetBetaPanel() {
   }
 }
 
-module.exports = { renderBetaPanel, appendBetaText, resetBetaPanel };
+function ensureBetaContainer(parent) {
+  if (typeof document === 'undefined') return null;
+  const existing = document.getElementById('beta');
+  if (existing) return existing;
+  const host = parent || document.getElementById('content');
+  if (!host) return null;
+  const beta = document.createElement('div');
+  beta.id = 'beta';
+  host.appendChild(beta);
+  logger.debug('Created beta panel container');
+  return beta;
+}
+
+module.exports = {
+  renderBetaPanel,
+  appendBetaText,
+  resetBetaPanel,
+  ensureBetaContainer,
+};
 module.exports.default = module.exports;

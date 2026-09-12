@@ -11,6 +11,14 @@ let activeRun = 0;
 let renderPending = false;
 let activeTimer;
 
+let renderMetadataLoadingPlaceholder = null;
+try {
+  const loading = require('../ui/startupMetadataLoading.js');
+  if (typeof loading.renderMetadataLoadingPlaceholder === 'function') {
+    renderMetadataLoadingPlaceholder = loading.renderMetadataLoadingPlaceholder;
+  }
+} catch {}
+
 function renderWhenStartupReady(render) {
   if (!renderPending) return render();
 }
@@ -59,11 +67,11 @@ function scheduleStartupRender({
 
   if (missing.length > 0 && typeof resolveMissingCityEntities === 'function') {
     renderPending = true;
-    if (citystats) {
-      citystats.innerHTML = `<div class="card my-2 shadow-sm border-0"><div class="card-body py-2 px-3 text-muted d-flex align-items-center"><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span><span data-i18n="loading-metadata">${loadingText}</span></div></div>`;
-      if (typeof translateContainer === 'function') {
-        translateContainer(citystats);
-      }
+    if (citystats && typeof renderMetadataLoadingPlaceholder === 'function') {
+      renderMetadataLoadingPlaceholder(citystats, {
+        loadingText,
+        translateContainer,
+      });
     }
     traceGate('P5g', 'loading placeholder installed; starting resolver');
 
