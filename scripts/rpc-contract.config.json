@@ -24,6 +24,7 @@
     "VisitAllService"
   ],
   "allowedUnhandled": [
+    "BonusService.getBonuses",
     "CityMapService.getNextId",
     "ConversationService.markMessageRead",
     "ConversationService.sendMessage",
