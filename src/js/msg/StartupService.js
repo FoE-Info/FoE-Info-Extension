@@ -23,7 +23,11 @@ import { parseUserAccount } from '../parsers/accountParser.js';
 import { blueGalaxyState } from '../state/BlueGalaxyState.js';
 import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
-import { appendBetaText, resetBetaPanel } from '../ui/betaDebugPanel.js';
+import {
+  appendBetaText,
+  ensureBetaContainer,
+  resetBetaPanel,
+} from '../ui/betaDebugPanel.js';
 import { buildCityStatsHTML } from '../ui/cityStatsHtmlBuilder.js';
 import { showTooltips } from '../ui/cityStatsTooltips.js';
 import {
@@ -218,14 +222,7 @@ export function startupService(msg) {
 
   // console.log('checkBeta:', users.checkBeta());
   if (DEV) {
-    var beta = document.getElementById('beta');
-    if (beta == null) {
-      // console.log('2');
-      beta = document.createElement('div');
-      document.getElementById('content').appendChild(beta);
-      beta.id = 'beta';
-      // beta.className = 'alert alert-dismissible alert-success';
-    }
+    ensureBetaContainer();
   } else {
     removeDebug();
   }
