@@ -123,11 +123,11 @@ test('Incidents Panel - Popover removal and collapsible panel preservation', asy
         'incidentsPanel.js must render #incidentsText collapsible div',
       );
 
-      // 9. Backward compatibility: helper.js re-exports fShowIncidents from incidentsPanel.js
-      assert.match(
+      // 9. UI panel decoupling: helper.js no longer re-exports fShowIncidents from incidentsPanel.js
+      assert.doesNotMatch(
         helperSource,
-        /export\s*\{[^}]*fShowIncidents[^}]*\}\s*from\s*['"]\.\.\/ui\/incidentsPanel(?:\.js)?['"]/,
-        'helper.js must re-export fShowIncidents from incidentsPanel.js',
+        /from\s*['"]\.\.\/ui\/incidentsPanel(?:\.js)?['"]/,
+        'helper.js must not import from ../ui/incidentsPanel.js',
       );
     },
   );

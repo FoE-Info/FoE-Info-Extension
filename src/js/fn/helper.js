@@ -27,17 +27,6 @@ export function fResourceShortName(name, lookup = null) {
 }
 
 export {
-  fshowBattleground,
-  fshowBattlegroundChanges,
-} from '../ui/renderBattlegroundsPanel.js';
-
-export {
-  fIncidentName,
-  fShowIncidents,
-  renderIncidentsPanel,
-} from '../ui/incidentsPanel.js';
-
-export {
   numAges,
   fLevelfromAge,
   fAgefromLevel,

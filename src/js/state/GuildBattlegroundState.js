@@ -18,6 +18,7 @@ class GuildBattlegroundState {
     this.result = null;
     this.leaderboard = null;
     this.province = null;
+    this.performance = null;
     this.subscribers = new Set();
     this.logger = log;
   }
@@ -33,7 +34,7 @@ class GuildBattlegroundState {
   }
 
   /**
-   * @param {'targets'|'result'|'leaderboard'|'province'|'all'} channel
+   * @param {'targets'|'result'|'leaderboard'|'province'|'performance'|'all'} channel
    */
   notify(channel = 'all') {
     for (const fn of this.subscribers) {
@@ -82,6 +83,15 @@ class GuildBattlegroundState {
 
   getProvince() {
     return this.province;
+  }
+
+  setPerformance(payload) {
+    this.performance = payload || null;
+    this.notify('performance');
+  }
+
+  getPerformance() {
+    return this.performance;
   }
 }
 
