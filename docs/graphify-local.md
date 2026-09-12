@@ -40,7 +40,7 @@ commands retain their managed llama-swap startup and teardown.
 
 Validation on 2026-09-08 found no Gemini/Google API keys in the shell, running
 Graphify processes, or checked host/launch configuration. Two copies of each
-server were parented by the then-active Codex host; no watch daemon was running.
+server were parented by the then-active agent host; no watch daemon was running.
 This is a launch-policy guarantee for the managed entry points, not protection
 against arbitrary direct CLI commands, modified upstream code, or an
 intentionally reconfigured local proxy.

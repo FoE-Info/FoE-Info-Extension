@@ -45,27 +45,43 @@ the F2 reactive-decoupling program closed.
 - Decide `ui/cityStatsHtmlBuilder.js` (131 L, production-orphan;
   `buildCityStatsHTML` has no production importer).
 - Retarget test-only `fn/CityStatsCalculator.js` consumers to `calc/`.
+- **NEW (verified 2026-09-12):** `GbDonationState.setDonationPanel` /
+  `getDonationPanel` / the `'donation'` channel are **dead production code**.
+  Evidence: the only production caller of the store is
+  `msg/GbDonationService.js:320,328`, and it calls `setReward` exclusively;
+  `grep -rn setDonationPanel src/` returns nothing outside the store itself,
+  while `tests/state/gb-donation-state.test.mjs` and
+  `tests/ui/gb-donation-render-binding.test.mjs` drive it by hand. The live
+  donation panel renders through the _other_ store — `GreatBuildingsState` →
+  `ui/greatBuildingsRenderBinding.js` → `renderGbDonationPanel.js` (the real
+  panel, now `ui/renderGbDonationLegacy.js`). `ui/gbDonationRenderBinding.js`
+  wires its `'donation'` branch to the legacy renderer, so that branch is both
+  unreachable and pointed at the superseded renderer. Decision required: either
+  complete the F2 cutover (make `GbDonationService` publish `setDonationPanel`
+  and drop the `GreatBuildingsState.donation` path) or delete the dead
+  `donationPanel` half of `GbDonationState` + the `'donation'` branch and
+  `renderGbDonationLegacy.js`. Do **not** delete without deciding which store
+  owns the donation panel.
 
 ### P2 — monolith extracts (ranked, all with existing tests)
 
-| File (lines)                          | Extract                                                       | ~Lines |
-| :------------------------------------ | :------------------------------------------------------------ | -----: |
-| `protocol/MessageDispatcher.js` (586) | direct-CDN metadata router L507–570                           |     64 |
-| ”                                     | request `postData` extraction L381–443                        |     63 |
-| `msg/GreatBuildingsService.js` (468)  | `fCheckOutput` L368–450 → `ui/gbOutputRepair.js`              |     83 |
-| `ui/containerBinding.js` (571)        | `setupPanelContainers` L280–556 factory                       |    277 |
-| `fn/collapse.js` (493)                | 27 toggles L143–478 → declarative specs                       |    330 |
-| `ui/indexUiBindings.js` (528)         | storage bootstrap + drop hardcoded jQuery locale map L210–242 |     75 |
+| File (lines)                          | Extract                                                         | ~Lines |
+| :------------------------------------ | :-------------------------------------------------------------- | -----: |
+| `protocol/MessageDispatcher.js` (434) | ✅ direct-CDN metadata router → `protocol/directMetadata.js`    |    106 |
+| ”                                     | ✅ request `postData` extraction → `protocol/requestPayload.js` |     63 |
+| `msg/GreatBuildingsService.js` (468)  | `fCheckOutput` L368–450 → `ui/gbOutputRepair.js`                |     83 |
+| `ui/containerBinding.js` (571 → 274)  | ✅ `setupPanelContainers` → `ui/panelContainerFactory.js`       |    277 |
+| `fn/collapse.js` (493)                | 27 toggles L143–478 → declarative specs                         |    330 |
+| `ui/indexUiBindings.js` (528)         | storage bootstrap + drop hardcoded jQuery locale map L210–242   |     75 |
 
-### P2 — TS mirror drift
+### P2 — TS mirror drift ✅ resolved by Phase 0
 
-- 12 hand-maintained `.js`/`.ts` pairs (none executed at runtime, validated
-  only by `tsc --noEmit`). Decide canonical direction (JS runtime + generated
-  `.d.ts`, or TS source compiled). Pairs: `ui/cardVisibility`,
-  `ui/panelDispatcher`, `state/MetadataStore`, `calc/CityStatsCalculator`,
-  `calc/GreatBuildingCalculator`, `calc/BlueGalaxyCalculator`,
-  `calc/InvestedCalculator`, `calc/GbgCalculator`, `calc/utils/{spatialUtils,
-eraUtils,bignumberUtils}`, `calc/eraMapping`.
+- All 12 hand-maintained `.js`/`.ts` pairs were deleted in
+  `chore(ts): remove dead js/ts twin modules` (`899735a`), guarded by
+  `tests/architecture/no-js-ts-twins.test.mjs`. Canonical direction decided:
+  real TS is authored from the authoritative `.js` in a later phase, never
+  mirrored. No `.ts` files remain under `src/js/` (only the `src/types/*.d.ts`
+  ambient contracts). See `docs/plans/2026-09-12-ts-hygiene-phase0.md`.
 
 ### P2 — small rule fixes
 

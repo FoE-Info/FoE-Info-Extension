@@ -19,7 +19,6 @@ Thumbs.db
 
 # Logs, Coverage & Temporary Files
 *.log
-Claude outputs/
 tmp/
 temp/
 coverage/

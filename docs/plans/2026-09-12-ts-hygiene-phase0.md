@@ -32,7 +32,7 @@
 - Consumes: nothing.
 - Produces: the invariant "no basename exists as both `.js` and `.ts` under `src/js/`"; the guard test `tests/architecture/no-js-ts-twins.test.mjs` (asserts a non-empty walk so it cannot pass vacuously).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```javascript
 // tests/architecture/no-js-ts-twins.test.mjs
@@ -71,12 +71,12 @@ test('no module exists as both .js and .ts under src/js', async () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `node --test tests/architecture/no-js-ts-twins.test.mjs`
 Expected: FAIL listing all 12 twins (e.g. `calc/BlueGalaxyCalculator`, `ui/cardVisibility`, …).
 
-- [ ] **Step 3: Confirm the twins are unresolved, then delete them**
+- [x] **Step 3: Confirm the twins are unresolved, then delete them**
 
 Run: `grep -rnE "from '.*\.ts'|require\(['\"].*\.ts['\"]\)" src/js tests --include=*.js --include=*.mjs` — expected: no output (no explicit `.ts` imports).
 
@@ -91,17 +91,17 @@ git rm src/js/calc/BlueGalaxyCalculator.ts src/js/calc/CityStatsCalculator.ts \
   src/js/ui/cardVisibility.ts src/js/ui/panelDispatcher.ts
 ```
 
-- [ ] **Step 4: Run the guard test to verify it passes**
+- [x] **Step 4: Run the guard test to verify it passes**
 
 Run: `node --test tests/architecture/no-js-ts-twins.test.mjs`
 Expected: PASS (1 test, 0 fail).
 
-- [ ] **Step 5: Run the full gate**
+- [x] **Step 5: Run the full gate**
 
 Run: `npm run verify`
 Expected: exit 0; webpack dev bundle compiles; test count increases by 1 (the new architecture guard test).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
@@ -122,7 +122,7 @@ git commit -m "chore(ts): remove dead js/ts twin modules" -m "- delete 12 never-
 - Consumes: nothing.
 - Produces: the invariant "every internal relative `require`/`from` specifier ends in `.js`/`.ts`/`.json`/`.mjs`/`.scss`/`.css`".
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```javascript
 // tests/architecture/explicit-relative-extensions.test.mjs
@@ -167,12 +167,12 @@ test('internal relative imports use explicit extensions', async () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `node --test tests/architecture/explicit-relative-extensions.test.mjs`
 Expected: FAIL listing 6 violations, all targeting `AddElement`.
 
-- [ ] **Step 3: Fix the 6 specifiers**
+- [x] **Step 3: Fix the 6 specifiers**
 
 Append `.js` to each `AddElement` specifier:
 
@@ -183,17 +183,17 @@ Append `.js` to each `AddElement` specifier:
 - `src/js/msg/StartupService.js:7` `from '../fn/AddElement'` -> `from '../fn/AddElement.js'`
 - `src/js/ui/renderInvestedPanel.js:11` `from '../fn/AddElement'` -> `from '../fn/AddElement.js'`
 
-- [ ] **Step 4: Run the guard test to verify it passes**
+- [x] **Step 4: Run the guard test to verify it passes**
 
 Run: `node --test tests/architecture/explicit-relative-extensions.test.mjs`
 Expected: PASS (1 test, 0 fail).
 
-- [ ] **Step 5: Run the full gate**
+- [x] **Step 5: Run the full gate**
 
 Run: `npm run verify`
 Expected: exit 0.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
@@ -214,23 +214,23 @@ git commit -m "chore(ts): require explicit relative import extensions" -m "- add
 - Consumes: no `.ts` source remains (Task 1), all imports explicit (Task 2).
 - Produces: `strict:true` baseline for Phase 2 migrations; `tsc --noEmit` is the type gate.
 
-- [ ] **Step 1: Flip `strict` to true**
+- [x] **Step 1: Flip `strict` to true**
 
 In `tsconfig.json`, change `"strict": false,` to `"strict": true,`. Keep `allowJs: true`, `checkJs: false`, `noEmit: true` unchanged.
 
-- [ ] **Step 2: Run the type gate**
+- [x] **Step 2: Run the type gate**
 
 Run: `npm run typecheck`
 Expected: exit 0 (only `.d.ts` ambient files are checked; JS is excluded by `checkJs:false`).
 
 If `src/types/state.d.ts` or `src/types/foe-rpc.d.ts` report errors under strict, fix them in place (they are small ambient contracts) and re-run until exit 0.
 
-- [ ] **Step 3: Run the full gate**
+- [x] **Step 3: Run the full gate**
 
 Run: `npm run verify`
 Expected: exit 0.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add tsconfig.json src/types
@@ -251,7 +251,7 @@ git commit -m "chore(ts): enable strict compiler checks" -m "- set strict true n
 - Consumes: the verified facts from the spec (§1, §7).
 - Produces: a correct reference the next migration session reads instead of the stale counts.
 
-- [ ] **Step 1: Update the monolith inventory**
+- [x] **Step 1: Update the monolith inventory**
 
 In `monolith-decomposition-phases.md` §1, replace the 6-row table with the current measured inventory and mark it verified:
 
@@ -266,7 +266,7 @@ In `monolith-decomposition-phases.md` §1, replace the 6-row table with the curr
 
 Add the real >450 L backlog: `protocol/MessageDispatcher.js` (586), `ui/containerBinding.js` (571), `ui/indexUiBindings.js` (528), `calc/entities/CityEntityHarvestCalculator.js` (513), `ui/renderGbDonationPanel.js` (504), `ui/cardVisibility.js` (503), `ui/gbDonationTables.js` (503), `msg/OtherPlayerService.js` (500), `fn/collapse.js` (493), `state/MetadataStore.js` (486), `protocol/networkListener.js` (476), `ui/panelDispatcher.js` (475). Delete §3 item A (date/time engine) — already shipped in `src/js/utils/date.js`.
 
-- [ ] **Step 2: Update the TS hybrid strategy**
+- [x] **Step 2: Update the TS hybrid strategy**
 
 In `typescript-hybrid-strategy.md`:
 
@@ -275,12 +275,12 @@ In `typescript-hybrid-strategy.md`:
 - Note the 12 dead mirrors were deleted in Phase 0 and real TS is authored from the authoritative `.js` in Phase 2.
 - Note `.d.ts` paths are `src/types/foe-rpc.d.ts` and `src/types/state.d.ts` (not `inno-rpc.d.ts`).
 
-- [ ] **Step 3: Run docs checks**
+- [x] **Step 3: Run docs checks**
 
 Run: `npm run check`
 Expected: exit 0 (Prettier clean). If markdown is reformatted by Prettier, accept it.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add .agents/skills/codebase-modernization-planner/references
