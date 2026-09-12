@@ -4,6 +4,12 @@ Updated 2026-09-12 after the quad-graph exploration and comparative analysis sui
 
 ## Current session (2026-09-12)
 
+- **Payload-Driven Architecture Analysis & RPC Contract Gate (report mode)**:
+  - Added [`docs/specs/2026-09-12-payload-driven-architecture-improvements.md`](specs/2026-09-12-payload-driven-architecture-improvements.md): architecture-level companion to the panel-focused spec. Tours the metadata graph (5,499 nodes / 46,623 edges / 383 communities; 103 `NetworkRPCPayload`, 27 `PayloadBundle`, 13 `PlayerCitySnapshot`), documents its limits (identity/provenance index, not formula authority; flat arrays expand, nested collapse; 103 vs 70 duplicate provenance; stale `GRAPH_SUMMARY.md`), and maps each pipeline layer to a concrete payload-driven improvement.
+  - Landed `scripts/rpc-contract.mjs` + `scripts/rpc-contract.config.json` + `tests/agents/rpc-contract.test.mjs` + `tests/fixtures/rpc/captured-rpcs.json` (103 keys) + `npm run rpc:contract`. Drives the real `registerAllServices`/`registerLegacyBridge` path against a fake dispatcher to capture the exact runtime registered set (99) and diff it against the captured universe.
+  - Current report (noisy, pre-triage): 45 captured-unhandled, 41 registered-but-uncaptured, 14 duplicate registrations (`ClanService.getTreasuryBag`, `TradeService.getTradeOffers`, …). **Not** wired into `npm run verify`; policy in `scripts/rpc-contract.config.json` is intentionally empty pending triage.
+  - Evidence: `npm run verify` exit 0 — 967/967 tests, prettier clean, eslint 0 errors, dev build compiles. `docs/README.md` HAR count corrected (39 → 44). No commit.
+
 - **GB Donation Panel Safe-Spot Selection Fix — Forge-Hammer Parity (`docs/har/network payload of the GB bug workflow.har`)**:
   - **User report**: Cosmic Catalyst showed correct numbers, but Statue of Zeus showed P2 as unsafe (Add 148) and The Blue Galaxy showed P3 (bakiron) as passable (Add 62), while both those spots were actually locked.
   - **Root cause**: `src/js/ui/renderGbDonationPanel.js` selected the first place satisfying `spotLock <= remaining`. Because `spotLock = ceil((remaining + occupant) / 2)`, that condition reduces to `occupant <= remaining`. The boundary case `occupant == remaining` is physically locked (a rival would need `occupant + 1 > remaining` FP, which levels the building first), yet it was treated as needing owner FP, and genuinely safe places were never skipped.
