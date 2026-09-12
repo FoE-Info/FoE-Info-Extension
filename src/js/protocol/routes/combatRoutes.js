@@ -18,6 +18,23 @@ try {
   };
 }
 
+let setCurrentView = () => {};
+try {
+  ({ setCurrentView } = require('../../ui/cardVisibility.js'));
+} catch {}
+
+/**
+ * Wrap an RPC handler so the panel enters the given context before it runs.
+ * @param {string} view One of GAME_CONTEXTS.
+ * @param {Function} handler Original handler.
+ */
+function withContext(view, handler) {
+  return (msg, ...rest) => {
+    setCurrentView(view);
+    return handler(msg, ...rest);
+  };
+}
+
 function extractSignalData(msg, context) {
   if (Array.isArray(msg) && msg.length > 0) return msg;
   if (Array.isArray(msg?.requestData) && msg.requestData.length > 0) {
@@ -158,14 +175,19 @@ function registerCombatRoutes(ctx) {
     );
   }
   if (getState) {
-    dispatcher.register('GuildBattlegroundService', 'getState', getState);
-    dispatcher.register('GuildBattlegroundStateService', 'getState', getState);
+    const gbgGetState = withContext('GBG', getState);
+    dispatcher.register('GuildBattlegroundService', 'getState', gbgGetState);
+    dispatcher.register(
+      'GuildBattlegroundStateService',
+      'getState',
+      gbgGetState,
+    );
   }
   if (getBattleground) {
     dispatcher.register(
       'GuildBattlegroundService',
       'getBattleground',
-      getBattleground,
+      withContext('GBG', getBattleground),
     );
   }
   if (getBuildings) {
@@ -265,13 +287,17 @@ function registerCombatRoutes(ctx) {
   // Guild Expedition & International Guild Expedition
   const geHandler = handlers.championshipService || guildExpeditionService;
   if (geHandler) {
-    dispatcher.register('ChampionshipService', 'getOverview', geHandler);
+    dispatcher.register(
+      'ChampionshipService',
+      'getOverview',
+      withContext('GE', geHandler),
+    );
   }
   if (guildExpeditionService) {
     dispatcher.register(
       'GuildExpeditionService',
       'getOverview',
-      guildExpeditionService,
+      withContext('GE', guildExpeditionService),
     );
     dispatcher.register(
       'GuildExpeditionService',

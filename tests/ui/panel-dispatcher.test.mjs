@@ -12,6 +12,9 @@ const {
   renderTreasuryPanel,
 } = panelDispatcherPkg.default || panelDispatcherPkg;
 
+const { getCurrentView, setCurrentView } =
+  await import('../../src/js/ui/cardVisibility.js');
+
 function createMockContainer(
   initialContent = '<div>test</div>',
   initialClass = 'some-class',
@@ -53,57 +56,28 @@ function createAllContainers() {
   };
 }
 
-test('clearVisitPlayer empties expected containers and clears cultural className', () => {
-  const containers = createAllContainers();
-  clearVisitPlayer(containers);
-
-  assert.equal(containers.cityinvested.innerHTML, '');
-  assert.equal(containers.output.innerHTML, '');
-  assert.equal(containers.overview.innerHTML, '');
-  assert.equal(containers.donationDIV.innerHTML, '');
-  assert.equal(containers.donation2DIV.innerHTML, '');
-  assert.equal(containers.greatbuilding.innerHTML, '');
-  assert.equal(containers.gbInfoDIV.innerHTML, '');
-  assert.equal(containers.cultural.innerHTML, '');
-  assert.equal(containers.cultural.className, '');
-  assert.equal(containers.friendsDiv.innerHTML, '');
-  assert.equal(containers.treasury.innerHTML, '');
+test('clearVisitPlayer delegates to the OTHER_PLAYER context', () => {
+  setCurrentView('OWN_CITY');
+  clearVisitPlayer();
+  assert.equal(getCurrentView(), 'OTHER_PLAYER');
 });
 
-test('clearExpedition empties expected containers and clears visitstats and cultural className', () => {
-  const containers = createAllContainers();
-  clearExpedition(containers);
-
-  assert.equal(containers.cityinvested.innerHTML, '');
-  assert.equal(containers.alerts.innerHTML, '');
-  assert.equal(containers.incidents.innerHTML, '');
-  assert.equal(containers.visitstats.innerHTML, '');
-  assert.equal(containers.visitstats.className, '');
-  assert.equal(containers.cultural.innerHTML, '');
-  assert.equal(containers.cultural.className, '');
-  assert.equal(containers.treasury.innerHTML, '');
+test('clearExpedition delegates to the GE context', () => {
+  setCurrentView('OWN_CITY');
+  clearExpedition();
+  assert.equal(getCurrentView(), 'GE');
 });
 
-test('clearForBattleground clears same containers as expedition', () => {
-  const containers = createAllContainers();
-  clearForBattleground(containers);
-
-  assert.equal(containers.cityinvested.innerHTML, '');
-  assert.equal(containers.alerts.innerHTML, '');
-  assert.equal(containers.incidents.innerHTML, '');
-  assert.equal(containers.visitstats.className, '');
-  assert.equal(containers.cultural.className, '');
+test('clearForBattleground delegates to the GBG context', () => {
+  setCurrentView('OWN_CITY');
+  clearForBattleground();
+  assert.equal(getCurrentView(), 'GBG');
 });
 
-test('clearForMainCity empties incidents, targets, donation and resets visitstats and cultural class', () => {
-  const containers = createAllContainers();
-  clearForMainCity(containers);
-
-  assert.equal(containers.incidents.innerHTML, '');
-  assert.equal(containers.targets.innerHTML, '');
-  assert.equal(containers.donationDIV.innerHTML, '');
-  assert.equal(containers.visitstats.className, '');
-  assert.equal(containers.cultural.className, '');
+test('clearForMainCity delegates to the OWN_CITY context', () => {
+  setCurrentView('GBG');
+  clearForMainCity();
+  assert.equal(getCurrentView(), 'OWN_CITY');
 });
 
 test('clearStartup empties all startup containers and executes resetState callback', () => {
@@ -133,15 +107,10 @@ test('clearStartup empties all startup containers and executes resetState callba
   assert.equal(resetState.Bonus.aid, 0);
 });
 
-test('clearCultural empties expected containers and clears visitstats className', () => {
-  const containers = createAllContainers();
-  clearCultural(containers);
-
-  assert.equal(containers.cityinvested.innerHTML, '');
-  assert.equal(containers.overview.innerHTML, '');
-  assert.equal(containers.visitstats.innerHTML, '');
-  assert.equal(containers.visitstats.className, '');
-  assert.equal(containers.armyDIV.innerHTML, '');
+test('clearCultural delegates to the SETTLEMENT context', () => {
+  setCurrentView('OWN_CITY');
+  clearCultural();
+  assert.equal(getCurrentView(), 'SETTLEMENT');
 });
 
 test('renderTreasuryPanel does nothing if resources is missing', () => {
