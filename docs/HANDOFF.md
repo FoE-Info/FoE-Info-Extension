@@ -363,7 +363,7 @@ The previous handoff at `cec0ded:docs/HANDOFF.md` is retained in Git history for
 - Painted-frame verification confirmed the old Daily Units 147-to-3299 flash. The shared resolver barrier removed that post-spinner intermediate value in the fixed capture.
 - Graphify uses the shared local launcher; routine AST output is logged. See [local Graphify execution](graphify-local.md).
 - Graphify graph synchronization and query-first enforcement have live evidence. See [opencode coexistence](OPENCODE.md) for the current host behavior.
-- The ecosystem accuracy audit is archived; see [its change ledger](archive/agent-ecosystem-audit.md).
+- The ecosystem accuracy audit has been completed and retired.
 
 ## Takeover changes and subsequent corrections
 
@@ -478,3 +478,14 @@ UI: three-way color coding (green = profit, yellow/neutral = break-even, red = l
 ## Guild thread donation ratio parsing (Implemented & Verified)
 
 Implemented in `src/js/fn/rateParser.js` (`extractRateFromTitle`) and wired into `src/js/msg/ConversationService.js` (`getConversation` → `getPercent` → `setCurrentPercent`), overriding the configured "Donation %" default when a guild message thread title carries an embedded ratio in the 1.00–2.50 (100%–250%) range (e.g. `LoW BE All GBs [secure @ 1.92]`, `1.9 Secure`, `2.0 All Levels`). Verified in `tests/protocol/domain-services.test.mjs`. Fallback to static Options default remains when no valid ratio or thread title is present.
+
+## End-to-End Knowledge Base Consolidation (2026-09-12)
+
+- **Graph Maintenance & Cleanup**: Removed stale reviews, audits (`docs/archive/reviews/`, `docs/archive/agent-ecosystem-audit.md`), and dated graph backup folders (`2026-09-12/`). Fixed absolute paths for all 5 MCP servers in `.agents/mcp_config.json`.
+- **DeepSeek Reindexing**: Extracted fresh AST across 489 source files (3,047 nodes, 4,975 edges) and labeled 248 communities using the DeepSeek API (`--backend deepseek`). Updated and exported all 5 knowledge graphs (`FoE-Info-Extension`, `metadata-store`, `forge-hammer`, `low-tool`, `foe-info-original`).
+- **Comprehensive Knowledge Base (`docs/KNOWLEDGEBASE.md`)**: Populated 26 verified architectural memories covering the entire stack from DevTools network interception to DOM presentation. Running `graphify reflect` compiled the deterministic lessons report into `graphify-out/foe-info/reflections/LESSONS.md`.
+- **Actionable Items Prioritized in `docs/STATUS.md`**:
+  1. Trim `MessageDispatcher.js` (608L -> ~525L) by extracting `_dedupCache` to `src/js/protocol/dedupCache.js` for 100% compliance with the `<= 600` line ceiling.
+  2. Transition domain RPC services in `src/js/msg/` to a reactive state notification pattern matching `BlueGalaxyState.notify()`.
+  3. Complete TypeScript mirrors for `CityStatsCalculator.js` and `MetadataStore.js`.
+  4. Harden the `devtools.js` ↔ `index.js` bridge into a formal message channel.
