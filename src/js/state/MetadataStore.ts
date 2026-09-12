@@ -1,3 +1,4 @@
+/** Strict TypeScript mirror of the runtime metadata entity store. */
 import type {
   GameEntityDefinition,
   MetadataStoreSubscriber,

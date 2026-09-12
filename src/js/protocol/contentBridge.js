@@ -1,3 +1,4 @@
+/** MV3 content-script bridge forwarding page network messages to the panel. */
 import browser from 'webextension-polyfill';
 import { createLogger, setDebugEnabled } from '../utils/logger.js';
 

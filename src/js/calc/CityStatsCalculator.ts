@@ -1,3 +1,4 @@
+/** Strict TypeScript mirror of the city production/boost aggregation calculator. */
 import BigNumber from 'bignumber.js';
 
 const metadataStorePkg = require('../state/MetadataStore.js');

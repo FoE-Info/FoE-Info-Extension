@@ -1,3 +1,4 @@
+/** Panel element factory producing close/copy/collapse-icon markup. */
 let storage = {};
 try {
   storage = require('../utils/storage.js');
