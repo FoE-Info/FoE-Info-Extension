@@ -147,5 +147,8 @@
   "stat_daily_coins": "Coins",
   "stat_daily_supplies": "Supplies",
   "stat_coin_boost": "Coins Bonus",
-  "stat_supply_boost": "Supplies Bonus"
+  "stat_supply_boost": "Supplies Bonus",
+  "daily_production": "Daily Production",
+  "combat_boosts": "Combat Boosts",
+  "crit_strike": "Crit Strike"
 }
