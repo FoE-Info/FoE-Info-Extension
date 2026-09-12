@@ -1,4 +1,3 @@
-const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -60,7 +59,6 @@ module.exports = {
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       title: 'FoE-Info',
-      manifest: 'manifest.json',
       filename: 'panel.html',
       template: './src/chrome/panel.html',
       chunks: ['app'],
@@ -85,17 +83,6 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        {
-          from: require.resolve('webextension-polyfill/dist/browser-polyfill.js'),
-          to: 'browser-polyfill.js',
-        },
-        {
-          from: require
-            .resolve('webextension-polyfill/dist/browser-polyfill.js')
-            .replace(/\.js$/, '.js.map'),
-          to: 'browser-polyfill.js.map',
-          noErrorOnMissing: true,
-        },
         { from: './src/i18n', to: 'i18n' },
         { from: './src/icons/common', to: 'icons' },
         { from: './src/icons/foe-info', to: 'icons' },

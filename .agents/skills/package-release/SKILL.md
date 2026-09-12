@@ -28,8 +28,8 @@ Follow this skill to validate code quality and produce a production-ready extens
    npm run build
    ```
    Outputs:
-   - Unpacked directory: `build/FoE-Info_WEBSTORE/`
-   - Packaged distribution zip: `build/FoE-Info_WEBSTORE_<version>_<YYYY-MM-DD>.zip` (generated automatically via `ZipPlugin` in `webpack.prod.js`).
+   - Unpacked directory: `build/FoE-Info-Prod/`
+   - Packaged distribution zip: `build/FoE-Info_WEBSTORE_<version>_<YYYY-MM-DD>.zip` (created by `scripts/package-extension.js`).
 
 4. **Automated Release Pipeline (`npm run release`)**:
    For official releases, use the automated release runner [`scripts/release.mjs`](../../../scripts/release.mjs):
@@ -45,4 +45,4 @@ Follow this skill to validate code quality and produce a production-ready extens
    - GitHub Release creation via `gh release create` attaching the zip artifact and release notes from `CHANGELOG.md`.
 
 5. **Verify Distribution Bundle**:
-   Confirm that `build/FoE-Info_WEBSTORE/manifest.json` exists, that all required icons and bundles are present, and that the zip file is ready for Chrome Web Store Developer Dashboard upload.
+   Confirm that `build/FoE-Info-Prod/manifest.json` exists, that all required icons and bundles are present, and that the zip file is ready for Chrome Web Store Developer Dashboard upload.

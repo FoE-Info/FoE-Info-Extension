@@ -158,8 +158,8 @@ test('PostToolUse Graphify Sync Hook - detects AST file modifications', () => {
   );
   assert.equal(affectsAst('src/scss/main.scss'), true);
   assert.equal(affectsAst('src/chrome/panel.html'), true);
-  assert.equal(affectsAst('webpack.dev.js'), true);
-  assert.equal(affectsAst('/path/to/project/webpack.prod.js'), true);
+  assert.equal(affectsAst('webpack.config.js'), true);
+  assert.equal(affectsAst('/path/to/project/webpack.common.js'), true);
 
   // Non-AST files that should not trigger
   assert.equal(affectsAst('docs/README.md'), false);
