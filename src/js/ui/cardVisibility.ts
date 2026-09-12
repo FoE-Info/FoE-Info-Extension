@@ -112,7 +112,14 @@ export const CONTEXT_ALLOWED_PANELS: Readonly<
     'quantumLeaderboard',
   ],
   SETTLEMENT: ['header', 'cultural'],
-  OTHER_PLAYER: ['header', 'visit', 'donation', 'gbInfo', 'greatbuilding'],
+  OTHER_PLAYER: [
+    'header',
+    'visit',
+    'donation',
+    'donation2',
+    'gbInfo',
+    'greatbuilding',
+  ],
 };
 
 /** Parent wrapper container for each nested panel. */

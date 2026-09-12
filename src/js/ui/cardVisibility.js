@@ -103,6 +103,7 @@ const CONTEXT_ALLOWED_PANELS = Object.freeze({
     'header',
     'visit',
     'donation',
+    'donation2',
     'gbInfo',
     'greatbuilding',
   ]),
