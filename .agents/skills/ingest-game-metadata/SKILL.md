@@ -1,6 +1,6 @@
 ---
 name: ingest-game-metadata
-description: "Ingest InnoGames metadata and update offline graphs."
+description: 'Ingest InnoGames metadata and update offline graphs.'
 ---
 
 # Workflow: Ingest Game Metadata & Update Knowledge Graph
@@ -10,6 +10,7 @@ Use this skill to ingest new raw game metadata from InnoGames releases, update o
 ---
 
 ## Phase 1: Capture & Download Raw Metadata
+
 1. Launch Chromium and authenticate into the game:
    ```bash
    foe-browser
@@ -18,25 +19,27 @@ Use this skill to ingest new raw game metadata from InnoGames releases, update o
    ```bash
    npm run metadata:download
    ```
-   * Downloads startup definitions, building configurations, historical allies, castle levels, and translation catalogs into `../metadata-store/`.
+   - Downloads startup definitions, building configurations, historical allies, castle levels, and translation catalogs into `../metadata-store/`.
 
 ---
 
 ## Phase 2: Build & Validate Knowledge Graph
+
 1. Regenerate the metadata graph:
    ```bash
    npm run graph:metadata:update
    ```
-   * Builds `../metadata-store/graphify-out/graph.json` spanning BuildingEntity, HistoricalAlly, Technology, SelectionKit, and MilitaryUnit nodes.
+   - Builds `../metadata-store/graphify-out/graph.json` spanning BuildingEntity, HistoricalAlly, Technology, SelectionKit, and MilitaryUnit nodes.
 2. Run topological integrity audit:
    ```bash
    npm run metadata:query -- audit
    ```
-   * Asserts 0 dangling edges and 100% resolved links across all relational edges (`UPGRADED_BY`, `BELONGS_TO_ERA`, `ASSIGNED_TO_INSTANCE`, etc.).
+   - Asserts 0 dangling edges and 100% resolved links across all relational edges (`UPGRADED_BY`, `BELONGS_TO_ERA`, `ASSIGNED_TO_INSTANCE`, etc.).
 
 ---
 
 ## Phase 3: Inspect & Query New Entities
+
 1. Inspect topological distribution:
    ```bash
    npm run metadata:query -- stats
@@ -50,6 +53,7 @@ Use this skill to ingest new raw game metadata from InnoGames releases, update o
 ---
 
 ## Phase 4: Synchronize Knowledge Base
+
 1. Update metadata knowledge graph:
    ```bash
    npm run graph:metadata:update

@@ -1,6 +1,6 @@
 ---
 name: debug-optimize-lcp
-description: "Debug and optimize Largest Contentful Paint and rendering."
+description: 'Debug and optimize Largest Contentful Paint and rendering.'
 ---
 
 ## What is LCP and why it matters
@@ -127,6 +127,7 @@ The HTML document itself takes too long to arrive.
 Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
 Primary reference categories: `performance/`.
 Uphold:
+
 - `scheduler.js` yielding
 - `content-visibility` on safe selectors
 - low-priority enrichment fetches

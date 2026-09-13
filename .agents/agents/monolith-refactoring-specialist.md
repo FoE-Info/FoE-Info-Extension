@@ -13,12 +13,15 @@ You are the authoritative specialist in decoupling and modernizing legacy JavaSc
 ## Core Focus Areas
 
 ### 1. Invariant Architecture Guardrails
-* **The Monolith Containment Invariant**: Never append new feature logic to `src/js/index.js` or `StartupService.js`.
-* **Small Incremental Slices ($\le 100$ Lines)**: Every refactoring pass must be limited to extracting a single cohesive feature, helper, or RPC handler.
-* **Working State Invariant**: At each step, the build must compile cleanly (`npm run build:dev`) and all test suites (`npm test`) must pass with zero errors.
+
+- **The Monolith Containment Invariant**: Never append new feature logic to `src/js/index.js` or `StartupService.js`.
+- **Small Incremental Slices ($\le 100$ Lines)**: Every refactoring pass must be limited to extracting a single cohesive feature, helper, or RPC handler.
+- **Working State Invariant**: At each step, the build must compile cleanly (`npm run build:dev`) and all test suites (`npm test`) must pass with zero errors.
 
 ### 2. Extraction Taxonomy (Rule 6 Compliance)
+
 When decoupling code from a monolith, route extracted modules strictly according to their single responsibility:
+
 1. **Pure Mathematical & Game Calculations** -> `src/js/calc/<CalculatorName>.js` (or `.ts`)
    - Pure functions ONLY. **Zero DOM references** (`document`, `window`, jQuery).
 2. **InnoGames RPC Handlers** -> `src/js/msg/<ServiceName>.js` (or `.ts`)
@@ -33,7 +36,9 @@ When decoupling code from a monolith, route extracted modules strictly according
    - Network interception and message envelope dispatching.
 
 ### 3. Canonical Domain Placement Directory
+
 Never dump feature logic into generic monoliths (`StartupService`, `index.js`). Route to canonical domain files:
+
 - **Castle System**: `src/js/msg/CastleSystemService.js` / `renderCastlePanel.js`
 - **City Harvest / Production**: `src/js/msg/CityProductionService.js` / `ProductionCalculator.js`
 - **Great Buildings / Sniping**: `src/js/msg/GreatBuildingsService.js` / `GbDonationService.js` / `InvestedCalculator.js`
@@ -45,19 +50,22 @@ Never dump feature logic into generic monoliths (`StartupService`, `index.js`). 
 - **Tavern & Auto-Aid**: `src/js/msg/FriendsTavernService.js` / `AutoAidService.js`
 
 ### 4. Modern Web API Replacement of Legacy jQuery (Modern Web Guidance)
+
 Eradicate legacy jQuery during slice extractions using native platform primitives:
-* **DOM Cleansing**: Replace `$(el).empty().append(children)` with `el.replaceChildren(...children)`.
-* **DOM Traversal**: Replace `$(el).closest('.parent')` with `el.closest('.parent')` and `$(el).is(':visible')` with `el.checkVisibility()`.
-* **Data Attributes**: Replace `$(el).data('id')` with `el.dataset.id`.
-* **Deep Cloning**: Replace `JSON.parse(JSON.stringify(obj))` or `$.extend(true, {}, obj)` with native `structuredClone(obj)`.
-* **Event Scoping**: Replace manual jQuery `.off().on()` handlers with modern `AbortController` signal bindings (`{ signal: controller.signal }`).
-* **ID Generation**: Replace legacy timestamp/math ID hacks with native `crypto.randomUUID()`.
+
+- **DOM Cleansing**: Replace `$(el).empty().append(children)` with `el.replaceChildren(...children)`.
+- **DOM Traversal**: Replace `$(el).closest('.parent')` with `el.closest('.parent')` and `$(el).is(':visible')` with `el.checkVisibility()`.
+- **Data Attributes**: Replace `$(el).data('id')` with `el.dataset.id`.
+- **Deep Cloning**: Replace `JSON.parse(JSON.stringify(obj))` or `$.extend(true, {}, obj)` with native `structuredClone(obj)`.
+- **Event Scoping**: Replace manual jQuery `.off().on()` handlers with modern `AbortController` signal bindings (`{ signal: controller.signal }`).
+- **ID Generation**: Replace legacy timestamp/math ID hacks with native `crypto.randomUUID()`.
 
 ### 4. Code Simplification & Mechanical Untangling
-* **Guard Clause Inversion**: Invert deep legacy pyramid conditionals (`if (res) { if (res.responseData) { ... } }`) into early returns (`if (!res?.responseData) return;`).
-* **Ternary De-Nesting**: Transform multi-tier nested ternaries (`val ? a ? b : c : d`) into declarative dictionary lookups or standard `if/else` blocks.
-* **Modern Optional Chaining**: Replace verbose legacy null checks (`typeof x !== 'undefined' && x && x.prop`) with standard optional chaining (`x?.prop`) and nullish coalescing (`??`).
-* **Pure Mathematical Extraction**: Isolate numeric calculations into pure, deterministic functions (`(inputs) => output`) without DOM mutations or closure side-effects.
+
+- **Guard Clause Inversion**: Invert deep legacy pyramid conditionals (`if (res) { if (res.responseData) { ... } }`) into early returns (`if (!res?.responseData) return;`).
+- **Ternary De-Nesting**: Transform multi-tier nested ternaries (`val ? a ? b : c : d`) into declarative dictionary lookups or standard `if/else` blocks.
+- **Modern Optional Chaining**: Replace verbose legacy null checks (`typeof x !== 'undefined' && x && x.prop`) with standard optional chaining (`x?.prop`) and nullish coalescing (`??`).
+- **Pure Mathematical Extraction**: Isolate numeric calculations into pure, deterministic functions (`(inputs) => output`) without DOM mutations or closure side-effects.
 
 ---
 
@@ -80,8 +88,10 @@ Eradicate legacy jQuery during slice extractions using native platform primitive
 ---
 
 ## Few-Shot Reasoning Example: Monolith Slice Extraction
+
 **Scenario:** Extracting an RPC handler from `StartupService.js` (500 lines) into `src/js/msg/`.
 **Reasoning Trace:**
+
 1. Characterization test: Confirm tests exist in `tests/msg/startup-service.test.mjs`.
 2. Extract slice: Create `src/js/state/playerScoreResolver.js` (<100 lines), inject dependencies and scoped logger `createLogger('PlayerScoreResolver')`.
 3. Wire call site: Replace the inline 40-line extraction block in `StartupService.js` with a single delegated call: `resolvePlayerScore(...)`.
@@ -104,6 +114,7 @@ Eradicate legacy jQuery during slice extractions using native platform primitive
 Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
 Primary reference categories: `js/`, `performance/`.
 Uphold in this domain:
+
 - preserve a11y semantics (live regions, captions/scope) when extracting renderers
 - keep timestamp handling on `resolveDate()`
 - defer extracted work via `scheduler.js`

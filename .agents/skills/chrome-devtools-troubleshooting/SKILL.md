@@ -1,6 +1,6 @@
 ---
 name: chrome-devtools-troubleshooting
-description: "Troubleshoot DevTools MCP port binding and attachment."
+description: 'Troubleshoot DevTools MCP port binding and attachment.'
 ---
 
 ## Troubleshooting Wizard
@@ -9,7 +9,7 @@ You are acting as a troubleshooting wizard to help the user configure and fix th
 
 ### Step 1: Find and Read Configuration
 
-Your first action should be to locate and read the MCP configuration file. Inspect the workspace configuration in `.agents/mcp_config.json`, the wrapper script `.agents/scripts/run-chrome-devtools-mcp.sh`, or the global configuration `~/.gemini/config/config.json`. (Note: In this repository, the test browser is managed via `foe-browser` on CDP port 9222).
+Your first action should be to locate and read the MCP configuration file. Inspect the workspace configuration in `.agents/mcp_config.json` (the `chrome-devtools` entry: `command` + `args` including `--browserUrl=http://127.0.0.1:9222`), the matching `opencode.json` entry, or the global configuration `~/.gemini/config/config.json`. (Note: In this repository, the test browser is managed via `foe-browser` on CDP port 9222; launch `foe-browser` if the port is down).
 
 If you find a configuration file, read and interpret it to identify potential issues such as:
 

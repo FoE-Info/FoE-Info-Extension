@@ -1,6 +1,6 @@
 ---
 name: audit-memory-leaks
-description: "Isolate detached DOM nodes and panel memory leaks via CDP."
+description: 'Isolate detached DOM nodes and panel memory leaks via CDP.'
 ---
 
 # Workflow: Audit Memory Leaks & Panel Performance
@@ -13,6 +13,7 @@ Use this skill to detect, isolate, and eliminate memory leaks, detached DOM node
 ---
 
 ## Phase 1: Establish Baseline Memory Footprint
+
 1. Start the test browser with a clean session:
    ```bash
    foe-browser --restart
@@ -26,6 +27,7 @@ Use this skill to detect, isolate, and eliminate memory leaks, detached DOM node
 ---
 
 ## Phase 2: Stress Simulation Cycle
+
 1. Run active gameplay or simulate repeated panel refreshes (repeat user interactions and panel view switches 5–10 times to amplify subtle leaks):
    ```bash
    for i in {1..5}; do foe-browser; sleep 2; done
@@ -39,7 +41,9 @@ Use this skill to detect, isolate, and eliminate memory leaks, detached DOM node
 ---
 
 ## Phase 3: Root Cause Isolation
+
 Check for primary FoE-Info leak patterns and remediation techniques:
+
 1. **Unbounded RPC Logging Arrays**:
    - Check if `buildingsReady`, `goodsBuildings`, or chat messages grow indefinitely.
    - Fix: Cap arrays with fixed-size ring buffers (e.g., `arr.slice(-500)`).
@@ -47,7 +51,7 @@ Check for primary FoE-Info leak patterns and remediation techniques:
    - Search for `$(...).on(...)` inside functions called on every RPC message.
    - Fix: Call `$(...).off(...)` before attaching, or use delegated event handling at the document level.
    - **Bootstrap Tooltip/Popover Disposal**: Always call `.dispose()` on component instances before removing or replacing host DOM nodes to prevent detached node accumulation. See [Bootstrap JS Lifecycle & Teardown](../add-feature-panel/references/bootstrap-js-api.md).
-   - *Caution on Detached DOM*: Certain detached DOM elements may be intentional cached table templates across tab switches. Confirm if nodes are active caches before nulling references.
+   - _Caution on Detached DOM_: Certain detached DOM elements may be intentional cached table templates across tab switches. Confirm if nodes are active caches before nulling references.
 
 3. **Global Window Caches & Retained Closures**:
    - Check if `window.CityEntities` or `window.Metadata` accumulates duplicate keys.
@@ -62,28 +66,37 @@ For canonical JavaScript memory leak patterns and remediation recipes, consult [
 ## Phase 4: 3-Snapshot Heap Comparison (Deep Inspection)
 
 If continuous memory growth is observed, follow the **3-Snapshot Lifecycle** to distinguish active state allocations from genuine leaks:
+
 1. **Baseline Snapshot**: Captured immediately after panel startup (`baseline.heapsnapshot`).
 2. **Target Snapshot**: Captured after repeated view switches, tab clicks, or 500+ RPC messages (`target.heapsnapshot`).
 3. **Final Snapshot (Post-Revert)**: Captured after navigating back to the starting tab and allowing GC to settle (`final.heapsnapshot`).
 
 ### 1. Snapshot Capture
+
 Capture snapshots programmatically using the `chrome-devtools` MCP server on CDP port 9222:
-* Call `take_heapsnapshot` with `pageId` (from `list_pages`) and target `filePath` (`/tmp/baseline.heapsnapshot`).
-* Alternatively, capture manually in DevTools: `Memory` tab -> `Take snapshot` -> right click -> `Save...`.
+
+- Call `take_heapsnapshot` with `pageId` (from `list_pages`) and target `filePath` (`/tmp/baseline.heapsnapshot`).
+- Alternatively, capture manually in DevTools: `Memory` tab -> `Take snapshot` -> right click -> `Save...`.
 
 ### 2. Compare Peak Allocation vs. Persistent Leaks
+
 Run `compare_snapshots.mjs` with all 3 snapshots:
+
 ```bash
 node .agents/skills/audit-memory-leaks/scripts/compare_snapshots.mjs /tmp/baseline.heapsnapshot /tmp/target.heapsnapshot /tmp/final.heapsnapshot
 ```
-*(Or use the native `compare_heapsnapshots` MCP tool within active agent sessions).*
+
+_(Or use the native `compare_heapsnapshots` MCP tool within active agent sessions)._
 
 The utility computes:
-* **Active Allocation (`Baseline -> Target`)**: Objects allocated to support gameplay and rendering.
-* **Persistent Leaks (`Baseline -> Final`)**: Objects that failed to garbage-collect after returning to the initial state (detached DOM, orphaned closures, lingering listeners).
+
+- **Active Allocation (`Baseline -> Target`)**: Objects allocated to support gameplay and rendering.
+- **Persistent Leaks (`Baseline -> Final`)**: Objects that failed to garbage-collect after returning to the initial state (detached DOM, orphaned closures, lingering listeners).
 
 ### 3. Deep Retainer Tracing via `memlab` (Optional)
+
 If `compare_snapshots.mjs` isolates detached DOM trees or closures, run `memlab` to trace the exact retaining path in the code:
+
 ```bash
 # Trace full root-to-leaf retainer paths for leaks across 3 snapshots
 npx memlab find-leaks --baseline /tmp/baseline.heapsnapshot --target /tmp/target.heapsnapshot --final /tmp/final.heapsnapshot
@@ -95,6 +108,7 @@ npx memlab analyze snapshot --snapshot /tmp/target.heapsnapshot
 ---
 
 ## Phase 5: Verification & Build
+
 1. Rebuild extension:
    ```bash
    npm run build:dev
@@ -112,6 +126,7 @@ npx memlab analyze snapshot --snapshot /tmp/target.heapsnapshot
 Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
 Primary reference categories: `performance/`.
 Uphold:
+
 - one long-lived `ResizeObserver` (disconnect before re-observe)
 - watch `innerHTML +=` re-serialization
 - batch DOM writes

@@ -1,6 +1,6 @@
 ---
 name: cookie-debugging
-description: "Inspect and debug cookies, auth headers, and session state."
+description: 'Inspect and debug cookies, auth headers, and session state.'
 ---
 
 ## Core Concepts
@@ -66,7 +66,7 @@ To verify that no non-essential or tracking cookies are set before consent or wh
 
 1. **Start Clean**: Open a fresh isolated context with a dedicated name:
    ```json
-   {"url": "<PAGE_URL>", "isolatedContext": "consent-test-1"}
+   { "url": "<PAGE_URL>", "isolatedContext": "consent-test-1" }
    ```
 2. **Record Baseline Cookies**: Before interacting with the banner, run `evaluate_script` with `async () => await cookieStore.getAll()`.
 3. **Inspect Premature Network Requests & Issues**:

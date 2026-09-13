@@ -9,8 +9,8 @@ The `Temporal` API provides a clean solution with `Temporal.PlainDate` and its `
 1. **MANDATORY:** **Parse the starting date**: Use `Temporal.PlainDate.from()` to create a date object.
 2. **MANDATORY:** **Add the duration**: Use the `.add()` method with a duration object (e.g., `{ months: 1 }`).
 3. **OPTIONAL:** **Specify overflow behavior**: Use the `overflow` option to control how invalid dates (like Feb 31) are handled.
-    - `'constrain'` (default): Clamps to the last valid day of the month.
-    - `'reject'`: Throws a `RangeError`.
+   - `'constrain'` (default): Clamps to the last valid day of the month.
+   - `'reject'`: Throws a `RangeError`.
 
 ### Example: Subscription Billing Cycle
 
@@ -34,7 +34,7 @@ try {
   // Jan 31 + 1 month with 'reject' throws because Feb 31 is invalid
   const invalidDate = startDate.add({ months: 1 }, { overflow: 'reject' });
 } catch (e) {
-  console.log("Caught expected error:", e.name); // RangeError
+  console.log('Caught expected error:', e.name); // RangeError
 }
 ```
 
@@ -58,7 +58,7 @@ For browsers that do not yet support the native `Temporal` API, use feature dete
 (async () => {
   if (typeof Temporal === 'undefined') {
     // Load the polyfill conditionally
-    const module = await import("https://esm.sh/@js-temporal/polyfill");
+    const module = await import('https://esm.sh/@js-temporal/polyfill');
     globalThis.Temporal = module.Temporal;
     // Extend Date.prototype if needed
     Date.prototype.toTemporalInstant = module.toTemporalInstant;

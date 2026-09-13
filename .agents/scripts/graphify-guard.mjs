@@ -6,9 +6,7 @@
  * across application source code unless Graphify knowledge graphs have been
  * consulted recently in the active session.
  */
-
-import fs from 'node:fs';
-import { statSync } from 'node:fs';
+import fs, { statSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

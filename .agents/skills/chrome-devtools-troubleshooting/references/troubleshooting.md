@@ -135,20 +135,35 @@ To register `chrome-devtools-mcp` in Antigravity workspaces, add it to `.agents/
   "mcpServers": {
     "chrome-devtools": {
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest", "--browserUrl", "http://127.0.0.1:9222"]
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--browserUrl",
+        "http://127.0.0.1:9222"
+      ]
     }
   }
 }
 ```
 
-For global registration across all Antigravity workspaces, configure `~/.gemini/config/mcp_config.json`. Alternatively, use our dedicated environment-isolated wrapper script:
+For global registration across all Antigravity workspaces, configure `~/.gemini/config/mcp_config.json`. Alternatively, register the native binary directly with the environment-isolated flags used by this workspace:
 
 ```json
 {
   "mcpServers": {
     "chrome-devtools": {
-      "command": "/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/.agents/scripts/run-chrome-devtools-mcp.sh",
-      "args": []
+      "command": "chrome-devtools-mcp",
+      "args": [
+        "--browserUrl=http://127.0.0.1:9222",
+        "--experimentalMemory",
+        "--experimentalVision",
+        "--categoryExperimentalWebmcp",
+        "--experimentalDevtools",
+        "--experimentalIncludeAllPages",
+        "--experimentalPageIdRouting",
+        "--allowUnrestrictedPaths",
+        "--no-usage-statistics"
+      ]
     }
   }
 }

@@ -53,7 +53,7 @@ If the experiment requires a variant stylesheet, use `blocking="render"` on the 
     rel="stylesheet"
     href="https://cdn.example.com/experiment-variant-b.css"
     blocking="render"
-  >
+  />
 </head>
 ```
 
@@ -70,8 +70,9 @@ If the experiment logic is lightweight enough to inline, use an inline module sc
   -->
   <script type="module" blocking="render">
     // Fetch the experiment configuration from your testing platform.
-    const config = await fetch('/api/experiment?id=homepage-cta')
-      .then(res => res.json());
+    const config = await fetch('/api/experiment?id=homepage-cta').then((res) =>
+      res.json(),
+    );
 
     // Apply the variant by setting a data attribute on <html>.
     // CSS rules keyed to this attribute will style the variant.
@@ -85,7 +86,7 @@ If the experiment logic is lightweight enough to inline, use an inline module sc
     }
 
     /* Variant B styles, activated by the data attribute */
-    [data-variant="b"] .cta-button {
+    [data-variant='b'] .cta-button {
       background-color: green;
     }
   </style>

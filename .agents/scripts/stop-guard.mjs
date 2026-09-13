@@ -5,7 +5,6 @@
  * Prevents premature session termination if background tasks (CDP traces,
  * Graphify reindexing, builds) are still actively executing.
  */
-
 import { fileURLToPath } from 'node:url';
 
 export function evaluateStopDecision(payload) {

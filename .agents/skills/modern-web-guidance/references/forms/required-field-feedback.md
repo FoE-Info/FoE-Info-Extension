@@ -1,10 +1,13 @@
 # Required Field Feedback
 
 ## The Problem
+
 Marking required fields with an error state immediately upon page load can be confusing. Ideally, a required field should only look "invalid" if the user has attempted to fill it out and failed.
 
 ## The Solution
+
 The `:user-invalid` pseudo-class solves this perfectly. For a required field, it will not match on page load. It will only match if:
+
 1.  The user interacts with the field (e.g., types a character and deletes it) and then leaves it (blur), leaving it empty.
 2.  The user attempts to submit the form while the field is empty.
 
@@ -17,6 +20,7 @@ The `:user-invalid` pseudo-class solves this perfectly. For a required field, it
 ## Implementation Guide
 
 ### 1. HTML Structure
+
 ```html
 <form id="feedback-form">
   <div class="field">
@@ -27,7 +31,7 @@ The `:user-invalid` pseudo-class solves this perfectly. For a required field, it
       name="full-name"
       required
       aria-errormessage="name-error"
-    >
+    />
     <!-- MANDATORY: Include an icon or distinct non-color indicator alongside error text -->
     <div id="name-error" class="error-msg">
       <span aria-hidden="true">❌</span> This field is required.
@@ -37,6 +41,7 @@ The `:user-invalid` pseudo-class solves this perfectly. For a required field, it
 ```
 
 ### 2. CSS
+
 ```css
 .error-msg {
   display: none;
@@ -81,11 +86,15 @@ const syncAriaInvalid = (input) => {
 };
 
 // Sync on blur when a user finishes interacting
-form.addEventListener('blur', (e) => {
-  if (e.target.matches('input[required]')) {
-    syncAriaInvalid(e.target);
-  }
-}, true);
+form.addEventListener(
+  'blur',
+  (e) => {
+    if (e.target.matches('input[required]')) {
+      syncAriaInvalid(e.target);
+    }
+  },
+  true,
+);
 
 // Sync all required fields when submission is attempted
 form.addEventListener('submit', () => {
@@ -161,14 +170,20 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -196,14 +211,17 @@ UserInvalidFallback.init(form);
 
 ## Other Considerations
 
-1.  **Asterisks**: It is still best practice to indicate required fields visually (e.g., with an asterisk `*`) in the label, so users know what to expect *before* they interact.
+1.  **Asterisks**: It is still best practice to indicate required fields visually (e.g., with an asterisk `*`) in the label, so users know what to expect _before_ they interact.
 2.  **Submit Buttons**: Unlike `disabled` buttons, keep your submit button enabled. If the user clicks it, the browser will automatically trigger `:user-invalid` on all empty required fields and focus the first one. This is excellent for accessibility and UX.
 3.  **Accessibility**: Native `:user-invalid` does not automatically sync with ARIA attributes. Add the following JavaScript to keep `aria-invalid` in sync with the visual state:
 
 ```javascript
 // Sync aria-invalid with the CSS :user-invalid state
 const syncAria = (el) => {
-  el.setAttribute?.('aria-invalid', el.matches(':user-invalid') ? 'true' : 'false');
+  el.setAttribute?.(
+    'aria-invalid',
+    el.matches(':user-invalid') ? 'true' : 'false',
+  );
 };
 
 // Update on blur (to show error) and input (to clear it)

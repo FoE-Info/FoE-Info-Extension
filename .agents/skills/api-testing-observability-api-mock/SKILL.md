@@ -1,6 +1,6 @@
 ---
 name: api-testing-observability-api-mock
-description: "Create mock RPC services, simulation contracts, and fixtures."
+description: 'Create mock RPC services, simulation contracts, and fixtures.'
 ---
 
 # API Mocking Framework
@@ -36,6 +36,7 @@ The user needs to create mock APIs for development, testing, or demonstration pu
 ## Requirements
 
 When creating mock API services or fixtures for FoE-Info:
+
 - Identify the target InnoGames JSON-RPC service classes and methods (e.g., `StartupService.getData`, `HiddenRewardService.getOverview`, `CityProductionService`, `GreatBuildingsService`).
 - Model realistic payload structures adhering to the `ServerRequest` envelope array format: `[{"__class__": "ServerRequest", "requestClass": "...", "requestMethod": "...", "responseData": {...}, "requestId": ...}]`.
 - Ensure mock fixtures integrate cleanly with `MessageDispatcher.dispatchRaw()` or unit tests in `tests/protocol/`.
@@ -54,6 +55,7 @@ When creating mock API services or fixtures for FoE-Info:
 - `references/implementation-playbook.md` for code samples, checklists, and templates.
 
 ## Limitations
+
 - Use this skill only when the task clearly matches the scope described above.
 - Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
 - Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.

@@ -1,9 +1,11 @@
 ## Overview
-Users expect immediate visual feedback when interacting with UI elements like carousels or galleries. Traditional scroll snap only provides feedback *after* the scroll gesture completes and the element settles. By using Scroll Snap Events, specifically `scrollsnapchanging`, you can provide real-time feedback during the scroll gesture, highlighting the pending snap target before the user releases their touch or mouse.
+
+Users expect immediate visual feedback when interacting with UI elements like carousels or galleries. Traditional scroll snap only provides feedback _after_ the scroll gesture completes and the element settles. By using Scroll Snap Events, specifically `scrollsnapchanging`, you can provide real-time feedback during the scroll gesture, highlighting the pending snap target before the user releases their touch or mouse.
 
 ## Implementation
 
 ### 1. Listen for `scrollsnapchanging`
+
 Attach an event listener for `scrollsnapchanging` to the scroll container. This event fires when the browser determines a new snap target is likely to be selected.
 
 ```javascript
@@ -29,6 +31,7 @@ container.addEventListener('scrollsnapchanging', (event) => {
 This example uses `snapTargetInline` because the gallery scrolls horizontally. If your scroll container scrolls vertically, use `snapTargetBlock` instead.
 
 ### 2. Listen for `scrollsnapchange`
+
 To finalize the state when the scroll gesture completes and the element actually snaps, listen for the `scrollsnapchange` event. This is required to establish the final active state.
 
 ```javascript
@@ -50,10 +53,11 @@ container.addEventListener('scrollsnapchange', (event) => {
 ```
 
 ### 3. Sync initial state
+
 When the page loads, the scroll position might be restored by the browser (e.g., via history traversal or an anchor link). Neither `scrollsnapchange` nor `scroll` events will fire automatically. Run a one-off geometric check to sync the UI with the initial scroll position.
 
 ```javascript
-// Note: For item.offsetLeft to be relative to the container, 
+// Note: For item.offsetLeft to be relative to the container,
 // the container MUST be the offsetParent (e.g., `position: relative`).
 const findClosestItemIndex = () => {
   // Center-distance assumes scroll-snap-align: center on items.
@@ -93,6 +97,7 @@ if (document.readyState === 'complete') {
 ```
 
 ### Fallback strategies
+
 Scroll snap events has limited availability.
 Supported by: Chrome 129 (Sep 2024) and Edge 129 (Sep 2024).
 Unsupported in: Firefox and Safari.
@@ -125,22 +130,26 @@ if ('onscrollsnapchanging' in Element.prototype) {
     thumbnails[closestIndex].setAttribute('aria-current', 'true');
   };
 
-  container.addEventListener('scroll', () => {
-    if (rafId) return;
-    rafId = requestAnimationFrame(() => {
-      rafId = null;
-      const closestIndex = findClosestItemIndex();
-      if (!thumbnails[closestIndex]) return;
+  container.addEventListener(
+    'scroll',
+    () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const closestIndex = findClosestItemIndex();
+        if (!thumbnails[closestIndex]) return;
 
-      // DO NOT forget to clean up stale pending classes
-      thumbnails.forEach((thumb) => thumb.classList.remove('pending'));
-      thumbnails[closestIndex].classList.add('pending');
-    });
+        // DO NOT forget to clean up stale pending classes
+        thumbnails.forEach((thumb) => thumb.classList.remove('pending'));
+        thumbnails[closestIndex].classList.add('pending');
+      });
 
-    // Debounce fallback for browsers that don't support scrollend
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(promotePendingToActive, 100);
-  }, { passive: true });
+      // Debounce fallback for browsers that don't support scrollend
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(promotePendingToActive, 100);
+    },
+    { passive: true },
+  );
 
   // Fallback: use Baseline `scrollend` event to promote pending to active cleanly where supported
   container.addEventListener('scrollend', () => {

@@ -10,7 +10,7 @@ Video and audio files cannot be read directly. Transcribe them to text first, th
 
 **Strategy:** Read the god nodes from `graphify-out/.graphify_detect.json` (or the analysis file if it exists from a previous run). You are already a language model — write a one-sentence domain hint yourself from those labels. Then pass it to Whisper as the initial prompt. No separate API call needed.
 
-**However**, if the corpus has *only* video files and no other docs/code, use the generic fallback prompt: `"Use proper punctuation and paragraph breaks."`
+**However**, if the corpus has _only_ video files and no other docs/code, use the generic fallback prompt: `"Use proper punctuation and paragraph breaks."`
 
 **Step 1 - Write the Whisper prompt yourself.**
 
@@ -44,6 +44,7 @@ print(f'Transcribed {len(transcript_paths)} file(s)', file=sys.stderr)
 ```
 
 After transcription:
+
 - Read the transcript paths from `graphify-out/.graphify_transcripts.json`
 - Add them to the docs list before dispatching semantic subagents in Step 3B
 - Print how many transcripts were created: `Transcribed N video file(s) -> treating as docs`

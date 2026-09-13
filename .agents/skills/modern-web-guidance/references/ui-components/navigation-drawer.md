@@ -38,10 +38,12 @@ The drawer is a single popover containing a horizontal scroller, which contains 
   <header>
     <!-- aria-controls links the trigger to the drawer; aria-expanded
          reflects the current state for assistive tech. -->
-    <button id="drawer-open"
-            aria-label="Menu"
-            aria-expanded="false"
-            aria-controls="drawer">
+    <button
+      id="drawer-open"
+      aria-label="Menu"
+      aria-expanded="false"
+      aria-controls="drawer"
+    >
       <!-- MANDATORY: Inline decorative SVGs MUST define aria-hidden="true" -->
       <svg aria-hidden="true" viewBox="0 0 24 24">...</svg>
     </button>
@@ -179,9 +181,13 @@ A scroll-driven animation maps `--drawer-backdrop` from 1 (open) to 0 (closed) a
 
   @keyframes fade-drawer-backdrop {
     /* Scroll position 0 = drawer fully open = backdrop visible. */
-    0% { --drawer-backdrop: 1 }
+    0% {
+      --drawer-backdrop: 1;
+    }
     /* Scroll position 100% = drawer fully closed = backdrop hidden. */
-    100% { --drawer-backdrop: 0 }
+    100% {
+      --drawer-backdrop: 0;
+    }
   }
 }
 ```
@@ -207,7 +213,7 @@ function openDrawer() {
   // to the CSS `scroll-behavior` property, which will be smooth unless
   // the user prefers reduced motion. Snap takes over at the end and
   // locks the drawer fully open.
-  scroller.scrollTo({left: 0, behavior: 'auto'});
+  scroller.scrollTo({ left: 0, behavior: 'auto' });
 }
 
 function closeDrawer() {
@@ -216,7 +222,7 @@ function closeDrawer() {
   // and the close animation would not be visible. The
   // IntersectionObserver in step 4 hides the popover once the sheet
   // has actually left the viewport.
-  scroller.scrollTo({left: scroller.offsetWidth, behavior: 'auto'});
+  scroller.scrollTo({ left: scroller.offsetWidth, behavior: 'auto' });
 }
 ```
 
@@ -259,7 +265,7 @@ const observer = new IntersectionObserver(
   // root: drawer makes the popover element the intersection root,
   // so the ratio reflects the sheet's visibility within the popover
   // (i.e. how much of it has been swiped on-screen).
-  {root: drawer, threshold: [visibleThreshold, 1]},
+  { root: drawer, threshold: [visibleThreshold, 1] },
 );
 observer.observe(sheet);
 ```
@@ -323,16 +329,16 @@ async function openDrawer() {
   if (!CSS.supports('scroll-initial-target', 'nearest')) {
     // Jump-scroll to the closed stop so the scroll below
     // animates the drawer in from off-screen.
-    scroller.scrollTo({left: scroller.offsetWidth, behavior: 'instant'});
+    scroller.scrollTo({ left: scroller.offsetWidth, behavior: 'instant' });
     // Wait two animation frames for the jump-scroll to commit.
     // A single rAF is not enough — the second `scrollTo` would
     // cancel the first before the browser has a chance to apply it.
     await new Promise((r) =>
-      requestAnimationFrame(() => requestAnimationFrame(r))
+      requestAnimationFrame(() => requestAnimationFrame(r)),
     );
   }
 
-  scroller.scrollTo({left: 0, behavior: 'auto'});
+  scroller.scrollTo({ left: 0, behavior: 'auto' });
 }
 ```
 
@@ -342,7 +348,6 @@ Baseline status for Registered custom properties: Newly available. It's been Bas
 Supported by: Chrome 85 (Aug 2020), Edge 85 (Aug 2020), Firefox 128 (Jul 2024), and Safari 16.4 (Mar 2023).
 
 `@property` is only needed because the scroll-driven animation interpolates `--drawer-backdrop` between keyframes — without registration, the property would be treated as a string and would jump between 0 and 1 with no fade. If the scroll-driven animation fallback above is in place, that JavaScript writes a fresh numeric string to `--drawer-backdrop` on every scroll frame and never interpolates, so no separate `@property` fallback is needed since all browsers that support scroll-driven animations also support `@property`.
-
 
 #### Popover API fallback (no `popover` attribute support):
 

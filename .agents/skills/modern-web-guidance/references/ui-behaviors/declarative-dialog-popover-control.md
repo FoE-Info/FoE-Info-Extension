@@ -11,9 +11,7 @@ Popovers can be toggled open and closed using a single button.
 ```html
 <!-- MANDATORY: The commandfor attribute links the invoker to the ID of the target element so the browser knows what to control. -->
 <!-- MANDATORY: The command attribute specifies the action to perform. Use 'toggle-popover' to handle both open and close states automatically. -->
-<button commandfor="my-popover" command="toggle-popover">
-  Toggle Popover
-</button>
+<button commandfor="my-popover" command="toggle-popover">Toggle Popover</button>
 
 <!-- MANDATORY: The target element must have the popover attribute to be controlled as a popover. -->
 <div id="my-popover" popover>
@@ -54,9 +52,7 @@ Unlike popovers, modal dialogs typically use separate buttons for opening and cl
   <p>Are you sure you want to proceed?</p>
 
   <!-- MANDATORY: Use command="close" to dismiss the dialog safely. -->
-  <button commandfor="confirm-dialog" command="close">
-    Cancel
-  </button>
+  <button commandfor="confirm-dialog" command="close">Cancel</button>
 </dialog>
 ```
 
@@ -128,18 +124,20 @@ if (!hasNativeSupport) {
 }
 
 // 2. Manually manage ARIA states in your listener
-document.getElementById('action-target').addEventListener('command', (event) => {
-  const command = event.command;
-  const target = event.target;
-  const source = event.source; // The button that triggered the command
+document
+  .getElementById('action-target')
+  .addEventListener('command', (event) => {
+    const command = event.command;
+    const target = event.target;
+    const source = event.source; // The button that triggered the command
 
-  if (command === '--spin') {
-    const isSpun = target.classList.toggle('is-spun');
-    
-    // Polyfill tip: Manually update ARIA to match the new state
-    source?.setAttribute('aria-pressed', isSpun);
-  }
-});
+    if (command === '--spin') {
+      const isSpun = target.classList.toggle('is-spun');
+
+      // Polyfill tip: Manually update ARIA to match the new state
+      source?.setAttribute('aria-pressed', isSpun);
+    }
+  });
 ```
 
 ### Manual fallback (Traditional pattern)
@@ -162,35 +160,41 @@ if (!globalThis.CommandEvent) {
       this.source = source;
       this.command = command;
     }
-  }
+  };
 }
 
 // 3. The fallback: Dispatch events manually if native support is missing
-  document.addEventListener('click', (event) => {
-    const button = event.composedPath().find((el) => el.matches?.("button[commandfor]"));
-    if (!button) return;
+document.addEventListener('click', (event) => {
+  const button = event
+    .composedPath()
+    .find((el) => el.matches?.('button[commandfor]'));
+  if (!button) return;
 
-    const target = document.getElementById(button.getAttribute('commandfor'));
-    const command = button.getAttribute('command');
+  const target = document.getElementById(button.getAttribute('commandfor'));
+  const command = button.getAttribute('command');
 
-    if (target && command) {
-      target.dispatchEvent(new CommandEvent('command', { 
-        command, 
+  if (target && command) {
+    target.dispatchEvent(
+      new CommandEvent('command', {
+        command,
         source: button,
-      }));
-    }
-  });
+      }),
+    );
+  }
+});
 
 // 4. **Mandatory:** Register the unified listener directly on the target element
-document.getElementById('action-target').addEventListener('command', (event) => {
-  const command = event.command;
-  const target = event.target;
-  const action = commandRegistry[command];
+document
+  .getElementById('action-target')
+  .addEventListener('command', (event) => {
+    const command = event.command;
+    const target = event.target;
+    const action = commandRegistry[command];
 
-  if (action) {
-    action(target);
-  }
- });
+    if (action) {
+      action(target);
+    }
+  });
 ```
 
 ### Fallbacks & browser support for Popover
@@ -206,8 +210,8 @@ With a bundler or import map:
 
 ```js
 // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
-if (!("popover" in HTMLElement.prototype)) {
-  import("@oddbird/popover-polyfill");
+if (!('popover' in HTMLElement.prototype)) {
+  import('@oddbird/popover-polyfill');
 }
 ```
 
@@ -215,8 +219,8 @@ Without a bundler, import from a CDN inside a `<script type="module">`:
 
 ```html
 <script type="module">
-  if (!("popover" in HTMLElement.prototype)) {
-    import("https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js");
+  if (!('popover' in HTMLElement.prototype)) {
+    import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js');
   }
 </script>
 ```

@@ -13,7 +13,7 @@ To build a component that changes its styling based on a child's state:
 1. **Define the default styling**: Set CSS variables on the container to define its base state.
 2. **Apply state-based overrides**: Target the container with `:has([child-selector]:[state])` and redefine the CSS variables for the active or alternate state.
 
-*Example: A component that changes theme based on a child toggle.*
+_Example: A component that changes theme based on a child toggle._
 
 ```css
 /* 1. Define the default state on the component container */
@@ -28,7 +28,9 @@ To build a component that changes its styling based on a child's state:
   border: 1px solid var(--card-border);
 
   /* Use a transition for smooth state changes */
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 /* 2. Apply styles when the child enters the specific state */
@@ -51,7 +53,7 @@ To build a component that changes its styling based on a child's state:
 <div class="theme-card">
   <!-- The child element whose state controls the parent -->
   <label>
-    <input type="checkbox" class="theme-toggle">
+    <input type="checkbox" class="theme-toggle" />
     Enable Dark Mode
   </label>
 

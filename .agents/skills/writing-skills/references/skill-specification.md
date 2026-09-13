@@ -7,6 +7,7 @@ Authoritative specification for Antigravity skills based on `https://antigravity
 ## 1. Directory Structure
 
 A skill must be a standalone directory placed inside a customization root:
+
 - Workspace: `.agents/skills/<skill-name>/`
 - Global: `~/.gemini/config/skills/<skill-name>/`
 - Plugin: `plugins/<plugin-name>/skills/<skill-name>/`
@@ -35,10 +36,10 @@ description: Clear description of what the skill does and when to use it.
 
 ### Frontmatter Fields
 
-| Field | Type | Required | Rules & Invariants |
-| :--- | :--- | :---: | :--- |
-| `name` | `string` | Yes | Unique identifier. Lowercase letters, digits, and hyphens only. Must match directory name. |
-| `description` | `string` | Yes | Written in third-person. States **what** the skill does AND **when** to activate it. Under 120 characters in FoE-Info to conserve discovery context. |
+| Field         | Type     | Required | Rules & Invariants                                                                                                                                   |
+| :------------ | :------- | :------: | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`        | `string` |   Yes    | Unique identifier. Lowercase letters, digits, and hyphens only. Must match directory name.                                                           |
+| `description` | `string` |   Yes    | Written in third-person. States **what** the skill does AND **when** to activate it. Under 120 characters in FoE-Info to conserve discovery context. |
 
 ---
 

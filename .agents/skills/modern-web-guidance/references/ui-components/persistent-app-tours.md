@@ -5,6 +5,7 @@ Onboarding tours require overlays that persist while users interact with the hig
 ### Recommended Implementation
 
 #### HTML
+
 ```html
 <div id="feature-target">Highlight this feature</div>
 
@@ -18,6 +19,7 @@ Onboarding tours require overlays that persist while users interact with the hig
 ```
 
 #### CSS
+
 ```css
 #feature-target {
   anchor-name: --feature-target;
@@ -37,6 +39,7 @@ Onboarding tours require overlays that persist while users interact with the hig
 ```
 
 #### JavaScript
+
 ```javascript
 const tourStep = document.getElementById('tour-step');
 tourStep.showPopover();
@@ -46,11 +49,11 @@ tourStep.querySelector('button').focus();
 
 ### Implementation Guidelines
 
-* **MANDATORY:** Use `popover="manual"` to prevent the tour step from closing accidentally during user interaction.
-* **MANDATORY:** Mark the container with `role="dialog"` and link its heading via `aria-labelledby`.
-* **MANDATORY:** Shift programmatic focus inside the popover immediately after opening to prevent focus abandonment.
-* **DO** use CSS Anchor Positioning to tether the tour step to the specific feature being explained.
-* **DO** provide an explicit "Close" or "Next" button within the popover that uses `popovertargetaction="hide"`.
+- **MANDATORY:** Use `popover="manual"` to prevent the tour step from closing accidentally during user interaction.
+- **MANDATORY:** Mark the container with `role="dialog"` and link its heading via `aria-labelledby`.
+- **MANDATORY:** Shift programmatic focus inside the popover immediately after opening to prevent focus abandonment.
+- **DO** use CSS Anchor Positioning to tether the tour step to the specific feature being explained.
+- **DO** provide an explicit "Close" or "Next" button within the popover that uses `popovertargetaction="hide"`.
 
 ### Fallback strategies
 
@@ -67,8 +70,8 @@ With a bundler or import map:
 
 ```js
 // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
-if (!("popover" in HTMLElement.prototype)) {
-  import("@oddbird/popover-polyfill");
+if (!('popover' in HTMLElement.prototype)) {
+  import('@oddbird/popover-polyfill');
 }
 ```
 
@@ -76,8 +79,8 @@ Without a bundler, import from a CDN inside a `<script type="module">`:
 
 ```html
 <script type="module">
-  if (!("popover" in HTMLElement.prototype)) {
-    import("https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js");
+  if (!('popover' in HTMLElement.prototype)) {
+    import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js');
   }
 </script>
 ```
@@ -99,12 +102,13 @@ Anchor positioning is not natively supported by any major browser yet.
 To support browsers without anchor positioning, you can choose between using a polyfill or a pure CSS fallback.
 
 ##### Option 1: Polyfill Fallback
+
 The `@oddbird/css-anchor-positioning` polyfill can be used to emulate anchor positioning. It does not support implicit anchors, so you MUST add explicit anchor names to the trigger. Additionally, `position-area` is not supported on popovers by the polyfill, so you MUST use `anchor()` on the desired insets instead of `position-area`.
 
 ```html
 <script type="module">
   if (!CSS.supports('anchor-name: --foo')) {
-    await import("https://unpkg.com/@oddbird/css-anchor-positioning");
+    await import('https://unpkg.com/@oddbird/css-anchor-positioning');
   }
 </script>
 ```
@@ -118,6 +122,7 @@ The `@oddbird/css-anchor-positioning` polyfill can be used to emulate anchor pos
 ```
 
 ##### Option 2: Non-Polyfill CSS Fallback
+
 If you prefer not to use a polyfill, you can default the tooltip to a fixed position at the bottom of the viewport using `@supports not`.
 
 ```css

@@ -1,34 +1,34 @@
 ---
 name: brooks-lint
-description: "Detect architectural smells and module coupling."
+description: 'Detect architectural smells and module coupling.'
 ---
 
 # Brooks Lint
 
 ## Overview
 
-Brooks Lint is an architectural code review skill that reviews your code through the lens of 12 classic software engineering books. Instead of checking style rules, it asks: "What would the authors of *The Pragmatic Programmer*, *Clean Code*, and *Designing Data-Intensive Applications* say about this code?"
+Brooks Lint is an architectural code review skill that reviews your code through the lens of 12 classic software engineering books. Instead of checking style rules, it asks: "What would the authors of _The Pragmatic Programmer_, _Clean Code_, and _Designing Data-Intensive Applications_ say about this code?"
 
 It synthesizes the principles from landmark engineering books into actionable, structured feedback — catching design smells, tight coupling, missing abstractions, and architectural risks that linters and AI tools typically miss.
 
-Named after Fred Brooks, author of *The Mythical Man-Month* — because the hardest bugs are conceptual, not syntactic.
+Named after Fred Brooks, author of _The Mythical Man-Month_ — because the hardest bugs are conceptual, not syntactic.
 
 ## The 12 Books
 
-| Book | Key Principles Applied |
-|------|----------------------|
-| *The Pragmatic Programmer* | DRY, orthogonality, tracer bullets |
-| *Clean Code* | Naming, function size, comment clarity |
-| *The Mythical Man-Month* | Conceptual integrity, second-system effect |
-| *Designing Data-Intensive Applications* | Data consistency, fault tolerance, scalability |
-| *A Philosophy of Software Design* | Deep modules, information hiding, complexity |
-| *Refactoring* | Code smells, extract method, encapsulation |
-| *Working Effectively with Legacy Code* | Seams, characterization tests, dependency breaking |
-| *Domain-Driven Design* | Ubiquitous language, bounded contexts, aggregates |
-| *Release It!* | Stability patterns, timeouts, bulkheads, circuit breakers |
-| *Structure and Interpretation of Computer Programs* | Abstraction, recursion, metalinguistic abstraction |
-| *The Art of UNIX Programming* | Modularity, composability, rule of least surprise |
-| *Extreme Programming Explained* | YAGNI, simple design, collective ownership |
+| Book                                                | Key Principles Applied                                    |
+| --------------------------------------------------- | --------------------------------------------------------- |
+| _The Pragmatic Programmer_                          | DRY, orthogonality, tracer bullets                        |
+| _Clean Code_                                        | Naming, function size, comment clarity                    |
+| _The Mythical Man-Month_                            | Conceptual integrity, second-system effect                |
+| _Designing Data-Intensive Applications_             | Data consistency, fault tolerance, scalability            |
+| _A Philosophy of Software Design_                   | Deep modules, information hiding, complexity              |
+| _Refactoring_                                       | Code smells, extract method, encapsulation                |
+| _Working Effectively with Legacy Code_              | Seams, characterization tests, dependency breaking        |
+| _Domain-Driven Design_                              | Ubiquitous language, bounded contexts, aggregates         |
+| _Release It!_                                       | Stability patterns, timeouts, bulkheads, circuit breakers |
+| _Structure and Interpretation of Computer Programs_ | Abstraction, recursion, metalinguistic abstraction        |
+| _The Art of UNIX Programming_                       | Modularity, composability, rule of least surprise         |
+| _Extreme Programming Explained_                     | YAGNI, simple design, collective ownership                |
 
 ## When to Use This Skill
 
@@ -67,6 +67,7 @@ This skill is active in `.agents/skills/brooks-lint/`. Invoke it directly or rec
 ```
 
 **Brooks Lint output:**
+
 ```
 [Pragmatic Programmer] DRY violation: payment validation logic duplicated in 3 places
 [Clean Code] Method processPayment() does 4 things — violates Single Responsibility
@@ -89,16 +90,16 @@ This skill is active in `.agents/skills/brooks-lint/`. Invoke it directly or rec
 
 ## Review Categories
 
-| Category | Books Applied | What It Catches |
-|----------|--------------|-----------------|
-| **DRY / Duplication** | PP, Refactoring | Copy-paste code, shared logic not extracted |
-| **Naming** | Clean Code, DDD | Unclear names, domain language violations |
-| **Coupling** | APOSD, PP | Tight dependencies, missing interfaces |
-| **Stability** | Release It! | Missing timeouts, no retry logic, no circuit breakers |
-| **Data Integrity** | DDIA | Race conditions, non-idempotent operations |
-| **Complexity** | APOSD, SICP | Over-engineering, unnecessary abstraction |
-| **Legacy Debt** | WELC | Hard-to-test code, missing seams |
-| **Domain Clarity** | DDD, XP | Anemic models, missing bounded contexts |
+| Category              | Books Applied   | What It Catches                                       |
+| --------------------- | --------------- | ----------------------------------------------------- |
+| **DRY / Duplication** | PP, Refactoring | Copy-paste code, shared logic not extracted           |
+| **Naming**            | Clean Code, DDD | Unclear names, domain language violations             |
+| **Coupling**          | APOSD, PP       | Tight dependencies, missing interfaces                |
+| **Stability**         | Release It!     | Missing timeouts, no retry logic, no circuit breakers |
+| **Data Integrity**    | DDIA            | Race conditions, non-idempotent operations            |
+| **Complexity**        | APOSD, SICP     | Over-engineering, unnecessary abstraction             |
+| **Legacy Debt**       | WELC            | Hard-to-test code, missing seams                      |
+| **Domain Clarity**    | DDD, XP         | Anemic models, missing bounded contexts               |
 
 ## Best Practices
 

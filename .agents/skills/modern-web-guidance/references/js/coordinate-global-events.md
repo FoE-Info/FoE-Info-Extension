@@ -16,9 +16,9 @@ To coordinate global events and handle potential DST conflicts:
 
 ```javascript
 // 1. Define the event time and target time zone
-const date = "2025-03-09";
-const time = "02:30"; // This time is skipped in New York during Spring Forward
-const timeZone = "America/New_York";
+const date = '2025-03-09';
+const time = '02:30'; // This time is skipped in New York during Spring Forward
+const timeZone = 'America/New_York';
 const inputStr = `${date}T${time}[${timeZone}]`;
 
 // 2. Detect conflicts using 'reject'
@@ -29,27 +29,29 @@ try {
 } catch (e) {
   if (e instanceof RangeError) {
     hasConflict = true;
-    console.log("This time falls in a DST transition gap or overlap.");
+    console.log('This time falls in a DST transition gap or overlap.');
   }
 }
 
 // 3. Resolve the time safely using 'compatible' (default)
 // 'compatible' will resolve to a valid time even if skipped or repeated
-const hostTime = Temporal.ZonedDateTime.from(inputStr, { disambiguation: 'compatible' });
+const hostTime = Temporal.ZonedDateTime.from(inputStr, {
+  disambiguation: 'compatible',
+});
 console.log(`Resolved time: ${hostTime.toString()}`);
 
 // 4. Convert to another time zone (e.g., Tokyo)
-const tokyoTime = hostTime.withTimeZone("Asia/Tokyo");
+const tokyoTime = hostTime.withTimeZone('Asia/Tokyo');
 console.log(`Tokyo time: ${tokyoTime.toString()}`);
 ```
 
 ## Strategic Implementation & Best Practices
 
--   **DO** use `Temporal.ZonedDateTime` for events that are bound to a specific geographical location (like a meeting in a specific city).
--   **DO** use `disambiguation: 'reject'` if you need to detect and warn users about scheduling conflicts during DST transitions.
--   **DO** use `disambiguation: 'compatible'` (the default) when you want the system to automatically pick a sensible time when conflicts occur.
--   **DO NOT** use `Temporal.PlainDateTime` for global events, as it does not carry time zone information and cannot account for DST changes.
--   **DO** use `.withTimeZone()` to calculate the equivalent time in other locations without mutating the original object (Temporal objects are immutable).
+- **DO** use `Temporal.ZonedDateTime` for events that are bound to a specific geographical location (like a meeting in a specific city).
+- **DO** use `disambiguation: 'reject'` if you need to detect and warn users about scheduling conflicts during DST transitions.
+- **DO** use `disambiguation: 'compatible'` (the default) when you want the system to automatically pick a sensible time when conflicts occur.
+- **DO NOT** use `Temporal.PlainDateTime` for global events, as it does not carry time zone information and cannot account for DST changes.
+- **DO** use `.withTimeZone()` to calculate the equivalent time in other locations without mutating the original object (Temporal objects are immutable).
 
 ### Fallback strategies
 
@@ -64,7 +66,7 @@ For environments without native `Temporal` support, you must conditionally load 
 (async () => {
   if (typeof Temporal === 'undefined') {
     // Load the polyfill conditionally
-    const module = await import("https://esm.sh/@js-temporal/polyfill");
+    const module = await import('https://esm.sh/@js-temporal/polyfill');
     globalThis.Temporal = module.Temporal;
     // Extend Date.prototype if needed
     Date.prototype.toTemporalInstant = module.toTemporalInstant;
@@ -74,6 +76,6 @@ For environments without native `Temporal` support, you must conditionally load 
 
 function initializeApp() {
   // Your app logic here
-  console.log("Temporal is ready:", typeof Temporal);
+  console.log('Temporal is ready:', typeof Temporal);
 }
 ```

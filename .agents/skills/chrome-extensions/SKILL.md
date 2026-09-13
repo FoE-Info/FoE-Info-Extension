@@ -1,6 +1,6 @@
 ---
 name: chrome-extensions
-description: "Manifest V3 lifecycle, service workers, and packaging."
+description: 'Manifest V3 lifecycle, service workers, and packaging.'
 ---
 
 # Chrome Extensions
@@ -58,7 +58,9 @@ eval(userCode); // CSP blocks this
 // manifest.json: { "sandbox": { "pages": ["sandbox.html"] } }
 iframe.contentWindow.postMessage({ html, css, js }, '*');
 // sandbox.html receives and runs:
-window.addEventListener('message', (e) => { eval(e.data.js); /* allowed in sandbox */ });
+window.addEventListener('message', (e) => {
+  eval(e.data.js); /* allowed in sandbox */
+});
 
 // ✅ OPTION B: Blob URL (creates separate origin, bypasses extension CSP)
 iframe.src = URL.createObjectURL(new Blob([doc], { type: 'text/html' }));
@@ -84,13 +86,18 @@ See `references/extensions/tab-management.md`.
 
 ```js
 // ❌ BAD
-chrome.tabs.query({active: true, currentWindow: true}).then(tabs => {
-  chrome.scripting.executeScript({target: {tabId: tabs[0].id}, files: ['content.js']}).then(() => {});
+chrome.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
+  chrome.scripting
+    .executeScript({ target: { tabId: tabs[0].id }, files: ['content.js'] })
+    .then(() => {});
 });
 
 // ✅ GOOD
 const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'] });
+await chrome.scripting.executeScript({
+  target: { tabId: tab.id },
+  files: ['content.js'],
+});
 ```
 
 For `runtime.onMessage` listeners that do async work:
@@ -113,10 +120,14 @@ When modifying many DOM elements, batch with `requestAnimationFrame` and yield b
 async function highlightAll(elements) {
   const BATCH = 20;
   for (let i = 0; i < elements.length; i += BATCH) {
-    await new Promise(r => requestAnimationFrame(() => {
-      elements.slice(i, i + BATCH).forEach(el => el.style.backgroundColor = 'yellow');
-      r();
-    }));
+    await new Promise((r) =>
+      requestAnimationFrame(() => {
+        elements
+          .slice(i, i + BATCH)
+          .forEach((el) => (el.style.backgroundColor = 'yellow'));
+        r();
+      }),
+    );
     if (globalThis.scheduler?.yield) await scheduler.yield();
   }
 }
@@ -129,7 +140,9 @@ See `references/extensions/content-scripts.md`.
 ```js
 // ❌ BROKEN — state lost when SW terminates (~30s of inactivity)
 let count = 0;
-chrome.tabs.onUpdated.addListener(() => { count++; });
+chrome.tabs.onUpdated.addListener(() => {
+  count++;
+});
 
 // ✅ CORRECT — persist in chrome.storage, read on every event
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
@@ -147,6 +160,7 @@ Use `chrome.alarms` instead of `setTimeout`/`setInterval`. See `references/exten
 When using Google sign-in, the OAuth client_id is tied to a specific extension ID. The ID changes between unpacked development and the Chrome Web Store.
 
 To stabilize the ID during development, add a `"key"` field to manifest.json:
+
 1. Pack the extension once (chrome://extensions → Pack)
 2. Extract the public key from the .crx
 3. Add `"key": "MIIBIjANBgkqh..."` to manifest.json
@@ -187,6 +201,7 @@ await chrome.action.setBadgeText({ text: '5' });
 #### 12. `activeTab` only works on direct user gestures — not from side panels
 
 `activeTab` grants temporary access to the current tab ONLY when triggered by:
+
 - Clicking the extension action icon
 - A context menu item
 - A keyboard shortcut from the `commands` API
@@ -199,7 +214,10 @@ or any programmatic trigger.
 // ❌ BROKEN — activeTab does NOT work from a side panel button click
 document.getElementById('summarize').addEventListener('click', async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: () => document.body.innerText });
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: () => document.body.innerText,
+  });
 });
 
 // ✅ FIX — use "tabs" permission + specific host_permissions instead
@@ -215,10 +233,10 @@ relative to the devtools page that calls `chrome.devtools.panels.create()`.
 
 ```js
 // ❌ BROKEN — path relative to devtools/ directory
-chrome.devtools.panels.create("My Panel", "", "panel/panel.html");
+chrome.devtools.panels.create('My Panel', '', 'panel/panel.html');
 
 // ✅ CORRECT — full path from extension root
-chrome.devtools.panels.create("My Panel", "", "devtools/panel/panel.html");
+chrome.devtools.panels.create('My Panel', '', 'devtools/panel/panel.html');
 ```
 
 See `references/extensions/devtools.md`.
@@ -237,6 +255,7 @@ chrome.action.setBadgeText({ text: 'REC' }); // TypeError
 ```
 
 **The only APIs available in offscreen documents are:**
+
 - `chrome.runtime.sendMessage` / `chrome.runtime.onMessage`
 - `chrome.runtime.getURL`
 - Standard Web APIs (DOM, fetch, MediaRecorder, Canvas, Web Audio, etc.)
@@ -254,13 +273,18 @@ chrome.notifications.create('reminder', {
   type: 'basic',
   iconUrl: 'icons/icon-128.png', // File not in extension!
   title: 'Reminder',
-  message: 'Time is up!'
+  message: 'Time is up!',
 });
 
 // ✅ Generate a data URL at runtime via OffscreenCanvas — no file needed.
 // See `references/extensions/icons.md` for a reusable implementation.
 const iconUrl = await getIconDataUrl();
-chrome.notifications.create('reminder', { type: 'basic', iconUrl, title: 'Reminder', message: 'Time is up!' });
+chrome.notifications.create('reminder', {
+  type: 'basic',
+  iconUrl,
+  title: 'Reminder',
+  message: 'Time is up!',
+});
 ```
 
 This applies to ALL image references in chrome.* APIs — notifications, `chrome.action.setIcon`,
@@ -276,15 +300,21 @@ easily trigger this. Use explicit state locking:
 // ❌ BROKEN — no guard against rapid clicks
 let isRecording = false;
 chrome.action.onClicked.addListener(async (tab) => {
-  if (isRecording) { stopRecording(); isRecording = false; }
-  else { isRecording = true; startRecording(tab); } // Second click = "active stream" error
+  if (isRecording) {
+    stopRecording();
+    isRecording = false;
+  } else {
+    isRecording = true;
+    startRecording(tab);
+  } // Second click = "active stream" error
 });
 
 // ✅ CORRECT — use transitional states to lock out concurrent operations
 // State machine: 'idle' → 'starting' → 'recording' → 'stopping' → 'idle'
 // Store state in chrome.storage.session (survives SW restart, cleared on browser close)
 chrome.action.onClicked.addListener(async (tab) => {
-  const { recordingState = 'idle' } = await chrome.storage.session.get('recordingState');
+  const { recordingState = 'idle' } =
+    await chrome.storage.session.get('recordingState');
 
   if (recordingState === 'starting' || recordingState === 'stopping') return;
 
@@ -301,8 +331,9 @@ chrome.action.onClicked.addListener(async (tab) => {
     }
   } else if (recordingState === 'recording') {
     await chrome.storage.session.set({ recordingState: 'stopping' });
-    try { await stopRecording(); }
-    finally {
+    try {
+      await stopRecording();
+    } finally {
       await chrome.storage.session.set({ recordingState: 'idle' });
       await chrome.action.setBadgeText({ text: '' });
     }
@@ -352,7 +383,7 @@ const windows = await chrome.windows.query({ focused: true });
 // ✅ CORRECT — use the right method for your need
 const focused = await chrome.windows.getLastFocused({ populate: true });
 const current = await chrome.windows.getCurrent({ populate: true });
-const all     = await chrome.windows.getAll({ populate: true });
+const all = await chrome.windows.getAll({ populate: true });
 ```
 
 **`chrome.windows` methods:** `getAll`, `getLastFocused`, `getCurrent`, `get(windowId)`, `create`, `update`, `remove`. See `references/extensions/tab-management.md`.
@@ -360,6 +391,7 @@ const all     = await chrome.windows.getAll({ populate: true });
 ### Always Manifest V3
 
 Never generate Manifest V2 code.
+
 - `background.service_worker` not `background.scripts`
 - `chrome.action` not `chrome.browserAction`
 - `chrome.scripting.executeScript` not `chrome.tabs.executeScript`
@@ -385,6 +417,7 @@ a single doc instead of scrambling at publish time.
 #### When to create CHROMEWEBSTORE.md
 
 Create it the moment any of these happen:
+
 - The user says they want to publish an extension
 - The user asks to "prepare for the store" or "get ready to publish"
 - You're building a new extension that will clearly end up on the store
@@ -396,6 +429,7 @@ before generating the file.
 #### When to update CHROMEWEBSTORE.md
 
 Update it whenever:
+
 - **User-facing changes**: Bump the "Last Updated" date, update the feature list in
   descriptions, and add an entry to Version History
 - **manifest.json changes**: If permissions, host_permissions, or content_scripts changed,
@@ -411,6 +445,7 @@ Update it whenever:
 #### How to fill it out
 
 For each section, pull information from the actual project files:
+
 1. Read `manifest.json` to extract name, version, description, permissions, host_permissions
 2. Scan the codebase for data collection (storage, fetch calls, analytics)
 3. Check for icon files and their dimensions
@@ -444,6 +479,7 @@ for guidance on generating a privacy policy.
 
 Before submission, run through `references/webstore/review-checklist.md`. The most common
 first-submission failures:
+
 - Every permission and host_permission must have a specific justification (not "needed to work")
 - Privacy policy URL must be live and match the data use disclosure form
 - At least 1 screenshot at 1280×800 or 640×400
@@ -458,10 +494,11 @@ searching again").
 ### WebStore Review: User-Initiated Permissions Justifications
 
 When submitting permissions that modify user data or system state (such as `clipboardWrite`, `storage`, or `tabs`):
+
 - **User-Gesture Requirement**: Explicitly state in the justification that the action occurs exclusively in direct response to an explicit user interaction (e.g., clicking a "Copy" button).
 - **Exact Destination & Purpose**: Explain what data is written and where the user pastes it.
 - **Example (`clipboardWrite`)**:
-  > *"The `clipboardWrite` permission is used exclusively when the user clicks an explicit 'Copy' button in the extension panel (such as copying Great Building investment spots, Guild Battleground focus targets, or inventory tallies). It copies formatted text to the user's system clipboard so they can paste it directly into in-game chat threads or external spreadsheets. It never writes to the clipboard automatically or without user intent."*
+  > _"The `clipboardWrite` permission is used exclusively when the user clicks an explicit 'Copy' button in the extension panel (such as copying Great Building investment spots, Guild Battleground focus targets, or inventory tallies). It copies formatted text to the user's system clipboard so they can paste it directly into in-game chat threads or external spreadsheets. It never writes to the clipboard automatically or without user intent."_
 
 ---
 
@@ -469,31 +506,31 @@ When submitting permissions that modify user data or system state (such as `clip
 
 For detailed API patterns and publishing guidance, read the relevant file BEFORE writing code or content:
 
-| Topic | Reference |
-|-------|-----------|
-| Permissions | `references/extensions/permissions.md` |
-| Side panels | `references/extensions/side-panel.md` |
-| Content scripts & DOM | `references/extensions/content-scripts.md` |
-| Popups | `references/extensions/popup-ui.md` |
-| Service worker lifetime | `references/extensions/service-worker.md` |
-| Code execution & CSP | `references/extensions/csp-sandbox.md` |
-| API calls | `references/extensions/api-calling.md` |
-| Declarative Net Request | `references/extensions/declarative-net-request.md` |
-| Chrome Prompt API | `references/extensions/prompt-api.md` |
-| DevTools panels | `references/extensions/devtools.md` |
-| Authentication | `references/extensions/auth-identity.md` |
-| Context menus | `references/extensions/context-menus.md` |
-| Omnibox | `references/extensions/omnibox.md` |
-| Storage | `references/extensions/storage.md` |
-| Tab & window management | `references/extensions/tab-management.md` |
-| Tab/desktop capture | `references/extensions/media-capture.md` |
-| User scripts | `references/extensions/user-scripts.md` |
-| Message passing | `references/extensions/message-passing.md` |
-| Icons | `references/extensions/icons.md` |
-| CHROMEWEBSTORE.md template | `references/webstore/chromewebstore-template.md` |
-| Privacy policy guidance | `references/webstore/privacy-policy.md` |
-| Pre-publish review checklist | `references/webstore/review-checklist.md` |
-| Store listing tips & rejections | `references/webstore/store-listing.md` |
+| Topic                           | Reference                                          |
+| ------------------------------- | -------------------------------------------------- |
+| Permissions                     | `references/extensions/permissions.md`             |
+| Side panels                     | `references/extensions/side-panel.md`              |
+| Content scripts & DOM           | `references/extensions/content-scripts.md`         |
+| Popups                          | `references/extensions/popup-ui.md`                |
+| Service worker lifetime         | `references/extensions/service-worker.md`          |
+| Code execution & CSP            | `references/extensions/csp-sandbox.md`             |
+| API calls                       | `references/extensions/api-calling.md`             |
+| Declarative Net Request         | `references/extensions/declarative-net-request.md` |
+| Chrome Prompt API               | `references/extensions/prompt-api.md`              |
+| DevTools panels                 | `references/extensions/devtools.md`                |
+| Authentication                  | `references/extensions/auth-identity.md`           |
+| Context menus                   | `references/extensions/context-menus.md`           |
+| Omnibox                         | `references/extensions/omnibox.md`                 |
+| Storage                         | `references/extensions/storage.md`                 |
+| Tab & window management         | `references/extensions/tab-management.md`          |
+| Tab/desktop capture             | `references/extensions/media-capture.md`           |
+| User scripts                    | `references/extensions/user-scripts.md`            |
+| Message passing                 | `references/extensions/message-passing.md`         |
+| Icons                           | `references/extensions/icons.md`                   |
+| CHROMEWEBSTORE.md template      | `references/webstore/chromewebstore-template.md`   |
+| Privacy policy guidance         | `references/webstore/privacy-policy.md`            |
+| Pre-publish review checklist    | `references/webstore/review-checklist.md`          |
+| Store listing tips & rejections | `references/webstore/store-listing.md`             |
 
 ## Output Checklist
 
@@ -528,4 +565,3 @@ Verify EVERY item before delivering:
 - [ ] `host_permissions` scoped to specific domains (not `<all_urls>` unless needed)
 - [ ] `return true` in `onMessage` listeners with async responses
 - [ ] Any use of `"tab"` in `chrome.contextMenus` `contexts` requires Chrome M150+
-

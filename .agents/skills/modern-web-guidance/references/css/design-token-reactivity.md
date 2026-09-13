@@ -80,11 +80,11 @@ For core features, an alternate approach using selectors should be used. This ex
 
 ```css
 /* This example uses `:where()` to avoid increasing specificity */
-:where([data-density="compact"]) .card {
+:where([data-density='compact']) .card {
   padding: var(--card-padding-compact);
 }
 
-:where([data-density="spacious"]) .card {
+:where([data-density='spacious']) .card {
   padding: var(--card-padding-spacious);
 }
 ```
@@ -101,11 +101,11 @@ While it’s NOT RECOMMENDED, if you want to use style queries as a progressive 
   --card-padding-spacious: 24px;
 }
 
-:where([data-density="compact"]) .card {
+:where([data-density='compact']) .card {
   padding: var(--card-padding-compact);
 }
 
-:where([data-density="spacious"]) .card {
+:where([data-density='spacious']) .card {
   padding: var(--card-padding-spacious);
 }
 
@@ -165,10 +165,13 @@ This example uses a custom property as it will have no visual effect:
 Then check the computed value in JavaScript like this:
 
 ```js
-if (getComputedStyle(document.body).getPropertyValue("--style-queries-supported") === "yes") {
+if (
+  getComputedStyle(document.body).getPropertyValue(
+    '--style-queries-supported',
+  ) === 'yes'
+) {
   // Use container style queries
 } else {
   // Use fallback strategy
 }
 ```
-

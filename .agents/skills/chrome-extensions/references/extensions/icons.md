@@ -42,20 +42,20 @@ for (const size of [16, 48, 128]) {
   const canvas = createCanvas(size, size);
   const ctx = canvas.getContext('2d');
   const r = size / 4;
-  
+
   // Rounded rectangle
   ctx.beginPath();
   ctx.roundRect(1, 1, size - 2, size - 2, r);
   ctx.fillStyle = '#4688F1';
   ctx.fill();
-  
+
   // Letter
   ctx.fillStyle = 'white';
   ctx.font = `bold ${size / 2}px sans-serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('E', size / 2, size / 2);
-  
+
   fs.writeFileSync(`icons/icon-${size}.png`, canvas.toBuffer('image/png'));
   console.log(`Created icons/icon-${size}.png (${size}x${size})`);
 }

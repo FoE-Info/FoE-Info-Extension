@@ -28,10 +28,12 @@ Every module in `src/js/` (outside pure type declarations) must instantiate a sc
 
 ```javascript
 import { createLogger } from '../utils/logger.js';
+
 const logger = createLogger('ModuleName');
 ```
 
 For CommonJS/Node environments or dual-export modules:
+
 ```javascript
 const { createLogger } = require('../utils/logger.js');
 const logger = createLogger('ModuleName');
@@ -43,14 +45,14 @@ const logger = createLogger('ModuleName');
 
 When writing or refactoring any code, instrument the following key operational events with `logger.debug(...)`:
 
-| Domain / Layer | Events Requiring Debug Logging |
-| :--- | :--- |
-| **Pure Calculations (`src/js/calc/`)** | Input values, intermediate formulas, Arc bonus multipliers applied, rounding steps, and computed outputs. |
-| **RPC & Protocol (`src/js/msg/`, `protocol/`)** | Inbound RPC requestClass/method, raw payload entity counts, unknown/unhandled packet formats, and dispatch decisions. |
-| **State & Cache (`src/js/state/`)** | Cache hits, misses, writes, invalidations, and reactive state emissions. |
-| **Network & Bridge (`contentBridge`, `xhrInterceptor`)** | Intercepted URL patterns, payload bridge handoffs, serialization checks, and connection lifecycle events. |
-| **UI Rendering (`src/js/ui/`)** | Container clear events, template render starts/completions, data-i18n bindings applied, and accordion/collapse state toggles. |
-| **Async Operations & Races** | Async fetch start/completion, storage load/save timestamps, potential out-of-order packet arrivals, and fallback recoveries. |
+| Domain / Layer                                           | Events Requiring Debug Logging                                                                                                |
+| :------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| **Pure Calculations (`src/js/calc/`)**                   | Input values, intermediate formulas, Arc bonus multipliers applied, rounding steps, and computed outputs.                     |
+| **RPC & Protocol (`src/js/msg/`, `protocol/`)**          | Inbound RPC requestClass/method, raw payload entity counts, unknown/unhandled packet formats, and dispatch decisions.         |
+| **State & Cache (`src/js/state/`)**                      | Cache hits, misses, writes, invalidations, and reactive state emissions.                                                      |
+| **Network & Bridge (`contentBridge`, `xhrInterceptor`)** | Intercepted URL patterns, payload bridge handoffs, serialization checks, and connection lifecycle events.                     |
+| **UI Rendering (`src/js/ui/`)**                          | Container clear events, template render starts/completions, data-i18n bindings applied, and accordion/collapse state toggles. |
+| **Async Operations & Races**                             | Async fetch start/completion, storage load/save timestamps, potential out-of-order packet arrivals, and fallback recoveries.  |
 
 ---
 

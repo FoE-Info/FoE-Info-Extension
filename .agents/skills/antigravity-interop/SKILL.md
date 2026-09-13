@@ -1,6 +1,6 @@
 ---
 name: antigravity-interop
-description: "Dual-harness contract between Antigravity and OpenCode."
+description: 'Dual-harness contract between Antigravity and OpenCode.'
 ---
 
 # Antigravity ↔ OpenCode Interop
@@ -11,14 +11,14 @@ This skill documents the dual-harness contract so work hands off seamlessly betw
 
 ## 1. Canonical Source of Truth
 
-| Artifact | Canonical Location | Host Shim |
-| :--- | :--- | :--- |
-| Subagents (36) | `.agents/agents/*.md` | `.opencode/agents/*.md` (thin shims) |
-| Rules (17) | `.agents/rules/*.md` | `opencode.json` instructions glob |
-| Skills (53) | `.agents/skills/*/SKILL.md` | Antigravity via `skills.json`; opencode natively from `.agents/skills` |
-| MCP servers | `.agents/mcp_config.json` | `opencode.json` `mcp` block |
-| Hooks | `.agents/hooks.json` | `.opencode/plugins/*.mjs` |
-| Grants | `~/.gemini/config/config.json` | `opencode.json` `permission` block |
+| Artifact       | Canonical Location             | Host Shim                                                              |
+| :------------- | :----------------------------- | :--------------------------------------------------------------------- |
+| Subagents (36) | `.agents/agents/*.md`          | `.opencode/agents/*.md` (thin shims)                                   |
+| Rules (17)     | `.agents/rules/*.md`           | `opencode.json` instructions glob                                      |
+| Skills (53)    | `.agents/skills/*/SKILL.md`    | Antigravity via `skills.json`; opencode natively from `.agents/skills` |
+| MCP servers    | `.agents/mcp_config.json`      | `opencode.json` `mcp` block                                            |
+| Hooks          | `.agents/hooks.json`           | `.opencode/plugins/*.mjs`                                              |
+| Grants         | `~/.gemini/config/config.json` | `opencode.json` `permission` block                                     |
 
 **Rule**: `.agents/` is canonical. `.opencode/` mirrors only what the host requires. When updating configs, always write the `.agents/` version first, then mirror.
 
@@ -27,7 +27,7 @@ This skill documents the dual-harness contract so work hands off seamlessly betw
 - **Antigravity plugin**: a shareable bundle at `plugins/<name>/plugin.json` that packages skills, rules, hooks, and MCP configs (see the `agy-customizations` skill). This workspace ships **no** Antigravity plugin bundles.
 - **opencode plugin**: the module form of a lifecycle hook, `.opencode/plugins/*.mjs`, registered in `opencode.json` `plugin[]`. It is the opencode implementation of the Antigravity `hooks.json` handlers, not an Antigravity plugin.
 
-So the interop table row `Hooks -> .opencode/plugins/*.mjs` maps *hooks*, not *plugins*. Never call `.opencode/plugins/*.mjs` an "Antigravity plugin".
+So the interop table row `Hooks -> .opencode/plugins/*.mjs` maps _hooks_, not _plugins_. Never call `.opencode/plugins/*.mjs` an "Antigravity plugin".
 
 ---
 
@@ -44,18 +44,17 @@ Both `.agents/mcp_config.json` and `opencode.json` use **native `env` injection*
 
 ### Graph path resolution
 
-| Server | Relative graph path | Resolved when cloned |
-| :--- | :--- | :--- |
-| `graphify-foe-info` | `graphify-out/foe-info/graph.json` | In-repo (generated) |
+| Server                       | Relative graph path                                      | Resolved when cloned                                                                   |
+| :--------------------------- | :------------------------------------------------------- | :------------------------------------------------------------------------------------- |
+| `graphify-foe-info`          | `graphify-out/foe-info/graph.json`                       | In-repo (generated)                                                                    |
 | `graphify-foe-info-original` | `../FoE-Info-Extension-original/graphify-out/graph.json` | Sibling repo clone (frozen baseline commit `8c681d1faa1f87930ecae3ffc3f9008ec49fe164`) |
-| `graphify-metadata-store` | `../metadata-store/graphify-out/graph.json` | Sibling store (generated) |
-| `graphify-forge-hammer` | `../forge-hammer/graphify-out/graph.json` | Sibling repo clone (optional) |
-| `graphify-low-tool` | `../LoW-Tool/graphify-out/graph.json` | Sibling repo clone (optional; original closed-source implementation) |
+| `graphify-metadata-store`    | `../metadata-store/graphify-out/graph.json`              | Sibling store (generated)                                                              |
+| `graphify-forge-hammer`      | `../forge-hammer/graphify-out/graph.json`                | Sibling repo clone (optional)                                                          |
+| `graphify-low-tool`          | `../LoW-Tool/graphify-out/graph.json`                    | Sibling repo clone (optional; original closed-source implementation)                   |
 
 ### Wrapper scripts (kept for non-MCP use)
 
 - `run-graphify-local.sh` — used by `npm run graph:*` scripts (terminal/CI use, with `--mcp` mode no longer invoked by MCP config).
-- `run-chrome-devtools-mcp.sh` — still invoked by MCP config via `bash .agents/scripts/...` (real browser orchestration: foe-browser lifecycle, extension list, standalone fallback).
 
 ---
 
@@ -74,12 +73,12 @@ OpenCode grants live in `opencode.json` `permission` block — different format,
 
 ### Grant topology (as of last rebuild)
 
-| File | Scope | Count | Notes |
-| :--- | :--- | :--- | :--- |
-| `~/.gemini/config/config.json` | Global | 86 | All 7 servers × per-tool grants (add explicit `mcp(github-mcp/<tool>)` grants) |
-| `projects/5c62244a-...json` | FoE-Info project | 79 | Host-scoped grants (incl. 10 graphify-low-tool) |
-| `projects/18cb2ceb-...json` | Forge-Hammer project | 13 | Peer-scoped grants |
-| `projects/outside-of-project.json` | Outside-of-project | 86 | Global fallback |
+| File                               | Scope                | Count | Notes                                                                          |
+| :--------------------------------- | :------------------- | :---- | :----------------------------------------------------------------------------- |
+| `~/.gemini/config/config.json`     | Global               | 86    | All 7 servers × per-tool grants (add explicit `mcp(github-mcp/<tool>)` grants) |
+| `projects/5c62244a-...json`        | FoE-Info project     | 79    | Host-scoped grants (incl. 10 graphify-low-tool)                                |
+| `projects/18cb2ceb-...json`        | Forge-Hammer project | 13    | Peer-scoped grants                                                             |
+| `projects/outside-of-project.json` | Outside-of-project   | 86    | Global fallback                                                                |
 
 Zero bare MCP grants remaining after rebuild.
 
@@ -103,6 +102,7 @@ When Antigravity runs out (context/token exhaustion), OpenCode continues. When A
 ### 4.1 Worktree Orchestration Pattern (Antigravity Tech Lead ↔ OpenCode Lifter)
 
 When delegating heavy lifting or parallel tasks to OpenCode:
+
 1. **Provision Worktree**: Create isolated worktrees under `.worktrees/` (e.g. `.worktrees/opencode-<track>`) branching off `development`.
 2. **Fast-Forward Sync**: If an earlier track merges into `development` while other worktrees are active, update them with `git -C .worktrees/<dir> merge development` before execution starts.
 3. **Turnkey Prompts**: Provide fully self-contained prompts containing the exact CWD, branch name, line counts, invariant rules, and commands.
@@ -111,9 +111,9 @@ When delegating heavy lifting or parallel tasks to OpenCode:
 ### 4.2 Turnkey Prompt Formatting Invariant
 
 When generating prompts for OpenCode sessions or subagents:
-- **Never render prompts as naked markdown**: Do not let markdown headers, checkboxes, or codeblocks render into the chat prose.
-- **Wrap in Raw Code Blocks**: Always enclose the complete prompt in a raw, unnested block using four backticks (````text ... ````) so the user can copy the entire prompt with a single click without formatting corruption.
 
+- **Never render prompts as naked markdown**: Do not let markdown headers, checkboxes, or codeblocks render into the chat prose.
+- **Wrap in Raw Code Blocks**: Always enclose the complete prompt in a raw, unnested block using four backticks (`text ... `) so the user can copy the entire prompt with a single click without formatting corruption.
 
 ---
 
@@ -145,6 +145,7 @@ Many FoE custom expert/subagent claims were **AI-inferred** by Antigravity from 
 ## 8. How to Use This Skill
 
 Load this skill when:
+
 - Setting up the repo on a new machine (check MCP config + grants + PATH binaries).
 - Switching between Antigravity and OpenCode mid-task.
 - Debugging MCP server connection issues (check relative paths, env neutralization, command resolution).

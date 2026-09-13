@@ -8,8 +8,8 @@ Use this snippet to identify the LCP element and get raw timing data from the Pe
 
 ```javascript
 async () => {
-  return await new Promise(resolve => {
-    new PerformanceObserver(list => {
+  return await new Promise((resolve) => {
+    new PerformanceObserver((list) => {
       const entries = list.getEntries();
       const last = entries[entries.length - 1];
       resolve({
@@ -22,7 +22,7 @@ async () => {
         loadTime: last.loadTime,
         size: last.size,
       });
-    }).observe({type: 'largest-contentful-paint', buffered: true});
+    }).observe({ type: 'largest-contentful-paint', buffered: true });
   });
 };
 ```
@@ -36,7 +36,7 @@ Use this snippet to check for common DOM-based LCP issues (lazy loading, priorit
   const issues = [];
 
   // Check for lazy-loaded images in viewport
-  document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+  document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
     const rect = img.getBoundingClientRect();
     if (rect.top < window.innerHeight) {
       issues.push({
@@ -48,7 +48,7 @@ Use this snippet to check for common DOM-based LCP issues (lazy loading, priorit
   });
 
   // Check for LCP-candidate images missing fetchpriority
-  document.querySelectorAll('img:not([fetchpriority])').forEach(img => {
+  document.querySelectorAll('img:not([fetchpriority])').forEach((img) => {
     const rect = img.getBoundingClientRect();
     if (rect.top < window.innerHeight && rect.width * rect.height > 50000) {
       issues.push({
@@ -64,7 +64,7 @@ Use this snippet to check for common DOM-based LCP issues (lazy loading, priorit
     .querySelectorAll(
       'head script:not([async]):not([defer]):not([type="module"])',
     )
-    .forEach(script => {
+    .forEach((script) => {
       if (script.src) {
         issues.push({
           issue: 'render-blocking script in head',
@@ -74,6 +74,6 @@ Use this snippet to check for common DOM-based LCP issues (lazy loading, priorit
       }
     });
 
-  return {issueCount: issues.length, issues};
+  return { issueCount: issues.length, issues };
 };
 ```

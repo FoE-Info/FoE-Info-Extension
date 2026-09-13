@@ -3,16 +3,20 @@ When building complex web applications, tasks have different levels of urgency. 
 ### Scheduling tasks by priority
 
 Use `scheduler.postTask()` to schedule tasks with one of three priorities:
+
 - `user-blocking`: Tasks that block user interaction (e.g., input handling, critical rendering).
 - `user-visible`: Tasks visible to the user but not blocking (default).
 - `background`: Tasks that are not time-critical (e.g., analytics, prefetching).
 
 ```javascript
 // Schedule a high-priority task that blocks user interaction
-scheduler.postTask(() => {
-  // DO: Handle critical updates that impact user interaction
-  handleCriticalUpdate();
-}, { priority: 'user-blocking' });
+scheduler.postTask(
+  () => {
+    // DO: Handle critical updates that impact user interaction
+    handleCriticalUpdate();
+  },
+  { priority: 'user-blocking' },
+);
 
 // Schedule a default priority task
 scheduler.postTask(() => {
@@ -21,10 +25,13 @@ scheduler.postTask(() => {
 }); // Defaults to 'user-visible'
 
 // Schedule a low-priority background task
-scheduler.postTask(() => {
-  // DO: Perform heavy background work that is not time-critical
-  sendAnalytics();
-}, { priority: 'background' });
+scheduler.postTask(
+  () => {
+    // DO: Perform heavy background work that is not time-critical
+    sendAnalytics();
+  },
+  { priority: 'background' },
+);
 ```
 
 ### Fallback strategies
@@ -52,8 +59,11 @@ if (!('scheduler' in window && 'postTask' in window.scheduler)) {
 
 function runScheduledTasks() {
   // Now safe to use scheduler.postTask in all browsers
-  scheduler.postTask(() => {
-    console.log('Task with priority support');
-  }, { priority: 'background' });
+  scheduler.postTask(
+    () => {
+      console.log('Task with priority support');
+    },
+    { priority: 'background' },
+  );
 }
 ```

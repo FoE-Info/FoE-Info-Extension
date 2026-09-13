@@ -1,8 +1,7 @@
 ---
 name: test-guard
-description: "Audit test assertions, mocks, and test hygiene."
+description: 'Audit test assertions, mocks, and test hygiene.'
 ---
-
 
 # Test Guard
 
@@ -45,48 +44,57 @@ When writing new tests, ask for each test: "What specific bug does this catch th
 ## The Nine Rules
 
 ### Rule 1: Test behavior, not implementation
+
 Test what code does from the caller's perspective. Assert return values and observable side effects. Never assert that an internal helper was called with specific arguments — that test breaks on every refactor while catching nothing.
 
 **Violation pattern:** asserting a mock of an internal function was called, where that function is not a system boundary.
 **Fix:** assert the return value or the state change the caller observes.
 
 ### Rule 2: Every mock must be justified
+
 Mock only at system boundaries: network and HTTP calls, LLM APIs, databases, filesystem I/O on external files, clock and randomness, third-party SDKs. Never mock internal classes or helper functions to isolate a "unit" — the seams you create hide the integration bugs worth catching.
 
-When you mock a boundary, assert what the caller *does with the response*, not that the mock received specific arguments.
+When you mock a boundary, assert what the caller _does with the response_, not that the mock received specific arguments.
 
 ### Rule 3: One scenario per test, data-driven for variants
+
 If two or more tests share identical setup and differ only in input/output values, merge them into one data-driven test (`@pytest.mark.parametrize`, PHPUnit `#[DataProvider]`, Jest `test.each`).
 
 **When separate tests ARE correct:** different setup, different assertions, different mock configurations, or genuinely different scenarios that happen to exercise the same function.
 
 ### Rule 4: Every test must justify its existence
+
 Ask: "What bug does this catch that no other test catches?" Delete tests that only catch typos, verify default values of data classes, or test trivial pass-through logic.
 
 **Common unjustified tests:** constructors setting attributes, a function rejecting input the type system already forbids, string formatting of log messages, a constant equaling its literal value.
 
 ### Rule 5: Name tests for the scenario
+
 Pattern: `test_<scenario>_<expected_outcome>`. The name should read like a requirement, not echo the function signature.
 
-| Bad | Good |
-|-----|------|
-| `test_parse_response_missing_field` | `test_malformed_response_falls_back_to_default` |
-| `test_get_language_no_class` | `test_element_without_class_returns_empty_language` |
-| `test_add_tags_single_string` | `test_single_tag_normalizes_to_list` |
+| Bad                                 | Good                                                |
+| ----------------------------------- | --------------------------------------------------- |
+| `test_parse_response_missing_field` | `test_malformed_response_falls_back_to_default`     |
+| `test_get_language_no_class`        | `test_element_without_class_returns_empty_language` |
+| `test_add_tags_single_string`       | `test_single_tag_normalizes_to_list`                |
 
 ### Rule 6: Production regression tests are sacred
+
 Tests that reproduce a real production bug are always justified. Reference the incident (date, issue ID, or short description) in the name or a comment, and never delete them. They are exempt from Rule 4 — their justification is the incident.
 
 ### Rule 7: No tests for framework guarantees
-Don't test that the validation library validates, the ORM commits, the router returns 404, or the test framework's fixtures work. Test *your* logic that sits on top of the framework.
+
+Don't test that the validation library validates, the ORM commits, the router returns 404, or the test framework's fixtures work. Test _your_ logic that sits on top of the framework.
 
 **Violation pattern:** a test that would still pass if you deleted all the project's custom code and kept only framework defaults.
 
 ### Rule 8: State and value objects are real, never mocked
+
 Never mock a data model, DTO, entity, or state object. Construct a real instance. Mocking state hides field-name typos and validation errors — exactly the bugs worth catching. If constructing the real object is painful, that is design feedback, not a reason to mock; add a small builder or factory helper.
 
 ### Rule 9: Infrastructure under test gets real infrastructure
-When database queries, schema behavior, or persistence logic *is the subject* of the test, run against a real test database with real migrations applied via fixtures. Mocking the session there tests nothing. Mocking the database is fine when persistence is only a side effect of the behavior under test.
+
+When database queries, schema behavior, or persistence logic _is the subject_ of the test, run against a real test database with real migrations applied via fixtures. Mocking the session there tests nothing. Mocking the database is fine when persistence is only a side effect of the behavior under test.
 
 ## Reporting format
 
@@ -120,7 +128,7 @@ Not all violations are equal. Use judgment:
 
 - It does not run tests. Use the project's test runner for that.
 - It does not enforce code style — that's the linter's job.
-- It does not decide *what* to test — only *how* to test it.
+- It does not decide _what_ to test — only _how_ to test it.
 - It does not flag pre-existing violations in files you're not touching, unless asked to audit.
 
 ---
@@ -130,4 +138,5 @@ Not all violations are equal. Use judgment:
 Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
 Primary reference categories: `accessibility/`, `performance/`.
 Uphold:
+
 - tests must assert the enforced conventions (status roles, captions/scope, scheduler deferral) rather than tautologies

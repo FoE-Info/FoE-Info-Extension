@@ -11,4 +11,4 @@ description: Query graphify knowledge graphs before source search and maintain A
 4. **Autonomous Deep Exploration**: Delegate architectural or comparative mapping to `graph-knowledge-explorer` or peer comparators (`forge-hammer-comparator`, `low-tool-comparator`, `foe-info-original-comparator`).
 5. **AST Freshness**: After modifying code files, run `npm run graph:foe-info:ast` to update the graph AST.
 
-*(See the `graphify` skill for CLI fallback commands, exports, and tool reference).*
+_(See the `graphify` skill for CLI fallback commands, exports, and tool reference)._

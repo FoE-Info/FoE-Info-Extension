@@ -31,10 +31,10 @@ These guidelines provide a high-density reference for writing maintainable, perf
    2. [Accessibility](#accessibility)
 10. [10. Generated content](#10-generated-content)
 
-
 ## 1. Foundations
 
 Be allergic to knowledge duplication. Prefer variables over repetition, but whenever possible, prefer built-in conventions such as:
+
 - `currentColor` instead of defining a variable and setting `color` to it
 - The `inherit` keyword instead of defining a variable on the parent and using it on the same property across parent and child.
 - `em` units instead of `font-size: var(--size)`
@@ -54,6 +54,7 @@ Within each layer, use `:where()` to make selectors only compete based on meanin
 
 Use keywords like `inherit`, `initial`, `unset`, or `revert` instead of explicit values to improve maintainability and better express intent.
 Examples:
+
 - When specifying a transition on a child that should match the parent's `transition-*` properties, instead of repeating the transition properties on the child, use `transition: inherit` (reduce duplication, improve maintainability)
 - Use `initial` to reset a property to its initial value instead of specifying the value explicitly (clearer expression of intent)
 
@@ -185,9 +186,14 @@ Use native CSS nesting to group related styles to the extent it improves maintai
 Prefer `@scope` over nesting when proximity should matter more than pure specificity. This is common in selectors that can be nested in any order, but the closest matching one (in element -> ancestor order) should win, e.g. theming classes.
 
 For example this will not work as expected:
+
 ```css
-.dark .invert { color-scheme: light }
-.light .invert { color-scheme: dark }
+.dark .invert {
+  color-scheme: light;
+}
+.light .invert {
+  color-scheme: dark;
+}
 ```
 
 If `.invert` is nested within _both_ `.dark` and `.light`, it will always resolve to dark mode as both rules have the same specificity.
@@ -195,11 +201,15 @@ Using `@scope` fixes this:
 
 ```css
 @scope (.dark) {
-  .invert { color-scheme: light }
+  .invert {
+    color-scheme: light;
+  }
 }
 
 @scope (.light) {
-  .invert { color-scheme: dark }
+  .invert {
+    color-scheme: dark;
+  }
 }
 ```
 
@@ -225,6 +235,7 @@ Use CSS custom properties on `:root` to define core design variables (colors, fo
 One exception is use cases where keeping code small and simple is far more important than long-term maintainability and evolution, such as testcases.
 
 Typically these are organized in tiers, with each tier building upon the previous one. For example:
+
 1. Tier 1: Literal design tokens (e.g. `--color-blue-10`, `--color-gray-90`, `--font-sans-serif`, `--size-xl` etc)
 2. Tier 2: Semantic design tokens (e.g. `--color-accent`, `--color-neutral`, `--font-body`, `--font-heading` etc)
 3. Tier 3: General UI design tokens (e.g. `--ui-border`, `--surface-bg-subtle` etc)
@@ -237,7 +248,7 @@ Check for any existing conventions around naming and levels before inventing you
 
 - Use `color-scheme: light dark` on `:root` to enable dark mode support that automatically adapts to the system setting. You can also specify `color-scheme` on individual elements to force a different value for that subtree (`light`/`dark` or `light dark` for the system default)
 - Use `light-dark()` to provide alternatives that automatically resolve based on the element's `color-scheme`.
-Typically this happens in Tier 2 or Tier 3 tokens.
+  Typically this happens in Tier 2 or Tier 3 tokens.
 - IMPORTANT: When using `light-dark()` on an inherited `<color>` property, it will resolve to a specific color based on that element's `color-scheme` and inherit as that resolved color, not as a `light-dark()` value. It will NOT adapt to any descendant-specific `color-scheme` overrides. To keep `light-dark()` color tokens dynamic resolve them as late as possible by only passing them around as unregistered custom properties and avoid relying on inherited color values across `color-scheme` boundaries.
 
 See `dark-mode` (via `npx -y modern-web-guidance@latest retrieve "dark-mode"`) for tips & best practices on supporting dark mode switching and `component-specific-light-dark-theme` (via `npx -y modern-web-guidance@latest retrieve "component-specific-light-dark-theme"`) for more on applying different `color-scheme` modes than the page-wide setting on certain elements.
@@ -250,12 +261,12 @@ In Forced Colors Mode (High Contrast on Windows), the browser overrides author c
 - **DON'T** rely on `background-image`, `box-shadow`, or `border-image` to convey borders, separators, or state — they disappear in forced colors (and often in print too). If you must, ensure there's an alternative in forced colors mode, such as `outline` or `border` with system color keywords (`CanvasText`, `LinkText`, `ButtonText`, `Highlight`, `GrayText`, etc.).
 - Use `forced-color-adjust: none` where color is essential information (syntax highlighter, color picker swatch). **DON'T** use `forced-color-adjust: none` just to preserve aesthetics.
 
-
 ### Generating tints
 
 Before generating tints dynamically, check if you can use an existing, predefined, design token. This allows much more designer control and ensures consistency.
 
 If you need to generate lighter or darker colors dynamically:
+
 - **DO NOT** just adjust the lightness channel in `oklch`/`oklab` or `lch`/`lab`, e.g. `oklab(from var(--primary) 0.9 a b)`. While that is theoretically the correct way, browsers do not yet implement gamut mapping, so the resulting color is unpredictable.
 - You can use `color-mix()` to mix with white or black (preferably in `oklab`). This keeps the color safely in gamut, but tends to over-desaturate colors and produce washed out tints and shades.
 - You MAY combine lightness adjustment with any of the other methods (e.g. `color-mix(in oklab, oklch(from var(--primary) 0.9 c h), white 30%)`) for a balance between the two, but avoid going above 30% for the lightness adjustment.
@@ -266,10 +277,12 @@ Most browser-generated UI can be customized to some extent using CSS.
 Even if it requires modern features, it degrades gracefully in older browsers, and thus often does not require a polyfill or fallback.
 
 Before re-creating browser UI (form controls, scrollbars, selections, error messages, etc), first verify that:
+
 1. the browser UI cannot be customized enough for your needs, even with modern CSS,
 2. the desired customization is sufficiently critical to justify the tradeoffs of re-creating built-in UI — most notably losing accessible semantics, keyboard handling, IME, and AT integration that the native UI provides for free.
 
 Example customizations that are possible:
+
 - Use `::selection` to customize highlighted text colors.
 - **DON'T** apply `user-select: none` to content text — breaks copy-paste, translation tools, and AT "read from here" gestures. Limit it to chrome (drag handles, toolbars, redundant button labels).
 - Use `accent-color` to apply the page's accent color to any browser-generated UI.
@@ -292,6 +305,7 @@ For most styling purposes (e.g. colors, borders, backgrounds, typography, etc) t
 - To select one among many options presented in a dropdown: Use a `<select>` + `appearance: base-select` + `::picker(select)`. For more info see `branded-select-styling` (via `npx -y modern-web-guidance@latest retrieve "branded-select-styling"`)
 - Selecting one or more among multiple options laid out inline in the page: Use a `<input type=checkbox>` or `<input type=radio>` inside a `<label>` for each option. Style via `label:has(:checked)`.
 - Style checkboxes, radios and switches via `appearance: none` + generated content (`::before`/`::after`) or background images to draw the checked state.
+
 <!-- Customizable select listbox version currently buggy + this has much better browser support -->
 
 #### Non-textual `<input>`s (buttons, sliders, file inputs etc.)
@@ -322,7 +336,7 @@ For most styling purposes (e.g. colors, borders, backgrounds, typography, etc) t
 - Use `text-wrap: balance` for balanced headlines and headline-like content (e.g. `<th>`)
 - Use `text-wrap: pretty` for long-form body text (paragraphs, blockquotes, etc.)
 - Use `text-wrap: balance` or `text-wrap: pretty` deliberately, **DO NOT** apply it on `*` as it does have a performance cost.
-- Avoid `text-wrap: balance` on elements with a visible box (backgrounds, borders, shadows, etc) as it does not change the container's width, it only affects how text wraps *within* that width. This can leave empty space at the end of the container, which is usually undesirable.
+- Avoid `text-wrap: balance` on elements with a visible box (backgrounds, borders, shadows, etc) as it does not change the container's width, it only affects how text wraps _within_ that width. This can leave empty space at the end of the container, which is usually undesirable.
 
 ## 8. Visual effects
 
@@ -347,9 +361,10 @@ For most styling purposes (e.g. colors, borders, backgrounds, typography, etc) t
 ### Gradients and `color-mix()`
 
 Use `in oklch` or `in oklab` to explicitly specify the interpolation color space for gradients or `color-mix()`.
+
 - `in oklch` preserves chroma better, but can more easily get out of device gamut, especially for bigger differences between colors
 - `in oklab` stays in gamut more easily (assuming in-gamut endpoints) but can create washed out desaturated colors in the middle, especially when interpolating between opposite hues.
-- *DON'T* use `in srgb` unless you have a specific reason to do so (e.g. you are building a color picker that needs to interpolate in srgb).
+- _DON'T_ use `in srgb` unless you have a specific reason to do so (e.g. you are building a color picker that needs to interpolate in srgb).
 
 #### Fallback
 
@@ -374,7 +389,11 @@ Then use like:
 
 ```css
 .card {
-  background: linear-gradient(to bottom var(--in-oklab), var(--accent-color), var(--darker));
+  background: linear-gradient(
+    to bottom var(--in-oklab),
+    var(--accent-color),
+    var(--darker)
+  );
 }
 ```
 
@@ -391,28 +410,40 @@ Examples below.
 Vertical stripes of `1em` width each:
 
 ```css
-background: linear-gradient(to right, var(--color-1) 50%, var(--color-2) 0) 0 / 2em;
+background: linear-gradient(to right, var(--color-1) 50%, var(--color-2) 0) 0 /
+  2em;
 ```
 
 Diagonal stripes of `1em` width each:
 
 ```css
-background: repeating-linear-gradient(-45deg, var(--color-1) 0 1em, var(--color-2) 0 2em);
+background: repeating-linear-gradient(
+  -45deg,
+  var(--color-1) 0 1em,
+  var(--color-2) 0 2em
+);
 ```
 
 Checkerboard pattern with `1em` squares:
 
 ```css
-background: repeating-conic-gradient(var(--color-1) 0 25%, var(--color-2) 0 50%) 0 / 2em 2em;
+background: repeating-conic-gradient(var(--color-1) 0 25%, var(--color-2) 0 50%)
+  0 / 2em 2em;
 ```
 
 Polka dot with `.5em` radius dots spaced `2em` apart (horizontally/vertically — multiply by `sqrt(2)` for diagonal distance):
 
 ```css
 --distance: 2em;
---radius: .5em;
---polka: radial-gradient(circle, var(--color-1) var(--radius), transparent calc(var(--radius) + 1px));
-background: var(--polka) 0 0, var(--polka) var(--distance) var(--distance) var(--color-2);
+--radius: 0.5em;
+--polka: radial-gradient(
+  circle,
+  var(--color-1) var(--radius),
+  transparent calc(var(--radius) + 1px)
+);
+background:
+  var(--polka) 0 0,
+  var(--polka) var(--distance) var(--distance) var(--color-2);
 background-size: calc(var(--distance) * 2) calc(var(--distance) * 2);
 ```
 
@@ -424,7 +455,8 @@ Simple pie chart:
   width: 60px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: conic-gradient(var(--color-1) var(--p), transparent 0%) var(--color-2);
+  background: conic-gradient(var(--color-1) var(--p), transparent 0%)
+    var(--color-2);
 }
 ```
 
@@ -455,7 +487,7 @@ Rendering performance is critical for smooth user experiences, especially in hea
 }
 
 .row {
-  --row-gap: .4rem;
+  --row-gap: 0.4rem;
   --title-height: 1lh;
   --description-height: 0.85lh;
 
@@ -463,7 +495,8 @@ Rendering performance is critical for smooth user experiences, especially in hea
   row-gap: var(--row-gap);
   content-visibility: auto;
   /* The sum of the title height, row gap, and description height should be the size of the contents when skipped for rendering. */
-  contain-intrinsic-block-size: auto calc(var(--title-height) + var(--row-gap) + var(--description-height));
+  contain-intrinsic-block-size: auto
+    calc(var(--title-height) + var(--row-gap) + var(--description-height));
 }
 
 .popover-reveal {
@@ -481,7 +514,7 @@ Either apply reduced motion versions on a case by case basis, or use a custom pr
 
 ```css
 @property --animation-reduced {
-  syntax: "*";
+  syntax: '*';
   inherits: false;
   initial-value: none;
 }
@@ -513,14 +546,16 @@ progress:not([value]) {
 **ONLY** use the alt text argument when the text is different than the primary value and is not already present in the DOM. I.e. this is wrong:
 
 HTML:
+
 ```html
 <button class="save">Save</button>
 ```
 
 CSS:
+
 ```css
 button.save::before {
-  content: url(cloud.svg) / "Save";
+  content: url(cloud.svg) / 'Save';
 }
 ```
 

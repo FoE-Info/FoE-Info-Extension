@@ -4,7 +4,7 @@ When building tooltips or popovers with CSS Anchor Positioning, the browser can 
 
 ## The problem
 
-Imagine a tooltip that appears above its anchor by default. It has a "down" arrow at the bottom. If the user scrolls and the tooltip flips to appear *below* the anchor, the arrow is now pointing the wrong way and is on the wrong side of the tooltip.
+Imagine a tooltip that appears above its anchor by default. It has a "down" arrow at the bottom. If the user scrolls and the tooltip flips to appear _below_ the anchor, the arrow is now pointing the wrong way and is on the wrong side of the tooltip.
 
 ## The solution: Anchored Container Queries
 
@@ -15,7 +15,9 @@ By setting `container-type: anchored` on your positioned element, you turn it in
 Use the Popover API to create a tooltip. This creates an implicit anchor connection that can be used for positioning.
 
 ```html
-<button popovertarget="tooltip" id="anchor" aria-describedby="tooltip">anchor</button>
+<button popovertarget="tooltip" id="anchor" aria-describedby="tooltip">
+  anchor
+</button>
 <div id="tooltip" popover role="tooltip"></div>
 ```
 
@@ -60,7 +62,7 @@ Like all container queries, `@container` can only style **descendants** of the c
 ```css
 .tooltip-content::before {
   /* Default "down" arrow for the 'top' position */
-  content: "▼";
+  content: '▼';
   position: absolute;
   inset-block-end: 0;
   inset-inline-start: 1rem;
@@ -69,7 +71,7 @@ Like all container queries, `@container` can only style **descendants** of the c
 /* Update to an "up" arrow when the 'flip-block' fallback (bottom) is active */
 @container anchored(fallback: flip-block) {
   .tooltip-content::before {
-    content: "▲";
+    content: '▲';
     inset-block-start: 0;
     inset-block-end: auto;
   }
@@ -83,11 +85,10 @@ If you need to change properties on the container itself (like `margin` or `back
 1. Apply `container-type: anchored` to the outer positioned element.
 2. Target the inner element inside the `@container` block.
 
-
 ```css
 @container anchored(fallback: flip-block) {
   .tooltip-content {
-    border-radius: 0 0 .5rem .5rem;
+    border-radius: 0 0 0.5rem 0.5rem;
     margin-block-start: 0.25rem;
   }
 }
@@ -97,7 +98,6 @@ If you need to change properties on the container itself (like `margin` or `back
 
 - **Prefer logical fallbacks**: Use keywords like `flip-block` and `flip-inline` in `position-try-fallbacks` for simpler queries that handle RTL and different writing modes automatically.
 - **Use pseudo-elements for arrows**: Tooltip arrows are purely decorative and are perfect candidates for `::before` or `::after`, which can be styled via anchored container queries without extra DOM.
-
 
 ## Fallback strategies
 
@@ -110,7 +110,7 @@ Positioning the arrow based on the applied fallback is a progressive enhancement
 ```css
 @supports (container-type: anchored) {
   .tooltip-content::before {
-    content: "▼";
+    content: '▼';
   }
 }
 ```
@@ -128,8 +128,8 @@ With a bundler or import map:
 
 ```js
 // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
-if (!("popover" in HTMLElement.prototype)) {
-  import("@oddbird/popover-polyfill");
+if (!('popover' in HTMLElement.prototype)) {
+  import('@oddbird/popover-polyfill');
 }
 ```
 
@@ -137,8 +137,8 @@ Without a bundler, import from a CDN inside a `<script type="module">`:
 
 ```html
 <script type="module">
-  if (!("popover" in HTMLElement.prototype)) {
-    import("https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js");
+  if (!('popover' in HTMLElement.prototype)) {
+    import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js');
   }
 </script>
 ```

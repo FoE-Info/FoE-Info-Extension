@@ -11,7 +11,7 @@ This rule defines how agent activities and project repositories are structured w
 
 ## 1. Directory Scoping
 
-* **Workspace & Repository Root (`FoE-Info-Extension`)**:
+- **Workspace & Repository Root (`FoE-Info-Extension`)**:
   - Primary Git repository and root for the active Forge of Empires browser extension.
   - Contains application source code (`src/`), Webpack build configurations, and `package.json`.
   - Hosts agent configurations (`.agents/`), rules, skills, and knowledge graph index (`graphify-out/`).

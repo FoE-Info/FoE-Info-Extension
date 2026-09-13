@@ -16,25 +16,29 @@ To capture and display location-agnostic data:
 
 ```javascript
 // 1. Parse a date string from an input (e.g., "1990-01-01")
-const birthdateStr = "1990-01-01";
+const birthdateStr = '1990-01-01';
 const plainDate = Temporal.PlainDate.from(birthdateStr);
 
 // 2. Display the date
 // This will output "01/01/1990" (or equivalent) in any time zone
-console.log(plainDate.toLocaleString('en-GB')); 
+console.log(plainDate.toLocaleString('en-GB'));
 
 // 3. Compare with standard Date (which might drift)
-const dateObj = new Date("1990-01-01T00:00:00Z");
+const dateObj = new Date('1990-01-01T00:00:00Z');
 // In a UTC-5 time zone, this might print "31/12/1989"
-console.log(new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York' }).format(dateObj));
+console.log(
+  new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York' }).format(
+    dateObj,
+  ),
+);
 ```
 
 ## Strategic Implementation & Best Practices
 
--   **DO** use `Temporal.PlainDate` for "calendar dates" like birthdates, anniversaries, and holidays where the specific time of day or time zone is irrelevant.
--   **DO** use `Temporal.PlainTime` for "wall-clock times" like a daily reminder at 9:00 AM, where the time should be 9:00 AM in whatever time zone the user happens to be in.
--   **DO NOT** use Plain types if you need to represent a specific moment in physical time (an "instant"). Use `Temporal.Instant` or `Temporal.ZonedDateTime` for logs, event timestamps, or anything requiring time zone awareness.
--   **DO** remember that `Temporal` objects are **immutable**. Methods like `add()` or `with()` return a new instance rather than modifying the original.
+- **DO** use `Temporal.PlainDate` for "calendar dates" like birthdates, anniversaries, and holidays where the specific time of day or time zone is irrelevant.
+- **DO** use `Temporal.PlainTime` for "wall-clock times" like a daily reminder at 9:00 AM, where the time should be 9:00 AM in whatever time zone the user happens to be in.
+- **DO NOT** use Plain types if you need to represent a specific moment in physical time (an "instant"). Use `Temporal.Instant` or `Temporal.ZonedDateTime` for logs, event timestamps, or anything requiring time zone awareness.
+- **DO** remember that `Temporal` objects are **immutable**. Methods like `add()` or `with()` return a new instance rather than modifying the original.
 
 ## Fallback Strategy
 
@@ -53,7 +57,7 @@ Note that the polyfill does not automatically assign the `Temporal` object to th
 (async () => {
   if (typeof Temporal === 'undefined') {
     // Load the polyfill conditionally
-    const module = await import("https://esm.sh/@js-temporal/polyfill");
+    const module = await import('https://esm.sh/@js-temporal/polyfill');
     globalThis.Temporal = module.Temporal;
     // Extend Date.prototype if needed
     Date.prototype.toTemporalInstant = module.toTemporalInstant;

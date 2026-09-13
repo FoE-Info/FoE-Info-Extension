@@ -5,7 +5,6 @@
  * Adheres strictly to the Antigravity PostToolUse contract (stdout: {}).
  * Performs fast AST updates when relevant source code files are edited.
  */
-
 import { spawn } from 'node:child_process';
 import { appendFileSync, closeSync, mkdirSync, openSync } from 'node:fs';
 import path from 'node:path';
@@ -41,7 +40,10 @@ export function extractTargetFile(payload) {
 export function queueGraphifySync(targetFile) {
   try {
     mkdirSync(path.dirname(logPath), { recursive: true });
-    appendFileSync(logPath, `${new Date().toISOString()} queued ${targetFile}\n`);
+    appendFileSync(
+      logPath,
+      `${new Date().toISOString()} queued ${targetFile}\n`,
+    );
     const fd = openSync(logPath, 'a');
     try {
       const child = spawn('npm', ['run', '--silent', 'graph:foe-info:ast'], {
@@ -50,7 +52,10 @@ export function queueGraphifySync(targetFile) {
         stdio: ['ignore', fd, fd],
       });
       child.on('error', (err) => {
-        appendFileSync(logPath, `${new Date().toISOString()} spawn failed: ${err.message}\n`);
+        appendFileSync(
+          logPath,
+          `${new Date().toISOString()} spawn failed: ${err.message}\n`,
+        );
       });
       child.on('exit', (code) => {
         appendFileSync(logPath, `${new Date().toISOString()} exit ${code}\n`);
@@ -99,4 +104,3 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     }
   });
 }
-

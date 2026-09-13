@@ -22,7 +22,7 @@
   <fieldset>
     <legend>Search Preferences</legend>
     <label for="q">Query:</label>
-    <input type="text" id="q" name="q" required>
+    <input type="text" id="q" name="q" required />
     <button type="submit">Search</button>
   </fieldset>
 </form>
@@ -30,12 +30,12 @@
 
 ### Selection Control Decision Matrix
 
-| Options Count | Choice Type | Recommended Element | Usability & Accessibility Logic |
-| :--- | :--- | :--- | :--- |
-| **1–5** | Single (Exclusive) | `<input type="radio">` | **Zero-click scanning**: All choices are immediately visible. Faster scan time. |
-| **6+** | Single (Exclusive) | `<select>` | **Space conservation**: Use only when vertical space is premium or the list is long. |
-| **10+ / Dynamic** | Single (Exclusive) | `<input list="id">` (`<datalist>`) | **Fuzzy Search**: Prevents scrolling fatigue in massive sets (e.g., countries). |
-| **Any** | Multi-select | `<input type="checkbox">` | **Standard semantics**: Native non-exclusive toggles. |
+| Options Count     | Choice Type        | Recommended Element                | Usability & Accessibility Logic                                                      |
+| :---------------- | :----------------- | :--------------------------------- | :----------------------------------------------------------------------------------- |
+| **1–5**           | Single (Exclusive) | `<input type="radio">`             | **Zero-click scanning**: All choices are immediately visible. Faster scan time.      |
+| **6+**            | Single (Exclusive) | `<select>`                         | **Space conservation**: Use only when vertical space is premium or the list is long. |
+| **10+ / Dynamic** | Single (Exclusive) | `<input list="id">` (`<datalist>`) | **Fuzzy Search**: Prevents scrolling fatigue in massive sets (e.g., countries).      |
+| **Any**           | Multi-select       | `<input type="checkbox">`          | **Standard semantics**: Native non-exclusive toggles.                                |
 
 **Single-Sentence Mental Model**: "Expose mutually exclusive options as visible radio buttons when choices are fewer than six; use `<select>` only when space is constrained or the list is long."
 
@@ -62,7 +62,13 @@
 ```html
 <div class="field">
   <label for="username">Username:</label>
-  <input type="text" id="username" name="username" aria-describedby="user-help" required>
+  <input
+    type="text"
+    id="username"
+    name="username"
+    aria-describedby="user-help"
+    required
+  />
   <span id="user-help" class="hint">3-12 characters.</span>
 </div>
 
@@ -89,7 +95,14 @@
 
 ```html
 <label for="zip">ZIP Code:</label>
-<input type="text" id="zip" name="zip" autocomplete="postal-code" inputmode="numeric" pattern="\d{5}">
+<input
+  type="text"
+  id="zip"
+  name="zip"
+  autocomplete="postal-code"
+  inputmode="numeric"
+  pattern="\d{5}"
+/>
 ```
 
 ## 4. Constraints and Validation
@@ -100,13 +113,13 @@
 - **DO** use CSS pseudo-classes `:invalid:user-invalid` for non-intrusive styling.
 - **DO** use the ValidityState API (`setCustomValidity`) for custom messaging.
 
-- **DON'T** disable submit buttons to block validation; let users submit and highlight errors. However, **DO** disable the button *after* a valid submission is clicked to prevent double-posts.
+- **DON'T** disable submit buttons to block validation; let users submit and highlight errors. However, **DO** disable the button _after_ a valid submission is clicked to prevent double-posts.
 
 ### Code Example
 
 ```html
 <label for="code">Activation Code (4 digits):</label>
-<input type="text" id="code" name="code" required pattern="\d{4}">
+<input type="text" id="code" name="code" required pattern="\d{4}" />
 
 <script>
   const input = document.getElementById('code');
@@ -121,11 +134,11 @@
 
 ### Validation Event Timing Matrix
 
-| Event Trigger | Phase | Action Allowed | UX / Accessibility Logic |
-| :--- | :--- | :--- | :--- |
-| **`input`** | Active Typing | **Clear** existing errors only. | **Non-intrusive**: Do not yell at the user before they finish typing. |
-| **`blur` / `focusout`** | Exiting Field | **Run** check and show error. | **Contextual validation**: Validate once the user indicates they are "done" with a field. |
-| **`submit`** | Final Attempt | **Block** and route focus. | **Final gatekeeper**: Intercepts bad payloads and forces screen reader focus to the summary. |
+| Event Trigger           | Phase         | Action Allowed                  | UX / Accessibility Logic                                                                     |
+| :---------------------- | :------------ | :------------------------------ | :------------------------------------------------------------------------------------------- |
+| **`input`**             | Active Typing | **Clear** existing errors only. | **Non-intrusive**: Do not yell at the user before they finish typing.                        |
+| **`blur` / `focusout`** | Exiting Field | **Run** check and show error.   | **Contextual validation**: Validate once the user indicates they are "done" with a field.    |
+| **`submit`**            | Final Attempt | **Block** and route focus.      | **Final gatekeeper**: Intercepts bad payloads and forces screen reader focus to the summary. |
 
 **Single-Sentence Mental Model**: "Validate on `blur` to avoid premature warnings while typing, and reset error states on `input` as soon as the user attempts a correction."
 
@@ -183,7 +196,7 @@ input {
 
 ```html
 <div class="checkbox-container">
-  <input type="checkbox" id="sub" name="sub" class="visually-hidden">
+  <input type="checkbox" id="sub" name="sub" class="visually-hidden" />
   <label for="sub" class="checkbox-label">Subscribe</label>
 </div>
 
@@ -200,7 +213,7 @@ input {
     white-space: nowrap;
   }
   .checkbox-label::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 1.25rem;
     height: 1.25rem;
@@ -253,35 +266,74 @@ form.addEventListener('submit', (e) => {
 
 ```html
 <form method="post">
-  <input type="hidden" name="csrf_token" value="secure_token_abc123">
+  <input type="hidden" name="csrf_token" value="secure_token_abc123" />
 
   <h1>Sign up</h1>
 
-  <div class="form-group">        
+  <div class="form-group">
     <label for="name">Full name</label>
-    <input id="name" name="name" autocomplete="name" required pattern="[\p{L}\.\- ]+">
+    <input
+      id="name"
+      name="name"
+      autocomplete="name"
+      required
+      pattern="[\p{L}\.\- ]+"
+    />
   </div>
 
-  <div class="form-group">        
+  <div class="form-group">
     <label for="email">Email</label>
-    <input id="email" name="email" type="email" autocomplete="username" required>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      autocomplete="username"
+      required
+    />
   </div>
 
   <div class="form-group">
     <label for="password">Password</label>
-    <button id="toggle-password" type="button" aria-pressed="false" aria-label="Show password" aria-describedby="toggle-warning">
-      <img class="icon-eye" src="/icons/eye.svg" alt="" width="20" height="20">
-      <img class="icon-eye-off" src="/icons/eye-off.svg" alt="" width="20" height="20">
+    <button
+      id="toggle-password"
+      type="button"
+      aria-pressed="false"
+      aria-label="Show password"
+      aria-describedby="toggle-warning"
+    >
+      <img
+        class="icon-eye"
+        src="/icons/eye.svg"
+        alt=""
+        width="20"
+        height="20"
+      />
+      <img
+        class="icon-eye-off"
+        src="/icons/eye-off.svg"
+        alt=""
+        width="20"
+        height="20"
+      />
     </button>
-    <span id="toggle-warning" class="visually-hidden">Warning: this will display your password on the screen.</span>
-    <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" aria-describedby="password-constraints" required>
+    <span id="toggle-warning" class="visually-hidden"
+      >Warning: this will display your password on the screen.</span
+    >
+    <input
+      id="password"
+      name="password"
+      type="password"
+      autocomplete="new-password"
+      minlength="8"
+      aria-describedby="password-constraints"
+      required
+    />
     <div id="password-constraints">Eight or more characters.</div>
   </div>
 
   <button id="sign-up">Sign up</button>
 </form>
 ```
-
 
 ## 9. Address Collection
 
@@ -302,18 +354,30 @@ form.addEventListener('submit', (e) => {
 <form action="/save-address" method="POST">
   <div class="form-group">
     <label for="full-name">Full name</label>
-    <input type="text" id="full-name" name="full_name" maxlength="100" required autocomplete="name">
+    <input
+      type="text"
+      id="full-name"
+      name="full_name"
+      maxlength="100"
+      required
+      autocomplete="name"
+    />
   </div>
 
   <div class="form-group">
     <label for="address">Address</label>
-    <textarea id="address" name="address" required autocomplete="street-address" maxlength="300"></textarea>
+    <textarea
+      id="address"
+      name="address"
+      required
+      autocomplete="street-address"
+      maxlength="300"
+    ></textarea>
   </div>
 
   <button type="submit">Save Address</button>
 </form>
 ```
-
 
 ## 10. Usability Testing and Analytics
 
@@ -333,14 +397,21 @@ form.addEventListener('submit', (e) => {
 ```html
 <form action="/submit" method="POST" id="track-form">
   <label for="postal-code">ZIP or postal code</label>
-  <input type="text" id="postal-code" name="postal-code" autocomplete="postal-code" maxlength="20" required>
+  <input
+    type="text"
+    id="postal-code"
+    name="postal-code"
+    autocomplete="postal-code"
+    maxlength="20"
+    required
+  />
   <button type="submit" id="submit-btn">Submit</button>
 </form>
 
 <script>
   const trackForm = document.getElementById('track-form');
   const trackBtn = document.getElementById('submit-btn');
-  
+
   trackBtn.addEventListener('click', () => {
     console.log('Analytics Event: Submit clicked');
   });
@@ -367,6 +438,8 @@ form.addEventListener('submit', (e) => {
   </ol>
 </nav>
 
-<button type="button" onclick="history.back()" enterkeyhint="previous">Previous</button>
+<button type="button" onclick="history.back()" enterkeyhint="previous">
+  Previous
+</button>
 <button type="submit" enterkeyhint="next">Next</button>
 ```

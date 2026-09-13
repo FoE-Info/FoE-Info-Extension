@@ -18,13 +18,13 @@ Create an endpoint that generates WebAuthn request parameters using a vetted lib
 // Options generation example (discoverable flow)
 const options = {
   challenge: serverGeneratedBase64UrlChallenge, // High-entropy random challenge stored in session
-  rpId: "example.com",
+  rpId: 'example.com',
   allowCredentials: [], // Request discoverable passkeys
-  userVerification: "preferred",
+  userVerification: 'preferred',
 };
 
 // Persist expected UV level to user session
-req.session.expectedUserVerification = "preferred";
+req.session.expectedUserVerification = 'preferred';
 ```
 
 ### Verification Endpoint
@@ -79,7 +79,7 @@ Activate form autofill suggestions on page load to offer passkey authentication 
 
 ```javascript
 // optionsFetch and loginVerifyFetch are app-defined HTTP methods
-import { optionsFetch, loginVerifyFetch } from "./api.js";
+import { loginVerifyFetch, optionsFetch } from './api.js';
 
 let autofillAbortController = new AbortController();
 
@@ -96,7 +96,7 @@ async function initializeConditionalAutofill() {
       const credential = await navigator.credentials.get({
         publicKey,
         signal: autofillAbortController.signal,
-        mediation: "conditional",
+        mediation: 'conditional',
       });
 
       // Segregated verification fetch
@@ -113,10 +113,10 @@ async function initializeConditionalAutofill() {
       }
     } catch (err) {
       // Silently swallow expected client WebAuthn exceptions
-      if (["NotAllowedError", "AbortError"].includes(err.name)) {
+      if (['NotAllowedError', 'AbortError'].includes(err.name)) {
         return;
       }
-      console.error("Unexpected conditional get error:", err);
+      console.error('Unexpected conditional get error:', err);
     }
   }
 }
@@ -138,10 +138,10 @@ async function triggerButtonAuthentication() {
       signal: autofillAbortController.signal,
     });
   } catch (err) {
-    if (err.name === "NotAllowedError") {
-      console.log("User cancelled passkey login.");
-    } else if (err.name === "AbortError") {
-      console.log("The authentication operation was aborted.");
+    if (err.name === 'NotAllowedError') {
+      console.log('User cancelled passkey login.');
+    } else if (err.name === 'AbortError') {
+      console.log('The authentication operation was aborted.');
     }
     // Re-arm Conditional autofill Suggestions after cancelled explicit button prompts
     initializeConditionalAutofill();
@@ -160,12 +160,12 @@ async function triggerButtonAuthentication() {
       });
     }
   } catch (serverErr) {
-    console.error("Verification request error:", serverErr);
+    console.error('Verification request error:', serverErr);
   }
 }
 
 // Trigger Conditional Get on load
-window.addEventListener("DOMContentLoaded", initializeConditionalAutofill);
+window.addEventListener('DOMContentLoaded', initializeConditionalAutofill);
 ```
 
 ## Fallback Strategies
@@ -176,11 +176,11 @@ Baseline status for the api.PublicKeyCredential.getClientCapabilities_static cap
 Supported by: Chrome 133 (Feb 2025), Edge 133 (Feb 2025), Firefox 135 (Feb 2025), and Safari 17.4 (Mar 2024).
 
 Always install 'webauthn-polyfills' and import it in the context.
-Consider as long as  `PublicKeyCredential` is supported, `PublicKeyCredential.getClientCapabilities` is also supported. 
+Consider as long as `PublicKeyCredential` is supported, `PublicKeyCredential.getClientCapabilities` is also supported.
 
-```js 
+```js
 import 'webauthn-polyfills';
-``` 
+```
 
 ### Signal API Synchronization Fallback
 
@@ -198,8 +198,8 @@ Baseline status for the api.PublicKeyCredential.parseRequestOptionsFromJSON_stat
 Supported by: Chrome 129 (Sep 2024), Edge 129 (Sep 2024), Firefox 119 (Oct 2023), and Safari 18.4 (Mar 2025).
 
 Always install 'webauthn-polyfills' and import it in the context.
-Consider as long as  `PublicKeyCredential` is supported, `PublicKeyCredential.parseRequestOptionsFromJSON` and `PublicKeyCredential.prototype.toJSON` are also supported. 
+Consider as long as `PublicKeyCredential` is supported, `PublicKeyCredential.parseRequestOptionsFromJSON` and `PublicKeyCredential.prototype.toJSON` are also supported.
 
-```js 
+```js
 import 'webauthn-polyfills';
-``` 
+```

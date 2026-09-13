@@ -1,6 +1,6 @@
 ---
 name: a11y-debugging
-description: "Audit ARIA, keyboard navigation, and contrast via CDP."
+description: 'Audit ARIA, keyboard navigation, and contrast via CDP.'
 ---
 
 ## Core Concepts
@@ -91,6 +91,7 @@ If standard a11y queries fail or the `evaluate_script` snippets return unexpecte
 ### 9. Report & Fix Modes
 
 Accessibility workflows operate in two distinct modes:
+
 - **Report mode**: Audit the codebase or DOM to produce a prioritized findings report without modifying files (see [references/report-template.md](references/report-template.md)).
 - **Fix mode**: Follow an iterative baseline → edit → verify loop applying mechanical fixes and documenting deferred items (see [references/fix-recipe.md](references/fix-recipe.md)).
 
@@ -101,6 +102,7 @@ Accessibility workflows operate in two distinct modes:
 Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
 Primary reference categories: `accessibility/`, `html/`.
 Uphold:
+
 - `role="status"` vs `role="alert"` discipline
 - copy announcements via `#foeCopyStatus`
 - Space-on-keyup activation

@@ -1,6 +1,6 @@
 ---
 name: cross-platform-contract-propagation-audit
-description: "Audit contract and enum propagation across layers."
+description: 'Audit contract and enum propagation across layers.'
 ---
 
 # Cross-Platform Contract Propagation Audit
@@ -24,13 +24,13 @@ This is a read-only evidence workflow. It reports propagation gaps; it does not 
 
 Before tracing files, state the business invariant and define every observable state. Distinguish values that languages and serializers often collapse:
 
-| State | Questions to answer |
-|---|---|
-| missing | Is the property absent on the wire or in an old record? |
-| `null` | Is it unknown, inherited, unsupported, or invalid? |
-| `false` or zero | Is this an explicit disabled value or a default? |
-| `true` or non-zero | What behavior becomes available? |
-| unknown enum | Must old consumers ignore, preserve, or reject it? |
+| State              | Questions to answer                                     |
+| ------------------ | ------------------------------------------------------- |
+| missing            | Is the property absent on the wire or in an old record? |
+| `null`             | Is it unknown, inherited, unsupported, or invalid?      |
+| `false` or zero    | Is this an explicit disabled value or a default?        |
+| `true` or non-zero | What behavior becomes available?                        |
+| unknown enum       | Must old consumers ignore, preserve, or reject it?      |
 
 Record compatibility requirements, ownership, rollout condition, and the exact user-visible or system behavior for each state. Do not accept `optional`, `nullable`, and `default false` as equivalent without evidence.
 
@@ -56,14 +56,14 @@ Include alternate read/write endpoints, list/detail projections, background cons
 
 For each edge, cite the producer, transformation, consumer, and test using file paths, symbols, schema names, or other inspectable evidence. Assign one status:
 
-| Status | Meaning |
-|---|---|
-| `proven` | Producer and consumer agree, with direct evidence and relevant test coverage. |
-| `partial` | Some paths or states agree, but coverage is incomplete. |
-| `missing` | A required propagation edge or consumer is absent. |
-| `conflict` | Two layers implement different semantics. |
-| `unknown` | Evidence is unavailable or ambiguous. |
-| `not_applicable` | The layer is outside scope, with a stated reason. |
+| Status           | Meaning                                                                       |
+| ---------------- | ----------------------------------------------------------------------------- |
+| `proven`         | Producer and consumer agree, with direct evidence and relevant test coverage. |
+| `partial`        | Some paths or states agree, but coverage is incomplete.                       |
+| `missing`        | A required propagation edge or consumer is absent.                            |
+| `conflict`       | Two layers implement different semantics.                                     |
+| `unknown`        | Evidence is unavailable or ambiguous.                                         |
+| `not_applicable` | The layer is outside scope, with a stated reason.                             |
 
 Do not upgrade `likely`, convention, type compatibility, or a framework default to `proven`. A declaration proves shape, not runtime mapping or behavior.
 
@@ -157,6 +157,7 @@ older-client and explicit-null compatibility remain unverified.
 Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
 Primary reference categories: `js/`, `accessibility/`.
 Uphold:
+
 - audit `resolveDate()` seconds/ms contracts across call sites
 - audit `role`/`aria-live` contracts across renderers
 - flag drift between `.js` and `.ts` mirrors

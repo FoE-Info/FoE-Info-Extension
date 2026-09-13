@@ -101,6 +101,7 @@ Subagent (invoke_subagent TypeName: "code-reviewer" or "self", Role: "Task Re-Re
 ```
 
 **Placeholders:**
+
 - `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection; scoped
   re-reviews of small fix diffs take a cheap-to-mid tier
 - `[BRIEF_FILE]` — the task brief file (same file the implementer worked from)

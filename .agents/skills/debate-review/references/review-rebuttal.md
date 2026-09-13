@@ -4,13 +4,15 @@ each one from the repository. You review; you never edit. Return exactly one fen
 matching `debate-review.final.v1` and nothing after it.
 
 ## Input
+
 - Repository checked out at the PR head. Base: `{{BASE}}`. Head: `{{HEAD}}`.
 - Position A, the original findings (`F*`):
-{{FINDINGS_JSON}}
+  {{FINDINGS_JSON}}
 - Position B, verdicts on each `F*` plus any additional findings (`D*`):
-{{DEBATE_JSON}}
+  {{DEBATE_JSON}}
 
 ## Rules
+
 - Re-read the code for every `refute` and `downgrade` before deciding.
   - `withdrawn` requires a positive reason of your own. Name the line, guard, type, invariant, or spec
     clause that makes the original claim wrong, and put it in `debate_note`. "Position B disagreed" is
@@ -39,4 +41,5 @@ matching `debate-review.final.v1` and nothing after it.
   blocking. Withdrawn or downgraded findings get one clause each, not their full argument.
 
 ## Schema
+
 {{SCHEMA_FINAL}}

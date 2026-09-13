@@ -1,6 +1,6 @@
 ---
 name: debate-review
-description: "Two-model adversarial debate on plans, PRs, and designs."
+description: 'Two-model adversarial debate on plans, PRs, and designs.'
 ---
 
 # Debate Review & Adversarial Stress-Testing
@@ -29,10 +29,13 @@ Use this workflow to review significant pull requests or complex feature diffs:
 ```
 
 ### Stage 1: Initial Invariant Gate
+
 Dispatch [`code-reviewer`](../../agents/code-reviewer.md) to audit the diff against the current eight-gate checklist in that role (including verification and debuggability).
 
 ### Stage 2: Adversarial Challenge
+
 Invoke [`adversarial-debater`](../../agents/adversarial-debater.md) with:
+
 1. The git diff (`git diff <base>...<head>`).
 2. The findings produced in Stage 1.
 3. Instructions to:
@@ -40,6 +43,7 @@ Invoke [`adversarial-debater`](../../agents/adversarial-debater.md) with:
    - **Gap sweep**: Probe unexamined trust boundaries, race conditions, memory leaks, or unhandled RPC failure states.
 
 ### Stage 3: Orchestrator Ruling
+
 The Lead / Orchestrator reviews the debate output, discards refuted items, and fixes confirmed bugs or gap findings before merging.
 
 ---
@@ -47,6 +51,7 @@ The Lead / Orchestrator reviews the debate output, discards refuted items, and f
 ## 3. Protocol 2: Plan & Architecture Stress-Testing
 
 Before implementing a complex multi-stage feature:
+
 1. Dispatch [`adversarial-debater`](../../agents/adversarial-debater.md) with the draft plan or RFC document.
 2. The debater evaluates:
    - **Over-Engineering**: Can this be implemented in 50 lines instead of 200?

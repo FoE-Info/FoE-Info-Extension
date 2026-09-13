@@ -1,6 +1,6 @@
 ---
 name: protocol-reverse-engineering
-description: "Analyze and document InnoGames JSON-RPC network payloads."
+description: 'Analyze and document InnoGames JSON-RPC network payloads.'
 ---
 
 # Protocol Reverse Engineering
@@ -29,6 +29,7 @@ Comprehensive techniques for capturing, analyzing, and documenting network proto
 - `references/implementation-playbook.md` for detailed patterns and examples.
 
 ## Limitations
+
 - Use this skill only when the task clearly matches the scope described above.
 - Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
 - Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.

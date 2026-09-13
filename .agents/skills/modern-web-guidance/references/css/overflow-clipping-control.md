@@ -4,7 +4,7 @@ While `overflow: hidden` is a "blunt instrument" that almost always clips conten
 
 Specify exactly where clipping occurs with `overflow: clip` and `overflow-clip-margin`. You can align the boundary precisely with inner box-model edges or extend the clipping boundary beyond the element's box by a specified offset (a safety margin). This modern approach is highly performant and eliminates the legacy requirement of adding extra wrapper containers with custom padding and negative margins just to let visual effects (like prominent child element shadows) render unclipped.
 
-Replaced elements (`<img>`, `<video>`, `<canvas>`, etc.) default to `overflow: clip` and `overflow-clip-margin: content-box`, giving you control to cleanly contain images that use `object-fit` or `border-radius`. 
+Replaced elements (`<img>`, `<video>`, `<canvas>`, etc.) default to `overflow: clip` and `overflow-clip-margin: content-box`, giving you control to cleanly contain images that use `object-fit` or `border-radius`.
 
 ## How to Implement
 
@@ -22,12 +22,12 @@ The following examples demonstrate dynamic container layout controls, showcasing
 
 ### Block Containers: Nested Rounded Curves
 
-* Apply `overflow-clip-margin: content-box` to a parent container with rounded corners and custom padding.
-* Apply similar rounded corners on inner child media and footer components along the concentric inner content box boundary, solving awkward nesting curves without custom `calc()` logic.
+- Apply `overflow-clip-margin: content-box` to a parent container with rounded corners and custom padding.
+- Apply similar rounded corners on inner child media and footer components along the concentric inner content box boundary, solving awkward nesting curves without custom `calc()` logic.
 
 ```html
 <div class="nested-curve-parent">
-  <img src="avatar.jpg" alt="Nested Curve Demo">
+  <img src="avatar.jpg" alt="Nested Curve Demo" />
   <div class="nested-curve-footer">Card Footer</div>
 </div>
 ```
@@ -60,7 +60,7 @@ The following examples demonstrate dynamic container layout controls, showcasing
 
 ### Block Containers: Child Element Shadow Bleed
 
-* Apply `overflow: clip` and define an extended `overflow-clip-margin` length offset to create a visible safety zone permitting the child's shadow to render unclipped outside the parent container without altering layout geometry. Without this, the child's shadow is clipped at the parent's boundary.
+- Apply `overflow: clip` and define an extended `overflow-clip-margin` length offset to create a visible safety zone permitting the child's shadow to render unclipped outside the parent container without altering layout geometry. Without this, the child's shadow is clipped at the parent's boundary.
 
 ```html
 <div class="safety-zone-parent">
@@ -112,6 +112,7 @@ Supported by: Firefox 148 (Feb 2026).
 Unsupported in: Chrome, Edge, and Safari.
 
 For target environments lacking native support for `overflow: clip` or `overflow-clip-margin`, progressive enhancement fallback strategies depend directly on the visual intent:
+
 - Fallback to `overflow: hidden` as the base experience to guarantee core boundaries are maintained.
 - Fallback to `overflow: visible` on elements where drop-shadows or external corner badges must not be truncated.
 
@@ -120,7 +121,7 @@ For target environments lacking native support for `overflow: clip` or `overflow
 ```html
 <!-- 1. Nested rounded edges fallback -->
 <div class="demo-container-fallback">
-  <img src="example.jpg" alt="Nested Curve Fallback">
+  <img src="example.jpg" alt="Nested Curve Fallback" />
   <div class="demo-footer-fallback">Footer</div>
 </div>
 
@@ -137,7 +138,7 @@ For target environments lacking native support for `overflow: clip` or `overflow
  * 1. Block Container Nested Curves Fallback
  * Keeps base level 1 fallback clipping roughly at the inner padding box.
  */
-.demo-container-fallback {  
+.demo-container-fallback {
   /* Level 1 Fallback: clip child roughly at padding box */
   overflow: hidden;
 }
@@ -158,7 +159,7 @@ For target environments lacking native support for `overflow: clip` or `overflow
  * 2. Child Element Shadow Bleed Fallback
  * Base fallback clips content using overflow: hidden, abruptly truncating child element shadows.
  */
-.demo-safety-parent {  
+.demo-safety-parent {
   /* Level 1 Fallback */
   overflow: hidden;
 }

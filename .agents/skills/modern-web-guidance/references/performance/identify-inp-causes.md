@@ -40,13 +40,16 @@ onINP((metric) => {
       // for the longest processing during the INP interaction.
       invokerType: metric.attribution.longestScript.entry?.invokerType,
       sourceURL: metric.attribution.longestScript.entry?.sourceURL,
-      sourceFunctionName: metric.attribution.longestScript.entry?.sourceFunctionName,
-      sourceCharPosition: metric.attribution.longestScript.entry?.sourceCharPosition,
+      sourceFunctionName:
+        metric.attribution.longestScript.entry?.sourceFunctionName,
+      sourceCharPosition:
+        metric.attribution.longestScript.entry?.sourceCharPosition,
       // subpart indicates which phase (input delay, processing, or
       // presentation delay) the longest script overlapped with most.
       subpart: metric.attribution.longestScript.subpart,
-      intersectingDuration: metric.attribution.longestScript.intersectingDuration
-    })
+      intersectingDuration:
+        metric.attribution.longestScript.intersectingDuration,
+    }),
   );
 });
 ```

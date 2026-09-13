@@ -11,17 +11,17 @@ opencode requires. See `docs/OPENCODE.md` for the full coexistence contract.
 
 ## 1. Tool Resolution
 
-| Abstract action | Antigravity | opencode |
-| :--- | :--- | :--- |
-| Run a command | `run_command` | `bash` |
-| Read a file | `view_file` | `read` |
-| Edit a file | `replace_file_content` | `edit` |
-| Create/overwrite a file | `write_to_file` | `write` |
-| Text search / file search | `grep_search` / `find_by_name` | `grep` / `glob` |
-| Dispatch a subagent | `invoke_subagent` | `task` (`subagent_type: <name>`) |
-| Load a skill | implicit skill activation | `skill` tool (`name: <skill>`) |
-| Track tasks | plan checkboxes + `replace_file_content` | `todowrite` |
-| Read MCP tool | `call_mcp_tool` (`ServerName`) | call the MCP tool directly (`<server>_<tool>`) |
+| Abstract action           | Antigravity                              | opencode                                       |
+| :------------------------ | :--------------------------------------- | :--------------------------------------------- |
+| Run a command             | `run_command`                            | `bash`                                         |
+| Read a file               | `view_file`                              | `read`                                         |
+| Edit a file               | `replace_file_content`                   | `edit`                                         |
+| Create/overwrite a file   | `write_to_file`                          | `write`                                        |
+| Text search / file search | `grep_search` / `find_by_name`           | `grep` / `glob`                                |
+| Dispatch a subagent       | `invoke_subagent`                        | `task` (`subagent_type: <name>`)               |
+| Load a skill              | implicit skill activation                | `skill` tool (`name: <skill>`)                 |
+| Track tasks               | plan checkboxes + `replace_file_content` | `todowrite`                                    |
+| Read MCP tool             | `call_mcp_tool` (`ServerName`)           | call the MCP tool directly (`<server>_<tool>`) |
 
 MCP tool names are sanitized per host: Antigravity uses `mcp(server/tool)` in
 grants; opencode exposes `server_tool` (e.g. `graphify-foe-info_query_graph`).
@@ -106,10 +106,10 @@ the user's instruction govern dispatch. A skill that names an unavailable
 
 ## 8. Known Parity Limits
 
-| Capability | Antigravity | opencode |
-| :--- | :--- | :--- |
-| Pre-invocation injection | `PreInvocation` hook | instructions files only |
-| Block completion | `Stop` hook (`decision: continue`, `fullyIdle`) | `session.idle` notify-only |
-| Approval semantics | `force_ask` / `permissionOverrides` | `permission` config (`allow`/`ask`/`deny`) |
-| Parallel workspace mode | `Workspace: "share"|"branch"` | explicit `.worktrees/<branch>` |
-| Skill slash command | native `/<skill>` | model-invoked only (or command file) |
+| Capability               | Antigravity                                     | opencode                                   |
+| :----------------------- | :---------------------------------------------- | :----------------------------------------- |
+| Pre-invocation injection | `PreInvocation` hook                            | instructions files only                    |
+| Block completion         | `Stop` hook (`decision: continue`, `fullyIdle`) | `session.idle` notify-only                 |
+| Approval semantics       | `force_ask` / `permissionOverrides`             | `permission` config (`allow`/`ask`/`deny`) |
+| Parallel workspace mode  | `Workspace: "share"                             | "branch"`                                  | explicit `.worktrees/<branch>` |
+| Skill slash command      | native `/<skill>`                               | model-invoked only (or command file)       |

@@ -12,6 +12,7 @@ To ensure rigor, architectural consistency, and prevent eager-action mistakes, a
 ## 1. The Skill-First Invariant
 
 Before modifying code, designing architecture, debugging an issue, or refactoring:
+
 1. **Consult `<skills>` Catalog**: Check whether a specialized procedure or runbook exists for the task.
 2. **Announce Active Skill**: Explicitly declare before execution:
    > `"Using [skill] to [purpose]"`
@@ -26,17 +27,18 @@ Before modifying code, designing architecture, debugging an issue, or refactorin
 - **Debugging & QA**: Follow `systematic-debugging` for defects; run `browser-testing` / `chrome-devtools` for runtime panel checks.
 - **Workflow & Governance**: Use `writing-plans` for architecture, `subagent-driven-development` for parallel work, `unslop-commit` for commits, and `verification-before-completion` before finishing.
 
-*(Consult `<skills>` catalog for complete runbooks and triggers).*
+_(Consult `<skills>` catalog for complete runbooks and triggers)._
 
 ---
 
 ## 3. Red Flags & Rationalizations
 
 Never skip skill consultation based on these internal excuses:
-- *"This is just a simple question/check"* $\to$ Check `<skills>` before answering or searching.
-- *"I need more context or need to explore first"* $\to$ Skills define how to gather context systematically.
-- *"The skill is overkill or I remember it"* $\to$ Skills contain evolving checklists. Read current instructions.
-- *"I'll just do this one quick thing first"* $\to$ Invariants require checking skills **BEFORE** taking action.
+
+- _"This is just a simple question/check"_ $\to$ Check `<skills>` before answering or searching.
+- _"I need more context or need to explore first"_ $\to$ Skills define how to gather context systematically.
+- _"The skill is overkill or I remember it"_ $\to$ Skills contain evolving checklists. Read current instructions.
+- _"I'll just do this one quick thing first"_ $\to$ Invariants require checking skills **BEFORE** taking action.
 
 ---
 

@@ -53,10 +53,16 @@ chrome.runtime.onMessage.addListener((message, sender) => {
 
 ```js
 // content script → service worker
-const result = await chrome.runtime.sendMessage({ type: 'FETCH_DATA', url: location.href });
+const result = await chrome.runtime.sendMessage({
+  type: 'FETCH_DATA',
+  url: location.href,
+});
 
 // service worker → specific tab's content script
-await chrome.tabs.sendMessage(tabId, { type: 'HIGHLIGHT', selector: '.important' });
+await chrome.tabs.sendMessage(tabId, {
+  type: 'HIGHLIGHT',
+  selector: '.important',
+});
 ```
 
 ## Service worker → content script (targeted)
@@ -104,13 +110,13 @@ chrome.runtime.onConnect.addListener((port) => {
 ```js
 // ❌ BROKEN — async work completes but channel is already closed
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  fetchSomething().then(data => sendResponse(data)); // too late
+  fetchSomething().then((data) => sendResponse(data)); // too late
   // missing: return true
 });
 
 // ✅ CORRECT
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  fetchSomething().then(data => sendResponse(data));
+  fetchSomething().then((data) => sendResponse(data));
   return true;
 });
 ```

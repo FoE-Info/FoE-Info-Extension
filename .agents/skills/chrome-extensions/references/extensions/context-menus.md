@@ -15,20 +15,20 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: 'save-link',
     title: 'Save to Reading List',
-    contexts: ['link']        // Only show on right-click of links
+    contexts: ['link'], // Only show on right-click of links
   });
 
   chrome.contextMenus.create({
     id: 'translate-selection',
-    title: 'Translate "%s"',   // %s = selected text
-    contexts: ['selection']
+    title: 'Translate "%s"', // %s = selected text
+    contexts: ['selection'],
   });
 
   // M150+: Context menu for the tab strip (right-clicking a tab)
   chrome.contextMenus.create({
     id: 'duplicate-tab',
     title: 'Custom Duplicate Tab',
-    contexts: ['tab']
+    contexts: ['tab'],
   });
 });
 ```
@@ -58,9 +58,23 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 ## Submenus
 
 ```js
-chrome.contextMenus.create({ id: 'parent', title: 'My Extension', contexts: ['page'] });
-chrome.contextMenus.create({ id: 'child1', parentId: 'parent', title: 'Option 1', contexts: ['page'] });
-chrome.contextMenus.create({ id: 'child2', parentId: 'parent', title: 'Option 2', contexts: ['page'] });
+chrome.contextMenus.create({
+  id: 'parent',
+  title: 'My Extension',
+  contexts: ['page'],
+});
+chrome.contextMenus.create({
+  id: 'child1',
+  parentId: 'parent',
+  title: 'Option 1',
+  contexts: ['page'],
+});
+chrome.contextMenus.create({
+  id: 'child2',
+  parentId: 'parent',
+  title: 'Option 2',
+  contexts: ['page'],
+});
 ```
 
 ## Dynamic Updates

@@ -27,14 +27,14 @@ skills:
 
 ### Field Definitions
 
-| Field | Type | Default | Description |
-| :--- | :--- | :---: | :--- |
-| `name` | `string` | (Required) | Unique identifier for the custom agent. Must match filename (`<name>.md`). |
-| `description` | `string` | (Required) | Explains capabilities and triggers. Must be $\le 150$ characters in FoE-Info. |
-| `subagent` | `boolean` | `true` | Must be `true` to allow invocation via `invoke_subagent`. |
-| `mainAgent` | `boolean` | `true` | Set to `false` if this is exclusively a background specialist. |
-| `model` | `string` | `inherit` | Model tier: `inherit` (default), `flash` (fast/light scanning), or `pro` (complex reasoning). |
-| `commandExecutionPolicy`| `string` | `sandbox` | Execution policy: `sandbox`, `auto`, `eager`, or `off`. |
-| `tools` | `string[]` | `[]` | Explicit allowed tools list. If omitted or empty, inherits all parent tools. |
-| `skills` | `string[]` | `[]` | Pre-mounted skill paths available to this subagent. |
-| `mcpServers` | `object[]`| `[]` | Custom MCP server configurations scoped to this subagent. |
+| Field                    | Type       |  Default   | Description                                                                                   |
+| :----------------------- | :--------- | :--------: | :-------------------------------------------------------------------------------------------- |
+| `name`                   | `string`   | (Required) | Unique identifier for the custom agent. Must match filename (`<name>.md`).                    |
+| `description`            | `string`   | (Required) | Explains capabilities and triggers. Must be $\le 150$ characters in FoE-Info.                 |
+| `subagent`               | `boolean`  |   `true`   | Must be `true` to allow invocation via `invoke_subagent`.                                     |
+| `mainAgent`              | `boolean`  |   `true`   | Set to `false` if this is exclusively a background specialist.                                |
+| `model`                  | `string`   | `inherit`  | Model tier: `inherit` (default), `flash` (fast/light scanning), or `pro` (complex reasoning). |
+| `commandExecutionPolicy` | `string`   | `sandbox`  | Execution policy: `sandbox`, `auto`, `eager`, or `off`.                                       |
+| `tools`                  | `string[]` |    `[]`    | Explicit allowed tools list. If omitted or empty, inherits all parent tools.                  |
+| `skills`                 | `string[]` |    `[]`    | Pre-mounted skill paths available to this subagent.                                           |
+| `mcpServers`             | `object[]` |    `[]`    | Custom MCP server configurations scoped to this subagent.                                     |

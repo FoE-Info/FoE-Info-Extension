@@ -1,6 +1,6 @@
 ---
 name: systematic-debugging
-description: "Four-phase root-cause debugging protocol."
+description: 'Four-phase root-cause debugging protocol.'
 ---
 
 # Systematic Debugging
@@ -22,6 +22,7 @@ If you haven't completed Phase 1, you cannot propose fixes.
 ## When to Use
 
 Use for ANY technical issue:
+
 - Test failures
 - Bugs in production
 - Unexpected behavior
@@ -30,6 +31,7 @@ Use for ANY technical issue:
 - Integration issues
 
 **Use this ESPECIALLY when:**
+
 - Under time pressure (emergencies make guessing tempting)
 - "Just one quick fix" seems obvious
 - You've already tried multiple fixes
@@ -37,6 +39,7 @@ Use for ANY technical issue:
 - You don't fully understand the issue
 
 **Don't skip when:**
+
 - Issue seems simple (simple bugs have root causes too)
 - You're in a hurry (rushing guarantees rework)
 - Manager wants it fixed NOW (systematic is faster than thrashing)
@@ -72,6 +75,7 @@ You MUST complete each phase before proceeding to the next.
    **WHEN system has multiple components (CI → build → signing, API → service → database):**
 
    **BEFORE proposing fixes, add diagnostic instrumentation:**
+
    ```
    For EACH component boundary:
      - Log what data enters component
@@ -85,6 +89,7 @@ You MUST complete each phase before proceeding to the next.
    ```
 
    **Example (multi-layer system):**
+
    ```bash
    # Layer 1: Workflow
    echo "=== Secrets available in workflow: ==="
@@ -214,6 +219,7 @@ You MUST complete each phase before proceeding to the next.
 ## Red Flags - STOP and Follow Process
 
 If you catch yourself thinking:
+
 - "Quick fix for now, investigate later"
 - "Just try changing X and see if it works"
 - "Add multiple changes, run tests"
@@ -233,6 +239,7 @@ If you catch yourself thinking:
 ## your human partner's Signals You're Doing It Wrong
 
 **Watch for these redirections:**
+
 - "Is that not happening?" - You assumed without verifying
 - "Will it show us...?" - You should have added evidence gathering
 - "Stop guessing" - You're proposing fixes without understanding
@@ -243,25 +250,25 @@ If you catch yourself thinking:
 
 ## Common Rationalizations
 
-| Excuse | Reality |
-|--------|---------|
-| "Issue is simple, don't need process" | Simple issues have root causes too. Process is fast for simple bugs. |
-| "Emergency, no time for process" | Systematic debugging is FASTER than guess-and-check thrashing. |
-| "Just try this first, then investigate" | First fix sets the pattern. Do it right from the start. |
-| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it. |
-| "Multiple fixes at once saves time" | Can't isolate what worked. Causes new bugs. |
-| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely. |
-| "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |
-| "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question pattern, don't fix again. |
+| Excuse                                       | Reality                                                                 |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| "Issue is simple, don't need process"        | Simple issues have root causes too. Process is fast for simple bugs.    |
+| "Emergency, no time for process"             | Systematic debugging is FASTER than guess-and-check thrashing.          |
+| "Just try this first, then investigate"      | First fix sets the pattern. Do it right from the start.                 |
+| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it.                       |
+| "Multiple fixes at once saves time"          | Can't isolate what worked. Causes new bugs.                             |
+| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely.              |
+| "I see the problem, let me fix it"           | Seeing symptoms ≠ understanding root cause.                             |
+| "One more fix attempt" (after 2+ failures)   | 3+ failures = architectural problem. Question pattern, don't fix again. |
 
 ## Quick Reference
 
-| Phase | Key Activities | Success Criteria |
-|-------|---------------|------------------|
-| **1. Root Cause** | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY |
-| **2. Pattern** | Find working examples, compare | Identify differences |
-| **3. Hypothesis** | Form theory, test minimally | Confirmed or new hypothesis |
-| **4. Implementation** | Create test, fix, verify | Bug resolved, tests pass |
+| Phase                 | Key Activities                                         | Success Criteria            |
+| --------------------- | ------------------------------------------------------ | --------------------------- |
+| **1. Root Cause**     | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY     |
+| **2. Pattern**        | Find working examples, compare                         | Identify differences        |
+| **3. Hypothesis**     | Form theory, test minimally                            | Confirmed or new hypothesis |
+| **4. Implementation** | Create test, fix, verify                               | Bug resolved, tests pass    |
 
 ## When Process Reveals "No Root Cause"
 

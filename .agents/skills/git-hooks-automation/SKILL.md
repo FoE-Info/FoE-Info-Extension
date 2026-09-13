@@ -1,6 +1,6 @@
 ---
 name: git-hooks-automation
-description: "Configure and audit Husky and lint-staged git hooks."
+description: 'Configure and audit Husky and lint-staged git hooks.'
 ---
 
 # Git Hooks Automation
@@ -23,16 +23,16 @@ Git hooks are scripts that run automatically at specific points in the Git workf
 
 ### Hook Types & When They Fire
 
-| Hook | Fires When | Common Use |
-|---|---|---|
-| `pre-commit` | Before commit is created | Lint, format, type-check staged files |
-| `prepare-commit-msg` | After default msg, before editor | Auto-populate commit templates |
-| `commit-msg` | After user writes commit message | Enforce commit message format |
-| `post-commit` | After commit is created | Notifications, logging |
-| `pre-push` | Before push to remote | Run tests, check branch policies |
-| `pre-rebase` | Before rebase starts | Prevent rebase on protected branches |
-| `post-merge` | After merge completes | Install deps, run migrations |
-| `post-checkout` | After checkout/switch | Install deps, rebuild assets |
+| Hook                 | Fires When                       | Common Use                            |
+| -------------------- | -------------------------------- | ------------------------------------- |
+| `pre-commit`         | Before commit is created         | Lint, format, type-check staged files |
+| `prepare-commit-msg` | After default msg, before editor | Auto-populate commit templates        |
+| `commit-msg`         | After user writes commit message | Enforce commit message format         |
+| `post-commit`        | After commit is created          | Notifications, logging                |
+| `pre-push`           | Before push to remote            | Run tests, check branch policies      |
+| `pre-rebase`         | Before rebase starts             | Prevent rebase on protected branches  |
+| `post-merge`         | After merge completes            | Install deps, run migrations          |
+| `post-checkout`      | After checkout/switch            | Install deps, rebuild assets          |
 
 ### Native Git Hooks (No Framework)
 
@@ -78,17 +78,9 @@ echo "npx lint-staged" > .husky/pre-commit
 ```json
 {
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix --max-warnings=0",
-      "prettier --write"
-    ],
-    "*.{css,scss}": [
-      "prettier --write",
-      "stylelint --fix"
-    ],
-    "*.{json,md,yml,yaml}": [
-      "prettier --write"
-    ]
+    "*.{js,jsx,ts,tsx}": ["eslint --fix --max-warnings=0", "prettier --write"],
+    "*.{css,scss}": ["prettier --write", "stylelint --fix"],
+    "*.{json,md,yml,yaml}": ["prettier --write"]
   }
 }
 ```
@@ -315,12 +307,12 @@ jobs:
 
 ### Hooks Not Running
 
-| Symptom | Cause | Fix |
-|---|---|---|
-| Hooks silently skipped | Not installed in `.git/hooks/` | Run `npx husky init` or `pre-commit install` |
-| "Permission denied" | Hook file not executable | `chmod +x .husky/pre-commit` |
-| Hooks run but wrong ones | Stale hooks from old setup | Delete `.git/hooks/` contents, reinstall |
-| Works locally, fails in CI | Different Node/Python versions | Pin versions in CI config |
+| Symptom                    | Cause                          | Fix                                          |
+| -------------------------- | ------------------------------ | -------------------------------------------- |
+| Hooks silently skipped     | Not installed in `.git/hooks/` | Run `npx husky init` or `pre-commit install` |
+| "Permission denied"        | Hook file not executable       | `chmod +x .husky/pre-commit`                 |
+| Hooks run but wrong ones   | Stale hooks from old setup     | Delete `.git/hooks/` contents, reinstall     |
+| Works locally, fails in CI | Different Node/Python versions | Pin versions in CI config                    |
 
 ### Performance Issues
 
@@ -413,6 +405,7 @@ echo "npx --no -- commitlint --edit \$1" > .husky/commit-msg
 - `@github-actions-templates` - CI/CD workflow templates
 
 ## Limitations
+
 - Use this skill only when the task clearly matches the scope described above.
 - Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
 - Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.

@@ -21,12 +21,14 @@ digraph when_to_use {
 ```
 
 **Use when:**
+
 - 3+ test files failing with different root causes
 - Multiple subsystems broken independently
 - Each problem can be understood without context from others
 - No shared state between investigations
 
 **Don't use when:**
+
 - Failures are related (fixing one might fix others)
 - Need to understand full system state
 - Agents would interfere with each other (editing same files, using shared resources)
@@ -36,6 +38,7 @@ digraph when_to_use {
 ## Agent Prompt Structure
 
 Good agent prompts are:
+
 1. **Focused** - One clear problem domain
 2. **Self-contained** - All context needed to understand the problem
 3. **Specific about output** - What should the agent return?
@@ -58,6 +61,7 @@ These are <issue type, e.g. timing/race condition> issues. Your task:
    - Adjusting test expectations if testing changed behavior
 
 Constraints:
+
 - Do NOT just increase timeouts - find the real issue.
 - Do NOT modify unrelated production code.
 

@@ -6,12 +6,12 @@ Adapting Test-Driven Development (TDD) to authoring, testing, and refining skill
 
 ## 1. Core Concept: Red-Green-Refactor for Processes
 
-| TDD Phase | Documentation Counterpart |
-| :--- | :--- |
-| **Test Case** | Baseline prompt given to an agent without the skill active. |
-| **RED (Failure)** | Agent makes common assumptions, introduces bugs, or violates repo invariants. |
-| **GREEN (Pass)** | Agent follows the newly authored skill and executes the procedure cleanly. |
-| **REFACTOR** | Identify remaining edge cases, trim unnecessary text, move details to `references/`. |
+| TDD Phase         | Documentation Counterpart                                                            |
+| :---------------- | :----------------------------------------------------------------------------------- |
+| **Test Case**     | Baseline prompt given to an agent without the skill active.                          |
+| **RED (Failure)** | Agent makes common assumptions, introduces bugs, or violates repo invariants.        |
+| **GREEN (Pass)**  | Agent follows the newly authored skill and executes the procedure cleanly.           |
+| **REFACTOR**      | Identify remaining edge cases, trim unnecessary text, move details to `references/`. |
 
 ---
 

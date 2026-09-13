@@ -78,11 +78,13 @@ If dynamically growing fields are absolutely required for older browsers, you mu
 ```javascript
 // Only attach the fallback event listeners if field-sizing is unsupported
 if (!CSS.supports('field-sizing', 'content')) {
-  document.querySelectorAll('.growable-textarea > textarea').forEach(textarea => {
-    textarea.addEventListener('input', () => {
-      textarea.parentNode.dataset.replicatedValue = textarea.value;
+  document
+    .querySelectorAll('.growable-textarea > textarea')
+    .forEach((textarea) => {
+      textarea.addEventListener('input', () => {
+        textarea.parentNode.dataset.replicatedValue = textarea.value;
+      });
     });
-  });
 }
 ```
 
@@ -105,7 +107,7 @@ if (!CSS.supports('field-sizing', 'content')) {
   /* The pseudo-element renders the copied text invisibly to stretch the grid */
   .growable-textarea::after {
     /* The space is necessary for trailing empty lines to be rendered */
-    content: attr(data-replicated-value) " ";
+    content: attr(data-replicated-value) ' ';
     white-space: pre-wrap;
     visibility: hidden;
   }

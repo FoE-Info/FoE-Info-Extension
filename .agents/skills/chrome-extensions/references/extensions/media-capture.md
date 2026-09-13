@@ -2,9 +2,9 @@
 
 ## Choosing the Right API
 
-| Need | API |
-|------|-----|
-| Record the active tab's audio/video | `chrome.tabCapture.getMediaStreamId()` |
+| Need                                         | API                                          |
+| -------------------------------------------- | -------------------------------------------- |
+| Record the active tab's audio/video          | `chrome.tabCapture.getMediaStreamId()`       |
 | Let the user choose a screen, window, or tab | `chrome.desktopCapture.chooseDesktopMedia()` |
 
 Prefer `tabCapture` when you only need the current tab — it requires no user chooser dialog and
@@ -27,7 +27,9 @@ media streams directly).
 ```js
 // service-worker.js
 chrome.action.onClicked.addListener(async (tab) => {
-  const streamId = await chrome.tabCapture.getMediaStreamId({ targetTabId: tab.id });
+  const streamId = await chrome.tabCapture.getMediaStreamId({
+    targetTabId: tab.id,
+  });
   // Pass the ID to the offscreen document to call getUserMedia
   await chrome.runtime.sendMessage({ type: 'START_CAPTURE', streamId });
 });
@@ -37,8 +39,18 @@ chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type !== 'START_CAPTURE') return;
   (async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
-      audio: { mandatory: { chromeMediaSource: 'tab', chromeMediaSourceId: msg.streamId } },
-      video: { mandatory: { chromeMediaSource: 'tab', chromeMediaSourceId: msg.streamId } }
+      audio: {
+        mandatory: {
+          chromeMediaSource: 'tab',
+          chromeMediaSourceId: msg.streamId,
+        },
+      },
+      video: {
+        mandatory: {
+          chromeMediaSource: 'tab',
+          chromeMediaSourceId: msg.streamId,
+        },
+      },
     });
     const recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
     // ... handle recorder events
@@ -66,17 +78,22 @@ chrome.action.onClicked.addListener(async (tab) => {
   // chrome.desktopCapture.chooseDesktopMedia(['screen', 'window'], cb);
 
   // ✅ CORRECT — pass the active tab
-  chrome.desktopCapture.chooseDesktopMedia(['screen', 'window', 'tab'], tab, (streamId) => {
-    if (!streamId) return; // User cancelled
-    // Send streamId to offscreen document for getUserMedia
-    chrome.runtime.sendMessage({ type: 'START_DESKTOP_CAPTURE', streamId });
-  });
+  chrome.desktopCapture.chooseDesktopMedia(
+    ['screen', 'window', 'tab'],
+    tab,
+    (streamId) => {
+      if (!streamId) return; // User cancelled
+      // Send streamId to offscreen document for getUserMedia
+      chrome.runtime.sendMessage({ type: 'START_DESKTOP_CAPTURE', streamId });
+    },
+  );
 });
 ```
 
 ## State Locking — Prevent Double-Start Errors
 
 Both APIs fail if called while a previous capture is still active:
+
 - `tabCapture`: `"Cannot capture a tab with an active stream"`
 - `desktopCapture`: opens a second chooser dialog on top of the first
 
@@ -86,7 +103,8 @@ cleared on browser close):
 ```js
 // State: 'idle' → 'starting' → 'recording' → 'stopping' → 'idle'
 chrome.action.onClicked.addListener(async (tab) => {
-  const { recordingState = 'idle' } = await chrome.storage.session.get('recordingState');
+  const { recordingState = 'idle' } =
+    await chrome.storage.session.get('recordingState');
 
   // Ignore clicks during transitions
   if (recordingState === 'starting' || recordingState === 'stopping') return;
@@ -104,8 +122,9 @@ chrome.action.onClicked.addListener(async (tab) => {
     }
   } else if (recordingState === 'recording') {
     await chrome.storage.session.set({ recordingState: 'stopping' });
-    try { await stopRecording(); }
-    finally {
+    try {
+      await stopRecording();
+    } finally {
       await chrome.storage.session.set({ recordingState: 'idle' });
       await chrome.action.setBadgeText({ text: '' });
     }

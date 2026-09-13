@@ -2,8 +2,8 @@
 
 You can customize the appearance of scrollbars using the standard CSS properties `scrollbar-color` and `scrollbar-width`.
 
-*   **`scrollbar-color`**: Accepts two `<color>` values. The first applies to the thumb (the moving part), and the second to the track (the fixed background).
-*   **`scrollbar-width`**: Accepts `auto` (default), `thin` (a thinner variant), or `none` (hides the scrollbar completely while maintaining scrollability).
+- **`scrollbar-color`**: Accepts two `<color>` values. The first applies to the thumb (the moving part), and the second to the track (the fixed background).
+- **`scrollbar-width`**: Accepts `auto` (default), `thin` (a thinner variant), or `none` (hides the scrollbar completely while maintaining scrollability).
 
 ## Apply `scrollbar-color` and `scrollbar-width`
 
@@ -56,4 +56,3 @@ If you are using custom properties to define colors, these will cascade to the l
   }
 }
 ```
-

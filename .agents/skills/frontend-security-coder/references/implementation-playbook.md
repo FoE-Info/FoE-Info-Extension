@@ -7,6 +7,7 @@ A practical checklist and implementation guide for DOM XSS prevention and Conten
 ## 1. DOM XSS Prevention Checklist
 
 ### Dangerous Sinks to Avoid or Guard
+
 - [ ] **Avoid `innerHTML`, `outerHTML`, and `insertAdjacentHTML` with dynamic data**:
   - Prefer `element.textContent = data;` for plain text.
   - Use `document.createElement()`, `element.setAttribute()`, and `element.appendChild()` for DOM building.
@@ -14,9 +15,10 @@ A practical checklist and implementation guide for DOM XSS prevention and Conten
   - If dynamic markup is mandatory, sanitize before assignment:
     ```javascript
     import DOMPurify from 'dompurify';
+
     element.innerHTML = DOMPurify.sanitize(untrustedHtml, {
       ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'span'],
-      ALLOWED_ATTR: ['href', 'title', 'class', 'target']
+      ALLOWED_ATTR: ['href', 'title', 'class', 'target'],
     });
     ```
 - [ ] **Safe URL Handling in Links and Attributes**:
@@ -43,6 +45,7 @@ A practical checklist and implementation guide for DOM XSS prevention and Conten
 ## 2. Content Security Policy (CSP) Checklist
 
 ### Baseline Policy Directives
+
 - [ ] **Default Restrictive Fallback**:
   - `default-src 'self'` prevents loading unauthorized external resources.
 - [ ] **Script Execution Controls**:

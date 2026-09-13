@@ -16,15 +16,15 @@ Create an endpoint that populates the allowed credentials parameters specificall
 
 ```javascript
 // Node.js step-up options generation example
-router.post("/api/reauth/options", enforceActiveSession, async (req, res) => {
+router.post('/api/reauth/options', enforceActiveSession, async (req, res) => {
   const userPasskeys = await db.findCredentialsByUserId(req.user.id);
 
   const options = {
     challenge: serverGeneratedBase64UrlChallenge, // Random challenge stored in user session
-    rpId: "example.com",
+    rpId: 'example.com',
     // Enforce allowance strictly limited to the user's credentials list
     allowCredentials: userPasskeys.map((cred) => ({
-      type: "public-key",
+      type: 'public-key',
       id: cred.id,
       transports: cred.transports, // Speeds up resolution by indicating platform transports
     })),
@@ -59,8 +59,8 @@ async function triggerButtonReauth() {
   reauthAbortController.abort();
   reauthAbortController = new AbortController();
 
-  const optionsResponse = await fetch("/api/reauth/options", {
-    method: "POST",
+  const optionsResponse = await fetch('/api/reauth/options', {
+    method: 'POST',
   });
   const optionsJSON = await optionsResponse.json();
   const publicKey =
@@ -74,31 +74,34 @@ async function triggerButtonReauth() {
 
     if (credential) {
       const encodedCredential = credential.toJSON();
-      const verifyResponse = await fetch("/api/reauth/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const verifyResponse = await fetch('/api/reauth/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(encodedCredential),
       });
 
       if (verifyResponse.ok) {
         showTransactionSuccessUI();
-      } else if (verifyResponse.status === 404 && PublicKeyCredential.signalUnknownCredential) {
+      } else if (
+        verifyResponse.status === 404 &&
+        PublicKeyCredential.signalUnknownCredential
+      ) {
         await PublicKeyCredential.signalUnknownCredential({
           rpId, // RP ID must match the one defined on the server
-          credentialId: encodedCredential.id
+          credentialId: encodedCredential.id,
         });
       }
     }
   } catch (err) {
-    if (err.name === "NotAllowedError") {
-      console.log("User cancelled reauthentication.");
+    if (err.name === 'NotAllowedError') {
+      console.log('User cancelled reauthentication.');
     }
   }
 }
 
 document
-  .getElementById("reauth-btn")
-  .addEventListener("click", triggerButtonReauth);
+  .getElementById('reauth-btn')
+  .addEventListener('click', triggerButtonReauth);
 ```
 
 ## Fallback Strategies
@@ -109,11 +112,11 @@ Baseline status for the api.PublicKeyCredential.getClientCapabilities_static cap
 Supported by: Chrome 133 (Feb 2025), Edge 133 (Feb 2025), Firefox 135 (Feb 2025), and Safari 17.4 (Mar 2024).
 
 Always install 'webauthn-polyfills' and import it in the context.
-Consider as long as  `PublicKeyCredential` is supported, `PublicKeyCredential.getClientCapabilities` is also supported. 
+Consider as long as `PublicKeyCredential` is supported, `PublicKeyCredential.getClientCapabilities` is also supported.
 
-```js 
+```js
 import 'webauthn-polyfills';
-``` 
+```
 
 ### Easy JSON Serialization Fallback
 
@@ -121,8 +124,8 @@ Baseline status for the api.PublicKeyCredential.parseRequestOptionsFromJSON_stat
 Supported by: Chrome 129 (Sep 2024), Edge 129 (Sep 2024), Firefox 119 (Oct 2023), and Safari 18.4 (Mar 2025).
 
 Always install 'webauthn-polyfills' and import it in the context.
-Consider as long as  `PublicKeyCredential` is supported, `PublicKeyCredential.parseRequestOptionsFromJSON` and `PublicKeyCredential.prototype.toJSON` are also supported. 
+Consider as long as `PublicKeyCredential` is supported, `PublicKeyCredential.parseRequestOptionsFromJSON` and `PublicKeyCredential.prototype.toJSON` are also supported.
 
-```js 
+```js
 import 'webauthn-polyfills';
-``` 
+```

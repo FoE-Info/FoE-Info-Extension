@@ -71,4 +71,3 @@ If you are using custom properties to define colors, these will cascade to the l
   }
 }
 ```
-

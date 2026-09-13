@@ -35,14 +35,14 @@ Context: `project`, `directory`, `worktree`, `client` (opencode SDK; use
 
 ## Hook Surface
 
-| Hook | Signature | Use |
-| :--- | :--- | :--- |
-| `tool.execute.before` | `(input, output)` | Validate/mutate `output.args`; throw to deny |
-| `tool.execute.after` | `(input, output)` | Post-processing; renew the Graphify query stamp |
-| `event` | `({ event })` | `session.idle`, `session.status`, `permission.asked`, ... |
-| `shell.env` | `(input, output)` | Inject variables into `output.env` |
-| `experimental.session.compacting` | `(input, output)` | Customize compaction context or replace the prompt |
-| `tool` | map | Register custom tools |
+| Hook                              | Signature         | Use                                                       |
+| :-------------------------------- | :---------------- | :-------------------------------------------------------- |
+| `tool.execute.before`             | `(input, output)` | Validate/mutate `output.args`; throw to deny              |
+| `tool.execute.after`              | `(input, output)` | Post-processing; renew the Graphify query stamp           |
+| `event`                           | `({ event })`     | `session.idle`, `session.status`, `permission.asked`, ... |
+| `shell.env`                       | `(input, output)` | Inject variables into `output.env`                        |
+| `experimental.session.compacting` | `(input, output)` | Customize compaction context or replace the prompt        |
+| `tool`                            | map               | Register custom tools                                     |
 
 ## Parity Limits vs Antigravity
 

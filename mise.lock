@@ -2,30 +2,51 @@
 
 lockfile_version = 1
 
+[[tools."aqua:gokcehan/lf"]]
+version = "r42"
+backend = "aqua:gokcehan/lf"
+specifiers = ["latest"]
+
+[tools."aqua:gokcehan/lf"."platforms.linux-x64"]
+checksum = "sha256:c6abe6c0c11a0a4ae89754884aad67de18decc113935cbc5eaa57dc0d1850fb4"
+url = "https://github.com/gokcehan/lf/releases/download/r42/lf-linux-amd64.tar.gz"
+url_api = "https://api.github.com/repos/gokcehan/lf/releases/assets/496377672"
+
+[tools."aqua:gokcehan/lf"."platforms.macos-x64"]
+checksum = "sha256:3a3c2180cce9274d5c4713b092cff2b1169db9d9df4334e1c40d485eab1e565a"
+url = "https://github.com/gokcehan/lf/releases/download/r42/lf-darwin-amd64.tar.gz"
+url_api = "https://api.github.com/repos/gokcehan/lf/releases/assets/496377686"
+
+[tools."aqua:gokcehan/lf"."platforms.windows-x64"]
+checksum = "sha256:13bb576b02373610dbcfb97e483272198a1b94cada66298a302954d87613465c"
+url = "https://github.com/gokcehan/lf/releases/download/r42/lf-windows-amd64.zip"
+url_api = "https://api.github.com/repos/gokcehan/lf/releases/assets/496377674"
+
+[[tools.go]]
+version = "1.27.1"
+backend = "core:go"
+specifiers = ["latest"]
+
+[tools.go."platforms.linux-x64"]
+checksum = "sha256:63d339f0da5ab53635a56f2490a7984dfe12dfcff22ad749f63edaf590168445"
+url = "https://dl.google.com/go/go1.27.1.linux-amd64.tar.gz"
+
+[tools.go."platforms.macos-x64"]
+checksum = "sha256:8f8f52c6649542cf027bbc9b9c68d1ec042f9f34808a40413f0b8b3f66f3caa4"
+url = "https://dl.google.com/go/go1.27.1.darwin-amd64.tar.gz"
+
+[tools.go."platforms.windows-x64"]
+checksum = "sha256:a3911b5e0e1b1053f25ed0675f4c1c6aad1e2bfcf253df2b9be4caabd2edd95d"
+url = "https://dl.google.com/go/go1.27.1.windows-amd64.zip"
+
 [[tools.node]]
 version = "26.8.2"
 backend = "core:node"
 specifiers = ["26.8.2"]
 
-[tools.node."platforms.linux-arm64"]
-checksum = "sha256:746cdbf21565b4ea06f77642bb0e85466de8bb722242be2c5e006f272c361c63"
-url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-linux-arm64.tar.gz"
-
-[tools.node."platforms.linux-arm64-musl"]
-checksum = "sha256:125437a0b59d69592b8f4bb813a47245337afac8c973d15ab7720f0ec55d182d"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-arm64-musl.tar.gz"
-
 [tools.node."platforms.linux-x64"]
 checksum = "sha256:badb3fe6a61b85e1352ca6564dc56b8b7bd5ecd5c474c52acc21dd0cdd586f35"
 url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-linux-x64.tar.gz"
-
-[tools.node."platforms.linux-x64-musl"]
-checksum = "sha256:696eb0180248a06c9893f3f07bcc4e2680891c83118c73aaf1de330efd053910"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-x64-musl.tar.gz"
-
-[tools.node."platforms.macos-arm64"]
-checksum = "sha256:974b6d5fb2fc7c33ff2354db0902b4e91c2de01ec8acc6de48e543c97e18c9e1"
-url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-darwin-arm64.tar.gz"
 
 [tools.node."platforms.macos-x64"]
 checksum = "sha256:adb8feb2d4987df3d72d2ec46f4fc4b58039c859b8c3f0e3cc2d3c6cbaf8629c"

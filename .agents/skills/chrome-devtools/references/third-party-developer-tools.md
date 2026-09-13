@@ -55,12 +55,12 @@ window.addEventListener(
           inputSchema: {
             type: 'object',
             properties: {
-              a: {type: 'number'},
-              b: {type: 'number'},
+              a: { type: 'number' },
+              b: { type: 'number' },
             },
             required: ['a', 'b'],
           },
-          execute: async (input: {a: number; b: number}) => {
+          execute: async (input: { a: number; b: number }) => {
             return input.a + input.b;
           },
         },

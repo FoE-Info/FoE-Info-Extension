@@ -16,13 +16,14 @@ The workspace maintains a roster of 36 specialized domain subagents across 4 squ
 - **Web Engineering & UI (4)**: Bootstrap 5.3 layouts, TypeScript, JavaScript, and Webpack.
 - **Knowledge Graphs & Architecture (8)**: Graphify navigation, refactoring, and peer comparisons.
 
-*(See `<subagents>` catalog for individual agent names, roles, and full prompt descriptions).*
+_(See `<subagents>` catalog for individual agent names, roles, and full prompt descriptions)._
 
 ---
 
 ## 2. Delegation & Execution Protocol
 
 ### A. Role Match Check (Delegation First)
+
 - Before executing code modifications or deep investigations, check whether the task fits any of the 36 specialized subagents in `<subagents>` or `.agents/agents/` (e.g. Bootstrap UI, Great Buildings math, RPC network handlers, CDP browser testing).
 - **If a subagent role fits**: The main agent must act as Tech Lead / Orchestrator and delegate the execution slice to that specialist via `invoke_subagent`.
 - **Runtime Resolution in Antigravity**: If the specialist is not pre-registered as an active type in `<subagents>`, either:
@@ -30,7 +31,9 @@ The workspace maintains a roster of 36 specialized domain subagents across 4 squ
   2. Or invoke `self` with `Role: "<name>"` and the specialist's system prompt instructions.
 
 ### B. When the Main Agent Executes Directly
+
 The main agent is explicitly permitted and expected to execute tasks directly when:
+
 1. **No Subagent Fits**: The task falls outside the defined roles of the 36 specialists.
 2. **Workspace & Agent Meta-Engineering**: Maintaining `.agents/` configurations, `AGENTS.md`, rules, skills, lifecycle hooks, and project documentation.
 3. **Cross-Squad Orchestration & Synthesis**: Multi-domain coordination where separating into single-domain subagents would cause thrashing or architectural fragmentation.

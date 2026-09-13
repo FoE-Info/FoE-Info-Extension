@@ -7,6 +7,7 @@ Use the CSS `:autofill` to highlight fields that have (or have not been) autofil
 To highlight a form field that has been autofilled by the browser (and not edited by the user) add a selector to your CSS using the `:autofill` class. This can be used for an `<input>`, `<select>`, or `<textarea>` element.
 
 When styling autofilled states, you must adhere to accessibility best practices:
+
 - **Multiple State Indicators**: Do not rely on border color alone to indicate the autofilled state. Use multiple indicators such as border thickness and custom background shading to ensure the state is perceivable.
 - **Preserve Focus Indicators**: Never remove focus outlines (`outline: none`) without providing a clear, high-contrast replacement for keyboard users.
 

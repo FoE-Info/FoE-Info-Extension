@@ -33,7 +33,7 @@ test.each([
 
 ## Snapshot discipline
 
-Snapshot tests are implementation tests in disguise unless the snapshot *is* the contract (e.g., a public JSON output, a CLI's help text). Avoid snapshots of:
+Snapshot tests are implementation tests in disguise unless the snapshot _is_ the contract (e.g., a public JSON output, a CLI's help text). Avoid snapshots of:
 
 - Full component trees that change on every styling tweak (Rule 1 — brittle, asserts implementation)
 - Large objects nobody reviews — an unread snapshot approves itself (Rule 4)

@@ -15,21 +15,22 @@ When a skill is activated, its entire `SKILL.md` is loaded into the conversation
 
 ## 2. Directory Separation Rules
 
-| Content Type | Where It Belongs | Why |
-| :--- | :--- | :--- |
-| **Trigger conditions & scope** | `SKILL.md` (Top) | Agent immediately knows whether the skill applies. |
-| **Step-by-step workflow** | `SKILL.md` (Body) | Provides clear sequencing and decision logic. |
-| **Verification checklist** | `SKILL.md` (Bottom)| Ensures quality before task completion. |
-| **API cheatsheets / Syntax tables** | `references/*.md` | Loaded on-demand only if specific syntax is queried. |
-| **Comprehensive edge cases** | `references/*.md` | Prevents bloating normal execution path. |
-| **Templates & Boilers** | `references/*.md` or `resources/` | Read only during initial scaffolding. |
-| **Executable automation** | `scripts/*.sh` or `*.mjs` | Black-box execution via terminal; 0 context consumed. |
+| Content Type                        | Where It Belongs                  | Why                                                   |
+| :---------------------------------- | :-------------------------------- | :---------------------------------------------------- |
+| **Trigger conditions & scope**      | `SKILL.md` (Top)                  | Agent immediately knows whether the skill applies.    |
+| **Step-by-step workflow**           | `SKILL.md` (Body)                 | Provides clear sequencing and decision logic.         |
+| **Verification checklist**          | `SKILL.md` (Bottom)               | Ensures quality before task completion.               |
+| **API cheatsheets / Syntax tables** | `references/*.md`                 | Loaded on-demand only if specific syntax is queried.  |
+| **Comprehensive edge cases**        | `references/*.md`                 | Prevents bloating normal execution path.              |
+| **Templates & Boilers**             | `references/*.md` or `resources/` | Read only during initial scaffolding.                 |
+| **Executable automation**           | `scripts/*.sh` or `*.mjs`         | Black-box execution via terminal; 0 context consumed. |
 
 ---
 
 ## 3. Black-Box Helper Scripts
 
 If a skill requires complex command sequences:
+
 1. Encapsulate the logic in an executable script in `scripts/` (e.g. `scripts/scaffold.sh`).
 2. Instruct the agent to run the script with `--help` or execute it directly rather than reading its full source code.
 3. This keeps the agent's focus on the user's task rather than internal script mechanics.

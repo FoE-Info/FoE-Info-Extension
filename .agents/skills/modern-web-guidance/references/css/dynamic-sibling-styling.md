@@ -47,7 +47,6 @@ By combining these functions with CSS trigonometry (`sin()`, `cos()`), you can p
   position: absolute;
   place-self: center;
 
-
   /* Position each element around the parent center */
   transform: translate(
     calc(cos(var(--angle)) * var(--radius)),

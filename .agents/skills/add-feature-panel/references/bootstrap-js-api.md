@@ -9,8 +9,9 @@ Guidelines for managing Bootstrap 5.3 component instances in Chrome Extension De
 Bootstrap 5.3 provides native static methods on all component classes (`Popover`, `Tooltip`, `Collapse`, `Modal`, `Dropdown`, `Toast`).
 
 ### Good: Native Instance Retrieval
+
 ```javascript
-import { Popover, Tooltip, Collapse } from 'bootstrap';
+import { Collapse, Popover, Tooltip } from 'bootstrap';
 
 // Safely get existing instance or create a new one:
 const popoverEl = document.getElementById('myPopover');
@@ -22,6 +23,7 @@ const popoverInstance = Popover.getOrCreateInstance(popoverEl, {
 ```
 
 ### Bad: jQuery Wrappers (Deprecated)
+
 ```javascript
 // BAD: Leaks memory and forces unnecessary jQuery dependency
 $('#myPopover').popover({ container: 'body' });
@@ -34,6 +36,7 @@ $('#myPopover').popover({ container: 'body' });
 In a Chrome extension DevTools panel, users switch between game tabs, reload cities, and visit other players hundreds of times. If Bootstrap components attached to removed DOM elements are not disposed of, detached DOM nodes accumulate and crash the DevTools process.
 
 ### The Teardown Protocol
+
 Always dispose of component instances before removing or overwriting a DOM node:
 
 ```javascript

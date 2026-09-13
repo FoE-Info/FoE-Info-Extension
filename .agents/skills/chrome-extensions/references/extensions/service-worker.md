@@ -14,12 +14,12 @@ persistent background pages, you CANNOT rely on in-memory state.
 
 ## Storage Tier Selection
 
-| Need | Use |
-|------|-----|
+| Need                                           | Use                                           |
+| ---------------------------------------------- | --------------------------------------------- |
 | Survives browser restart, syncs across devices | `chrome.storage.sync` (8KB/item, 100KB total) |
-| Survives browser restart, local only | `chrome.storage.local` (10MB default) |
-| Survives SW restart only | `chrome.storage.session` (10MB default) |
-| Never persisted (avoid) | Global variables ❌ |
+| Survives browser restart, local only           | `chrome.storage.local` (10MB default)         |
+| Survives SW restart only                       | `chrome.storage.session` (10MB default)       |
+| Never persisted (avoid)                        | Global variables ❌                           |
 
 ## Pattern: State Read-on-Demand
 
@@ -70,7 +70,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   chrome.contextMenus.create({
     id: 'myItem',
     title: 'My Context Menu Item',
-    contexts: ['selection']
+    contexts: ['selection'],
   });
 });
 ```
@@ -132,7 +132,10 @@ function getToday() {
 }
 
 async function incrementDailyCount() {
-  const { dailyCount = 0, countDate = '' } = await chrome.storage.local.get(['dailyCount', 'countDate']);
+  const { dailyCount = 0, countDate = '' } = await chrome.storage.local.get([
+    'dailyCount',
+    'countDate',
+  ]);
   const today = getToday();
 
   if (countDate !== today) {

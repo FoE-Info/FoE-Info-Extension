@@ -2,7 +2,7 @@ Historically, applying different layouts to a component based on its content req
 
 The `:has()` pseudo-class eliminates this need by acting as a parent selector. It allows you to conditionally style a container element based on the presence or absence of specific descendant elements.
 
-Using `:has()`, you can easily define distinct layout variations entirely in CSS based on a component's actual DOM content. You can also optionally combine it with `:not()` to explicitly target the *absence* of content to define default layouts.
+Using `:has()`, you can easily define distinct layout variations entirely in CSS based on a component's actual DOM content. You can also optionally combine it with `:not()` to explicitly target the _absence_ of content to define default layouts.
 
 ### Implementing content-based container styling
 
@@ -13,7 +13,7 @@ To build a component that changes its layout based on its content:
 1. **Define the default styling**: Apply the base layout styles to the container element (e.g., a simple single-column stack).
 2. **Apply content-based overrides**: Target the container with `:has([child-selector])` and apply the new layout styles for when that content is present (e.g., a multi-column grid).
 
-*Example: A card component that switches to a side-by-side layout if an image is present.*
+_Example: A card component that switches to a side-by-side layout if an image is present._
 
 ```css
 /* 1. Define the default state on the component container */
@@ -65,7 +65,10 @@ To build a component that changes its layout based on its content:
 <article class="article-card">
   <div class="content">
     <h2>Text-Only Card</h2>
-    <p>This card lays out its content vertically, and gets its background color from the :not(:has()) rule.</p>
+    <p>
+      This card lays out its content vertically, and gets its background color
+      from the :not(:has()) rule.
+    </p>
   </div>
 </article>
 ```
@@ -94,7 +97,7 @@ If server-side rendering is not an option, you must use a small script with `CSS
     flex-direction: row;
     align-items: center;
   }
-  
+
   .article-card:not(.has-image) {
     background-color: #f9f9f9;
   }
@@ -107,8 +110,8 @@ If server-side rendering is not an option, you must use a small script with `CSS
 if (!CSS.supports('selector(:has(*))')) {
   // Find all components that need checking
   const cards = document.querySelectorAll('.article-card');
-  
-  cards.forEach(card => {
+
+  cards.forEach((card) => {
     // If the critical content exists, manually add the fallback class
     if (card.querySelector('img')) {
       card.classList.add('has-image');

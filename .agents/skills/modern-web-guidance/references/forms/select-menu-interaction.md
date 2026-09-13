@@ -1,9 +1,11 @@
 # Select Menu Interaction
 
 ## The Problem
+
 For mandatory dropdowns (e.g., "Choose a Country"), standard validation flags the field as invalid immediately if the default option has an empty value. This can create visual noise. We want to show the error only if the user opens the menu and closes it without choosing an option, or attempts to submit the form.
 
 ## The Solution
+
 The `:user-invalid` pseudo-class works seamlessly with `<select>` elements. It respects the user's interaction flow: simply loading the page or focusing/blurring without making a change doesn't count as an interaction, so the field stays neutral until they actively attempt a selection.
 
 ### Implementation Strategy
@@ -15,6 +17,7 @@ The `:user-invalid` pseudo-class works seamlessly with `<select>` elements. It r
 ## Implementation Guide
 
 ### 1. HTML Structure
+
 The "placeholder" option is key here.
 
 ```html
@@ -32,14 +35,13 @@ The "placeholder" option is key here.
       <option value="ca">Canada</option>
       <option value="uk">United Kingdom</option>
     </select>
-    <div id="country-error" class="error-msg">
-      Please select a country.
-    </div>
+    <div id="country-error" class="error-msg">Please select a country.</div>
   </div>
 </form>
 ```
 
 ### 2. CSS
+
 ```css
 .error-msg {
   display: none;
@@ -128,14 +130,20 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -169,7 +177,10 @@ UserInvalidFallback.init(form);
 ```javascript
 // Sync aria-invalid with the CSS :user-invalid state
 const syncAria = (el) => {
-  el.setAttribute?.('aria-invalid', el.matches(':user-invalid') ? 'true' : 'false');
+  el.setAttribute?.(
+    'aria-invalid',
+    el.matches(':user-invalid') ? 'true' : 'false',
+  );
 };
 
 // Update on blur (to show error) and input (to clear it)

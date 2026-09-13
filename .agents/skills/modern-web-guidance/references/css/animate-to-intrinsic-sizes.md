@@ -24,7 +24,7 @@ You can apply this pattern to any container (like a "Show More" section or a nav
   /* 1. Define a fixed initial size (or 0) and hide overflow */
   block-size: 100px;
   overflow: hidden;
-  
+
   /* 2. Transition the sizing property */
   transition: block-size 0.4s ease-out;
 }
@@ -61,7 +61,9 @@ You can also animate in the opposite direction—starting from a natural size an
   /* 1. Start with the natural content height */
   block-size: auto;
   overflow: hidden;
-  transition: block-size 0.5s ease-in-out, opacity 0.5s ease;
+  transition:
+    block-size 0.5s ease-in-out,
+    opacity 0.5s ease;
 }
 
 .collapsible-alert.is-dismissed {
@@ -85,7 +87,10 @@ You can also animate in the opposite direction—starting from a natural size an
 // MANDATORY Accessibility Synchronization: Ensure elements collapsed to zero dimensions are removed from the assistive technology tree, and sync aria-expanded states on triggers.
 const alertElement = document.querySelector('.collapsible-alert');
 alertElement.addEventListener('transitionend', (e) => {
-  if (e.propertyName === 'block-size' && alertElement.classList.contains('is-dismissed')) {
+  if (
+    e.propertyName === 'block-size' &&
+    alertElement.classList.contains('is-dismissed')
+  ) {
     alertElement.hidden = true;
   }
 });
@@ -100,9 +105,9 @@ triggerBtn?.addEventListener('click', () => {
 
 ## Key constraints
 
-*   **Keyword-to-Keyword Restriction**: You cannot animate between two different keywords directly (e.g., from `min-content` to `max-content`). One end of the transition must be a fixed length or percentage (e.g., `0` to `auto`).
-*   **Calc-size Syntax**: Inside `calc-size()`, you cannot mix different intrinsic keywords in the same expression. The first argument (the basis) defines what `size` represents.
-*   **Opt-in Requirement**: Transitions to intrinsic keywords are disabled by default (`numeric-only`) to maintain backward compatibility. You must apply `interpolate-size: allow-keywords` to the element or an ancestor. `calc-size()` acts as a per-property override, automatically enabling interpolation whenever it is used.
+- **Keyword-to-Keyword Restriction**: You cannot animate between two different keywords directly (e.g., from `min-content` to `max-content`). One end of the transition must be a fixed length or percentage (e.g., `0` to `auto`).
+- **Calc-size Syntax**: Inside `calc-size()`, you cannot mix different intrinsic keywords in the same expression. The first argument (the basis) defines what `size` represents.
+- **Opt-in Requirement**: Transitions to intrinsic keywords are disabled by default (`numeric-only`) to maintain backward compatibility. You must apply `interpolate-size: allow-keywords` to the element or an ancestor. `calc-size()` acts as a per-property override, automatically enabling interpolation whenever it is used.
 
 ## Fallback strategies
 
@@ -115,8 +120,8 @@ Unsupported in: Firefox and Safari.
 
 `interpolate-size` and `calc-size()` are progressive enhancements. Browsers that do not support them will perform an instant jump to the target size.
 
-*   **Graceful Degradation**: For simple `block-size: auto` transitions, standard browsers will simply toggle the size instantly, which is functional but less polished.
-*   **Manual keyword fallbacks**: When using `calc-size()`, always provide a standard keyword fallback for older browsers, as they will discard the entire `calc-size()` declaration.
+- **Graceful Degradation**: For simple `block-size: auto` transitions, standard browsers will simply toggle the size instantly, which is functional but less polished.
+- **Manual keyword fallbacks**: When using `calc-size()`, always provide a standard keyword fallback for older browsers, as they will discard the entire `calc-size()` declaration.
 
 ```css
 .card {

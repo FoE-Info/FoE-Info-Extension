@@ -75,8 +75,12 @@ When handling custom mutually exclusive regions controlled by external buttons, 
 ```html
 <div class="custom-accordion">
   <div class="controls">
-    <button aria-expanded="true" aria-controls="panel-1" id="btn-1">Section 1</button>
-    <button aria-expanded="false" aria-controls="panel-2" id="btn-2">Section 2</button>
+    <button aria-expanded="true" aria-controls="panel-1" id="btn-1">
+      Section 1
+    </button>
+    <button aria-expanded="false" aria-controls="panel-2" id="btn-2">
+      Section 2
+    </button>
   </div>
 
   <div id="panel-1" class="panel">
@@ -101,7 +105,10 @@ accordion.addEventListener('beforematch', (e) => {
   });
   accordion.querySelectorAll('button').forEach((btn) => {
     const controls = btn.getAttribute('aria-controls');
-    btn.setAttribute('aria-expanded', controls === e.target.id ? 'true' : 'false');
+    btn.setAttribute(
+      'aria-expanded',
+      controls === e.target.id ? 'true' : 'false',
+    );
   });
 });
 ```

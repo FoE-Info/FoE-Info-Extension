@@ -75,7 +75,7 @@ function displayDiff(snapA, snapB, label) {
       d.key.toLowerCase().includes('html') ||
       d.key.toLowerCase().includes('eventlistener') ||
       d.key.toLowerCase().includes('context') ||
-      d.key.toLowerCase().includes('closure')
+      d.key.toLowerCase().includes('closure'),
   );
 
   commonLeaks.sort((a, b) => b.countDiff - a.countDiff);
@@ -93,7 +93,7 @@ function displayDiff(snapA, snapB, label) {
 const [, , file1, file2, file3] = process.argv;
 if (!file1 || !file2) {
   console.error(
-    'Usage: node compare_snapshots.mjs <baseline.heapsnapshot> <target.heapsnapshot> [final.heapsnapshot]'
+    'Usage: node compare_snapshots.mjs <baseline.heapsnapshot> <target.heapsnapshot> [final.heapsnapshot]',
   );
   process.exit(1);
 }
@@ -104,14 +104,22 @@ try {
 
   if (file3) {
     const snap3 = parseSnapshot(file3);
-    displayDiff(snap1, snap2, 'Active Allocation: Baseline -> Target (Peak Load)');
-    displayDiff(snap1, snap3, 'Persistent Leaks: Baseline -> Final (Post-Revert / GC)');
+    displayDiff(
+      snap1,
+      snap2,
+      'Active Allocation: Baseline -> Target (Peak Load)',
+    );
+    displayDiff(
+      snap1,
+      snap3,
+      'Persistent Leaks: Baseline -> Final (Post-Revert / GC)',
+    );
   } else {
     displayDiff(snap1, snap2, 'Snapshot Comparison: Baseline -> Target');
   }
 } catch (error) {
   console.error(
-    'Error parsing snapshots. They might be too large for JSON.parse or invalid.'
+    'Error parsing snapshots. They might be too large for JSON.parse or invalid.',
   );
   console.error(error.message);
 }

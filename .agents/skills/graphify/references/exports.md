@@ -65,12 +65,17 @@ $(cat graphify-out/.graphify_python) -m graphify.serve graphify-out/graph.json
 This starts a stdio MCP server that exposes tools: `query_graph`, `get_node`, `get_neighbors`, `get_community`, `god_nodes`, `graph_stats`, `shortest_path`. Add to any MCP-compatible agent orchestrator so other agents can query the graph live.
 
 To configure in an MCP client, set `command` to the **absolute interpreter path** printed by `cat graphify-out/.graphify_python`:
+
 ```json
 {
   "mcpServers": {
     "graphify": {
       "command": "<absolute path from: cat graphify-out/.graphify_python>",
-      "args": ["-m", "graphify.serve", "/absolute/path/to/graphify-out/graph.json"]
+      "args": [
+        "-m",
+        "graphify.serve",
+        "/absolute/path/to/graphify-out/graph.json"
+      ]
     }
   }
 }

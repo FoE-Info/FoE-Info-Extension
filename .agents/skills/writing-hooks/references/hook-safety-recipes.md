@@ -15,8 +15,12 @@ process.stdin.on('end', () => {
   const cmd = toolCall?.args?.CommandLine || '';
   const isDestructive = /(rm -rf|git reset --hard|DROP TABLE)/i.test(cmd);
 
-  const response = isDestructive
-    ? { decision: 'force_ask', reason: `Destructive command detected: "${cmd}"` }
+  const response =
+    isDestructive ?
+      {
+        decision: 'force_ask',
+        reason: `Destructive command detected: "${cmd}"`,
+      }
     : { decision: 'allow' };
 
   process.stdout.write(JSON.stringify(response));
@@ -35,9 +39,10 @@ process.stdin.on('end', () => {
   const response = {
     injectSteps: [
       {
-        ephemeralMessage: 'Guardrail Reminder: Keep slices <= 100 lines, files <= 600 lines.'
-      }
-    ]
+        ephemeralMessage:
+          'Guardrail Reminder: Keep slices <= 100 lines, files <= 600 lines.',
+      },
+    ],
   };
   process.stdout.write(JSON.stringify(response));
 });
@@ -57,7 +62,7 @@ process.stdin.on('end', () => {
   // Spawn detached process so hook exits instantly
   const child = spawn('npm', ['run', 'graph:foe-info:update'], {
     detached: true,
-    stdio: 'ignore'
+    stdio: 'ignore',
   });
   child.unref();
 
@@ -78,10 +83,12 @@ process.stdin.on('end', () => {
   const { fullyIdle, terminationReason } = JSON.parse(input);
 
   if (terminationReason === 'model_stop' && !fullyIdle) {
-    process.stdout.write(JSON.stringify({
-      decision: 'continue',
-      reason: 'Background tasks are still actively executing. Please wait.'
-    }));
+    process.stdout.write(
+      JSON.stringify({
+        decision: 'continue',
+        reason: 'Background tasks are still actively executing. Please wait.',
+      }),
+    );
     return;
   }
 

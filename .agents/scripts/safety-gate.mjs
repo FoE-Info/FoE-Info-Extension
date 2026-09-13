@@ -12,7 +12,6 @@
  * payloads do not trip the gate. Git and browser guards stay regex-based over
  * the quote-stripped command.
  */
-
 import { fileURLToPath } from 'node:url';
 
 export const DANGEROUS_PATTERNS = [
@@ -57,10 +56,7 @@ function stripQuoted(text) {
 }
 
 function basename(token) {
-  return String(token)
-    .replace(/\/+$/, '')
-    .split('/')
-    .pop();
+  return String(token).replace(/\/+$/, '').split('/').pop();
 }
 
 function isGeneratedArtifact(path) {

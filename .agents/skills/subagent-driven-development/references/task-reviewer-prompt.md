@@ -188,6 +188,7 @@ Subagent (invoke_subagent TypeName: "code-reviewer" or "self", Role: "Task Revie
 ```
 
 **Placeholders:**
+
 - `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection
 - `[BRIEF_FILE]` — REQUIRED: the task brief file (`scripts/task-brief PLAN N`
   prints the path; same file the implementer worked from)

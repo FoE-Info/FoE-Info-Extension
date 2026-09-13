@@ -34,6 +34,7 @@ To maintain high maintainability, testability, and clarity, agents must write mo
 ## 3. InnoGames Domain Taxonomy Summary
 
 Never dump feature logic, RPC parsing, or calculations into generic catch-alls (`StartupService.js`, `index.js`, or `helper.js`).
+
 - **City Production & Harvest** $\to$ `CityProductionService.js` / `ProductionCalculator.js` / `renderProductionPanel.js`
 - **Great Buildings & Investments** $\to$ `GreatBuildingsService.js` / `InvestedCalculator.js` / `renderInvestedPanel.js`
 - **Guild Battlegrounds (GBG)** $\to$ `GuildBattlegroundService.js` / `GbgSignalService.js` / `renderGbgPanel.js`

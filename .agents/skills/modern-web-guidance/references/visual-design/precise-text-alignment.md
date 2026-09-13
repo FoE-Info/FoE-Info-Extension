@@ -5,6 +5,7 @@
 Browsers automatically add extra whitespace above and below text characters to accommodate line-height and font-specific metrics like ascenders and descenders. This "ghost space" makes it impossible to achieve pixel-perfect vertical alignment using standard CSS.
 
 Common issues include:
+
 - **Misaligned Icons**: Text appears visually lower or higher than an adjacent icon even when using `align-items: center`.
 - **Inaccurate Padding**: A button with `padding: 12px` visually appears to have more space on top or bottom because of the font's internal leading.
 - **Flush Alignment**: You cannot align the top of a capital letter exactly with the top of a container or an adjacent image without using "magic number" negative margins.
@@ -48,12 +49,12 @@ When using Flexbox to align text and icons, the "ghost space" often makes the te
 .button {
   display: inline-flex;
   align-items: center;
-  gap: 8px; 
+  gap: 8px;
 }
 /* 
   text-box does NOT inherit, and must be applied directly to the text element.
 */
-.button-text{
+.button-text {
   /* 
     The flex container now centers against the 
     visible letters, not the invisible font box.

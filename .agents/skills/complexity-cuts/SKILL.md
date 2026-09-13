@@ -1,6 +1,6 @@
 ---
 name: complexity-cuts
-description: "Lower algorithmic complexity via verify-revert-stop cycles."
+description: 'Lower algorithmic complexity via verify-revert-stop cycles.'
 ---
 
 # complexity-cuts — Lower Big-O on Existing Code
@@ -64,40 +64,40 @@ The vast majority of real-world Big-O wins come from a small set of moves. Try t
 
 ### Time-complexity reductions
 
-| Smell | Fix | Typical win |
-|---|---|---|
-| `for x in A: if x in B` where B is list/array | Convert B to `Set`/`Map` once | O(n·m) → O(n+m) |
-| Nested loop computing pairs/joins | Hash-join on the key; index by lookup field | O(n·m) → O(n+m) |
-| Repeated `.find` / `.indexOf` / `.includes` inside a loop | Precompute index `Map<key, item>` outside loop | O(n^2) → O(n) |
-| Repeated recomputation of same value | Memoize / cache by input key | O(n·f(n)) → O(n + f(n)) |
-| Sort inside a loop | Sort once outside | O(n^2 log n) → O(n log n) |
-| Linear scan for min/max/median repeatedly | Heap / sorted structure | O(n·k) → O(n log k) |
-| Recursive recomputation (naive Fibonacci shape) | Memoize, or convert to iterative DP | exponential → O(n) |
-| String concatenation in a loop (some langs) | Use builder / `join` / `array.push` then join | O(n^2) → O(n) |
-| Repeated regex compile in loop | Compile once outside | constant-factor, large |
-| Counting / grouping via nested loop | Single pass with `Counter` / `Map<k, count>` | O(n^2) → O(n) |
-| Sliding-window written as nested loop | Two-pointer / windowed sum | O(n^2) → O(n) |
-| Repeated prefix sums | Precompute prefix array, O(1) range queries | O(n·q) → O(n+q) |
-| Pairwise distance / containment checks on intervals | Sort + sweep line | O(n^2) → O(n log n) |
-| Top-K via full sort | Heap of size K | O(n log n) → O(n log k) |
-| Repeated set membership in loop body | `Set` once, reuse | O(n·m) → O(n) |
-| `await` inside a `for` over independent items | `Promise.all` / batched concurrency | wall-clock O(n·latency) → O(latency) |
-| ORM query inside a loop (N+1) | `IN (...)` / `select_related` / bulk fetch | O(n) round-trips → O(1) |
+| Smell                                                     | Fix                                            | Typical win                          |
+| --------------------------------------------------------- | ---------------------------------------------- | ------------------------------------ |
+| `for x in A: if x in B` where B is list/array             | Convert B to `Set`/`Map` once                  | O(n·m) → O(n+m)                      |
+| Nested loop computing pairs/joins                         | Hash-join on the key; index by lookup field    | O(n·m) → O(n+m)                      |
+| Repeated `.find` / `.indexOf` / `.includes` inside a loop | Precompute index `Map<key, item>` outside loop | O(n^2) → O(n)                        |
+| Repeated recomputation of same value                      | Memoize / cache by input key                   | O(n·f(n)) → O(n + f(n))              |
+| Sort inside a loop                                        | Sort once outside                              | O(n^2 log n) → O(n log n)            |
+| Linear scan for min/max/median repeatedly                 | Heap / sorted structure                        | O(n·k) → O(n log k)                  |
+| Recursive recomputation (naive Fibonacci shape)           | Memoize, or convert to iterative DP            | exponential → O(n)                   |
+| String concatenation in a loop (some langs)               | Use builder / `join` / `array.push` then join  | O(n^2) → O(n)                        |
+| Repeated regex compile in loop                            | Compile once outside                           | constant-factor, large               |
+| Counting / grouping via nested loop                       | Single pass with `Counter` / `Map<k, count>`   | O(n^2) → O(n)                        |
+| Sliding-window written as nested loop                     | Two-pointer / windowed sum                     | O(n^2) → O(n)                        |
+| Repeated prefix sums                                      | Precompute prefix array, O(1) range queries    | O(n·q) → O(n+q)                      |
+| Pairwise distance / containment checks on intervals       | Sort + sweep line                              | O(n^2) → O(n log n)                  |
+| Top-K via full sort                                       | Heap of size K                                 | O(n log n) → O(n log k)              |
+| Repeated set membership in loop body                      | `Set` once, reuse                              | O(n·m) → O(n)                        |
+| `await` inside a `for` over independent items             | `Promise.all` / batched concurrency            | wall-clock O(n·latency) → O(latency) |
+| ORM query inside a loop (N+1)                             | `IN (...)` / `select_related` / bulk fetch     | O(n) round-trips → O(1)              |
 
 ### Space-complexity reductions
 
-| Smell | Fix | Typical win |
-|---|---|---|
-| Materializing whole list/array just to iterate | Generator / iterator / stream | O(n) → O(1) |
-| Building intermediate arrays via chained `.map().filter().map()` on huge data | Single-pass loop or lazy pipeline | k·O(n) → O(n) (often O(1) extra) |
-| Caching every intermediate result of a recursion | Rolling window (keep last k states) | O(n) → O(k) |
-| Storing parents/visited for graph traversal when only count needed | Bitset / counter only | O(n) → O(1) |
-| Copying input to mutate | In-place mutation when caller allows | O(n) → O(1) |
-| Reading entire file before processing | Stream line-by-line / chunked | O(file) → O(chunk) |
-| Deep-clone for safety in a loop | Clone once, or use structural sharing / immutables | O(n·m) → O(n+m) |
-| Holding references that prevent GC (closures, listeners, caches) | Bound the cache (LRU), remove listeners, scope closures tightly | unbounded → bounded |
-| Loading full result set from DB | Cursor / pagination / streaming query | O(rows) → O(page) |
-| `JSON.parse(JSON.stringify(x))` for cloning | `structuredClone` or targeted copy | O(n) work and allocation removed |
+| Smell                                                                         | Fix                                                             | Typical win                      |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------- |
+| Materializing whole list/array just to iterate                                | Generator / iterator / stream                                   | O(n) → O(1)                      |
+| Building intermediate arrays via chained `.map().filter().map()` on huge data | Single-pass loop or lazy pipeline                               | k·O(n) → O(n) (often O(1) extra) |
+| Caching every intermediate result of a recursion                              | Rolling window (keep last k states)                             | O(n) → O(k)                      |
+| Storing parents/visited for graph traversal when only count needed            | Bitset / counter only                                           | O(n) → O(1)                      |
+| Copying input to mutate                                                       | In-place mutation when caller allows                            | O(n) → O(1)                      |
+| Reading entire file before processing                                         | Stream line-by-line / chunked                                   | O(file) → O(chunk)               |
+| Deep-clone for safety in a loop                                               | Clone once, or use structural sharing / immutables              | O(n·m) → O(n+m)                  |
+| Holding references that prevent GC (closures, listeners, caches)              | Bound the cache (LRU), remove listeners, scope closures tightly | unbounded → bounded              |
+| Loading full result set from DB                                               | Cursor / pagination / streaming query                           | O(rows) → O(page)                |
+| `JSON.parse(JSON.stringify(x))` for cloning                                   | `structuredClone` or targeted copy                              | O(n) work and allocation removed |
 
 ### When you cannot lower asymptotic Big-O
 
@@ -134,14 +134,14 @@ The same optimization with and without the verify-revert-stop loop.
 ```ts
 // No workflow: change semantics + the optimization in one go
 export function getOrdersWithUsers(orders, users) {
-  const userById = Object.fromEntries(users.map(u => [u.id, u]));
+  const userById = Object.fromEntries(users.map((u) => [u.id, u]));
   return orders
-    .map(o => ({ ...o, user: userById[o.userId] }))
-    .filter(o => o.user); // silently drops orders whose user was deleted
+    .map((o) => ({ ...o, user: userById[o.userId] }))
+    .filter((o) => o.user); // silently drops orders whose user was deleted
 }
 ```
 
-Faster, *and* changes the result set. Existing tests catch it — but the diff also "fixes" a flaky test by removing the assertion that checked the old behavior. Ships green. Breaks the billing report two weeks later.
+Faster, _and_ changes the result set. Existing tests catch it — but the diff also "fixes" a flaky test by removing the assertion that checked the old behavior. Ships green. Breaks the billing report two weeks later.
 
 ### With the workflow — one transformation, semantics preserved
 
@@ -155,8 +155,8 @@ Faster, *and* changes the result set. Existing tests catch it — but the diff a
 //   Reverts so far: 0
 
 export function getOrdersWithUsers(orders, users) {
-  const userById = new Map(users.map(u => [u.id, u]));
-  return orders.map(o => ({ ...o, user: userById.get(o.userId) }));
+  const userById = new Map(users.map((u) => [u.id, u]));
+  return orders.map((o) => ({ ...o, user: userById.get(o.userId) }));
 }
 ```
 
@@ -187,14 +187,14 @@ Premature optimization past these points adds risk without payoff.
 
 ## Rationalizations to watch for
 
-| Excuse | Reality |
-| --- | --- |
+| Excuse                                                                         | Reality                                                                                                                                            |
+| ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | "I already solved this in my head — just paste the diff and add labels after." | Retrofitted labels lie about the reasoning order. Write bottleneck → complexity → transformation → diff in that order, or you are writing fiction. |
-| "Stating the current Big-O is busywork — everyone can see the nested loop." | If everyone can see it, writing one line costs nothing. If only you can see it, you just saved the reviewer's time. |
-| "Semantic risk is None, skip that step." | "None" is a valid answer — but write it. The next reader does not know which guarantees you considered. |
-| "I'll do all three transformations in one diff." | Stacked transformations hide regressions. One transformation, verify, repeat. |
-| "It's just a small refactor, the workflow is overkill." | Then it takes 30 seconds. The cases where you skip the workflow are the ones where you miss the optimization next to the obvious one. |
-| "I'll measure later." | Later is `<measured: TBD>` forever. Either measure now or accept the asymptotic argument as the only claim. |
+| "Stating the current Big-O is busywork — everyone can see the nested loop."    | If everyone can see it, writing one line costs nothing. If only you can see it, you just saved the reviewer's time.                                |
+| "Semantic risk is None, skip that step."                                       | "None" is a valid answer — but write it. The next reader does not know which guarantees you considered.                                            |
+| "I'll do all three transformations in one diff."                               | Stacked transformations hide regressions. One transformation, verify, repeat.                                                                      |
+| "It's just a small refactor, the workflow is overkill."                        | Then it takes 30 seconds. The cases where you skip the workflow are the ones where you miss the optimization next to the obvious one.              |
+| "I'll measure later."                                                          | Later is `<measured: TBD>` forever. Either measure now or accept the asymptotic argument as the only claim.                                        |
 
 ## Red flags — STOP
 

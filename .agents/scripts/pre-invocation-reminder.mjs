@@ -4,7 +4,6 @@
  * PreInvocation Hook
  * Injects transient guardrail reminder for invariants across Forge of Empires extensions.
  */
-
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -28,11 +27,9 @@ process.stdin.on('end', () => {
   const response = {
     injectSteps: [
       {
-        ephemeralMessage:
-          `${prefixName} Guardrail Reminder: Check task fit against the 36 subagents. If a domain/UI/math/QA specialist matches, delegate via invoke_subagent (Workspace: "share" for parallel work). If the task does NOT fit any subagent role (meta-agent config, cross-squad, general tasks), execute directly as main agent. Always consult <skills> and announce active skill ("Using [skill] to [purpose]") before code execution, verify with fresh evidence before completion, query Graphify before wide search, keep slices <= 100 lines and files <= 600 lines, preserve BigNumber precision, and never bundle static game metadata into runtime source code.`,
+        ephemeralMessage: `${prefixName} Guardrail Reminder: Check task fit against the 36 subagents. If a domain/UI/math/QA specialist matches, delegate via invoke_subagent (Workspace: "share" for parallel work). If the task does NOT fit any subagent role (meta-agent config, cross-squad, general tasks), execute directly as main agent. Always consult <skills> and announce active skill ("Using [skill] to [purpose]") before code execution, verify with fresh evidence before completion, query Graphify before wide search, keep slices <= 100 lines and files <= 600 lines, preserve BigNumber precision, and never bundle static game metadata into runtime source code.`,
       },
     ],
   };
   process.stdout.write(JSON.stringify(response));
 });
-

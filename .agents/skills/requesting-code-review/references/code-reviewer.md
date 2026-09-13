@@ -4,7 +4,7 @@ Use this template when dispatching a code reviewer subagent.
 
 **Purpose:** Review completed work against requirements and code quality standards before it cascades into more work.
 
-```
+````
 Subagent (invoke_subagent TypeName: "code-reviewer" or "self", Role: "Code Reviewer"):
   description: "Review code changes"
   prompt: |
@@ -132,9 +132,10 @@ Subagent (invoke_subagent TypeName: "code-reviewer" or "self", Role: "Code Revie
     - Give feedback on code you didn't actually read
     - Be vague ("improve error handling")
     - Avoid giving a clear verdict
-```
+````
 
 **Placeholders:**
+
 - `[DESCRIPTION]` — brief summary of what was built
 - `[PLAN_OR_REQUIREMENTS]` — what it should do (plan file path, task text, or requirements)
 - `[BASE_SHA]` — starting commit

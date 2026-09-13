@@ -1,6 +1,6 @@
 ---
 name: add-rpc-service
-description: "Scaffold decoupled JSON-RPC service handlers in src/js/msg/."
+description: 'Scaffold decoupled JSON-RPC service handlers in src/js/msg/.'
 ---
 
 # Workflow: Add New InnoGames RPC Service
@@ -10,6 +10,7 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
 ---
 
 ## Phase 1: Packet Capture & Reverse-Engineering
+
 1. Launch the test browser:
    ```bash
    foe-browser
@@ -28,6 +29,7 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
 ---
 
 ## Phase 2: Create Modular Service Handler
+
 1. Create `src/js/msg/<ServiceName>.js`.
 2. Implement the parsing function:
    - Handle undefined properties and missing fields defensively.
@@ -43,6 +45,7 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
 ---
 
 ## Phase 3: Route in Message Dispatcher
+
 1. Expose a service `register(dispatcher)` method using `dispatcher.register(requestClass, requestMethod, handler)`; follow an existing module such as `AllyService.js`.
 2. Import the service in `src/js/msg/registerServices.js` and invoke its registration from `registerAllServices`.
 3. Keep registration owned by that central registry; do not self-register at module import or add a new switch branch to `index.js`.
@@ -50,7 +53,9 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
 ---
 
 ## Phase 4: End-to-End Contract Propagation Audit
+
 Audit the new service contract across every pipeline stage using the `cross-platform-contract-propagation-audit` skill:
+
 1. **Wire Ingestion**: Confirm `xhrInterceptor.js` and `contentBridge.js` bridge the payload without dropping properties.
 2. **State & Storage**: Confirm state attributes are saved to `MetadataStore` or `src/js/vars/` with defensive defaults (`?.`, `??`).
 3. **DOM Presentation**: Confirm all user-visible text is safely inserted using `textContent` or sanitized elements (no unescaped `.html()`).
@@ -59,6 +64,7 @@ Audit the new service contract across every pipeline stage using the `cross-plat
 ---
 
 ## Phase 5: UI Presentation & Localization
+
 1. In `src/chrome/panel.html`, add a responsive Bootstrap card/tab for the feature:
    - Use `data-i18n` attributes on all labels.
 2. Add new translation keys to `src/i18n/en.json`.
@@ -71,6 +77,7 @@ Audit the new service contract across every pipeline stage using the `cross-plat
 ---
 
 ## Phase 6: Verification & Knowledge Graph Sync
+
 1. Run formatting and linting:
    ```bash
    npm run format
@@ -98,6 +105,7 @@ Audit the new service contract across every pipeline stage using the `cross-plat
 Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
 Primary reference categories: `js/`, `performance/`.
 Uphold:
+
 - parse seconds/ms via `resolveDate()`
 - defer rendering via `scheduler.js`
 - keep handlers DOM-free and delegate rendering

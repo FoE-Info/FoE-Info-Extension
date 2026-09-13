@@ -14,6 +14,7 @@ To enable light-dismiss:
 - `none`: Only developer mechanisms can close the dialog.
 
 ### Styling the Backdrop
+
 When a dialog is opened as a modal using `showModal()`, the browser generates a `::backdrop` pseudo-element. This backdrop covers the entire viewport and sits directly behind the dialog.
 
 ```css
@@ -36,7 +37,9 @@ dialog::backdrop {
   </form>
 </dialog>
 
-<button onclick="document.getElementById('myDialog').showModal()">Open Dialog</button>
+<button onclick="document.getElementById('myDialog').showModal()">
+  Open Dialog
+</button>
 ```
 
 ## Constraints & Accessibility
@@ -45,7 +48,7 @@ dialog::backdrop {
 - **MANDATORY**: Always open modal dialogs with `showModal()`. This ensures the dialog is in the top layer, focus is trapped, and the `Esc` key is handled.
 - **DO**: Use `aria-labelledby` or `aria-label` to provide an accessible name for the dialog.
 - **DO NOT**: Use `closedby` for non-modal dialogs (opened with `show()`), as they do not have a backdrop and won't trigger light-dismiss.
-- **DO NOT**: Use the `click` event for critical logic that should happen *before* closing; instead, listen for the `close` or `cancel` events.
+- **DO NOT**: Use the `click` event for critical logic that should happen _before_ closing; instead, listen for the `close` or `cancel` events.
 
 ## Fallback strategies
 
@@ -68,12 +71,11 @@ if (!('closedBy' in HTMLDialogElement.prototype)) {
     // 2. Check if the click coordinates fall within the dialog's content box.
     // This distinguishes between a click on the backdrop vs a click on the dialog's background/padding.
     const rect = dialog.getBoundingClientRect();
-    const isDialogContent = (
+    const isDialogContent =
       rect.top <= event.clientY &&
       event.clientY <= rect.top + rect.height &&
       rect.left <= event.clientX &&
-      event.clientX <= rect.left + rect.width
-    );
+      event.clientX <= rect.left + rect.width;
 
     if (isDialogContent) return;
 

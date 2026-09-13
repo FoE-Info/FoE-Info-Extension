@@ -18,6 +18,7 @@ Never state, imply, or assume that a task is finished, a bug is fixed, a build s
 ## 2. The Verification Gate
 
 Before declaring success or claiming any completed status:
+
 1. **IDENTIFY**: What command or test specifically proves the claim? (e.g. `npm test`, `npm run verify`, `npm run check`, `npm run i18n:check`, `npm run build:dev`).
 2. **RUN**: Execute the complete verification command in the terminal.
 3. **READ**: Inspect the exit code, error logs, and failure counts directly from stdout/stderr.

@@ -1,7 +1,8 @@
 # debate-review JSON contracts
 
 Three documents flow through one run. Each implementer returns its document as the only fenced
-```json block in its final message. The script extracts it and checks it against the contract below.
+
+````json block in its final message. The script extracts it and checks it against the contract below.
 Anything that fails the check stops the run. Nothing gets posted.
 
 The script reads sections 1, 2, and 3 below by heading order and pastes them into the briefs. Don't
@@ -30,7 +31,7 @@ reorder them or add a `##` heading above section 3.
     }
   ]
 }
-```
+````
 
 - `id` is `F<n>` for the main reviewer and `D<n>` for findings the debate reviewer adds.
 - `line_start` and `line_end` must be lines on the new side of the PR diff, because GitHub and GitLab
@@ -47,9 +48,14 @@ reorder them or add a `##` heading above section 3.
   "schema": "debate-review.debate.v1",
   "head": "<same sha>",
   "verdicts": [
-    { "id": "F1", "verdict": "confirm | refute | downgrade", "reason": "one sentence", "evidence": "file:line or quoted code" }
+    {
+      "id": "F1",
+      "verdict": "confirm | refute | downgrade",
+      "reason": "one sentence",
+      "evidence": "file:line or quoted code"
+    }
   ],
-  "new_findings": [ /* same shape as findings[], ids D1, D2, ... */ ]
+  "new_findings": [/* same shape as findings[], ids D1, D2, ... */]
 }
 ```
 
@@ -72,8 +78,12 @@ reorder them or add a `##` heading above section 3.
       "id": "F1",
       "status": "agreed | contested | withdrawn",
       "severity": "blocking | non-blocking",
-      "file": "...", "line_start": 0, "line_end": 0,
-      "claim": "...", "evidence": "...", "recommendation": "...",
+      "file": "...",
+      "line_start": 0,
+      "line_end": 0,
+      "claim": "...",
+      "evidence": "...",
+      "recommendation": "...",
       "debate_note": "one line: what the challenge said and why the finding was kept, dropped, or changed"
     }
   ]

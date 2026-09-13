@@ -1,13 +1,13 @@
 ---
 name: unslop-commit
-description: "Write concise Conventional Commits under 72 characters."
+description: 'Write concise Conventional Commits under 72 characters.'
 ---
 
 # Unslop Commit
+
 ## When to Use
 
 Use this skill when you need rewrites commit messages so they sound like a careful human engineer wrote them. Strips AI/marketing slop ("comprehensive solution", "robust implementation", "leverage", "enhance", "seamlessly", "This commit..."). Keeps Conventional Commits format. Subject ≤72 chars (aim ≤50),...
-
 
 ## Purpose
 
@@ -38,7 +38,6 @@ Generate or rewrite commit messages so they read like a real engineer wrote them
 - CLI syntax: use multiple `-m` flags:
   `git commit -m "<type>(<scope>): <summary>" -m "- first change detail" -m "- second change detail"`
 
-
 ### Never include
 
 - Template prefixes: "This commit...", "This change...", "We are...", "I have..."
@@ -66,6 +65,7 @@ Generate or rewrite commit messages so they read like a real engineer wrote them
 ### Bad → good (vague body)
 
 Bad:
+
 ```
 fix: fixed the bug
 
@@ -74,6 +74,7 @@ in some edge cases. We've improved the logic to handle these scenarios.
 ```
 
 Good:
+
 ```
 fix(checkout): ignore stale cart id from localStorage
 

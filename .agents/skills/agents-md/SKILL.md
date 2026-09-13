@@ -1,6 +1,6 @@
 ---
 name: agents-md
-description: "Create, revise, or audit AGENTS.md from repo evidence and commands."
+description: 'Create, revise, or audit AGENTS.md from repo evidence and commands.'
 ---
 
 # Maintain AGENTS.md from repository evidence
@@ -140,11 +140,13 @@ A useful result might include:
 # Agent instructions
 
 ## Commands
+
 - Run commands from the repository root.
 - Install with `npm ci`.
 - For handoff, run `npm run lint`, `npm run typecheck`, and `npm test`.
 
 ## Generated code
+
 - Do not edit `src/generated/` directly; update its source and run `npm run generate`.
 ```
 

@@ -4,12 +4,12 @@ Toast notifications are transient status messages. Unlike menus, they should not
 
 ### Implementation Guidelines
 
-* **MANDATORY:** Use popover="manual" so the notification stays visible until explicitly closed or timed out by a script.
-* **DO** use a container to manage the stacking of multiple toasts. Since popovers in the Top Layer ignore parent z-index, you must position them individually or within a common layout group.
-* **DO** use sibling-index() to add margin between toast notifications so that items lower in the stack are visible.
-* **DO** provide an explicit "Close" button within the toast using popovertargetaction="hide".
-* **DO** use JavaScript for auto-dismissal timers (e.g., calling hidePopover() after 3000ms).
-* **DO** utilize transition-behavior: allow-discrete to animate the entry and exit from the Top Layer.
+- **MANDATORY:** Use popover="manual" so the notification stays visible until explicitly closed or timed out by a script.
+- **DO** use a container to manage the stacking of multiple toasts. Since popovers in the Top Layer ignore parent z-index, you must position them individually or within a common layout group.
+- **DO** use sibling-index() to add margin between toast notifications so that items lower in the stack are visible.
+- **DO** provide an explicit "Close" button within the toast using popovertargetaction="hide".
+- **DO** use JavaScript for auto-dismissal timers (e.g., calling hidePopover() after 3000ms).
+- **DO** utilize transition-behavior: allow-discrete to animate the entry and exit from the Top Layer.
 
 ### Fallback Strategies
 
@@ -26,8 +26,8 @@ With a bundler or import map:
 
 ```js
 // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
-if (!("popover" in HTMLElement.prototype)) {
-  import("@oddbird/popover-polyfill");
+if (!('popover' in HTMLElement.prototype)) {
+  import('@oddbird/popover-polyfill');
 }
 ```
 
@@ -35,8 +35,8 @@ Without a bundler, import from a CDN inside a `<script type="module">`:
 
 ```html
 <script type="module">
-  if (!("popover" in HTMLElement.prototype)) {
-    import("https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js");
+  if (!('popover' in HTMLElement.prototype)) {
+    import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js');
   }
 </script>
 ```
@@ -53,12 +53,12 @@ Alternatively, for a legacy fallback without a polyfill, use `position: fixed` a
 
 #### sibling-index()
 
-* **Guidance:** If sibling-index() is not supported, use the `+` operator to add margin manually. I.e. `popover + popover { margin-top: 1rem }`
+- **Guidance:** If sibling-index() is not supported, use the `+` operator to add margin manually. I.e. `popover + popover { margin-top: 1rem }`
 
 #### anchor-positioning
 
-* **Guidance:** Use the [CSS Anchor Positioning Polyfill](https://github.com/oddbird/css-anchor-positioning). For a non-polyfill fallback, default the tooltip to a fixed position at the bottom of the viewport using `@supports not (anchor-name: --foo)`.
+- **Guidance:** Use the [CSS Anchor Positioning Polyfill](https://github.com/oddbird/css-anchor-positioning). For a non-polyfill fallback, default the tooltip to a fixed position at the bottom of the viewport using `@supports not (anchor-name: --foo)`.
 
 #### transition-behavior
 
-* **Guidance:** If transition-behavior is not supported, use JavaScript to add animation via classes as the toast element transitions in and out.
+- **Guidance:** If transition-behavior is not supported, use JavaScript to add animation via classes as the toast element transitions in and out.

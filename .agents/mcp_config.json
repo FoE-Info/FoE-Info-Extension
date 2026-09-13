@@ -1,12 +1,24 @@
 {
   "mcpServers": {
     "chrome-devtools": {
-      "command": "bash",
-      "args": [".agents/scripts/run-chrome-devtools-mcp.sh"]
+      "command": "chrome-devtools-mcp",
+      "args": [
+        "--browserUrl=http://127.0.0.1:9222",
+        "--experimentalMemory",
+        "--experimentalVision",
+        "--categoryExperimentalWebmcp",
+        "--experimentalDevtools",
+        "--experimentalIncludeAllPages",
+        "--experimentalPageIdRouting",
+        "--allowUnrestrictedPaths",
+        "--no-usage-statistics"
+      ]
     },
     "graphify-foe-info": {
       "command": "graphify-mcp",
-      "args": ["/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/graphify-out/foe-info/graph.json"],
+      "args": [
+        "/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/graphify-out/foe-info/graph.json"
+      ],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -33,7 +45,9 @@
     },
     "graphify-forge-hammer": {
       "command": "graphify-mcp",
-      "args": ["/var/home/kronikpillow/Projects/FoE-Info/forge-hammer/graphify-out/graph.json"],
+      "args": [
+        "/var/home/kronikpillow/Projects/FoE-Info/forge-hammer/graphify-out/graph.json"
+      ],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -60,7 +74,9 @@
     },
     "graphify-foe-info-original": {
       "command": "graphify-mcp",
-      "args": ["/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension-original/graphify-out/graph.json"],
+      "args": [
+        "/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension-original/graphify-out/graph.json"
+      ],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -87,7 +103,9 @@
     },
     "graphify-low-tool": {
       "command": "graphify-mcp",
-      "args": ["/var/home/kronikpillow/Projects/FoE-Info/LoW-Tool/graphify-out/graph.json"],
+      "args": [
+        "/var/home/kronikpillow/Projects/FoE-Info/LoW-Tool/graphify-out/graph.json"
+      ],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -114,7 +132,9 @@
     },
     "graphify-metadata-store": {
       "command": "graphify-mcp",
-      "args": ["/var/home/kronikpillow/Projects/FoE-Info/metadata-store/graphify-out/graph.json"],
+      "args": [
+        "/var/home/kronikpillow/Projects/FoE-Info/metadata-store/graphify-out/graph.json"
+      ],
       "env": {
         "GRAPHIFY_BACKEND": "openai",
         "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -140,8 +160,24 @@
       }
     },
     "github-mcp": {
-      "command": "bash",
-      "args": [".agents/scripts/run-github-mcp.sh"]
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ]
+    },
+    "linux-tools": {
+      "command": "linux-mcp-server",
+      "args": [],
+      "env": {
+        "LINUX_MCP_LOG_LEVEL": "INFO",
+        "LINUX_MCP_USER": "kronikpillow",
+        "LINUX_MCP_SSH_KEY_PATH": "/var/home/kronikpillow/.ssh/id_ed25519"
+      }
     }
   }
 }

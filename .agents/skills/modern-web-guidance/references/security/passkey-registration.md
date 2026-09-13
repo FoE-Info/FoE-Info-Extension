@@ -11,8 +11,8 @@ export interface StoredPasskeyCredential {
   id: string; // Base64URL-encoded credential ID (unique lookup key)
   passkeyUserId: string; // Associated application user ID
   credentialPublicKey: string; // Base64URL-encoded public key used to verify assertion signatures
-  credentialType: "public-key";
-  credentialDeviceType: "singleDevice" | "multiDevice"; // Helps distinguish device-bound vs cloud-synced passkeys
+  credentialType: 'public-key';
+  credentialDeviceType: 'singleDevice' | 'multiDevice'; // Helps distinguish device-bound vs cloud-synced passkeys
   credentialBackedUp: boolean; // Boolean backup state reported by the authenticator
   aaguid: string; // Authenticator Attestation GUID
   providerIcon?: string; // Provider icon derived from the AAGUID registry (dark or light theme URLs)
@@ -44,32 +44,32 @@ Create an endpoint that generates WebAuthn creation parameters. Rely on a vetted
 // Options generation example
 const options = {
   challenge: serverGeneratedBase64UrlChallenge, // Cryptographically random challenge
-  rp: { id: "example.com", name: "Secure Application" },
+  rp: { id: 'example.com', name: 'Secure Application' },
   user: {
     id: userBase64UrlId, // Unique base64url string identifying the account
-    name: "user@example.com",
-    displayName: "Jane Doe",
+    name: 'user@example.com',
+    displayName: 'Jane Doe',
   },
   pubKeyCredParams: [
     {
-      type: "public-key",
+      type: 'public-key',
       alg: -7,
     },
     {
-      type: "public-key",
+      type: 'public-key',
       alg: -257,
     },
   ],
   excludeCredentials: userExistingCredentials.map((cred) => ({
-    type: "public-key",
+    type: 'public-key',
     id: cred.id,
     transports: cred.transports,
   })),
   authenticatorSelection: {
-    residentKey: "required",
+    residentKey: 'required',
     requireResidentKey: true,
-    userVerification: "preferred",
-    ...(isPromotionFlow && { authenticatorAttachment: "platform" }),
+    userVerification: 'preferred',
+    ...(isPromotionFlow && { authenticatorAttachment: 'platform' }),
   },
 };
 ```
@@ -98,7 +98,7 @@ const options = {
 
 ```javascript
 // optionsFetch and registerVerifyFetch are app-defined HTTP methods
-import { optionsFetch, registerVerifyFetch } from "./api.js";
+import { optionsFetch, registerVerifyFetch } from './api.js';
 
 async function registerPasskey(isPromotion = false) {
   // Verify passkey capability and conditional UI are available
@@ -121,16 +121,16 @@ async function registerPasskey(isPromotion = false) {
     // passkey prompt execution
     credential = await navigator.credentials.create({ publicKey });
   } catch (err) {
-    if (err.name === "InvalidStateError") {
-      console.log("A passkey already exists for this account.");
-      alert("A passkey already exists for this account.");
-    } else if (err.name === "SecurityError") {
-      console.error("Configuration RP ID or Secure Context error.");
-      alert("Configuration RP ID or Secure Context error.");
-    } else if (err.name === "NotAllowedError") {
-      console.log("User cancelled the passkey dialog.");
-    } else if (err.name === "AbortError") {
-      console.log("The creation operation has been aborted.");
+    if (err.name === 'InvalidStateError') {
+      console.log('A passkey already exists for this account.');
+      alert('A passkey already exists for this account.');
+    } else if (err.name === 'SecurityError') {
+      console.error('Configuration RP ID or Secure Context error.');
+      alert('Configuration RP ID or Secure Context error.');
+    } else if (err.name === 'NotAllowedError') {
+      console.log('User cancelled the passkey dialog.');
+    } else if (err.name === 'AbortError') {
+      console.log('The creation operation has been aborted.');
     }
     return; // Safe API exit, do not signal unknown for standard WebAuthn cancels
   }
@@ -147,7 +147,7 @@ async function registerPasskey(isPromotion = false) {
       });
     }
   } catch (serverErr) {
-    console.error("Server verification network failure:", serverErr);
+    console.error('Server verification network failure:', serverErr);
     await publickeycredential.signalunknowncredential({
       rpId, // RP ID must match the one defined on the server
       credentialid: encodedresponse.id, // base64url-encoded credential id
@@ -174,8 +174,8 @@ Baseline status for the api.PublicKeyCredential.parseCreationOptionsFromJSON_sta
 Supported by: Chrome 129 (Sep 2024), Edge 129 (Sep 2024), Firefox 119 (Oct 2023), and Safari 18.4 (Mar 2025).
 
 Always install 'webauthn-polyfills' and import it in the context.
-Consider as long as  `PublicKeyCredential` is supported, `PublicKeyCredential.parseCreationOptionsFromJSON` and `PublicKeyCredential.prototype.toJSON` are also supported. 
+Consider as long as `PublicKeyCredential` is supported, `PublicKeyCredential.parseCreationOptionsFromJSON` and `PublicKeyCredential.prototype.toJSON` are also supported.
 
-```js 
+```js
 import 'webauthn-polyfills';
-``` 
+```

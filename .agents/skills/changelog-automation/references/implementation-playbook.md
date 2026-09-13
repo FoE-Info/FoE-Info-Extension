@@ -17,27 +17,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - New feature X
 
 ## [1.2.0] - 2024-01-15
 
 ### Added
+
 - User profile avatars
 - Dark mode support
 
 ### Changed
+
 - Improved loading performance by 40%
 
 ### Deprecated
+
 - Old authentication API (use v2)
 
 ### Removed
+
 - Legacy payment gateway
 
 ### Fixed
+
 - Login timeout issue (#123)
 
 ### Security
+
 - Updated dependencies for CVE-2024-1234
 
 [Unreleased]: https://github.com/user/repo/compare/v1.2.0...HEAD
@@ -54,19 +61,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [optional footer(s)]
 ```
 
-| Type | Description | Changelog Section |
-|------|-------------|-------------------|
-| `feat` | New feature | Added |
-| `fix` | Bug fix | Fixed |
-| `docs` | Documentation | (usually excluded) |
-| `style` | Formatting | (usually excluded) |
-| `refactor` | Code restructure | Changed |
-| `perf` | Performance | Changed |
-| `test` | Tests | (usually excluded) |
-| `chore` | Maintenance | (usually excluded) |
-| `ci` | CI changes | (usually excluded) |
-| `build` | Build system | (usually excluded) |
-| `revert` | Revert commit | Removed |
+| Type       | Description      | Changelog Section  |
+| ---------- | ---------------- | ------------------ |
+| `feat`     | New feature      | Added              |
+| `fix`      | Bug fix          | Fixed              |
+| `docs`     | Documentation    | (usually excluded) |
+| `style`    | Formatting       | (usually excluded) |
+| `refactor` | Code restructure | Changed            |
+| `perf`     | Performance      | Changed            |
+| `test`     | Tests            | (usually excluded) |
+| `chore`    | Maintenance      | (usually excluded) |
+| `ci`       | CI changes       | (usually excluded) |
+| `build`    | Build system     | (usually excluded) |
+| `revert`   | Revert commit    | Removed            |
 
 ### 3. Semantic Versioning
 
@@ -142,7 +149,8 @@ module.exports = {
     { type: 'ci', section: 'CI/CD', hidden: true },
   ],
   commitUrlFormat: '{{host}}/{{owner}}/{{repository}}/commit/{{hash}}',
-  compareUrlFormat: '{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}',
+  compareUrlFormat:
+    '{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}',
   issueUrlFormat: '{{host}}/{{owner}}/{{repository}}/issues/{{id}}',
   userUrlFormat: '{{host}}/{{user}}',
   releaseCommitMessageFormat: 'chore(release): {{currentTag}}',
@@ -203,7 +211,8 @@ module.exports = {
       '@semantic-release/git',
       {
         assets: ['CHANGELOG.md', 'package.json'],
-        message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
+        message:
+          'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       },
     ],
   ],
@@ -420,29 +429,39 @@ cz check --rev-range HEAD~5..HEAD
 ## What's Changed
 
 ### 🚀 Features
+
 {{ range .Features }}
+
 - {{ .Title }} by @{{ .Author }} in #{{ .PR }}
-{{ end }}
+  {{ end }}
 
 ### 🐛 Bug Fixes
+
 {{ range .Fixes }}
+
 - {{ .Title }} by @{{ .Author }} in #{{ .PR }}
-{{ end }}
+  {{ end }}
 
 ### 📚 Documentation
+
 {{ range .Docs }}
+
 - {{ .Title }} by @{{ .Author }} in #{{ .PR }}
-{{ end }}
+  {{ end }}
 
 ### 🔧 Maintenance
+
 {{ range .Chores }}
+
 - {{ .Title }} by @{{ .Author }} in #{{ .PR }}
-{{ end }}
+  {{ end }}
 
 ## New Contributors
+
 {{ range .NewContributors }}
+
 - @{{ .Username }} made their first contribution in #{{ .PR }}
-{{ end }}
+  {{ end }}
 
 **Full Changelog**: https://github.com/owner/repo/compare/v{{ .Previous }}...v{{ .Current }}
 ```
@@ -453,33 +472,40 @@ cz check --rev-range HEAD~5..HEAD
 # Release v2.1.0 - January 15, 2024
 
 ## Summary
+
 This release introduces dark mode support and improves checkout performance
 by 40%. It also includes important security updates.
 
 ## Highlights
 
 ### 🌙 Dark Mode
+
 Users can now switch to dark mode from settings. The preference is
 automatically saved and synced across devices.
 
 ### ⚡ Performance
+
 - Checkout flow is 40% faster
 - Reduced bundle size by 15%
 
 ## Breaking Changes
+
 None in this release.
 
 ## Upgrade Guide
+
 No special steps required. Standard deployment process applies.
 
 ## Known Issues
+
 - Dark mode may flicker on initial load (fix scheduled for v2.1.1)
 
 ## Dependencies Updated
-| Package | From | To | Reason |
-|---------|------|-----|--------|
-| react | 18.2.0 | 18.3.0 | Performance improvements |
-| lodash | 4.17.20 | 4.17.21 | Security patch |
+
+| Package | From    | To      | Reason                   |
+| ------- | ------- | ------- | ------------------------ |
+| react   | 18.2.0  | 18.3.0  | Performance improvements |
+| lodash  | 4.17.20 | 4.17.21 | Security patch           |
 ```
 
 ## Commit Message Examples
@@ -516,6 +542,7 @@ Reviewed-by: @alice
 ## Best Practices
 
 ### Do's
+
 - **Follow Conventional Commits** - Enables automation
 - **Write clear messages** - Future you will thank you
 - **Reference issues** - Link commits to tickets
@@ -523,6 +550,7 @@ Reviewed-by: @alice
 - **Automate releases** - Reduce manual errors
 
 ### Don'ts
+
 - **Don't mix changes** - One logical change per commit
 - **Don't skip validation** - Use commitlint
 - **Don't manual edit** - Generated changelogs only

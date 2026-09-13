@@ -13,16 +13,18 @@ All keys sent to stdin and expected on stdout must use **camelCase** (e.g. `conv
 ## 2. Event Contracts
 
 ### `PreToolUse`
+
 - **stdin**: `{"toolCall": {"name": "run_command", "args": {"CommandLine": "..."}}, "stepIdx": 1, ...}`
 - **stdout**:
   ```json
   {
-    "decision": "allow",         // "allow" | "deny" | "ask" | "force_ask"
+    "decision": "allow", // "allow" | "deny" | "ask" | "force_ask"
     "reason": "Safe command."
   }
   ```
 
 ### `PreInvocation`
+
 - **stdin**: `{"invocationNum": 1, "conversationId": "...", ...}`
 - **stdout**:
   ```json
@@ -36,15 +38,17 @@ All keys sent to stdin and expected on stdout must use **camelCase** (e.g. `conv
   ```
 
 ### `PostToolUse`
+
 - **stdin**: `{"stepIdx": 5, "error": "", ...}`
 - **stdout**: `{}` (Empty JSON object expected).
 
 ### `Stop`
+
 - **stdin**: `{"fullyIdle": false, "terminationReason": "model_stop", ...}`
 - **stdout**:
   ```json
   {
-    "decision": "continue",      // "continue" to block exit; anything else permits stop
+    "decision": "continue", // "continue" to block exit; anything else permits stop
     "reason": "Background tasks still active."
   }
   ```

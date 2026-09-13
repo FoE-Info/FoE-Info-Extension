@@ -1,6 +1,6 @@
 ---
 name: writing-agents
-description: "Design and verify custom subagents in .agents/agents/."
+description: 'Design and verify custom subagents in .agents/agents/.'
 ---
 
 # Writing Subagents
@@ -42,13 +42,16 @@ For the complete schema, see [Subagent Frontmatter Specification](references/age
 ## 3. Step-by-Step Creation Workflow
 
 ### Step 1: Define Role and Frontmatter
+
 1. Create `.agents/agents/<name>.md`.
 2. Set `name` exactly matching the filename without `.md`.
 3. Set `description` $\le 150$ characters stating what domain the agent owns and when to delegate to it.
 4. Set `subagent: true`.
 
 ### Step 2: Write Focused System Prompt
+
 Follow the standard specialist structure:
+
 - **Title & Identity**: Who the specialist is.
 - **Focus Areas**: Core competencies, domain RPCs, calculations.
 - **Invariants & Rules**: Architectural rules to obey (e.g. $\le 250$ line limits, BigNumber math).
@@ -57,11 +60,14 @@ Follow the standard specialist structure:
 See [System Prompt Templates](references/system-prompt-templates.md) for boilerplate.
 
 ### Step 3: Configure Lifecycles & Workspace Modes
+
 - When dispatching subagents for parallel feature tasks, isolate them: Antigravity `Workspace: "share"`, opencode explicit `.worktrees/<branch>` checkouts. See [Harness Adapters](../../references/harness-adapters.md).
 - See [Subagent Lifecycles & Coordination](references/subagent-lifecycles.md).
 
 ### Step 4: Validate Subagent Configuration
+
 Run the automated configuration test to verify naming, frontmatter, and character limits:
+
 ```sh
 node --test tests/agents/agent-config.test.mjs
 ```

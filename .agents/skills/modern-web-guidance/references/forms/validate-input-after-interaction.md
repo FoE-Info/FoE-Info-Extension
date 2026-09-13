@@ -36,7 +36,7 @@ MANDATORY: Rely on standard HTML5 attributes for email fields. The error message
       autocomplete="email"
       aria-describedby="email-hint"
       aria-errormessage="email-error"
-    >
+    />
     <div id="email-error" class="error-msg">
       <span aria-hidden="true">❌</span> Please enter a valid email address.
     </div>
@@ -105,15 +105,15 @@ MANDATORY: Define the complexity rule using a Regex Lookahead pattern in the `pa
       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
       minlength="8"
       aria-describedby="password-rules"
-    >
+    />
   </div>
 </form>
 ```
 
 ```css
 /* DO: State the default styling as neutral */
-.rules-list { 
-  color: #5f6368; 
+.rules-list {
+  color: #5f6368;
   margin-bottom: 0.5rem;
 }
 
@@ -201,14 +201,20 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -237,17 +243,20 @@ UserInvalidFallback.init(form);
 ## Other Considerations
 
 1.  **Accessibility**:
-    *   MANDATORY: Use `aria-describedby` to link the rules list to the input.
-    *   DO NOT: Hide rules lists entirely until the input is valid; users need to know what to type!
+    - MANDATORY: Use `aria-describedby` to link the rules list to the input.
+    - DO NOT: Hide rules lists entirely until the input is valid; users need to know what to type!
 2.  **Pattern Attribute Limits**: MANDATORY: The `pattern` attribute performs a full match (implied `^...$`). Ensure your password regex accounts for the entire string.
 3.  **Validation Strictness**: DO note that the browser's default `type="email"` validation is quite permissive (e.g., `user@localserver` might pass). If you need stricter validation, you may need to use a more robust validation library or a custom validation function alongside `type="email"`.
 4.  **Focus Management**: MANDATORY: If a user submits the form with an invalid field, the browser will automatically focus the first invalid field. Your `:user-invalid` styles will apply immediately because a submission attempt counts as an interaction.
-5. **Consistent ARIA Experience**: Native `:user-invalid` does not automatically sync with ARIA attributes. Add the following JavaScript to keep `aria-invalid` in sync with the visual state:
+5.  **Consistent ARIA Experience**: Native `:user-invalid` does not automatically sync with ARIA attributes. Add the following JavaScript to keep `aria-invalid` in sync with the visual state:
 
 ```javascript
 // Sync aria-invalid with the CSS :user-invalid state
 const syncAria = (el) => {
-  el.setAttribute?.('aria-invalid', el.matches(':user-invalid') ? 'true' : 'false');
+  el.setAttribute?.(
+    'aria-invalid',
+    el.matches(':user-invalid') ? 'true' : 'false',
+  );
 };
 
 // Update on blur (to show error) and input (to clear it)

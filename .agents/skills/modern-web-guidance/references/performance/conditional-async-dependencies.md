@@ -1,4 +1,4 @@
-Top-level `await` allows modules to act as asynchronous functions, meaning they can pause module execution to await promises. This is extremely useful for conditionally loading async dependencies—like polyfills or heavy secondary libraries—only when required by the browser. 
+Top-level `await` allows modules to act as asynchronous functions, meaning they can pause module execution to await promises. This is extremely useful for conditionally loading async dependencies—like polyfills or heavy secondary libraries—only when required by the browser.
 
 By utilizing top-level await, you can encapsulate the conditional loading logic inside a single module, effectively preventing downstream consumer modules from executing until the dependency is fully loaded and ready.
 
@@ -15,7 +15,7 @@ In the following case, the `popover` attribute polyfill is conditionally loaded 
 // MANDATORY: Prefer checking HTMLElement.prototype over window or document
 // when checking for a global DOM attribute or property like popover.
 if (!('popover' in HTMLElement.prototype)) {
-  // Use top-level await to pause the execution of any module that imports this file 
+  // Use top-level await to pause the execution of any module that imports this file
   // until the polyfill finishes downloading and executing.
   await import('/path/to/popover-polyfill.js');
 }
@@ -27,7 +27,7 @@ export const polyfillLoaded = true;
 ```javascript
 // main.js
 
-// MANDATORY: Because conditionally-load-polyfill.js uses top-level await, 
+// MANDATORY: Because conditionally-load-polyfill.js uses top-level await,
 // this import will block execution of main.js until the polyfill is ready.
 import './conditionally-load-polyfill.js';
 
@@ -40,12 +40,12 @@ if (myPopover) {
 
 ### Avoiding the Safari top-level `await` bug
 
-**MANDATORY:** You must structure your imports carefully to avoid a bug where top-level await doesn't behave as expected in Webkit, which occurs when multiple modules *simultaneously* import a module that contains a top-level `await`:
+**MANDATORY:** You must structure your imports carefully to avoid a bug where top-level await doesn't behave as expected in Webkit, which occurs when multiple modules _simultaneously_ import a module that contains a top-level `await`:
 
 ```javascript
 // DO NOT do this: importing the top-level await module from multiple sibling modules
 // simultaneously will crash in Safari.
-// 
+//
 // a.js: import './conditionally-load-polyfill.js';
 // b.js: import './conditionally-load-polyfill.js';
 // main.js: import './a.js'; import './b.js'; // CRASH!
@@ -53,7 +53,6 @@ if (myPopover) {
 // INSTEAD, guarantee a single entry point:
 // Import the top-level await module ONCE at the very top of your application tree.
 import './conditionally-load-polyfill.js';
-
 // Then import the rest of your application code, ensuring the await resolves first.
 import './app.js';
 ```

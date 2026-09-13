@@ -5,10 +5,11 @@ The CSS Custom Highlight API lets you style arbitrary text ranges on a page with
 To highlight text ranges, you must collect the target text nodes, create `Range` and `Highlight` objects, register them in the `HighlightRegistry`, and then style them with the `::highlight()` pseudo-element.
 
 #### 1. Collect text nodes and create ranges
+
 Use a `TreeWalker` to collect all text nodes in the target element, then create `Range` objects pointing at the character offsets you want to highlight.
 
 ```javascript
-const article = document.querySelector("article");
+const article = document.querySelector('article');
 
 // MANDATORY: Use TreeWalker to collect text nodes — do not manipulate innerHTML.
 const treeWalker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
@@ -28,6 +29,7 @@ range.setEnd(textNode, matchEndIndex);
 Cache the text-node list and only rebuild it when the DOM content actually changes, since walking the tree is expensive.
 
 #### 2. Create a Highlight from the ranges
+
 Group one or more `Range` objects into a `Highlight`. Multiple ranges that share the same style belong in a single highlight.
 
 ```javascript
@@ -35,6 +37,7 @@ const searchHighlight = new Highlight(...matchingRanges);
 ```
 
 #### 3. Register the highlight in the registry
+
 Register each `Highlight` under a custom name using `CSS.highlights`, which is a `Map`-like `HighlightRegistry`.
 
 ```javascript
@@ -42,7 +45,7 @@ Register each `Highlight` under a custom name using `CSS.highlights`, which is a
 // to avoid stale ranges persisting on the page.
 CSS.highlights.clear();
 
-CSS.highlights.set("search-results", searchHighlight);
+CSS.highlights.set('search-results', searchHighlight);
 ```
 
 When multiple highlights overlap, use the `priority` property to control stacking order. Higher priority highlights paint on top.
@@ -54,11 +57,12 @@ primary.priority = 1;
 const secondary = new Highlight(...secondaryRanges);
 secondary.priority = 0; // painted first (behind primary)
 
-CSS.highlights.set("primary", primary);
-CSS.highlights.set("secondary", secondary);
+CSS.highlights.set('primary', primary);
+CSS.highlights.set('secondary', secondary);
 ```
 
 #### 4. Style with `::highlight()`
+
 Use the `::highlight()` pseudo-element in CSS to style each registered highlight by name.
 
 ```css
@@ -114,7 +118,7 @@ if (!CSS.highlights) {
     let last = 0;
     while (pos !== -1) {
       frag.append(text.slice(last, pos));
-      const mark = document.createElement("mark");
+      const mark = document.createElement('mark');
       // textContent assignment avoids HTML injection.
       mark.textContent = text.slice(pos, pos + term.length);
       frag.append(mark);

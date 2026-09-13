@@ -10,7 +10,7 @@ Do test:
 
 - The prompt template exists and loads without error (smoke test)
 - Template variables are substituted correctly — no leftover `{placeholder}` markers
-- The prompt contains required structural markers *if the caller parses them* (e.g., a JSON schema block, a delimiter the parser splits on)
+- The prompt contains required structural markers _if the caller parses them_ (e.g., a JSON schema block, a delimiter the parser splits on)
 
 ## Rule 11: Observability is infrastructure
 
@@ -21,7 +21,7 @@ Don't unit-test telemetry wiring. The violation pattern is asserting a tracing/a
 mock_tracer.assert_called_once_with(session_id=..., tags=[...])
 ```
 
-Mocking observability calls to *prevent side effects* during tests is fine and often necessary. Just don't assert on the mock's call args. If telemetry breaks, dashboards show it; a unit test asserting wiring only breaks refactors.
+Mocking observability calls to _prevent side effects_ during tests is fine and often necessary. Just don't assert on the mock's call args. If telemetry breaks, dashboards show it; a unit test asserting wiring only breaks refactors.
 
 ## Rule 12: Agent and flow tests test transitions
 

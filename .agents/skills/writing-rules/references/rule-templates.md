@@ -33,7 +33,7 @@ All new or modified files in `src/` must adhere to modular responsibility bounda
 ```markdown
 ---
 trigger: glob
-glob: "src/js/calc/**"
+glob: 'src/js/calc/**'
 description: Mandates BigNumber precision for Great Building arithmetic.
 ---
 

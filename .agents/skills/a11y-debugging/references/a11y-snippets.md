@@ -9,13 +9,13 @@ Finds form inputs that lack an associated label (no `label[for]`, `aria-label`, 
 ```js
 () =>
   Array.from(document.querySelectorAll('input, select, textarea'))
-    .filter(i => {
+    .filter((i) => {
       const hasId = i.id && document.querySelector(`label[for="${i.id}"]`);
       const hasAria =
         i.getAttribute('aria-label') || i.getAttribute('aria-labelledby');
       return !hasId && !hasAria && !i.closest('label');
     })
-    .map(i => ({
+    .map((i) => ({
       tag: i.tagName,
       id: i.id,
       name: i.name,
@@ -28,9 +28,9 @@ Finds form inputs that lack an associated label (no `label[for]`, `aria-label`, 
 Returns the bounding box dimensions of an element. Pass the element's `uid` from the snapshot as an argument to `evaluate_script`.
 
 ```js
-el => {
+(el) => {
   const rect = el.getBoundingClientRect();
-  return {width: rect.width, height: rect.height};
+  return { width: rect.width, height: rect.height };
 };
 ```
 
@@ -41,11 +41,11 @@ Approximates the contrast ratio between an element's text color and background c
 **Note**: This uses a simplified algorithm and may not account for transparency, gradients, or background images. For production-grade auditing, consider injecting `axe-core`.
 
 ```js
-el => {
+(el) => {
   function getRGB(colorStr) {
     const match = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-    return match
-      ? [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])]
+    return match ?
+        [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])]
       : [255, 255, 255];
   }
   function luminance(r, g, b) {
@@ -85,8 +85,9 @@ Checks document-level accessibility settings often missed in component testing.
   viewport:
     document.querySelector('meta[name="viewport"]')?.content ||
     'MISSING - Check for user-scalable=no (bad practice)',
-  reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ? 'Enabled'
+  reducedMotion:
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ?
+      'Enabled'
     : 'Disabled',
 });
 ```

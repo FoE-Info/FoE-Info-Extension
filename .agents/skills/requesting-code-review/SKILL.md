@@ -1,6 +1,6 @@
 ---
 name: requesting-code-review
-description: "Formal pre-merge code review request and invariant audit."
+description: 'Formal pre-merge code review request and invariant audit.'
 ---
 
 # Requesting Code Review
@@ -12,11 +12,13 @@ Dispatch a code reviewer subagent to catch issues before they cascade. The revie
 ## When to Request Review
 
 **Mandatory:**
+
 - After each task in subagent-driven development
 - After completing major feature
 - Before merge to main
 
 **Optional but valuable:**
+
 - When stuck (fresh perspective)
 - Before refactoring (baseline check)
 - After fixing complex bug
@@ -24,6 +26,7 @@ Dispatch a code reviewer subagent to catch issues before they cascade. The revie
 ## How to Request
 
 **1. Get git SHAs:**
+
 ```bash
 BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
 HEAD_SHA=$(git rev-parse HEAD)
@@ -34,13 +37,14 @@ HEAD_SHA=$(git rev-parse HEAD)
 Dispatch the project's native `code-reviewer` specialist. It enforces FoE's 8 invariant gates: monolith containment, CSP, BigNumber, modular limits, dynamic metadata, i18n, small slices, and debuggability by design. Host dispatch mechanics (Antigravity `invoke_subagent` vs opencode `task`) are in [Harness Adapters](../../references/harness-adapters.md); pass the filled review template at [code-reviewer.md](references/code-reviewer.md).
 
 **Placeholders:**
+
 - `{DESCRIPTION}` - Brief summary of what you built
 - `{PLAN_OR_REQUIREMENTS}` - What it should do
 - `{BASE_SHA}` - Starting commit
 - `{HEAD_SHA}` - Ending commit
 
-
 **3. Act on feedback:**
+
 - Fix Critical issues immediately
 - Fix Important issues before proceeding
 - Note Minor issues for later
@@ -75,20 +79,22 @@ You: [Fix progress indicators]
 
 ## Common Rationalizations
 
-| Excuse | Reality |
-|--------|---------|
-| "I'll just review the diff myself instead of dispatching a reviewer" | You're the coordinator — reviewing the diff inline burns the context window you need to keep driving the work. Dispatch a reviewer subagent: the diff and the evaluation live in its context, and only the findings come back to you. |
-| "The reviewer needs my whole session history to understand the change" | Hand it precisely crafted context, never your session's history. That keeps the reviewer on the work product, not your thought process. |
+| Excuse                                                                 | Reality                                                                                                                                                                                                                               |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "I'll just review the diff myself instead of dispatching a reviewer"   | You're the coordinator — reviewing the diff inline burns the context window you need to keep driving the work. Dispatch a reviewer subagent: the diff and the evaluation live in its context, and only the findings come back to you. |
+| "The reviewer needs my whole session history to understand the change" | Hand it precisely crafted context, never your session's history. That keeps the reviewer on the work product, not your thought process.                                                                                               |
 
 ## Red Flags
 
 **Never:**
+
 - Skip review because "it's simple"
 - Ignore Critical issues
 - Proceed with unfixed Important issues
 - Argue with valid technical feedback
 
 **If reviewer wrong:**
+
 - Push back with technical reasoning
 - Show code/tests that prove it works
 - Request clarification

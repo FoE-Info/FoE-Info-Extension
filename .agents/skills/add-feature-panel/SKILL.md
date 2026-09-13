@@ -1,6 +1,6 @@
 ---
 name: add-feature-panel
-description: "Scaffold accessible, localized UI panels in panel.html."
+description: 'Scaffold accessible, localized UI panels in panel.html.'
 ---
 
 # Workflow: Add Feature UI Panel
@@ -11,10 +11,10 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
 > **Production Extension UI Boundary**:
 > Do not use in-chat Generative UI (`<agent-embed>` artifacts) for extension features. Production panels must be integrated directly into `src/chrome/panel.html` using **Bootstrap 5.3**, localized with `data-i18n` attributes, and styled via `src/css/main.scss`.
 
-
 ---
 
 ## Phase 1: Service Architecture & State
+
 1. Implement the feature logic in a modular service:
    - `src/js/msg/<FeatureName>Service.js` (for RPC handlers) or `src/js/utils/<featureName>.js` (for new utilities; `fn/` contains legacy helpers).
    - Never write monolithic logic directly into `src/js/index.js`.
@@ -23,10 +23,10 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
 2. Connect state reactively with `MetadataStore.js` or `src/js/vars/state.js`.
 3. Use `bignumber.js` for all Forge Point, boost, or resource arithmetic.
 
-
 ---
 
 ## Phase 2: Component Layout & Accessibility
+
 1. Define the collapsible container using Bootstrap 5 classes and accessible markup:
    - Use standard accordion / collapse elements: `data-bs-toggle="collapse"` and `aria-expanded`.
    - Ensure color contrast complies with WCAG 2.2 AA (minimum 4.5:1 for normal text).
@@ -42,6 +42,7 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
 ---
 
 ## Phase 3: Internationalization (i18n)
+
 1. Add `data-i18n` attributes to all static text labels:
    ```html
    <span data-i18n="allies_active_count">Active Allies</span>
@@ -57,6 +58,7 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
 ---
 
 ## Phase 4: Verification & Runtime Testing
+
 1. Build the development bundle:
    ```bash
    npm run build:dev
@@ -82,6 +84,7 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
 Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
 Primary reference categories: `accessibility/`, `html/`, `ui-behaviors/`, `ui-atoms/`, `css/`.
 Uphold:
+
 - informational updates use `role="status" aria-live="polite"`
 - tables get `<caption>` + `<th scope>`
 - one focusable collapse control with synced `aria-expanded`

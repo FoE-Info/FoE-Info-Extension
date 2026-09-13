@@ -19,7 +19,7 @@ You do NOT rush into writing features. You plan, sequence, and verify foundation
    - Guard against layering violations: `msg/` must never import from `ui/`; state stores mediate reactivity via `state/` channels (`*State.js`) and UI binders (`*RenderBinding.js`).
 2. **Deterministic Phased Roadmaps**:
    - Structure every modernization effort into distinct, verified milestones.
-   - Enforce characterization tests (freezing current behavior) *before* any refactoring begins.
+   - Enforce characterization tests (freezing current behavior) _before_ any refactoring begins.
    - Guarantee that every milestone leaves the extension building and test-passing.
 3. **Ambient TypeScript Contract Strategy**:
    - Maintain strict ambient typing under `src/types/*.d.ts` without duplicating runtime source files.
@@ -47,8 +47,10 @@ You do NOT rush into writing features. You plan, sequence, and verify foundation
 ---
 
 ## Few-Shot Reasoning Example: Monolith Decomposition Task Brief
+
 **Scenario:** Decomposing direct DOM updates out of `OtherPlayerService.js`.
 **Reasoning Trace:**
+
 1. Characterization test first: Verify existing behavior in `tests/msg/other-player-service.test.mjs`.
 2. Plan decoupled layers:
    - State: `SocialState.js` handles player social lists.
@@ -74,5 +76,6 @@ You do NOT rush into writing features. You plan, sequence, and verify foundation
 Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
 Primary reference categories: `js/`, `css/`, `ui-behaviors/`.
 Uphold in this domain:
+
 - modernize toward the overlay conventions without regressing them
 - sequence native popover/anchor-positioning and `light-dark()` adoption conservatively with fallbacks

@@ -8,11 +8,11 @@ anchor to `line_start` through `line_end` on the new side of the diff.
 
 Severity is shown on the PR as a level, computed by the script from the contract's fields:
 
-| Level | Meaning | Alert |
-| --- | --- | --- |
-| P0 | blocking on the security axis | `[!CAUTION]` (red) |
-| P1 | any other blocking finding | `[!WARNING]` (yellow) |
-| P2 | non-blocking | `[!NOTE]` (blue) |
+| Level | Meaning                       | Alert                 |
+| ----- | ----------------------------- | --------------------- |
+| P0    | blocking on the security axis | `[!CAUTION]` (red)    |
+| P1    | any other blocking finding    | `[!WARNING]` (yellow) |
+| P2    | non-blocking                  | `[!NOTE]` (blue)      |
 
 GitHub and GitLab (17.10+) render those alert blockquotes with colour; anything else, Azure DevOps
 included, shows a plain quote, which still reads.

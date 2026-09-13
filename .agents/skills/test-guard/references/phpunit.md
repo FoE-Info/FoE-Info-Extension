@@ -42,7 +42,7 @@ Pest equivalent: `it('normalizes slug', ...)->with([...])`.
 ## WordPress-specific boundaries
 
 - **Integration tests** (`WP_UnitTestCase` / `wp-env` / `wp-cli scaffold`): use the real WordPress test framework with factories — `self::factory()->post->create()`, `self::factory()->user->create()`. Don't mock `WP_Post` or `WP_User`; the factories exist precisely so you don't have to (Rule 8).
-- **Unit tests without WordPress loaded** (Brain Monkey / WP_Mock): mocking WordPress functions like `get_option()` or `apply_filters()` is a boundary mock and justified. But assert what *your code does* with the values, not that `get_option` was called with specific args (Rule 1).
+- **Unit tests without WordPress loaded** (Brain Monkey / WP_Mock): mocking WordPress functions like `get_option()` or `apply_filters()` is a boundary mock and justified. But assert what _your code does_ with the values, not that `get_option` was called with specific args (Rule 1).
 - Mock outbound HTTP with the `pre_http_request` filter rather than patching `wp_remote_get` internals.
 - Don't test that WordPress sanitizes, escapes, or that hooks fire — that's core's guarantee (Rule 7). Test your callback's behavior given an input.
 

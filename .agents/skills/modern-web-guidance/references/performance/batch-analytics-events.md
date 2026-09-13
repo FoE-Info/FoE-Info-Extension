@@ -12,7 +12,7 @@ The optimal way to provide real-time analytics updates, while still minimizing b
 
 3. **Reset the event queue when the timeout expires:** If a new analytics event occurs after the scheduled beacon has successfully sent (i.e. the `fetchLater()` result's `activated` value is `true`), reset the event queue.
 
-3. **Let the browser handle the rest:** If the user navigates away or closes the tab before the `activateAfter` timeout expires, the browser will still reliably send the payload from your most recent `fetchLater()` call.
+4. **Let the browser handle the rest:** If the user navigates away or closes the tab before the `activateAfter` timeout expires, the browser will still reliably send the payload from your most recent `fetchLater()` call.
 
 ## Example code
 
@@ -56,7 +56,7 @@ function trackEvent(eventData) {
   try {
     fetchLaterResult = fetchLater(ANALYTICS_ENDPOINT, {
       method: 'POST',
-      headers: {'content-type': 'application/json'},
+      headers: { 'content-type': 'application/json' },
       body: JSON.stringify(eventQueue),
       signal: fetchLaterController.signal,
       activateAfter: BATCH_WINDOW,
@@ -68,12 +68,12 @@ function trackEvent(eventData) {
 
 // Track page loads.
 window.addEventListener('load', () => {
-  trackEvent({type: 'page_load'});
+  trackEvent({ type: 'page_load' });
 });
 
 // Track click events.
 window.addEventListener('click', (event) => {
-  trackEvent({type: 'click', target: serializeElement(event.target)});
+  trackEvent({ type: 'click', target: serializeElement(event.target) });
 });
 ```
 
@@ -115,7 +115,7 @@ globalThis.fetchLater ??= function fetchLater(url, init = {}) {
         init.method !== 'POST' ||
         init.headers
       ) {
-        fetch(url, Object.assign({}, init, {keepalive: true}));
+        fetch(url, Object.assign({}, init, { keepalive: true }));
         activated = true;
       } else {
         activated = navigator.sendBeacon(url, init.body);

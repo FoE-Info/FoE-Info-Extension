@@ -1139,7 +1139,7 @@ Deploy mock servers:
 
 ```yaml
 # docker-compose.yml for mock services
-version: "3.8"
+version: '3.8'
 
 services:
   mock-api:
@@ -1147,7 +1147,7 @@ services:
       context: .
       dockerfile: Dockerfile.mock
     ports:
-      - "3001:3001"
+      - '3001:3001'
     environment:
       - MOCK_SCENARIO=production
       - MOCK_DATA_PATH=/data/mocks
@@ -1155,7 +1155,7 @@ services:
       - ./mocks:/data/mocks
       - ./scenarios:/data/scenarios
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3001/health']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -1165,7 +1165,7 @@ services:
       context: .
       dockerfile: Dockerfile.admin
     ports:
-      - "3002:3002"
+      - '3002:3002'
     environment:
       - MOCK_SERVER_URL=http://mock-api:3001
     depends_on:
@@ -1297,7 +1297,7 @@ return doc
             });
         }
     </script>
-    
+
     <div class="scenario-selector">
         <label>Scenario:</label>
         <select id="scenario-select">
@@ -1306,6 +1306,7 @@ return doc
             <option value="slow">Slow Responses</option>
         </select>
     </div>
+
 </body>
 </html>
 '''

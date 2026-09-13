@@ -21,7 +21,7 @@ To apply shared styles, also assign a `view-transition-class`.
 ```
 
 2. **Define the shared transition logic**
-   
+
 Use the `::view-transition-group()` pseudo-element with the class selector to apply styles to all members of that group.
 
 ```css
@@ -96,7 +96,7 @@ View transitions work by overlaying snapshots of the DOM elements, and then tran
 }
 ```
 
-In addition, by default, the `:root` element has a view transition named `root`, which enables default full-page transitions. If there are no changes to the root element, this will be a transition between two identical snapshots, which are not interactive. Because we are only transitioning specific elements, and not the entire screen, we can disable the `root` transition. 
+In addition, by default, the `:root` element has a view transition named `root`, which enables default full-page transitions. If there are no changes to the root element, this will be a transition between two identical snapshots, which are not interactive. Because we are only transitioning specific elements, and not the entire screen, we can disable the `root` transition.
 
 ```css
 :root {
