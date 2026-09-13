@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
-# Tier 2: AST refresh + visual doc exports (no LLM).
+# Tier 2: AST refresh + visual doc exports (LLM-backed).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 cd "${WORKSPACE_ROOT}"
+
+# Ensure an OpenAI-compatible backend is available for the export phase.
+source "${SCRIPT_DIR}/llama-swap-lifecycle.sh"
 
 echo "==> Step 1: Fast AST Update on Knowledge Graph..."
 bash "${SCRIPT_DIR}/graph-foe-info-ast.sh"

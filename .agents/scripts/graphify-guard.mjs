@@ -249,16 +249,8 @@ export function evaluateGraphifyGuard(toolCall) {
     return { decision: 'allow' };
   }
 
-  const MANDATORY_GRAPHIFY_REASON =
-    'MANDATORY: Graphify knowledge graph exists at graphify-out/foe-info/graph.json. You must consult Graphify first before performing broad codebase searches. Use call_mcp_tool on "graphify-foe-info" (or "graphify-metadata-store" / "graphify-forge-hammer" / "graphify-low-tool" / "graphify-foe-info-original") with one of the native MCP tools:\n' +
-    '  - query_graph ({"question": "..."}) for broad questions and semantic context\n' +
-    '  - get_node ({"label": "..."}) for inspecting a specific symbol, class, or function\n' +
-    '  - get_neighbors ({"label": "..."}) for immediate callers, callees, or module imports\n' +
-    '  - shortest_path ({"source": "...", "target": "..."}) to trace relationships between symbols\n' +
-    '  - god_nodes ({"top_n": 10}) to inspect high-centrality hub modules\n' +
-    '  - get_community ({"community_id": ...}) to inspect architectural clusters\n' +
-    '  - graph_stats to inspect overall graph metrics\n' +
-    'Or CLI fallback: `graphify query "..."`, `graphify explain "..."`, `graphify path "..."`. Only use grep_search or find_by_name after Graphify has oriented you or when targeting specific files/tests.';
+  const SUGGEST_GRAPHIFY =
+    'Graphify knowledge graph exists at graphify-out/foe-info/graph.json. Consider consulting it first for broad codebase questions before grepping - use query_graph / get_node / get_neighbors / shortest_path via MCP or `graphify query`. For targeted file reads or file-scoped searches, grep/find are fine without it.';
 
   if (toolName === 'run_command') {
     const cmd = String(args.CommandLine || '');
@@ -275,10 +267,10 @@ export function evaluateGraphifyGuard(toolCall) {
     }
 
     if (isBroadSourceSearch(cmd, args.Cwd || projectRoot)) {
-      if (!isQueryStampFresh()) {
+      if (!isQueryStampFresh(3600)) {
         return {
-          decision: 'deny',
-          reason: MANDATORY_GRAPHIFY_REASON,
+          decision: 'allow',
+          reason: SUGGEST_GRAPHIFY,
         };
       }
     }
@@ -287,10 +279,10 @@ export function evaluateGraphifyGuard(toolCall) {
 
   // Check if this is an unoriented search of application code
   if (isCodebaseSourceSearch(toolName, args)) {
-    if (!isQueryStampFresh()) {
+    if (!isQueryStampFresh(3600)) {
       return {
-        decision: 'deny',
-        reason: MANDATORY_GRAPHIFY_REASON,
+        decision: 'allow',
+        reason: SUGGEST_GRAPHIFY,
       };
     }
   }

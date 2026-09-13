@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+# Tier 2: AST refresh + visual doc exports (LLM-backed).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
@@ -13,6 +14,9 @@ fi
 
 cd "${WORKSPACE_ROOT}"
 export GRAPHIFY_OUT="${METADATA_STORE_DIR}/graphify-out"
+
+# Ensure an OpenAI-compatible backend is available for the export phase.
+source "${SCRIPT_DIR}/llama-swap-lifecycle.sh"
 
 echo "==> Step 1: Rebuilding Metadata Knowledge Graph from entities..."
 node scripts/build-metadata-graph.mjs

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# Tier 2: AST refresh + visual doc exports (no LLM).
+# Tier 2: AST refresh + visual doc exports (LLM-backed).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FORGE_HAMMER_DIR="${FORGE_HAMMER_DIR:-$(cd "${SCRIPT_DIR}/../.." && pwd)/../forge-hammer}"
 
@@ -9,6 +9,9 @@ if [ ! -d "$FORGE_HAMMER_DIR" ]; then
   echo "Error: Forge-Hammer directory not found at $FORGE_HAMMER_DIR"
   exit 1
 fi
+
+# Ensure an OpenAI-compatible backend is available for the export phase.
+source "${SCRIPT_DIR}/llama-swap-lifecycle.sh"
 
 echo "==> Step 1: Fast AST Update on Forge-Hammer Knowledge Graph..."
 bash "${SCRIPT_DIR}/graph-forge-hammer-ast.sh"

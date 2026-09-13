@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# Tier 2: AST refresh + visual doc exports (no LLM).
+# Tier 2: AST refresh + visual doc exports (LLM-backed).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ORIGINAL_DIR="${ORIGINAL_DIR:-$(cd "${SCRIPT_DIR}/../.." && pwd)/../FoE-Info-Extension-original}"
 
@@ -9,6 +9,9 @@ if [ ! -d "$ORIGINAL_DIR" ]; then
   echo "Error: FoE-Info-Extension-original directory not found at $ORIGINAL_DIR"
   exit 1
 fi
+
+# Ensure an OpenAI-compatible backend is available for the export phase.
+source "${SCRIPT_DIR}/llama-swap-lifecycle.sh"
 
 echo "==> Step 1: Fast AST Update on FoE-Info-Extension-original Knowledge Graph..."
 bash "${SCRIPT_DIR}/graph-foe-info-original-ast.sh"

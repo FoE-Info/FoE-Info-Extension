@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "chrome-devtools": {
-      "command": "chrome-devtools-mcp",
+      "command": "/home/linuxbrew/.linuxbrew/bin/chrome-devtools-mcp",
       "args": [
         "--browserUrl=http://127.0.0.1:9222",
         "--experimentalMemory",
@@ -15,7 +15,7 @@
       ]
     },
     "graphify-foe-info": {
-      "command": "graphify-mcp",
+      "command": "/home/linuxbrew/.linuxbrew/bin/graphify-mcp",
       "args": [
         "/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension/graphify-out/foe-info/graph.json"
       ],
@@ -44,7 +44,7 @@
       }
     },
     "graphify-forge-hammer": {
-      "command": "graphify-mcp",
+      "command": "/home/linuxbrew/.linuxbrew/bin/graphify-mcp",
       "args": [
         "/var/home/kronikpillow/Projects/FoE-Info/forge-hammer/graphify-out/graph.json"
       ],
@@ -73,7 +73,7 @@
       }
     },
     "graphify-foe-info-original": {
-      "command": "graphify-mcp",
+      "command": "/home/linuxbrew/.linuxbrew/bin/graphify-mcp",
       "args": [
         "/var/home/kronikpillow/Projects/FoE-Info/FoE-Info-Extension-original/graphify-out/graph.json"
       ],
@@ -102,7 +102,7 @@
       }
     },
     "graphify-low-tool": {
-      "command": "graphify-mcp",
+      "command": "/home/linuxbrew/.linuxbrew/bin/graphify-mcp",
       "args": [
         "/var/home/kronikpillow/Projects/FoE-Info/LoW-Tool/graphify-out/graph.json"
       ],
@@ -131,7 +131,7 @@
       }
     },
     "graphify-metadata-store": {
-      "command": "graphify-mcp",
+      "command": "/home/linuxbrew/.linuxbrew/bin/graphify-mcp",
       "args": [
         "/var/home/kronikpillow/Projects/FoE-Info/metadata-store/graphify-out/graph.json"
       ],
@@ -171,7 +171,7 @@
       ]
     },
     "linux-tools": {
-      "command": "linux-mcp-server",
+      "command": "/home/linuxbrew/.linuxbrew/bin/linux-mcp-server",
       "args": [],
       "env": {
         "LINUX_MCP_LOG_LEVEL": "INFO",
