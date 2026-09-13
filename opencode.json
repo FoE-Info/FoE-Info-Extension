@@ -11,7 +11,18 @@
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": ["bash", ".agents/scripts/run-chrome-devtools-mcp.sh"],
+      "command": [
+        "chrome-devtools-mcp",
+        "--browserUrl=http://127.0.0.1:9222",
+        "--experimentalMemory",
+        "--experimentalVision",
+        "--categoryExperimentalWebmcp",
+        "--experimentalDevtools",
+        "--experimentalIncludeAllPages",
+        "--experimentalPageIdRouting",
+        "--allowUnrestrictedPaths",
+        "--no-usage-statistics"
+      ],
       "enabled": true
     },
     "graphify-foe-info": {
@@ -159,7 +170,29 @@
     },
     "github-mcp": {
       "type": "local",
-      "command": ["bash", ".agents/scripts/run-github-mcp.sh"],
+      "command": [
+        "docker",
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+      },
+      "enabled": true
+    },
+    "linux-tools": {
+      "type": "local",
+      "command": ["linux-mcp-server"],
+      "environment": {
+        "LINUX_MCP_LOG_LEVEL": "INFO",
+        "LINUX_MCP_USER": "kronikpillow",
+        "LINUX_MCP_SSH_KEY_PATH": "/var/home/kronikpillow/.ssh/id_ed25519",
+        "LINUX_MCP_KEY_PASSPHRASE": "{env:LINUX_MCP_KEY_PASSPHRASE}"
+      },
       "enabled": true
     }
   },
