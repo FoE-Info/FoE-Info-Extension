@@ -68,8 +68,6 @@ Do not attempt these; opencode has no equivalent event:
 
 ## References
 
-- Existing plugins: `safety-gate.mjs`, `graphify-guard.mjs`, `graphify-sync.mjs`,
-  `sync-state.mjs`, `stop-guard.mjs`.
-- Canonical Antigravity handlers: `.agents/scripts/safety-gate.mjs`,
-  `.agents/scripts/graphify-guard.mjs`,
-  `.agents/scripts/post-tool-graphify-sync.mjs`.
+- Existing plugins: `safety-gate.mjs`, `sync-state.mjs`, `stop-guard.mjs`
+  (the `graphify-guard`/`graphify-sync` plugins were removed as overzealous).
+- Canonical Antigravity handlers: `.agents/scripts/safety-gate.mjs`.

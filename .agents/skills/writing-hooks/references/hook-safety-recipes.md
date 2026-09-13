@@ -55,7 +55,8 @@ process.stdin.on('end', () => {
 Trigger non-blocking background tasks after file edits:
 
 ```javascript
-// scripts/post-tool-graphify-sync.mjs
+// scripts/post-tool-example-sync.mjs (pattern; the concrete graphify sync
+// hook was removed as overzealous — prefer manual `npm run graph:*:ast`)
 import { spawn } from 'node:child_process';
 
 process.stdin.on('end', () => {
