@@ -7,7 +7,7 @@ The canonical skills, role descriptions, rules, scripts, and Antigravity registr
 1. Read `docs/README.md` (coordination hub), `AGENTS.md`, and `docs/STATUS.md` (live work/todos), then inspect `git status` and current source before executing an old plan; `docs/HANDOFF.md` holds verified state and resume-safely notes.
 2. Read `.agents/rules/` entries marked `always_on` and the scoped rules applicable to the task. Antigravity frontmatter is not automatic rule activation in opencode; all 17 rules are injected as instructions (`opencode.json` `instructions` glob, `.agents/rules/*.md`) and the agent decides applicability per task.
 3. Use the workspace skill path from the available-skills catalog. Several global `~/.agents/skills/` skills share names with repository skills; the project copy wins (verified in `<available_skills>`), but prefer the repository runbook for repository work and avoid adding new name collisions. To force only the canonical 53, set `OPENCODE_DISABLE_EXTERNAL_SKILLS=1`.
-4. Query the host graph before broad source searches. The `graphify-guard` plugin enforces this mechanically (see Hooks below).
+4. Query the host graph before broad source searches (`npm run graph:foe-info:ast` after code edits; the mechanical guard plugin was removed as overzealous).
 5. Run `npm run verify` and `npm run typecheck` before claiming an implementation verified. A passing unit suite is not a browser behavior test.
 
 ## Tool and role mapping
@@ -28,16 +28,16 @@ Role Markdown is reusable instruction content, not automatic native named-agent 
 
 Antigravity sessions need no migration for opencode coexistence. The following differences are opencode responsibilities; they do not require rewriting the canonical Antigravity files.
 
-| Difference                                                              | Working procedure in opencode                                                                                                                         | Additional automation needed for parity                               |
-| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| Rule frontmatter (`always_on`/`model_decision`) is not read by opencode | All 17 rules are injected as instructions; applicability is decided by the agent per task                                                             | None (single always-on injection bucket)                              |
-| Named specialist registration is not auto-imported                      | `.opencode/agents/<name>.md` shims add `subagent_type` for each of the 36 specialists                                                                 | None                                                                  |
-| `Workspace: "share"` does not create an isolated checkout               | Create explicit worktrees and assign each writer its cwd                                                                                              | A worktree-aware dispatch wrapper                                     |
-| Graph-query tool names differ                                           | The `graphify-guard` plugin blocks broad bash source searches without a shared 1800-second stamp; supported Graphify MCP queries renew it             | Extend coverage only for additional concrete search tools when needed |
-| AST synchronization is best-effort                                      | The `graphify-sync` plugin spawns detached `npm run graph:foe-info:ast` on AST-affected writes; log at `graphify-out/foe-info/opencode-sync.log`      | No freshness certification for unsupported write tools                |
-| Per-turn guardrail activation                                           | The canonical reminder is baked into instructions (`.opencode/instructions/guardrail.md`, sourced from `.agents/scripts/pre-invocation-reminder.mjs`) | None (no PreInvocation event exists)                                  |
-| Antigravity's `fullyIdle` stop payload is unavailable                   | The `stop-guard` plugin logs a warning on `session.idle` if a background AST sync is pending; it cannot block completion                              | Native task-state integration before a reliable stop gate             |
-| Safety hook returns `deny`, not Antigravity `force_ask`                 | The `safety-gate` plugin throws on destructive commands; the permission system additionally asks/denies configurable bash patterns                    | Host-supported approval semantics                                     |
+| Difference                                                              | Working procedure in opencode                                                                                                                                            | Additional automation needed for parity                   |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| Rule frontmatter (`always_on`/`model_decision`) is not read by opencode | All 17 rules are injected as instructions; applicability is decided by the agent per task                                                                                | None (single always-on injection bucket)                  |
+| Named specialist registration is not auto-imported                      | `.opencode/agents/<name>.md` shims add `subagent_type` for each of the 36 specialists                                                                                    | None                                                      |
+| `Workspace: "share"` does not create an isolated checkout               | Create explicit worktrees and assign each writer its cwd                                                                                                                 | A worktree-aware dispatch wrapper                         |
+| Graph-query tool names differ                                           | Query the MCP graph before broad source searches by convention; the `graphify-guard` plugin was removed (burned context). Refresh ASTs with `npm run graph:foe-info:ast` | None (manual pipeline)                                    |
+| AST synchronization is manual                                           | Run `npm run graph:foe-info:ast` after AST-affected edits; the `graphify-sync` auto-sync plugin was removed (overzealous)                                                | None                                                      |
+| Per-turn guardrail activation                                           | The canonical reminder is baked into instructions (`.opencode/instructions/guardrail.md`, sourced from `.agents/scripts/pre-invocation-reminder.mjs`)                    | None (no PreInvocation event exists)                      |
+| Antigravity's `fullyIdle` stop payload is unavailable                   | The `stop-guard` plugin logs a warning on `session.idle` if a background AST sync is pending; it cannot block completion                                                 | Native task-state integration before a reliable stop gate |
+| Safety hook returns `deny`, not Antigravity `force_ask`                 | The `safety-gate` plugin throws on destructive commands; the permission system additionally asks/denies configurable bash patterns                                       | Host-supported approval semantics                         |
 
 These procedures permit development today. Automatic enforcement parity is unfinished opencode integration work.
 
@@ -47,7 +47,7 @@ These procedures permit development today. Automatic enforcement parity is unfin
 
 - **model**: `opencode/big-pickle` (cloud fallback for this repo until the local `llama-swap` model is preferred).
 - **instructions**: `.agents/rules/*.md` (all 17 rules) plus `.opencode/instructions/*.md` (guardrail reminder).
-- **plugins**: the four hook plugins in `.opencode/plugins/` (registered explicitly because `.mjs` is not auto-discovered).
+- **plugins**: the two hook plugins in `.opencode/plugins/` (registered explicitly because `.mjs` is not auto-discovered).
 - **mcp**: the same servers as `.agents/mcp_config.json` — Chrome DevTools via native `chrome-devtools-mcp` (`--browserUrl=http://127.0.0.1:9222` plus experimental flags), `github-mcp` via the `ghcr.io/github/github-mcp-server` Docker image, `linux-tools` via native `linux-mcp-server`, and the five Graphify graphs via native `graphify-mcp` with relative paths and local env blocks. Secrets (`GITHUB_PERSONAL_ACCESS_TOKEN`, `LINUX_MCP_KEY_PASSPHRASE`) resolve through `{env:VAR}` from git-ignored `.env`, loaded into the shell by mise. Paths match this machine's Antigravity setup; on relocation update them after locating the executables.
 - **permission**: read/edit/glob/grep/list/task/skill allowed; bash uses a first-match-wins list where `*` asks by default and only the documented `git*`/`npm*` read/build/test patterns are auto-allowed. No wildcard tool grants.
 
@@ -58,9 +58,9 @@ Global ~/.config/opencode adds the `llama-swap` provider (models from `~/.config
 Built and live-verified on 2026-09-09:
 
 - `safety-gate` (`tool.execute.before`, bash): reuses `isDangerousCommand` from `.agents/scripts/safety-gate.mjs` and throws on destructive commands (e.g. `git push --force`, `rm -rf`). A live `git status` was unaffected.
-- `graphify-guard` (`tool.execute.before`/`after`): imports `isBroadSourceSearch` and the shared stamp helpers from `.agents/scripts/graphify-guard.mjs`. Broad `rg`/`grep`/`find` source searches (bash) and broad `grep`/`glob` tool searches are blocked without a stamp younger than 1800 s; Graphify MCP queries renew it; a single-file search is never blocked.
-- `graphify-sync` (`tool.execute.after`, edit/write): queues a detached `npm run graph:foe-info:ast` for AST-affected source paths; a live edit to `src/js/utils/copy.js` produced `queued … exit 0` in `graphify-out/foe-info/opencode-sync.log`.
 - `stop-guard` (`event`, `session.idle`): via `client.app.log` it warns when the session idles with a background AST sync still pending. It detects, it does not force-continue.
+
+Removed (overzealous auto-sync, burned context): `graphify-guard` (blocked broad source searches without a query stamp) and `graphify-sync` (spawned detached AST sync on every edit). The graphify pipeline is manual via `npm run graph:*:ast|update|reindex`.
 
 Not wired: Antigravity's `force_ask` semantics (opencode permission system asks/denies instead), and a reliable stop gate (no `fullyIdle` equivalent).
 

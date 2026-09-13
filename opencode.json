@@ -4,8 +4,6 @@
   "instructions": [".agents/rules/*.md", ".opencode/instructions/*.md"],
   "plugins": [
     ".opencode/plugins/safety-gate.mjs",
-    ".opencode/plugins/graphify-guard.mjs",
-    ".opencode/plugins/graphify-sync.mjs",
     ".opencode/plugins/stop-guard.mjs"
   ],
   "mcp": {

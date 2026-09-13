@@ -55,7 +55,7 @@ something here goes stale rather than letting it drift.
    `graphify label . --backend deepseek`. Fall back to the local `llama-swap`
    backend only when no DeepSeek key is configured. Never call an unconfigured
    or third-party paid API. See `.agents/scripts/graph-*-reindex.sh` and
-   [`graphify-local.md`](graphify-local.md).
+   [`GRAPHIFY.md`](GRAPHIFY.md) (Local Execution Policy).
 
 ## Current status
 

@@ -237,11 +237,12 @@ a changelog. See `docs/README.md` for the full hub.
 - **Full ecosystem audit** — verified 36 subagents / 17 rules / 53 skills;
   fixed 2 stale counts. Gaps: rules not auto-injected by trigger mode in hosts;
   hooks enforced by host adapters.
-- **Hook parity** — `graphify-sync`, `graphify-guard`, `monolith-guardrail`
-  built + live-verified; `stop-guard` logs a warning plugin (no `fullyIdle`
-  equivalent).
+- **Hook parity** — `monolith-guardrail` + `safety-gate` built + live-verified;
+  `stop-guard` logs a warning plugin (no `fullyIdle` equivalent). The
+  `graphify-sync` / `graphify-guard` plugins were removed (overzealous
+  auto-sync, burned context) — the graphify pipeline is manual.
 - **opencode takeover** — RESOLVED. `opencode.json` (17 rules as instructions,
-  7 MCP servers), 36 shims in `.opencode/agents/`, 4 hook plugins live-verified.
+  7 MCP servers), 36 shims in `.opencode/agents/`, 2 hook plugins live-verified.
   Legacy harness compatibility layer decommissioned 2026-09-09; opencode is the
   active coding host.
 
