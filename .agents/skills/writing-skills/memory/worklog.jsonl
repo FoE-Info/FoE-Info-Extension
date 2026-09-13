@@ -1,0 +1,1 @@
+{"ts":"2026-09-13T23:39:19.909Z","skill":"writing-skills","task":"skill-memory-layer","outcome":"pass","signals":["node --test tests/agents/skill-memory.test.mjs"],"lesson":"Record a run and patch the skill in the same change: a lesson that lives only in the worklog is never read by the next run.","note":null}

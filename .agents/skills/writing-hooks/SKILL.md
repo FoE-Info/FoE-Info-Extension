@@ -60,7 +60,21 @@ See [Hook Events & Matchers](references/hook-events-and-matchers.md) and [Input/
 3. Write JSON response to stdout.
    See [Hook Safety Recipes](references/hook-safety-recipes.md) for tested implementations.
 
-### Step 3: Test Hook with Unit Tests
+### Step 3: Remove or Replace a Hook Cleanly
+
+Deleting a hook, plugin, or handler script is a multi-file change. Prune every
+reference in the same commit — tests, docs, rules, and `references/` files:
+
+```sh
+grep -rn "<deleted-file>" --include="*.md" --include="*.mjs" --include="*.json" .
+```
+
+The obsolete-path config test only catches protocol paths, so a stale
+`graphify-guard.mjs` reference can survive a green suite and only surface when a
+hook factory fails to import. Leave the removal documented (a "Removed" table in
+`docs/HOOKS.md`) so the next reader knows the capability was dropped on purpose.
+
+### Step 4: Test Hook with Unit Tests
 
 Create or update tests in `tests/agents/hooks.test.mjs` verifying:
 

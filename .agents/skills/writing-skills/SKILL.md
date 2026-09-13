@@ -26,8 +26,14 @@ Every skill resides in a standalone directory:
 ├── SKILL.md          # Primary instructions (be concise, use references/ for bulk)
 ├── references/       # Heavy documentation, API tables, checklists (*.md)
 ├── scripts/          # Optional: Shell/Node automation run as black boxes
+├── memory/           # Optional: worklog.jsonl + lessons.md (see step 5)
 └── examples/         # Optional: Code patterns and reference implementations
 ```
+
+Keep `.agents/skills/` at one entry per distinct domain. `writing-skills`,
+`writing-agents`, `writing-rules`, `writing-hooks`, and `writing-plans` are
+separate skills on purpose — different artifacts, different verification. Merge
+skills only when the trigger conditions genuinely coincide.
 
 For complete structural requirements, see [Antigravity Skill Specification](references/skill-specification.md).
 
@@ -70,3 +76,18 @@ See [Progressive Disclosure Guide](references/progressive-disclosure.md).
    ```sh
    node --test tests/agents/agent-config.test.mjs
    ```
+
+### Step 5: Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> --outcome fail --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
