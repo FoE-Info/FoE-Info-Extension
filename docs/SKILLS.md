@@ -84,6 +84,30 @@ Discovered from `.agents/skills/`. Consult `<skills>` catalog for triggers. Load
 | `requesting-code-review`       | Pre-commit review gates                                 |
 | `grill-me`                     | Adversarial plan interview                              |
 
+## Skill Memory & Work Log
+
+Skills accumulate evidence about their own usage — the persistence layer for a
+Generator → Reflector → Curator self-improvement loop:
+
+| Artifact                                     | Purpose                                                  |
+| -------------------------------------------- | -------------------------------------------------------- |
+| `.agents/skills/<name>/memory/worklog.jsonl` | One JSON object per run: outcome, ground signals, lesson |
+| `.agents/skills/<name>/memory/lessons.md`    | Deduplicated prose lessons, newest date block first      |
+
+Record a run, then fold the lesson back into the skill's `SKILL.md` in the same
+change — a lesson recorded only in the worklog never changes behaviour:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> --outcome pass|fail|partial \
+  --signal "<ground command that can fail>" --lesson '<imperative rule + why>'
+node .agents/scripts/skill-memory.mjs lessons --skill <name>
+node .agents/scripts/skill-memory.mjs stats
+```
+
+Full loop, promotion signals, and authoring rules: `writing-skills`
+`references/skill-memory.md`. Verified by `tests/agents/skill-memory.test.mjs`.
+
 ## Skill-First Invariant
 
 **Before any non-trivial task:**
