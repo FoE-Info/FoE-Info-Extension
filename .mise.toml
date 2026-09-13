@@ -1,4 +1,6 @@
 [tools]
+"aqua:gokcehan/lf" = "latest"
+go = "latest"
 # Pinned to the verified dev toolchain. engines.node requires >=24; the
 # @types/node devDependency tracks the 26.x line. Refresh with `mise lock`.
 node = "26.8.2"
@@ -7,7 +9,8 @@ node = "26.8.2"
 NODE_ENV = "development"
 
 [env._]
-path = ["./node_modules/.bin", "./.agents/scripts"]
+path = [ "./.agents/scripts", "./node_modules/.bin", "./scripts" ]
+file = [ ".env", ".env.local" ]
 
 [tasks.setup]
 description = "Install npm dependencies for the pinned toolchain"
