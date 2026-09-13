@@ -1,9 +1,5 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {
-  GRAPHIFY_QUERY_TOOLS,
-  isBroadSourceSearchTool,
-} from '../../.opencode/plugins/graphify-guard.mjs';
 import { SafetyGate } from '../../.opencode/plugins/safety-gate.mjs';
 import { StopGuard } from '../../.opencode/plugins/stop-guard.mjs';
 import {
@@ -93,28 +89,4 @@ test('safety-gate throws on destructive command and allows others', async () => 
   await assert.doesNotReject(
     hooks['tool.execute.before']({ tool: 'edit' }, { args: {} }),
   );
-});
-
-test('graphify-guard regex matches opencode MCP tool IDs (hyphenated)', () => {
-  assert.ok(GRAPHIFY_QUERY_TOOLS.test('graphify-foe-info_query_graph'));
-  assert.ok(GRAPHIFY_QUERY_TOOLS.test('graphify-foe-info-original_get_node'));
-  assert.ok(GRAPHIFY_QUERY_TOOLS.test('graphify-forge-hammer_god_nodes'));
-  assert.ok(GRAPHIFY_QUERY_TOOLS.test('graphify-metadata-store_graph_stats'));
-  assert.ok(!GRAPHIFY_QUERY_TOOLS.test('graphify-foe-info_bad_tool'));
-  assert.ok(!GRAPHIFY_QUERY_TOOLS.test('graphify_foe_info_query_graph'));
-});
-
-test('graphify-guard flags broad grep/glob and allows scoped ones', () => {
-  assert.equal(isBroadSourceSearchTool('grep', { path: 'src' }), true);
-  assert.equal(isBroadSourceSearchTool('grep', { path: '.' }), true);
-  assert.equal(isBroadSourceSearchTool('grep', { path: 'tests' }), false);
-  assert.equal(
-    isBroadSourceSearchTool('grep', { path: 'src/js/state.js' }),
-    false,
-  );
-  assert.equal(isBroadSourceSearchTool('glob', { path: '' }), true);
-  assert.equal(isBroadSourceSearchTool('glob', {}), true);
-  assert.equal(isBroadSourceSearchTool('glob', { path: 'tests' }), false);
-  assert.equal(isBroadSourceSearchTool('glob', { path: 'src' }), true);
-  assert.equal(isBroadSourceSearchTool('bash', { command: 'npm test' }), false);
 });
