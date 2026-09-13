@@ -336,7 +336,6 @@ test('Agent Config - validates standardized shell script naming convention', () 
     'graph-metadata-update.sh',
     'llama-swap-lifecycle.sh',
     'run-graphify-local.sh',
-    'run-with-llama-swap.sh',
   ];
 
   for (const script of expectedScripts) {

@@ -5,7 +5,7 @@
 
 # Apply the same inference policy as CLI/MCP, without starting a model.
 _GRAPHIFY_ROOT=$(git rev-parse --show-toplevel) || exit 1
-. "$_GRAPHIFY_ROOT/.agents/scripts/graphify-local-env.sh"
+. "$_GRAPHIFY_ROOT/.agents/scripts/llama-swap-env.sh"
 
 # Deterministic clustering: networkx louvain iterates string-keyed sets whose
 # order is randomized per-process by PYTHONHASHSEED, so community assignments
