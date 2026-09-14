@@ -71,6 +71,16 @@ These are remaining architecture debt, not evidence that previous extractions ne
 
 ## Decisions and corrections to old instructions
 
+### Subagent knowledge placement
+
+Antigravity discovers the 36 subagents only as flat
+`.agents/agents/<name>.md` files; nested `<name>/SKILL.md` definitions are not
+supported. Flat definitions retain identity, mandatory workflow, safety
+invariants, and verification. Detailed FoE domain knowledge and optional worked
+examples live under `.agents/references/` and are indexed by
+[the agent reference catalog](../.agents/references/README.md) for on-demand use
+by agents and skills.
+
 ### Workspace identity
 
 `.agents/project.json` is the canonical workspace identity anchor (`name`, `displayName`, `primaryGraph`), restored after its brief removal in `e61503f`. `package.json` mirrors those fields for npm/build tooling. `tests/agents/agent-config.test.mjs` verifies the file's presence and schema.
