@@ -10,6 +10,7 @@ The previous handoff at `cec0ded:docs/HANDOFF.md` is retained in Git history for
 
 ## Current follow-ups
 
+- **Test Suite Footprint Optimization Phase 3 completed 2026-09-14**: Pruned 5 oversized JSON test fixtures (`TradeService.getTradeOffers.json`, `marketplace_trades.json`, `construction_ranking.json`, `OutpostService.getAll.json`, `guild_overview.json`), trimming ~22.4 MB disk space and ~720,689 lines while maintaining 100% test coverage and full verification gate.
 - **Graph generation completed 2026-09-11** for LoW-Tool and FoE-Info-original (`npm run graph:low-tool:reindex`, `npm run graph:foe-info-original:reindex`); both `graphify-out/graph.json` files are generated and queryable via MCP. The reindex scripts now source `.env` and use the DeepSeek backend when `DEEPSEEK_API_KEY`/`GRAPHIFY_BACKEND=deepseek` is set, falling back to local `llama-swap` otherwise; the stale "auto-start llama-swap always" note no longer applies.
 - **QI implementation Slice 1 (shipped)**: `src/js/protocol/routes/guildRaidsRoutes.js`, `src/js/state/quantumState.js`, and the `GuildRaids*Service.js` CJS parsers are wired into the dispatcher (see `docs/STATUS.md`). Architecture remains in [`plans/2026-09-12-quantum-incursions-architecture.md`](plans/2026-09-12-quantum-incursions-architecture.md).
 - Debug lookup fixes reduced MetadataStore messages from 170,669 to 258 across the measured cold capture; the first loop dropped from 119,227 to 102. Last-render completion was 4.01 seconds versus the earlier 18.73-second Debug Mode run.
