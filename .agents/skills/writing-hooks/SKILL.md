@@ -69,10 +69,8 @@ reference in the same commit — tests, docs, rules, and `references/` files:
 grep -rn "<deleted-file>" --include="*.md" --include="*.mjs" --include="*.json" .
 ```
 
-The obsolete-path config test only catches protocol paths, so a stale
-`graphify-guard.mjs` reference can survive a green suite and only surface when a
-hook factory fails to import. Leave the removal documented (a "Removed" table in
-`docs/HOOKS.md`) so the next reader knows the capability was dropped on purpose.
+The obsolete-path config test only catches protocol paths, so a stale reference
+can survive a green suite and only surface when a hook factory fails to import.
 
 ### Step 4: Test Hook with Unit Tests
 
