@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Skill work log & memory — the persistence layer for the self-improvement loop.
 //
-// Every skill gains two artifacts under .agents/skills/<name>/memory/:
+// Every skill and subagent stores two artifacts under .agents/memory/<name>/:
 //   worklog.jsonl  — one JSON object per use (append-only, machine-readable)
 //   lessons.md     — accumulated, deduplicated lessons in prose
 //
@@ -22,12 +22,14 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-// SKILL_MEMORY_ROOT lets tests (and other repos) point at a scratch skills dir
-// instead of writing fixtures into the live .agents/skills tree.
-const SKILLS_DIR = process.env.SKILL_MEMORY_ROOT
+const AGENTS_ROOT = process.env.SKILL_MEMORY_ROOT
   ? resolve(process.env.SKILL_MEMORY_ROOT)
-  : join(ROOT, '.agents', 'skills');
+  : join(ROOT, '.agents');
+const SKILLS_DIR = join(AGENTS_ROOT, 'skills');
+const SUBAGENTS_DIR = join(AGENTS_ROOT, 'agents');
+const MEMORY_DIR = join(AGENTS_ROOT, 'memory');
 const OUTCOMES = new Set(['pass', 'fail', 'partial']);
+const NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function fail(code, message) {
   process.stderr.write(`${message}\n`);
@@ -53,28 +55,20 @@ function parseArgs(argv) {
 }
 
 function skillMemoryDir(skill) {
-  // Try multiple possible locations for the skill/subagent SKILL.md
-  // 1. Directly under SKILLS_DIR (used by tests with SKILL_MEMORY_ROOT)
-  let skillDir = join(SKILLS_DIR, skill);
-  let skillPath = join(skillDir, 'SKILL.md');
-  let isSkill = true;
-  if (!existsSync(skillPath)) {
-    // 2. Under .agents/skills/<skill>/SKILL.md
-    skillDir = join(SKILLS_DIR, 'skills', skill);
-    skillPath = join(skillDir, 'SKILL.md');
-    isSkill = true;
-    if (!existsSync(skillPath)) {
-      // 3. Under .agents/agents/<skill>/SKILL.md (subagent)
-      skillDir = join(SKILLS_DIR, 'agents', skill);
-      skillPath = join(skillDir, 'SKILL.md');
-      isSkill = false;
-      if (!existsSync(skillPath)) {
-        fail(2, `Unknown skill "${skill}" — no ${isSkill ? skillDir + '/SKILL.md' : skillPath} found in .agents/skills/ or .agents/agents/`);
-      }
-    }
+  if (!NAME_PATTERN.test(skill)) {
+    fail(1, `Invalid skill or subagent name "${skill}"`);
   }
-  // Memory directory is alongside the SKILL.md file
-  const memoryDir = join(skillDir, 'memory');
+
+  const skillPath = join(SKILLS_DIR, skill, 'SKILL.md');
+  const subagentPath = join(SUBAGENTS_DIR, `${skill}.md`);
+  if (!existsSync(skillPath) && !existsSync(subagentPath)) {
+    fail(
+      2,
+      `Unknown skill or subagent "${skill}" — expected ${skillPath} or ${subagentPath}`,
+    );
+  }
+
+  const memoryDir = join(MEMORY_DIR, skill);
   mkdirSync(memoryDir, { recursive: true });
   return memoryDir;
 }
@@ -138,13 +132,15 @@ function commandLessons(args) {
 }
 
 function commandStats() {
-  const skills = readdirSync(SKILLS_DIR, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name);
+  const tracked = existsSync(MEMORY_DIR)
+    ? readdirSync(MEMORY_DIR, { withFileTypes: true })
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => entry.name)
+    : [];
 
   const summary = [];
-  for (const skill of skills) {
-    const path = join(SKILLS_DIR, skill, 'memory', 'worklog.jsonl');
+  for (const skill of tracked) {
+    const path = join(MEMORY_DIR, skill, 'worklog.jsonl');
     if (!existsSync(path)) continue;
     const entries = readFileSync(path, 'utf8')
       .split('\n')
@@ -167,10 +163,10 @@ function commandStats() {
       runs: entries.length,
       ...byOutcome,
       last_used: entries[entries.length - 1].ts,
-      has_lessons: existsSync(join(SKILLS_DIR, skill, 'memory', 'lessons.md')),
+      has_lessons: existsSync(join(MEMORY_DIR, skill, 'lessons.md')),
     });
   }
-  summary.sort((a, b) => b.runs - a.runs);
+  summary.sort((a, b) => b.runs - a.runs || a.skill.localeCompare(b.skill));
   process.stdout.write(`${JSON.stringify({ skills_tracked: summary.length, summary }, null, 2)}\n`);
 }
 

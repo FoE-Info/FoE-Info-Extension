@@ -1,7 +1,7 @@
 # Skill Work Log & Memory
 
-Every skill can accumulate evidence about its own usage. Two files under
-`.agents/skills/<name>/memory/` hold it:
+Every skill and subagent can accumulate evidence about its own usage. Two files
+under `.agents/memory/<name>/` hold it:
 
 | File           | Format      | Written by | Purpose                                        |
 | -------------- | ----------- | ---------- | ---------------------------------------------- |

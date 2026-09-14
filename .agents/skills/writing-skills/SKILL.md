@@ -26,8 +26,11 @@ Every skill resides in a standalone directory:
 ├── SKILL.md          # Primary instructions (be concise, use references/ for bulk)
 ├── references/       # Heavy documentation, API tables, checklists (*.md)
 ├── scripts/          # Optional: Shell/Node automation run as black boxes
-├── memory/           # Optional: worklog.jsonl + lessons.md (see step 5)
 └── examples/         # Optional: Code patterns and reference implementations
+
+.agents/memory/<skill-name>/
+├── worklog.jsonl     # Append-only run evidence
+└── lessons.md        # Deduplicated durable lessons
 ```
 
 Keep `.agents/skills/` at one entry per distinct domain. `writing-skills`,
