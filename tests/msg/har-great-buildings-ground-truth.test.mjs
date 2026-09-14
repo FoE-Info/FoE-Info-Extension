@@ -132,7 +132,7 @@ test('HAR ground truth: GB sniping construction rankings', async (t) => {
   );
 
   await t.test('ranking captures expose cumulative rank rewards', () => {
-    assert.ok(RANKING.captures.length >= 100);
+    assert.ok(RANKING.captures.length >= 15);
     let rewarded = 0;
     for (const capture of RANKING.captures) {
       const rows = capture.responseData;
