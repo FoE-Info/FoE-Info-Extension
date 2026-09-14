@@ -3,39 +3,35 @@ trigger: always_on
 description: Mandate small incremental edits (<100 lines), surgical blast radius, and stop-the-line debugging.
 ---
 
-# Rule: Small & Incremental Codebase Changes
+# Rule: Small and Incremental Changes
 
-## 1. Core Mandates
+## Core mandates
 
-1. **Smallest Workable Slice**: Never implement large features in a single pass. Limit modifications to ~100 lines or less per pass.
-2. **Working State Invariant**: Every completed increment must leave the codebase building, type-safe, and test-passing.
-3. **Stop-the-Line Rule**: If a test, build, or runtime check fails, freeze feature additions immediately and resolve root causes before proceeding.
+Work in the smallest slice that can stand on its own. Around 100 lines per pass is the ceiling, not the goal.
 
----
+Every increment leaves the codebase building, type-safe, and test-passing.
 
-## 2. Surgical Blast Radius (Karpathy Invariants)
+If a test, build, or runtime check fails, stop adding features and fix the cause first.
 
-1. **Touch Only What You Must**: Never "improve", reformat, or refactor adjacent unrelated code, comments, or styling simply because you encountered them.
-2. **Clean Up Only Your Own Mess**: If your changes introduce orphaned imports, unused variables, or dead helpers, remove them immediately. Do NOT touch pre-existing dead code unless explicitly requested.
-3. **Traceability**: Every single changed line in the git diff must trace directly back to the user's explicit request.
-4. **Simplicity First**: Prefer direct, naive implementations over premature abstractions. If an approach is over-engineered or 50 lines would do instead of 200, push back and rewrite it simply. No speculative features or configurability.
+## Blast radius
 
----
+Touch only what the task requires. Do not improve, reformat, or refactor adjacent code, comments, or styling just because you walked past it.
 
-## 3. Increment Cycle & Slicing
+Clean up your own mess (orphaned imports, unused variables, dead helpers you created). Leave pre-existing dead code alone unless the user asked for it.
 
-1. **Implement**: Code minimal logic required for the current slice.
-2. **Verify & Test**: Run `npm test` and type/build checks.
-3. **Checkpoint**: Commit or save progress with a clear, concise message.
-4. **Next Slice**: Proceed to the next increment on top of green checks.
+Every changed line should trace back to the user's request.
 
----
+Prefer the direct implementation over a premature abstraction. If 50 lines would do instead of 200, or an approach is over-engineered, say so and write the simpler version. No speculative features, no configurability nobody asked for.
 
-## 4. Stop-the-Line Protocol
+## Increment cycle
 
-On build failure, test breakage, or runtime error:
+Implement the minimal logic for the slice, run `npm test` and the type and build checks, checkpoint with a clear commit message, then start the next slice from green.
 
-1. **Freeze**: Stop adding new features immediately.
-2. **Reproduce & Localize**: Isolate into a minimal failing test or trace to upstream data providers.
-3. **Fix Root Cause**: Eliminate defect at its source without symptom patching, artificial sleep delays, or swallowed errors.
-4. **Guard**: Add a regression test, verify clean build/tests, then resume.
+## Stop the line
+
+On a build failure, a broken test, or a runtime error:
+
+1. Freeze. No new features.
+2. Reproduce and localize. Get it into a minimal failing test, or trace it back to the upstream data provider.
+3. Fix the root cause. No symptom patching, no sleep delays papering over a race, no swallowed errors.
+4. Guard it with a regression test, verify a clean build and test run, then resume.

@@ -154,8 +154,25 @@ test('Agent Config - validates rule definitions', () => {
   );
   assert.match(
     delegationContent,
-    /roster of 36 specialized domain subagents/,
-    'subagent-delegation.md must reflect all 36 subagents',
+    /36 specialized domain subagents/,
+    'subagent-delegation.md must state the 36-subagent roster',
+  );
+
+  // The routing table lives in an on-demand reference; every one of the 36
+  // subagents must still be reachable from it plus the rule's own squad list.
+  const routing = fs.readFileSync(
+    path.join(AGENTS_DIR, 'references', 'subagent-routing.md'),
+    'utf8',
+  );
+  const routed = [...routing.matchAll(/`([a-z0-9-]+)`/g)]
+    .map((m) => m[1])
+    .filter((name) =>
+      fs.existsSync(path.join(AGENTS_DIR, 'agents', `${name}.md`)),
+    );
+  assert.equal(
+    new Set(routed).size,
+    36,
+    `subagent-routing.md must route all 36 subagents (found ${new Set(routed).size})`,
   );
 });
 
@@ -248,10 +265,9 @@ test('Agent Config - validates AGENTS.md integrity and internal links', () => {
     'utf8',
   );
 
-  // Exact counts
+  // Counts stated once each: the roster line and the skills pointer.
   assert.match(agentsMd, /36 subagents, 17 rules, and 55 skills/);
-  assert.match(agentsMd, /55 on-demand runbooks and procedures/);
-  assert.match(agentsMd, /Skills & Runbooks Taxonomy \(55 Skills\)/);
+  assert.match(agentsMd, /55 on-demand\s+runbooks and procedures/);
 
   // Link validation
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;

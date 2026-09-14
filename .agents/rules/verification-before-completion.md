@@ -5,31 +5,21 @@ description: Mandates fresh terminal verification evidence before claiming task 
 
 # Rule: Verification Before Completion
 
-## 1. The Iron Law
+No completion claim without fresh verification evidence.
 
-```
-NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
-```
+Never say or imply that a task is finished, a bug is fixed, a build succeeds, or tests pass unless you ran the relevant command this turn and read the whole output.
 
-Never state, imply, or assume that a task is finished, a bug is fixed, a build succeeds, or tests pass without having executed the relevant verification command in the current turn and inspected the full output.
+## The gate
 
----
+1. Identify the command that would prove the claim: `npm test`, `npm run verify`, `npm run check`, `npm run i18n:check`, `npm run build:dev`.
+2. Run it.
+3. Read the exit code, error output, and failure counts from stdout and stderr.
+4. Confirm the output actually supports the claim: zero errors, zero unexpected failures.
+5. Only then tell the user, citing what you just ran.
 
-## 2. The Verification Gate
+## Red flags
 
-Before declaring success or claiming any completed status:
-
-1. **IDENTIFY**: What command or test specifically proves the claim? (e.g. `npm test`, `npm run verify`, `npm run check`, `npm run i18n:check`, `npm run build:dev`).
-2. **RUN**: Execute the complete verification command in the terminal.
-3. **READ**: Inspect the exit code, error logs, and failure counts directly from stdout/stderr.
-4. **VERIFY**: Confirm that the actual terminal output confirms the claim with 0 errors and 0 unexpected failures.
-5. **ONLY THEN**: Make the claim to the user, citing the fresh evidence.
-
----
-
-## 3. Prohibited Red Flags
-
-- Claiming code "should work", "probably passes", or "looks good" without executing it.
-- Expressing satisfaction ("Done!", "Great!", "Fixed!") before terminal verification.
-- Trusting subagent success reports without checking the output diff or re-verifying.
-- Relying on previous test runs when subsequent code edits have been made.
+- Saying code "should work", "probably passes", or "looks good" without running it.
+- Celebrating before the terminal agreed. No "Done!", no "Fixed!", no "Great!" until then.
+- Trusting a subagent's success report without checking its diff or re-running the check.
+- Quoting a test run from before your last edit.

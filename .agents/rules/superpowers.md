@@ -3,48 +3,37 @@ trigger: always_on
 description: Proactive skill-first execution loop requiring skill consultation and declaration before code modifications.
 ---
 
-# Rule: Superpowers & Skill-Driven Development
+# Rule: Skill-Driven Development
 
-To ensure rigor, architectural consistency, and prevent eager-action mistakes, agents must actively consult available specialized skills (`<skills>`) before starting non-trivial development tasks.
+Consult the specialized skills before starting non-trivial work, and say out loud which one you are following. This exists to stop eager-action mistakes, not to add ceremony.
 
----
+## The skill-first invariant
 
-## 1. The Skill-First Invariant
+Before you modify code, design architecture, debug, or refactor:
 
-Before modifying code, designing architecture, debugging an issue, or refactoring:
+1. Check the `<skills>` catalog for a procedure covering the task.
+2. Announce it: `Using [skill] to [purpose]`.
+3. Follow the skill's sequence, checklist, or test-first requirement.
 
-1. **Consult `<skills>` Catalog**: Check whether a specialized procedure or runbook exists for the task.
-2. **Announce Active Skill**: Explicitly declare before execution:
-   > `"Using [skill] to [purpose]"`
-3. **Follow the Skill Workflow**: Adhere strictly to the skill's defined sequence, checklist, or test-first requirement.
+## Which skill for what
 
----
+- Exploring code: `graphify`, or the knowledge graph skills, before manual searches.
+- Implementing: `test-driven-development` alongside the domain specialists for calculations. `add-rpc-service` or `service-extractor` for protocol handlers. `add-feature-panel` or `ui-ux-pro-max` for UI.
+- Debugging: `systematic-debugging` for defects; `browser-testing` or `chrome-devtools` for runtime panel checks.
+- Workflow: `writing-plans` for architecture, `subagent-driven-development` for parallel work, `unslop-commit` for commits, `verification-before-completion` before you call anything finished.
 
-## 2. Skill Discovery & Routing Principles
+The catalog has the complete list of runbooks and their triggers.
 
-- **Code Exploration**: Consult `graphify` / knowledge graph skills before manual searches.
-- **Implementation**: Pair `test-driven-development` with domain specialists for calculations; use `add-rpc-service` / `service-extractor` for protocol handlers; use `add-feature-panel` / `ui-ux-pro-max` for UI.
-- **Debugging & QA**: Follow `systematic-debugging` for defects; run `browser-testing` / `chrome-devtools` for runtime panel checks.
-- **Workflow & Governance**: Use `writing-plans` for architecture, `subagent-driven-development` for parallel work, `unslop-commit` for commits, and `verification-before-completion` before finishing.
+## Excuses that do not hold
 
-_(Consult `<skills>` catalog for complete runbooks and triggers)._
+- "It's just a simple question." Check the catalog first.
+- "I need to explore before I know what to do." Skills define how to explore.
+- "The skill is overkill, or I remember it." Skills carry evolving checklists that memory does not.
+- "I'll do this one quick thing first." The invariant is check-before-act, not check-eventually.
 
----
+## Precedence
 
-## 3. Red Flags & Rationalizations
-
-Never skip skill consultation based on these internal excuses:
-
-- _"This is just a simple question/check"_ $\to$ Check `<skills>` before answering or searching.
-- _"I need more context or need to explore first"_ $\to$ Skills define how to gather context systematically.
-- _"The skill is overkill or I remember it"_ $\to$ Skills contain evolving checklists. Read current instructions.
-- _"I'll just do this one quick thing first"_ $\to$ Invariants require checking skills **BEFORE** taking action.
-
----
-
-## 4. Precedence Hierarchy
-
-1. **User Explicit Directives**: Always take highest priority.
-2. **Workspace Rules (`.agents/rules/`)**: Always-on invariants strictly govern code safety and architecture.
-3. **Skill Runbooks (`.agents/skills/`)**: Prescribe step-by-step procedures when active.
-4. **Default Model Behavior**: Fallback only when no user directive, rule, or skill applies.
+1. The user's explicit directive.
+2. Workspace rules in `.agents/rules/`, which govern code safety and architecture.
+3. Active skill runbooks from `.agents/skills/`.
+4. Default model behavior, only when nothing above applies.

@@ -3,48 +3,46 @@ trigger: always_on
 description: Mandatory modular file limits (<= 600 lines) and strict directory taxonomy in src/.
 ---
 
-# Rule: Modular Architecture & File Boundaries
+# Rule: Modular Architecture and File Boundaries
 
-To maintain high maintainability, testability, and clarity, agents must write modular, single-responsibility files rather than large monolithic classes.
+Write modular, single-responsibility files instead of large monolithic classes.
 
----
+## Size budgets
 
-## 1. File Size & Responsibility Budgets
+No new or refactored module in `src/js/` goes past 600 lines. The absolute ceiling for complex dispatch tables is 800. Aim for 100 to 300 lines per module.
 
-- **Hard File Cap**: No new or refactored module in `src/js/` may exceed **600 lines** (absolute ceiling: 800 lines for complex dispatch tables).
-- **Target Size**: 100–300 lines per module.
-- **Single Responsibility Principle (SRP)**: Each file must do exactly one thing (e.g. military boost tallying, goods calculation, popover event binding).
-- **Orchestrator Pattern**: High-level engines (like `CityStatsCalculator`) must not contain raw parsing algorithms; they must delegate to focused sub-modules and remain $\le 80$ lines.
+Each file does one thing: tally military boosts, calculate goods, bind popover events, and so on.
 
----
+Orchestrators such as `CityStatsCalculator` hold no raw parsing algorithms. They delegate to focused sub-modules and stay under 80 lines.
 
-## 2. Directory Placement Invariants
+## Where files go
 
-- `src/js/calc/`: Pure mathematical and game calculation logic ONLY. Zero DOM references (`document`, `window`, jQuery).
-- `src/js/ui/`: DOM generation, card templates, popover event listeners, clipboard formatters.
-- `src/js/msg/`: InnoGames JSON-RPC service handlers (`*Service.js`).
-- `src/js/protocol/`: Network packet interception, message dispatching, and envelope routing.
-- `src/js/state/`: In-memory state, metadata lookup stores, player preferences.
-- `src/js/utils/`: General-purpose utilities (storage, copy, i18n, logger).
-- `src/js/`: Root extension entry points only (`index.js`, `devtools.js`, `options.js`, etc.).
-- Legacy monoliths (`src/js/index.js`, `StartupService.js`, `GreatBuildingsService.js`, `helper.js`) remain untouched until their dedicated refactoring slices.
+| Directory | Contents |
+| :--- | :--- |
+| `src/js/calc/` | Pure math and game calculations. No DOM, no `document`, no `window`, no jQuery. |
+| `src/js/ui/` | DOM generation, card templates, popover listeners, clipboard formatters. |
+| `src/js/msg/` | InnoGames JSON-RPC service handlers (`*Service.js`). |
+| `src/js/protocol/` | Network interception, message dispatching, envelope routing. |
+| `src/js/state/` | In-memory state, metadata lookup stores, player preferences. |
+| `src/js/utils/` | Shared utilities: storage, copy, i18n, logger. |
+| `src/js/` | Extension entry points only (`index.js`, `devtools.js`, `options.js`). |
 
----
+Legacy monoliths (`index.js`, `StartupService.js`, `GreatBuildingsService.js`, `helper.js`) stay as they are until their dedicated refactoring slice.
 
-## 3. InnoGames Domain Taxonomy Summary
+## Domain taxonomy
 
-Never dump feature logic, RPC parsing, or calculations into generic catch-alls (`StartupService.js`, `index.js`, or `helper.js`).
+Feature logic, RPC parsing, and calculations do not go into the catch-alls (`StartupService.js`, `index.js`, `helper.js`). Each domain has its own trio:
 
-- **City Production & Harvest** $\to$ `CityProductionService.js` / `ProductionCalculator.js` / `renderProductionPanel.js`
-- **Great Buildings & Investments** $\to$ `GreatBuildingsService.js` / `InvestedCalculator.js` / `renderInvestedPanel.js`
-- **Guild Battlegrounds (GBG)** $\to$ `GuildBattlegroundService.js` / `GbgSignalService.js` / `renderGbgPanel.js`
-- **Guild Expedition (GE 1–5)** $\to$ `GuildExpeditionService.js` / `renderExpeditionPanel.js`
-- **Army & Combat Boosts** $\to$ `ArmyUnitManagementService.js` / `UnitCalculator.js` / `renderArmyPanel.js`
-- **Inventory & Historical Allies** $\to$ `InventoryService.js` / `AllyService.js` / `renderAlliesPanel.js`
-- **City Boosts & Blue Galaxy** $\to$ `CityStatsCalculator.js` / `BlueGalaxyCalculator.js` / `renderGalaxyPanel.js`
+| Domain | Service, calculator, renderer |
+| :--- | :--- |
+| City production and harvest | `CityProductionService.js`, `ProductionCalculator.js`, `renderProductionPanel.js` |
+| Great Buildings and investments | `GreatBuildingsService.js`, `InvestedCalculator.js`, `renderInvestedPanel.js` |
+| Guild Battlegrounds | `GuildBattlegroundService.js`, `GbgSignalService.js`, `renderGbgPanel.js` |
+| Guild Expedition (1 to 5) | `GuildExpeditionService.js`, `renderExpeditionPanel.js` |
+| Army and combat boosts | `ArmyUnitManagementService.js`, `UnitCalculator.js`, `renderArmyPanel.js` |
+| Inventory and Historical Allies | `InventoryService.js`, `AllyService.js`, `renderAlliesPanel.js` |
+| City boosts and Blue Galaxy | `CityStatsCalculator.js`, `BlueGalaxyCalculator.js`, `renderGalaxyPanel.js` |
 
----
+## Logging
 
-## 4. Debuggability
-
-Every module performing calculations, RPC handling, state caching, or UI rendering must instantiate a scoped logger (`createLogger('ModuleName')`) and follow [Debuggability by Design](debuggability-by-design.md).
+Every module that calculates, handles RPC, caches state, or renders UI instantiates a scoped logger with `createLogger('ModuleName')`, per [Debuggability by Design](debuggability-by-design.md).
