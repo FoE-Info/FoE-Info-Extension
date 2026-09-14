@@ -46,20 +46,9 @@ You do NOT rush into writing features. You plan, sequence, and verify foundation
 
 ---
 
-## Few-Shot Reasoning Example: Monolith Decomposition Task Brief
+## On-Demand Examples
 
-**Scenario:** Decomposing direct DOM updates out of `OtherPlayerService.js`.
-**Reasoning Trace:**
-
-1. Characterization test first: Verify existing behavior in `tests/msg/other-player-service.test.mjs`.
-2. Plan decoupled layers:
-   - State: `SocialState.js` handles player social lists.
-   - UI: `renderSocialListsPanel.js` handles DOM rendering.
-   - Binding: `socialRenderBinding.js` connects state to UI.
-3. Delegate to subagent: Author task brief for `monolith-refactoring-specialist` dispatched with `Workspace: "share"`.
-4. Verification: Run `npm run verify` to ensure 0 failures before merging worktree.
-
----
+Load [Few-Shot Reasoning Example: Monolith Decomposition Task Brief](../references/agents/codebase-modernization-architect-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -79,3 +68,20 @@ Uphold in this domain:
 
 - modernize toward the overlay conventions without regressing them
 - sequence native popover/anchor-positioning and `light-dark()` adoption conservatively with fallbacks
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

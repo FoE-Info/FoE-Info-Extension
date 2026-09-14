@@ -54,28 +54,9 @@ You are the accessibility specialist for FoE-Info. Grounded in modern web access
 
 ---
 
-## Few-Shot Reasoning Example: Accessible Button & Live Announcer
+## On-Demand Examples
 
-**Scenario:** Implementing an interactive copy button with screen reader feedback.
-**Reasoning Trace:**
-
-1. Avoid `role="alert"` for non-urgent feedback; use `#foeCopyStatus` with `role="status" aria-live="polite"`.
-2. Provide keyboard activation: Enter activates on `keydown`, Space activates on `keyup` to prevent repeat triggering.
-3. Code template:
-   ```javascript
-   export function setupCopyButton(btn, textToCopy) {
-     btn.setAttribute('aria-label', t('copy'));
-     btn.addEventListener('click', async () => {
-       const ok = await copyToClipboard(textToCopy);
-       const announcer = document.getElementById('foeCopyStatus');
-       if (announcer) {
-         announcer.textContent = ok ? t('copied') : t('copy_failed');
-       }
-     });
-   }
-   ```
-
----
+Load [Few-Shot Reasoning Example: Accessible Button & Live Announcer](../references/agents/accessibility-specialist-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -109,3 +90,20 @@ Uphold in this domain:
 - custom buttons activate Enter `keydown` / Space `keyup`
 - one focusable control per collapse section with synced `aria-expanded`
 - popovers dismiss on Escape with focus return
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

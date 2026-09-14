@@ -110,3 +110,20 @@ Closes #1290
 - Use this skill only when the task clearly matches its upstream source and local project context.
 - Verify commands, generated code, dependencies, credentials, and external service behavior before applying changes.
 - Do not treat examples as a substitute for environment-specific tests, security review, or user approval for destructive or costly actions.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
+

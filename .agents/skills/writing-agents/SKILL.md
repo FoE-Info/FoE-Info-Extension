@@ -59,6 +59,20 @@ Follow the standard specialist structure:
 
 See [System Prompt Templates](references/system-prompt-templates.md) for boilerplate.
 
+### Step 2a: Separate On-Demand Knowledge
+
+Keep the flat agent definition lean and operational. Role identity, mandatory
+workflow, safety invariants, tool restrictions, and verification stay in
+`.agents/agents/<name>.md`. Move detailed game/domain knowledge, API catalogs,
+and worked examples to `.agents/references/`, then add explicit relative links
+from every agent or skill that consumes them.
+
+Antigravity discovers only flat `.agents/agents/<name>.md` definitions. Never
+convert subagents to `.agents/agents/<name>/SKILL.md`; use
+`.agents/references/agents/` and `.agents/references/foe/` for supporting files.
+Consult the [Agent Reference Catalog](../../references/README.md) before adding a
+duplicate reference.
+
 ### Step 3: Configure Lifecycles & Workspace Modes
 
 - When dispatching subagents for parallel feature tasks, isolate them: Antigravity `Workspace: "share"`, opencode explicit `.worktrees/<branch>` checkouts. See [Harness Adapters](../../references/harness-adapters.md).
@@ -71,3 +85,20 @@ Run the automated configuration test to verify naming, frontmatter, and characte
 ```sh
 node --test tests/agents/agent-config.test.mjs
 ```
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
+

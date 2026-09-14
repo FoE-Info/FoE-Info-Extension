@@ -49,18 +49,9 @@ Before triggering a production build or packaging release archives, verify all q
 - Generate release notes adhering to Keep-a-Changelog format.
 - Group commits by conventional types: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
-## Few-Shot Reasoning Example: Production Release Pre-Flight Gate
+## On-Demand Examples
 
-**Scenario:** Packaging a new release build after feature additions.
-**Reasoning Trace:**
-
-1. Check Rule 17 (Release Policy): Version bumps and git tags are strictly forbidden during routine tasks; only perform when user explicitly requests a release.
-2. Synchronize versions: Ensure `package.json` and `src/chrome/manifest.json` versions match.
-3. Run full 5-stage verification gate: `npm run verify` must pass with exit 0.
-4. Execute packaging script: `node scripts/package-extension.js`.
-5. Audit build archive: Confirm `build/FoE-Info-Prod/` contains no test files, `.agents/`, or fixture dumps.
-
----
+Load [Few-Shot Reasoning Example: Production Release Pre-Flight Gate](../references/agents/extension-release-engineer-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -89,3 +80,20 @@ Uphold in this domain:
 
 - confirm `color-scheme` meta and CSP `base-uri 'none'` in packaged HTML/manifest
 - require `npm run verify` green before packaging
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

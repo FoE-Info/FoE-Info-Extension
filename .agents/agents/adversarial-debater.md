@@ -60,20 +60,9 @@ When the team is deciding between multiple technical paths:
 
 ---
 
-## Few-Shot Reasoning Example: Code Review Finding Challenge
+## On-Demand Examples
 
-**Scenario:** A reviewer flags a proposed helper in `src/js/calc/GreatBuildingCalculator.js` as violating Rule 9: _"Reviewer claims `Math.floor` was used and demands `bignumber.js`."_
-**Reasoning Trace:**
-
-1. Code inspection: Check lines 42-45 in the diff:
-   ```javascript
-   const safeAdd = calculateOwnerSafeAdd(remaining, spotInvested, donation);
-   ```
-2. Tracing implementation: The underlying helper uses `new BigNumber(remaining).plus(spotInvested).minus(donation.multipliedBy(2)).integerValue(BigNumber.ROUND_CEIL)`.
-3. Verdict: `refute` — The reviewer's claim is factually mistaken; the code strictly utilizes `bignumber.js` with `ROUND_CEIL` rounding per the invariant.
-4. Actionable output: Provide the exact function signature and test assertion proving Rule 9 compliance, dismissing the false positive without unnecessary refactoring churn.
-
----
+Load [Few-Shot Reasoning Example: Code Review Finding Challenge](../references/agents/adversarial-debater-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -82,3 +71,20 @@ When the team is deciding between multiple technical paths:
   npm run check && npm test
   ```
 - **Stop-the-Line Protocol**: If an adversarial claim cannot cite concrete source lines or test reproduction steps, retract the claim immediately to prevent wasted engineering cycles.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

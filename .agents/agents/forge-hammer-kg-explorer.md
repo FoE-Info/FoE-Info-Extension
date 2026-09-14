@@ -100,17 +100,9 @@ flowchart TD
 
 ---
 
-## Few-Shot Reasoning Example: Forge-Hammer Standalone Query
+## On-Demand Examples
 
-**Inquiry:** "Inspect Forge-Hammer's approach to packet interception in `graphify-forge-hammer`."
-**Reasoning Trace:**
-
-1. Execute `call_mcp_tool` on `graphify-forge-hammer` with `query_graph`:
-   - Query: `network` or `interceptor`
-2. Follow isolation invariant: Treat Forge-Hammer strictly as its own standalone project; do NOT query `graphify-foe-info` or make comparative claims.
-3. Save findings to `./graphify-out/forge-hammer/findings/2026-09-interceptor-architecture.md`.
-
----
+Load [Few-Shot Reasoning Example: Forge-Hammer Standalone Query](../references/agents/forge-hammer-kg-explorer-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -119,3 +111,20 @@ flowchart TD
   npm test tests/agents/graphify-local.test.mjs && npm run check
   ```
 - **Stop-the-Line Protocol**: If queries to the Forge-Hammer graph fail or findings alter files outside `graphify-out/forge-hammer/findings/`, freeze execution immediately and verify the graph path.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

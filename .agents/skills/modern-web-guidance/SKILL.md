@@ -66,3 +66,20 @@ To find a relevant guide without loading unnecessary context:
 - **Baseline Widely Available**: Features with 30+ months of cross-browser support are safe to use immediately without polyfills.
 - **Baseline Newly Available**: Require feature detection (`if ('...' in window)` or `@supports (...)`) and graceful degradation.
 - **Extension Context**: Chrome extensions target Chromium, allowing newer web platform features (Chrome 120+) natively without legacy IE/Safari polyfills.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
+

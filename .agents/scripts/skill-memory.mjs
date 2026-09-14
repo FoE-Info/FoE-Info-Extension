@@ -53,10 +53,27 @@ function parseArgs(argv) {
 }
 
 function skillMemoryDir(skill) {
-  const skillDir = join(SKILLS_DIR, skill);
-  if (!existsSync(join(skillDir, 'SKILL.md'))) {
-    fail(2, `Unknown skill "${skill}" — no ${skill}/SKILL.md under .agents/skills/`);
+  // Try multiple possible locations for the skill/subagent SKILL.md
+  // 1. Directly under SKILLS_DIR (used by tests with SKILL_MEMORY_ROOT)
+  let skillDir = join(SKILLS_DIR, skill);
+  let skillPath = join(skillDir, 'SKILL.md');
+  let isSkill = true;
+  if (!existsSync(skillPath)) {
+    // 2. Under .agents/skills/<skill>/SKILL.md
+    skillDir = join(SKILLS_DIR, 'skills', skill);
+    skillPath = join(skillDir, 'SKILL.md');
+    isSkill = true;
+    if (!existsSync(skillPath)) {
+      // 3. Under .agents/agents/<skill>/SKILL.md (subagent)
+      skillDir = join(SKILLS_DIR, 'agents', skill);
+      skillPath = join(skillDir, 'SKILL.md');
+      isSkill = false;
+      if (!existsSync(skillPath)) {
+        fail(2, `Unknown skill "${skill}" — no ${isSkill ? skillDir + '/SKILL.md' : skillPath} found in .agents/skills/ or .agents/agents/`);
+      }
+    }
   }
+  // Memory directory is alongside the SKILL.md file
   const memoryDir = join(skillDir, 'memory');
   mkdirSync(memoryDir, { recursive: true });
   return memoryDir;

@@ -44,38 +44,9 @@ You are the authoritative specialist in Discord webhook integrations, automated 
 - If Discord responds with HTTP 404 (Unknown Webhook), mark the endpoint as invalid and pause automated posting until updated.
 - Handle network offline states gracefully without throwing unhandled promise rejections that disrupt the host application.
 
-## Few-Shot Reasoning Example: Safe Snipe Alert Embed Formatting
+## On-Demand Examples
 
-**Scenario:** Target found: Player "LordFoE", The Arc Level 80, P1 lock cost 950 FP, Net Profit +120 FP. User webhook configured.
-**Reasoning Trace:**
-
-1. Check token privacy: Ensure webhook URL is masked in logs (`.../webhooks/123/***/xyz`).
-2. Construct embed payload conforming to Discord limits:
-   ```json
-   {
-     "embeds": [
-       {
-         "title": "🎯 High-Profit Snipe Detected!",
-         "color": 3066993,
-         "fields": [
-           {
-             "name": "Target",
-             "value": "LordFoE (The Arc L80)",
-             "inline": true
-           },
-           { "name": "Spot", "value": "P1", "inline": true },
-           { "name": "Required Deposit", "value": "950 FP", "inline": true },
-           { "name": "Net Profit", "value": "+120 FP", "inline": true }
-         ],
-         "timestamp": "2026-09-13T00:00:00.000Z"
-       }
-     ]
-   }
-   ```
-3. Character budget check: Embed size is ~350 chars (well below the 6,000 char cap).
-4. Rate limit check: Push into dispatch queue throttled to max 5 req / 5s.
-
----
+Load [Few-Shot Reasoning Example: Safe Snipe Alert Embed Formatting](../references/agents/discord-webhook-integrator-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -97,3 +68,20 @@ You are the authoritative specialist in Discord webhook integrations, automated 
    - Verify that rapid sequential alert triggers are queued and flushed according to the 5 req/5s rate limit.
 4. **Error Resilience**:
    - Simulate an unreachable or invalid webhook URL; verify that user-facing errors are handled gracefully without unhandled exceptions.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

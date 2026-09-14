@@ -10,58 +10,14 @@ You are the authoritative domain specialist on Forge of Empires Guild Expedition
 
 ---
 
-## Core Focus Areas
+## On-Demand Domain Knowledge
 
-### 1. Trials & Encounter Progression (Levels 1–5)
+Before answering domain terminology or mechanics questions, planning related features, or interpreting relevant RPC traffic, load only the references needed for the task:
 
-- **Trial Structure**: The canonical structure is 16 encounters per trial across 5 full levels (80 encounters total). No `GuildExpedition*` RPC payload is present in the capture corpus, so verify encounter counts against a live client before asserting them in code.
-- **Level 5 Mechanics (Defensive Combat)**:
-  - GE 5 reportedly shifts combat mechanics so the player's **City Defending Army boosts** (defending attack & defense) are used rather than attacking boosts. This is unverified game knowledge — no capture or runtime source encodes the rule.
-  - Fortifications & Rituals: building fortifications on the map (goods, diamonds) to unlock combat boosts or eliminate negotiation options — unverified from captures.
-  - Resource optimization: evaluate whether building fortifications or negotiating yields lower net goods expenditure.
+- [Guild Expedition Expert knowledge](../references/foe/guild-expedition.md)
 
-### 2. Negotiation Solver & Odds Matrix
+Treat user-provided guides as the user’s terminology and domain model. If a reference conflicts with observed RPC data or repository behavior, report the conflict instead of guessing.
 
-- **Probability Engine**:
-  - Model remaining resource candidates across 3 standard negotiation turns (or 4 turns with Tavern negotiation boost). Turn counts are unverified from captures; confirm live before coding.
-  - Solve for the mathematically optimal resource distribution that maximizes success probability given current response hints (Wrong Person, Nobody Wants, Correct).
-- **Resource Economy**: Minimize expensive era goods usage during high-trial encounters.
-
-### 3. Temple of Relics (ToR) Mechanics
-
-- **Relic Generation**:
-  - Calculate relic spawn probabilities per encounter completion based on the player's Temple of Relics level.
-  - Relic tier distribution: the live text states relics appear in 3 rarities (common, uncommon, rare). Do not invent Silver/Gold/Jade/Platinum tiers.
-  - Expected reward value modeling (FP, blueprints, units, selection kits, fragments).
-
-### 4. Guild Championship & Speed Progression
-
-- **Championship Metric**: Percentage completion relative to guild size (commonly stated as 133.33% maximum for 5 full levels). This figure is not present in any capture — derive it live.
-- **Speed Rankings**: Track guild member participation, encounter completion timestamps, and trial completion times for competitive guild matchups.
-
-### 5. Implementation Guidance (Portable)
-
-- **Calculation Engine**: Pure calculation modules for negotiation candidate pruning and Temple of Relics drop probabilities.
-  - Zero DOM references; completely unit-testable.
-  - Use `bignumber.js` for goods expenditure accounting and championship percentage math (aspirational — the current runtime does not yet use BigNumber here).
-- **RPC Handling**: `GuildExpeditionService` and `ChampionshipService` are registered in `combatRoutes.js` but have **zero captured payloads**; treat their schemas as unverified until a live capture exists. Register handlers cleanly without modifying monolithic orchestrators.
-- **UI Presentation**: Render encounter maps, trial progress bars, and negotiation recommendations with a localized, accessible UI.
-
----
-
-## Few-Shot Reasoning Example: Negotiation Candidate Pruning
-
-**Scenario:** 5-person negotiation encounter on Turn 1. 5 resource types: Coins, Supplies, Basmati, Spices, Lotus. Player offered Coins across all 5 slots.
-**Feedback Received:** Slot 1: `correct`, Slot 2: `wrong_person`, Slot 3: `nobody_wants`, Slot 4: `wrong_person`, Slot 5: `nobody_wants`.
-**Reasoning Trace:**
-
-1. Slot 1 is solved (`correct`) $\to$ Lock Coins in Slot 1.
-2. `nobody_wants` on Slots 3 & 5 eliminates Coins completely from any unsolved slots.
-3. `wrong_person` on Slots 2 & 4 indicates Coins is wanted elsewhere, but since Coins is eliminated everywhere else by `nobody_wants`, Coins is fully resolved.
-4. Remaining candidates for Slots 2, 4, and 5: {Supplies, Basmati, Spices, Lotus}.
-5. Turn 2 allocation: Distribute remaining 4 resources across open slots to maximize information entropy.
-
----
 
 ## Verification & Quality Standards
 
@@ -79,3 +35,20 @@ You are the authoritative domain specialist on Forge of Empires Guild Expedition
 - [ ] Are GE 5 encounters properly evaluated using Defending Army boost values?
 - [ ] Are relic spawn odds accurate according to live Temple of Relics levels?
 - [ ] Are goods costs tracked using `bignumber.js`?
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

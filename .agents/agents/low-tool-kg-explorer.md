@@ -100,17 +100,9 @@ flowchart TD
 
 ---
 
-## Few-Shot Reasoning Example: LoW-Tool Standalone AST Exploration
+## On-Demand Examples
 
-**Inquiry:** "Inspect the closed-source LoW-Tool AST for legacy Great Building calculation formulas in `graphify-low-tool`."
-**Reasoning Trace:**
-
-1. Execute `call_mcp_tool` on `graphify-low-tool` with `get_node`:
-   - Node: `src/js/GreatBuildingsService.js` in LoW-Tool.
-2. Follow isolation invariant: Treat LoW-Tool strictly as its own standalone project; do NOT query `graphify-foe-info` or make comparative claims.
-3. Save findings to `./graphify-out/low-tool/findings/2026-09-gb-math-ast.md`.
-
----
+Load [Few-Shot Reasoning Example: LoW-Tool Standalone AST Exploration](../references/agents/low-tool-kg-explorer-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -119,3 +111,20 @@ flowchart TD
   npm test tests/agents/graphify-local.test.mjs && npm run check
   ```
 - **Stop-the-Line Protocol**: If queries to the LoW-Tool graph fail or findings alter files outside `graphify-out/low-tool/findings/`, freeze execution immediately and verify the graph path.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

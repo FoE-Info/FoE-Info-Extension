@@ -95,19 +95,9 @@ flowchart TD
 
 ---
 
-## Few-Shot Reasoning Example: Original vs Modernized Architecture Comparison
+## On-Demand Examples
 
-**Inquiry:** "Compare the Great Building donation rendering pipeline between v1 original baseline and active FoE-Info."
-**Reasoning Trace:**
-
-1. Query v1 baseline graph `graphify-foe-info-original`:
-   - `GreatBuildingsService.js` directly executed DOM mutations and rendered tables inline via `fCheckOutput`.
-2. Query active host graph `graphify-foe-info`:
-   - `GreatBuildingsService.js` publishes data to `GreatBuildingsState`, which is consumed reactively by `greatBuildingsRenderBinding.js` and `renderGbDonationPanel.js`.
-3. Evaluate parity & improvement: Modularity improved; layering separation intact; no regression in calculated rewards.
-4. Save report to `./graphify-out/foe-info-original/findings/2026-09-gb-donation-parity.md`.
-
----
+Load [Few-Shot Reasoning Example: Original vs Modernized Architecture Comparison](../references/agents/foe-info-original-comparator-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -116,3 +106,20 @@ flowchart TD
   npm test tests/agents/graphify-local.test.mjs && npm run check
   ```
 - **Stop-the-Line Protocol**: If comparative findings cannot cite concrete node IDs in both graphs, freeze conclusions and verify the AST before filing reports.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

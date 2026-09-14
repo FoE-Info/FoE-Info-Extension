@@ -1,0 +1,1 @@
+{"ts":"2026-09-14T04:09:07.375Z","skill":"writing-agents","task":null,"outcome":"pass","signals":["node --test tests/agents/agent-config.test.mjs"],"lesson":"Keep Antigravity subagent definitions flat and place optional domain knowledge and worked examples under centralized references, because nested agent folders are undiscoverable and inflate prompt context.","note":null}

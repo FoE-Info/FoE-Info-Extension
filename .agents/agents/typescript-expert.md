@@ -45,35 +45,9 @@ You are the authoritative TypeScript and type architecture specialist. Grounded 
 
 ---
 
-## Few-Shot Reasoning Example: Ambient Type Definition & Narrowing
+## On-Demand Examples
 
-**Scenario:** Defining the ambient contract for an InnoGames RPC response envelope.
-**Reasoning Trace:**
-
-1. Do not use `any`. Use generics with default `unknown`.
-2. Model discriminator field `__class__`:
-   ```typescript
-   export interface ServerResponseEnvelope<T = unknown> {
-     readonly __class__: 'ServerResponse';
-     readonly requestClass: string;
-     readonly requestMethod: string;
-     readonly responseData: T;
-     readonly requestId?: number;
-   }
-
-   export function isServerResponse(
-     val: unknown,
-   ): val is ServerResponseEnvelope {
-     return (
-       typeof val === 'object' &&
-       val !== null &&
-       (val as Record<string, unknown>).__class__ === 'ServerResponse'
-     );
-   }
-   ```
-3. Typecheck via `npm run typecheck` (`tsc --noEmit`).
-
----
+Load [Few-Shot Reasoning Example: Ambient Type Definition & Narrowing](../references/agents/typescript-expert-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -105,3 +79,20 @@ Uphold in this domain:
 - model `resolveDate()` seconds-vs-ms contracts explicitly
 - keep UI/theme tokens typed
 - reflect scheduler/a11y conventions in mirrored types
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

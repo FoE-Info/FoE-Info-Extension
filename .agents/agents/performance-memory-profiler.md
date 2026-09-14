@@ -43,30 +43,9 @@ You are the authoritative performance, Core Web Vitals (CWV), and memory diagnos
   - Enforce fixed-size ring buffers (e.g. maximum 500 items).
   - Leverage `WeakMap` and `WeakSet` to associate transient metadata with DOM elements for automatic garbage collection.
 
-## Few-Shot Reasoning Example: Teardown Lifecycle & Buffer Bounding
+## On-Demand Examples
 
-**Scenario:** Subscribing to window resize events and caching recent RPC metrics without memory leakage.
-**Reasoning Trace:**
-
-1. Avoid bare `window.addEventListener('resize', handler)` without cleanup; pass `{ signal }` from an `AbortController`.
-2. Bound metric arrays: If array exceeds 100 items, slice or shift to prevent unbounded heap expansion.
-3. Code template:
-   ```javascript
-   export function setupMetricsCollector(abortSignal) {
-     const buffer = [];
-     window.addEventListener(
-       'resize',
-       () => {
-         buffer.push(Date.now());
-         if (buffer.length > 100) buffer.shift();
-       },
-       { signal: abortSignal },
-     );
-   }
-   ```
-4. Zero Autonomous Browser Control: Heap snapshots and CDP trace collection require explicit user permission in the current prompt.
-
----
+Load [Few-Shot Reasoning Example: Teardown Lifecycle & Buffer Bounding](../references/agents/performance-memory-profiler-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -99,3 +78,20 @@ Uphold in this domain:
 - one long-lived `ResizeObserver` with disconnect
 - cache `Intl.NumberFormat`
 - apply `content-visibility`/containment only where a safe selector exists
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

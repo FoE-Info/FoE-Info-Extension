@@ -51,32 +51,9 @@ You are the authoritative JavaScript and Node.js language specialist. You govern
 
 ---
 
-## Few-Shot Reasoning Example: Scoped Logger & Clean Async Pipeline
+## On-Demand Examples
 
-**Scenario:** Implementing a pure helper function that normalizes game timestamps and handles promise timeouts cleanly.
-**Reasoning Trace:**
-
-1. Avoid `console.log`; instantiate a scoped logger `createLogger('DateHelper')`.
-2. Do not re-introduce `dayjs` or raw `toLocaleDateString`. Use `resolveDate(rawSeconds)` from `src/js/utils/date.js`.
-3. Protect async pipelines with `AbortSignal.timeout(5000)`.
-4. Code template:
-   ```javascript
-   import { resolveDate } from '../utils/date.js';
-   import { createLogger } from '../utils/logger.js';
-
-   const logger = createLogger('DateHelper');
-
-   export function parseTimestamp(unixSeconds) {
-     const date = resolveDate(unixSeconds);
-     logger.debug('Resolved timestamp', {
-       unixSeconds,
-       iso: date.toISOString(),
-     });
-     return date;
-   }
-   ```
-
----
+Load [Few-Shot Reasoning Example: Scoped Logger & Clean Async Pipeline](../references/agents/javascript-expert-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -109,3 +86,20 @@ Uphold in this domain:
 - never raw `toLocale*` for dates and do not reintroduce `dayjs`
 - defer with `src/js/utils/scheduler.js` (`yieldToMain`/`postBackgroundTask`) instead of bare `setTimeout`
 - batch DOM writes (no `innerHTML +=`)
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

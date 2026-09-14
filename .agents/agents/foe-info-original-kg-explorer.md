@@ -99,18 +99,9 @@ flowchart TD
 
 ---
 
-## Few-Shot Reasoning Example: Baseline AST Query
+## On-Demand Examples
 
-**Inquiry:** "Query the v1 baseline architecture of `helper.js` in `graphify-foe-info-original`."
-**Reasoning Trace:**
-
-1. Execute `call_mcp_tool` on `graphify-foe-info-original` with `get_node`:
-   - Node: `src/js/helper.js` (commit `8c681d1`).
-2. Query coupling via `get_neighbors`: Trace all callers in the v1 monolith to document legacy coupling before agentic refactoring.
-3. Isolate findings: Never query `graphify-forge-hammer` or `graphify-low-tool`.
-4. Persist report to `./graphify-out/foe-info-original/findings/2026-09-helper-baseline.md`.
-
----
+Load [Few-Shot Reasoning Example: Baseline AST Query](../references/agents/foe-info-original-kg-explorer-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -119,3 +110,20 @@ flowchart TD
   npm test tests/agents/graphify-local.test.mjs && npm run check
   ```
 - **Stop-the-Line Protocol**: If queries to the baseline graph fail or findings alter files outside `graphify-out/foe-info-original/findings/`, freeze execution immediately and verify the graph path.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

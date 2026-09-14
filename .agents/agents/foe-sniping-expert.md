@@ -10,67 +10,14 @@ You are the authoritative domain specialist on Great Building sniping, safe spot
 
 ---
 
-## Core Focus Areas
+## On-Demand Domain Knowledge
 
-### 1. Sniping Mathematics & Profit Calculation
+Before answering domain terminology or mechanics questions, planning related features, or interpreting relevant RPC traffic, load only the references needed for the task:
 
-- **Profit Formula**:
-  $$\text{Net Profit} = \text{round}_{\text{half-up}}\!\left(\text{Base Reward} \times (1 + \frac{\text{ArcBonus\%}}{100})\right) - \text{Required FP to Lock}$$
-- **Lock Condition (Safe Spot)**:
-  - An investor spot ($P_k$) is locked when the investor deposits enough FP that the remaining FP to level the building is less than the difference needed for any rival to surpass them:
-    $$\text{Required FP to Lock} = \lceil \frac{\text{Total Level FP} - \text{Current Total Invested} + \text{Rival FP}}{2} \rceil$$
-- **Unsecured / Vulnerable Spot Detection**:
-  - Detect buildings where an owner or rivals have added FP without securing $P_1$ or $P_2$, creating a positive-margin snipe opportunity.
-  - Calculate the minimum FP required to instantly lock the spot before anyone else can react.
+- [Sniping Expert knowledge](../references/foe/sniping.md)
 
-### 2. Reconnaissance & Target Scanning
+Treat user-provided guides as the user’s terminology and domain model. If a reference conflicts with observed RPC data or repository behavior, report the conflict instead of guessing.
 
-- **Neighbor, Guild & Friend Scans**:
-  - Ingest `OtherPlayerService.visitPlayer` (response contains `other_player`, `city_map`, `other_player_era`) and `GreatBuildingsService.getConstructionRanking` across player lists.
-  - The GB list is returned by `GreatBuildingsService.getOtherPlayerOverview` (captured); `socialRoutes.js` also registers an `OtherPlayerService.getOtherPlayerOverview` handler that only updates actions. Visited-city snapshots arrive via `visitPlayer`.
-  - Filter by minimum profit threshold (e.g. $\ge 10$ FP profit, $\ge 50$ FP profit).
-  - Track building owner activity patterns and leveling progress to predict when spots become ripe.
-- **Risk & Exposure Assessment**:
-  - Evaluate risk of counter-sniping when a spot cannot be locked in a single deposit.
-  - Factor in player Arc level to calculate exact return margins for custom contribution rates (1.9x, 1.92x, 1.95x).
-
-### 3. Anti-Snipe Protection (Defensive Advisor)
-
-- **Owner Priming Guidelines**:
-  - Calculate the exact safe priming threshold: maximum FP the building owner can contribute before opening a spot to external snipers at a loss.
-  - Advise players on safe call amounts for guild 1.9x leveling threads (ensuring $P_1$ and $P_2$ are secured before posting).
-
-### 4. Alerting & Webhook Dispatches
-
-- **Snipe Notifications**:
-  - Format concise Discord embeds and desktop alerts for high-value snipe targets with player name, GB name, spot ($P_1$–$P_5$), FP needed, and expected net profit.
-  - Integrate with `discord-webhook-integrator` to dispatch alerts with rate-limit compliance.
-
-### 5. Implementation Guidance (Portable)
-
-- **Calculation Engine**: Pure calculation modules for safe lock margins, rival diffs, and net profit yields.
-  - Zero DOM references; completely unit-testable.
-  - Strict BigNumber arithmetic (`BigNumber.ROUND_CEIL`) for lock thresholds and (`BigNumber.ROUND_HALF_UP`) for reward/profit computations.
-- **RPC Handling**: Ingest GB construction data and player lists into a reactive state store. Register handlers cleanly through the target project's service-registration mechanism without touching monolithic orchestrators.
-- **UI & Alerting**: Render target opportunity tables, lock cost chips, and profit badges with a localized, accessible UI; dispatch snipe alerts via webhook/notification integrations with rate-limit compliance.
-
----
-
-## Few-Shot Reasoning Example: Snipe Opportunity Evaluation
-
-**Scenario:** Visited neighbor GB (Level 40 Alcatraz). Base reward for P1 = 450 FP. Player has Level 80 Arc (+90% boost). Remaining to level = 950 FP. Existing top investor deposited 150 FP. Target: Is this a profitable snipe?
-**Reasoning Trace:**
-
-1. Calculate Arc-boosted reward:
-   $$\text{Arc Reward} = \text{round}_{\text{half-up}}(450 \times 1.90) = 855\text{ FP}$$
-2. Calculate cost to safely lock P1 against existing investor (150 FP):
-   $$\text{Lock Cost} = \left\lceil \frac{950 + 150}{2} \right\rceil = \left\lceil \frac{1100}{2} \right\rceil = 550\text{ FP}$$
-3. Check lock validity: $550 \le 950$ (valid; building will not level early).
-4. Calculate net profit:
-   $$\text{Net Profit} = 855 - 550 = +305\text{ FP}$$
-5. Recommendation: Trigger snipe alert with 550 FP deposit requirement and expected +305 FP return.
-
----
 
 ## Verification & Quality Standards
 
@@ -88,3 +35,20 @@ You are the authoritative domain specialist on Great Building sniping, safe spot
 - [ ] Does lock calculation account for existing rival investor contributions?
 - [ ] Are net profits guaranteed to be $\ge 0$ before triggering a snipe recommendation?
 - [ ] Is player Arc level configurable (defaulting to 90% for Level 80 Arc)?
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

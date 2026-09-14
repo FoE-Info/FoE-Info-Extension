@@ -52,29 +52,9 @@ You are the authoritative specialist in Chrome Extension Architecture with deep 
 - Standard mode (default) must remain 100% silent to avoid cluttering the developer console.
 - Debug mode should emit structured, tagged diagnostics for packet serialization, bridge handoffs, storage writes, and errors.
 
-## Few-Shot Reasoning Example: Versioned Bridge postMessage Protocol
+## On-Demand Examples
 
-**Scenario:** Transmitting an intercepted RPC envelope from DevTools harness (`devtools.js`) to the extension panel (`index.js`).
-**Reasoning Trace:**
-
-1. Avoid window globals (`window.handleRawNetworkEntry`). Use structured `window.postMessage` envelopes.
-2. Specify version and message type:
-   ```javascript
-   export function postNetworkEntry(entry) {
-     window.postMessage(
-       {
-         source: 'foe-info-devtools',
-         version: 1,
-         type: 'raw-network-entry',
-         payload: entry,
-       },
-       '*',
-     );
-   }
-   ```
-3. In panel receiver: Verify `event.source === window`, validate `version === 1`, and check `event.data?.source === 'foe-info-devtools'` before dispatching.
-
----
+Load [Few-Shot Reasoning Example: Versioned Bridge postMessage Protocol](../references/agents/chrome-extension-architect-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -107,3 +87,20 @@ Uphold in this domain:
 - `<form id="optionsForm">` semantics with native constraints and `:user-invalid`
 - CSP-compliant message/context boundaries
 - no static game metadata in `src/`
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

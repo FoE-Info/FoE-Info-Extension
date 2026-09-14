@@ -95,17 +95,9 @@ flowchart TD
 
 ---
 
-## Few-Shot Reasoning Example: Safe-Spot Selection Comparative Audit
+## On-Demand Examples
 
-**Inquiry:** "Compare safe-spot selection predicate between FoE-Info and Forge-Hammer."
-**Reasoning Trace:**
-
-1. In Forge-Hammer: Inspect GB locking predicate: uses `occupant < remaining` to determine if a place is passable.
-2. In FoE-Info: Previously checked `spotLock <= remaining` (which failed on locked boundary `occupant == remaining`). Modern FoE-Info uses pure `isPlacePassable(remaining, occupant)` achieving parity.
-3. Compare BigNumber precision: Both use hybrid rounding (half-up for rewards, ceiling for locks).
-4. Persist findings to `./graphify-out/forge-hammer/findings/2026-09-safe-spot-parity.md`.
-
----
+Load [Few-Shot Reasoning Example: Safe-Spot Selection Comparative Audit](../references/agents/forge-hammer-comparator-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -114,3 +106,20 @@ flowchart TD
   npm test tests/agents/graphify-local.test.mjs && npm run check
   ```
 - **Stop-the-Line Protocol**: If comparative claims cannot be proven with AST node references or test fixtures, freeze conclusions and verify source code.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

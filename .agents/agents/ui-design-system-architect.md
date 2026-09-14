@@ -50,33 +50,9 @@ You are the authoritative frontend UI, design system, and styling specialist. Gr
 
 ---
 
-## Few-Shot Reasoning Example: Accessible Bootstrap 5.3 Panel Component
+## On-Demand Examples
 
-**Scenario:** Rendering a new collapsible panel card with keyboard accessibility, responsive container queries, and i18n bindings.
-**Reasoning Trace:**
-
-1. Avoid bare native checkboxes or unstyled toggles; use Bootstrap `form-check-input`.
-2. Ensure ARIA live status: Use `role="status" aria-live="polite"` for non-disruptive feedback (not aggressive `role="alert"`).
-3. Connect toggle semantics: Provide `aria-expanded="false"`, `aria-controls="cardContent"`, and keyboard Space/Enter activation.
-4. Render markup template:
-   ```javascript
-   export function renderCardTemplate(container, titleKey, contentHtml) {
-     container.innerHTML = `
-       <div class="card foe-card mb-2">
-         <div class="card-header d-flex justify-content-between align-items-center"
-              role="button" tabindex="0" aria-expanded="false" aria-controls="cardBody">
-           <span data-i18n="${titleKey}"></span>
-           <span class="badge bg-secondary foe-badge"></span>
-         </div>
-         <div id="cardBody" class="collapse card-body">
-           ${contentHtml}
-         </div>
-       </div>
-     `;
-   }
-   ```
-
----
+Load [Few-Shot Reasoning Example: Accessible Bootstrap 5.3 Panel Component](../references/agents/ui-design-system-architect-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -110,3 +86,20 @@ Uphold in this domain:
 - container queries (`@container`) for resizable docked panels
 - native `<dialog>`/popover + `inert` for overlays
 - `<caption>` and `<th scope>` on data tables
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

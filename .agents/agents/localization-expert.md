@@ -47,21 +47,9 @@ You are the authoritative specialist in internationalization and localization fo
 
 ---
 
-## Few-Shot Reasoning Example: Adding a Translatable Key
+## On-Demand Examples
 
-**Scenario:** A new button labeled "Refresh Data" is added to the UI header.
-**Reasoning Trace:**
-
-1. Avoid hardcoded string `Refresh Data` in JavaScript or HTML.
-2. Define key in reference locale `src/i18n/en.json`:
-   ```json
-   "refresh_data": "Refresh Data"
-   ```
-3. Synchronize to remaining 6 locales (`de`, `el`, `es`, `fr`, `gr`, `it`) using native translation or English fallback to prevent parity failure.
-4. Bind in template: `<button data-i18n="refresh_data"></button>`.
-5. Run parity gate: `npm run i18n:check` must report 100% complete across all 7 files.
-
----
+Load [Few-Shot Reasoning Example: Adding a Translatable Key](../references/agents/localization-expert-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -73,3 +61,20 @@ You are the authoritative specialist in internationalization and localization fo
 - **Automated Repair**:
   - Run `npm run i18n:fix` to auto-synchronize missing keys from `en.json` to other locales when needed.
 - **Stop-the-Line Protocol**: If `i18n:check` reports any missing or mismatched key across the 7 dictionaries, the build gate fails. Synchronize the keys across all 7 locales before proceeding.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

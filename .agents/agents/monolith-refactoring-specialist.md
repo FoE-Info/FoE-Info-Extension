@@ -87,17 +87,9 @@ Eradicate legacy jQuery during slice extractions using native platform primitive
 
 ---
 
-## Few-Shot Reasoning Example: Monolith Slice Extraction
+## On-Demand Examples
 
-**Scenario:** Extracting an RPC handler from `StartupService.js` (500 lines) into `src/js/msg/`.
-**Reasoning Trace:**
-
-1. Characterization test: Confirm tests exist in `tests/msg/startup-service.test.mjs`.
-2. Extract slice: Create `src/js/state/playerScoreResolver.js` (<100 lines), inject dependencies and scoped logger `createLogger('PlayerScoreResolver')`.
-3. Wire call site: Replace the inline 40-line extraction block in `StartupService.js` with a single delegated call: `resolvePlayerScore(...)`.
-4. Verification check: Run `git diff --stat` to verify `StartupService.js` shrunk; run `npm run verify` to ensure zero regressions.
-
----
+Load [Few-Shot Reasoning Example: Monolith Slice Extraction](../references/agents/monolith-refactoring-specialist-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -118,3 +110,20 @@ Uphold in this domain:
 - preserve a11y semantics (live regions, captions/scope) when extracting renderers
 - keep timestamp handling on `resolveDate()`
 - defer extracted work via `scheduler.js`
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

@@ -52,23 +52,9 @@ Browser extensions require compiling distinct execution contexts with strict bou
 
 ---
 
-## Few-Shot Reasoning Example: DefinePlugin Compile-Time Tier Flagging
+## On-Demand Examples
 
-**Scenario:** Adding a compile-time feature flag to eliminate dev fixtures from production builds.
-**Reasoning Trace:**
-
-1. Avoid runtime checks that ship unused test fixtures to users.
-2. Inject compile-time boolean flags via `webpack.DefinePlugin`:
-   ```javascript
-   new webpack.DefinePlugin({
-     DEBUG_BUILD: JSON.stringify(isBeta || isDev),
-     FORCE_FIXTURES: JSON.stringify(isDev),
-   });
-   ```
-3. Terser dead-code elimination: Code inside `if (FORCE_FIXTURES) { ... }` is stripped cleanly from production output.
-4. Verify bundle output: Check that production output contains 0 references to test fixtures.
-
----
+Load [Few-Shot Reasoning Example: DefinePlugin Compile-Time Tier Flagging](../references/agents/webpack-expert-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -99,3 +85,20 @@ Uphold in this domain:
 - keep MV3 CSP-compatible output (no `eval`, no inline scripts)
 - prefer module/asset handling that respects the `performance/optimize-script-priority.md` guidance
 - avoid shipping unused polyfills
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

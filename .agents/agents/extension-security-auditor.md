@@ -52,28 +52,9 @@ You are the authoritative security and privacy auditor for browser extensions. G
 - Reject wildcard host permissions unless strictly required.
 - Ensure all declared permissions have clear functional justifications in store documentation.
 
-## Few-Shot Reasoning Example: DOM XSS Prevention
+## On-Demand Examples
 
-**Scenario:** Reviewing a proposed change that displays player names from a visited city RPC:
-
-```javascript
-// Prohibited unsafe insertion:
-container.innerHTML = `<div>Player: ${player.name}</div>`;
-```
-
-**Reasoning Trace:**
-
-1. Player names are user-generated content from external servers; inserting directly via string interpolation into `innerHTML` is vulnerable to DOM XSS.
-2. Require safe DOM construction or `textContent`:
-   ```javascript
-   const div = document.createElement('div');
-   div.textContent = `Player: ${player.name}`;
-   container.appendChild(div);
-   ```
-3. If templates require HTML strings, enforce escaping with `escapeHTML()` (`src/js/utils/formatters.js`).
-4. Verdict: Flag as blocker; demand `textContent` or `escapeHTML()`.
-
----
+Load [Few-Shot Reasoning Example: DOM XSS Prevention](../references/agents/extension-security-auditor-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -106,3 +87,20 @@ Uphold in this domain:
 - no `eval`/`new Function`
 - render untrusted/AI text with `textContent`
 - avoid plaintext secrets and minimize host permissions
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

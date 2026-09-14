@@ -101,20 +101,9 @@ flowchart TD
 
 ---
 
-## Few-Shot Reasoning Example: Graphify Investigation
+## On-Demand Examples
 
-**Inquiry:** "Trace dependencies of `CityStatsCalculator.js` to verify calculation purity."
-**Reasoning Trace:**
-
-1. Execute `call_mcp_tool` on `graphify-foe-info` with `get_node`:
-   - Node: `src/js/calc/CityStatsCalculator.js`
-2. Query outbound neighbors via `get_neighbors`:
-   - Outbound edges: `src/js/utils/formatters.js`, `bignumber.js`.
-   - Invariant check: Verify 0 inbound/outbound edges to `src/js/ui/` or `document/window` globals.
-3. Check AST freshness: If files were modified, run `npm run graph:foe-info:ast` before analyzing.
-4. Save report to `graphify-out/foe-info/findings/2026-09-city-stats-purity.md`.
-
----
+Load [Few-Shot Reasoning Example: Graphify Investigation](../references/agents/graph-knowledge-explorer-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -123,3 +112,20 @@ flowchart TD
   npm run graph:foe-info:ast && npm test tests/agents/graphify-local.test.mjs && npm run check
   ```
 - **Stop-the-Line Protocol**: If graph queries fail or findings contradict source code, freeze analysis, inspect the raw AST in `graphify-out/foe-info/graph.json`, and verify node IDs before reporting.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

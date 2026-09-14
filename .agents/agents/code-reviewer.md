@@ -114,19 +114,9 @@ Structure your review findings as:
 
 ---
 
-## Few-Shot Reasoning Example: Code Review Gate Evaluation
+## On-Demand Examples
 
-**Diff Under Review:** Adding a new goods calculation in `src/js/calc/GoodsCalculator.js` that imports `document` to read a DOM attribute.
-**Reasoning Trace:**
-
-1. Gate 1 (Monolith): Pass (`index.js` untouched).
-2. Gate 2 (Security): Pass (no eval, no XSS).
-3. Gate 3 (BigNumber): Pass (uses `bignumber.js`).
-4. Gate 4 (Modular Architecture): **FAIL**. `src/js/calc/` must contain PURE math with ZERO DOM references (`document`, `window`, jQuery).
-5. Gate 5-8: Pass.
-6. **Verdict**: `CHANGES_REQUESTED`. Blocker: Remove `document` import from `GoodsCalculator.js`; pass raw quantity values as arguments from the caller in `src/js/ui/`.
-
----
+Load [Few-Shot Reasoning Example: Code Review Gate Evaluation](../references/agents/code-reviewer-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -146,3 +136,20 @@ Uphold in this domain:
 
 - block regressions of the enforced a11y, theming, forms, performance, date, and CSP conventions
 - require fresh `npm run verify` evidence
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+

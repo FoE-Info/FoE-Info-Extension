@@ -78,3 +78,20 @@ npm run verify
 
 - [`references/typescript-hybrid-strategy.md`](references/typescript-hybrid-strategy.md): Webpack setup, `tsconfig.json`, and conversion sequence.
 - [`references/monolith-decomposition-phases.md`](references/monolith-decomposition-phases.md): Verified line-count inventory and >450 L decomposition backlog.
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
+

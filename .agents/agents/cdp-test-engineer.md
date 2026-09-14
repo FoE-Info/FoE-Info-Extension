@@ -45,26 +45,9 @@ You are the test automation and quality assurance specialist for browser extensi
 
 ---
 
-## Few-Shot Reasoning Example: Headless Mock RPC Injection
+## On-Demand Examples
 
-**Scenario:** Testing panel rendering when `CityMapService.getEntities` arrives.
-**Reasoning Trace:**
-
-1. Zero Autonomous Browser Control check: No live browser permission was requested in prompt $\to$ Do NOT spawn `foe-browser` or port 9222 CDP.
-2. Prioritize headless mock harness (`npm test`):
-   ```javascript
-   import assert from 'node:assert/strict';
-   import test from 'node:test';
-   import { dispatchRaw } from '../src/js/protocol/MessageDispatcher.js';
-
-   test('dispatches synthetic entities payload', () => {
-     const res = dispatchRaw(mockEntitiesJson);
-     assert.equal(res.status, 'dispatched');
-   });
-   ```
-3. Verify exit code: Check that all headless tests pass.
-
----
+Load [Few-Shot Reasoning Example: Headless Mock RPC Injection](../references/agents/cdp-test-engineer-examples.md) when a worked example would materially help the current task.
 
 ## Verification & Quality Standards
 
@@ -95,3 +78,20 @@ Uphold in this domain:
 - assert `role="status"` live regions and table semantics in the panel DOM
 - watch for detached observers/render regressions
 - measure render timing after scheduler changes
+## 5. Record Usage in the Skill Work Log
+
+A skill that only accumulates notes never changes behaviour. Record each real
+run and fold the lesson back into this file:
+
+```sh
+node .agents/scripts/skill-memory.mjs log \
+  --skill <name> \
+  --outcome pass|fail|partial \
+  --lesson '<imperative rule + why>'
+```
+
+`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
+that can actually fail. Patch the workflow above with the lesson in the same
+change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
+See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
+
