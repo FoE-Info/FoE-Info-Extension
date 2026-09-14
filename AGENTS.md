@@ -12,7 +12,7 @@ Commands you'll use:
 - `npm run graph:<repo>:ast|update|reindex` runs one Graphify tier.
 - `foe-browser` starts the isolated Chromium on port 9222 for CDP work.
 
-Config lives in `.agents/` (36 subagents, 17 rules, and 55 skills, hooks, MCP).
+Config lives in `.agents/` (36 subagents, 17 rules, and 56 skills, hooks, MCP).
 `.opencode/` mirrors it for the OpenCode host.
 
 Start with [docs/README.md](docs/README.md) (coordination hub),
@@ -31,7 +31,7 @@ before trusting an old plan. Host-specific wiring: [docs/OPENCODE.md](docs/OPENC
 
 ## Before you write code
 
-Check the skills catalog and say which skill you are following. The 55 on-demand
+Check the skills catalog and say which skill you are following. The 56 on-demand
 runbooks and procedures are in [docs/SKILLS.md](docs/SKILLS.md).
 
 ## Before you pick up a task

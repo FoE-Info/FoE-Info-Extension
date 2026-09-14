@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { beforeEach, describe, it } from 'node:test';
+import { afterEach, beforeEach, describe, it } from 'node:test';
 import {
   buildBuildingCostCardHTML,
   buildBuildingCostsTableHTML,
@@ -13,65 +13,25 @@ import {
   renderTargetGeneratorCard,
   renderTargetGeneratorPanel,
 } from '../../src/js/ui/renderTargetGeneratorCard.js';
-
-function createMockElement(id = '') {
-  const listeners = new Map();
-  return {
-    id,
-    innerHTML: '',
-    style: {},
-    className: '',
-    children: [],
-    addEventListener(event, fn) {
-      if (!listeners.has(event)) listeners.set(event, []);
-      listeners.get(event).push(fn);
-    },
-    click() {
-      const handlers = listeners.get('click') || [];
-      for (const h of handlers) h();
-    },
-    querySelector(selector) {
-      if (this.innerHTML.includes(selector.replace('#', ''))) {
-        return createMockElement(selector.replace('#', ''));
-      }
-      return null;
-    },
-    querySelectorAll() {
-      return [];
-    },
-    cloneNode() {
-      return { ...this };
-    },
-  };
-}
+import { createMockElement, setupMockDOM } from '../helpers/test-mocks.mjs';
 
 describe('gbgProvinceView Suite', () => {
   let doc;
-  let domStore;
+  let mockEnv;
 
   beforeEach(() => {
-    domStore = new Map();
-    doc = {
-      getElementById(id) {
-        if (!domStore.has(id)) {
-          domStore.set(id, createMockElement(id));
-        }
-        return domStore.get(id);
+    mockEnv = setupMockDOM({
+      window: {
+        createRange: () => ({
+          selectNode: () => {},
+        }),
       },
-      createElement(tag) {
-        return createMockElement(tag);
-      },
-    };
-    globalThis.document = doc;
-    globalThis.window = {
-      getSelection: () => ({
-        removeAllRanges: () => {},
-        addRange: () => {},
-      }),
-      createRange: () => ({
-        selectNode: () => {},
-      }),
-    };
+    });
+    doc = mockEnv.document;
+  });
+
+  afterEach(() => {
+    if (mockEnv) mockEnv.restore();
   });
 
   describe('buildLeaderboardHTML', () => {
