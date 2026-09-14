@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { createMockElement } from '../helpers/test-mocks.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -133,66 +134,6 @@ test('Incidents Panel - Popover removal and collapsible panel preservation', asy
   );
 
   await t.test('fShowIncidents rendered DOM contract verification', () => {
-    const elementsById = new Map();
-
-    function createMockElement(id = '', tagName = 'div') {
-      const listeners = new Map();
-      const el = {
-        id,
-        tagName: tagName.toUpperCase(),
-        className: '',
-        attributes: new Map(),
-        innerHTML: '',
-        addEventListener(event, fn) {
-          if (!listeners.has(event)) listeners.set(event, []);
-          listeners.get(event).push(fn);
-        },
-        dispatchEvent(event) {
-          const fns = listeners.get(event.type) || [];
-          fns.forEach((f) => f(event));
-        },
-        setAttribute(attr, val) {
-          this.attributes.set(attr, val);
-        },
-        getAttribute(attr) {
-          return this.attributes.get(attr) || null;
-        },
-        hasAttribute(attr) {
-          return this.attributes.has(attr);
-        },
-        querySelector(sel) {
-          if (sel.startsWith('#')) {
-            const targetId = sel.slice(1);
-            if (this.id === targetId) return this;
-            if (this.innerHTML.includes(`id="${targetId}"`)) {
-              return createMockElement(targetId);
-            }
-            return null;
-          }
-          if (sel.startsWith('.')) {
-            const targetClass = sel.slice(1);
-            if (
-              this.innerHTML.includes(`class="${targetClass}`) ||
-              this.innerHTML.includes(`class="pop `) ||
-              this.innerHTML.includes(` ${targetClass}"`)
-            ) {
-              return createMockElement('', 'span');
-            }
-            return null;
-          }
-          if (sel.includes('[data-bs-toggle="popover"]')) {
-            if (this.innerHTML.includes('data-bs-toggle="popover"')) {
-              return createMockElement('', 'span');
-            }
-            return null;
-          }
-          return null;
-        },
-      };
-      if (id) elementsById.set(id, el);
-      return el;
-    }
-
     const incidentsContainer = createMockElement('incidents');
 
     const incidentType = 'r';
