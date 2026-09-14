@@ -2,8 +2,6 @@
 
 Updated 2026-09-13 after the post-F2 monolith extractions (MessageDispatcher, containerBinding, collapse, GreatBuildingsService, indexUiBindings, OtherPlayerService), the City Overview layout redesign, and the GitHub security hardening / CI test-skip fix.
 
-Historical per-session work logs (2026-09-11 through 2026-09-13) live in [HANDOFF-SESSION-LOG.md](archive/HANDOFF-SESSION-LOG.md).
-
 ## Resume safely
 
 Read `AGENTS.md` and [opencode coexistence](OPENCODE.md). Inspect `git status` before editing. The takeover is committed in logical chunks on `development`; it has been pushed. Three pre-existing `docs/antigravity_prompt_*.md` files are user workspace artifacts and remain untouched.
@@ -106,12 +104,6 @@ The old statement that DevTools panels cannot be inspected through CDP was too b
 6. Reconcile the UI/RPC punch-list against source and existing tests before execution. Several named tasks already have implementations/tests; unchecked boxes do not prove they are unstarted.
 7. Re-scope the StartupService decomposition roadmap against actual remaining responsibilities. Settlement/quest/inventory/castle services already exist; their existence alone does not establish all old responsibilities have migrated.
 
-Relevant historical plans:
-
-- [UI/RPC/metadata punch-list](archive/plans/2026-09-08-ui-rpc-and-metadata-fixes.md)
-- [Modernization Briefs 12–14](archive/plans/2026-09-08-modernization-briefs-12-14.md)
-- [Decomposition and debuggability roadmap](archive/plans/2026-09-08-monolith-decomposition-and-debuggability-roadmap.md)
-
 Plans/specs live in `docs/plans/` and `docs/specs/`; the coordination hub is
 `docs/README.md` and the live work/todo board is `docs/STATUS.md`.
 
@@ -136,7 +128,7 @@ Implemented in `src/js/fn/rateParser.js` (`extractRateFromTitle`) and wired into
 
 ## End-to-End Knowledge Base Consolidation (2026-09-12)
 
-- **Graph Maintenance & Cleanup**: Removed stale reviews, audits (`docs/archive/reviews/`, `docs/archive/agent-ecosystem-audit.md`), and dated graph backup folders (`2026-09-12/`). Fixed absolute paths for all 5 MCP servers in `.agents/mcp_config.json`.
+- **Graph Maintenance & Cleanup**: Fixed absolute paths for all 5 MCP servers in `.agents/mcp_config.json` and removed the stale reviews, audits, and dated graph backup folders.
 - **DeepSeek Reindexing**: Extracted fresh AST across 489 source files (3,047 nodes, 4,975 edges) and labeled 248 communities using the DeepSeek API (`--backend deepseek`). Updated and exported all 5 knowledge graphs (`FoE-Info-Extension`, `metadata-store`, `forge-hammer`, `low-tool`, `foe-info-original`).
 - **Comprehensive Knowledge Base (`docs/KNOWLEDGEBASE.md`)**: Populated 26 verified architectural memories covering the entire stack from DevTools network interception to DOM presentation. Running `graphify reflect` compiled the deterministic lessons report into `graphify-out/foe-info/reflections/LESSONS.md`.
 - **Actionable Items Prioritized in `docs/STATUS.md`**:

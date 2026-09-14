@@ -56,6 +56,13 @@ module.exports = (env = {}, argv = {}) => {
     mode: isProdMode ? 'production' : 'development',
     devtool: isProdMode ? 'source-map' : 'cheap-module-source-map',
     cache: isProdMode ? false : { type: 'filesystem' },
+    // Keep build output to errors and warnings. The asset/module table is
+    // noise for humans and costs tokens for agents; `--stats detailed` when
+    // you actually need the breakdown.
+    stats: 'errors-warnings',
+    // webpack-cli v7 turns the progress plugin on by default and routes it
+    // through the infrastructure logger, which spams one line per build step.
+    infrastructureLogging: { level: 'error' },
     output: {
       path: outputDir,
     },
