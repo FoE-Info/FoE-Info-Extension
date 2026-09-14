@@ -10,15 +10,37 @@ a changelog. See `docs/README.md` for the full hub.
 
 ## Todos
 
-- [ ] Test Suite Footprint Optimization:
-  - [x] Phase 1: Shared test harness utilities (`tests/helpers/test-mocks.mjs`) for DOM, Chrome extension APIs, and mock factories (shipped: `test-mocks.mjs` + `test-mocks.test.mjs`, adopted in initial suites).
-  - [x] Phase 2: Decompose oversized monolithic tests violating <600 line limit (shipped: decomposed into focused suites under 600L — `domain-services.test.mjs` 347L, `domain-services-city.test.mjs` 523L, `domain-services-social.test.mjs` 429L; `guild-battleground-signals.test.mjs` 403L, `guild-battleground-targets.test.mjs` 569L, `guild-battleground-panels.test.mjs` 349L).
-  - [x] Phase 3: Prune multi-megabyte captured JSON fixtures in `tests/fixtures/` (-22.4 MB, -720k lines pruned across 5 fixtures, verified clean). Plan: [`docs/plans/2026-09-14-test-suite-fixture-pruning-plan.md`](plans/2026-09-14-test-suite-fixture-pruning-plan.md).
+- [ ] Agent framework: introduce task-scoped MCP profiles.
+  - Keep only `graphify-foe-info` enabled for ordinary development.
+  - Enable Chrome DevTools, GitHub, Linux, metadata, baseline, and competitor MCPs only for matching tasks.
+  - Evaluate one Graphify multiplexer to replace five copies of the same ten-tool schema.
+- [ ] Agent framework: reduce OpenCode always-injected instructions.
+  - Inject only the nine canonical `always_on` rules.
+  - Add a compact router that loads scoped rules by trigger.
+  - Replace duplicated guardrail/tool-translation prose with pointers to the shared harness adapter.
+- [ ] Agent framework: slim startup context and remove stale coordination history.
+  - Stop requiring `docs/HANDOFF.md` on every session; load it only when resuming a named thread.
+  - Keep `AGENTS.md`, `docs/README.md`, `docs/STATUS.md`, `docs/HANDOFF.md`, `docs/COORDINATION.md`, and `docs/OPENCODE.md` current-state-only.
+  - Delete completed plans, superseded audits, resolved questionnaires, and removal narration; Git history remains the backup.
+- [ ] Agent framework: deduplicate self-improvement instructions.
+  - Replace 91 repeated logging blocks with one compact shared invariant/reference.
+  - Replace 55 identical `references/skill-memory.md` copies with one canonical reference.
+- [ ] Agent framework: remove stale manual catalogs and count-locked tests.
+  - Delete or generate `docs/SKILLS.md` and `docs/SUBAGENTS.md` from actual frontmatter/routing data.
+  - Replace exact 56-skill/36-agent/17-rule assertions with discovery, parity, uniqueness, routing, and required-core invariants.
+  - Correct stale framework counts and paths in remaining current-state docs.
+- [ ] Agent framework: compress and consolidate overlapping skills.
+  - Remove `using-superpowers` duplication with the always-on rule and reduce `verification-before-completion` duplication.
+  - Consider merging `chrome-devtools-troubleshooting` into `chrome-devtools`, `service-extractor` with `refactor-index-slice`, and release/changelog workflows.
+  - Shrink frequently loaded large skills via progressive disclosure; keep all `writing-*` skills separate and leave `chrome-extensions` untouched.
+- [ ] Agent framework: consolidate overlapping subagents and OpenCode shims.
+  - Merge the four near-identical graph explorers into one target-driven role.
+  - Merge the three extension comparators into one target-driven role.
+  - Reduce each OpenCode shim to frontmatter plus a canonical-role pointer; defer broader FoE specialist consolidation until dispatch usage is measured.
 - [ ] Modern-web Tier 3 (deferred, higher risk): migrate Bootstrap popovers/collapse to native `popover` + CSS Anchor Positioning, adopt `light-dark()`/`[data-bs-theme]` theming, and evaluate opt-in Built-in AI/WebMCP enhancements.
 - [ ] Modern-web deferred items: `content-visibility` on measured card bodies (no safe stable selector yet), `MessageDispatcher` parse yielding, and residual table semantics. `renderBattlegroundsPanel.js` already has `<caption>`/`scope="col"`; the `renderInvestedPanel.js` table is a commented-out future feature.
-- [ ] Graph-explorer follow-ups (2026-09-12), full ranked backlog in [`docs/plans/2026-09-12-post-f2-refactor-backlog.md`](plans/2026-09-12-post-f2-refactor-backlog.md):
+- [ ] Graph-explorer follow-up (2026-09-12), full ranked backlog in [`docs/plans/2026-09-12-post-f2-refactor-backlog.md`](plans/2026-09-12-post-f2-refactor-backlog.md):
   - Review the 4 lazy `resolveDep` `ui/ → msg/` fallbacks in `ui/indexUiBindings.js` (F3 left them, injectable from `index.js`).
-  - Decide the fate of `ui/cityStatsHtmlBuilder.js` (production orphan).
 
 ## Open threads requiring a decision
 

@@ -90,10 +90,10 @@ Discovered from `.agents/skills/`. Consult `<skills>` catalog for triggers. Load
 Skills accumulate evidence about their own usage — the persistence layer for a
 Generator → Reflector → Curator self-improvement loop:
 
-| Artifact                                     | Purpose                                                  |
-| -------------------------------------------- | -------------------------------------------------------- |
-| `.agents/skills/<name>/memory/worklog.jsonl` | One JSON object per run: outcome, ground signals, lesson |
-| `.agents/skills/<name>/memory/lessons.md`    | Deduplicated prose lessons, newest date block first      |
+| Artifact                              | Purpose                                                  |
+| ------------------------------------- | -------------------------------------------------------- |
+| `.agents/memory/<name>/worklog.jsonl` | One JSON object per run: outcome, ground signals, lesson |
+| `.agents/memory/<name>/lessons.md`    | Deduplicated prose lessons, newest date block first      |
 
 Record a run, then fold the lesson back into the skill's `SKILL.md` in the same
 change — a lesson recorded only in the worklog never changes behaviour:
