@@ -4,6 +4,7 @@ import { registerHooks } from 'node:module';
 import { dirname, resolve as resolvePath } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { setupMockDOM } from '../helpers/test-mocks.mjs';
 
 // GuildBattlegroundService.js uses ESM syntax but lives in a CommonJS package.
 // Register a synchronous loader hook so the mixed src/js module graph can be
@@ -57,44 +58,14 @@ registerHooks({
   },
 });
 
-function noop() {}
-function createMockElement() {
-  return {
-    id: '',
-    innerHTML: '',
-    innerText: '',
-    style: {},
-    classList: { add: noop, remove: noop, contains: () => false },
-    appendChild: noop,
-    addEventListener: noop,
-    removeEventListener: noop,
-    setAttribute: noop,
-    getAttribute: () => null,
-    querySelector: () => null,
-    querySelectorAll: () => [],
-    closest: () => null,
-    focus: noop,
-    remove: noop,
-  };
-}
-
-globalThis.document = {
-  readyState: 'complete',
-  body: createMockElement(),
-  head: createMockElement(),
-  documentElement: createMockElement(),
-  getElementById: () => null,
-  createElement: createMockElement,
-  querySelector: () => null,
-  querySelectorAll: () => [],
-  addEventListener: noop,
-  removeEventListener: noop,
-};
-globalThis.window = globalThis;
-globalThis.addEventListener = noop;
-globalThis.removeEventListener = noop;
-globalThis.getComputedStyle = () => ({ getPropertyValue: () => '' });
-globalThis.location = { href: 'https://en7.forgeofempires.com/game/index' };
+setupMockDOM({
+  window: {
+    getComputedStyle: () => ({ getPropertyValue: () => '' }),
+    location: { href: 'https://en7.forgeofempires.com/game/index' },
+  },
+});
+globalThis.getComputedStyle = globalThis.window.getComputedStyle;
+globalThis.location = globalThis.window.location;
 
 const service = await import('../../src/js/msg/GuildBattlegroundService.js');
 const { GBGdata, BattlegroundPerformance } =

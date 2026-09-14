@@ -1,63 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { createMockElement, setupMockDOM } from '../helpers/test-mocks.mjs';
 
-// Setup DOM mocks
-const domStore = new Map();
-
-function createMockElement(tag, id = '') {
-  const el = {
-    tagName: tag.toUpperCase(),
-    id,
-    innerHTML: '',
-    innerText: '',
-    style: {},
-    className: '',
-    children: [],
-    listeners: {},
-    appendChild(child) {
-      if (!child) return child;
-      if (child.parentNode && child.parentNode.removeChild) {
-        child.parentNode.removeChild(child);
-      }
-      child.parentNode = this;
-      this.children.push(child);
-      if (child.id) domStore.set(child.id, child);
-      return child;
-    },
-    addEventListener(event, fn) {
-      this.listeners[event] = this.listeners[event] || [];
-      this.listeners[event].push(fn);
-    },
-    querySelector(sel) {
-      const targetId = sel.replace('#', '');
-      if (this.innerHTML.includes(targetId)) {
-        if (!domStore.has(targetId)) {
-          domStore.set(targetId, createMockElement('div', targetId));
-        }
-        return domStore.get(targetId);
-      }
-      return domStore.get(targetId) || null;
-    },
-    querySelectorAll() {
-      return [];
-    },
-    setAttribute() {},
-    getAttribute() {
-      return null;
-    },
-  };
-  if (id) domStore.set(id, el);
-  return el;
-}
-
-globalThis.document = {
-  getElementById(id) {
-    if (!domStore.has(id)) {
-      domStore.set(id, createMockElement('div', id));
-    }
-    return domStore.get(id);
-  },
-};
+// Setup DOM mocks via shared harness
+const { domStore } = setupMockDOM();
 
 test('gbOverviewCard UI Suite', async (t) => {
   const gbOverviewPkg = await import('../../src/js/ui/gbOverviewCard.js');
