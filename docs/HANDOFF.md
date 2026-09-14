@@ -1,6 +1,6 @@
 # FoE-Info Extension — Project Handoff
 
-Updated 2026-09-13 after the post-F2 monolith extractions (MessageDispatcher, containerBinding, collapse, GreatBuildingsService, indexUiBindings, OtherPlayerService), the City Overview layout redesign, and the GitHub security hardening / CI test-skip fix.
+Updated 2026-09-14 after the Test Suite Footprint Optimization (Phase 1 shared test-mocks harness, Phase 2 monolithic test decomposition across domain-services and GBG signals, and Phase 3 fixture pruning Step 1).
 
 ## Resume safely
 
@@ -10,6 +10,7 @@ The previous handoff at `cec0ded:docs/HANDOFF.md` is retained in Git history for
 
 ## Current follow-ups
 
+- **Test Suite Footprint Optimization Phase 3 completed 2026-09-14**: Pruned 5 oversized JSON test fixtures (`TradeService.getTradeOffers.json`, `marketplace_trades.json`, `construction_ranking.json`, `OutpostService.getAll.json`, `guild_overview.json`), trimming ~22.4 MB disk space and ~720,689 lines while maintaining 100% test coverage and full verification gate.
 - **Graph generation completed 2026-09-11** for LoW-Tool and FoE-Info-original (`npm run graph:low-tool:reindex`, `npm run graph:foe-info-original:reindex`); both `graphify-out/graph.json` files are generated and queryable via MCP. The reindex scripts now source `.env` and use the DeepSeek backend when `DEEPSEEK_API_KEY`/`GRAPHIFY_BACKEND=deepseek` is set, falling back to local `llama-swap` otherwise; the stale "auto-start llama-swap always" note no longer applies.
 - **QI implementation Slice 1 (shipped)**: `src/js/protocol/routes/guildRaidsRoutes.js`, `src/js/state/quantumState.js`, and the `GuildRaids*Service.js` CJS parsers are wired into the dispatcher (see `docs/STATUS.md`). Architecture remains in [`plans/2026-09-12-quantum-incursions-architecture.md`](plans/2026-09-12-quantum-incursions-architecture.md).
 - Debug lookup fixes reduced MetadataStore messages from 170,669 to 258 across the measured cold capture; the first loop dropped from 119,227 to 102. Last-render completion was 4.01 seconds versus the earlier 18.73-second Debug Mode run.
@@ -100,9 +101,8 @@ The old statement that DevTools panels cannot be inspected through CDP was too b
 2. Timing instrumentation now exists for P1–P6 across bootstrap, content bridge, network listener, and startup/resolution paths. Check current source and capture availability before adding duplicate tags. Persisted debug state is loaded asynchronously; earliest startup events may not be logged.
 3. Validate slow/failed metadata recovery in the real panel, including recomputed FP and goods totals. Unit tests cover lifecycle behavior, not a full live gameplay scenario.
 4. Confirm desired Galaxy debug behavior before changing it: current debug mode shows the full candidate set and can display the panel with no charges; standard mode filters readiness/charges. This takeover did not change that behavior.
-5. Investigate the reported Town Hall long list, missing collapse control, and height/scroll behavior in the actual render path. It has not been established as fixed.
-6. Reconcile the UI/RPC punch-list against source and existing tests before execution. Several named tasks already have implementations/tests; unchecked boxes do not prove they are unstarted.
-7. Re-scope the StartupService decomposition roadmap against actual remaining responsibilities. Settlement/quest/inventory/castle services already exist; their existence alone does not establish all old responsibilities have migrated.
+5. Reconcile the UI/RPC punch-list against source and existing tests before execution. Several named tasks already have implementations/tests; unchecked boxes do not prove they are unstarted.
+6. Re-scope the StartupService decomposition roadmap against actual remaining responsibilities. Settlement/quest/inventory/castle services already exist; their existence alone does not establish all old responsibilities have migrated.
 
 Plans/specs live in `docs/plans/` and `docs/specs/`; the coordination hub is
 `docs/README.md` and the live work/todo board is `docs/STATUS.md`.
@@ -136,3 +136,24 @@ Implemented in `src/js/fn/rateParser.js` (`extractRateFromTitle`) and wired into
   2. Transition domain RPC services in `src/js/msg/` to a reactive state notification pattern matching `BlueGalaxyState.notify()`.
   3. Complete TypeScript mirrors for `CityStatsCalculator.js` and `MetadataStore.js`.
   4. Harden the `devtools.js` ↔ `index.js` bridge into a formal message channel.
+
+## Test Suite Footprint Optimization (2026-09-14)
+
+- **Phase 1: Shared Test Harness (`tests/helpers/test-mocks.mjs`)**:
+  - Implemented reusable mock DOM primitives (`createMockElement`, `createMockDocument`, `setupMockDOM`) and Chrome extension API shims (`chrome.runtime`, `chrome.storage.local`).
+  - Added full test coverage in `tests/helpers/test-mocks.test.mjs`.
+  - Configured automatic `domStore` registration and querySelector ID fallback resolving into the active document store.
+
+- **Phase 2: Monolithic Test Decomposition (<600 line limit enforcement)**:
+  - Decomposed `tests/protocol/domain-services.test.mjs` (1,240 lines) into:
+    - `tests/protocol/domain-services.test.mjs` (347 lines): Core protocol lifecycle, central service registry, ResourceService bag extraction, ArmyUnitManagementService multi-era unit resolution, legacyBridge fallback.
+    - `tests/protocol/domain-services-city.test.mjs` (523 lines): HiddenRewardService (incidents), CastleSystemService, BoostService (BigNumber matrices), AllyService, InventoryService, OutpostService.
+    - `tests/protocol/domain-services-social.test.mjs` (429 lines): AutoAidService, FriendsTavernService, TreasuryService, QuestService, ItemExchangeService, TimeService, ConversationService rate parsing.
+  - Decomposed `tests/msg/guild-battleground-signals.test.mjs` (1,196 lines) into:
+    - `tests/msg/guild-battleground-signals.test.mjs` (403 lines): Signal state lifecycle (set/remove/ignore), raw postData.text payload routing, context.requestPayload fallback, conquest pruning.
+    - `tests/msg/guild-battleground-targets.test.mjs` (569 lines): Target generator (Volcano/Waterfall), UC camps formatting, server market resolution, 12h/24h server/local time formatting (timeGBG), token ordering.
+    - `tests/msg/guild-battleground-panels.test.mjs` (349 lines): Panel interactions, chat thread switching, reactive store dispatching to dedicated containers, result card formatting, province updates.
+
+- **Phase 3: Fixture Pruning (Active — Plan: `docs/plans/2026-09-14-test-suite-fixture-pruning-plan.md`)**:
+  - Step 1 completed: Removed redundant unreferenced `tests/fixtures/rpc/TradeService.getTradeOffers.json` (-6.2 MB, -226,659 lines).
+  - All tests passing with 0 failures across the test runner.

@@ -1,4 +1,4 @@
-# Skills & Runbooks Taxonomy (55 Skills)
+# Skills & Runbooks Taxonomy (56 Skills)
 
 Discovered from `.agents/skills/`. Consult `<skills>` catalog for triggers. Load on-demand via `skill_view(name)`.
 
@@ -62,7 +62,7 @@ Discovered from `.agents/skills/`. Consult `<skills>` catalog for triggers. Load
 | `localization-workflow` | Translation extraction, validation, sync   |
 | `release-checklist`     | Pre-release verification gates             |
 
-### Multi-Agent Orchestration (17)
+### Multi-Agent Orchestration (18)
 
 | Skill                          | Purpose                                                 |
 | ------------------------------ | ------------------------------------------------------- |
@@ -83,6 +83,7 @@ Discovered from `.agents/skills/`. Consult `<skills>` catalog for triggers. Load
 | `hermes-agent-skill-authoring` | Author in-repo SKILL.md files                           |
 | `requesting-code-review`       | Pre-commit review gates                                 |
 | `grill-me`                     | Adversarial plan interview                              |
+| `caveman`                      | Terse communication mode cutting output tokens          |
 
 ## Skill Memory & Work Log
 
