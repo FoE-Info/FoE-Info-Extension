@@ -109,6 +109,14 @@ node .agents/scripts/skill-memory.mjs stats
 Full loop, promotion signals, and authoring rules: `writing-skills`
 `references/skill-memory.md`. Verified by `tests/agents/skill-memory.test.mjs`.
 
+## Shared On-Demand Knowledge
+
+Reusable FoE domain knowledge, API catalogs, and worked subagent examples live
+outside agent prompts under `.agents/references/`. Use the
+[Agent Reference Catalog](../.agents/references/README.md) to locate material
+that agents and skills can load only when relevant. Antigravity subagent
+definitions remain flat in `.agents/agents/*.md`.
+
 ## Skill-First Invariant
 
 **Before any non-trivial task:**
