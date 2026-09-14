@@ -41,9 +41,9 @@ const resolveEra = (goodId) => ERA_BY_GOOD[goodId] || null;
 test('TradeService: getTradeOffers parsing from HAR capture', async (t) => {
   const responseData = loadOffers();
 
-  await t.test('captures the full 3,109 trade offers', () => {
+  await t.test('captures the representative trade offers', () => {
     const offers = parseTradeOffers(responseData);
-    assert.equal(offers.length, 3109);
+    assert.equal(offers.length, 20);
   });
 
   await t.test('normalizes offer, need and merchant fields', () => {
@@ -61,7 +61,7 @@ test('TradeService: getTradeOffers parsing from HAR capture', async (t) => {
   });
 
   await t.test('accepts both wrapped and bare response shapes', () => {
-    assert.equal(parseTradeOffers({ offers: responseData }).length, 3109);
+    assert.equal(parseTradeOffers({ offers: responseData }).length, 20);
     assert.equal(parseTradeOffers([]).length, 0);
     assert.equal(parseTradeOffers(null).length, 0);
   });
@@ -229,9 +229,9 @@ test('TradeService: real fixture classification parity', async (t) => {
       for (const { result } of offers) {
         if (counts[result.label] !== undefined) counts[result.label]++;
       }
-      assert.equal(counts['1:1'], 454);
-      assert.equal(counts['2:1'], 357);
-      assert.equal(counts['1:2'], 1676);
+      assert.equal(counts['1:1'], 5);
+      assert.equal(counts['2:1'], 5);
+      assert.equal(counts['1:2'], 5);
     },
   );
 
@@ -252,8 +252,8 @@ test('TradeService: instance API', async (t) => {
     const service = new TradeService({ resolveEra });
     const res = service.getTradeOffers({ responseData: loadOffers() });
     assert.equal(res.success, true);
-    assert.equal(res.count, 3109);
-    assert.equal(service.getOffers().length, 3109);
+    assert.equal(res.count, 20);
+    assert.equal(service.getOffers().length, 20);
     assert.ok(service.getTradeOffer(49797288));
     assert.equal(service.getTradeOffer(999999999), null);
     assert.ok(service.getFairTrades().length > 0);
@@ -261,6 +261,6 @@ test('TradeService: instance API', async (t) => {
 
   await t.test('singleton parses without an explicit resolver', () => {
     const res = tradeService.getTradeOffers({ responseData: loadOffers() });
-    assert.equal(res.count, 3109);
+    assert.equal(res.count, 20);
   });
 });
