@@ -1,169 +1,53 @@
-# FoE-Info Extension — Project Handoff
+# FoE-Info Extension — Verified Handoff
 
-Updated 2026-09-14 after the Test Suite Footprint Optimization (Phase 1 shared test-mocks harness, Phase 2 monolithic test decomposition across domain-services and GBG signals, and Phase 3 fixture pruning Step 1).
+## Repository State
 
-## Resume safely
+- Branch: `development`, tracking `origin/development`.
+- The working tree is intentionally dirty with both harness work and pre-existing application work. Do not discard, stage, commit, or push unrelated changes.
+- `.agents/` is the Git-tracked canonical harness library. `.opencode/` and `opencode.json` are adapters, not independent owners.
 
-Read `AGENTS.md` and [opencode coexistence](OPENCODE.md). Inspect `git status` before editing. The takeover is committed in logical chunks on `development`; it has been pushed. Three pre-existing `docs/antigravity_prompt_*.md` files are user workspace artifacts and remain untouched.
+## Canonical Harness
 
-The previous handoff at `cec0ded:docs/HANDOFF.md` is retained in Git history for historical debugging context. Its completion labels and next-step instructions were not reliable. This document supersedes them.
+- 55 skills under `.agents/skills/`.
+- 20 flat subagents under `.agents/agents/`, with matching OpenCode shims.
+- 17 rules: 8 `always_on`, 9 `model_decision`.
+- `docs/SKILLS.md` and `docs/SUBAGENTS.md` are generated from canonical frontmatter by `.agents/scripts/generate-agent-catalogs.mjs`; `--check` detects drift.
+- Optional skill depth lives in owned `references/` libraries with explicit `references/README.md` catalogs. Skill entrypoints stay at or below 250 lines.
 
-## Current follow-ups
+## Routing and Ownership
 
-- **Test Suite Footprint Optimization Phase 3 completed 2026-09-14**: Pruned 5 oversized JSON test fixtures (`TradeService.getTradeOffers.json`, `marketplace_trades.json`, `construction_ranking.json`, `OutpostService.getAll.json`, `guild_overview.json`), trimming ~22.4 MB disk space and ~720,689 lines while maintaining 100% test coverage and full verification gate.
-- **Graph generation completed 2026-09-11** for LoW-Tool and FoE-Info-original (`npm run graph:low-tool:reindex`, `npm run graph:foe-info-original:reindex`); both `graphify-out/graph.json` files are generated and queryable via MCP. The reindex scripts now source `.env` and use the DeepSeek backend when `DEEPSEEK_API_KEY`/`GRAPHIFY_BACKEND=deepseek` is set, falling back to local `llama-swap` otherwise; the stale "auto-start llama-swap always" note no longer applies.
-- **QI implementation Slice 1 (shipped)**: `src/js/protocol/routes/guildRaidsRoutes.js`, `src/js/state/quantumState.js`, and the `GuildRaids*Service.js` CJS parsers are wired into the dispatcher (see `docs/STATUS.md`). Architecture remains in [`plans/2026-09-12-quantum-incursions-architecture.md`](plans/2026-09-12-quantum-incursions-architecture.md).
-- Debug lookup fixes reduced MetadataStore messages from 170,669 to 258 across the measured cold capture; the first loop dropped from 119,227 to 102. Last-render completion was 4.01 seconds versus the earlier 18.73-second Debug Mode run.
-- Painted-frame verification confirmed the old Daily Units 147-to-3299 flash. The shared resolver barrier removed that post-spinner intermediate value in the fixed capture.
-- Graphify uses the shared local launcher; routine AST output is logged. See [Graphify infrastructure](GRAPHIFY.md).
-- Graphify graph synchronization and query-first enforcement have live evidence. See [opencode coexistence](OPENCODE.md) for the current host behavior.
-- The ecosystem accuracy audit has been completed and retired.
+- `graph-knowledge-explorer` uses explicit graph profiles from `.agents/references/agents/graph-targets.md`.
+- `cross-codebase-comparator` uses explicit peer/baseline profiles from `.agents/references/agents/comparison-targets.md`.
+- `foe-economy-analyst` and `foe-combat-analyst` use topic profiles from `.agents/references/agents/foe-mechanics-topics.md`.
+- FoE JSON-RPC analysis is owned by `protocol-reverse-engineering`; `add-rpc-service` remains the separate implementation workflow.
+- Mandatory skill selection and completion verification are owned by rules, not duplicate invokable skills.
+- Chrome extension development and Chrome Web Store publishing are separate skills.
 
-## Takeover changes and subsequent corrections
+## Host Behavior
 
-- Central service registration owns initialization. Individual service modules no longer self-register. Repeated registry initialization is idempotent per dispatcher; identical callbacks on the same route are deduplicated while distinct legacy and modern handlers are retained.
-- Failed metadata requests can be retried on a later resolver invocation. Concurrent callers share pending downloads and each receive completion; only successful ingestion is cached as fetched. There is no automatic unbounded retry loop.
-- The current startup barrier retains its spinner while the aggregate metadata resolver is pending. The three-second threshold now warns; it does not render early. Resolver failure or settlement without updates releases to the fallback. This supersedes the original takeover timeout behavior.
-- Live goods detail and total rendering use supplied values. SAD/SASH/SAT fixed-value substitutions, SAJM suppression, and the guild-total substitution were removed. Existing boost and BigNumber rounding formulas were preserved.
-- Routine logger info/debug output requires Debug Mode. Warnings/errors remain local in the DevTools panel console in Standard Mode and expand in Debug Mode. Content-bridge timing uses persisted debug state. Other legacy direct console calls remain to be audited.
-- The CDP inspector requires confirmed subscriptions and reports connection failures, rejected subscriptions, exceptions, and warnings with a nonzero exit. Its native WebSocket fallback now uses the correct event API.
-- LLM lifecycle tests use command fixtures instead of contacting the real server. Lint/format exclude worktrees; existing prompt documents are excluded from formatting without modifying their contents. The Node requirement is now 24 or later.
-- `.opencode/` supplies the host-specific registration and hook plugins on top of the shared `.agents/` launcher. Hook trust and current enforcement limitations are documented in `OPENCODE.md`.
+- OpenCode injects exactly the eight canonical `always_on` rules. Scoped rules load by relevance.
+- BigNumber precision is `model_decision` and applies only to FP, boost, treasury, lock, and related arithmetic work.
+- MCP commands resolve through `PATH`; graph locations are workspace-relative. Antigravity environment placeholders resolve when a profile is generated. OpenCode uses literal local Graphify defaults and native `{env:NAME}` interpolation only for required external credentials.
+- MCP profile writes reject symlinked destinations, use exclusively created randomized staging files, preserve unrelated OpenCode MCP entries, and format both generated configs before replacement.
+- `.agents/references/harness-adapters.md` is the canonical tool, dispatch, isolation, hook, and artifact mapping.
 
-The implementation is recorded in Git history on `development`.
+## Self-Improvement
+
+- `.agents/rules/verification-before-completion.md` requires grounded outcome logging for each project skill or subagent used.
+- `.agents/scripts/skill-memory.mjs` records evidence and promotes verified lessons into canonical definitions.
+- `.agents/scripts/project-curator.mjs` is dry-run/read-only by default; apply mode only repairs already-recorded missing lesson promotions.
+- `.agents/references/skill-memory.md` is the sole shared explanation.
 
 ## Verification
 
-Focused regression tests were observed failing before each runtime fix and passing afterward. Integration verification passed: formatting, lint (0 errors, 204 existing warnings), translation parity, 550 tests at the time of writing (591 as of 2026-09-09), and development build. `npm run typecheck` passed separately.
+Verified on 2026-09-15:
 
-The root development extension was reloaded through `foe-browser --reload-ext`, followed by game login. A direct FoE `panel.html` CDP session confirmed City Info content, no metadata spinner, and 244 received RPC messages; a three-second inspector session captured zero panel warnings/errors. This is a smoke test, not validation of every game feature or slow-network recovery.
+- `npm run test:agents` — 83/83 passed.
+- `node .agents/scripts/generate-agent-catalogs.mjs --check` — both catalogs current.
+- `node .agents/scripts/project-curator.mjs status` — 55 skills, 20 agents, 75 definitions, 0 missing stored lessons, 0 stale definitions, 0 duplicate lesson groups, 0 duplicate reference groups, 0 warnings.
+- `npm run verify` — passed formatting, ESLint, TypeScript, RPC contract, i18n, complete Node tests, and development webpack build.
+- `git diff --check` — passed.
 
-Follow-up reload timings on 2026-09-08, with Debug Mode off:
+## Current Work
 
-| Reload                 | Fresh startup RPC received |  First fresh City Info render | Last observed replacement |
-| ---------------------- | -------------------------: | ----------------------------: | ------------------------: |
-| Normal cache           |                    2.713 s |    2.962 s (root replacement) |                   4.615 s |
-| Browser cache bypassed |                    2.588 s | 2.826 s (full card confirmed) |                   4.452 s |
-
-Times are measured from sending the game-tab CDP reload command. Both fresh startup payloads contained 447 entities; the previous City Info DOM node was disconnected before counting the new render. The second run also confirmed the current copy button and no spinner. No runtime exceptions or log warnings were captured, and the final three-second panel inspector passed. Temporary observation instrumentation was removed; Debug Mode remained off.
-
-These were authenticated game reloads with an already-running extension and warm in-memory metadata. Browser cache bypass does not clear the extension's metadata. They do not reproduce the reported 22-second delay on this path, but do not establish cold logout/login timing, final calculated-value correctness, or slow-network recovery.
-
-MCP initialization and tools/list succeeded for Chrome DevTools and all five Graphify servers (6 MCP servers total). After the user's trust review and restart, the tools were exposed in the session and live browser/host-graph queries succeeded. The opencode hook plugins were exercised; see `OPENCODE.md` for the remaining host-specific differences.
-
-## Architecture and remaining decomposition
-
-The runtime pipeline is main-world XHR interception / DevTools network capture → dispatcher → services → state and metadata → calculators → UI. `MetadataStore` retains compatibility proxies for legacy consumers; mixed CommonJS/ESM modules are bundled by Webpack.
-
-The extracted `gbgProvinceView.js`, `gbOverviewCard.js`, and `panelDispatcher.js` already exist and are used. Do not repeat Briefs 12–14 based on stale plan checkboxes.
-
-Oversized modules at the takeover baseline:
-
-| File                                     | Lines |
-| ---------------------------------------- | ----: |
-| `src/js/msg/StartupService.js`           | 1,432 |
-| `src/js/index.js`                        | 1,078 |
-| `src/js/fn/helper.js`                    |   710 |
-| `src/js/msg/GuildBattlegroundService.js` |   656 |
-| `src/js/protocol/legacyBridge.js`        |   629 |
-
-These are remaining architecture debt, not evidence that previous extractions never happened. Continue in bounded slices, without adding inline feature logic to `index.js` or `StartupService.js`.
-
-## Decisions and corrections to old instructions
-
-### Subagent knowledge placement
-
-Antigravity discovers the 36 subagents only as flat
-`.agents/agents/<name>.md` files; nested `<name>/SKILL.md` definitions are not
-supported. Flat definitions retain identity, mandatory workflow, safety
-invariants, and verification. Detailed FoE domain knowledge and optional worked
-examples live under `.agents/references/` and are indexed by
-[the agent reference catalog](../.agents/references/README.md) for on-demand use
-by agents and skills.
-
-### Workspace identity
-
-`.agents/project.json` is the canonical workspace identity anchor (`name`, `displayName`, `primaryGraph`), restored after its brief removal in `e61503f`. `package.json` mirrors those fields for npm/build tooling. `tests/agents/agent-config.test.mjs` verifies the file's presence and schema.
-
-### Arithmetic
-
-The active `.agents/rules/bignumber-precision.md` defines a deliberate rounding hybrid: `ROUND_HALF_UP` for Arc rewards and suggested donations, `ROUND_CEIL` for spot locks, owner-safe-adds, and safe-spots. The reviewer role now defers to the rule and validated calculation tests. No Arc or investment calculation formula was changed in this takeover. Validate operation-specific game examples before any future change; do not apply historical blanket single-mode rounding instructions.
-
-### Goods substitutions
-
-Commit `eccddbe` removed the original renderer substitutions; `3c89c8a` reintroduced and expanded them without supporting metadata, and `f90d531` extracted them unchanged. They changed arbitrary matching live quantities rather than deriving results from game data. The current regressions cover both detail and aggregate rendering with changing runtime values.
-
-### Browser inspection
-
-The old statement that DevTools panels cannot be inspected through CDP was too broad. Availability depends on exposed targets and frames. Use `npm run inspect:panel` and verify connection/subscription success. If panel targets are unavailable, inspect the DevTools target/frame context; report the actual limitation rather than claiming the panel was tested.
-
-## Preserve these existing fixes
-
-- `MetadataStore.registerEntity` avoids unchanged registrations. The proxy set trap only registers canonical IDs; alias writes retain the existing multi-key lookup behavior. Do not remove those alias writes or the canonical-ID guard.
-- Startup rendering delegates to `scheduleStartupRender`; do not restore an unconditional early render.
-- GBG renders in its dedicated battleground containers, not Great Buildings' `#donation` container.
-- Legacy GvG removal was deliberate; do not reintroduce its dead panels.
-- Runtime game metadata stays network-driven. `../metadata-store/` is offline development/test input, never a runtime bundle dependency.
-
-## Remaining product work
-
-1. If investigating remaining startup latency, use the existing scripted fresh server-entry flow, preserving account authentication. Cold Standard Mode previously reached its last render at 5.49 seconds; the logging fix reached 4.01 seconds in Debug Mode. Do not confuse those final-render endpoints with the historical 2.8–3.0-second first-render measurements or the user-reported 22 seconds.
-2. Timing instrumentation now exists for P1–P6 across bootstrap, content bridge, network listener, and startup/resolution paths. Check current source and capture availability before adding duplicate tags. Persisted debug state is loaded asynchronously; earliest startup events may not be logged.
-3. Validate slow/failed metadata recovery in the real panel, including recomputed FP and goods totals. Unit tests cover lifecycle behavior, not a full live gameplay scenario.
-4. Confirm desired Galaxy debug behavior before changing it: current debug mode shows the full candidate set and can display the panel with no charges; standard mode filters readiness/charges. This takeover did not change that behavior.
-5. Reconcile the UI/RPC punch-list against source and existing tests before execution. Several named tasks already have implementations/tests; unchecked boxes do not prove they are unstarted.
-6. Re-scope the StartupService decomposition roadmap against actual remaining responsibilities. Settlement/quest/inventory/castle services already exist; their existence alone does not establish all old responsibilities have migrated.
-
-Plans/specs live in `docs/plans/` and `docs/specs/`; the coordination hub is
-`docs/README.md` and the live work/todo board is `docs/STATUS.md`.
-
-Run `npm run verify` and `npm run typecheck` on the integrated checkout. TypeScript has `checkJs: false`; translation parity proves matching keys, not translation quality. Distinguish runtime observations, source findings, and unverified assumptions when updating this handoff.
-
-## GB donation math: Costs/Reward/Lock model (2026-09-08, commit 9388525)
-
-The GB donation panels previously conflated three distinct quantities into a single "safe spot" number, producing wrong Profit/Loss figures once a viewer's own Arc bonus diverged from the guild's standard donation percent. `GreatBuildingCalculator.js` now exposes them separately:
-
-- **Costs** (`calculateSuggestedDonation(baseReward, standardPercent)`): the guild-convention donation amount at the configured standard (e.g. 190%). Unchanged, was always correct.
-- **Lock / spotLock** (`calculateSpotLock(remaining, spotInvested)` = `ceil((remaining + spotInvested) / 2)`): the worst-case FP a potential donor must add to make a place mathematically unsnipeable. Independent of any Arc bonus or standard percent.
-- **Donor Reward** (`calculateArcReward(baseReward, viewerArcPercent)`): what the _viewing_ account would receive at its own known Arc bonus, not the existing holder's.
-- **Headline Profit** = Donor Reward − Costs (not minus Lock). `calculateDonorOutcome(remaining, spotInvested, baseReward, arcBonusPercent, standardPercent)` returns `{ spotLock, costs, donorReward, donorProfit, guaranteedProfit }`, where `guaranteedProfit = spotLock <= costs` (true when the building owner has over-funded their own place, meaning even the fully-safe lock threshold is cheaper than the guild-standard cost — a stronger "risk-free" case worth visually distinguishing from ordinary profit).
-
-Root causes fixed: (1) `calculateSafeSpots()` wasn't threading a sequential `remaining` value across P1–P5 the way Forge-Hammer's reference algorithm does; (2) it compared against the wrong quantity (owner's personal Arc reward instead of the community-standard donation amount) when deciding if a spot was already safe. Both confirmed against Forge-Hammer's live `part-calc.js` source and multiple real in-game examples (Stellar Warship P3, Blue Galaxy row 4, Statue of Zeus at 180%/190% standard) — all now match exactly, including the case that had read as a false "profit" being an actual loss under the old Reward-minus-Lock formula.
-
-UI: three-way color coding (green = profit, yellow/neutral = break-even, red = loss) plus a "Guaranteed profit" note when `guaranteedProfit` is true. The donation-loop card headers in `GreatBuildingsService.js` no longer attribute a place to a player name (the loop iterates P1–P5 as the _viewer's_ potential-donor outcome at each rank, not a specific current holder's identity — the old code was mislabeling the building owner as sitting in P1). All 575 tests pass at the time of writing (591 as of 2026-09-09); `npm run verify`/`typecheck` should still be run before the Chrome Web Store release, but the math itself is verified release-ready.
-
-## Guild thread donation ratio parsing (Implemented & Verified)
-
-Implemented in `src/js/fn/rateParser.js` (`extractRateFromTitle`) and wired into `src/js/msg/ConversationService.js` (`getConversation` → `getPercent` → `setCurrentPercent`), overriding the configured "Donation %" default when a guild message thread title carries an embedded ratio in the 1.00–2.50 (100%–250%) range (e.g. `LoW BE All GBs [secure @ 1.92]`, `1.9 Secure`, `2.0 All Levels`). Verified in `tests/protocol/domain-services.test.mjs`. Fallback to static Options default remains when no valid ratio or thread title is present.
-
-## End-to-End Knowledge Base Consolidation (2026-09-12)
-
-- **Graph Maintenance & Cleanup**: Fixed absolute paths for all 5 MCP servers in `.agents/mcp_config.json` and removed the stale reviews, audits, and dated graph backup folders.
-- **DeepSeek Reindexing**: Extracted fresh AST across 489 source files (3,047 nodes, 4,975 edges) and labeled 248 communities using the DeepSeek API (`--backend deepseek`). Updated and exported all 5 knowledge graphs (`FoE-Info-Extension`, `metadata-store`, `forge-hammer`, `low-tool`, `foe-info-original`).
-- **Comprehensive Knowledge Base (`docs/KNOWLEDGEBASE.md`)**: Populated 26 verified architectural memories covering the entire stack from DevTools network interception to DOM presentation. Running `graphify reflect` compiled the deterministic lessons report into `graphify-out/foe-info/reflections/LESSONS.md`.
-- **Actionable Items Prioritized in `docs/STATUS.md`**:
-  1. Trim `MessageDispatcher.js` (608L -> ~525L) by extracting `_dedupCache` to `src/js/protocol/dedupCache.js` for 100% compliance with the `<= 600` line ceiling.
-  2. Transition domain RPC services in `src/js/msg/` to a reactive state notification pattern matching `BlueGalaxyState.notify()`.
-  3. Complete TypeScript mirrors for `CityStatsCalculator.js` and `MetadataStore.js`.
-  4. Harden the `devtools.js` ↔ `index.js` bridge into a formal message channel.
-
-## Test Suite Footprint Optimization (2026-09-14)
-
-- **Phase 1: Shared Test Harness (`tests/helpers/test-mocks.mjs`)**:
-  - Implemented reusable mock DOM primitives (`createMockElement`, `createMockDocument`, `setupMockDOM`) and Chrome extension API shims (`chrome.runtime`, `chrome.storage.local`).
-  - Added full test coverage in `tests/helpers/test-mocks.test.mjs`.
-  - Configured automatic `domStore` registration and querySelector ID fallback resolving into the active document store.
-
-- **Phase 2: Monolithic Test Decomposition (<600 line limit enforcement)**:
-  - Decomposed `tests/protocol/domain-services.test.mjs` (1,240 lines) into:
-    - `tests/protocol/domain-services.test.mjs` (347 lines): Core protocol lifecycle, central service registry, ResourceService bag extraction, ArmyUnitManagementService multi-era unit resolution, legacyBridge fallback.
-    - `tests/protocol/domain-services-city.test.mjs` (523 lines): HiddenRewardService (incidents), CastleSystemService, BoostService (BigNumber matrices), AllyService, InventoryService, OutpostService.
-    - `tests/protocol/domain-services-social.test.mjs` (429 lines): AutoAidService, FriendsTavernService, TreasuryService, QuestService, ItemExchangeService, TimeService, ConversationService rate parsing.
-  - Decomposed `tests/msg/guild-battleground-signals.test.mjs` (1,196 lines) into:
-    - `tests/msg/guild-battleground-signals.test.mjs` (403 lines): Signal state lifecycle (set/remove/ignore), raw postData.text payload routing, context.requestPayload fallback, conquest pruning.
-    - `tests/msg/guild-battleground-targets.test.mjs` (569 lines): Target generator (Volcano/Waterfall), UC camps formatting, server market resolution, 12h/24h server/local time formatting (timeGBG), token ordering.
-    - `tests/msg/guild-battleground-panels.test.mjs` (349 lines): Panel interactions, chat thread switching, reactive store dispatching to dedicated containers, result card formatting, province updates.
-
-- **Phase 3: Fixture Pruning (Active — Plan: `docs/plans/2026-09-14-test-suite-fixture-pruning-plan.md`)**:
-  - Step 1 completed: Removed redundant unreferenced `tests/fixtures/rpc/TradeService.getTradeOffers.json` (-6.2 MB, -226,659 lines).
-  - All tests passing with 0 failures across the test runner.
+Use `docs/STATUS.md` for open product work. No harness migration task remains open. Before any future harness change, inspect the current tree and run the generator check, harness suite, Curator status, and full verification gate.

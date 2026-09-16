@@ -3,6 +3,17 @@ import * as bootstrap from 'bootstrap';
 import browser from 'webextension-polyfill';
 import '../css/main.scss';
 import { rewardObserve, showReward } from './fn/RewardRenderer.js';
+import { setCurrentPercent } from './msg/GreatBuildingsService.js';
+import {
+  processMetadataData,
+  processMetadataEntry,
+} from './msg/MetadataService.js';
+import { setResourceDefs } from './msg/ResourceService.js';
+import {
+  renderLiveCityStats,
+  lastStartupMsg as serviceLastStartupMsg,
+  startupService,
+} from './msg/StartupService.js';
 import { installPanelBridge } from './protocol/devtoolsBridge.js';
 import { setupIndexBridge } from './protocol/indexBridgeSetup.js';
 import { messageDispatcher } from './protocol/MessageDispatcher.js';
@@ -111,10 +122,7 @@ export {
 };
 export * from './vars/state.js';
 export * from './state/indexEntityDefs.js';
-export {
-  processMetadataEntry,
-  processMetadataData,
-} from './msg/MetadataService.js';
+export { processMetadataEntry, processMetadataData };
 export { renderTreasuryPanel as processTreasuryData } from './ui/panelDispatcher.js';
 
 let lastStartupMsg = null;
@@ -136,12 +144,18 @@ setupIndexBridge(messageDispatcher, {
 initIndexUiBindings({
   browser,
   citystats,
+  renderLiveCityStats,
+  startupService,
+  setCurrentPercent,
+  setResourceDefs,
+  processMetadataData,
   tool: browser?.runtime?.getManifest?.() || {},
   getLanguage: () => language,
   setLanguage: (v) => {
     language = v;
   },
   getLastStartupMsg: () => lastStartupMsg,
+  getServiceLastStartupMsg: () => serviceLastStartupMsg,
   setLastStartupMsg: (m) => {
     lastStartupMsg = m;
     setLastStartupMsg(m);

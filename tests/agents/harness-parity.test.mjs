@@ -91,7 +91,6 @@ test('Harness Parity - shared adapter exists and is linked by workflow skills', 
   );
 
   const linked = [
-    'using-superpowers',
     'writing-skills',
     'writing-agents',
     'writing-rules',
@@ -124,20 +123,28 @@ test('Harness Parity - opencode.json plugin entries resolve to files', () => {
   }
 });
 
-test('Harness Parity - opencode instructions glob covers every canonical rule', () => {
+test('Harness Parity - opencode injects exactly the always-on canonical rules', () => {
   const config = JSON.parse(
     fs.readFileSync(path.join(PROJECT_ROOT, 'opencode.json'), 'utf8'),
   );
-  const instructions = config.instructions ?? [];
-  assert.ok(
-    instructions.includes('.agents/rules/*.md'),
-    'opencode.json instructions must include .agents/rules/*.md',
-  );
+  const injectedRules = (config.instructions ?? [])
+    .filter((entry) => entry.startsWith('.agents/rules/'))
+    .sort();
 
   const rulesDir = path.join(AGENTS_DIR, 'rules');
-  const ruleFiles = fs.readdirSync(rulesDir).filter((f) => f.endsWith('.md'));
-  assert.ok(
-    ruleFiles.length > 0,
-    'Expected canonical rules under .agents/rules/',
+  const alwaysOnRules = fs
+    .readdirSync(rulesDir)
+    .filter((file) => file.endsWith('.md'))
+    .filter((file) => {
+      const { frontmatter } = readFrontmatter(path.join(rulesDir, file));
+      return field(frontmatter, 'trigger') === 'always_on';
+    })
+    .map((file) => `.agents/rules/${file}`)
+    .sort();
+
+  assert.deepEqual(
+    injectedRules,
+    alwaysOnRules,
+    'opencode.json must inject every always_on rule and no model_decision rules',
   );
 });

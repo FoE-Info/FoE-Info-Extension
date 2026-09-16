@@ -1,65 +1,27 @@
 # Cross-Agent Coordination
 
-This repo is worked on by AI coding agents. **`docs/README.md` is the single
-coordination hub** every agent should read at session start, alongside
-`AGENTS.md`. Live work/todos live in `docs/STATUS.md`; project history and
-resume-safely notes are in `docs/HANDOFF.md`; host-specific wiring is in
-`docs/OPENCODE.md`. Whichever agent is reading this should treat the status
-board as current status, not a changelog — update `docs/STATUS.md` when
-something here goes stale rather than letting it drift.
+`docs/README.md` is the coordination hub. `AGENTS.md` is the portable harness entrypoint, `docs/STATUS.md` lists open work only, and `docs/HANDOFF.md` records verified state for resume work.
 
-## Roster and roles
+## Ownership
 
-- **Antigravity** — the MAIN agent. Owns and canonicalizes `.agents/` (36 subagent
-  personas, 17 rules, 53 skills, 5 lifecycle hooks). User has an Ultra package that
-  refreshes roughly every 2 days.
-- **opencode** — the primary CLI agent. Runs against the local `llama-swap`
-  backend (see `.agents/scripts/llama-swap-lifecycle.sh`) or a configured cloud
-  backend such as DeepSeek (`.env` → `DEEPSEEK_API_KEY`). Adapts Antigravity's
-  canonical setup (`.agents/`) through its own `.opencode/` directory and
-  `docs/OPENCODE.md`.
-- **The user** — coordinates activity from outside the repo (browser-based team
-  chat, console logs, screenshots, bug reports) and turns observations into scoped
-  prompts for whichever agent is active. The user does the external coordination a
-  separate assistant previously performed.
+- `.agents/` is the Git-tracked canonical library: 55 skills, 20 subagents, 17 rules, shared references, scripts, hooks, and MCP registry.
+- `.opencode/` and `opencode.json` adapt the canonical library to OpenCode without owning duplicate skills or personas.
+- Other harnesses consume the same canonical definitions through their native discovery and adapter mechanisms.
 
-## Standing rules for every agent, every session
+## Session Discipline
 
-1. **No AI co-authorship or attribution markers in any commit**, ever, unless the
-   user explicitly asks for one this specific time. Already codified in
-   `.agents/rules/unslop-commit.md` — this is not optional or agent-specific.
-2. **No commit or push without the user's explicit approval for that specific
-   change.** A prior incident: an agent session committed with AI attribution and
-   pushed to GitHub without asking — do not repeat this, regardless of which tool.
-3. **Investigate and report before fixing**, unless a fix is explicitly
-   pre-authorized (e.g. the subagent/rule count-mismatch fix was authorized as a
-   standing exception). Default to reporting findings and waiting for a go-ahead.
-4. **One capability/change at a time, verified live, before moving to the next.**
-   Don't batch unverified changes.
-5. **Flag any staleness you find.** If you notice anything stale, wrong,
-   inconsistent, half-written, or referencing something that no longer exists in
-   `.agents/` or the ecosystem docs — even if unrelated to your current task — say
-   so explicitly in your report. Don't silently fix it and don't silently ignore it.
-6. **`.agents/` is canonical and Antigravity's.** Other agents adapt to it via their
-   own tool-specific directory (`.opencode/`) rather than modifying it, except for
-   narrow, pre-authorized text/count corrections.
-7. **Browser/login test flows must reuse the existing scripted CDP flow** at
-   `tests/cdp/verify-startup-logs.mjs`. Never touch the actual account/login
-   session, never use mouse/keyboard browser automation for testing — an ambiguous
-   "cold login" instruction previously caused a real account logout and wasted a
-   large amount of token budget.
-8. **Graphify semantic extraction/labeling must not consume local VRAM unless
-   intended.** Prefer the DeepSeek cloud backend when it is configured:
-   `DEEPSEEK_API_KEY` (or `GRAPHIFY_BACKEND=deepseek`) is sourced from the
-   git-ignored `.env`, and the reindex scripts then call
-   `graphify label . --backend deepseek`. Fall back to the local `llama-swap`
-   backend only when no DeepSeek key is configured. Never call an unconfigured
-   or third-party paid API. See `.agents/scripts/graph-*-reindex.sh` and
-   [`GRAPHIFY.md`](GRAPHIFY.md) (Local Execution Policy).
+1. Read `AGENTS.md`, `docs/README.md`, and `docs/STATUS.md` at startup. Read `docs/HANDOFF.md` only when resuming a named thread or verifying known state.
+2. Inspect branch, working tree, and current source before acting on a plan.
+3. Select a relevant skill before implementation and a subagent only for independently bounded specialist work.
+4. Keep unrelated working-tree changes untouched.
+5. Do not stage, commit, push, publish, merge, restore, clean, or mutate external systems without the applicable explicit authorization.
+6. Use Graphify for broad architecture discovery; verify conclusions against current source.
+7. Follow `.agents/rules/verification-before-completion.md` before claiming completion.
 
-## Current status
+## Host Differences
 
-Live thread states, todos, and recently-completed work are maintained in
-`docs/STATUS.md` — see that board for current status instead of this file.
-Open items that span coordination (rather than a single thread) are noted there
-under "Open threads requiring a decision".
+Read `.agents/references/harness-adapters.md` for tool names, subagent dispatch, rule activation, worktree isolation, hooks, and artifact placement. Host adapters may translate capabilities, but they must not fork canonical behavior.
+
+## Current Work
+
+Use `docs/STATUS.md`. Completed work is removed from the live board; Git history is the backup.

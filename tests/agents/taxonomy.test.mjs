@@ -1,0 +1,258 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import test from 'node:test';
+
+const ROOT = path.resolve('.');
+const AGENTS = path.join(ROOT, '.agents');
+
+function names(directory, suffix) {
+  return fs
+    .readdirSync(directory, { withFileTypes: true })
+    .filter((entry) =>
+      suffix ?
+        entry.isFile() && entry.name.endsWith(suffix)
+      : entry.isDirectory(),
+    )
+    .map((entry) => (suffix ? entry.name.slice(0, -suffix.length) : entry.name))
+    .sort();
+}
+
+function catalogNames(file) {
+  return [
+    ...fs
+      .readFileSync(file, 'utf8')
+      .matchAll(/^\|\s*`([a-z0-9][a-z0-9-]*)`\s*\|/gm),
+  ]
+    .map((match) => match[1])
+    .sort();
+}
+
+test('Taxonomy - canonical catalogs are generated and exact', () => {
+  execFileSync(
+    'node',
+    ['.agents/scripts/generate-agent-catalogs.mjs', '--check'],
+    {
+      cwd: ROOT,
+      stdio: 'pipe',
+    },
+  );
+
+  const skillNames = names(path.join(AGENTS, 'skills'));
+  const agentNames = names(path.join(AGENTS, 'agents'), '.md');
+
+  assert.equal(skillNames.length, 56);
+  assert.equal(agentNames.length, 20);
+  assert.deepEqual(
+    catalogNames(path.join(ROOT, 'docs', 'SKILLS.md')),
+    skillNames,
+  );
+  assert.deepEqual(
+    catalogNames(path.join(ROOT, 'docs', 'SUBAGENTS.md')),
+    agentNames,
+  );
+});
+
+test('Taxonomy - mandatory behavior has one canonical owner', () => {
+  for (const obsoleteSkill of [
+    'using-superpowers',
+    'verification-before-completion',
+    'antigravity-interop',
+  ]) {
+    assert.ok(
+      !fs.existsSync(path.join(AGENTS, 'skills', obsoleteSkill)),
+      `${obsoleteSkill} must not remain a skill`,
+    );
+  }
+
+  assert.ok(fs.existsSync(path.join(AGENTS, 'rules', 'superpowers.md')));
+  assert.ok(
+    fs.existsSync(
+      path.join(AGENTS, 'rules', 'verification-before-completion.md'),
+    ),
+  );
+  assert.ok(
+    fs.existsSync(path.join(AGENTS, 'references', 'harness-adapters.md')),
+  );
+});
+
+test('Taxonomy - repeated subagent families are profile driven', () => {
+  const agentNames = names(path.join(AGENTS, 'agents'), '.md');
+  for (const expected of [
+    'graph-knowledge-explorer',
+    'cross-codebase-comparator',
+    'foe-economy-analyst',
+    'foe-combat-analyst',
+  ]) {
+    assert.ok(agentNames.includes(expected), `Missing ${expected}`);
+  }
+
+  for (const removed of [
+    'forge-hammer-kg-explorer',
+    'low-tool-kg-explorer',
+    'foe-info-original-kg-explorer',
+    'forge-hammer-comparator',
+    'low-tool-comparator',
+    'foe-info-original-comparator',
+    'foe-game-data-expert',
+    'foe-combat-boost-analyst',
+    'foe-great-buildings-expert',
+    'foe-guild-battlegrounds-expert',
+    'foe-guild-expedition-expert',
+    'foe-historical-allies-expert',
+    'foe-pvp-expert',
+    'foe-quantum-incursions-expert',
+    'foe-settlements-expert',
+    'foe-sniping-expert',
+  ]) {
+    assert.ok(
+      !agentNames.includes(removed),
+      `Obsolete subagent remains: ${removed}`,
+    );
+  }
+
+  for (const profile of [
+    'graph-targets.md',
+    'comparison-targets.md',
+    'foe-mechanics-topics.md',
+  ]) {
+    assert.ok(
+      fs.existsSync(path.join(AGENTS, 'references', 'agents', profile)),
+      `Missing profile reference ${profile}`,
+    );
+  }
+
+  const graphProfiles = fs.readFileSync(
+    path.join(AGENTS, 'references', 'agents', 'graph-targets.md'),
+    'utf8',
+  );
+  for (const profile of [
+    'foe-info',
+    'metadata',
+    'forge-hammer',
+    'low-tool',
+    'foe-info-original',
+  ]) {
+    assert.match(
+      graphProfiles,
+      new RegExp('^\\| `' + profile + '` \\|', 'm'),
+      `Missing graph target profile ${profile}`,
+    );
+  }
+  const metadataProfile = graphProfiles
+    .split('\n')
+    .find((line) => line.startsWith('| `metadata` |'));
+  assert.match(metadataProfile, /graphify-metadata-store/);
+  assert.match(metadataProfile, /npm run|node -e|node --test/);
+});
+
+test('Taxonomy - OpenCode injects only always-on rules', () => {
+  const config = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'opencode.json'), 'utf8'),
+  );
+  const ruleDirectory = path.join(AGENTS, 'rules');
+  const expected = fs
+    .readdirSync(ruleDirectory)
+    .filter((file) => file.endsWith('.md'))
+    .filter((file) =>
+      /^trigger:\s*always_on$/m.test(
+        fs.readFileSync(path.join(ruleDirectory, file), 'utf8'),
+      ),
+    )
+    .map((file) => `.agents/rules/${file}`)
+    .concat('.opencode/instructions/*.md')
+    .sort();
+  assert.ok(
+    !expected.includes('.agents/rules/bignumber-precision.md'),
+    'BigNumber precision must remain domain-scoped',
+  );
+  assert.deepEqual([...(config.instructions ?? [])].sort(), expected);
+});
+
+test('Taxonomy - imported reference libraries have explicit catalogs', () => {
+  for (const skill of ['chrome-extensions', 'modern-web-guidance']) {
+    const skillRoot = path.join(AGENTS, 'skills', skill);
+    const body = fs.readFileSync(path.join(skillRoot, 'SKILL.md'), 'utf8');
+    assert.match(body, /\[Reference catalog\]\(references\/README\.md\)/);
+    assert.ok(fs.existsSync(path.join(skillRoot, 'references', 'README.md')));
+  }
+});
+
+test('Taxonomy - harness files are workstation neutral', () => {
+  const roots = [
+    path.join(ROOT, '.agents'),
+    path.join(ROOT, '.husky'),
+    path.join(ROOT, '.opencode'),
+    path.join(ROOT, 'opencode.json'),
+  ];
+  const offenders = [];
+  const visit = (target) => {
+    const stat = fs.statSync(target);
+    if (stat.isDirectory()) {
+      for (const entry of fs.readdirSync(target))
+        visit(path.join(target, entry));
+      return;
+    }
+    const isHook = target.startsWith(`${path.join(ROOT, '.husky')}${path.sep}`);
+    if (!isHook && !/\.(?:md|json|mjs|sh)$/.test(target)) return;
+    const content = fs.readFileSync(target, 'utf8');
+    if (
+      /\/var\/home\/kronikpillow|\/home\/linuxbrew\/\.linuxbrew/.test(content)
+    ) {
+      offenders.push(path.relative(ROOT, target));
+    }
+  };
+  for (const root of roots) visit(root);
+  assert.deepEqual(offenders, []);
+});
+
+test('Taxonomy - playbooks match this repository and skill entrypoints stay lean', () => {
+  const forbidden = {
+    'api-testing-observability-api-mock': /FastAPI|uvicorn|pytest|AsyncMock/,
+    'protocol-reverse-engineering': /tcpdump|Wireshark|MITM|TLS decryption/i,
+  };
+
+  for (const [skill, pattern] of Object.entries(forbidden)) {
+    const playbook = path.join(
+      AGENTS,
+      'skills',
+      skill,
+      'references',
+      'implementation-playbook.md',
+    );
+    const content = fs.readFileSync(playbook, 'utf8');
+    assert.doesNotMatch(content, pattern);
+    assert.ok(content.split(/\r?\n/).length <= 200);
+  }
+
+  const changelogPlaybook = fs.readFileSync(
+    path.join(
+      AGENTS,
+      'skills',
+      'changelog-automation',
+      'references',
+      'implementation-playbook.md',
+    ),
+    'utf8',
+  );
+  assert.ok(changelogPlaybook.split(/\r?\n/).length <= 200);
+  assert.match(changelogPlaybook, /package\.json|CHANGELOG\.md/);
+
+  for (const skill of names(path.join(AGENTS, 'skills'))) {
+    const body = fs.readFileSync(
+      path.join(AGENTS, 'skills', skill, 'SKILL.md'),
+      'utf8',
+    );
+    assert.ok(
+      body.split(/\r?\n/).length <= 250,
+      `${skill}/SKILL.md exceeds 250 lines`,
+    );
+  }
+
+  assert.ok(
+    fs.existsSync(
+      path.join(AGENTS, 'skills', 'chrome-web-store-publishing', 'SKILL.md'),
+    ),
+  );
+});

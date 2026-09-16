@@ -7,33 +7,6 @@ const { GbDonationState } = statePkg;
 const { bindGbDonationPanels } = bindingPkg;
 
 test('gbDonationRenderBinding - renders the published payloads', async (t) => {
-  await t.test('forwards the donation payload to renderDonation', () => {
-    const state = new GbDonationState();
-    const calls = [];
-    const off = bindGbDonationPanels(state, {
-      renderDonation: (...args) => calls.push(args),
-    });
-
-    const payload = {
-      containers: { donation2DIV: {} },
-      gbData: { name: 'The Arc' },
-      rankings: [{ rank: 1 }],
-      showOptions: { showDonation: true },
-    };
-    state.setDonationPanel(payload);
-    off();
-    state.setDonationPanel({ gbData: { name: 'Other' } });
-
-    assert.deepEqual(calls, [
-      [
-        payload.containers,
-        payload.gbData,
-        payload.rankings,
-        payload.showOptions,
-      ],
-    ]);
-  });
-
   await t.test('routes a unified reward through showReward', () => {
     const state = new GbDonationState();
     const calls = [];
@@ -79,9 +52,6 @@ test('gbDonationRenderBinding - renders the published payloads', async (t) => {
     const state = new GbDonationState();
     let called = false;
     bindGbDonationPanels(state, {
-      renderDonation: () => {
-        called = true;
-      },
       renderReward: () => {
         called = true;
       },
@@ -90,9 +60,25 @@ test('gbDonationRenderBinding - renders the published payloads', async (t) => {
       },
     });
 
-    state.setDonationPanel(null);
     state.setReward(null);
     assert.equal(called, false);
+  });
+
+  await t.test('ignores donation-like notifications', () => {
+    const state = new GbDonationState();
+    const calls = [];
+    state.setReward({
+      mode: 'unified',
+      args: { name: 'The Arc' },
+    });
+    bindGbDonationPanels(state, {
+      renderReward: (...args) => calls.push(['generic', ...args]),
+      showReward: (...args) => calls.push(['unified', ...args]),
+    });
+
+    state.notify('donation');
+
+    assert.deepEqual(calls, []);
   });
 
   await t.test('returns a safe no-op for an invalid state', () => {

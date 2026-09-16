@@ -89,7 +89,7 @@ git commit -m "feat(calc): add Blue Galaxy economic ranking and date engine Intl
 git checkout backup/full-history-2026-09-12 -- .
 git commit -m "docs(rules): mandate structured commit bodies for non-trivial changes" \
            -m "- require 2-4 concise bullets detailing changes and technical rationale" \
-           -m "- document worktree orchestration pattern in antigravity-interop skill" \
+           -m "- document worktree orchestration pattern in the shared harness adapter reference" \
            -m "- enforce strict 72-char line limit per body line in commit-msg hook"
 
 # Step 3: Re-point release tags to exact matching trees
