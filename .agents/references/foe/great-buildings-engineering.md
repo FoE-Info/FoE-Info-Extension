@@ -1,6 +1,6 @@
-# Great Buildings Expert Knowledge
+# Great Buildings Engineering Knowledge
 
-On-demand domain knowledge and worked reasoning for the `foe-great-buildings-expert` subagent. Operational workflow, safety invariants, and verification remain in the flat agent definition.
+On-demand domain knowledge and worked reasoning for the `great-buildings` topic handled by `foe-economy-analyst`. Operational workflow, safety invariants, and verification remain in the flat agent definition and topic profile.
 
 ## Core Focus Areas
 

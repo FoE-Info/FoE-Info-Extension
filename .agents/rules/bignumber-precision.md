@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: model_decision
 description: FoE precision math invariants (bignumber.js hybrid rounding: half-up for Arc rewards and suggested donations, ceiling for spot locks and owner safe adds) for Great Buildings and reward calculations.
 ---
 

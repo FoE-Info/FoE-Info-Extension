@@ -1,7 +1,17 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "model": "opencode/big-pickle",
-  "instructions": [".agents/rules/*.md", ".opencode/instructions/*.md"],
+  "instructions": [
+    ".agents/rules/browser-environment-hygiene.md",
+    ".agents/rules/graphify.md",
+    ".agents/rules/modular-architecture.md",
+    ".agents/rules/scope-control.md",
+    ".agents/rules/small-incremental-changes.md",
+    ".agents/rules/subagent-delegation.md",
+    ".agents/rules/superpowers.md",
+    ".agents/rules/verification-before-completion.md",
+    ".opencode/instructions/*.md"
+  ],
   "plugins": [
     ".opencode/plugins/safety-gate.mjs",
     ".opencode/plugins/stop-guard.mjs"
@@ -21,17 +31,17 @@
         "--allowUnrestrictedPaths",
         "--no-usage-statistics"
       ],
-      "enabled": true
+      "enabled": false
     },
     "graphify-foe-info": {
       "type": "local",
       "command": ["graphify-mcp", "graphify-out/foe-info/graph.json"],
       "environment": {
-        "GRAPHIFY_BACKEND": "{env:GRAPHIFY_BACKEND:-openai}",
-        "OPENAI_BASE_URL": "{env:OPENAI_BASE_URL:-http://127.0.0.1:8081/v1}",
-        "OPENAI_API_KEY": "{env:OPENAI_API_KEY:-local}",
-        "OPENAI_MODEL": "{env:OPENAI_MODEL:-qwen2.5-vl-7b}",
-        "GRAPHIFY_OPENAI_MODEL": "{env:GRAPHIFY_OPENAI_MODEL:-qwen2.5-vl-7b}",
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
         "GRAPHIFY_NO_TIPS": "1"
       },
       "enabled": true
@@ -40,14 +50,14 @@
       "type": "local",
       "command": ["graphify-mcp", "../forge-hammer/graphify-out/graph.json"],
       "environment": {
-        "GRAPHIFY_BACKEND": "{env:GRAPHIFY_BACKEND:-openai}",
-        "OPENAI_BASE_URL": "{env:OPENAI_BASE_URL:-http://127.0.0.1:8081/v1}",
-        "OPENAI_API_KEY": "{env:OPENAI_API_KEY:-local}",
-        "OPENAI_MODEL": "{env:OPENAI_MODEL:-qwen2.5-vl-7b}",
-        "GRAPHIFY_OPENAI_MODEL": "{env:GRAPHIFY_OPENAI_MODEL:-qwen2.5-vl-7b}",
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
         "GRAPHIFY_NO_TIPS": "1"
       },
-      "enabled": true
+      "enabled": false
     },
     "graphify-foe-info-original": {
       "type": "local",
@@ -56,40 +66,40 @@
         "../FoE-Info-Extension-original/graphify-out/graph.json"
       ],
       "environment": {
-        "GRAPHIFY_BACKEND": "{env:GRAPHIFY_BACKEND:-openai}",
-        "OPENAI_BASE_URL": "{env:OPENAI_BASE_URL:-http://127.0.0.1:8081/v1}",
-        "OPENAI_API_KEY": "{env:OPENAI_API_KEY:-local}",
-        "OPENAI_MODEL": "{env:OPENAI_MODEL:-qwen2.5-vl-7b}",
-        "GRAPHIFY_OPENAI_MODEL": "{env:GRAPHIFY_OPENAI_MODEL:-qwen2.5-vl-7b}",
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
         "GRAPHIFY_NO_TIPS": "1"
       },
-      "enabled": true
+      "enabled": false
     },
     "graphify-low-tool": {
       "type": "local",
       "command": ["graphify-mcp", "../LoW-Tool/graphify-out/graph.json"],
       "environment": {
-        "GRAPHIFY_BACKEND": "{env:GRAPHIFY_BACKEND:-openai}",
-        "OPENAI_BASE_URL": "{env:OPENAI_BASE_URL:-http://127.0.0.1:8081/v1}",
-        "OPENAI_API_KEY": "{env:OPENAI_API_KEY:-local}",
-        "OPENAI_MODEL": "{env:OPENAI_MODEL:-qwen2.5-vl-7b}",
-        "GRAPHIFY_OPENAI_MODEL": "{env:GRAPHIFY_OPENAI_MODEL:-qwen2.5-vl-7b}",
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
         "GRAPHIFY_NO_TIPS": "1"
       },
-      "enabled": true
+      "enabled": false
     },
     "graphify-metadata-store": {
       "type": "local",
       "command": ["graphify-mcp", "../metadata-store/graphify-out/graph.json"],
       "environment": {
-        "GRAPHIFY_BACKEND": "{env:GRAPHIFY_BACKEND:-openai}",
-        "OPENAI_BASE_URL": "{env:OPENAI_BASE_URL:-http://127.0.0.1:8081/v1}",
-        "OPENAI_API_KEY": "{env:OPENAI_API_KEY:-local}",
-        "OPENAI_MODEL": "{env:OPENAI_MODEL:-qwen2.5-vl-7b}",
-        "GRAPHIFY_OPENAI_MODEL": "{env:GRAPHIFY_OPENAI_MODEL:-qwen2.5-vl-7b}",
+        "GRAPHIFY_BACKEND": "openai",
+        "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+        "OPENAI_API_KEY": "local",
+        "OPENAI_MODEL": "qwen2.5-vl-7b",
+        "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
         "GRAPHIFY_NO_TIPS": "1"
       },
-      "enabled": true
+      "enabled": false
     },
     "github-mcp": {
       "type": "local",
@@ -105,18 +115,18 @@
       "environment": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}"
       },
-      "enabled": true
+      "enabled": false
     },
     "linux-tools": {
       "type": "local",
       "command": ["linux-mcp-server"],
       "environment": {
         "LINUX_MCP_LOG_LEVEL": "INFO",
-        "LINUX_MCP_USER": "kronikpillow",
-        "LINUX_MCP_SSH_KEY_PATH": "/var/home/kronikpillow/.ssh/id_ed25519",
+        "LINUX_MCP_USER": "{env:USER}",
+        "LINUX_MCP_SSH_KEY_PATH": "{env:HOME}/.ssh/id_ed25519",
         "LINUX_MCP_KEY_PASSPHRASE": "{env:LINUX_MCP_KEY_PASSPHRASE}"
       },
-      "enabled": true
+      "enabled": false
     }
   },
   "permission": {

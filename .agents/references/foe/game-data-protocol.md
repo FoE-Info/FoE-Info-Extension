@@ -1,6 +1,6 @@
 # Game Data Expert Knowledge
 
-On-demand domain knowledge and worked reasoning for the `foe-game-data-expert` subagent. Operational workflow, safety invariants, and verification remain in the flat agent definition.
+On-demand protocol and mechanics knowledge for the `protocol-reverse-engineering` skill and FoE analyst subagents. The skill owns the reverse-engineering workflow; analyst definitions own bounded delegated investigations.
 
 ## Core Focus Areas
 

@@ -1,42 +1,28 @@
 # Subagent Routing Table
 
-Which of the 36 specialists to dispatch for a given task. Loaded on demand; the
-always-on `subagent-delegation` rule keeps only the protocol.
+Dispatch a subagent only for an independently bounded investigation, implementation, or review. Profile-driven roles require the named target or topic in the dispatch prompt.
 
 | If the task involves... | Dispatch subagent |
-| :--- | :--- |
-| AST traversal, call graphs, module dependencies, or graph comparison | `graph-knowledge-explorer` |
-| Forge-Hammer comparison (architecture, features, parity) | `forge-hammer-comparator` or `forge-hammer-kg-explorer` |
-| LoW-Tool comparison (closed-source benchmark) | `low-tool-comparator` or `low-tool-kg-explorer` |
-| v1 baseline comparison (pre-agentic diff) | `foe-info-original-comparator` or `foe-info-original-kg-explorer` |
-| Great Buildings math, Arc rewards, spot locks, leveling curves | `foe-great-buildings-expert` |
-| Guild Battlegrounds (attrition, sectors, lock timers, costs) | `foe-guild-battlegrounds-expert` |
-| Guild Expeditions (trials, negotiation, relics, fortification) | `foe-guild-expedition-expert` |
-| Quantum Incursions (settlement economics, shards, node pathing) | `foe-quantum-incursions-expert` |
-| PvP Arena / neighborhood warfare (matchmaking, plundering) | `foe-pvp-expert` |
-| Historical Allies (room assignments, rarity, compatibility, boosts) | `foe-historical-allies-expert` |
-| Cultural settlements (Vikings, Japan, Egypt, Aztecs, Mughals, Polynesia, Pirates) | `foe-settlements-expert` |
-| Seasonal events (minigame solvers, event passes, currency econ) | `foe-event-mechanics-expert` |
-| Combat boosts across GBG/GE/QI/PvP/army units | `foe-combat-boost-analyst` |
-| City layout optimization (production density, road reduction) | `foe-city-optimizer` |
-| Antiques Dealer (inventory, auctions, gem/coin appraisals) | `foe-antiques-dealer-expert` |
-| InnoGames JSON-RPC parsing, metadata ingestion, game calculations | `foe-game-data-expert` |
-| Sniping (GB investment scans, spot locking, profit margins, alerts) | `foe-sniping-expert` |
-| MV3 manifest, DevTools panel iframe, CSP, cross-context messaging | `chrome-extension-architect` |
-| CDP test pipelines, mock RPC, DOM assertions, live panel exceptions | `cdp-test-engineer` |
-| Code review (monolith containment, BigNumber, MV3 CSP, modular rules) | `code-reviewer` |
-| Monolith decomposition (index.js, StartupService.js to isolated modules) | `monolith-refactoring-specialist` |
-| Full legacy decomposition + gradual TypeScript migration planning | `codebase-modernization-architect` |
-| Webpack 5 multi-target configs, asset modules, bundle splitting, MV3 packaging | `webpack-expert` |
-| TypeScript type design, strict RPC contracts, Web API typing, hybrid migration | `typescript-expert` |
-| Bootstrap 5.3 layouts, SCSS themes, responsive DevTools docking, semantic HTML | `ui-design-system-architect` |
-| Modern ECMAScript, async pipelines, test runners, clean architecture simplification | `javascript-expert` |
-| WCAG 2.2 AA, ARIA live regions for game RPC events, keyboard navigation | `accessibility-specialist` |
-| Performance & memory (panel latency, Core Web Vitals, heap snapshots, DOM leaks) | `performance-memory-profiler` |
-| Discord webhook rate limits, embed layouts, snipe notifications | `discord-webhook-integrator` |
-| Release engineering (Chrome Web Store packaging, MV3 manifest sync, changelogs) | `extension-release-engineer` |
-| Manifest V3 security (DOM XSS prevention, credential leak protection, host permissions) | `extension-security-auditor` |
-| Localization (7-language dictionaries, translation bindings) | `localization-expert` |
-| Adversarial review (challenge designs, plans, PR diffs, code reviews) | `adversarial-debater` |
+| --- | --- |
+| One FoE-Info, peer, metadata, or baseline graph investigation | `graph-knowledge-explorer` with a graph target profile |
+| Comparing FoE-Info with Forge-Hammer, LoW-Tool, or frozen v1 | `cross-codebase-comparator` with a comparison profile |
+| Great Buildings, sniping, settlements, or Historical Allies | `foe-economy-analyst` with mechanics topics |
+| Combat boosts, GBG, GE, QI, or PvP | `foe-combat-analyst` with mechanics topics |
+| MV3 architecture, DevTools iframe, CSP, or cross-context messaging | `chrome-extension-architect` |
+| CDP pipelines, mock RPC, DOM assertions, or live panel errors | `cdp-test-engineer` |
+| Independent code review against repository invariants | `code-reviewer` |
+| Full legacy decomposition and gradual TypeScript migration planning | `codebase-modernization-architect` |
+| Extracting legacy monolith behavior into isolated modules | `monolith-refactoring-specialist` |
+| Manifest V3 security, DOM XSS, credentials, or host permissions | `extension-security-auditor` |
+| Panel latency, Core Web Vitals, heaps, or DOM leaks | `performance-memory-profiler` |
+| Discord webhooks, rate limits, embeds, or snipe notifications | `discord-webhook-integrator` |
+| Web Store packaging, manifest version sync, or changelogs | `extension-release-engineer` |
+| WCAG 2.2 AA, ARIA, keyboard navigation, or live regions | `accessibility-specialist` |
+| Webpack 5 targets, assets, splitting, or MV3 packaging | `webpack-expert` |
+| TypeScript contracts, Web API typing, or gradual migration | `typescript-expert` |
+| Bootstrap/SCSS design systems and responsive DevTools layouts | `ui-design-system-architect` |
+| Modern JavaScript, async flow, test runners, or simplification | `javascript-expert` |
+| Locale dictionaries, translation bindings, or i18n parity | `localization-expert` |
+| Adversarial challenge of a plan, design, diff, or review | `adversarial-debater` |
 
-Squad membership: FoE Game Mechanics & Data (15), Extension Architecture, Security & QA (9), Web Engineering & UI (4), Knowledge Graphs & Architecture (8).
+Profiles live under `.agents/references/agents/`. Host-specific dispatch syntax lives in [Harness Adapters](harness-adapters.md).

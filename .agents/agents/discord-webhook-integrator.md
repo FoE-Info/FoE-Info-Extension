@@ -68,20 +68,4 @@ Load [Few-Shot Reasoning Example: Safe Snipe Alert Embed Formatting](../referenc
    - Verify that rapid sequential alert triggers are queued and flushed according to the 5 req/5s rate limit.
 4. **Error Resilience**:
    - Simulate an unreachable or invalid webhook URL; verify that user-facing errors are handled gracefully without unhandled exceptions.
-## 5. Record Usage in the Skill Work Log
-
-A skill that only accumulates notes never changes behaviour. Record each real
-run and fold the lesson back into this file:
-
-```sh
-node .agents/scripts/skill-memory.mjs log \
-  --skill <name> \
-  --outcome pass|fail|partial \
-  --lesson '<imperative rule + why>'
-```
-
-`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
-that can actually fail. Patch the workflow above with the lesson in the same
-change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
-See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
 

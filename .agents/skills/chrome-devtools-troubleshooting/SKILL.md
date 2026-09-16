@@ -89,20 +89,7 @@ First consult the local offline reference [`references/troubleshooting.md`](refe
 `gh issue list --repo ChromeDevTools/chrome-devtools-mcp --search "<error snippet>" --state all`
 
 Alternatively, you can recommend that the user checks https://github.com/ChromeDevTools/chrome-devtools-mcp/issues and https://github.com/ChromeDevTools/chrome-devtools-mcp/discussions for help.
-## 5. Record Usage in the Skill Work Log
 
-A skill that only accumulates notes never changes behaviour. Record each real
-run and fold the lesson back into this file:
+## Reference Catalog
 
-```sh
-node .agents/scripts/skill-memory.mjs log \
-  --skill <name> \
-  --outcome pass|fail|partial \
-  --lesson '<imperative rule + why>'
-```
-
-`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
-that can actually fail. Patch the workflow above with the lesson in the same
-change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
-See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
-
+- [Reference catalog](references/README.md) — load only task-relevant supporting material.

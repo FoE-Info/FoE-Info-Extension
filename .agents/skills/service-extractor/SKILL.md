@@ -54,20 +54,4 @@ For an existing legacy handler extraction, replace its current call site without
 3. **Debuggability Verification**: Confirm module instantiates `createLogger`, produces zero logs when debug is disabled, and emits detailed diagnostics when debug is enabled.
 4. **Runtime Test**: Run `foe-browser` and `node .agents/scripts/inspect-extension.js 3000` to confirm no runtime errors.
 5. **Knowledge Graph Sync**: Run `npm run graph:foe-info:update`.
-## 5. Record Usage in the Skill Work Log
-
-A skill that only accumulates notes never changes behaviour. Record each real
-run and fold the lesson back into this file:
-
-```sh
-node .agents/scripts/skill-memory.mjs log \
-  --skill <name> \
-  --outcome pass|fail|partial \
-  --lesson '<imperative rule + why>'
-```
-
-`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
-that can actually fail. Patch the workflow above with the lesson in the same
-change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
-See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
 

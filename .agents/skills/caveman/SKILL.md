@@ -85,20 +85,4 @@ Example destructive op:
 ## Boundaries
 
 Persisted outside chat: write normal prose code, comments, commits, docs, issue/PR/MR/defect/ticket/bug-report text, memory files, third-party messages (/caveman-compress exempt). "Open a defect" or "file a bug" mean the same as "open issue": body go to other humans, so body normal English. "stop caveman" or "normal mode": revert. Level persist until changed or session end.
-## 5. Record Usage in the Skill Work Log
-
-A skill that only accumulates notes never changes behaviour. Record each real
-run and fold the lesson back into this file:
-
-```sh
-node .agents/scripts/skill-memory.mjs log \
-  --skill <name> \
-  --outcome pass|fail|partial \
-  --lesson '<imperative rule + why>'
-```
-
-`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
-that can actually fail. Patch the workflow above with the lesson in the same
-change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
-See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
 

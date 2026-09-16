@@ -71,20 +71,4 @@ Load [Few-Shot Reasoning Example: Code Review Finding Challenge](../references/a
   npm run check && npm test
   ```
 - **Stop-the-Line Protocol**: If an adversarial claim cannot cite concrete source lines or test reproduction steps, retract the claim immediately to prevent wasted engineering cycles.
-## 5. Record Usage in the Skill Work Log
-
-A skill that only accumulates notes never changes behaviour. Record each real
-run and fold the lesson back into this file:
-
-```sh
-node .agents/scripts/skill-memory.mjs log \
-  --skill <name> \
-  --outcome pass|fail|partial \
-  --lesson '<imperative rule + why>'
-```
-
-`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
-that can actually fail. Patch the workflow above with the lesson in the same
-change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
-See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
 

@@ -33,7 +33,7 @@ grants; opencode exposes `server_tool` (e.g. `graphify-foe-info_query_graph`).
 - **Antigravity**: `invoke_subagent` with `TypeName`/`Role`/`Prompt`, or
   `define_subagent` from `.agents/agents/<name>.md`. Built-ins: `self`,
   `research`.
-- **opencode**: `task` tool with `subagent_type: <name>`; the 36 specialists are
+- **opencode**: `task` tool with `subagent_type: <name>`; project specialists are
   thin shims in `.opencode/agents/<name>.md` that point back at the canonical
   persona in `.agents/agents/<name>.md`.
 
@@ -58,10 +58,11 @@ the user's instruction govern dispatch. A skill that names an unavailable
 - **Antigravity**: `.agents/rules/*.md` frontmatter `trigger: always_on`
   activates unconditionally; `glob` / `model_decision` / `manual` load
   contextually. Hierarchical `AGENTS.md`/`GEMINI.md` apply per directory scope.
-- **opencode**: frontmatter triggers are not read. All 17 rules are injected via
-  the `opencode.json` `instructions` glob (`.agents/rules/*.md`) plus
-  `.opencode/instructions/*.md`; the agent decides applicability per task.
-  Project `AGENTS.md` and global `~/.config/opencode/AGENTS.md` also apply.
+- **opencode**: frontmatter triggers are not read. `opencode.json` therefore
+  lists exactly the eight `always_on` rules plus `.opencode/instructions/*.md`.
+  The agent reads a `model_decision` rule from `.agents/rules/` only when its
+  scope matches the task. Project `AGENTS.md` and global
+  `~/.config/opencode/AGENTS.md` also apply.
 
 ---
 
@@ -111,5 +112,5 @@ the user's instruction govern dispatch. A skill that names an unavailable
 | Pre-invocation injection | `PreInvocation` hook                            | instructions files only                    |
 | Block completion         | `Stop` hook (`decision: continue`, `fullyIdle`) | `session.idle` notify-only                 |
 | Approval semantics       | `force_ask` / `permissionOverrides`             | `permission` config (`allow`/`ask`/`deny`) |
-| Parallel workspace mode  | `Workspace: "share"                             | "branch"`                                  | explicit `.worktrees/<branch>` |
+| Parallel workspace mode  | `Workspace: "share"` or `"branch"`                 | explicit `.worktrees/<branch>`              |
 | Skill slash command      | native `/<skill>`                               | model-invoked only (or command file)       |

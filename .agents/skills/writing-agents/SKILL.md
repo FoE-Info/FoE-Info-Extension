@@ -85,20 +85,13 @@ Run the automated configuration test to verify naming, frontmatter, and characte
 ```sh
 node --test tests/agents/agent-config.test.mjs
 ```
-## 5. Record Usage in the Skill Work Log
 
-A skill that only accumulates notes never changes behaviour. Record each real
-run and fold the lesson back into this file:
+<!-- skill-memory:lessons:start -->
+## Learned Improvements
 
-```sh
-node .agents/scripts/skill-memory.mjs log \
-  --skill <name> \
-  --outcome pass|fail|partial \
-  --lesson '<imperative rule + why>'
-```
+- Keep Antigravity subagent definitions flat and place optional domain knowledge and worked examples under centralized references, because nested agent folders are undiscoverable and inflate prompt context.
+<!-- skill-memory:lessons:end -->
 
-`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
-that can actually fail. Patch the workflow above with the lesson in the same
-change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
-See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
+## Reference Catalog
 
+- [Reference catalog](references/README.md) — load only task-relevant supporting material.

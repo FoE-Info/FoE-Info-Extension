@@ -1,0 +1,350 @@
+{
+  "profiles": {
+    "default": [
+      "graphify-foe-info"
+    ],
+    "browser": [
+      "graphify-foe-info",
+      "chrome-devtools"
+    ],
+    "research": [
+      "graphify-foe-info",
+      "graphify-forge-hammer",
+      "graphify-foe-info-original",
+      "graphify-low-tool",
+      "graphify-metadata-store"
+    ],
+    "github": [
+      "graphify-foe-info",
+      "github-mcp"
+    ],
+    "linux": [
+      "graphify-foe-info",
+      "linux-tools"
+    ],
+    "full": [
+      "chrome-devtools",
+      "graphify-foe-info",
+      "graphify-forge-hammer",
+      "graphify-foe-info-original",
+      "graphify-low-tool",
+      "graphify-metadata-store",
+      "github-mcp",
+      "linux-tools"
+    ]
+  },
+  "servers": {
+    "chrome-devtools": {
+      "antigravity": {
+        "command": "chrome-devtools-mcp",
+        "args": [
+          "--browserUrl=http://127.0.0.1:9222",
+          "--experimentalMemory",
+          "--experimentalVision",
+          "--categoryExperimentalWebmcp",
+          "--experimentalDevtools",
+          "--experimentalIncludeAllPages",
+          "--experimentalPageIdRouting",
+          "--allowUnrestrictedPaths",
+          "--no-usage-statistics"
+        ]
+      },
+      "opencode": {
+        "type": "local",
+        "command": [
+          "chrome-devtools-mcp",
+          "--browserUrl=http://127.0.0.1:9222",
+          "--experimentalMemory",
+          "--experimentalVision",
+          "--categoryExperimentalWebmcp",
+          "--experimentalDevtools",
+          "--experimentalIncludeAllPages",
+          "--experimentalPageIdRouting",
+          "--allowUnrestrictedPaths",
+          "--no-usage-statistics"
+        ]
+      }
+    },
+    "graphify-foe-info": {
+      "antigravity": {
+        "command": "graphify-mcp",
+        "args": [
+          "graphify-out/foe-info/graph.json"
+        ],
+        "env": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1",
+          "NO_PROXY": "*",
+          "no_proxy": "*",
+          "GEMINI_API_KEY": "",
+          "GOOGLE_API_KEY": "",
+          "ANTHROPIC_API_KEY": "",
+          "MOONSHOT_API_KEY": "",
+          "DEEPSEEK_API_KEY": "",
+          "AZURE_OPENAI_API_KEY": "",
+          "AZURE_OPENAI_ENDPOINT": "",
+          "HTTP_PROXY": "",
+          "HTTPS_PROXY": "",
+          "ALL_PROXY": "",
+          "http_proxy": "",
+          "https_proxy": "",
+          "all_proxy": ""
+        }
+      },
+      "opencode": {
+        "type": "local",
+        "command": [
+          "graphify-mcp",
+          "graphify-out/foe-info/graph.json"
+        ],
+        "environment": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1"
+        }
+      }
+    },
+    "graphify-forge-hammer": {
+      "antigravity": {
+        "command": "graphify-mcp",
+        "args": [
+          "../forge-hammer/graphify-out/graph.json"
+        ],
+        "env": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1",
+          "NO_PROXY": "*",
+          "no_proxy": "*",
+          "GEMINI_API_KEY": "",
+          "GOOGLE_API_KEY": "",
+          "ANTHROPIC_API_KEY": "",
+          "MOONSHOT_API_KEY": "",
+          "DEEPSEEK_API_KEY": "",
+          "AZURE_OPENAI_API_KEY": "",
+          "AZURE_OPENAI_ENDPOINT": "",
+          "HTTP_PROXY": "",
+          "HTTPS_PROXY": "",
+          "ALL_PROXY": "",
+          "http_proxy": "",
+          "https_proxy": "",
+          "all_proxy": ""
+        }
+      },
+      "opencode": {
+        "type": "local",
+        "command": [
+          "graphify-mcp",
+          "../forge-hammer/graphify-out/graph.json"
+        ],
+        "environment": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1"
+        }
+      }
+    },
+    "graphify-foe-info-original": {
+      "antigravity": {
+        "command": "graphify-mcp",
+        "args": [
+          "../FoE-Info-Extension-original/graphify-out/graph.json"
+        ],
+        "env": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1",
+          "NO_PROXY": "*",
+          "no_proxy": "*",
+          "GEMINI_API_KEY": "",
+          "GOOGLE_API_KEY": "",
+          "ANTHROPIC_API_KEY": "",
+          "MOONSHOT_API_KEY": "",
+          "DEEPSEEK_API_KEY": "",
+          "AZURE_OPENAI_API_KEY": "",
+          "AZURE_OPENAI_ENDPOINT": "",
+          "HTTP_PROXY": "",
+          "HTTPS_PROXY": "",
+          "ALL_PROXY": "",
+          "http_proxy": "",
+          "https_proxy": "",
+          "all_proxy": ""
+        }
+      },
+      "opencode": {
+        "type": "local",
+        "command": [
+          "graphify-mcp",
+          "../FoE-Info-Extension-original/graphify-out/graph.json"
+        ],
+        "environment": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1"
+        }
+      }
+    },
+    "graphify-low-tool": {
+      "antigravity": {
+        "command": "graphify-mcp",
+        "args": [
+          "../LoW-Tool/graphify-out/graph.json"
+        ],
+        "env": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1",
+          "NO_PROXY": "*",
+          "no_proxy": "*",
+          "GEMINI_API_KEY": "",
+          "GOOGLE_API_KEY": "",
+          "ANTHROPIC_API_KEY": "",
+          "MOONSHOT_API_KEY": "",
+          "DEEPSEEK_API_KEY": "",
+          "AZURE_OPENAI_API_KEY": "",
+          "AZURE_OPENAI_ENDPOINT": "",
+          "HTTP_PROXY": "",
+          "HTTPS_PROXY": "",
+          "ALL_PROXY": "",
+          "http_proxy": "",
+          "https_proxy": "",
+          "all_proxy": ""
+        }
+      },
+      "opencode": {
+        "type": "local",
+        "command": [
+          "graphify-mcp",
+          "../LoW-Tool/graphify-out/graph.json"
+        ],
+        "environment": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1"
+        }
+      }
+    },
+    "graphify-metadata-store": {
+      "antigravity": {
+        "command": "graphify-mcp",
+        "args": [
+          "../metadata-store/graphify-out/graph.json"
+        ],
+        "env": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1",
+          "NO_PROXY": "*",
+          "no_proxy": "*",
+          "GEMINI_API_KEY": "",
+          "GOOGLE_API_KEY": "",
+          "ANTHROPIC_API_KEY": "",
+          "MOONSHOT_API_KEY": "",
+          "DEEPSEEK_API_KEY": "",
+          "AZURE_OPENAI_API_KEY": "",
+          "AZURE_OPENAI_ENDPOINT": "",
+          "HTTP_PROXY": "",
+          "HTTPS_PROXY": "",
+          "ALL_PROXY": "",
+          "http_proxy": "",
+          "https_proxy": "",
+          "all_proxy": ""
+        }
+      },
+      "opencode": {
+        "type": "local",
+        "command": [
+          "graphify-mcp",
+          "../metadata-store/graphify-out/graph.json"
+        ],
+        "environment": {
+          "GRAPHIFY_BACKEND": "openai",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_API_KEY": "local",
+          "OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
+          "GRAPHIFY_NO_TIPS": "1"
+        }
+      }
+    },
+    "github-mcp": {
+      "antigravity": {
+        "command": "docker",
+        "args": [
+          "run",
+          "-i",
+          "--rm",
+          "-e",
+          "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "ghcr.io/github/github-mcp-server"
+        ]
+      },
+      "opencode": {
+        "type": "local",
+        "command": [
+          "docker",
+          "run",
+          "-i",
+          "--rm",
+          "-e",
+          "GITHUB_PERSONAL_ACCESS_TOKEN",
+          "ghcr.io/github/github-mcp-server"
+        ],
+        "environment": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+        }
+      }
+    },
+    "linux-tools": {
+      "antigravity": {
+        "command": "linux-mcp-server",
+        "args": [],
+        "env": {
+          "LINUX_MCP_LOG_LEVEL": "INFO",
+          "LINUX_MCP_USER": "${USER}",
+          "LINUX_MCP_SSH_KEY_PATH": "${HOME}/.ssh/id_ed25519"
+        }
+      },
+      "opencode": {
+        "type": "local",
+        "command": [
+          "linux-mcp-server"
+        ],
+        "environment": {
+          "LINUX_MCP_LOG_LEVEL": "INFO",
+          "LINUX_MCP_USER": "{env:USER}",
+          "LINUX_MCP_SSH_KEY_PATH": "{env:HOME}/.ssh/id_ed25519",
+          "LINUX_MCP_KEY_PASSPHRASE": "{env:LINUX_MCP_KEY_PASSPHRASE}"
+        }
+      }
+    }
+  }
+}

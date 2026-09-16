@@ -35,20 +35,4 @@ This skill outlines the step-by-step procedure to safely decouple logic from the
 
 5. **Runtime Verification**:
    - Test in Chromium DevTools via `node .agents/scripts/inspect-extension.js 5000 --target panel.html` to confirm no ReferenceError or missing variable exceptions.
-## 5. Record Usage in the Skill Work Log
-
-A skill that only accumulates notes never changes behaviour. Record each real
-run and fold the lesson back into this file:
-
-```sh
-node .agents/scripts/skill-memory.mjs log \
-  --skill <name> \
-  --outcome pass|fail|partial \
-  --lesson '<imperative rule + why>'
-```
-
-`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
-that can actually fail. Patch the workflow above with the lesson in the same
-change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
-See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
 

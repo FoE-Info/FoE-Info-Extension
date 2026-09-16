@@ -6,16 +6,17 @@ activation differs.
 ## Activation Model
 
 opencode does **not** read Antigravity's `trigger:` frontmatter
-(`always_on`, `glob`, `model_decision`, `manual`). Instead the workspace injects
-every rule unconditionally via the `opencode.json` `instructions` glob:
+(`always_on`, `glob`, `model_decision`, `manual`). The workspace must therefore
+list only `always_on` rules explicitly in `opencode.json`:
 
 ```json
-{ "instructions": [".agents/rules/*.md", ".opencode/instructions/*.md"] }
+{ "instructions": [".agents/rules/<always-on-rule>.md", ".opencode/instructions/*.md"] }
 ```
 
-The agent decides applicability per task. Keep `always_on` invariants short so
-the always-loaded set stays inside the context budget; put long procedures in
-skills or `references/` instead.
+The agent loads `model_decision` rules from `.agents/rules/` only when their
+declared scope matches the task. Keep `always_on` invariants short so the
+always-loaded set stays inside the context budget; put long procedures in skills
+or `references/` instead.
 
 ## Other Instruction Sources
 
@@ -25,13 +26,13 @@ skills or `references/` instead.
 
 ## Scoping
 
-opencode has no per-glob rule activation. To scope guidance to a path, either
-keep it in a skill the agent loads on demand, or state the scope explicitly in
-the rule text and let the agent apply it. Per-agent overrides belong in
+opencode has no frontmatter-driven rule activation. To scope guidance, state the
+scope explicitly in a `model_decision` rule and require the agent to read it on
+demand, or keep the procedure in a skill. Per-agent overrides belong in
 `.opencode/agents/<name>.md` `permission`, not in rules.
 
 ## Verification
 
-Existing rules are validated by loading them through the `instructions` glob;
-there is no separate rule-registration test. `tests/agents/harness-parity.test.mjs`
-can assert the glob still resolves all 17 canonical rule files.
+`tests/agents/harness-parity.test.mjs` and `tests/agents/taxonomy.test.mjs`
+compare OpenCode's instruction list with the canonical `always_on` frontmatter
+set. A wildcard or a missing always-on rule fails the harness tests.

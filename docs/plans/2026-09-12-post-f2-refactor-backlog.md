@@ -44,23 +44,6 @@ the F2 reactive-decoupling program closed.
 - ✅ Deleted `fn/cityStatsUtils.js` (0 consumers) on 2026-09-12.
 - ✅ Deleted `ui/cityStatsHtmlBuilder.js` (131 L, production-orphan) on 2026-09-12.
 - ✅ Retargeted `fn/CityStatsCalculator.js` consumers to `calc/` and deleted legacy shim (7 L) on 2026-09-12.
-- **NEW (verified 2026-09-12):** `GbDonationState.setDonationPanel` /
-  `getDonationPanel` / the `'donation'` channel are **dead production code**.
-  Evidence: the only production caller of the store is
-  `msg/GbDonationService.js:320,328`, and it calls `setReward` exclusively;
-  `grep -rn setDonationPanel src/` returns nothing outside the store itself,
-  while `tests/state/gb-donation-state.test.mjs` and
-  `tests/ui/gb-donation-render-binding.test.mjs` drive it by hand. The live
-  donation panel renders through the _other_ store — `GreatBuildingsState` →
-  `ui/greatBuildingsRenderBinding.js` → `renderGbDonationPanel.js` (the real
-  panel, now `ui/renderGbDonationLegacy.js`). `ui/gbDonationRenderBinding.js`
-  wires its `'donation'` branch to the legacy renderer, so that branch is both
-  unreachable and pointed at the superseded renderer. Decision required: either
-  complete the F2 cutover (make `GbDonationService` publish `setDonationPanel`
-  and drop the `GreatBuildingsState.donation` path) or delete the dead
-  `donationPanel` half of `GbDonationState` + the `'donation'` branch and
-  `renderGbDonationLegacy.js`. Do **not** delete without deciding which store
-  owns the donation panel.
 
 ### P2 — monolith extracts (ranked, all with existing tests)
 

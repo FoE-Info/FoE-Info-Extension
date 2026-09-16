@@ -33,7 +33,7 @@ This rule defines how agent activities and project repositories are structured w
    - For parallel feature tasks or multi-agent execution, dispatch subagents with `Workspace: "share"` to isolate branch checkouts and avoid dirty working tree collisions.
    - Node module resolution walks up directory trees automatically to root `node_modules/` (no duplicate `npm install` needed).
    - Headless unit tests (`npm test`) execute independently inside worktrees. Integration and live browser testing via `foe-browser` execute on the root workspace after merging into `development`.
-   - Because `.agents/` and `AGENTS.md` are tracked in Git, newly created worktrees automatically inherit all 36 subagents, 16 rules, and 53 skills upon checkout.
+   - Because `.agents/` and `AGENTS.md` are tracked in Git, newly created worktrees automatically inherit the project agent configuration upon checkout.
 5. **No IDE Configuration Files (`.vscode/`, `.idea/`)**:
    - Never create, generate, or restore `.vscode/`, `.idea/`, or IDE-specific configuration files (`tasks.json`, `launch.json`, `settings.json`, `mcp.json`).
    - This workspace is strictly agentic and CLI-driven. Task execution relies exclusively on package task runners and agent tooling.

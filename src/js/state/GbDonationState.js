@@ -1,8 +1,8 @@
 /**
  * GbDonationState.js
  *
- * Reactive state store for the Great Buildings donation and reward panels.
- * GbDonationService publishes prepared render payloads; the UI binding renders
+ * Reactive state store for Great Buildings reward notifications.
+ * GbDonationService publishes prepared reward payloads; the UI binding renders
  * them.
  */
 
@@ -14,7 +14,6 @@ try {
 
 class GbDonationState {
   constructor({ logger: log = logger } = {}) {
-    this.donationPanel = null;
     this.reward = null;
     this.subscribers = new Set();
     this.logger = log;
@@ -31,7 +30,7 @@ class GbDonationState {
   }
 
   /**
-   * @param {'donation'|'reward'|'all'} channel
+   * @param {'reward'|'all'} channel
    */
   notify(channel = 'all') {
     for (const fn of this.subscribers) {
@@ -44,15 +43,6 @@ class GbDonationState {
         });
       }
     }
-  }
-
-  setDonationPanel(payload) {
-    this.donationPanel = payload || null;
-    this.notify('donation');
-  }
-
-  getDonationPanel() {
-    return this.donationPanel;
   }
 
   setReward(payload) {

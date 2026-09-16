@@ -41,7 +41,7 @@ You are the test automation and quality assurance specialist for browser extensi
 - **Never Auto-Spawn**: Background tools (`chrome-devtools`) must remain strictly passive; never auto-spawn a browser window when port 9222 is offline.
 - **Default to Headless Verification**: All standard verification, testing, and checks must use headless CLI tools (`npm test`, `npm run verify`).
 - **Passive Connection Only**: When explicitly requested by the user to inspect live runtime or attach via CDP on port 9222, connect passively. Do not trigger window reload, navigation, or tab termination.
-- **Subshell Isolation**: When explicitly requested by the user to launch a test browser, use isolated `foe-browser` (`/var/home/kronikpillow/.local/bin/foe-browser`), stripping terminal emulator variables (`LD_PRELOAD`, `GHOSTTY_*`, etc.).
+- **Subshell Isolation**: When explicitly requested by the user to launch a test browser, resolve isolated `foe-browser` from `PATH`; if unavailable, report the missing prerequisite. The launcher strips terminal emulator variables (`LD_PRELOAD`, `GHOSTTY_*`, etc.).
 
 ---
 
@@ -78,20 +78,4 @@ Uphold in this domain:
 - assert `role="status"` live regions and table semantics in the panel DOM
 - watch for detached observers/render regressions
 - measure render timing after scheduler changes
-## 5. Record Usage in the Skill Work Log
-
-A skill that only accumulates notes never changes behaviour. Record each real
-run and fold the lesson back into this file:
-
-```sh
-node .agents/scripts/skill-memory.mjs log \
-  --skill <name> \
-  --outcome pass|fail|partial \
-  --lesson '<imperative rule + why>'
-```
-
-`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
-that can actually fail. Patch the workflow above with the lesson in the same
-change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
-See [Skill Work Log & Memory](../skills/writing-skills/references/skill-memory.md) for the full loop.
 

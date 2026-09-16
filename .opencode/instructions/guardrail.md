@@ -3,7 +3,7 @@
 Baked into instructions because opencode has no PreInvocation hook event;
 the source of truth is `.agents/scripts/pre-invocation-reminder.mjs`.
 
-Before acting on this task, check fit against the 36 subagents in
+Before acting on this task, check fit against the project subagents in
 `.agents/agents/` (thin shims in `.opencode/agents/`). If a
 domain/UI/math/QA specialist matches, delegate via the Task tool
 (`subagent_type: <name>`). If the task does NOT fit any subagent role

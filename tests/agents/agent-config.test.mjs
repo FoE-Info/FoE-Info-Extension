@@ -31,11 +31,7 @@ test('Agent Config - validates subagent definitions', () => {
   const agentsDir = path.join(AGENTS_DIR, 'agents');
   const agentFiles = fs.readdirSync(agentsDir).filter((f) => f.endsWith('.md'));
 
-  assert.equal(
-    agentFiles.length,
-    36,
-    'Expected exactly 36 subagent markdown files',
-  );
+  assert.ok(agentFiles.length > 0, 'Expected a non-empty subagent roster');
 
   for (const file of agentFiles) {
     const content = fs.readFileSync(path.join(agentsDir, file), 'utf8');
@@ -66,17 +62,11 @@ test('Agent Config - validates subagent definitions', () => {
   const opencodeFiles = fs
     .readdirSync(opencodeDir)
     .filter((f) => f.endsWith('.md'));
-  assert.equal(
-    opencodeFiles.length,
-    agentFiles.length,
-    'Expected .opencode/agents to match canonical subagent count',
+  assert.deepEqual(
+    opencodeFiles.sort(),
+    agentFiles.sort(),
+    'Expected .opencode/agents filenames to exactly match the canonical roster',
   );
-  for (const file of agentFiles) {
-    assert.ok(
-      fs.existsSync(path.join(opencodeDir, file)),
-      `Missing opencode shim for ${file}`,
-    );
-  }
 });
 
 test('Agent Config - validates skill definitions', () => {
@@ -119,6 +109,87 @@ test('Agent Config - validates skill definitions', () => {
   }
 });
 
+test('Agent Config - centralizes skill-memory documentation', () => {
+  const centralReference = path.join(
+    AGENTS_DIR,
+    'references',
+    'skill-memory.md',
+  );
+  assert.ok(
+    fs.existsSync(centralReference),
+    'Expected one canonical skill-memory reference',
+  );
+
+  const copies = [];
+  const findCopies = (directory) => {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const entryPath = path.join(directory, entry.name);
+      if (entry.name === 'skill-memory.md') copies.push(entryPath);
+      if (entry.isDirectory()) findCopies(entryPath);
+    }
+  };
+  findCopies(AGENTS_DIR);
+  assert.deepEqual(
+    copies,
+    [centralReference],
+    'Expected .agents/references/skill-memory.md to be the sole copy',
+  );
+
+  const duplicatedLogging = /node \.agents\/scripts\/skill-memory\.mjs log/;
+  const duplicatedSkillLink = /\]\(\.\.\/\.\.\/references\/skill-memory\.md\)/;
+  const skillsDir = path.join(AGENTS_DIR, 'skills');
+  for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const content = fs.readFileSync(
+      path.join(skillsDir, entry.name, 'SKILL.md'),
+      'utf8',
+    );
+    assert.doesNotMatch(
+      content,
+      duplicatedLogging,
+      `Skill ${entry.name} duplicates the global skill-memory logging rule`,
+    );
+    assert.doesNotMatch(
+      content,
+      duplicatedSkillLink,
+      `Skill ${entry.name} duplicates the global skill-memory reference link`,
+    );
+  }
+
+  const duplicatedAgentLink = /\]\(\.\.\/references\/skill-memory\.md\)/;
+  const agentsDir = path.join(AGENTS_DIR, 'agents');
+  for (const entry of fs.readdirSync(agentsDir, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+    const content = fs.readFileSync(path.join(agentsDir, entry.name), 'utf8');
+    assert.doesNotMatch(
+      content,
+      duplicatedLogging,
+      `Subagent ${entry.name} duplicates the global skill-memory logging rule`,
+    );
+    assert.doesNotMatch(
+      content,
+      duplicatedAgentLink,
+      `Subagent ${entry.name} duplicates the global skill-memory reference link`,
+    );
+  }
+
+  const verificationRule = fs.readFileSync(
+    path.join(AGENTS_DIR, 'rules', 'verification-before-completion.md'),
+    'utf8',
+  );
+  assert.match(
+    verificationRule,
+    duplicatedLogging,
+    'Verification rule must own skill-memory logging',
+  );
+  assert.equal(
+    verificationRule.match(/\]\(\.\.\/references\/skill-memory\.md\)/g)
+      ?.length ?? 0,
+    1,
+    'Verification rule must link the canonical skill-memory reference once',
+  );
+});
+
 test('Agent Config - validates rule definitions', () => {
   const rulesDir = path.join(AGENTS_DIR, 'rules');
   const ruleFiles = fs.readdirSync(rulesDir).filter((f) => f.endsWith('.md'));
@@ -154,25 +225,34 @@ test('Agent Config - validates rule definitions', () => {
   );
   assert.match(
     delegationContent,
-    /36 specialized domain subagents/,
-    'subagent-delegation.md must state the 36-subagent roster',
+    /\[subagent-routing\.md\]\(\.\.\/references\/subagent-routing\.md\)/,
+    'subagent-delegation.md must link the routing reference',
+  );
+  assert.match(
+    delegationContent,
+    /delegat(?:e|ing).*invoke_subagent/is,
+    'subagent-delegation.md must describe delegation via invoke_subagent',
   );
 
-  // The routing table lives in an on-demand reference; every one of the 36
-  // subagents must still be reachable from it plus the rule's own squad list.
+  // The routing table lives in an on-demand reference. Parse every backticked
+  // name from its table rows so alternatives such as `A` or `B` are included.
   const routing = fs.readFileSync(
     path.join(AGENTS_DIR, 'references', 'subagent-routing.md'),
     'utf8',
   );
-  const routed = [...routing.matchAll(/`([a-z0-9-]+)`/g)]
-    .map((m) => m[1])
-    .filter((name) =>
-      fs.existsSync(path.join(AGENTS_DIR, 'agents', `${name}.md`)),
-    );
-  assert.equal(
-    new Set(routed).size,
-    36,
-    `subagent-routing.md must route all 36 subagents (found ${new Set(routed).size})`,
+  const routed = routing
+    .split(/\r?\n/)
+    .filter((line) => line.startsWith('|'))
+    .flatMap((line) => [...line.matchAll(/`([a-z0-9-]+)`/g)])
+    .map((match) => match[1]);
+  const canonical = fs
+    .readdirSync(path.join(AGENTS_DIR, 'agents'))
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => file.replace(/\.md$/, ''));
+  assert.deepEqual(
+    [...new Set(routed)].sort(),
+    canonical.sort(),
+    'subagent-routing.md must route every canonical subagent with no stale routes',
   );
 });
 
@@ -265,9 +345,13 @@ test('Agent Config - validates AGENTS.md integrity and internal links', () => {
     'utf8',
   );
 
-  // Counts stated once each: the roster line and the skills pointer.
-  assert.match(agentsMd, /36 subagents, 17 rules, and 56 skills/);
-  assert.match(agentsMd, /56 on-demand\s+runbooks and procedures/);
+  assert.match(agentsMd, /Config lives in `\.agents\/`/);
+  assert.match(agentsMd, /`\.opencode\/` adapts the canonical library/);
+  assert.match(agentsMd, /\[docs\/SKILLS\.md\]\(docs\/SKILLS\.md\)/);
+  assert.match(
+    agentsMd,
+    /\[rules\/subagent-delegation\.md\]\(\.agents\/rules\/subagent-delegation\.md\)/,
+  );
 
   // Link validation
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -297,6 +381,7 @@ test('Agent Config - validates markdown links across all skills, rules, agents, 
     path.join(AGENTS_DIR, 'skills'),
     path.join(AGENTS_DIR, 'rules'),
     path.join(AGENTS_DIR, 'agents'),
+    path.join(AGENTS_DIR, 'references'),
     path.join(PROJECT_ROOT, 'docs'),
   ];
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;

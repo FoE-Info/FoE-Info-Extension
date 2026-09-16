@@ -6,7 +6,7 @@ Operational detail for the isolated Chromium instance, the CDP port, and the ext
 
 Never launch development browser instances directly inside terminal emulator subshells (Ghostty, Kitty) or subagent environments without stripping environment variables.
 
-When the user explicitly asks for a test browser, use the dedicated `foe-browser` script (`/var/home/kronikpillow/.local/bin/foe-browser`). It isolates the desktop environment and unsets terminal pollution variables: `LD_PRELOAD`, `GHOSTTY_*`, `LIBGL_*`, `MESA_*`, `ELECTRON_*`, `TERM`, `VTE_VERSION`.
+When the user explicitly asks for a test browser, resolve the dedicated `foe-browser` command from `PATH`. It isolates the desktop environment and unsets terminal pollution variables: `LD_PRELOAD`, `GHOSTTY_*`, `LIBGL_*`, `MESA_*`, `ELECTRON_*`, `TERM`, `VTE_VERSION`. If the command is unavailable, stop and report that prerequisite instead of guessing a workstation path.
 
 ## Hardware acceleration flags and isolated profile
 

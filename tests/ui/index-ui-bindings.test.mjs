@@ -112,11 +112,13 @@ globalThis.document = targetDocument;
 
 const {
   initIndexUiBindings,
+  bootstrapExtensionUi,
   bindOptionsButton,
   bindWindowMessageListener,
   bindThemeToggle,
   logStorageUsage,
   bindRuntimeLifecycle,
+  buildStorageDeps,
 } = require('../../src/js/ui/indexUiBindings.js');
 
 describe('indexUiBindings UI listeners', () => {
@@ -209,6 +211,60 @@ describe('indexUiBindings runtime lifecycle', () => {
 });
 
 describe('indexUiBindings initIndexUiBindings', () => {
+  test('uses all injected msg service functions by identity', () => {
+    const injected = {
+      renderLiveCityStats() {},
+      startupService() {},
+      setCurrentPercent() {},
+      setResourceDefs() {},
+      processMetadataData() {},
+      getServiceLastStartupMsg() {},
+    };
+
+    const storageDeps = buildStorageDeps(injected);
+
+    for (const [name, dependency] of Object.entries(injected)) {
+      assert.equal(storageDeps[name], dependency, `${name} must be forwarded`);
+    }
+  });
+
+  test('bootstrapExtensionUi forwards injected msg service functions', () => {
+    const injected = {
+      renderLiveCityStats() {},
+      startupService() {},
+      setCurrentPercent() {},
+      setResourceDefs() {},
+      processMetadataData() {},
+      getServiceLastStartupMsg() {},
+    };
+
+    const { storageDeps } = bootstrapExtensionUi({
+      ...injected,
+      browser: createMockBrowser(),
+      window: mockWindow,
+      document: { querySelector: () => null, body: createMockElement('body') },
+    });
+
+    for (const [name, dependency] of Object.entries(injected)) {
+      assert.equal(storageDeps[name], dependency, `${name} must be forwarded`);
+    }
+  });
+
+  test('injected startup message getter reads its mutable backing value', () => {
+    let serviceLastStartupMsg = { id: 'initial' };
+    const getServiceLastStartupMsg = () => serviceLastStartupMsg;
+    const storageDeps = buildStorageDeps({ getServiceLastStartupMsg });
+
+    assert.equal(
+      storageDeps.getServiceLastStartupMsg,
+      getServiceLastStartupMsg,
+    );
+    assert.deepEqual(storageDeps.getServiceLastStartupMsg(), { id: 'initial' });
+
+    serviceLastStartupMsg = { id: 'updated' };
+    assert.deepEqual(storageDeps.getServiceLastStartupMsg(), { id: 'updated' });
+  });
+
   test('initializes safely in a mock DOM without throwing', async () => {
     const browser = createMockBrowser();
     const button = createMockElement('go-to-options');
@@ -258,6 +314,72 @@ describe('indexUiBindings initIndexUiBindings', () => {
     assert.ok(
       lineCount <= 600,
       `src/js/index.js must stay <= 600 lines (was ${lineCount})`,
+    );
+  });
+
+  test('msg service dependencies are imported and injected only by index.js', () => {
+    const uiSource = fs.readFileSync(
+      path.join(ROOT_DIR, 'src/js/ui/indexUiBindings.js'),
+      'utf8',
+    );
+    const indexSource = fs.readFileSync(
+      path.join(ROOT_DIR, 'src/js/index.js'),
+      'utf8',
+    );
+
+    assert.doesNotMatch(
+      uiSource,
+      /['"]\.\.\/msg\//,
+      'indexUiBindings.js must not import or require msg modules',
+    );
+
+    const expectedImports = new Map([
+      ['./msg/StartupService.js', ['renderLiveCityStats', 'startupService']],
+      ['./msg/GreatBuildingsService.js', ['setCurrentPercent']],
+      ['./msg/ResourceService.js', ['setResourceDefs']],
+      ['./msg/MetadataService.js', ['processMetadataData']],
+    ]);
+    for (const [modulePath, names] of expectedImports) {
+      const escapedPath = modulePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const importMatch = indexSource.match(
+        new RegExp(`import\\s+\\{([\\s\\S]*?)\\}\\s+from\\s+'${escapedPath}'`),
+      );
+      assert.ok(importMatch, `index.js must import from ${modulePath}`);
+      for (const name of names) {
+        assert.match(importMatch[1], new RegExp(`\\b${name}\\b`));
+      }
+    }
+
+    const initCall = indexSource.match(
+      /initIndexUiBindings\(\{([\s\S]*?)\n\}\);/,
+    );
+    assert.ok(initCall, 'index.js must configure initIndexUiBindings()');
+    for (const name of [
+      'renderLiveCityStats',
+      'startupService',
+      'setCurrentPercent',
+      'setResourceDefs',
+      'processMetadataData',
+    ]) {
+      assert.match(initCall[1], new RegExp(`\\b${name}\\s*,`));
+    }
+
+    const startupImport = indexSource.match(
+      /import\s+\{([\s\S]*?)\}\s+from\s+'\.\/msg\/StartupService\.js'/,
+    );
+    assert.ok(
+      startupImport,
+      'index.js must import StartupService dependencies',
+    );
+    assert.match(
+      startupImport[1],
+      /\blastStartupMsg\s+as\s+serviceLastStartupMsg\b/,
+      'index.js must import the live service startup message binding',
+    );
+    assert.match(
+      initCall[1],
+      /getServiceLastStartupMsg:\s*\(\)\s*=>\s*serviceLastStartupMsg/,
+      'index.js must inject a getter over the live service binding',
     );
   });
 });

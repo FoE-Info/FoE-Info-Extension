@@ -66,20 +66,4 @@ curl -s -m 2 http://127.0.0.1:8081/v1/models >/dev/null && echo up || echo down
 | **Connection Refused** | No backend listening — the workspace does not start one for you.   | Start `llama-swap` with your own launcher, then re-run the reindex tier.                                     |
 | **GPU VRAM Stuck**     | Process killed with `kill -9`, bypassing model unload.             | `curl -s -X POST http://127.0.0.1:8081/api/models/unload`, or `pkill -f "llama-server.*qwen2.5-vl-7b"`.      |
 | **Semantic work skipped** | `extract`/`label` found `/v1/models` unreachable and exited 0.  | Check the watch log for `unavailable; ... skipped`, start the backend, re-run.                                |
-## 5. Record Usage in the Skill Work Log
-
-A skill that only accumulates notes never changes behaviour. Record each real
-run and fold the lesson back into this file:
-
-```sh
-node .agents/scripts/skill-memory.mjs log \
-  --skill <name> \
-  --outcome pass|fail|partial \
-  --lesson '<imperative rule + why>'
-```
-
-`--outcome` is `pass`, `fail`, or `partial`, and every `--signal` is a command
-that can actually fail. Patch the workflow above with the lesson in the same
-change — the worklog is the audit trail, `SKILL.md` is what the next run reads.
-See [Skill Work Log & Memory](references/skill-memory.md) for the full loop.
 

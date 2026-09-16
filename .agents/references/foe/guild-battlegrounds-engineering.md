@@ -1,6 +1,6 @@
-# Guild Battlegrounds Expert Knowledge
+# Guild Battlegrounds Engineering Knowledge
 
-On-demand domain knowledge and worked reasoning for the `foe-guild-battlegrounds-expert` subagent. Operational workflow, safety invariants, and verification remain in the flat agent definition.
+On-demand domain knowledge and worked reasoning for the `gbg` topic handled by `foe-combat-analyst`. Operational workflow, safety invariants, and verification remain in the flat agent definition and topic profile.
 
 ## Authoritative Game Domain Knowledge
 
