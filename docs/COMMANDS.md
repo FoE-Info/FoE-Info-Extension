@@ -14,6 +14,10 @@ Run all commands from workspace root.
 | **i18n Check**        | `npm run i18n:check`              | Key parity across 7 locales (de, el, en, es, fr, gr, it) |
 | **i18n Fix**          | `npm run i18n:fix`                | Auto-fix missing keys                                    |
 | **Dev Build**         | `npm run build:dev`               | Webpack dev bundle                                       |
+| **Curator Status**    | `npm run curator:status`          | Read-only shared skill/subagent lifecycle audit          |
+| **Curator Report**    | `npm run curator:run`             | Read-only curation report for interactive review         |
+| **Curator Repair**    | `npm run curator:apply`           | Promote proven stored lessons; never merge/delete        |
+| **Agent Tests**       | `npm run test:agents`             | Shared harness, curator, hooks, and memory tests         |
 | **Watch**             | `npm run dev`                     | Webpack watch mode                                       |
 | **Prod Build**        | `npm run build`                   | Webpack production bundle                                |
 | **CDP Browser**       | `foe-browser [--restart]`         | Isolated Chromium on port 9222                           |

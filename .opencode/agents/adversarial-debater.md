@@ -14,4 +14,4 @@ Adapt its Antigravity-specific instructions to opencode equivalents:
 - `call_mcp_tool` naming → the MCP tools exposed via the configured servers (chrome-devtools, graphify-*).
 - Rule/skill selection → read the applicable `.agents/rules/*.md` files and consult the available-skills catalog from `.agents/skills/`.
 
-Follow the standing repo invariants in AGENTS.md and the injected `.agents/rules/*.md`: modular architecture (<= 600 lines/file), small slices (<= 100 lines), dynamic runtime metadata, BigNumber precision, i18n compliance, and verification before completion.
+Follow the standing repo invariants in `AGENTS.md` and the always-on rules explicitly listed in `opencode.json`. Read `model_decision` rules from `.agents/rules/` only when their declared scope matches the task; for example, BigNumber precision applies to FoE calculations rather than every delegated task.

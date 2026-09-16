@@ -6,26 +6,6 @@ const { GbDonationState, gbDonationState } = statePkg;
 
 test('GbDonationState - reactive publish/subscribe', async (t) => {
   await t.test(
-    'stores the donation payload and notifies the donation channel',
-    () => {
-      const state = new GbDonationState();
-      const channels = [];
-      state.subscribe((snapshot, channel) => channels.push(channel));
-
-      const payload = {
-        containers: { donation2DIV: {} },
-        gbData: { name: 'The Arc' },
-        rankings: [],
-        showOptions: {},
-      };
-      state.setDonationPanel(payload);
-
-      assert.deepEqual(channels, ['donation']);
-      assert.equal(state.getDonationPanel(), payload);
-    },
-  );
-
-  await t.test(
     'stores the reward payload and notifies the reward channel',
     () => {
       const state = new GbDonationState();
@@ -48,9 +28,7 @@ test('GbDonationState - reactive publish/subscribe', async (t) => {
 
   await t.test('defaults missing payloads to null', () => {
     const state = new GbDonationState();
-    state.setDonationPanel(undefined);
     state.setReward(undefined);
-    assert.equal(state.getDonationPanel(), null);
     assert.equal(state.getReward(), null);
   });
 

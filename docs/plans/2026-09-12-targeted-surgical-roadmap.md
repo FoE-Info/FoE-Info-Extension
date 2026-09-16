@@ -38,7 +38,7 @@
 - [x] **B2 (D5)** Shipped — `npm run typecheck` (`tsc --noEmit`) wired into the `verify` pipeline.
 - [x] **B3** Shipped — `CityMapEntityProcessor.js` 657 -> 244 L; harvest logic extracted to `src/js/calc/entities/CityEntityHarvestCalculator.js`.
 - [x] **B4** Shipped — `legacyBridge.js` 831 -> 62 L with per-domain route tables under `src/js/protocol/routes/` behind the `registerLegacyBridge` facade.
-- [x] **B5** Shipped 2026-09-12 — residual `msg/` DOM routed through `src/js/ui/` (`renderTreasuryLogPanel`, `renderCulturalPanel`, `renderBonusPanel`, `renderResourcePanel`, `renderExpeditionPanel`, `renderArmyPanel`, `renderRewardsPanel`, `renderGbDonationLegacy`); services keep state/parsing and delegate markup+binding.
+- [x] **B5** Shipped 2026-09-12 — residual `msg/` DOM routed through `src/js/ui/` (`renderTreasuryLogPanel`, `renderCulturalPanel`, `renderBonusPanel`, `renderResourcePanel`, `renderExpeditionPanel`, `renderArmyPanel`, `renderRewardsPanel`, `renderGbDonationPanel`); services keep state/parsing and delegate markup+binding.
 
 ## Phase C — Differentiated Feature Parity (P1–P2)
 

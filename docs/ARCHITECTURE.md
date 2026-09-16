@@ -1,47 +1,37 @@
-# Antigravity / OpenCode Architecture & Precedence
+# Harness Architecture and Precedence
 
-## Precedence Hierarchy
+## Canonical Layers
 
-1. **Workspace Root** (`.agents/`, `AGENTS.md`)
-2. **Declared Configs** (`.agents/skills/` individual files, `.agents/rules/`, `.agents/hooks.json`)
-3. **Global** (`~/.gemini/config/`, `~/.config/opencode/`)
-4. **Built-in** (agent defaults)
+1. `AGENTS.md` — portable repository entrypoint.
+2. `.agents/` — canonical skills, subagents, rules, references, scripts, hooks, MCP registry, and project identity.
+3. Host adapters — `.opencode/`, `opencode.json`, and equivalent host-native registration.
+4. User/global host configuration.
+5. Harness defaults.
+
+A lower layer may translate tool names or registration formats but must not duplicate or override canonical repository behavior silently.
 
 ## Progressive Disclosure
 
-- **Skills** load on-demand via `skill_view(name)`
-- **Rules** inject contextually or via `always_on` trigger
-- **Subagents** load only when invoked via `invoke_subagent`
+- Eight `always_on` rules are active for every task.
+- Nine `model_decision` rules load only when their declared domain matches.
+- Skills load by task relevance from `.agents/skills/`.
+- Subagents load only when dispatched from the 20-persona roster.
+- Optional facts, profiles, and examples load from reference catalogs.
 
-## Dual-Harness MCP Registration
+## MCP Profiles
 
-| Harness         | Config                    | Servers (7)                                                                                                                                   |
-| --------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| Antigravity CLI | `.agents/mcp_config.json` | chrome-devtools, github-mcp, graphify-foe-info, graphify-forge-hammer, graphify-metadata-store, graphify-foe-info-original, graphify-low-tool |
-| OpenCode        | `opencode.json`           | Same 7, registered via plugin entries                                                                                                         |
+`.agents/mcp-registry.json` defines the available servers and task-scoped profiles. `.agents/scripts/mcp-profile.mjs` generates `.agents/mcp_config.json` and synchronizes OpenCode `enabled` flags while preserving unrelated OpenCode configuration.
 
-**Permission grants:** `mcp(server/tool)` wrapper syntax in `~/.gemini/config/config.json`
+Commands resolve through `PATH`; graph locations are workspace-relative. The default profile enables only the FoE-Info graph. Browser, peer-graph, GitHub, and Linux servers are opt-in by task.
 
-## Handoff Protocol
+## Host Adapter
 
-See `antigravity-interop` skill for the full protocol:
-
-- Antigravity runs out → OpenCode continues
-- Grant rebuilds, MCP portability preserved
-- Session context transferred via workspace state
-
-## Documentation
-
-- [Antigravity Docs](https://antigravity.google/docs)
-- [Skills](https://antigravity.google/docs/skills)
-- [Rules](https://antigravity.google/docs/rules-workflows)
-- [Hooks](https://antigravity.google/docs/hooks)
-- [MCP](https://antigravity.google/docs/mcp)
+See [.agents/references/harness-adapters.md](../.agents/references/harness-adapters.md) for current tool mapping, subagent dispatch, worktree isolation, rule activation, skill discovery, hook parity, and artifact placement.
 
 ## Project Identity
 
-`.agents/project.json` (canonical):
+`.agents/project.json` owns `name`, `displayName`, and `primaryGraph`. `package.json` mirrors the fields needed by npm and build tooling.
 
-- `name`, `displayName`, `primaryGraph`
+## Verification
 
-`package.json` mirrors these fields for npm/build tooling.
+Harness parity, exact catalogs, rule activation, profile generation, Markdown links, and configuration structure are enforced under `tests/agents/` and through `npm run test:agents`.

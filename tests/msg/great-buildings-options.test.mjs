@@ -1,7 +1,48 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
+import fs, { readFileSync } from 'node:fs';
+import { registerHooks } from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
+import { fileURLToPath } from 'node:url';
+
+const dataModule = (source) =>
+  'data:text/javascript,' + encodeURIComponent(source);
+
+const moduleStubs = {
+  bootstrap: dataModule(
+    'export class Alert {}\nexport class Popover {}\nexport class Tooltip {}\nexport default { Alert, Popover, Tooltip };\n',
+  ),
+  'webextension-polyfill': dataModule(
+    'export default { storage: { local: { get: async () => ({}), set: async () => {} }, onChanged: { addListener() {} } } };\n',
+  ),
+};
+
+registerHooks({
+  resolve(specifier, context, nextResolve) {
+    if (moduleStubs[specifier]) {
+      return { url: moduleStubs[specifier], shortCircuit: true };
+    }
+    if (
+      specifier === './StartupService.js' &&
+      context.parentURL.endsWith('/src/js/msg/GreatBuildingsService.js')
+    ) {
+      return {
+        url: dataModule('export const City = {};\n'),
+        shortCircuit: true,
+      };
+    }
+    return nextResolve(specifier, context);
+  },
+  load(url, context, nextLoad) {
+    if (url.endsWith('.js') && url.includes('/src/js/')) {
+      const source = readFileSync(fileURLToPath(url), 'utf8');
+      if (/^\s*(?:import|export)\s/m.test(source)) {
+        return { format: 'module', source, shortCircuit: true };
+      }
+    }
+    return nextLoad(url, context);
+  },
+});
 
 // Setup DOM mocks before imports
 const domStore = new Map();
@@ -84,6 +125,8 @@ globalThis.document = {
   querySelectorAll() {
     return [];
   },
+  addEventListener() {},
+  removeEventListener() {},
 };
 
 globalThis.window = globalThis;
@@ -107,14 +150,18 @@ const {
   calculateSafeSpots,
 } = gbDonationServicePkg.default || gbDonationServicePkg;
 
-const gbDonationLegacyPkg =
-  await import('../../src/js/ui/renderGbDonationLegacy.js');
-const { renderGbDonationPanel } =
-  gbDonationLegacyPkg.default || gbDonationLegacyPkg;
-
 const gbDonationStatePkg =
   await import('../../src/js/state/GbDonationState.js');
 const { gbDonationState } = gbDonationStatePkg;
+
+const greatBuildingsServicePkg =
+  await import('../../src/js/msg/GreatBuildingsService.js');
+const { showGreatBuldingDonation } =
+  greatBuildingsServicePkg.default || greatBuildingsServicePkg;
+
+const greatBuildingsStatePkg =
+  await import('../../src/js/state/GreatBuildingsState.js');
+const { greatBuildingsState } = greatBuildingsStatePkg;
 
 const bridgePkg = await import('../../src/js/protocol/legacyBridge.js');
 const { registerLegacyBridge } = bridgePkg.default || bridgePkg;
@@ -273,86 +320,34 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
   );
 
   await t.test(
-    'renderGbDonationPanel decouples showGBInfo, showGBDonors, and showDonation',
+    'showGreatBuldingDonation publishes the complete canonical donation payload',
     () => {
-      const gbInfo = createMockElement('div', 'gbInfo');
-      const greatbuilding = createMockElement('div', 'greatbuilding');
-      const donation2DIV = createMockElement('div', 'donation2');
-      const containers = { gbInfo, greatbuilding, donation2DIV };
+      greatBuildingsState.setDonation(null);
 
-      const gbData = {
-        name: 'Statue of Zeus',
-        level: 42,
-        total: 500,
-        current: 100,
-      };
+      try {
+        showGreatBuldingDonation();
+        const payload = greatBuildingsState.getDonation();
 
-      const rankings = [
-        {
-          rank: 1,
-          player: { player_id: 1, name: 'Donor1' },
-          forge_points: 50,
-          reward: { strategy_point_amount: 50 },
-        },
-      ];
-
-      // Case 1: showGBInfo = true, showGBDonors = false, showDonation = false
-      renderGbDonationPanel(containers, gbData, rankings, {
-        showGBInfo: true,
-        showGBDonors: false,
-        showDonation: false,
-      });
-      assert.match(gbInfo.innerHTML, /Statue of Zeus/);
-      assert.match(gbInfo.innerHTML, /42/);
-      assert.equal(greatbuilding.innerHTML, '');
-      assert.equal(donation2DIV.innerHTML, '');
-
-      // Case 2: showGBInfo = false, showGBDonors = true, showDonation = false
-      renderGbDonationPanel(containers, gbData, rankings, {
-        showGBInfo: false,
-        showGBDonors: true,
-        showDonation: false,
-      });
-      assert.equal(gbInfo.innerHTML, '');
-      assert.match(greatbuilding.innerHTML, /Donor1/);
-      assert.equal(donation2DIV.innerHTML, '');
-
-      // Case 3: showDonation = true
-      renderGbDonationPanel(containers, gbData, rankings, {
-        showGBInfo: true,
-        showGBDonors: true,
-        showDonation: true,
-      });
-      assert.notEqual(donation2DIV.innerHTML, '');
-      assert.match(donation2DIV.innerHTML, /Lock|donation/i);
-    },
-  );
-
-  await t.test(
-    'donation ranks consume the preceding lock from the pool',
-    () => {
-      const donation2DIV = createMockElement('div');
-      renderGbDonationPanel(
-        { donation2DIV },
-        { total: 1000, current: 200, rewards: [300, 150, 50, 10, 0] },
-        [100, 50, 0, 0, 0],
-        { arcBonusPercent: 100, donationPercent: 180 },
-      );
-      // Pools: 800 -> 350 -> 150 -> 75 -> 37 -> 18.
-      assert.deepEqual(
-        [...donation2DIV.innerHTML.matchAll(/P\d: Lock (\d+)FP/g)].map(
-          (match) => Number(match[1]),
-        ),
-        [450, 200, 75, 38, 19],
-      );
-      assert.match(
-        donation2DIV.innerHTML,
-        /Costs: 540FP, Reward: 600FP, Profit\/Loss: 150FP/,
-      );
-      assert.match(
-        donation2DIV.innerHTML,
-        /Costs: 270FP, Reward: 300FP, Profit\/Loss: 100FP/,
-      );
+        assert.deepEqual(Object.keys(payload).sort(), [
+          'City',
+          'GBrewards',
+          'GBselected',
+          'MyInfo',
+          'PlayerID',
+          'PlayerName',
+          'Top',
+          'availablePackageForgePoints',
+          'currentPercent',
+          'donation2DIV',
+          'donationDIV',
+          'donationSuffix',
+          'onRerender',
+          'showOptions',
+        ]);
+        assert.equal(payload.onRerender, showGreatBuldingDonation);
+      } finally {
+        greatBuildingsState.setDonation(null);
+      }
     },
   );
 

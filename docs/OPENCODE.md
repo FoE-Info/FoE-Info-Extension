@@ -1,142 +1,83 @@
-# opencode and Antigravity coexistence
+# OpenCode Adapter
 
-The canonical skills, role descriptions, rules, scripts, and Antigravity registrations remain in `.agents/`. opencode reads the same source material. Its separate registrations live in `.opencode/`; there is no second copy of the 53 skills or 36 specialist documents.
+`.agents/` is the Git-tracked source of truth for skills, subagents, rules, references, scripts, and hooks. `.opencode/` contains only the shims and plugins OpenCode requires; it does not own a second copy of the canonical library.
 
-## Start here
+## Startup
 
-1. Read `docs/README.md` (coordination hub), `AGENTS.md`, and `docs/STATUS.md` (live work/todos), then inspect `git status` and current source before executing an old plan; `docs/HANDOFF.md` holds verified state and resume-safely notes.
-2. Read `.agents/rules/` entries marked `always_on` and the scoped rules applicable to the task. Antigravity frontmatter is not automatic rule activation in opencode; all 17 rules are injected as instructions (`opencode.json` `instructions` glob, `.agents/rules/*.md`) and the agent decides applicability per task.
-3. Use the workspace skill path from the available-skills catalog. Several global `~/.agents/skills/` skills share names with repository skills; the project copy wins (verified in `<available_skills>`), but prefer the repository runbook for repository work and avoid adding new name collisions. To force only the canonical 53, set `OPENCODE_DISABLE_EXTERNAL_SKILLS=1`.
-4. Query the host graph before broad source searches (`npm run graph:foe-info:ast` after code edits).
-5. Run `npm run verify` and `npm run typecheck` before claiming an implementation verified. A passing unit suite is not a browser behavior test.
+1. Read `AGENTS.md`, `docs/STATUS.md`, and `docs/HANDOFF.md`.
+2. Inspect the current branch, working tree, and relevant source before acting on a plan.
+3. OpenCode injects the eight canonical rules whose frontmatter is `trigger: always_on`, plus `.opencode/instructions/*.md`.
+4. Read a `model_decision` rule from `.agents/rules/` only when its declared scope matches the task.
+5. Select project skills from `.agents/skills/` and subagents from `.opencode/agents/`.
+6. Query the relevant Graphify graph before broad source discovery.
+7. Run the verification required by `.agents/rules/verification-before-completion.md`.
 
-## Tool and role mapping
+## Canonical Inventory
 
-| Antigravity instruction                              | opencode equivalent                                                                                                                         |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `run_command` / `CommandLine`                        | `bash` tool, permissions configured in `opencode.json`                                                                                      |
-| `grep_search`, `find_by_name`                        | `grep` / `glob` tools, after graph consultation                                                                                             |
-| `view_file`, `replace_file_content`, `write_to_file` | `read`, `edit`, `write` tools                                                                                                               |
-| `invoke_subagent` with a named specialist            | `task` tool with `subagent_type: <name>`; the 36 specialists are thin shims in `.opencode/agents/` (pointing at `.agents/agents/<name>.md`) |
-| `Workspace: "share"`                                 | Worktrees under `.worktrees/<branch>`; assign each cooperating agent its own branch-checkout cwd                                            |
-| `call_mcp_tool` / `ServerName`                       | MCP servers declared in `opencode.json`; tool names follow the `_server_tool_` sanitized convention                                         |
-| `<appDataDir>/brain/` artifacts                      | Do not invent an Antigravity brain path. Keep implementation plans in `docs/plans/` and disposable analysis under ignored `graphify-out/`   |
+- 55 skills under `.agents/skills/<name>/SKILL.md`.
+- 20 delegated personas under `.agents/agents/<name>.md`.
+- 17 rules under `.agents/rules/`: eight always-on and nine model-decided.
+- Exact skill and subagent catalogs are generated from canonical frontmatter with `.agents/scripts/generate-agent-catalogs.mjs`.
 
-Role Markdown is reusable instruction content, not automatic native named-agent registration. Actual tool schemas and user instructions govern dispatch. A skill's reference to unavailable tool/model parameters must be adapted, not copied verbatim.
+The OpenCode agent roster must match the canonical subagent roster by name and description. Profile-driven agents require an explicit graph, comparison, or FoE topic profile from `.agents/references/agents/`.
 
-### What still needs adaptation
+## Tool Mapping
 
-Antigravity sessions need no migration for opencode coexistence. The following differences are opencode responsibilities; they do not require rewriting the canonical Antigravity files.
+| Canonical/Antigravity action   | OpenCode action                       |
+| ------------------------------ | ------------------------------------- |
+| `run_command`                  | `bash`                                |
+| `view_file`                    | `read`                                |
+| `replace_file_content`         | `edit`                                |
+| `write_to_file`                | `write`                               |
+| `grep_search` / `find_by_name` | `grep` / `glob`                       |
+| `invoke_subagent`              | `task` with `subagent_type: <name>`   |
+| skill activation               | `skill` with `name: <skill>`          |
+| `call_mcp_tool`                | configured MCP server tool            |
+| isolated parallel workspace    | explicit worktree under `.worktrees/` |
 
-| Difference                                                              | Working procedure in opencode                                                                                                                         | Additional automation needed for parity                   |
-| ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| Rule frontmatter (`always_on`/`model_decision`) is not read by opencode | All 17 rules are injected as instructions; applicability is decided by the agent per task                                                             | None (single always-on injection bucket)                  |
-| Named specialist registration is not auto-imported                      | `.opencode/agents/<name>.md` shims add `subagent_type` for each of the 36 specialists                                                                 | None                                                      |
-| `Workspace: "share"` does not create an isolated checkout               | Create explicit worktrees and assign each writer its cwd                                                                                              | A worktree-aware dispatch wrapper                         |
-| Graph-query tool names differ                                           | Query the MCP graph before broad source searches; refresh ASTs with `npm run graph:foe-info:ast`                                                      | None (manual pipeline)                                    |
-| AST synchronization                                                     | Run `npm run graph:foe-info:ast` after AST-affected edits                                                                                             | None                                                      |
-| Per-turn guardrail activation                                           | The canonical reminder is baked into instructions (`.opencode/instructions/guardrail.md`, sourced from `.agents/scripts/pre-invocation-reminder.mjs`) | None (no PreInvocation event exists)                      |
-| Antigravity's `fullyIdle` stop payload is unavailable                   | The `stop-guard` plugin logs a warning on `session.idle` if a background AST sync is pending; it cannot block completion                              | Native task-state integration before a reliable stop gate |
-| Safety hook returns `deny`, not Antigravity `force_ask`                 | The `safety-gate` plugin throws on destructive commands; the permission system additionally asks/denies configurable bash patterns                    | Host-supported approval semantics                         |
+See `.agents/references/harness-adapters.md` for the complete host-difference contract.
 
-These procedures permit development today. Automatic enforcement parity is unfinished opencode integration work.
+## Rule Activation
 
-## Configuration
+OpenCode does not interpret Antigravity rule frontmatter. `opencode.json` therefore lists every and only `always_on` rule explicitly. Do not restore an `.agents/rules/*.md` wildcard: it would make domain rules such as BigNumber precision global.
 
-`opencode.json` at the workspace root declares:
+When changing a trigger:
 
-- **model**: `opencode/big-pickle` (cloud fallback for this repo until the local `llama-swap` model is preferred).
-- **instructions**: `.agents/rules/*.md` (all 17 rules) plus `.opencode/instructions/*.md` (guardrail reminder).
-- **plugins**: the two hook plugins in `.opencode/plugins/` (registered explicitly because `.mjs` is not auto-discovered).
-- **mcp**: the same servers as `.agents/mcp_config.json` — Chrome DevTools via native `chrome-devtools-mcp` (`--browserUrl=http://127.0.0.1:9222` plus experimental flags), `github-mcp` via the `ghcr.io/github/github-mcp-server` Docker image, `linux-tools` via native `linux-mcp-server`, and the five Graphify graphs via native `graphify-mcp` with relative paths and local env blocks. Secrets (`GITHUB_PERSONAL_ACCESS_TOKEN`, `LINUX_MCP_KEY_PASSPHRASE`) resolve through `{env:VAR}` from git-ignored `.env`, loaded into the shell by mise. Paths match this machine's Antigravity setup; on relocation update them after locating the executables.
-- **permission**: read/edit/glob/grep/list/task/skill allowed; bash uses a first-match-wins list where `*` asks by default and only the documented `git*`/`npm*` read/build/test patterns are auto-allowed. No wildcard tool grants.
+1. update the canonical rule frontmatter;
+2. synchronize `opencode.json` if the rule enters or leaves `always_on`;
+3. run `node --test tests/agents/harness-parity.test.mjs tests/agents/taxonomy.test.mjs`.
 
-Global ~/.config/opencode adds the `llama-swap` provider (models from `~/.config/llama-swap/config.yaml`). The user picks the active model; project `opencode.json` can override `model`.
+## MCP Profiles
 
-## Hooks and enforcement limits
+`.agents/mcp-registry.json` is canonical. Commands resolve through `PATH`; repository and sibling graph paths are workspace-relative. Generate task-scoped host configuration with:
 
-Built and live-verified on 2026-09-09:
+```sh
+node .agents/scripts/mcp-profile.mjs default
+node .agents/scripts/mcp-profile.mjs browser
+node .agents/scripts/mcp-profile.mjs research
+node .agents/scripts/mcp-profile.mjs github
+node .agents/scripts/mcp-profile.mjs linux
+node .agents/scripts/mcp-profile.mjs full
+```
 
-- `safety-gate` (`tool.execute.before`, bash): reuses `isDangerousCommand` from `.agents/scripts/safety-gate.mjs` and throws on destructive commands (e.g. `git push --force`, `rm -rf`). A live `git status` was unaffected.
-- `stop-guard` (`event`, `session.idle`): via `client.app.log` it warns when the session idles with a background AST sync still pending. It detects, it does not force-continue.
+The default profile enables only `graphify-foe-info`. Other servers remain disabled until a matching task requires them. Credentials remain environment substitutions; never commit secret values.
 
-The graphify pipeline is manual: `npm run graph:*:ast|update|reindex`.
+## Hooks and Permissions
 
-Not wired: Antigravity's `force_ask` semantics (opencode permission system asks/denies instead), and a reliable stop gate (no `fullyIdle` equivalent).
+- `.opencode/plugins/safety-gate.mjs` imports the shared dangerous-command classifier and blocks destructive commands.
+- `.opencode/plugins/stop-guard.mjs` warns on idle while AST synchronization is pending; OpenCode has no equivalent blocking `fullyIdle` gate.
+- `opencode.json` allows read/edit/search/task/skill operations. Shell commands ask by default; only named read, build, test, and verification patterns are pre-approved.
+- Staging, committing, pushing, restoring, cleaning, stashing, destructive deletion, publishing, and external writes require the applicable explicit authorization.
 
-## Known instruction conflicts
+## Verification
 
-- Workspace identity is `.agents/project.json` (`name`, `displayName`, `primaryGraph`); `package.json` mirrors those fields for npm/build tooling. The file was briefly removed in `e61503f` and later restored; tests enforce its presence.
-- The active BigNumber rule describes a rounding hybrid: `ROUND_HALF_UP` for Arc rewards and suggested donations, `ROUND_CEIL` for spot locks, owner safe adds, and safe-spots. Historical plans/handoffs claiming a blanket single mode are superseded as instructions. Use validated game examples before any arithmetic change.
-- Routine logger debug/info messages are gated by Debug Mode. Warnings and errors remain visible locally in the DevTools panel console for diagnosis. Legacy direct console calls are not all migrated.
-- Global file caps describe the target architecture; existing oversized modules are baseline debt. Do not add inline feature logic to monoliths or repeat completed extractions based only on line counts.
+```sh
+node --test tests/agents/harness-parity.test.mjs
+node --test tests/agents/mcp-profile.test.mjs
+node --test tests/agents/taxonomy.test.mjs
+npm run test:agents
+npm run verify
+git diff --check
+```
 
-## Dual-harness adapter and opencode instruction layer
-
-The harness-neutral workflow skills point at one shared adapter instead of duplicating host details inline:
-
-- `.agents/references/harness-adapters.md` is the single source for tool mappings, subagent dispatch, worktree isolation, rules activation, skill/slash invocation, hooks, and plans/artifacts across both hosts. It does not live under `.agents/skills/`, so the canonical 53-skill count is unaffected.
-- `.opencode/instructions/antigravity-tool-translation.md` is the always-injected bootstrap token map; it links to the adapter and lists the canonical files that still carry Antigravity tokens.
-- Per-skill opencode authoring deltas live in `references/opencode.md` (or `opencode-plugins.md` for hooks) inside `writing-skills`, `writing-agents`, `writing-rules`, and `writing-hooks`. These are loaded only when authoring for opencode.
-
-`.agents/` stays canonical. The former standalone `.opencode/skills/writing-opencode-plugins` was absorbed into `writing-hooks/references/opencode-plugins.md` so hook authoring is one skill with two references instead of two skills.
-
-## Verification environment
-
-Use Node.js 24 or later with the installed dependencies. The `node_modules` under `.opencode/` only provides local type-checking of the hook plugin API (`@opencode-ai/plugin`, `@opencode-ai/sdk`); the plugins run inside opencode's own runtime. Live hook behavior must be confirmed with `opencode run` against a running model, not just a Node import harness.
-
-Formatting excludes existing `docs/antigravity_prompt_*.md` conversation artifacts and worktrees. ESLint excludes worktrees too. Translation parity only checks keys, and TypeScript has `checkJs: false`; neither is a full semantic correctness guarantee.
-
-## Active Dual-Harness Tasks
-
-- **[COMPLETED] Track 2: UI Panels, Layouts, Sizing & Options Reorganization**:
-  - Plan: [`docs/plans/2026-09-12-city-stats-persistence-and-panel-refinements.md`](plans/2026-09-12-city-stats-persistence-and-panel-refinements.md).
-  - Merged & Verified: 1,005/1,005 tests passing, full 5-stage `npm run verify` gate green.
-  - Tasks completed:
-    1. **QI & GBG Contributions & Leaderboard Sizing**:
-       - `src/js/ui/renderQuantumPanels.js`:
-         - QI Contributions: When "show changes only" is OFF (`!isChangesOnly`), bounded height to ~20 players (~480px) with `overflow-y: auto`. When ON (`isChangesOnly`), full natural height (`height: auto`, no scrollbar).
-         - QI Leaderboard: Default height bounded to top 10 guilds (~260px) with `overflow-y: auto`. Expanding/collapsing strictly preserves and restores this height.
-       - `src/js/ui/renderBattlegroundsPanel.js`:
-         - GBG Battlegrounds: When "show changes only" is OFF, bounded height to ~20 players (~480px) with `overflow-y: auto`. When ON, full natural height (`height: auto`, no scrollbar).
-    2. **Guild Overview Panel Redesign**:
-       - `src/js/ui/renderGuildPanel.js`:
-         - Dual Header State:
-           - Collapsed: `[+] Guild: <GuildName> (<count> Guild Members)  [X]`
-           - Expanded: `[-] Guild Overview                              [Copy] [X]` with `<GuildName> • <count> Members` subtitle row.
-         - Flexbox layout: `d-flex align-items-center justify-content-between` so Copy and Close buttons never overlap text regardless of viewport width.
-         - Table container: Wrap member table in `<div class="table-responsive">` with compact column styling.
-    3. **City Info Options Clean-Up & 4 New Settings**:
-       - `src/chrome/options.html`: Clean up "City Info" card to strictly host panel options: `Stats`, `visit`, `army`, `showDailyCoins`, `showDailySupplies`, `showCoinBoost`, `showSupplyBoost`. Move `#incidents`, `#galaxy`, `#guild`, `#bonus`, and `collectionTimes` to their own dedicated cards.
-       - `src/js/options.js` & `src/js/state/showOptions.js`: Register and sync `showDailyCoins`, `showDailySupplies`, `showCoinBoost`, `showSupplyBoost` (all default `true`).
-       - `src/js/ui/templates/ownCityCard.js` & `src/js/ui/templates/visitedCityCard.js`: Render Daily Coins, Daily Supplies, Coin Boost %, Supply Boost % conditionally.
-       - `src/i18n/*.json`: Add localized keys for the 4 new options across all 7 language dictionaries (`npm run i18n:check`).
-    4. **Verification**:
-       - Verified via full 5-stage gate: `npm test`, `npm run i18n:check`, `npm run check`, `npm run lint`, and `npm run verify`.
-
-- **[COMPLETED] Zero Autonomous Browser Control Hardening**:
-  - Promoted `.agents/rules/browser-environment-hygiene.md` to `always_on`; updated `.agents/scripts/safety-gate.mjs` to block `foe-browser` and chrome process termination; added automated hook tests (`tests/agents/hooks.test.mjs`). Merged in `6ceb53a`.
-
-- **[COMPLETED] Workstream 1: Context-Driven Panel Visibility Engine**:
-  - Plan: [`docs/plans/2026-09-12-context-driven-panel-visibility-engine.md`](plans/2026-09-12-context-driven-panel-visibility-engine.md).
-  - Merged into `development` (`b9b41e7`, `6ceaf8f`). Declarative 6-context visibility matrix (`OWN_CITY`, `GBG`, `GE`, `QI`, `SETTLEMENT`, `OTHER_PLAYER`), route wiring, non-destructive `panelDispatcher.js` delegation, `donation2` added to `OTHER_PLAYER`. All 941 tests passing.
-
-- **[COMPLETED] Great Buildings Panel DOM Crash Fix**:
-  - Replaced fatal DOM `insertBefore` crash in `GreatBuildingsService.js` (`b08402b`) with container presence checks; fixed webpack dev output casing to `build/FoE-Info-DEV`; added HAR ground-truth test suite `tests/msg/har-great-buildings-ground-truth.test.mjs`. Merged in `b08402b`.
-
-- **[COMPLETED] Curated Git History Reconstruction (from `8c681d1` to `HEAD`)**:
-  - Plan: [`docs/plans/2026-09-12-curated-history-reconstruction.md`](plans/2026-09-12-curated-history-reconstruction.md).
-  - Reconstructed clean, structured 14-commit milestone progression from baseline `8c681d1` to `HEAD`. Merged into `development`.
-- **[COMPLETED] OpenCode Heavy Lifting Implementation (Tracks 1, 2, 3)**:
-  - Plan: [`docs/plans/2026-09-12-opencode-heavy-lifting-plan.md`](plans/2026-09-12-opencode-heavy-lifting-plan.md). All 3 tracks merged cleanly into `development` (`abf9e2a`).
-
-- **[COMPLETED] Era Mapping Extraction from helper.js**: See [`docs/plans/2026-09-11-era-mapping-extraction.md`](plans/2026-09-11-era-mapping-extraction.md).
-- **[COMPLETED] GBG Target Generator Card Extraction**: See [`docs/plans/2026-09-11-gbg-and-helper-decomposition.md`](plans/2026-09-11-gbg-and-helper-decomposition.md).
-- **[COMPLETED] Slices 1, 2 & 3 Heavy Lifter (F5, F6, F18, F19, F21, F23)**:
-  - Worktree: `.worktrees/opencode-slices-heavy` on branch `feat/opencode-slices-heavy` (commit `1343183`)
-  - Delivered:
-    1. **F5 (`GuildBattlegroundService.js`)**: Extracted the shared signal payload resolution and signal-list mutation into `src/js/msg/GbgSignalPayloadHandler.js` (`createLogger('GbgSignalPayloadHandler')`); `updateSignal`/`setSignal`/`removeSignal` now delegate to `resolveSignalData`, `resolveSignalTarget`, `applySignalToList`, and `removeSignalFromList`. Service reduced **857 → 596 lines** (≤ 600 hard cap).
-    2. **F6 (TypeScript mirrors)**: Reconciled `src/js/ui/cardVisibility.ts`, `src/js/ui/panelDispatcher.ts`, `src/js/calc/GbgCalculator.ts`, and `src/js/calc/GreatBuildingCalculator.ts` with their shipping `.js` twins — restored the guarded lazy-require/logging behavior, removed divergent debug-only branches, and aligned `renderTreasuryPanel` options sourcing; `npx tsc --noEmit` clean.
-    3. **F18/F19 (`BoostService.js`)**: Added `if (!item) continue;` to the `getAllBoosts` item loop; `applyBoostsToCity` now accumulates through `BigNumber.plus` and converts to `Number` only in the final export loop.
-    4. **F21/F23 (a11y)**: Added `tabindex="0"` to popover triggers in `statFormatters.js` and `cityStatsHtmlBuilder.js`; converted informational cards in `expeditionTables.js`, `renderBattlegroundResultCard.js`, and `gbgProvinceView.js` to `role="status" aria-live="polite"`.
-  - Verification: `npm run verify` exit 0 (768/768 tests, lint clean, dev build compiles), `npx tsc --noEmit` exit 0, `npm run check` clean.
+Live plugin or MCP behavior still requires an OpenCode runtime with the selected server/profile available; import and configuration tests do not prove a live external integration.
