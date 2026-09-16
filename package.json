@@ -38,6 +38,7 @@
     "rpc:contract": "node scripts/rpc-contract.mjs",
     "rpc:contract:check": "node scripts/rpc-contract.mjs --check",
     "test": "node --test --test-reporter=dot tests/**/*.test.mjs",
+    "test:agents": "node --test tests/agents/*.test.mjs",
     "test:cdp": "node tests/cdp/run-all.mjs",
     "test:cdp:devtools": "node tests/cdp/devtools-reload.mjs",
     "test:cdp:popovers": "node tests/cdp/panel-popovers.mjs",

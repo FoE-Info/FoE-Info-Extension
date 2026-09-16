@@ -94,9 +94,6 @@ function bindThemeToggle(win, targetDocument, onThemeChange) {
 
 function buildStorageDeps(config = {}) {
   const state = resolveDep(config, 'state', () => require('../vars/state.js'));
-  const startup = resolveDep(config, 'startup', () =>
-    require('../msg/StartupService.js'),
-  );
 
   return {
     storage: resolveDep(config, 'storage', () => require('../fn/storage.js')),
@@ -106,12 +103,7 @@ function buildStorageDeps(config = {}) {
     applyCardVisibility,
     setTargetsTopic: (val) => state?.setTargetsTopic?.(val),
     setTargetText: (val) => state?.setTargetText?.(val),
-    setCurrentPercent: resolveDep(
-      config,
-      'setCurrentPercent',
-      () => require('../msg/GreatBuildingsService.js'),
-      'setCurrentPercent',
-    ),
+    setCurrentPercent: config.setCurrentPercent,
     setUrl: (val) => state?.setUrl?.(val),
     setToolOptions: resolveDep(
       config,
@@ -119,31 +111,21 @@ function buildStorageDeps(config = {}) {
       () => require('../fn/globals.js'),
       'setToolOptions',
     ),
-    setResourceDefs: resolveDep(
-      config,
-      'setResourceDefs',
-      () => require('../msg/ResourceService.js'),
-      'setResourceDefs',
-    ),
+    setResourceDefs: config.setResourceDefs,
     collapseOptions: resolveDep(config, 'collapseOptions', () =>
       require('../fn/collapse.js'),
     ),
-    processMetadataData: resolveDep(
-      config,
-      'processMetadataData',
-      () => require('../msg/MetadataService.js'),
-      'processMetadataData',
-    ),
+    processMetadataData: config.processMetadataData,
     resolveMissingCityEntitiesFromMap: config.resolveMissingCityEntitiesFromMap,
-    renderLiveCityStats: startup?.renderLiveCityStats,
-    startupService: startup?.startupService,
+    renderLiveCityStats: config.renderLiveCityStats,
+    startupService: config.startupService,
     setDonationPercent: config.setDonationPercent,
     setDonationSuffix: config.setDonationSuffix,
     setLanguage: config.setLanguage,
     setMetadataLoaded: config.setMetadataLoaded,
     getLastStartupMsg: config.getLastStartupMsg,
     setLastStartupMsg: config.setLastStartupMsg,
-    getServiceLastStartupMsg: () => startup?.lastStartupMsg,
+    getServiceLastStartupMsg: config.getServiceLastStartupMsg,
     getPendingStartupMsg: config.getPendingStartupMsg,
     setPendingStartupMsg: config.setPendingStartupMsg,
     BuildingEntityLookup: state?.BuildingEntityLookup,
@@ -377,11 +359,17 @@ function bootstrapExtensionUi(options = {}) {
     document: targetDoc,
     citystats,
     tool,
+    renderLiveCityStats: options.renderLiveCityStats,
+    startupService: options.startupService,
+    setCurrentPercent: options.setCurrentPercent,
+    setResourceDefs: options.setResourceDefs,
+    processMetadataData: options.processMetadataData,
     getLanguage: () => language,
     setLanguage: (v) => {
       language = v;
     },
     getLastStartupMsg: () => lastStartupMsg,
+    getServiceLastStartupMsg: options.getServiceLastStartupMsg,
     setLastStartupMsg: (m) => {
       lastStartupMsg = m;
       onStartupMsg(m);
