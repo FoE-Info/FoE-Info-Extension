@@ -11,6 +11,11 @@
 
 const BigNumber = require('bignumber.js');
 const { toBigNumber } = require('../utils/bignumberUtils.js');
+const {
+  getBuildingEra,
+  getPreviousEra,
+  getNextEra,
+} = require('../utils/eraUtils.js');
 
 const NON_GOODS_KEYS = new Set([
   'money',
@@ -92,6 +97,10 @@ function addPlayerResources(
   multBn = 1,
   effectiveAided = true,
   isMotivatable = false,
+  bEra = null,
+  prevEra = null,
+  nextEra = null,
+  resourceDefMap = null,
 ) {
   if (!resObj) return;
   const mult = toBigNumber(multBn);
@@ -106,9 +115,27 @@ function addPlayerResources(
       const doubled = effectiveAided && isMotivatable ? 2 : 1;
       result.supplies = result.supplies.plus(bnVal.multipliedBy(doubled));
     } else if (!NON_GOODS_KEYS.has(k) && !SPECIAL_GOODS.has(k)) {
-      const goodsAmt = k === 'all_goods_of_age' ? bnVal.multipliedBy(5) : bnVal;
+      const goodsAmt = bnVal;
       result.goods = result.goods.plus(goodsAmt);
       result.goodsMap[k] = (result.goodsMap[k] || 0) + goodsAmt.toNumber();
+
+      let goodEra = bEra;
+      const resDef = resourceDefMap?.get(k);
+      if (resDef?.era) {
+        goodEra = resDef.era;
+      } else if (k.includes('previous_age') || k.includes('previous')) {
+        goodEra = prevEra;
+      } else if (k.includes('next_age') || k.includes('next')) {
+        goodEra = nextEra;
+      } else {
+        goodEra = bEra;
+      }
+
+      if (goodEra && result.goodsByEra) {
+        result.goodsByEra[goodEra] = (
+          result.goodsByEra[goodEra] || new BigNumber(0)
+        ).plus(goodsAmt);
+      }
     }
   }
 }
@@ -117,16 +144,20 @@ function addGuildResources(guildRes, result) {
   if (!guildRes) return;
   for (const [k, v] of Object.entries(guildRes)) {
     if (k !== 'clan_power' && typeof v === 'number') {
-      const cgAmt =
-        k === 'all_goods_of_age' ?
-          toBigNumber(v).multipliedBy(5)
-        : toBigNumber(v);
-      result.clanGoods = result.clanGoods.plus(cgAmt);
+      result.clanGoods = result.clanGoods.plus(toBigNumber(v));
     }
   }
 }
 
-function applyGenericRewardToResult(reward, result, multiplier = 1) {
+function applyGenericRewardToResult(
+  reward,
+  result,
+  multiplier = 1,
+  bEra = null,
+  prevEra = null,
+  nextEra = null,
+  resourceDefMap = null,
+) {
   if (!reward) return;
   const multBn = toBigNumber(multiplier);
 
@@ -137,10 +168,40 @@ function applyGenericRewardToResult(reward, result, multiplier = 1) {
   } else if (reward.type === 'chest') {
     let chestUnits = 0;
     if (Array.isArray(reward.possible_rewards)) {
-      for (const pr of reward.possible_rewards) {
+      const prList = reward.possible_rewards;
+      for (const pr of prList) {
         if (pr.reward?.type === 'unit') {
           chestUnits = pr.reward.amount || 1;
           break;
+        }
+        if (
+          pr.reward?.type === 'goods' ||
+          pr.reward?.type === 'good' ||
+          pr.reward?.subType === 'goods'
+        ) {
+          const chance =
+            pr.dropChance ??
+            pr.drop_chance ??
+            (prList.length > 0 ? 1 / prList.length : 1);
+          const rAmt = toBigNumber(pr.reward.amount || 1)
+            .multipliedBy(multBn)
+            .multipliedBy(toBigNumber(chance));
+          let gEra = bEra;
+          const rId = pr.reward.id || reward.id || '';
+          const resDef = resourceDefMap?.get(rId);
+          if (resDef?.era) gEra = resDef.era;
+          else if (rId.includes('previous')) gEra = prevEra;
+          else if (rId.includes('next')) gEra = nextEra;
+
+          result.goods = result.goods.plus(rAmt);
+          const gKey = rId || 'random_good_of_age';
+          result.goodsMap[gKey] =
+            (result.goodsMap[gKey] || 0) + rAmt.toNumber();
+          if (gEra && result.goodsByEra) {
+            result.goodsByEra[gEra] = (
+              result.goodsByEra[gEra] || new BigNumber(0)
+            ).plus(rAmt);
+          }
         }
       }
     }
@@ -161,11 +222,37 @@ function applyGenericRewardToResult(reward, result, multiplier = 1) {
     result.fp = result.fp.plus(
       toBigNumber(reward.amount || 0).multipliedBy(multBn),
     );
-  } else if (reward.type === 'goods') {
-    const amt = toBigNumber(reward.amount || 0).multipliedBy(multBn);
+  } else if (
+    reward.type === 'goods' ||
+    reward.type === 'good' ||
+    reward.subType === 'goods' ||
+    (reward.icon && /good/.test(reward.icon))
+  ) {
+    const amt = toBigNumber(
+      reward.amount || reward.totalAmount || 0,
+    ).multipliedBy(multBn);
     result.goods = result.goods.plus(amt);
-    const goodKey = reward.id || 'random_good_of_age';
+    let goodEra = bEra;
+    const rId = reward.id || '';
+    const resDef = resourceDefMap?.get(rId);
+    if (resDef?.era) {
+      goodEra = resDef.era;
+    } else if (rId.includes('previous') || reward.icon?.includes('previous')) {
+      goodEra = prevEra;
+    } else if (
+      rId.includes('next') ||
+      reward.icon === 'next_age_goods' ||
+      reward.icon?.includes('next')
+    ) {
+      goodEra = nextEra;
+    }
+    const goodKey = rId || 'random_good_of_age';
     result.goodsMap[goodKey] = (result.goodsMap[goodKey] || 0) + amt.toNumber();
+    if (goodEra && result.goodsByEra) {
+      result.goodsByEra[goodEra] = (
+        result.goodsByEra[goodEra] || new BigNumber(0)
+      ).plus(amt);
+    }
   }
 }
 
@@ -173,12 +260,29 @@ function extractEntityProductionData(
   entity,
   meta,
   targetEra,
-  { forceAided = false } = {},
+  {
+    forceAided = false,
+    helper = null,
+    ResourceDefs = [],
+    resourceDefMap = null,
+  } = {},
 ) {
   const isGB =
     entity?.type === 'greatbuilding' ||
     meta?.type === 'greatbuilding' ||
     String(entity?.cityentity_id || '').startsWith('X_');
+
+  let rMap = resourceDefMap;
+  if (!rMap && Array.isArray(ResourceDefs) && ResourceDefs.length > 0) {
+    rMap = new Map();
+    for (const r of ResourceDefs) {
+      if (r && r.id) rMap.set(r.id, r);
+    }
+  }
+
+  const bEra = getBuildingEra(entity, targetEra);
+  const prevEra = getPreviousEra(bEra) || getPreviousEra(targetEra);
+  const nextEra = getNextEra(bEra) || getNextEra(targetEra);
 
   const result = {
     fp: new BigNumber(0),
@@ -189,6 +293,7 @@ function extractEntityProductionData(
     supplies: new BigNumber(0),
     isBoostable: !isGB,
     goodsMap: {},
+    goodsByEra: {},
   };
 
   const isMotivatable = !isGB && isEntityMotivatable(entity, meta);
@@ -200,14 +305,18 @@ function extractEntityProductionData(
     const curProduct = entity?.state?.current_product;
     if (curProduct) {
       const res = curProduct.product?.resources;
-      if (res?.strategy_points) {
-        result.fp = result.fp.plus(toBigNumber(res.strategy_points));
-      }
-      if (res?.money) {
-        result.coins = result.coins.plus(toBigNumber(res.money));
-      }
-      if (res?.supplies) {
-        result.supplies = result.supplies.plus(toBigNumber(res.supplies));
+      if (res) {
+        addPlayerResources(
+          res,
+          result,
+          1,
+          effectiveAided,
+          false,
+          bEra,
+          prevEra,
+          nextEra,
+          rMap,
+        );
       }
       addGuildResources(curProduct.guildProduct?.resources, result);
       if (curProduct.name === 'clan_goods' || curProduct.goods) {
@@ -246,7 +355,10 @@ function extractEntityProductionData(
   // 2. Generic and Special City Entities
   if (meta) {
     const eraComp =
-      meta.components?.[targetEra] || meta.components?.AllAge || null;
+      meta.components?.[bEra] ||
+      meta.components?.[targetEra] ||
+      meta.components?.AllAge ||
+      null;
     const allAgeComp = meta.components?.AllAge || null;
     const prodComp = eraComp?.production || allAgeComp?.production || null;
     const lookup =
@@ -269,6 +381,10 @@ function extractEntityProductionData(
             1,
             effectiveAided,
             isMotivatable,
+            bEra,
+            prevEra,
+            nextEra,
+            rMap,
           );
         } else if (p.type === 'guildResources') {
           addGuildResources(
@@ -282,7 +398,15 @@ function extractEntityProductionData(
             toBigNumber(p.amount || p.unit?.amount || 1),
           );
         } else if (p.type === 'genericReward') {
-          applyGenericRewardToResult(lookup[p.reward?.id], result, 1);
+          applyGenericRewardToResult(
+            lookup[p.reward?.id],
+            result,
+            1,
+            bEra,
+            prevEra,
+            nextEra,
+            rMap,
+          );
         } else if (p.type === 'random') {
           for (const randP of p.products || []) {
             const chanceBn = toBigNumber(randP.dropChance || 1);
@@ -292,6 +416,10 @@ function extractEntityProductionData(
                 lookup[prod.reward?.id],
                 result,
                 chanceBn,
+                bEra,
+                prevEra,
+                nextEra,
+                rMap,
               );
             } else if (
               prod?.type === 'resources' &&
@@ -303,6 +431,10 @@ function extractEntityProductionData(
                 chanceBn,
                 effectiveAided,
                 isMotivatable,
+                bEra,
+                prevEra,
+                nextEra,
+                rMap,
               );
             }
           }
@@ -342,20 +474,38 @@ function extractEntityProductionData(
           a.__class__ === 'AddResourcesToGuildTreasuryAbility' &&
           a.additionalResources
         ) {
-          const resObj =
-            a.additionalResources.AllAge?.resources ||
-            a.additionalResources[targetEra]?.resources;
-          addGuildResources(resObj, result);
-        }
-        if (a.additionalResources) {
-          for (const k of ['AllAge', targetEra]) {
-            if (k === 'AllAge' || targetEra !== 'AllAge') {
+          const eraKey = bEra || targetEra;
+          const erasToScan = ['AllAge'];
+          if (eraKey && eraKey !== 'AllAge') {
+            erasToScan.push(eraKey);
+          } else if (targetEra && targetEra !== 'AllAge') {
+            erasToScan.push(targetEra);
+          }
+          for (const k of erasToScan) {
+            if (a.additionalResources[k]?.resources) {
+              addGuildResources(a.additionalResources[k].resources, result);
+            }
+          }
+        } else if (a.additionalResources) {
+          const eraKey = bEra || targetEra;
+          const erasToScan = ['AllAge'];
+          if (eraKey && eraKey !== 'AllAge') {
+            erasToScan.push(eraKey);
+          } else if (targetEra && targetEra !== 'AllAge') {
+            erasToScan.push(targetEra);
+          }
+          for (const k of erasToScan) {
+            if (a.additionalResources[k]?.resources) {
               addPlayerResources(
-                a.additionalResources[k]?.resources,
+                a.additionalResources[k].resources,
                 result,
                 1,
                 effectiveAided,
                 isMotivatable,
+                bEra,
+                prevEra,
+                nextEra,
+                rMap,
               );
             }
           }
@@ -367,7 +517,17 @@ function extractEntityProductionData(
     const curProduct = entity?.state?.current_product;
     const prodOption = entity?.state?.productionOption;
     if (curProduct?.product?.resources) {
-      addPlayerResources(curProduct.product.resources, result, 1, false, false);
+      addPlayerResources(
+        curProduct.product.resources,
+        result,
+        1,
+        false,
+        false,
+        bEra,
+        prevEra,
+        nextEra,
+        rMap,
+      );
     }
     if (prodOption?.products) {
       const pList =
@@ -380,6 +540,10 @@ function extractEntityProductionData(
             1,
             false,
             false,
+            bEra,
+            prevEra,
+            nextEra,
+            rMap,
           );
         }
       }

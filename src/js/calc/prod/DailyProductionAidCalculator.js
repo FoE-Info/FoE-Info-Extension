@@ -61,9 +61,21 @@ function calculateDailyProductionAid({
 
   let maxBaseGoods = new BigNumber(0);
   let currentBaseGoods = new BigNumber(0);
+  let maxBoostableGoods = new BigNumber(0);
+  let maxUnboostableGoods = new BigNumber(0);
+  let currentBoostableGoods = new BigNumber(0);
+  let currentUnboostableGoods = new BigNumber(0);
+
+  const maxBaseGoodsByEra = {};
+  const maxBaseBoostableGoodsByEra = {};
+  const currentBaseGoodsByEra = {};
 
   let maxBaseClanGoods = new BigNumber(0);
   let currentBaseClanGoods = new BigNumber(0);
+  let maxBoostableClanGoods = new BigNumber(0);
+  let currentBoostableClanGoods = new BigNumber(0);
+  let maxUnboostableClanGoods = new BigNumber(0);
+  let currentUnboostableClanGoods = new BigNumber(0);
 
   let maxUnits = new BigNumber(0);
   let currentUnits = new BigNumber(0);
@@ -90,6 +102,13 @@ function calculateDailyProductionAid({
 
   const unaidedBuildingsList = [];
 
+  const resourceDefMap = new Map();
+  if (Array.isArray(ResourceDefs)) {
+    for (const r of ResourceDefs) {
+      if (r && r.id) resourceDefMap.set(r.id, r);
+    }
+  }
+
   for (const entity of entities) {
     if (!entity) continue;
     const eid = entity.cityentity_id || entity.id;
@@ -111,20 +130,55 @@ function calculateDailyProductionAid({
       forceAided: true,
       helper,
       ResourceDefs,
+      resourceDefMap,
     });
 
     const curProd = extractEntityProductionData(entity, meta, playerEra, {
       forceAided: false,
       helper,
       ResourceDefs,
+      resourceDefMap,
     });
 
     if (maxProd.isBoostable) {
       maxBoostableFp = maxBoostableFp.plus(maxProd.fp);
       currentBoostableFp = currentBoostableFp.plus(curProd.fp);
+      maxBoostableGoods = maxBoostableGoods.plus(maxProd.goods);
+      currentBoostableGoods = currentBoostableGoods.plus(curProd.goods);
+      maxBoostableClanGoods = maxBoostableClanGoods.plus(maxProd.clanGoods);
+      currentBoostableClanGoods = currentBoostableClanGoods.plus(
+        curProd.clanGoods,
+      );
     } else {
       maxUnboostableFp = maxUnboostableFp.plus(maxProd.fp);
       currentUnboostableFp = currentUnboostableFp.plus(curProd.fp);
+      maxUnboostableGoods = maxUnboostableGoods.plus(maxProd.goods);
+      currentUnboostableGoods = currentUnboostableGoods.plus(curProd.goods);
+      maxUnboostableClanGoods = maxUnboostableClanGoods.plus(maxProd.clanGoods);
+      currentUnboostableClanGoods = currentUnboostableClanGoods.plus(
+        curProd.clanGoods,
+      );
+    }
+
+    if (maxProd.goodsByEra) {
+      for (const [eraKey, amtBn] of Object.entries(maxProd.goodsByEra)) {
+        maxBaseGoodsByEra[eraKey] = (
+          maxBaseGoodsByEra[eraKey] || new BigNumber(0)
+        ).plus(amtBn);
+        if (maxProd.isBoostable) {
+          maxBaseBoostableGoodsByEra[eraKey] = (
+            maxBaseBoostableGoodsByEra[eraKey] || new BigNumber(0)
+          ).plus(amtBn);
+        }
+      }
+    }
+
+    if (curProd.goodsByEra) {
+      for (const [eraKey, amtBn] of Object.entries(curProd.goodsByEra)) {
+        currentBaseGoodsByEra[eraKey] = (
+          currentBaseGoodsByEra[eraKey] || new BigNumber(0)
+        ).plus(amtBn);
+      }
     }
 
     if (maxProd.fp.gt(0)) {
@@ -221,17 +275,73 @@ function calculateDailyProductionAid({
     .plus(currentBoostableFp)
     .plus(curFpBoostAmount);
 
-  const maxTotalGoods = applyBoost(maxBaseGoods, goodsBoostPercent);
-  const curTotalGoods = applyBoost(currentBaseGoods, goodsBoostPercent);
+  const maxBoostedGoodsAmount =
+    goodsBoostPercent.gt(0) ?
+      maxBoostableGoods
+        .multipliedBy(goodsBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+    : new BigNumber(0);
+  const maxTotalGoods = maxUnboostableGoods
+    .plus(maxBoostableGoods)
+    .plus(maxBoostedGoodsAmount);
 
-  const maxTotalClanGoods = applyBoost(
-    maxBaseClanGoods,
-    guildGoodsBoostPercent,
-  );
-  const curTotalClanGoods = applyBoost(
-    currentBaseClanGoods,
-    guildGoodsBoostPercent,
-  );
+  const curBoostedGoodsAmount =
+    goodsBoostPercent.gt(0) ?
+      currentBoostableGoods
+        .multipliedBy(goodsBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+    : new BigNumber(0);
+  const curTotalGoods = currentUnboostableGoods
+    .plus(currentBoostableGoods)
+    .plus(curBoostedGoodsAmount);
+
+  const maxGoodsByEra = {};
+  for (const [eraKey, baseAmt] of Object.entries(maxBaseGoodsByEra)) {
+    const boostablePart =
+      maxBaseBoostableGoodsByEra[eraKey] || new BigNumber(0);
+    const unboostablePart = baseAmt.minus(boostablePart);
+    const boostAmt =
+      goodsBoostPercent.gt(0) ?
+        boostablePart
+          .multipliedBy(goodsBoostPercent)
+          .dividedBy(100)
+          .integerValue(BigNumber.ROUND_HALF_UP)
+      : new BigNumber(0);
+    maxGoodsByEra[eraKey] = unboostablePart.plus(boostablePart).plus(boostAmt);
+  }
+
+  const currentGoodsByEra = {};
+  for (const [eraKey, baseAmt] of Object.entries(currentBaseGoodsByEra)) {
+    currentGoodsByEra[eraKey] = applyBoost(baseAmt, goodsBoostPercent);
+  }
+
+  const maxClanGoodsBoostAmount =
+    guildGoodsBoostPercent.gt(0) ?
+      maxBoostableClanGoods
+        .dividedBy(5)
+        .multipliedBy(guildGoodsBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+        .multipliedBy(5)
+    : new BigNumber(0);
+  const maxTotalClanGoods = maxUnboostableClanGoods
+    .plus(maxBoostableClanGoods)
+    .plus(maxClanGoodsBoostAmount);
+
+  const curClanGoodsBoostAmount =
+    guildGoodsBoostPercent.gt(0) ?
+      currentBoostableClanGoods
+        .dividedBy(5)
+        .multipliedBy(guildGoodsBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+        .multipliedBy(5)
+    : new BigNumber(0);
+  const curTotalClanGoods = currentUnboostableClanGoods
+    .plus(currentBoostableClanGoods)
+    .plus(curClanGoodsBoostAmount);
 
   const maxTotalCoins = applyBoost(maxCoins, coinBoostPercent, true);
   const curTotalCoins = applyBoost(currentCoins, coinBoostPercent, true);
@@ -250,8 +360,13 @@ function calculateDailyProductionAid({
     fpBoostAmount: maxFpBoostAmount,
     goods: maxTotalGoods,
     baseGoods: maxBaseGoods,
+    goodsByEra: maxGoodsByEra,
+    baseGoodsByEra: maxBaseGoodsByEra,
     clanGoods: maxTotalClanGoods,
     baseClanGoods: maxBaseClanGoods,
+    baseBoostableClanGoods: maxBoostableClanGoods,
+    baseUnboostableClanGoods: maxUnboostableClanGoods,
+    clanGoodsBoostAmount: maxClanGoodsBoostAmount,
     units: maxUnits,
     coins: maxTotalCoins,
     supplies: maxTotalSupplies,
@@ -264,8 +379,13 @@ function calculateDailyProductionAid({
     fpBoostAmount: curFpBoostAmount,
     goods: curTotalGoods,
     baseGoods: currentBaseGoods,
+    goodsByEra: currentGoodsByEra,
+    baseGoodsByEra: currentBaseGoodsByEra,
     clanGoods: curTotalClanGoods,
     baseClanGoods: currentBaseClanGoods,
+    baseBoostableClanGoods: currentBoostableClanGoods,
+    baseUnboostableClanGoods: currentUnboostableClanGoods,
+    clanGoodsBoostAmount: curClanGoodsBoostAmount,
     units: currentUnits,
     coins: curTotalCoins,
     supplies: curTotalSupplies,
