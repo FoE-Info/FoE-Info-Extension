@@ -18,8 +18,8 @@ Before you modify code, design architecture, debug, or refactor:
 ## Which skill for what
 
 - Exploring code: `graphify`, or the knowledge graph skills, before manual searches.
-- Implementing: `test-driven-development` alongside the domain specialists for calculations. `add-rpc-service` or `service-extractor` for protocol handlers. `add-feature-panel` or `ui-ux-pro-max` for UI.
-- Debugging: `systematic-debugging` for defects; `browser-testing` or `chrome-devtools` for runtime panel checks.
+- Implementing: domain specialists for calculations. `add-rpc-service` or `service-extractor` for protocol handlers. `add-feature-panel` or `ui-ux-pro-max` for UI.
+- Debugging: `browser-testing` or `chrome-devtools` for runtime panel checks.
 - Workflow: native `/plan` or `/grill-me` for design and architecture, `unslop-commit` for commits, `verification-before-completion` before you call anything finished.
 
 The catalog has the complete list of runbooks and their triggers.

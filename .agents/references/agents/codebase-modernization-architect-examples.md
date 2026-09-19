@@ -12,7 +12,7 @@ On-demand examples for the `codebase-modernization-architect` subagent. The agen
    - State: `SocialState.js` handles player social lists.
    - UI: `renderSocialListsPanel.js` handles DOM rendering.
    - Binding: `socialRenderBinding.js` connects state to UI.
-3. Delegate to subagent: Author task brief for `javascript-expert` dispatched with `Workspace: "share"`.
+3. Delegate or implement: Author task brief for subagent dispatched with `Workspace: "share"`.
 4. Verification: Run `npm run verify` to ensure 0 failures before merging worktree.
 
 ---

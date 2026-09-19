@@ -13,15 +13,10 @@ Dispatch a subagent only for an independently bounded investigation, implementat
 | Independent code review against repository invariants | `code-reviewer` |
 | Full legacy decomposition and gradual TypeScript migration planning | `codebase-modernization-architect` |
 | Manifest V3 security, DOM XSS, credentials, or host permissions | `extension-security-auditor` |
-| Panel latency, Core Web Vitals, heaps, or DOM leaks | `performance-memory-profiler` |
 | Discord webhooks, rate limits, embeds, or snipe notifications | `discord-webhook-integrator` |
 | Web Store packaging, manifest version sync, or changelogs | `extension-release-engineer` |
-| WCAG 2.2 AA, ARIA, keyboard navigation, or live regions | `accessibility-specialist` |
 | Webpack 5 targets, assets, splitting, or MV3 packaging | `webpack-expert` |
-| TypeScript contracts, Web API typing, or gradual migration | `typescript-expert` |
 | Bootstrap/SCSS design systems and responsive DevTools layouts | `ui-design-system-architect` |
-| Modern JavaScript, async flow, test runners, or simplification | `javascript-expert` |
 | Locale dictionaries, translation bindings, or i18n parity | `localization-expert` |
-| Adversarial challenge of a plan, design, diff, or review | `adversarial-debater` |
 
 Profiles live under `.agents/references/agents/`. Host-specific dispatch syntax lives in [Harness Adapters](harness-adapters.md).

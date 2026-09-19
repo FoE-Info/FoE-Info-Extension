@@ -50,8 +50,7 @@ Canonical configuration lives under `.agents/`.
 Antigravity executes shell commands with a JSON stdin/stdout contract on key lifecycle events:
 
 - `PreToolUse`: Evaluates tool calls before execution (e.g. `safety-gate.mjs` blocks destructive commands).
-- `PreInvocation`: Injects transient context before agent reasoning (e.g. `pre-invocation-reminder.mjs`).
-- `Stop`: Validates conditions before stopping execution (e.g. `stop-guard.mjs`).
+- `PostToolUse`, `PreInvocation`, `Stop`: Optional lifecycle events configured in `.agents/hooks.json`.
 
 ---
 

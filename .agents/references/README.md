@@ -31,8 +31,6 @@ On-demand knowledge shared by canonical subagents and project skills. Keep deleg
 
 ## Specialist Examples
 
-- [Accessibility specialist](agents/accessibility-specialist-examples.md)
-- [Adversarial debater](agents/adversarial-debater-examples.md)
 - [CDP test engineer](agents/cdp-test-engineer-examples.md)
 - [Chrome extension architect](agents/chrome-extension-architect-examples.md)
 - [Code reviewer](agents/code-reviewer-examples.md)
@@ -40,10 +38,7 @@ On-demand knowledge shared by canonical subagents and project skills. Keep deleg
 - [Discord webhook integrator](agents/discord-webhook-integrator-examples.md)
 - [Extension release engineer](agents/extension-release-engineer-examples.md)
 - [Extension security auditor](agents/extension-security-auditor-examples.md)
-- [JavaScript expert](agents/javascript-expert-examples.md)
 - [Localization expert](agents/localization-expert-examples.md)
-- [Performance and memory profiler](agents/performance-memory-profiler-examples.md)
-- [TypeScript expert](agents/typescript-expert-examples.md)
 - [UI design-system architect](agents/ui-design-system-architect-examples.md)
 - [Webpack expert](agents/webpack-expert-examples.md)
 

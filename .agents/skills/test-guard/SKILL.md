@@ -24,10 +24,8 @@ Use this skill when reviewing generated or changed test code before it ships. Ac
 These rules are universal, but their application is not. Before reviewing:
 
 1. Check the project's own agent instructions (AGENTS.md) and testing docs. Project-specific testing rules win over this skill when they conflict.
-2. Identify the test stack, then read the matching reference for concrete patterns:
-   - JavaScript / TypeScript / Jest / Node.js test runner → [references/jest.md](references/jest.md)
-3. If the project calls LLM APIs, uses agent frameworks, or wires up observability/telemetry, also read [references/llm-app-testing.md](references/llm-app-testing.md) — it adds three rules specific to LLM applications.
-4. Map the project's system boundaries: network calls, databases, filesystem, clock and randomness, third-party SDKs, LLM APIs. Existing fixtures and test helpers usually reveal where the project already draws these lines.
+2. Consult native Node.js test runner patterns: [references/node-test.md](references/node-test.md).
+3. Map the project's system boundaries: network calls, filesystem, clock and randomness, third-party APIs. Existing fixtures and test helpers in `tests/fixtures/` reveal where the project already draws these lines.
 
 ## What to do
 
@@ -116,8 +114,7 @@ Not all violations are equal. Use judgment:
 
 ## References
 
-- [references/jest.md](references/jest.md) — Jest/Vitest/Node test patterns: test.each, module mocks, msw, snapshot discipline
-- [references/llm-app-testing.md](references/llm-app-testing.md) — three extra rules for LLM applications: prompt contracts, observability wiring, agent-flow transitions
+- [references/node-test.md](references/node-test.md) — Native Node.js `node:test` patterns, mock boundaries, and assertion discipline
 
 ## What this skill does NOT do
 

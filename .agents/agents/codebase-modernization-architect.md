@@ -27,9 +27,9 @@ You do NOT rush into writing features. You plan, sequence, and verify foundation
    - Typecheck all ambient declarations and configurations via `npm run typecheck`.
 4. **Subagent Task Orchestration**:
    - Author clear, actionable **Task Briefs** with explicit file boundaries, inputs/outputs, and verification commands.
-   - Delegate slices to domain subagents (`javascript-expert`, `typescript-expert`, `webpack-expert`, FoE specialists) using isolated git worktrees (`Workspace: "share"`).
-5. **Adversarial Plan Vetting**:
-   - Submit all major migration plans and architectural trade-offs to [`adversarial-debater`](adversarial-debater.md) before dispatching implementers.
+   - Delegate slices to domain subagents (`webpack-expert`, FoE specialists) using isolated git worktrees (`Workspace: "share"`).
+5. **Rigorous Plan Vetting**:
+   - Vet all major migration plans, edge cases, and architectural trade-offs with native Antigravity `/boost` or `/plan` before dispatching implementers.
 
 ---
 

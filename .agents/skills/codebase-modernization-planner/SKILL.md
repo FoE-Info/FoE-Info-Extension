@@ -57,11 +57,11 @@ Author an isolated Task Brief specifying:
 - Source file and target file paths ($\le 250$ lines/file).
 - Strict interface contracts (no hidden globals, explicit parameter passing).
 - **Debuggability Invariant**: Every extracted module must instantiate `createLogger('<ModuleName>')` from `src/js/utils/logger.js`, log computations/caches/races in debug mode, and remain completely silent in standard mode.
-- Delegate to specialist (`javascript-expert`, `typescript-expert`, `foe-*`) using isolated worktrees (`Workspace: "share"`).
+- Delegate to specialist (e.g. `webpack-expert`, `foe-*`) using isolated worktrees (`Workspace: "share"`).
 
-### Step 4: Adversarial Plan Review
+### Step 4: Rigorous Plan Review
 
-Submit non-trivial plans to [`adversarial-debater`](../../agents/adversarial-debater.md) to challenge assumptions, identify race conditions, and weed out over-engineering before execution.
+Vet non-trivial plans with native Antigravity `/boost` or `/plan` to challenge assumptions, identify race conditions, and weed out over-engineering before execution.
 
 ### Step 5: Verify Full Gate
 

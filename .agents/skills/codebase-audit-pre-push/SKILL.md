@@ -228,11 +228,11 @@ Overall: 9/10
 - Be thorough but practical—focus on real problems  
 - Security issues are blockers—nothing should ship with critical vulnerabilities  
 
-## Related Skills  
+## Related Agents & Rules
 
-- `@security-auditor` - Deeper security review  
-- `@systematic-debugging` - Investigate specific issues  
-- `@git-pushing` - Push code after audit
+- `extension-security-auditor` - Deeper security review
+- `unslop-commit` - Format commit message cleanly
+- `verification-before-completion` - Full test and build gate verification
 
 ## Limitations
 - Use this skill only when the task clearly matches the scope described above.

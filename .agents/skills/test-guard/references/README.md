@@ -4,5 +4,4 @@ Load only the references required by the current task. The owning `SKILL.md` rem
 
 | Reference | Purpose |
 | --- | --- |
-| [`jest.md`](jest.md) | Jest guidance. |
-| [`llm-app-testing.md`](llm-app-testing.md) | Llm App Testing guidance. |
+| [`node-test.md`](node-test.md) | Native Node.js `node:test` and `node:assert/strict` guidance. |

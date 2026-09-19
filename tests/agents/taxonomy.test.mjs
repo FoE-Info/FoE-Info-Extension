@@ -42,8 +42,8 @@ test('Taxonomy - canonical catalogs are generated and exact', () => {
   const skillNames = names(path.join(AGENTS, 'skills'));
   const agentNames = names(path.join(AGENTS, 'agents'), '.md');
 
-  assert.equal(skillNames.length, 30);
-  assert.equal(agentNames.length, 19);
+  assert.equal(skillNames.length, 23);
+  assert.equal(agentNames.length, 14);
   assert.deepEqual(
     catalogNames(path.join(ROOT, 'docs', 'SKILLS.md')),
     skillNames,
@@ -73,6 +73,13 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
     'writing-hooks',
     'writing-agents',
     'chrome-devtools-troubleshooting',
+    'using-git-worktrees',
+    'github',
+    'agents-md',
+    'audit-memory-leaks',
+    'chrome-web-store-publishing',
+    'systematic-debugging',
+    'test-driven-development',
   ]) {
     assert.ok(
       !fs.existsSync(path.join(AGENTS, 'skills', obsoleteSkill)),
@@ -121,6 +128,11 @@ test('Taxonomy - repeated subagent families are profile driven', () => {
     'foe-quantum-incursions-expert',
     'foe-settlements-expert',
     'foe-sniping-expert',
+    'javascript-expert',
+    'typescript-expert',
+    'accessibility-specialist',
+    'performance-memory-profiler',
+    'adversarial-debater',
   ]) {
     assert.ok(
       !agentNames.includes(removed),
@@ -167,7 +179,6 @@ test('Taxonomy - imported reference libraries have explicit catalogs', () => {
   for (const skill of [
     'test-guard',
     'add-feature-panel',
-    'audit-memory-leaks',
     'codebase-modernization-planner',
     'protocol-reverse-engineering',
   ]) {
@@ -231,10 +242,4 @@ test('Taxonomy - playbooks match this repository and skill entrypoints stay lean
   );
   assert.ok(changelogPlaybook.split(/\r?\n/).length <= 200);
   assert.match(changelogPlaybook, /package\.json|CHANGELOG\.md/);
-
-  assert.ok(
-    fs.existsSync(
-      path.join(AGENTS, 'skills', 'chrome-web-store-publishing', 'SKILL.md'),
-    ),
-  );
 });

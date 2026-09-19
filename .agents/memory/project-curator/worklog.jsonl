@@ -1,1 +1,0 @@
-{"ts":"2026-09-15T19:31:22.186Z","skill":"project-curator","task":"project-curator-build","outcome":"pass","signals":["node --test tests/agents/project-curator.test.mjs","npm run test:agents"],"lesson":null,"note":"Deterministic shared-library curator implemented and independently reviewed; no reusable correction beyond the fixes already encoded in tests."}
