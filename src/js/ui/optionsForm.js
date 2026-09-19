@@ -128,8 +128,11 @@ function readGlobalSettingsFromForm() {
     }
   }
 
+  const themeEl = document.getElementById('theme');
+
   return {
     language: langEl?.value || 'game',
+    theme: themeEl?.value || 'auto',
     timeFormatting: {
       dateFormat,
       timeFormat,
@@ -203,6 +206,11 @@ function populateForm(worldSettings = {}, globalSettings = {}) {
   const langEl = document.getElementById('language');
   if (langEl) {
     langEl.value = globalSettings?.language || 'game';
+  }
+
+  const themeEl = document.getElementById('theme');
+  if (themeEl) {
+    themeEl.value = globalSettings?.theme || 'auto';
   }
 
   const dateTimeFormatEl = document.getElementById('dateTimeFormat');

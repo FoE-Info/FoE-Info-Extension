@@ -269,7 +269,7 @@ function gbTabSafe(...args) {
       element.icon('donationicon', 'donationText', isDonationCollapsed)
     : '';
 
-  return `<div class="card ${cfg.darkMode === 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0">
+  return `<div class="card text-dark bg-light alert show collapsed p-0">
     <div class="card-header fw-bold d-flex align-items-center justify-content-between">
       <div id="donationTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#donationText" aria-expanded="${!isDonationCollapsed}" aria-controls="donationText" class="cursor-pointer user-select-none d-flex align-items-center gap-1 text-truncate" style="cursor: pointer; user-select: none;">
         ${iconHtml}
@@ -326,7 +326,7 @@ function gbTabNotSafe(...args) {
       element.icon('donationicon', 'donationText', isDonationCollapsed)
     : '';
 
-  return `<div class="card ${cfg.darkMode === 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} ${alertClass} show collapsed p-0 ">
+  return `<div class="card text-dark bg-light ${alertClass} show collapsed p-0 ">
     <div class="card-header fw-bold d-flex align-items-center justify-content-between">
       <div id="donationTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#donationText" aria-expanded="${!isDonationCollapsed}" aria-controls="donationText" class="cursor-pointer user-select-none d-flex align-items-center gap-1 text-truncate" style="cursor: pointer; user-select: none;">
         ${iconHtml}
@@ -370,7 +370,7 @@ function gbTabEmpty(...args) {
       element.icon('donationicon', 'donationText', isDonationCollapsed)
     : '';
 
-  return `<div class="card ${cfg.darkMode === 'dark' ? 'text-light bg-dark' : 'text-dark bg-light'} alert show collapsed p-0 ">
+  return `<div class="card text-dark bg-light alert show collapsed p-0 ">
     <div class="card-header fw-bold d-flex align-items-center justify-content-between">
       <div id="donationTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#donationText" aria-expanded="${!isDonationCollapsed}" aria-controls="donationText" class="cursor-pointer user-select-none d-flex align-items-center gap-1 text-truncate" style="cursor: pointer; user-select: none;">
         ${iconHtml}
