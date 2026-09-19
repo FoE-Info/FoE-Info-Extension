@@ -169,6 +169,7 @@ export function startupService(msg) {
   City.ChatBonus = 0;
   City.AOCriticalStrike = 0;
   City.CCCriticalStrike = 0;
+  City.CriticalStrike = 0;
 
   logger.debug('window', window);
 

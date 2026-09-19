@@ -33,7 +33,11 @@ function formatPercent(val, options = {}) {
   const bn = BigNumber.isBigNumber(val) ? val : new BigNumber(val);
   if (bn.isNaN() || !bn.isFinite()) return '0%';
   const isFloor = options === true || options.floor === true;
-  return `${(isFloor ? bn.integerValue(BigNumber.ROUND_FLOOR) : bn).toString()}%`;
+  if (isFloor) {
+    return `${bn.integerValue(BigNumber.ROUND_FLOOR).toString()}%`;
+  }
+  const decimals = typeof options?.decimals === 'number' ? options.decimals : 2;
+  return `${bn.decimalPlaces(decimals, BigNumber.ROUND_HALF_UP).toString()}%`;
 }
 
 function formatBoostText(val) {
@@ -241,23 +245,34 @@ function formatFpHTML(stats = {}, playerInfo = {}, prefix = '', exact = false) {
 }
 
 function formatCritStrikeHTML(spec = {}) {
-  const ao = spec.aoCriticalStrike;
-  const cc = spec.ccCriticalStrike;
-  const hasAo =
-    ao && (BigNumber.isBigNumber(ao) ? !ao.isZero() : Number(ao) > 0);
-  const hasCc =
-    cc && (BigNumber.isBigNumber(cc) ? !cc.isZero() : Number(cc) > 0);
+  const ao =
+    spec.aoCriticalStrike != null ?
+      BigNumber.isBigNumber(spec.aoCriticalStrike) ?
+        spec.aoCriticalStrike
+      : new BigNumber(spec.aoCriticalStrike)
+    : new BigNumber(0);
 
-  if (hasAo && hasCc) {
-    return `<div><span data-i18n="crit_strike">Crit Strike</span>: ${formatPercent(ao)} (AO), ${formatPercent(cc)} (CC)</div>`;
+  const cc =
+    spec.ccCriticalStrike != null ?
+      BigNumber.isBigNumber(spec.ccCriticalStrike) ?
+        spec.ccCriticalStrike
+      : new BigNumber(spec.ccCriticalStrike)
+    : new BigNumber(0);
+
+  const specTotal =
+    spec.criticalStrike != null ?
+      BigNumber.isBigNumber(spec.criticalStrike) ?
+        spec.criticalStrike
+      : new BigNumber(spec.criticalStrike)
+    : null;
+
+  const total = specTotal && !specTotal.isZero() ? specTotal : ao.plus(cc);
+
+  if (!total || total.isNaN() || total.lte(0)) {
+    return '';
   }
-  if (hasAo) {
-    return `<div><span data-i18n="crit_strike">Crit Strike</span>: ${formatPercent(ao)}</div>`;
-  }
-  if (hasCc) {
-    return `<div><span data-i18n="crit_strike">Crit Strike</span>: ${formatPercent(cc)}</div>`;
-  }
-  return '';
+
+  return `<div><span data-i18n="crit_strike">Crit Strike</span>: ${formatPercent(total)}</div>`;
 }
 
 function formatUnitsHTML(

@@ -100,6 +100,7 @@ function buildTargetParams(payload = {}) {
     post_webstore,
     targetPost: post_webstore?.postTargetGenToDiscord,
     Tooltip: resolveTooltip(),
+    guildBattlegroundState,
     map: payload.map,
     signals: payload.signals,
     provinceDefs: payload.provinceDefs,

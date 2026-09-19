@@ -111,6 +111,7 @@ test('renderLiveCityStats passes AOCriticalStrike and CCCriticalStrike to specia
   assert.equal(stats.special.arcPercent.toNumber(), 100);
   assert.equal(stats.special.aoCriticalStrike.toNumber(), 69.76);
   assert.equal(stats.special.ccCriticalStrike.toNumber(), 25);
+  assert.equal(stats.special.criticalStrike.toNumber(), 94.76);
 });
 
 for (const [boost, expected, total] of [

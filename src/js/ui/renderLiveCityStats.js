@@ -232,6 +232,9 @@ function renderLiveCityStats(ctx = {}) {
         .integerValue(BigNumber.ROUND_FLOOR),
       aoCriticalStrike: new BigNumber(City.AOCriticalStrike || 0),
       ccCriticalStrike: new BigNumber(City.CCCriticalStrike || 0),
+      criticalStrike: new BigNumber(City.AOCriticalStrike || 0).plus(
+        new BigNumber(City.CCCriticalStrike || 0),
+      ),
     },
   };
 
