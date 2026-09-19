@@ -4,8 +4,8 @@
 
 ## Ownership
 
-- `.agents/` is the Git-tracked canonical library: 55 skills, 20 subagents, 17 rules, shared references, scripts, hooks, and MCP registry.
-- The project is configured strictly for Antigravity. Secondary harnesses are paused.
+- `.agents/` is the Git-tracked canonical library: 51 skills, 20 subagents, 18 rules, shared references, scripts, hooks, and MCP registry.
+- The project is configured strictly for Antigravity.
 
 ## Session Discipline
 
@@ -17,9 +17,9 @@
 6. Use Graphify for broad architecture discovery; verify conclusions against current source.
 7. Follow `.agents/rules/verification-before-completion.md` before claiming completion.
 
-## Host Differences
+## Environment & Tooling Reference
 
-Read `.agents/references/harness-adapters.md` for tool names, subagent dispatch, rule activation, worktree isolation, hooks, and artifact placement. Host adapters may translate capabilities, but they must not fork canonical behavior.
+Read `.agents/references/harness-adapters.md` for tool names, subagent dispatch, rule activation, workspace isolation, hooks, and artifact placement.
 
 ## Current Work
 

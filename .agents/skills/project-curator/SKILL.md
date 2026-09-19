@@ -4,18 +4,16 @@ description: 'Audit and curate shared skills from grounded usage.'
 ---
 # Project Curator
 
-Maintain the Git-tracked `.agents/` library shared by Antigravity, OpenCode,
-Hermes, Codex, and Claude. Deterministic checks may promote already-recorded
-lessons; deletion, merging, archiving, and semantic rewrites require human review.
+Maintain the Git-tracked `.agents/` library configured for Antigravity.
+Deterministic checks may promote already-recorded lessons; deletion, merging,
+archiving, and semantic rewrites require human review.
 
 ## When to Use
 
 - Reviewing skill and subagent usage, stale entries, or duplicated guidance.
 - Repairing stored lessons that were logged but not promoted into definitions.
-- Running a periodic, read-only health check over the shared `.agents/` library.
+- Running a periodic, read-only health check over the `.agents/` library.
 
-Do not use this skill to maintain profile-local Hermes skills. Do not create a
-second writable copy of `.agents/skills/` under another harness.
 
 ## Commands
 

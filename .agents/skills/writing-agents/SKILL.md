@@ -74,7 +74,7 @@ duplicate reference.
 
 ### Step 3: Configure Lifecycles & Workspace Modes
 
-- When dispatching subagents for parallel feature tasks, isolate them: Antigravity `Workspace: "share"`, opencode explicit `.worktrees/<branch>` checkouts. See [Harness Adapters](../../references/harness-adapters.md).
+- When dispatching subagents for parallel feature tasks, isolate them: Antigravity `Workspace: "share"` (shared repo checkout) or explicit `.worktrees/<branch>` checkouts. See [Harness Adapters](../../references/harness-adapters.md).
 - See [Subagent Lifecycles & Coordination](references/subagent-lifecycles.md).
 
 ### Step 4: Validate Subagent Configuration

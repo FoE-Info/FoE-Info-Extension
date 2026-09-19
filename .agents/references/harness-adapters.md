@@ -1,116 +1,63 @@
-# Dual-Harness Adapter (Antigravity & opencode)
+# Antigravity Harness & Environment Reference
 
-Single shared reference for the harness-specific details behind the abstract
-actions used by workflow skills. Load it only when a skill step differs by
-harness; the canonical `.agents/` content is otherwise harness-neutral.
+Operational reference for Antigravity-native execution across tools, subagent dispatch, workspace isolation, lifecycle hooks, and artifact management.
 
-Canonical source of truth stays in `.agents/`. `.opencode/` mirrors only what
-opencode requires. See `docs/OPENCODE.md` for the full coexistence contract.
+Canonical configuration lives under `.agents/`.
 
 ---
 
-## 1. Tool Resolution
+## 1. Tool Resolution & Primitives
 
-| Abstract action           | Antigravity                              | opencode                                       |
-| :------------------------ | :--------------------------------------- | :--------------------------------------------- |
-| Run a command             | `run_command`                            | `bash`                                         |
-| Read a file               | `view_file`                              | `read`                                         |
-| Edit a file               | `replace_file_content`                   | `edit`                                         |
-| Create/overwrite a file   | `write_to_file`                          | `write`                                        |
-| Text search / file search | `grep_search` / `find_by_name`           | `grep` / `glob`                                |
-| Dispatch a subagent       | `invoke_subagent`                        | `task` (`subagent_type: <name>`)               |
-| Load a skill              | implicit skill activation                | `skill` tool (`name: <skill>`)                 |
-| Track tasks               | plan checkboxes + `replace_file_content` | `todowrite`                                    |
-| Read MCP tool             | `call_mcp_tool` (`ServerName`)           | call the MCP tool directly (`<server>_<tool>`) |
-
-MCP tool names are sanitized per host: Antigravity uses `mcp(server/tool)` in
-grants; opencode exposes `server_tool` (e.g. `graphify-foe-info_query_graph`).
+| Action | Antigravity Tool | Operational Notes |
+| :--- | :--- | :--- |
+| Run commands | `run_command` | Execute commands in project root or subdirectories. Persistent terminals supported. |
+| Read file | `view_file` | Slice viewing up to 800 lines; supports text and binary inspection. |
+| Edit file | `replace_file_content` | Contiguous block replacement. Line numbers and exact target text required. |
+| Create file | `write_to_file` | Create or overwrite files. Use `ArtifactMetadata` only in brain directories. |
+| Text search | `run_command` (`git grep`) | Fast text search across tracked repository files. |
+| Subagent dispatch | `invoke_subagent` | Dispatch project specialists (`TypeName`, `Role`, `Prompt`, `Workspace`). |
+| Manage subagents | `manage_subagents` / `send_message` | List, query status, kill, or message running subagents. |
+| MCP tools | `call_mcp_tool` / native tools | Eagerly loaded tools or lazy-loaded MCP tools via `call_mcp_tool`. |
+| Browser tasks | OpenCLI (`opencli browser ...`) | Connected via local daemon on `19825`. Mandatory `--window background`. |
+| Interactive input | `ask_question` | Structured multi-choice question prompts for user decisions. |
 
 ---
 
-## 2. Subagent Dispatch
+## 2. Subagent Dispatch & Isolation
 
-- **Antigravity**: `invoke_subagent` with `TypeName`/`Role`/`Prompt`, or
-  `define_subagent` from `.agents/agents/<name>.md`. Built-ins: `self`,
-  `research`.
-- **opencode**: `task` tool with `subagent_type: <name>`; project specialists are
-  thin shims in `.opencode/agents/<name>.md` that point back at the canonical
-  persona in `.agents/agents/<name>.md`.
-
-Role Markdown is reusable instruction content on both hosts; tool schemas and
-the user's instruction govern dispatch. A skill that names an unavailable
-`invoke_subagent` parameter must be adapted, not copied verbatim.
+- **Dispatch**: Use `invoke_subagent` with:
+  - `TypeName`: Defined agent name (e.g. `foe-economy-analyst`, `research`, `self`, `code-reviewer`).
+  - `Role`: 2-5 word job title.
+  - `Prompt`: Specific, bounded task instructions with verification commands.
+  - `Workspace`:
+    - `"inherit"` (default): Shares current working directory.
+    - `"share"`: Shared repo checkout via git worktree (ideal for independent branch work without duplicating disk space).
+    - `"branch"`: Fully isolated clone/branch.
 
 ---
 
-## 3. Parallel Isolation (Worktrees)
+## 3. Rules & Instruction Scoping
 
-- **Antigravity**: `Workspace: "share"` (shared repo checkout via git worktree),
-  `"branch"` (fully isolated clone/branch), `"inherit"` (parent cwd, default).
-- **opencode**: no `Workspace` mode. Create an explicit worktree under
-  `.worktrees/<branch>` and point each writer at its own checkout cwd. Use the
-  `using-git-worktrees` skill.
-
----
-
-## 4. Rules & Instructions Activation
-
-- **Antigravity**: `.agents/rules/*.md` frontmatter `trigger: always_on`
-  activates unconditionally; `glob` / `model_decision` / `manual` load
-  contextually. Hierarchical `AGENTS.md`/`GEMINI.md` apply per directory scope.
-- **opencode**: frontmatter triggers are not read. `opencode.json` therefore
-  lists exactly the eight `always_on` rules plus `.opencode/instructions/*.md`.
-  The agent reads a `model_decision` rule from `.agents/rules/` only when its
-  scope matches the task. Project `AGENTS.md` and global
-  `~/.config/opencode/AGENTS.md` also apply.
+- Frontmatter `trigger: always_on` activates unconditionally for all prompts.
+- Frontmatter `trigger: model_decision` activates contextually based on task scope.
+- Frontmatter `trigger: glob` activates when editing or inspecting matching file patterns.
+- Directory-level instructions: `AGENTS.md` at workspace root sets project-wide boundaries.
 
 ---
 
-## 5. Skills & Slash Commands
+## 4. Lifecycle Hooks (`.agents/hooks.json`)
 
-- **Antigravity**: skills are first-class slash commands (`/<skill-name>`), plus
-  semantic auto-discovery from the `description`.
-- **opencode**: skills are model-invoked through the `skill` tool; discovery is
-  `**/SKILL.md` under `.opencode/skills` and `.agents/skills` (project walk-up)
-  plus the `~/.config/opencode/skills` and `~/.agents/skills` globals. There is no implicit
-  `/<skill>` command; use `.opencode/command/<name>.md` to add one.
-- Frontmatter must satisfy opencode: `name` matches the directory and the regex
-  `^[a-z0-9]+(-[a-z0-9]+)*$`, and `description` is 1-1024 characters.
+Antigravity executes shell commands with a JSON stdin/stdout contract on key lifecycle events:
+
+- `PreToolUse`: Evaluates tool calls before execution (e.g. `safety-gate.mjs` blocks destructive commands).
+- `PreInvocation`: Injects transient context before agent reasoning (e.g. `pre-invocation-reminder.mjs`).
+- `Stop`: Validates conditions before stopping execution (e.g. `stop-guard.mjs`).
 
 ---
 
-## 6. Lifecycle Hooks
+## 5. Plans & Artifact Placement
 
-- **Antigravity**: `.agents/hooks.json` events `PreToolUse`, `PostToolUse`,
-  `PreInvocation`, `PostInvocation`, `Stop`; handlers are shell commands with a
-  stdin/stdout JSON contract.
-- **opencode**: `.opencode/plugins/*.mjs`, registered in `opencode.json`
-  `plugin[]`. Hook surface: `tool.execute.before|after`, `event`, `shell.env`,
-  `experimental.session.compacting`, `tool`. There is no `PreInvocation` (bake
-  guardrails into `.opencode/instructions/*.md`), no blocking `Stop`
-  (`session.idle` is notification-only), and no `force_ask` (a before-hook can
-  only throw; approvals come from `permission`).
-- Shared enforcement logic lives once in `.agents/scripts/*.mjs` and is imported
-  by the opencode plugins. Details and authoring steps: `writing-hooks` skill.
+- **User-facing artifacts**: Written to `<appDataDir>/brain/<conversation-id>/` using `write_to_file` with `ArtifactMetadata`.
+- **Repository documentation**: Implementation plans, specs, and persistent architectural records live in `docs/plans/` and `docs/specs/`.
+- **Scratch scripts**: Temporary one-off debug scripts belong in `<appDataDir>/brain/<conversation-id>/scratch/`.
 
----
-
-## 7. Plans & Artifacts
-
-- **Antigravity**: repository files never take `ArtifactMetadata`; user-facing
-  plans/diffs are written to `<appDataDir>/brain/<conversation-id>/`.
-- **opencode**: no brain path. Keep implementation plans in `docs/plans/` and
-  disposable analysis under the git-ignored `graphify-out/`. Do not invent an
-  Antigravity artifact path.
-
----
-
-## 8. Known Parity Limits
-
-| Capability               | Antigravity                                     | opencode                                   |
-| :----------------------- | :---------------------------------------------- | :----------------------------------------- |
-| Pre-invocation injection | `PreInvocation` hook                            | instructions files only                    |
-| Block completion         | `Stop` hook (`decision: continue`, `fullyIdle`) | `session.idle` notify-only                 |
-| Approval semantics       | `force_ask` / `permissionOverrides`             | `permission` config (`allow`/`ask`/`deny`) |
-| Parallel workspace mode  | `Workspace: "share"` or `"branch"`                 | explicit `.worktrees/<branch>`              |
-| Skill slash command      | native `/<skill>`                               | model-invoked only (or command file)       |
