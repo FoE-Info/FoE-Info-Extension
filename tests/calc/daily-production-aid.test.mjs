@@ -430,6 +430,10 @@ test('UI - buildUnaidedIndicatorHTML dark theme contrast and no duplicate inner 
   assert.ok(html.includes('color: #ffca2c'));
   assert.ok(html.includes('text-nowrap'));
 
+  // Single scrollbar invariant: Ensure no inner max-height or overflow-y on .unaided-building-list
+  assert.ok(!html.includes('max-height: 160px'));
+  assert.ok(!html.includes('overflow-y: auto'));
+
   // Ensure NO title attribute on the inner icon (which creates duplicate browser tooltip)
   assert.ok(
     !html.includes(
