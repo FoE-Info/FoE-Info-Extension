@@ -360,6 +360,10 @@ export function renderLiveCityStats(ctx) {
       `[TIMING:P6s] renderLiveCityStats wrapper entered | t = ${performance.now().toFixed(2)}ms | run = ${startupTimingRun} | caller = ${new Error().stack?.split('\n').slice(2, 4).join(' <- ')}`,
     );
   }
+  const startupContext = ctx?.lastStartupContext || lastStartupContext;
+  if (!startupContext && !ctx?.force && !lastStartupMsg) {
+    return;
+  }
   return renderWhenStartupReady(() =>
     startupRenderState.setCityStatsContext(
       ctx || {

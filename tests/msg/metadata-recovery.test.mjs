@@ -216,3 +216,42 @@ test('rejected async resolution renders fallback once without an unhandled rejec
   t.mock.timers.tick(10);
   assert.equal(rendered, 1);
 });
+
+test('city metadata invokes onUpdate when all entities are loaded from persistent cache', async (t) => {
+  const cachedId = 'cached_only_building';
+  const cacheKey = 'metadata:cityEntities';
+  const stored = {
+    [cacheKey]: {
+      version: 1,
+      entries: {
+        [cachedId]: {
+          fetchedAt: Date.now(),
+          data: { id: cachedId, name: 'Cached Only Building' },
+        },
+      },
+    },
+  };
+  const storage = {
+    get: async (key) => (key === cacheKey ? stored : {}),
+    set: async () => {},
+  };
+  globalThis.chrome = { storage: { local: storage } };
+  t.after(() => delete globalThis.chrome);
+
+  let updates = 0;
+  const loaded = [];
+  await resolver.resolveMissingCityEntities(
+    [cachedId],
+    () => updates++,
+    {},
+    {},
+    (data) => loaded.push(data.id),
+  );
+
+  assert.equal(
+    updates,
+    1,
+    'onUpdate should be invoked when cached entities are loaded',
+  );
+  assert.deepEqual(loaded, [cachedId]);
+});
