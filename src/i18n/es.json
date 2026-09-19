@@ -248,5 +248,7 @@
   "city_overview": "City Overview",
   "dev_seed": "Load Dev Fixtures",
   "dev_seed_done": "Dev fixtures loaded",
-  "dev_seed_failed": "Dev seed failed"
+  "dev_seed_failed": "Dev seed failed",
+  "player_status": "Status",
+  "gbg_building_costs": "GBG Building Costs"
 }

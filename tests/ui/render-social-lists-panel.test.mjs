@@ -132,6 +132,28 @@ test('renderSocialListsPanel Suite', async (t) => {
       assert.ok(container.innerHTML.includes('GuildOne'));
       assert.ok(container.innerHTML.includes('HoodOne'));
 
+      // Accessible table semantics assertions
+      assert.ok(
+        container.innerHTML.includes(
+          '<caption class="visually-hidden"><span data-i18n="friends">Friends</span></caption>',
+        ),
+      );
+      assert.ok(
+        container.innerHTML.includes(
+          '<caption class="visually-hidden"><span data-i18n="guild">Guild</span></caption>',
+        ),
+      );
+      assert.ok(
+        container.innerHTML.includes(
+          '<caption class="visually-hidden"><span data-i18n="hood">Hood List</span></caption>',
+        ),
+      );
+      assert.ok(
+        container.innerHTML.includes(
+          '<thead class="visually-hidden"><tr><th scope="col" data-i18n="name">Name</th><th scope="col" data-i18n="player_status">Status</th></tr></thead>',
+        ),
+      );
+
       assert.equal(getEl('friendsCopyID').listenerCount('click'), 1);
       assert.equal(getEl('guildCopyID').listenerCount('click'), 1);
       assert.equal(getEl('hoodCopyID').listenerCount('click'), 1);
