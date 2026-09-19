@@ -294,6 +294,7 @@ export function startupService(msg) {
     collapseStats: collapse.collapseStats,
     fpBuildings,
     goodsBuildings,
+    aidStats: entityResult.aidStats,
     tooltipHTML: {
       fp: tooltipHTML.fp,
       clanGoods: tooltipHTML.clanGoods,
