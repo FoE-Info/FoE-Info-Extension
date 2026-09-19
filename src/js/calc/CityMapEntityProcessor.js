@@ -25,8 +25,11 @@ const {
   evaluateEntityHarvest,
   SPECIAL_GOODS,
 } = require('./entities/CityEntityHarvestCalculator.js');
+const {
+  calculateDailyProductionAid,
+} = require('./prod/DailyProductionAidCalculator.js');
 
-function buildResult(accum, timing) {
+function buildResult(accum, timing, aidStats = null) {
   return {
     buildingsReady: accum.buildingsReady,
     fpBuildings: accum.fpBuildings,
@@ -39,6 +42,7 @@ function buildResult(accum, timing) {
     totalGoods: accum.totalGoods,
     unknownBonusTypes: accum.unknownBonusTypes,
     timing,
+    aidStats,
   };
 }
 
@@ -262,6 +266,38 @@ function processCityMapEntities(mapEntities, options = {}) {
     }
   }
 
+  let aidStats = null;
+  try {
+    aidStats = calculateDailyProductionAid({
+      entities: mapEntities,
+      metadataStore,
+      CityEntityDefs,
+      playerEra: user?.era || MyInfo?.era || 'SpaceAgeTitan',
+      boosts: {
+        fp: City.fpProductionBoost || 0,
+        goods: City.goodsProductionBoost || 0,
+        coin: City.CoinBoost || 0,
+        supply: City.SupplyBoost || 0,
+      },
+      helper,
+      ResourceDefs,
+    });
+    if (aidStats) {
+      City.aidStats = aidStats;
+      if (aidStats.max?.units && aidStats.max.units.gt(0)) {
+        City.TrazUnits = aidStats.max.units.toNumber();
+      }
+      if (aidStats.max?.coins && aidStats.max.coins.gt(0)) {
+        City.Coins = aidStats.max.coins.toNumber();
+      }
+      if (aidStats.max?.supplies && aidStats.max.supplies.gt(0)) {
+        City.Supplies = aidStats.max.supplies.toNumber();
+      }
+    }
+  } catch (err) {
+    logger?.warn('calculateDailyProductionAid failed', err);
+  }
+
   logger.debug('City map entities processed successfully', {
     readyCount: accum.buildingsReady.length,
     fpBuildingsCount: accum.fpBuildings.length,
@@ -273,11 +309,15 @@ function processCityMapEntities(mapEntities, options = {}) {
     uncountedEntitiesCount: accum.uncountedEntitiesCount,
   });
 
-  return buildResult(accum, {
-    galaxyEntityMs,
-    entityProductionMs,
-    entityAbilityMs,
-  });
+  return buildResult(
+    accum,
+    {
+      galaxyEntityMs,
+      entityProductionMs,
+      entityAbilityMs,
+    },
+    aidStats,
+  );
 }
 
 module.exports = {
