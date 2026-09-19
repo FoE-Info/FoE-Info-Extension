@@ -65,19 +65,36 @@ fi
 
 case "$ACTION" in
   ast)
-    echo "==> AST update for $TARGET..."
-    $RUNNER update . "$@"
+    if [ "$TARGET" = "metadata" ]; then
+      echo "==> Building metadata graph for $TARGET..."
+      node "${WORKSPACE_ROOT}/scripts/build-metadata-graph.mjs"
+    else
+      echo "==> AST update for $TARGET..."
+      $RUNNER update . "$@"
+    fi
     ;;
   update)
-    echo "==> Incremental update for $TARGET..."
-    $RUNNER update . "$@"
-    $RUNNER export wiki obsidian svg html tree 2>/dev/null || true
+    if [ "$TARGET" = "metadata" ]; then
+      echo "==> Updating metadata graph for $TARGET..."
+      node "${WORKSPACE_ROOT}/scripts/build-metadata-graph.mjs"
+      $RUNNER export wiki obsidian svg html tree 2>/dev/null || true
+    else
+      echo "==> Incremental update for $TARGET..."
+      $RUNNER update . "$@"
+      $RUNNER export wiki obsidian svg html tree 2>/dev/null || true
+    fi
     ;;
   reindex)
-    echo "==> Full reindex for $TARGET..."
-    $RUNNER extract . --token-budget 8192 "$@"
-    $RUNNER label --max-concurrency 1 "$@"
-    $RUNNER export wiki obsidian svg html tree 2>/dev/null || true
+    if [ "$TARGET" = "metadata" ]; then
+      echo "==> Full reindex for $TARGET..."
+      node "${WORKSPACE_ROOT}/scripts/build-metadata-graph.mjs"
+      $RUNNER export wiki obsidian svg html tree 2>/dev/null || true
+    else
+      echo "==> Full reindex for $TARGET..."
+      $RUNNER extract . --token-budget 8192 "$@"
+      $RUNNER label --max-concurrency 1 "$@"
+      $RUNNER export wiki obsidian svg html tree 2>/dev/null || true
+    fi
     ;;
   export)
     echo "==> Exporting graph documentation for $TARGET..."

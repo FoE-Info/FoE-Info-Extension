@@ -27,10 +27,9 @@ Every graph follows the same three-tier contract: **ast → update → reindex**
 
 `<repo>` is one of `foe-info`, `foe-info-original`, `forge-hammer`, `low-tool`. The metadata graph is built from entity JSON (`build-metadata-graph.mjs` + `cluster-only`), so it has no AST tier.
 
-1. **Automated Local LLM Lifecycle** (reindex only):
-   - Reindexing scripts automatically source `.agents/scripts/llama-swap-lifecycle.sh`.
-   - If `llama-swap` (vision instance) is not running, it is spawned automatically on `http://127.0.0.1:8081`.
-   - As soon as semantic extraction and community labeling complete, `stop_llama_swap` unloads the vision model and stops the server before visual exports begin.
+1. **Automated Local LLM Environment** (reindex only):
+   - Reindexing scripts automatically source `.agents/scripts/llama-swap-env.sh`.
+   - Directs requests to the local `llama-swap` vision instance on `http://127.0.0.1:8081/v1`.
 
 2. **Tier 1 — Fast AST (no LLM, no exports)**: Use to refresh a stale graph before querying.
 
