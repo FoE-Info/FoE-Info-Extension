@@ -12,7 +12,7 @@ This skill defines the master architectural procedure to modernize the remaining
 
 - Planning multi-stage refactoring across the measured large-file inventory (see [`references/monolith-decomposition-phases.md`](references/monolith-decomposition-phases.md)): `StartupService.js` (422), `GreatBuildingsService.js` (468), `GuildBattlegroundService.js` (446), plus the 12-file >450 L backlog. `index.js` (174) is a thin entry point, and `helper.js` (203) / `legacyBridge.js` (62) are **not** monoliths.
 - Setting up or extending the hybrid JavaScript/TypeScript compilation pipeline.
-- Scaffolding bite-sized task briefs for structured execution via `executing-plans`.
+- Scaffolding bite-sized task briefs for structured incremental execution.
 
 ---
 

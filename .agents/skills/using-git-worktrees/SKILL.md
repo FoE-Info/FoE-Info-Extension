@@ -159,12 +159,11 @@ Ready to implement auth feature
 ## Integration
 
 **Called by:**
-- **brainstorming** (Phase 4) - when design is approved and implementation follows
-- Any skill needing isolated workspace
+- Architecture planning and design workflows when implementation follows
+- Any task or subagent needing an isolated workspace
 
 **Pairs with:**
 - **unslop-commit** - Commit changes following repo standards
-- **executing-plans** - Work happens in this worktree
 
 ## When to Use
 This skill is applicable to execute the workflow or actions described in the overview.

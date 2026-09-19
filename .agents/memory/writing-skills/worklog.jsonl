@@ -1,6 +1,0 @@
-{"ts":"2026-09-13T23:39:19.909Z","skill":"writing-skills","task":"skill-memory-layer","outcome":"pass","signals":["node --test tests/agents/skill-memory.test.mjs"],"lesson":"Record a run and patch the skill in the same change: a lesson that lives only in the worklog is never read by the next run.","note":null}
-{"ts":"2026-09-14T02:34:52.738Z","skill":"writing-skills","task":null,"outcome":"pass","signals":[],"lesson":"Test lesson for self-improvement","note":null}
-{"ts":"2026-09-14T02:40:39.342Z","skill":"writing-skills","task":null,"outcome":"pass","signals":[],"lesson":"Test lesson for skill","note":null}
-{"ts":"2026-09-14T02:42:28.865Z","skill":"writing-skills","task":null,"outcome":"pass","signals":[],"lesson":"Test skill lesson","note":null}
-{"ts":"2026-09-14T02:43:41.475Z","skill":"writing-skills","task":null,"outcome":"pass","signals":[],"lesson":"Test skill from antigravity","note":null}
-{"ts":"2026-09-14T02:52:35.900Z","skill":"writing-skills","task":null,"outcome":"pass","signals":[],"lesson":"Test skill lesson","note":null}

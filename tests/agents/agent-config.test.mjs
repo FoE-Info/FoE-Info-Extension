@@ -66,8 +66,8 @@ test('Agent Config - validates skill definitions', () => {
 
   assert.equal(
     skillDirs.length,
-    38,
-    'Expected exactly 38 skills in .agents/skills',
+    30,
+    'Expected exactly 30 skills in .agents/skills',
   );
 
   for (const dir of skillDirs) {
