@@ -1,224 +1,309 @@
 /**
  * PopoverManager.js
  *
- * Interactive Bootstrap 5.3 Popover and Tooltip lifecycle manager for DevTools panels.
- * Handles hover delays, tip interaction, text selection, and clean disposal.
+ * Native HTML Popover API and CSS Anchor Positioning lifecycle manager for DevTools panels.
+ * Provides unified, top-layer interactive popovers and tooltips without Popper.js/Bootstrap JS overhead.
+ * Handles hover delays, selection retention, light-dismiss, and accessibility bindings.
  */
 
-function getBootstrap() {
-  if (typeof window !== 'undefined' && window.bootstrap) {
-    return window.bootstrap;
+let logger = null;
+try {
+  const { createLogger } = require('../../utils/logger.js');
+  logger = createLogger('PopoverManager');
+} catch {
+  logger = {
+    debug: () => {},
+    info: () => {},
+    warn: () => {},
+    error: () => {},
+  };
+}
+
+let activeTrigger = null;
+let showTimer = null;
+let hideTimer = null;
+let isSelecting = false;
+
+/**
+ * Ensures the single top-layer #foe-popover element exists in the DOM.
+ * @param {Document} [doc]
+ * @returns {HTMLElement|null}
+ */
+function getOrCreatePopoverElement(doc) {
+  const targetDoc = doc || (typeof document !== 'undefined' ? document : null);
+  if (!targetDoc || !targetDoc.body) return null;
+
+  let popoverEl = targetDoc.getElementById('foe-popover');
+  if (!popoverEl) {
+    popoverEl = targetDoc.createElement('div');
+    popoverEl.id = 'foe-popover';
+    popoverEl.setAttribute('popover', 'auto');
+    targetDoc.body.appendChild(popoverEl);
+    bindPopoverElementEvents(popoverEl);
   }
-  try {
-    return require('bootstrap');
-  } catch {
-    return null;
+  return popoverEl;
+}
+
+/**
+ * Binds hover, selection, and toggle events to the top-layer popover container.
+ * @param {HTMLElement} popoverEl
+ */
+function bindPopoverElementEvents(popoverEl) {
+  if (!popoverEl || popoverEl._foeBound) return;
+  popoverEl._foeBound = true;
+
+  popoverEl.addEventListener('mouseenter', () => {
+    if (hideTimer) {
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+  });
+
+  popoverEl.addEventListener('mouseleave', (e) => {
+    if (
+      activeTrigger &&
+      (activeTrigger === e.relatedTarget ||
+        activeTrigger.contains?.(e.relatedTarget))
+    ) {
+      return;
+    }
+    hideActivePopover();
+  });
+
+  popoverEl.addEventListener('mousedown', () => {
+    isSelecting = true;
+    if (hideTimer) {
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+    const targetWin = popoverEl.ownerDocument?.defaultView || window;
+    targetWin.addEventListener(
+      'mouseup',
+      () => {
+        if (isSelecting) {
+          isSelecting = false;
+          if (
+            popoverEl.matches?.(':hover') === false &&
+            (!activeTrigger || activeTrigger.matches?.(':hover') === false)
+          ) {
+            hideActivePopover();
+          }
+        }
+      },
+      { once: true },
+    );
+  });
+
+  popoverEl.addEventListener('toggle', (e) => {
+    if (e.newState === 'closed') {
+      clearActiveAnchor();
+    }
+  });
+}
+
+/**
+ * Clears the active anchor CSS property and resets aria-expanded on trigger.
+ */
+function clearActiveAnchor() {
+  if (activeTrigger) {
+    try {
+      activeTrigger.style.removeProperty('anchor-name');
+      activeTrigger.setAttribute('aria-expanded', 'false');
+    } catch {}
+    activeTrigger = null;
   }
 }
 
 /**
- * Initializes and binds interactive tooltips and popovers within a container.
+ * Shows the native popover anchored to the specified trigger element.
+ * @param {HTMLElement} triggerEl
+ */
+function showPopoverForTrigger(triggerEl) {
+  if (!triggerEl) return;
+  if (hideTimer) {
+    clearTimeout(hideTimer);
+    hideTimer = null;
+  }
+  if (showTimer) return;
+
+  showTimer = setTimeout(() => {
+    showTimer = null;
+    const doc = triggerEl.ownerDocument || document;
+    const popoverEl = getOrCreatePopoverElement(doc);
+    if (!popoverEl) return;
+
+    if (activeTrigger && activeTrigger !== triggerEl) {
+      clearActiveAnchor();
+    }
+
+    activeTrigger = triggerEl;
+    try {
+      triggerEl.style.setProperty('anchor-name', '--active-popover-trigger');
+      triggerEl.setAttribute('aria-expanded', 'true');
+    } catch {}
+
+    const title =
+      triggerEl.getAttribute('data-bs-title') ||
+      triggerEl.getAttribute('data-title') ||
+      triggerEl.getAttribute('data-foe-title') ||
+      triggerEl.getAttribute('title') ||
+      '';
+
+    // Store title in data-foe-title and clear title to prevent native browser tooltip collision
+    if (triggerEl.hasAttribute('title')) {
+      triggerEl.setAttribute('data-foe-title', title);
+      triggerEl.removeAttribute('title');
+    }
+
+    const content =
+      triggerEl.getAttribute('data-bs-content') ||
+      triggerEl.getAttribute('data-content') ||
+      '';
+
+    if (!title && !content) {
+      clearActiveAnchor();
+      return;
+    }
+
+    if (!content && title) {
+      // Compact tooltip variant
+      popoverEl.className = 'popover-compact';
+      popoverEl.textContent = title;
+    } else {
+      // Rich popover variant
+      popoverEl.className = '';
+      let html = '';
+      if (title) {
+        html += `<h3 class="popover-header">${title}</h3>`;
+      }
+      html += `<div class="popover-body">${content}</div>`;
+      popoverEl.innerHTML = html;
+    }
+
+    if (typeof popoverEl.showPopover === 'function') {
+      try {
+        popoverEl.showPopover();
+      } catch (err) {
+        logger.debug('showPopover error:', err);
+      }
+    }
+  }, 80);
+}
+
+/**
+ * Hides the native popover after a grace delay.
+ * @param {HTMLElement} [triggerEl]
+ */
+function hidePopoverForTrigger(triggerEl) {
+  if (showTimer) {
+    clearTimeout(showTimer);
+    showTimer = null;
+  }
+  if (hideTimer) clearTimeout(hideTimer);
+
+  hideTimer = setTimeout(() => {
+    hideTimer = null;
+    if (isSelecting) return;
+
+    const doc = triggerEl?.ownerDocument || document;
+    const popoverEl = doc?.getElementById?.('foe-popover');
+    if (popoverEl && popoverEl.matches?.(':hover')) return;
+
+    hideActivePopover(doc);
+  }, 350);
+}
+
+/**
+ * Immediately closes the active popover and clears state.
+ * @param {Document} [doc]
+ */
+function hideActivePopover(doc) {
+  clearActiveAnchor();
+  const targetDoc = doc || (typeof document !== 'undefined' ? document : null);
+  const popoverEl = targetDoc?.getElementById?.('foe-popover');
+  if (popoverEl && typeof popoverEl.hidePopover === 'function') {
+    try {
+      popoverEl.hidePopover();
+    } catch (err) {
+      logger.debug('hidePopover error:', err);
+    }
+  }
+}
+
+/**
+ * Initializes and binds interactive tooltips and popovers within a container element.
+ * Retains exact backward compatibility signature for existing callers.
  *
  * @param {HTMLElement} container Container element
- * @param {Object} [customBs] Optional Bootstrap instance override
  */
-function initPopovers(container, customBs = null) {
+function initPopovers(container) {
   if (!container || typeof container.querySelectorAll !== 'function') return;
 
   try {
-    const bs = customBs || getBootstrap();
-    if (!bs) return;
+    const triggers = container.querySelectorAll(
+      '[data-bs-toggle="popover"], [data-popover], [data-bs-toggle="tooltip"], [data-tooltip]',
+    );
 
-    // Tooltips
-    if (bs.Tooltip) {
-      container.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
-        const existing = bs.Tooltip.getInstance(el);
-        if (existing) {
-          existing.dispose();
+    triggers.forEach((el) => {
+      if (el._foePopoverBound) return;
+      el._foePopoverBound = true;
+
+      // Accessibility setup
+      if (typeof el.setAttribute === 'function') {
+        if (!el.getAttribute('role')) {
+          el.setAttribute('role', 'button');
         }
-        new bs.Tooltip(el, {
-          html: true,
-          container: 'body',
-          delay: { show: 100, hide: 500 },
-        });
+        if (!el.hasAttribute('tabindex')) {
+          el.setAttribute('tabindex', '0');
+        }
+        el.setAttribute('aria-haspopup', 'dialog');
+        el.setAttribute('aria-expanded', 'false');
+      }
+
+      el.addEventListener('mouseenter', () => showPopoverForTrigger(el));
+      el.addEventListener('mouseleave', (e) => {
+        const doc = el.ownerDocument || document;
+        const popoverEl = doc?.getElementById?.('foe-popover');
+        if (
+          popoverEl &&
+          e.relatedTarget &&
+          (popoverEl === e.relatedTarget ||
+            popoverEl.contains?.(e.relatedTarget))
+        ) {
+          return;
+        }
+        hidePopoverForTrigger(el);
       });
-    }
 
-    // Interactive Popovers
-    if (bs.Popover) {
-      container.querySelectorAll('[data-bs-toggle="popover"]').forEach((el) => {
-        const existing = bs.Popover.getInstance(el);
-        if (existing) {
-          existing.dispose();
+      el.addEventListener('focus', () => showPopoverForTrigger(el));
+      el.addEventListener('blur', () => hidePopoverForTrigger(el));
+
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const doc = el.ownerDocument || document;
+        const popoverEl = doc?.getElementById?.('foe-popover');
+        if (activeTrigger === el && popoverEl?.matches?.(':popover-open')) {
+          hideActivePopover(doc);
+        } else {
+          showPopoverForTrigger(el);
         }
-
-        const titleGetter = () =>
-          el.getAttribute('data-bs-title') || el.getAttribute('title') || '';
-        const contentGetter = () => el.getAttribute('data-bs-content') || '';
-
-        const popover = new bs.Popover(el, {
-          html: true,
-          trigger: 'manual',
-          container: 'body',
-          sanitize: false,
-          animation: false,
-          title: titleGetter,
-          content: contentGetter,
-        });
-
-        let showTimer = null;
-        let hideTimer = null;
-        let isSelecting = false;
-
-        if (typeof el.setAttribute === 'function') {
-          if (!el.getAttribute || !el.getAttribute('role')) {
-            el.setAttribute('role', 'button');
-          }
-          el.setAttribute('aria-haspopup', 'true');
-          el.setAttribute('aria-expanded', 'false');
-        }
-
-        const getTip = () => {
-          try {
-            if (popover.tip) return popover.tip;
-            if (typeof popover._getTipElement === 'function') {
-              return popover._getTipElement();
-            }
-            const ariaId = el.getAttribute('aria-describedby');
-            if (ariaId) return document.getElementById(ariaId);
-          } catch {}
-          return null;
-        };
-
-        const showPopover = () => {
-          if (hideTimer) {
-            clearTimeout(hideTimer);
-            hideTimer = null;
-          }
-          if (!showTimer) {
-            showTimer = setTimeout(() => {
-              showTimer = null;
-              popover.show();
-              if (typeof el.setAttribute === 'function') {
-                el.setAttribute('aria-expanded', 'true');
-              }
-              bindPopoverBox();
-            }, 80);
-          }
-        };
-
-        const hidePopover = () => {
-          if (showTimer) {
-            clearTimeout(showTimer);
-            showTimer = null;
-          }
-          if (hideTimer) clearTimeout(hideTimer);
-          hideTimer = setTimeout(() => {
-            if (isSelecting) return;
-            const tip = getTip();
-            if (tip && tip.matches(':hover')) return;
-            popover.hide();
-            if (typeof el.setAttribute === 'function') {
-              el.setAttribute('aria-expanded', 'false');
-            }
-          }, 350);
-        };
-
-        el.addEventListener('mouseenter', showPopover);
-        el.addEventListener('mouseleave', (e) => {
-          const tip = getTip();
-          if (
-            tip &&
-            e.relatedTarget &&
-            (tip === e.relatedTarget || tip.contains(e.relatedTarget))
-          ) {
-            return;
-          }
-          hidePopover();
-        });
-        el.addEventListener('focus', showPopover);
-        el.addEventListener('blur', hidePopover);
-
-        el.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const tip = getTip();
-          if (tip && tip.classList.contains('show')) {
-            hidePopover();
-          } else {
-            showPopover();
-          }
-        });
-
-        el.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') {
-            hidePopover();
-          }
-        });
-
-        const bindPopoverBox = () => {
-          const tip = getTip();
-          if (tip && !tip._hoverBound) {
-            tip._hoverBound = true;
-            tip.addEventListener('mouseenter', () => {
-              if (hideTimer) {
-                clearTimeout(hideTimer);
-                hideTimer = null;
-              }
-            });
-            tip.addEventListener('keydown', (e) => {
-              if (e.key === 'Escape') {
-                e.stopPropagation();
-                hidePopover();
-                if (typeof el.focus === 'function') el.focus();
-              }
-            });
-            tip.addEventListener('mouseleave', (e) => {
-              if (
-                e.relatedTarget &&
-                (el === e.relatedTarget || el.contains(e.relatedTarget))
-              ) {
-                return;
-              }
-              hidePopover();
-            });
-            tip.addEventListener('mousedown', () => {
-              isSelecting = true;
-              if (hideTimer) {
-                clearTimeout(hideTimer);
-                hideTimer = null;
-              }
-              window.addEventListener(
-                'mouseup',
-                () => {
-                  if (isSelecting) {
-                    isSelecting = false;
-                    const curTip = getTip();
-                    if (
-                      curTip &&
-                      !curTip.matches(':hover') &&
-                      !el.matches(':hover')
-                    ) {
-                      hidePopover();
-                    }
-                  }
-                },
-                { once: true },
-              );
-            });
-          }
-        };
-
-        el.addEventListener('inserted.bs.popover', bindPopoverBox);
-        el.addEventListener('shown.bs.popover', bindPopoverBox);
       });
-    }
-  } catch {
-    // Graceful fallback for test or headless environments without full DOM
+
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          hideActivePopover(el.ownerDocument || document);
+        }
+      });
+    });
+  } catch (err) {
+    logger.debug('initPopovers error:', err);
   }
 }
 
 module.exports = {
   initPopovers,
+  hideActivePopover,
+  getOrCreatePopoverElement,
 };
 module.exports.default = initPopovers;
