@@ -96,7 +96,7 @@ function bindPopoverElementEvents(popoverEl) {
 
   popoverEl.addEventListener('toggle', (e) => {
     if (e.newState === 'closed') {
-      clearActiveAnchor();
+      clearActiveAnchor(popoverEl.ownerDocument);
     }
   });
 }
@@ -110,16 +110,15 @@ function clearActiveAnchor(doc) {
       activeTrigger.style.removeProperty('anchor-name');
       activeTrigger.setAttribute('aria-expanded', 'false');
     } catch {}
-    const targetDoc =
-      doc || (activeTrigger ? activeTrigger.ownerDocument : null) || document;
-    const popoverEl = targetDoc?.getElementById?.('foe-popover');
-    if (popoverEl) {
-      popoverEl.style.maxHeight = '';
-      popoverEl.style.positionArea = '';
-      popoverEl.style.top = '';
-      popoverEl.style.left = '';
-    }
     activeTrigger = null;
+  }
+  const targetDoc = doc || (typeof document !== 'undefined' ? document : null);
+  const popoverEl = targetDoc?.getElementById?.('foe-popover');
+  if (popoverEl) {
+    popoverEl.style.maxHeight = '';
+    popoverEl.style.positionArea = '';
+    popoverEl.style.top = '';
+    popoverEl.style.left = '';
   }
 }
 
@@ -133,16 +132,25 @@ function showPopoverForTrigger(triggerEl) {
     clearTimeout(hideTimer);
     hideTimer = null;
   }
-  if (showTimer) return;
+  if (showTimer) {
+    clearTimeout(showTimer);
+    showTimer = null;
+  }
+
+  const doc = triggerEl.ownerDocument || document;
+  const currentPopoverEl = doc?.getElementById?.('foe-popover');
+  const isAlreadyOpen = Boolean(
+    currentPopoverEl?.matches?.(':popover-open') || currentPopoverEl?._isOpen,
+  );
+  const delay = isAlreadyOpen ? 30 : 80;
 
   showTimer = setTimeout(() => {
     showTimer = null;
-    const doc = triggerEl.ownerDocument || document;
     const popoverEl = getOrCreatePopoverElement(doc);
     if (!popoverEl) return;
 
     if (activeTrigger && activeTrigger !== triggerEl) {
-      clearActiveAnchor();
+      clearActiveAnchor(doc);
     }
 
     activeTrigger = triggerEl;
@@ -236,7 +244,7 @@ function showPopoverForTrigger(triggerEl) {
         logger.debug('showPopover error:', err);
       }
     }
-  }, 80);
+  }, delay);
 }
 
 /**
@@ -248,7 +256,10 @@ function hidePopoverForTrigger(triggerEl) {
     clearTimeout(showTimer);
     showTimer = null;
   }
-  if (hideTimer) clearTimeout(hideTimer);
+  if (hideTimer) {
+    clearTimeout(hideTimer);
+    hideTimer = null;
+  }
 
   hideTimer = setTimeout(() => {
     hideTimer = null;
@@ -259,7 +270,7 @@ function hidePopoverForTrigger(triggerEl) {
     if (popoverEl && popoverEl.matches?.(':hover')) return;
 
     hideActivePopover(doc);
-  }, 350);
+  }, 180);
 }
 
 /**
@@ -267,15 +278,21 @@ function hidePopoverForTrigger(triggerEl) {
  * @param {Document} [doc]
  */
 function hideActivePopover(doc) {
-  clearActiveAnchor();
   const targetDoc = doc || (typeof document !== 'undefined' ? document : null);
   const popoverEl = targetDoc?.getElementById?.('foe-popover');
   if (popoverEl && typeof popoverEl.hidePopover === 'function') {
     try {
-      popoverEl.hidePopover();
+      if (popoverEl.matches?.(':popover-open') || popoverEl._isOpen) {
+        popoverEl.hidePopover();
+      }
     } catch (err) {
       logger.debug('hidePopover error:', err);
     }
+  }
+
+  // In non-browser environments or when popover is not in open transition:
+  if (typeof window === 'undefined' || !popoverEl?.matches?.(':popover-open')) {
+    clearActiveAnchor(targetDoc);
   }
 }
 
