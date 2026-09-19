@@ -52,6 +52,14 @@ try {
   loggerModule = require('../utils/logger.js');
 } catch {}
 
+const {
+  getFriendlyDonation,
+  getSafe,
+  getDonations,
+  buildClassicDonationHeader,
+  bindDonationEvents,
+} = require('./gbDonationFormatters.js');
+
 const logger =
   typeof loggerModule.createLogger === 'function' ?
     loggerModule.createLogger('GbDonationPanel')
@@ -70,84 +78,6 @@ try {
     if (syncVal !== null) useNewDonationPanel = syncVal;
   }
 } catch {}
-
-function getFriendlyDonation(donation, reward, percent, lock, band) {
-  const isLoss =
-    band !== undefined ?
-      band === 'red'
-    : donation &&
-      reward &&
-      lock &&
-      (donation.isGreaterThan(reward) || lock.isGreaterThan(donation));
-  return `<span class="${isLoss ? 'red' : 'green'}">${
-    percent / 100
-  }: ${donation}FP</span><br>`;
-}
-
-function getSafe(params = {}) {
-  const {
-    place = 1,
-    GBrewards = [0, 0, 0, 0, 0],
-    currentPercent = 190,
-    remaining = 0,
-    Top = [0, 0, 0, 0, 0, 0],
-    calculateSuggestedDonation = GreatBuildingCalculator.calculateSuggestedDonation,
-  } = params;
-
-  const safe = [];
-  const donateSuggest = [];
-  const index = place - 1;
-  let rem = remaining;
-
-  for (let i = index; i < 5; i++) {
-    const BN = BigNumber || (typeof global !== 'undefined' && global.BigNumber);
-    const suggested =
-      typeof calculateSuggestedDonation === 'function' ?
-        calculateSuggestedDonation(GBrewards[i] || 0, currentPercent)
-      : BN ?
-        new BN(GBrewards[i] || 0)
-          .multipliedBy(currentPercent)
-          .dividedBy(100)
-          .integerValue(BN.ROUND_HALF_UP)
-          .toNumber()
-      : Math.round((GBrewards[i] || 0) * (currentPercent / 100));
-
-    donateSuggest[i] = BN ? new BN(suggested) : suggested;
-
-    const numVal =
-      typeof donateSuggest[i]?.toNumber === 'function' ?
-        donateSuggest[i].toNumber()
-      : Number(donateSuggest[i] || 0);
-
-    rem -= numVal;
-    safe[i] = rem <= numVal - (Top[i + 1] || 0);
-  }
-
-  return { safe, donateSuggest };
-}
-
-function getDonations(params = {}) {
-  const { place = 1, safe = [], donateSuggest = [], showOptions = {} } = params;
-
-  let footer = '';
-  for (let i = 5; i > 0; i--) {
-    const suggestVal =
-      typeof donateSuggest[i - 1]?.toNumber === 'function' ?
-        donateSuggest[i - 1].toNumber()
-      : Number(donateSuggest[i - 1] || 0);
-
-    if (
-      place <= i &&
-      suggestVal > 0 &&
-      (safe[i - 1] || !showOptions.hideUnsafe)
-    ) {
-      footer += `<span class="${safe[i - 1] ? 'invest-good' : 'invest-bad'}">P${
-        i + '(' + suggestVal + ')'
-      }</span> `;
-    }
-  }
-  return footer;
-}
 
 function renderGbDonationPanel(params = {}) {
   const {
@@ -242,27 +172,24 @@ function renderGbDonationPanel(params = {}) {
       )} FP</span>`
     : '';
 
-  let olddonationHTML = `<div class="alert alert-secondary alert-dismissible show collapsed" role="status" aria-live="polite">
-            ${closeBtn}
-            <p id="freeTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#donationText3" aria-expanded="${!isCollapsed}" aria-controls="donationText3" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-      ${iconHtml}
-            <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong>${packageBadgeHtml}</p>`;
-  olddonationHTML += copyBtn;
-  olddonationHTML += `<div id="donationText3" class="collapse ${
-    isCollapsed ? '' : 'show'
-  }"><p>${getPlayerLink(PlayerName || GBselected.player_name, PlayerID || GBselected.player)}<br>`;
-  olddonationHTML += `<span id="GBselected">${escapeFn(GBselected.name)} ${(GBselected.level || 0) + 1}</span></p>`;
-
   const isGbLocked = Boolean(
     GBselected.max_level > 0 && GBselected.level >= GBselected.max_level,
   );
-  if (GBselected.connected === false) {
-    olddonationHTML += '<p class="red">*** DISCONNECTED ***</p>';
-  }
-  if (isGbLocked) {
-    olddonationHTML += '<p class="red">*** LOCKED ***</p>';
-  }
-  olddonationHTML += checkInactive();
+
+  let olddonationHTML = buildClassicDonationHeader({
+    isCollapsed,
+    iconHtml,
+    closeBtn,
+    copyBtn,
+    packageBadgeHtml,
+    getPlayerLink,
+    PlayerName,
+    GBselected,
+    PlayerID,
+    escapeFn,
+    isGbLocked,
+    checkInactive,
+  });
 
   if (donationDIV) {
     donationDIV.innerHTML = '';
@@ -439,26 +366,17 @@ function renderGbDonationPanel(params = {}) {
           (donationSuffix ? donationSuffix : '') +
           '</div>';
 
-        if (typeof document !== 'undefined') {
-          const donationCopyEl = document.getElementById('donationCopyID');
-          if (donationCopyEl) {
-            if (typeof depCopy.DonationCopy === 'function') {
-              donationCopyEl.addEventListener('click', depCopy.DonationCopy);
-            }
-            if (!copyText) donationCopyEl.style.display = 'none';
-          }
-
-          const freeTextLabelEl = document.getElementById('freeTextLabel');
-          if (
-            freeTextLabelEl &&
-            typeof depCollapse.fCollapseDonation === 'function'
-          ) {
-            freeTextLabelEl.addEventListener(
-              'click',
-              depCollapse.fCollapseDonation,
-            );
-          }
-        }
+        bindDonationEvents({
+          depCopy,
+          depCollapse,
+          depStorage,
+          onRerender,
+          getUseNewPanel: () => useNewDonationPanel,
+          setUseNewPanel: (val) => {
+            useNewDonationPanel = val;
+          },
+          copyText,
+        });
       }
 
       if (typeof document !== 'undefined') {
