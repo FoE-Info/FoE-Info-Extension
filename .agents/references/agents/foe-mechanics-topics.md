@@ -6,7 +6,7 @@ Use these profiles with `foe-economy-analyst` or `foe-combat-analyst`. Load only
 
 | Topic | Reference | Verification / stop condition |
 | --- | --- | --- |
-| `great-buildings` | [Great Buildings engineering](../foe/great-buildings-engineering.md) and [GB metadata](../great-building-meta.md) | Recompute rounding boundaries with BigNumber; stop on disagreement with captured construction payloads. |
+| `great-buildings` | [Great Buildings engineering](../foe/great-buildings-engineering.md) | Recompute rounding boundaries with BigNumber; stop on disagreement with captured construction payloads. |
 | `sniping` | [Sniping](../foe/sniping.md) | Verify lock and owner-safe-add formulas against fixtures; never round a funded lock down. |
 | `settlements` | [Cultural settlements](../foe/cultural-settlements.md) | Treat event IDs and costs as dynamic; stop when the current payload shape is unknown. |
 | `historical-allies` | [Historical Allies](../foe/historical-allies.md) | Verify room, rarity, compatibility, and boost IDs from metadata or RPC data. |

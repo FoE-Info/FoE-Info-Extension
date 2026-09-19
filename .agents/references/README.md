@@ -10,8 +10,6 @@ On-demand knowledge shared by canonical subagents and project skills. Keep deleg
 
 ## FoE Domain Knowledge
 
-- [Guild Battlegrounds meta](gbg-meta.md)
-- [Great Building meta](great-building-meta.md)
 - [Combat boosts](foe/combat-boosts.md)
 - [Cultural settlements](foe/cultural-settlements.md)
 - [Game data and protocol](foe/game-data-protocol.md)

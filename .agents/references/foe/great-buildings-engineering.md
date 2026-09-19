@@ -48,7 +48,17 @@ A spot is locked when no rival can deposit enough Forge Points to surpass the cu
 - Understand the "Sweet Spot" (typically Levels 30–70) where owner cost per level is minimal due to high 1.9x contribution ratios.
 - Compare 1.9x thread efficiency against traditional guild swap chains (showing FP loss in swap chains vs 1.9x guarantees).
 
-### 4. Dynamic InnoGames RPC Schemas
+### 4. Prestige Tiers & Multiplicative Combat GBs
+
+- **Prestige Tier Progression**:
+  - _Copper Tier_: Levels 1 to 200 (base tier for all GBs).
+  - _Silver Tier_: Unlocks at Level 101, caps at Level 300 (requires Silver Blueprints, coins, and current-era goods).
+  - _Gold Tier_: Unlocks at Level 201, hard caps at Level 400.
+  - _Tier Coverage_: 19 selected GBs support Silver and Gold progression (Zeus, Aachen, CdM, The Arc, AO, Alcatraz, BG, CF, Himeji, Kraken, Observatory, Terracotta Army, Seed Vault, Space Carrier, St. Mark's, Deal Castle, Lotus Temple, Colosseum, Virgo Project). Other 29 GBs remain capped at Level 200.
+- **Multiplicative Combat Boosts**:
+  - Four Gold-tier GBs—**Statue of Zeus**, **Cathedral of Aachen**, **Alcatraz**, and **The Kraken**—grant multiplicative army boosts that scale total combat stats rather than applying flat additives.
+
+### 5. Dynamic InnoGames RPC Schemas
 
 - **`InventoryService.getGreatBuildings`**: Provides the player's owned Great Buildings (from the inventory payload, not a `GreatBuildingsService.getOverview` call — no such method is handled).
 - **`GreatBuildingsService.getConstruction`**: Response carries `rankings` (investors with `player.player_id` and `forge_points`), plus `next_passive_bonus`/`next_production_bonus`/`ownerEra`. Its request is `[entityId, playerId]` (no level); the `[entityId, playerId, level]` tuple belongs to `getConstructionRanking`, and `contributeForgePoints` sends `[entityId, playerId, level, fpAmount, boolean]`. Current FP is the `rankings[].forge_points` sum and total comes from the registry level-cost, not the payload.
@@ -60,7 +70,7 @@ A spot is locked when no rival can deposit enough Forge Points to surpass the cu
   - When `request.player_id` is missing or `0`, fall back to `handlers.MyInfo?.id` (there is no `globals.playerId`).
 - Map building entity IDs dynamically using live game metadata (e.g. `X_FutureEra_Landmark1` $\to$ The Arc).
 
-### 5. Implementation Guidance (Portable)
+### 6. Implementation Guidance (Portable)
 
 - **Calculation Engine**: Pure calculation modules for 1.9x scaling, safe lock thresholds, and level progression curves — zero DOM references, fully unit-testable.
 - **RPC Handling**: Ingest GB and ranking payloads into a reactive state store. Pure dynamic RPC ingestion — zero hardcoded static building cost tables.
