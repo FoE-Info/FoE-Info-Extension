@@ -36,7 +36,7 @@ These rules are universal, but their application is not. Before reviewing:
 
 When writing new tests, ask for each test: "What specific bug does this catch that no other test in this suite catches?" If you can't answer clearly, don't write it.
 
-## The Nine Rules
+## The Ten Rules
 
 ### Rule 1: Test behavior, not implementation
 
@@ -91,6 +91,13 @@ Never mock a data model, DTO, entity, or state object. Construct a real instance
 
 When database queries, schema behavior, or persistence logic _is the subject_ of the test, run against a real test database with real migrations applied via fixtures. Mocking the session there tests nothing. Mocking the database is fine when persistence is only a side effect of the behavior under test.
 
+### Rule 10: Zero live network calls in unit tests
+
+Unit tests must NEVER execute unmocked live network requests (`fetch()`, `XMLHttpRequest`, `WebSocket`). An unmocked network request will either fail in isolated CI environments or hang until socket timeout (e.g. 60–300s), stalling test runners and pre-push hooks.
+
+**Violation pattern:** Calling a function or component that triggers `fetch()` without mocking `globalThis.fetch` in `t.beforeEach()`.
+**Fix:** Stub `globalThis.fetch` to return an in-memory resolved response promise and restore in `t.afterEach()`.
+
 ## Reporting format
 
 When flagging violations, use this format:
@@ -107,7 +114,7 @@ Group violations by file. If a file has no violations, don't mention it.
 
 Not all violations are equal. Use judgment:
 
-- **Must fix:** Rules 1, 2, 8 — these hide real bugs or make tests brittle
+- **Must fix:** Rules 1, 2, 8, 10 — these hide real bugs, make tests brittle, or stall test suites
 - **Should fix:** Rules 3, 4, 5, 7 — these cause bloat and maintenance drag
 - **Sacred:** Rule 6 — never delete, always allow
 - **Worth noting:** Rule 9 — test architecture; flag it, but don't block small changes on it
