@@ -439,7 +439,7 @@ function evaluateEntityHarvest(mapID, index, options = {}) {
           treasuryAb.additionalResources['AllAge']?.resources ||
           treasuryAb.additionalResources[MyInfo?.era]?.resources;
         if (res && res.all_goods_of_age) {
-          const goods = res.all_goods_of_age * 5;
+          const goods = res.all_goods_of_age;
           accum.clanGoods += goods;
           accum.clanGoodsBuildings.push({
             id: cid,
