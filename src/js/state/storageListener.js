@@ -11,6 +11,11 @@ try {
   defaultStorage = require('../utils/storage.js');
 } catch {}
 
+let metadataStore = null;
+try {
+  metadataStore = require('./MetadataStore.js').metadataStore;
+} catch {}
+
 let activeListener = null;
 let registeredDeps = {};
 
@@ -107,9 +112,37 @@ function handleStorageChange(changes, namespace, deps = {}) {
         const { setDebugEnabled } = require('../utils/logger.js');
         setDebugEnabled(Boolean(newValue), { persist: false });
       } catch {}
+    } else if (key === 'BuildingEntityLookup') {
+      if (newValue && typeof newValue === 'object') {
+        if (resolved.BuildingEntityLookup) {
+          Object.assign(resolved.BuildingEntityLookup, newValue);
+        }
+        if (metadataStore?.registerLookupUrl) {
+          for (const [id, url] of Object.entries(newValue)) {
+            metadataStore.registerLookupUrl(id, url);
+          }
+        }
+      }
     } else if (key === 'CityEntityDefs') {
       if (newValue && typeof newValue === 'object') {
         resolved.processMetadataData?.(newValue);
+        resolved.setMetadataLoaded?.(true);
+        const lastStartupMsg =
+          resolved.getLastStartupMsg?.() ||
+          resolved.getServiceLastStartupMsg?.();
+        if (lastStartupMsg) {
+          resolved.startupService?.(lastStartupMsg);
+        }
+      }
+    } else if (key === 'metadata:cityEntities') {
+      if (newValue?.entries && typeof newValue.entries === 'object') {
+        const entityList = [];
+        for (const entry of Object.values(newValue.entries)) {
+          if (entry?.data) entityList.push(entry.data);
+        }
+        if (entityList.length > 0) {
+          resolved.processMetadataData?.(entityList);
+        }
         resolved.setMetadataLoaded?.(true);
         const lastStartupMsg =
           resolved.getLastStartupMsg?.() ||
@@ -188,7 +221,7 @@ function handleReceiveStorage(result, deps = {}) {
 
   // Pass 1: Process lookups, definitions, and settings first
   for (const [key, value] of Object.entries(result)) {
-    if (key === 'CityEntityDefs') continue;
+    if (key === 'CityEntityDefs' || key === 'metadata:cityEntities') continue;
 
     if (key === 'showOptions') {
       if (!curWorldData) {
@@ -198,8 +231,15 @@ function handleReceiveStorage(result, deps = {}) {
     } else if (key === 'ResourceDefs') {
       resolved.setResourceDefs?.(value);
     } else if (key === 'BuildingEntityLookup') {
-      if (value && resolved.BuildingEntityLookup) {
-        Object.assign(resolved.BuildingEntityLookup, value);
+      if (value && typeof value === 'object') {
+        if (resolved.BuildingEntityLookup) {
+          Object.assign(resolved.BuildingEntityLookup, value);
+        }
+        if (metadataStore?.registerLookupUrl) {
+          for (const [id, url] of Object.entries(value)) {
+            metadataStore.registerLookupUrl(id, url);
+          }
+        }
       }
       console.debug(
         'BuildingEntityLookup loaded from storage:',
@@ -252,14 +292,35 @@ function handleReceiveStorage(result, deps = {}) {
     }
   }
 
-  // Pass 2: Process CityEntityDefs after lookups and definitions are loaded
-  if (result.CityEntityDefs) {
-    const value = result.CityEntityDefs;
-    if (value && typeof value === 'object') {
-      resolved.processMetadataData?.(value);
+  // Pass 2: Process CityEntityDefs and metadata:cityEntities after lookups and definitions are loaded
+  const persistentMeta = result['metadata:cityEntities'];
+  const hasPersistentEntities =
+    persistentMeta?.entries && typeof persistentMeta.entries === 'object';
+  const hasCityEntityDefs =
+    result.CityEntityDefs && typeof result.CityEntityDefs === 'object';
+
+  if (hasCityEntityDefs || hasPersistentEntities) {
+    if (hasCityEntityDefs) {
+      resolved.processMetadataData?.(result.CityEntityDefs);
+    }
+    if (hasPersistentEntities) {
+      const entityList = [];
+      for (const entry of Object.values(persistentMeta.entries)) {
+        if (entry?.data) {
+          entityList.push(entry.data);
+        }
+      }
+      if (entityList.length > 0) {
+        resolved.processMetadataData?.(entityList);
+      }
     }
     resolved.setMetadataLoaded?.(true);
-    console.debug('CityEntityDefs loaded from storage:', value);
+    console.debug('City entities loaded from storage:', {
+      fromDefs:
+        hasCityEntityDefs ? Object.keys(result.CityEntityDefs).length : 0,
+      fromPersistent:
+        hasPersistentEntities ? Object.keys(persistentMeta.entries).length : 0,
+    });
 
     const lastStartupMsg =
       resolved.getLastStartupMsg?.() || resolved.getServiceLastStartupMsg?.();
@@ -275,8 +336,8 @@ function handleReceiveStorage(result, deps = {}) {
       if (pendingStartupMsg) {
         resolved.setPendingStartupMsg?.(null);
       }
+      resolved.renderLiveCityStats?.();
     }
-    resolved.renderLiveCityStats?.();
   }
 }
 
