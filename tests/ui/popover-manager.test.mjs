@@ -341,4 +341,78 @@ test('PopoverManager Suite', async (t) => {
       hideActivePopover(doc);
     },
   );
+
+  await t.test(
+    'rapid movement between triggers cancels prior show timer and anchors to new trigger',
+    async () => {
+      const doc = createMockDocument();
+      const triggerA = createMockElement('span', {
+        'data-popover': '',
+        'data-title': 'Trigger A',
+        'data-content': 'Content A',
+      });
+      triggerA.ownerDocument = doc;
+
+      const triggerB = createMockElement('span', {
+        'data-popover': '',
+        'data-title': 'Trigger B',
+        'data-content': 'Content B',
+      });
+      triggerB.ownerDocument = doc;
+
+      const container = {
+        querySelectorAll: () => [triggerA, triggerB],
+      };
+
+      initPopovers(container);
+
+      // Hover Trigger A
+      triggerA.triggerEvent('mouseenter');
+      // Within 40ms (before showTimer 80ms fires), hover Trigger B
+      await new Promise((r) => setTimeout(r, 40));
+      triggerB.triggerEvent('mouseenter');
+
+      // Wait for Trigger B's timer to fire
+      await new Promise((r) => setTimeout(r, 120));
+
+      const popoverEl = doc.getElementById('foe-popover');
+      assert.ok(popoverEl);
+      assert.equal(popoverEl._isOpen, true);
+      // Trigger A should NOT be the active anchor; Trigger B must be active
+      assert.equal(triggerA._styles['anchor-name'], undefined);
+      assert.equal(triggerB._styles['anchor-name'], '--active-popover-trigger');
+      assert.match(popoverEl.innerHTML, /Trigger B/);
+
+      hideActivePopover(doc);
+    },
+  );
+
+  await t.test(
+    'toggle event cleans up anchor styles when popover finishes closing',
+    async () => {
+      const doc = createMockDocument();
+      const trigger = createMockElement('span', {
+        'data-popover': '',
+        'data-title': 'Trigger',
+        'data-content': 'Content',
+      });
+      trigger.ownerDocument = doc;
+
+      const container = {
+        querySelectorAll: () => [trigger],
+      };
+
+      initPopovers(container);
+      trigger.triggerEvent('mouseenter');
+      await new Promise((r) => setTimeout(r, 120));
+
+      const popoverEl = doc.getElementById('foe-popover');
+      assert.equal(trigger._styles['anchor-name'], '--active-popover-trigger');
+
+      // In real browser, toggle event fires with newState = closed when transition ends
+      popoverEl.triggerEvent('toggle', { newState: 'closed' });
+      assert.equal(trigger._styles['anchor-name'], undefined);
+      assert.equal(trigger.getAttribute('aria-expanded'), 'false');
+    },
+  );
 });

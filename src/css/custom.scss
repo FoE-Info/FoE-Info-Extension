@@ -724,24 +724,20 @@ hr {
     flip-block,
     top span-all;
 
-  // Smooth entry transition with @starting-style
+  // Smooth fade transition with @starting-style (strictly stationary, zero spatial movement)
   transition:
-    opacity 0.15s ease,
-    transform 0.15s ease,
-    display 0.15s allow-discrete,
-    overlay 0.15s allow-discrete;
+    opacity 0.12s ease,
+    display 0.12s allow-discrete,
+    overlay 0.12s allow-discrete;
   opacity: 0;
-  transform: translateY(-4px);
 
   &:popover-open {
     opacity: 0.96;
-    transform: translateY(0);
   }
 
   @starting-style {
     &:popover-open {
       opacity: 0;
-      transform: translateY(-4px);
     }
   }
 
