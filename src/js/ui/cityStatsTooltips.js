@@ -70,7 +70,7 @@ function showTooltips({
     : null) ||
     Popover;
 
-  if (TooltipClass) {
+  if (customTooltip) {
     const options = {
       html: true,
       delay: { show: 100, hide: 500 },
@@ -80,13 +80,13 @@ function showTooltips({
     for (let i = 0; i < AGES.length; i++) {
       const tip = doc.getElementById ? doc.getElementById(AGES[i]) : null;
       if (tip) {
-        if (typeof TooltipClass.getInstance === 'function') {
-          const existing = TooltipClass.getInstance(tip);
+        if (typeof customTooltip.getInstance === 'function') {
+          const existing = customTooltip.getInstance(tip);
           if (existing && typeof existing.dispose === 'function') {
             existing.dispose();
           }
         }
-        new TooltipClass(tip, options);
+        new customTooltip(tip, options);
       }
     }
   }

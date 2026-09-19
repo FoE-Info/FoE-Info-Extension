@@ -752,9 +752,11 @@ hr {
   &.popover-compact {
     padding: 0.35rem 0.6rem;
     font-size: 0.75rem;
-    max-width: 220px;
+    max-width: 260px;
     border-radius: 0.25rem;
-    line-height: 1.25;
+    line-height: 1.35;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .popover-header {

@@ -300,4 +300,45 @@ test('PopoverManager Suite', async (t) => {
       hideActivePopover(doc);
     },
   );
+
+  await t.test(
+    'renders HTML in compact tooltip mode and strips native title on init',
+    async () => {
+      const doc = createMockDocument();
+      const trigger = createMockElement('span', {
+        'data-bs-toggle': 'tooltip',
+        'data-bs-html': 'true',
+        'data-bs-title': '606 Metamorphic Alloys<br>1038 Xenocrystals',
+        title: '606 Metamorphic Alloys\n1038 Xenocrystals',
+      });
+      trigger.ownerDocument = doc;
+
+      const container = {
+        querySelectorAll: () => [trigger],
+      };
+
+      initPopovers(container);
+
+      // Title should be immediately stripped to avoid native browser tooltip flashing
+      assert.equal(trigger.getAttribute('title'), null);
+      assert.equal(
+        trigger.getAttribute('data-foe-title'),
+        '606 Metamorphic Alloys\n1038 Xenocrystals',
+      );
+
+      trigger.triggerEvent('mouseenter');
+      await new Promise((r) => setTimeout(r, 120));
+
+      const popoverEl = doc.getElementById('foe-popover');
+      assert.ok(popoverEl);
+      assert.equal(popoverEl._isOpen, true);
+      assert.equal(popoverEl.className, 'popover-compact');
+      assert.equal(
+        popoverEl.innerHTML,
+        '606 Metamorphic Alloys<br>1038 Xenocrystals',
+      );
+
+      hideActivePopover(doc);
+    },
+  );
 });
