@@ -351,4 +351,34 @@ test('MessageDispatcher - Core Engine & Dispatching Protocol', async (t) => {
     assert.equal(typeof messageDispatcher.dispatchRaw, 'function');
     assert.equal(typeof messageDispatcher.dispatchBatch, 'function');
   });
+
+  // Test 9: Yields control during large batch dispatching to keep UI responsive
+  await t.test(
+    'yields control to main thread during large batch dispatch',
+    async () => {
+      let yieldCalls = 0;
+      const dispatcher = new MessageDispatcher({
+        yieldInterval: 5,
+        yieldFn: async () => {
+          yieldCalls++;
+        },
+      });
+
+      const messages = Array.from({ length: 17 }, (_, i) => ({
+        requestClass: 'TestService',
+        requestMethod: 'test',
+        responseData: { i },
+      }));
+
+      let handledCount = 0;
+      dispatcher.register('TestService', 'test', () => {
+        handledCount++;
+      });
+
+      const res = await dispatcher.dispatchBatch(messages);
+      assert.equal(handledCount, 17);
+      assert.equal(res.succeeded, 17);
+      assert.equal(yieldCalls, 3);
+    },
+  );
 });

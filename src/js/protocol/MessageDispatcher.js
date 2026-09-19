@@ -17,6 +17,14 @@ const { shouldLogUnhandledRpc } = require('./rpcScope.js');
 const { extractRequestPayload } = require('./requestPayload.js');
 const { routeDirectMetadata } = require('./directMetadata.js');
 
+let yieldToMain = async () => new Promise((resolve) => setTimeout(resolve, 0));
+try {
+  const scheduler = require('../utils/scheduler.js');
+  if (typeof scheduler.yieldToMain === 'function') {
+    yieldToMain = scheduler.yieldToMain;
+  }
+} catch {}
+
 const combinedHandlerMembers = new WeakMap();
 
 class MessageDispatcher {
@@ -24,6 +32,8 @@ class MessageDispatcher {
    * @param {Object} [options]
    * @param {number} [options.dedupWindowMs=1000] - Deduplication window in milliseconds
    * @param {number} [options.maxCacheSize=500] - Maximum deduplication cache size
+   * @param {number} [options.yieldInterval=10] - Yield to main thread every N messages in batch
+   * @param {Function} [options.yieldFn] - Custom yielding function (defaults to yieldToMain)
    */
   constructor(options = {}) {
     this.handlers = new Map();
@@ -36,6 +46,10 @@ class MessageDispatcher {
       typeof options.dedupWindowMs === 'number' ? options.dedupWindowMs : 1000;
     this.maxCacheSize =
       typeof options.maxCacheSize === 'number' ? options.maxCacheSize : 500;
+    this.yieldInterval =
+      typeof options.yieldInterval === 'number' ? options.yieldInterval : 10;
+    this.yieldFn =
+      typeof options.yieldFn === 'function' ? options.yieldFn : yieldToMain;
     this.dedupCache = new DedupCache({
       windowMs: this.dedupWindowMs,
       maxSize: this.maxCacheSize,
@@ -295,7 +309,11 @@ class MessageDispatcher {
     let succeeded = 0;
     let failed = 0;
 
-    for (const msg of sorted) {
+    for (let i = 0; i < sorted.length; i++) {
+      if (this.yieldInterval > 0 && i > 0 && i % this.yieldInterval === 0) {
+        await this.yieldFn();
+      }
+      const msg = sorted[i];
       try {
         const res = await this.dispatchSingle(msg, context);
         succeeded++;
