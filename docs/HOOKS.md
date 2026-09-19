@@ -1,14 +1,12 @@
 # Lifecycle Hooks Reference
 
-Defined in `.agents/hooks.json`. Hooks run as Node.js scripts via Antigravity/OpenCode lifecycle events.
+Defined in `.agents/hooks.json`. Hooks run as Node.js scripts via Antigravity lifecycle events.
 
-## Active Hooks (3)
+## Active Hooks (1)
 
-| Hook                 | Event           | Matcher       | Script                                | Timeout | Purpose                                          |
-| -------------------- | --------------- | ------------- | ------------------------------------- | ------- | ------------------------------------------------ |
-| `safety-gate`        | `PreToolUse`    | `run_command` | `scripts/safety-gate.mjs`             | 5s      | Intercept destructive commands                   |
-| `monolith-guardrail` | `PreInvocation` | —             | `scripts/pre-invocation-reminder.mjs` | 5s      | Inject guardrail reminders before subagent calls |
-| `stop-guard`         | `Stop`          | —             | `scripts/stop-guard.mjs`              | 5s      | Block premature exit during background tasks     |
+| Hook          | Event        | Matcher       | Script                    | Timeout | Purpose                        |
+| ------------- | ------------ | ------------- | ------------------------- | ------- | ------------------------------ |
+| `safety-gate` | `PreToolUse` | `run_command` | `scripts/safety-gate.mjs` | 5s      | Intercept destructive commands |
 
 ## Script Locations
 

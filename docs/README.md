@@ -1,38 +1,27 @@
-# FoE-Info Extension — Agent Coordination Hub
+# FoE-Info Extension — Documentation Hub
 
-Single entry point for every agent (Antigravity, OpenCode, or any future host)
-working in this repository. **Read this file first.** It routes to the current
-status, handoff state, plans, specs, and host-specific wiring.
+Central documentation index for developers and agents working on the FoE-Info Chrome extension.
 
-Ground-truth layout:
+## Documentation Index
 
-| Artifact                     | Location                      | What it holds                                                                                                                                                                                                                                                                                                                   |
-| :--------------------------- | :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Live work & todos**        | `docs/STATUS.md`              | In-progress threads and open todos. Update this file when something changes.                                                                                                                                                                                                                                                    |
-| **Project handoff**          | `docs/HANDOFF.md`             | Verified fixes, decisions/corrections, remaining product work, resume-safely notes.                                                                                                                                                                                                                                             |
-| **Cross-agent rules**        | `docs/COORDINATION.md`        | Roster, standing rules for every agent every session, status-by-thread summaries.                                                                                                                                                                                                                                               |
-| **Implementation plans**     | `docs/plans/`                 | `YYYY-MM-DD-<feature>.md` step plans with checkbox tracking.                                                                                                                                                                                                                                                                    |
-| **Live HAR captures**        | `../metadata-store/extracts/` | Raw `docs/har/` recordings (2.3 GB) were purged 2026-09-12 to reclaim disk; their extracted ground truth lives in the sibling `../metadata-store/extracts/` (103 RPCs, 27 bundles, 13 cities) indexed into the metadata graph. Re-capture and re-run `npm run metadata:extract-hars` if raw HARs are needed; never commit them. |
-| **Design specs**             | `docs/specs/`                 | `YYYY-MM-DD-<topic>-design.md` validated design documents.                                                                                                                                                                                                                                                                      |
-| **Debugging guide**          | `docs/debugging.md`           | Debug Mode usage and diagnostic conventions.                                                                                                                                                                                                                                                                                    |
-| **Graphify local execution** | `docs/GRAPHIFY.md`            | Graph catalog, 3-tier contract, local launcher, backend env vars, watch/update flows.                                                                                                                                                                                                                                           |
+| Topic                       | Document                                  | Purpose                                                                      |
+| :-------------------------- | :---------------------------------------- | :--------------------------------------------------------------------------- |
+| **Live Work & Todos**       | [`docs/STATUS.md`](STATUS.md)             | In-progress threads and open todos. Updated atomically with changes.         |
+| **Project Handoff**         | [`docs/HANDOFF.md`](HANDOFF.md)           | Verified state, architecture decisions, and resume-safely notes.             |
+| **Software Architecture**   | [`docs/ARCHITECTURE.md`](ARCHITECTURE.md) | Extension runtime architecture, data pipeline, and modular layer invariants. |
+| **Commands & Verification** | [`docs/COMMANDS.md`](COMMANDS.md)         | Pipeline stages, test runners, build gates, and graphify commands.           |
+| **Debugging Guide**         | [`docs/debugging.md`](debugging.md)       | Runtime Debug Mode, scoped loggers, and diagnostic conventions.              |
+| **Knowledge Graph**         | [`docs/GRAPHIFY.md`](GRAPHIFY.md)         | Graph catalog, 3-tier contract, local launcher, and watch flows.             |
+| **Implementation Plans**    | [`docs/plans/`](plans/)                   | Active implementation plans with step-by-step checkbox tracking.             |
+| **Design Specifications**   | [`docs/specs/`](specs/)                   | Validated architectural and feature design documents.                        |
+| **Skills Catalog**          | [`docs/SKILLS.md`](SKILLS.md)             | Generated catalog of task-specific runbooks in `.agents/skills/`.            |
+| **Subagents Catalog**       | [`docs/SUBAGENTS.md`](SUBAGENTS.md)       | Generated catalog of specialized agent personas in `.agents/agents/`.        |
+| **Live HAR Captures**       | `../metadata-store/extracts/`             | Extracted RPC payloads, bundles, and city ground truth.                      |
 
-## Session start protocol (every host)
+## Session Protocol
 
-1. Read `AGENTS.md` (workspace rules) and this hub (`docs/README.md`).
-2. Read `docs/STATUS.md` for live work/todos, then `docs/HANDOFF.md` for
-   verified state and resume-safely notes.
-3. Consult `docs/plans/` for active implementation plans; read the relevant
-   plan before executing any step with checkbox tracking.
-4. Read `.agents/rules/` marked `always_on` and any scoped rules for the task.
-5. Inspect `git status` before editing; do not execute a stale plan.
-
-## Writing convention
-
-- **Plans** and **specs** are shared across hosts: save to `docs/plans/` /
-  `docs/specs/`.
-- **State**: when a thread changes status or a todo completes, update
-  `docs/STATUS.md` in the same change, not after the fact.
-- `docs/superpowers/` was consolidated into `docs/plans/` + `docs/specs/` on
-  2026-09-10, and legacy runtime directories (`.superpowers/`) were removed.
-  All active plans and specifications reside exclusively in `docs/plans/` and `docs/specs/`.
+1. **Workspace Entrypoint**: Read [`AGENTS.md`](../AGENTS.md) for non-negotiable workspace rules and boundaries.
+2. **Current State**: Read [`docs/STATUS.md`](STATUS.md) for open items, and [`docs/HANDOFF.md`](HANDOFF.md) when resuming a thread.
+3. **Task Scope**: Check `docs/plans/` for active plans before starting non-trivial tasks.
+4. **Clean Worktree**: Inspect `git status` before editing; do not work against a dirty or stale state.
+5. **Atomic Updates**: When a thread status changes or a task completes, update `docs/STATUS.md` in the same change.

@@ -4,7 +4,7 @@ Shared status board for all agents. **Update this file in the same change that
 changes the underlying work** — this is the current-status source of truth, not
 a changelog. See `docs/README.md` for the full hub.
 
-> Standing constraint from `docs/COORDINATION.md`: no commit/push without the
+> Standing constraint from `AGENTS.md`: no commit/push without the
 > user's explicit approval; investigate-and-report before fixing; one verified
 > change at a time.
 

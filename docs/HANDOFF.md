@@ -3,12 +3,12 @@
 ## Repository State
 
 - Branch: `development`, tracking `origin/development`.
-- The repository is configured strictly for Google Antigravity; secondary harness layers (Hermes, OpenCode) have been completely removed.
-- `.agents/` is the Git-tracked canonical harness library.
+- The repository is configured strictly for native Google Antigravity.
+- `.agents/` is the Git-tracked canonical agent library.
 
-## Canonical Harness
+## Canonical Configuration
 
-- 22 skills under `.agents/skills/` (Antigravity-native; obsolete out-of-domain and external framework residue purged).
+- 12 domain-specific skills under `.agents/skills/` (Antigravity-native; generic AAS residue purged).
 - 14 flat subagents under `.agents/agents/`.
 - 16 rules: 7 `always_on`, 9 `model_decision` (including `modern-web-conventions.md`).
 - `docs/SKILLS.md` and `docs/SUBAGENTS.md` are generated from canonical frontmatter by `.agents/scripts/generate-agent-catalogs.mjs`; `--check` detects drift.
@@ -28,7 +28,7 @@
 - Antigravity directly loads workspace rules, skills, agents, and hooks.
 - BigNumber precision is `model_decision` and applies only to FP, boost, treasury, lock, and related arithmetic work.
 - MCP commands resolve through `PATH`; graph locations are workspace-relative. Antigravity environment placeholders resolve when a profile is generated.
-- `.agents/references/harness-adapters.md` provides tool, dispatch, isolation, hook, and artifact mapping.
+- `.agents/references/antigravity-environment.md` provides tool, dispatch, isolation, hook, and artifact mapping.
 
 ## Self-Improvement
 
@@ -39,7 +39,7 @@
 
 Verified on 2026-09-19:
 
-- `node --test tests/agents/*.test.mjs` — 79/79 passed.
+- `node --test tests/agents/*.test.mjs` — 38/38 passed.
 - `node .agents/scripts/generate-agent-catalogs.mjs --check` — both catalogs current.
 - `npm run verify` — passed formatting, ESLint, TypeScript, RPC contract, i18n, complete Node tests, and development webpack build.
 - `git diff --check` — passed.

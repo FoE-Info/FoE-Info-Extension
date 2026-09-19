@@ -5,9 +5,9 @@
 **Parent program**: [`2026-09-12-f2-reactive-decoupling-session-plan.md`](2026-09-12-f2-reactive-decoupling-session-plan.md)
 **Evidence**: `graphify-out/foe-info/findings/2026-09-12-reactive-store-migration-audit.md`
 
-> Standing constraint (`docs/COORDINATION.md`): no commit/push without explicit
-> user approval; one verified change at a time; `npm run verify` green before
-> completion.
+> Standing constraint (`AGENTS.md`): no commit/push without explicit
+> user approval; investigate-and-report before fixing; one verified change at a
+> time. Keep work on development clean and tests passing.
 
 ## Why this one is different
 
