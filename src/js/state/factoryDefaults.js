@@ -53,7 +53,7 @@ const FACTORY_WORLD_SETTINGS = Object.freeze({
   donation: Object.freeze({
     percent: 190,
     suffix: '',
-    targets: '',
+    targets: 'Targets',
     targetText: '',
   }),
   webhooks: Object.freeze({
