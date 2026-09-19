@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import pkg from '../../src/js/state/storageListener.js';
+import themeManager from '../../src/js/ui/themeManager.js';
 
 const { handleStorageChange, handleReceiveStorage, initStorageListeners } = pkg;
 
@@ -509,4 +510,30 @@ test('handleReceiveStorage does not render citystats when no startup message is 
     false,
     'renderLiveCityStats should not be called when startup message is absent',
   );
+});
+
+test('handleStorageChange and handleReceiveStorage synchronize theme preference', () => {
+  // Test handleReceiveStorage with theme: 'dark'
+  handleReceiveStorage({
+    'global:settings': { theme: 'dark' },
+  });
+  assert.strictEqual(themeManager.getTheme(), 'dark');
+  assert.strictEqual(themeManager.isDarkMode(), true);
+
+  // Test handleStorageChange with theme: 'light'
+  handleStorageChange({
+    'global:settings': {
+      newValue: { theme: 'light' },
+    },
+  });
+  assert.strictEqual(themeManager.getTheme(), 'light');
+  assert.strictEqual(themeManager.isDarkMode(), false);
+
+  // Reset to auto
+  handleStorageChange({
+    'global:settings': {
+      newValue: { theme: 'auto' },
+    },
+  });
+  assert.strictEqual(themeManager.getTheme(), 'auto');
 });

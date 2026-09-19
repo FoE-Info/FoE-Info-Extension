@@ -212,6 +212,7 @@ async function saveCurrentSettings() {
   const updatedGlobals = {
     ...globals,
     language: globalForm.language,
+    theme: globalForm.theme || 'auto',
     timeFormatting: globalForm.timeFormatting,
     lastActiveWorld: activeWorld,
   };
