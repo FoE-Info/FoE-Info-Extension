@@ -276,6 +276,7 @@ function processCityMapEntities(mapEntities, options = {}) {
       boosts: {
         fp: City.fpProductionBoost || 0,
         goods: City.goodsProductionBoost || 0,
+        guildGoods: City.guildGoodsProductionBoost || 0,
         coin: City.CoinBoost || 0,
         supply: City.SupplyBoost || 0,
       },
