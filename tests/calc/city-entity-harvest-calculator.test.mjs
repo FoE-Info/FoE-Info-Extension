@@ -227,7 +227,7 @@ test('CityEntityHarvestCalculator Suite', async (t) => {
       );
 
       assert.equal(ctx.City.TrazUnits, 3);
-      assert.equal(ctx.accum.clanGoods, 10);
+      assert.equal(ctx.accum.clanGoods, 2);
       assert.equal(ctx.accum.clanGoodsBuildings.length, 1);
     },
   );

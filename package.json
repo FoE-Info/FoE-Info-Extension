@@ -117,7 +117,8 @@
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,
-    "core-js@3.50.0": true
+    "core-js@3.50.0": true,
+    "@jackwener/opencli@1.8.7": true
   },
   "primaryGraph": "graphify-foe-info"
 }
