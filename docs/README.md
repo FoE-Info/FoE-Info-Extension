@@ -30,7 +30,7 @@ Ground-truth layout:
 ## Writing convention
 
 - **Plans** and **specs** are shared across hosts: save to `docs/plans/` /
-  `docs/specs/` (see the `writing-plans` and `brainstorming` skills).
+  `docs/specs/`.
 - **State**: when a thread changes status or a todo completes, update
   `docs/STATUS.md` in the same change, not after the fact.
 - `docs/superpowers/` was consolidated into `docs/plans/` + `docs/specs/` on

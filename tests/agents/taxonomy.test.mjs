@@ -42,7 +42,7 @@ test('Taxonomy - canonical catalogs are generated and exact', () => {
   const skillNames = names(path.join(AGENTS, 'skills'));
   const agentNames = names(path.join(AGENTS, 'agents'), '.md');
 
-  assert.equal(skillNames.length, 38);
+  assert.equal(skillNames.length, 30);
   assert.equal(agentNames.length, 19);
   assert.deepEqual(
     catalogNames(path.join(ROOT, 'docs', 'SKILLS.md')),
@@ -65,6 +65,14 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
     'receiving-code-review',
     'agent-orchestration-improve-agent',
     'refactor-index-slice',
+    'brainstorming',
+    'writing-plans',
+    'executing-plans',
+    'writing-skills',
+    'writing-rules',
+    'writing-hooks',
+    'writing-agents',
+    'chrome-devtools-troubleshooting',
   ]) {
     assert.ok(
       !fs.existsSync(path.join(AGENTS, 'skills', obsoleteSkill)),
@@ -158,10 +166,10 @@ test('Taxonomy - repeated subagent families are profile driven', () => {
 test('Taxonomy - imported reference libraries have explicit catalogs', () => {
   for (const skill of [
     'test-guard',
-    'writing-skills',
-    'writing-rules',
-    'writing-agents',
-    'writing-hooks',
+    'add-feature-panel',
+    'audit-memory-leaks',
+    'codebase-modernization-planner',
+    'protocol-reverse-engineering',
   ]) {
     const skillRoot = path.join(AGENTS, 'skills', skill);
     const body = fs.readFileSync(path.join(skillRoot, 'SKILL.md'), 'utf8');
