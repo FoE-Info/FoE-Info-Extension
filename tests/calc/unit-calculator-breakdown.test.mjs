@@ -146,6 +146,7 @@ test('Unit Calculator Breakdown & Critical Hit Suite', async (t) => {
 
       assert.equal(ownStats.special.aoCriticalStrike.toNumber(), 33);
       assert.equal(ownStats.special.ccCriticalStrike.toNumber(), 25);
+      assert.equal(ownStats.special.criticalStrike.toNumber(), 58);
       assert.ok(Array.isArray(ownStats.units.buildings));
       assert.equal(ownStats.units.buildings.length, 1);
       assert.equal(ownStats.units.buildings[0].name, 'Alcatraz');
@@ -174,6 +175,7 @@ test('Unit Calculator Breakdown & Critical Hit Suite', async (t) => {
 
       assert.equal(visitedStats.special.aoCriticalStrike.toNumber(), 33);
       assert.equal(visitedStats.special.ccCriticalStrike.toNumber(), 25);
+      assert.equal(visitedStats.special.criticalStrike.toNumber(), 58);
       assert.ok(Array.isArray(visitedStats.units.buildings));
       assert.equal(visitedStats.units.buildings.length, 1);
       assert.equal(visitedStats.units.buildings[0].name, 'Alcatraz');

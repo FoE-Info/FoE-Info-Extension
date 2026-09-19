@@ -43,6 +43,7 @@ function createFreshCityState() {
     tGE: 0,
     AOCriticalStrike: 0,
     CCCriticalStrike: 0,
+    CriticalStrike: 0,
   };
 }
 

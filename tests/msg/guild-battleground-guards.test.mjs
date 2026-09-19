@@ -459,6 +459,40 @@ test('GuildBattlegroundService partial RPC payload guards', async (t) => {
         targetsGBG.innerHTML.includes('GBG Target Generator:'),
         'Must switch back to Target Generator when re-entering map',
       );
+
+      // 13. User opens thread, then marks existing signal as stop sign via setSignal
+      conversationService({
+        requestMethod: 'getOverviewForCategory',
+        responseData: {
+          category: {
+            teasers: [
+              {
+                title: '🎯🎯 Battleground TARGETS 🎯🎯',
+                lastMessage: {
+                  text: 'Target on A1S',
+                  sender: { name: 'Commander' },
+                  date: 1700000025,
+                },
+              },
+            ],
+          },
+        },
+      });
+      assert.ok(targetsGBG.innerHTML.includes('Target on A1S'));
+      assert.equal(guildBattlegroundState.isTargetMessageActive(), true);
+
+      // Setting ignore signal (stop sign) on only focus province
+      service.setSignal(null, [1, 'ignore']);
+      assert.equal(
+        guildBattlegroundState.isTargetMessageActive(),
+        false,
+        'targetMessageActive must be reset to false when setting ignore signal',
+      );
+      assert.equal(
+        targetsGBG.innerHTML,
+        '',
+        'Previous thread target message must be cleared when all focus targets are stopped',
+      );
     },
   );
 });

@@ -167,6 +167,7 @@ test('CityMapEntityProcessor Suite', async (t) => {
     assert.equal(City.ChatBonus, 150);
     assert.equal(City.AOCriticalStrike, 69.76);
     assert.equal(City.CCCriticalStrike, 25);
+    assert.equal(City.CriticalStrike, 94.76);
     assert.equal(City.gbAttack, 50); // 30 + 20
     assert.equal(City.gbDefense, 50); // 30 + 20
     assert.equal(City.gbCityAttack, 45); // 20 + 25

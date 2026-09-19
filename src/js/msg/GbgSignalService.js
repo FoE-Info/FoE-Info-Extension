@@ -64,6 +64,7 @@ function extractSignalData(msg, payload, context) {
           (r) =>
             r &&
             (r.requestMethod === 'setSignal' ||
+              r.requestMethod === 'updateSignal' ||
               r.requestMethod === 'removeSignal' ||
               r.requestClass?.includes('GuildBattleground')),
         ) ||
