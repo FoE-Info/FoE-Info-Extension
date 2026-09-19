@@ -8,8 +8,8 @@
 
 ## Canonical Harness
 
-- 30 skills under `.agents/skills/` (Antigravity-native; obsolete out-of-domain and external framework residue purged).
-- 19 flat subagents under `.agents/agents/`.
+- 23 skills under `.agents/skills/` (Antigravity-native; obsolete out-of-domain and external framework residue purged).
+- 14 flat subagents under `.agents/agents/`.
 - 16 rules: 7 `always_on`, 9 `model_decision` (including `modern-web-conventions.md`).
 - `docs/SKILLS.md` and `docs/SUBAGENTS.md` are generated from canonical frontmatter by `.agents/scripts/generate-agent-catalogs.mjs`; `--check` detects drift.
 - Optional skill depth lives in owned `references/` libraries with explicit `references/README.md` catalogs.
