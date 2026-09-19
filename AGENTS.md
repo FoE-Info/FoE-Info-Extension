@@ -22,7 +22,7 @@ known verified state. Check git status and current source before trusting a plan
 
 ## Rules that are not negotiable
 
-- `src/js/` files stay under 600 lines.
+- `src/js/` files stay under 500 lines.
 - When a task touches FP, boost, treasury, or lock calculations, load the domain-scoped BigNumber rule before changing arithmetic.
 - Game metadata streams from the InnoGames CDN. Nothing is hardcoded.
 - Observation only. Never drive the game or the browser without asking first.
