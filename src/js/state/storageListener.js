@@ -87,6 +87,19 @@ function handleStorageChange(changes, namespace, deps = {}) {
       if (newValue?.language && newValue.language !== 'auto') {
         resolved.setLanguage?.(newValue.language);
       }
+      if (newValue?.theme) {
+        try {
+          const themeManager = require('../ui/themeManager.js');
+          const devtoolsTheme =
+            resolved.browser?.devtools?.panels?.themeName || '';
+          themeManager.initTheme({
+            targetDocument: typeof document !== 'undefined' ? document : null,
+            targetWindow: typeof window !== 'undefined' ? window : null,
+            devtoolsTheme,
+            initialPreference: newValue.theme,
+          });
+        } catch {}
+      }
     } else if (key === 'timeFormatting') {
       if (newValue) {
         try {
@@ -187,6 +200,18 @@ function handleReceiveStorage(result, deps = {}) {
   }
   if (globalSettings?.language && globalSettings.language !== 'auto') {
     resolved.setLanguage?.(globalSettings.language);
+  }
+  if (globalSettings?.theme) {
+    try {
+      const themeManager = require('../ui/themeManager.js');
+      const devtoolsTheme = resolved.browser?.devtools?.panels?.themeName || '';
+      themeManager.initTheme({
+        targetDocument: typeof document !== 'undefined' ? document : null,
+        targetWindow: typeof window !== 'undefined' ? window : null,
+        devtoolsTheme,
+        initialPreference: globalSettings.theme,
+      });
+    } catch {}
   }
 
   const currentWorld = storage?.getCurrentWorld?.();

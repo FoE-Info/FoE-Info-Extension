@@ -33,6 +33,7 @@ function setupMockDOM() {
   });
   elements['minSize'] = createMockElement({ value: '45' });
   elements['language'] = createMockElement({ value: 'de' });
+  elements['theme'] = createMockElement({ value: 'auto' });
   elements['GBGtimeMode'] = createMockElement({ value: 'server' });
   elements['dateTimeFormat'] = createMockElement({
     value: 'DD.MM.YYYY HH:mm:ss',
@@ -97,6 +98,7 @@ test('optionsForm - readWorldSettingsFromForm and readGlobalSettingsFromForm', (
 
   const globalSettings = readGlobalSettingsFromForm();
   assert.strictEqual(globalSettings.language, 'de');
+  assert.strictEqual(globalSettings.theme, 'auto');
   assert.strictEqual(
     globalSettings.timeFormatting.dateTimeFormat,
     'DD.MM.YYYY HH:mm:ss',
@@ -106,8 +108,10 @@ test('optionsForm - readWorldSettingsFromForm and readGlobalSettingsFromForm', (
 
   // Test 12-hour US preset derives 12-hour time format
   elements['dateTimeFormat'].value = 'MM/DD/YYYY hh:mm:ss A';
+  elements['theme'].value = 'dark';
   const globalSettings12h = readGlobalSettingsFromForm();
   assert.strictEqual(globalSettings12h.timeFormatting.timeFormat, 'hh:mm:ss A');
+  assert.strictEqual(globalSettings12h.theme, 'dark');
 });
 
 test('optionsForm - populateForm binds settings to DOM', () => {
@@ -138,7 +142,7 @@ test('optionsForm - populateForm binds settings to DOM', () => {
         minSize: 60,
       },
     },
-    { language: 'fr' },
+    { language: 'fr', theme: 'dark' },
   );
 
   assert.strictEqual(elements['bonus'].checked, false);
@@ -159,10 +163,12 @@ test('optionsForm - populateForm binds settings to DOM', () => {
   assert.strictEqual(elements['sheetGuildURL'].value, 'https://sheet.test');
   assert.strictEqual(elements['minSize'].value, 60);
   assert.strictEqual(elements['language'].value, 'fr');
+  assert.strictEqual(elements['theme'].value, 'dark');
 
   // Test fallback to 50 when minSize is 0 or undefined
   populateForm({ toolOptions: { minSize: 0 } }, {});
   assert.strictEqual(elements['minSize'].value, 50);
+  assert.strictEqual(elements['theme'].value, 'auto');
   populateForm({ toolOptions: {} }, {});
   assert.strictEqual(elements['minSize'].value, 50);
 

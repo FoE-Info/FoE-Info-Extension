@@ -312,6 +312,7 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
       assert.match(targetEl.innerHTML, /gbinfoicon/);
       assert.match(targetEl.innerHTML, /pe-4 mb-0/);
       assert.match(targetEl.innerHTML, /cursor-pointer/);
+      assert.match(targetEl.innerHTML, /alert-purple/);
 
       // When showGBInfo is false, panel is emptied
       renderGbInfoPanel(targetEl, gbData, 'PlayerOne', { showGBInfo: false });

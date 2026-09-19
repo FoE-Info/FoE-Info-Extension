@@ -33,6 +33,7 @@ import {
 } from './ui/containerBinding.js';
 import './ui/renderBindings.js';
 import { initIndexUiBindings } from './ui/indexUiBindings.js';
+import { initTheme } from './ui/themeManager.js';
 import { escapeHTML } from './utils/formatters.js';
 import { isDebugEnabled, onDebugToggle, toggleDebug } from './utils/logger.js';
 import {
@@ -67,6 +68,15 @@ export var content = document.createElement('main');
 document.body.appendChild(content);
 content.id = 'content';
 if (darkMode === 'dark') content.className = 'text-light bg-dark';
+
+if (typeof document !== 'undefined') {
+  initTheme({
+    targetWindow: typeof window !== 'undefined' ? window : null,
+    targetDocument: document,
+    devtoolsTheme: darkMode,
+    initialPreference: 'auto',
+  });
+}
 
 const containers = setupPanelContainers(content, {
   targets,

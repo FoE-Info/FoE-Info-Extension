@@ -1,13 +1,44 @@
+:root {
+  --foe-panel-bg: #ffffff;
+  --foe-panel-color: #212529;
+  --foe-header-bg: #ffffff;
+  --foe-header-color: #212529;
+  --color-background: var(--foe-panel-bg);
+  --color-text-primary: var(--foe-panel-color);
+}
+
+[data-theme='dark'],
+.dark-mode,
+body.bg-dark {
+  --foe-panel-bg: rgb(41 42 45);
+  --foe-panel-color: #f8f9fa;
+  --foe-header-bg: rgb(41 42 45);
+  --foe-header-color: #f8f9fa;
+  background-color: var(--foe-panel-bg);
+}
+
 body {
   /* default is 1rem or 16px */
   font-size: 0.8em;
   line-height: 1.25;
-  color: var(--color-text-primary);
-  background: var(--color-background);
+  color: var(--color-text-primary, #212529);
+  background: var(--color-background, #ffffff);
 }
 
-.dark-mode {
-  background-color: rgb(41 42 45);
+.alert-purple {
+  --bs-alert-color: #4a148c;
+  --bs-alert-bg: #ede7f6;
+  --bs-alert-border-color: #d1c4e9;
+  --bs-alert-link-color: #311b92;
+  background-color: #ede7f6;
+  color: #4a148c;
+  border-color: #d1c4e9;
+
+  .header-icon,
+  strong,
+  .alert-heading {
+    color: #311b92;
+  }
 }
 
 h6 {
