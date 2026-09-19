@@ -111,6 +111,7 @@ function buildTargetParams(payload = {}) {
     gameOrigin: payload.gameOrigin,
     targetText: payload.targetText,
     formatTime: payload.formatTime,
+    signalChanged: payload.signalChanged,
   };
 }
 
@@ -183,7 +184,12 @@ function bindGuildBattlegroundPanels(
   return state.subscribe((snapshot, channel) => {
     if (channel === 'targets' || channel === 'all') {
       const payload = snapshot.getTargets();
-      if (payload) renderTargets(buildTargetParams(payload));
+      if (payload) {
+        if (snapshot.isTargetMessageActive?.() && !payload.signalChanged) {
+          return;
+        }
+        renderTargets(buildTargetParams(payload));
+      }
     }
     if (channel === 'result' || channel === 'all') {
       const payload = snapshot.getResult();

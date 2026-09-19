@@ -19,6 +19,7 @@ class GuildBattlegroundState {
     this.leaderboard = null;
     this.province = null;
     this.performance = null;
+    this.targetMessageActive = false;
     this.subscribers = new Set();
     this.logger = log;
   }
@@ -52,6 +53,34 @@ class GuildBattlegroundState {
   setTargets(payload) {
     this.targets = payload || null;
     this.notify('targets');
+  }
+
+  setTargetMessageActive(active) {
+    this.targetMessageActive = Boolean(active);
+  }
+
+  isTargetMessageActive() {
+    if (!this.targetMessageActive) return false;
+    if (typeof document !== 'undefined') {
+      const targetsGBG = document.getElementById('targetsGBG');
+      const targetText = document.getElementById('targetText');
+      if (
+        targetsGBG &&
+        typeof targetsGBG.innerHTML === 'string' &&
+        !targetsGBG.innerHTML.includes('targetText')
+      ) {
+        this.targetMessageActive = false;
+        return false;
+      }
+      if (
+        !targetText &&
+        (!targetsGBG || !targetsGBG.innerHTML.includes('targetText'))
+      ) {
+        this.targetMessageActive = false;
+        return false;
+      }
+    }
+    return true;
   }
 
   getTargets() {
