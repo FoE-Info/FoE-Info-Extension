@@ -3,7 +3,7 @@
 **Date**: 2026-09-12  
 **Harness**: OpenCode Execution Task  
 **Delegation Target**: OpenCode Multi-Domain Squad  
-**Status**: Executed — Phase 1 & 2 complete; Phase 3 architecture complete (implementation pending). See the [execution record](#6-execution-record-2026-09-12) and [`2026-09-12-quantum-incursions-architecture.md`](2026-09-12-quantum-incursions-architecture.md).  
+**Status**: Executed & Completed (2026-09-12) — Phase 1 & 2 complete; Phase 3 QI Member Activity & Leaderboard shipped via `GuildRaidsService.js` and `renderQuantumPanels.js`; scope sorted per user requirements.  
 **Safety Invariant**: `docs/har/*.har` must **NEVER** be committed to Git (`.gitignore` strictly enforced).
 
 ---

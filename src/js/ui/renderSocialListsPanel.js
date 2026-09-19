@@ -139,9 +139,9 @@ function renderSocialListsPanel({
           </div>
           <div id="friendsText" class="resize-both collapse ${
             collapse.collapseFriends ? '' : 'show'
-          }"><table id="friendsText2">`;
+          }"><table id="friendsText2"><caption class="visually-hidden"><span data-i18n="friends">Friends</span></caption><thead class="visually-hidden"><tr><th scope="col" data-i18n="name">Name</th><th scope="col" data-i18n="player_status">Status</th></tr></thead><tbody>`;
     friendsHTML += getFriendsHTML(friends, { CityProtections });
-    friendsHTML += `</table></div></div>`;
+    friendsHTML += `</tbody></table></div></div>`;
   }
 
   if (showOptions.showGuild) {
@@ -157,9 +157,9 @@ function renderSocialListsPanel({
           </div>
           <div id="guildText" class="resize-both collapse ${
             collapse.collapseGuild ? '' : 'show'
-          }"><table id="guildText2">`;
+          }"><table id="guildText2"><caption class="visually-hidden"><span data-i18n="guild">Guild</span></caption><thead class="visually-hidden"><tr><th scope="col" data-i18n="name">Name</th><th scope="col" data-i18n="player_status">Status</th></tr></thead><tbody>`;
     friendsHTML += getFriendsHTML(guildMembers, { CityProtections });
-    friendsHTML += `</table></div></div>`;
+    friendsHTML += `</tbody></table></div></div>`;
   }
 
   if (showOptions.showHood) {
@@ -175,9 +175,9 @@ function renderSocialListsPanel({
           </div>
           <div id="hoodText" class="resize-both collapse ${
             collapse.collapseHood ? '' : 'show'
-          }"><table id="hoodText2">`;
+          }"><table id="hoodText2"><caption class="visually-hidden"><span data-i18n="hood">Hood List</span></caption><thead class="visually-hidden"><tr><th scope="col" data-i18n="name">Name</th><th scope="col" data-i18n="player_status">Status</th></tr></thead><tbody>`;
     friendsHTML += getFriendsHTML(hoodlist, { CityProtections });
-    friendsHTML += `</table></div></div>`;
+    friendsHTML += `</tbody></table></div></div>`;
   }
   friendsHTML += `</div></div>`;
 
