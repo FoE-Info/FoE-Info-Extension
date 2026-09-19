@@ -149,12 +149,24 @@ test('CityMapEntityProcessor Suite', async (t) => {
         bonus: { type: 'money_boost', value: 50 },
         state: {},
       },
+      {
+        cityentity_id: 'X_ArcticFuture_Landmark2', // Arctic Orangery
+        bonus: { type: 'critical_hit_chance', value: 69.76 },
+        state: {},
+      },
+      {
+        cityentity_id: 'X_SpaceAgeSpaceHub_Landmark2', // Cosmic Catalyst
+        bonus: { type: 'critical_hit_chance', value: 25 },
+        state: {},
+      },
     ];
 
     processCityMapEntities(entities, { City });
 
     assert.equal(City.ArcBonus, 90.6);
     assert.equal(City.ChatBonus, 150);
+    assert.equal(City.AOCriticalStrike, 69.76);
+    assert.equal(City.CCCriticalStrike, 25);
     assert.equal(City.gbAttack, 50); // 30 + 20
     assert.equal(City.gbDefense, 50); // 30 + 20
     assert.equal(City.gbCityAttack, 45); // 20 + 25
