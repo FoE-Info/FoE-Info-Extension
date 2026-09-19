@@ -9,6 +9,13 @@ const { createLogger } = require('../utils/logger.js');
 
 const logger = createLogger('CollapseToggleRunner');
 
+let hideNativePopover = null;
+try {
+  ({
+    hideActivePopover: hideNativePopover,
+  } = require('./components/PopoverManager.js'));
+} catch {}
+
 function getBootstrap() {
   if (typeof window !== 'undefined' && window.bootstrap) {
     return window.bootstrap;
@@ -55,6 +62,14 @@ function hideAllTooltips(doc = null, bs = null) {
   if (!targetDoc || typeof targetDoc.querySelectorAll !== 'function') {
     return;
   }
+  if (typeof hideNativePopover === 'function') {
+    try {
+      hideNativePopover(targetDoc);
+    } catch (err) {
+      logger.debug('Native popover hide error:', err);
+    }
+  }
+
   const bootstrapInstance = bs || getBootstrap();
   if (!bootstrapInstance) {
     return;
