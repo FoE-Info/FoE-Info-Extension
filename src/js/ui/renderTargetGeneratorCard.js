@@ -308,6 +308,16 @@ function renderTargetGeneratorPanel(params = {}) {
   const doc = typeof document !== 'undefined' ? document : null;
   if (!doc) return '';
 
+  const existingTargetsGBG = doc.getElementById('targetsGBG');
+  if (
+    existingTargetsGBG &&
+    typeof existingTargetsGBG.innerHTML === 'string' &&
+    existingTargetsGBG.innerHTML.includes('targetText') &&
+    !params.signalChanged
+  ) {
+    return '';
+  }
+
   let targetGenerator = doc.createElement('div');
   if (doc.getElementById('targetsGBG')) {
     targetGenerator = doc.getElementById('targetsGBG');
@@ -382,6 +392,13 @@ function renderTargetGeneratorPanel(params = {}) {
     textProvinceLocked,
     signalsCount: Array.isArray(signals) ? signals.length : 0,
   });
+
+  if (params.signalChanged && !textProvinceUnlocked && !textProvinceLocked) {
+    if (targetGenerator) {
+      targetGenerator.innerHTML = '';
+    }
+    return '';
+  }
 
   return renderTargetGeneratorCard({
     targetGenerator,
