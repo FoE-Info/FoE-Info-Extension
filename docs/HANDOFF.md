@@ -3,16 +3,16 @@
 ## Repository State
 
 - Branch: `development`, tracking `origin/development`.
-- The working tree is intentionally dirty with both harness work and pre-existing application work. Do not discard, stage, commit, or push unrelated changes.
-- `.agents/` is the Git-tracked canonical harness library. `.opencode/` and `opencode.json` are adapters, not independent owners.
+- The repository is configured strictly for Google Antigravity; secondary harness layers (Hermes, OpenCode) have been completely removed.
+- `.agents/` is the Git-tracked canonical harness library.
 
 ## Canonical Harness
 
-- 55 skills under `.agents/skills/`.
-- 20 flat subagents under `.agents/agents/`, with matching OpenCode shims.
-- 17 rules: 8 `always_on`, 9 `model_decision`.
+- 51 skills under `.agents/skills/` (canonical Superpowers restored; plugin skills delegated to Google plugins).
+- 20 flat subagents under `.agents/agents/`.
+- 18 rules: 8 `always_on`, 10 `model_decision` (including `modern-web-conventions.md`).
 - `docs/SKILLS.md` and `docs/SUBAGENTS.md` are generated from canonical frontmatter by `.agents/scripts/generate-agent-catalogs.mjs`; `--check` detects drift.
-- Optional skill depth lives in owned `references/` libraries with explicit `references/README.md` catalogs. Skill entrypoints stay at or below 250 lines.
+- Optional skill depth lives in owned `references/` libraries with explicit `references/README.md` catalogs.
 
 ## Routing and Ownership
 
@@ -21,15 +21,14 @@
 - `foe-economy-analyst` and `foe-combat-analyst` use topic profiles from `.agents/references/agents/foe-mechanics-topics.md`.
 - FoE JSON-RPC analysis is owned by `protocol-reverse-engineering`; `add-rpc-service` remains the separate implementation workflow.
 - Mandatory skill selection and completion verification are owned by rules, not duplicate invokable skills.
-- Chrome extension development and Chrome Web Store publishing are separate skills.
+- Chrome extension development and DevTools inspection are provided by official Google plugins (`modern-web-guidance-plugin` and `chrome-devtools-plugin`).
 
 ## Host Behavior
 
-- OpenCode injects exactly the eight canonical `always_on` rules. Scoped rules load by relevance.
+- Antigravity directly loads workspace rules, skills, agents, and hooks.
 - BigNumber precision is `model_decision` and applies only to FP, boost, treasury, lock, and related arithmetic work.
-- MCP commands resolve through `PATH`; graph locations are workspace-relative. Antigravity environment placeholders resolve when a profile is generated. OpenCode uses literal local Graphify defaults and native `{env:NAME}` interpolation only for required external credentials.
-- MCP profile writes reject symlinked destinations, use exclusively created randomized staging files, preserve unrelated OpenCode MCP entries, and format both generated configs before replacement.
-- `.agents/references/harness-adapters.md` is the canonical tool, dispatch, isolation, hook, and artifact mapping.
+- MCP commands resolve through `PATH`; graph locations are workspace-relative. Antigravity environment placeholders resolve when a profile is generated.
+- `.agents/references/harness-adapters.md` provides tool, dispatch, isolation, hook, and artifact mapping.
 
 ## Self-Improvement
 
@@ -40,14 +39,13 @@
 
 ## Verification
 
-Verified on 2026-09-15:
+Verified on 2026-09-19:
 
-- `npm run test:agents` — 83/83 passed.
+- `node --test tests/agents/*.test.mjs` — 79/79 passed.
 - `node .agents/scripts/generate-agent-catalogs.mjs --check` — both catalogs current.
-- `node .agents/scripts/project-curator.mjs status` — 55 skills, 20 agents, 75 definitions, 0 missing stored lessons, 0 stale definitions, 0 duplicate lesson groups, 0 duplicate reference groups, 0 warnings.
 - `npm run verify` — passed formatting, ESLint, TypeScript, RPC contract, i18n, complete Node tests, and development webpack build.
 - `git diff --check` — passed.
 
 ## Current Work
 
-Use `docs/STATUS.md` for open product work. No harness migration task remains open. Before any future harness change, inspect the current tree and run the generator check, harness suite, Curator status, and full verification gate.
+Use `docs/STATUS.md` for open product work. Harness is lean, canonical, and Antigravity-focused. Next phase is core FoE-Info feature and bugfix work.

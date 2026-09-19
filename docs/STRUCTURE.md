@@ -12,22 +12,16 @@ FoE-Info-Extension/
 │   ├── mcp-registry.json         # Canonical task-scoped MCP profiles
 │   ├── mcp_config.json           # Generated Antigravity profile
 │   └── project.json              # Workspace identity
-├── .opencode/
-│   ├── agents/                   # 20 thin canonical-persona shims
-│   ├── instructions/             # OpenCode-only bootstrap instructions
-│   └── plugins/                  # OpenCode hook adapters
 ├── docs/
 │   ├── README.md                 # Coordination hub
 │   ├── STATUS.md                 # Open work only
 │   ├── HANDOFF.md                # Verified resume state
 │   ├── SKILLS.md                 # Generated exact skill catalog
 │   ├── SUBAGENTS.md              # Generated exact subagent catalog
-│   ├── OPENCODE.md               # OpenCode adapter contract
 │   └── plans/ and specs/         # Current implementation/design artifacts
 ├── graphify-out/                 # Generated graphs; gitignored
 ├── src/                          # Extension source
 ├── tests/                        # Node test suites and harness contracts
-├── opencode.json                 # OpenCode config, rules, MCP, permissions
 ├── AGENTS.md                     # Portable agent entrypoint
 └── package.json                  # Project scripts and metadata
 ```

@@ -11,9 +11,11 @@ try {
 } catch {}
 
 let stateModule = {};
-try {
-  stateModule = require('../vars/state.js');
-} catch {}
+if (typeof __webpack_require__ !== 'undefined') {
+  try {
+    stateModule = require('../vars/state.js');
+  } catch {}
+}
 
 let logger = null;
 try {

@@ -5,8 +5,7 @@
 ## Ownership
 
 - `.agents/` is the Git-tracked canonical library: 55 skills, 20 subagents, 17 rules, shared references, scripts, hooks, and MCP registry.
-- `.opencode/` and `opencode.json` adapt the canonical library to OpenCode without owning duplicate skills or personas.
-- Other harnesses consume the same canonical definitions through their native discovery and adapter mechanisms.
+- The project is configured strictly for Antigravity. Secondary harnesses are paused.
 
 ## Session Discipline
 
