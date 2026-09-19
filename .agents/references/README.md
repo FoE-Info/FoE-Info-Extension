@@ -47,4 +47,3 @@ On-demand knowledge shared by canonical subagents and project skills. Keep deleg
 - [Browser test environment](browser-test-environment.md)
 - [Harness adapters](harness-adapters.md)
 - [Subagent routing](subagent-routing.md)
-- [Skill memory](skill-memory.md)

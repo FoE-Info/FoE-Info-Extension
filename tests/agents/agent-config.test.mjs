@@ -66,8 +66,8 @@ test('Agent Config - validates skill definitions', () => {
 
   assert.equal(
     skillDirs.length,
-    23,
-    'Expected exactly 23 skills in .agents/skills',
+    22,
+    'Expected exactly 22 skills in .agents/skills',
   );
 
   for (const dir of skillDirs) {
@@ -96,87 +96,6 @@ test('Agent Config - validates skill definitions', () => {
       );
     }
   }
-});
-
-test('Agent Config - centralizes skill-memory documentation', () => {
-  const centralReference = path.join(
-    AGENTS_DIR,
-    'references',
-    'skill-memory.md',
-  );
-  assert.ok(
-    fs.existsSync(centralReference),
-    'Expected one canonical skill-memory reference',
-  );
-
-  const copies = [];
-  const findCopies = (directory) => {
-    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
-      const entryPath = path.join(directory, entry.name);
-      if (entry.name === 'skill-memory.md') copies.push(entryPath);
-      if (entry.isDirectory()) findCopies(entryPath);
-    }
-  };
-  findCopies(AGENTS_DIR);
-  assert.deepEqual(
-    copies,
-    [centralReference],
-    'Expected .agents/references/skill-memory.md to be the sole copy',
-  );
-
-  const duplicatedLogging = /node \.agents\/scripts\/skill-memory\.mjs log/;
-  const duplicatedSkillLink = /\]\(\.\.\/\.\.\/references\/skill-memory\.md\)/;
-  const skillsDir = path.join(AGENTS_DIR, 'skills');
-  for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue;
-    const content = fs.readFileSync(
-      path.join(skillsDir, entry.name, 'SKILL.md'),
-      'utf8',
-    );
-    assert.doesNotMatch(
-      content,
-      duplicatedLogging,
-      `Skill ${entry.name} duplicates the global skill-memory logging rule`,
-    );
-    assert.doesNotMatch(
-      content,
-      duplicatedSkillLink,
-      `Skill ${entry.name} duplicates the global skill-memory reference link`,
-    );
-  }
-
-  const duplicatedAgentLink = /\]\(\.\.\/references\/skill-memory\.md\)/;
-  const agentsDir = path.join(AGENTS_DIR, 'agents');
-  for (const entry of fs.readdirSync(agentsDir, { withFileTypes: true })) {
-    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
-    const content = fs.readFileSync(path.join(agentsDir, entry.name), 'utf8');
-    assert.doesNotMatch(
-      content,
-      duplicatedLogging,
-      `Subagent ${entry.name} duplicates the global skill-memory logging rule`,
-    );
-    assert.doesNotMatch(
-      content,
-      duplicatedAgentLink,
-      `Subagent ${entry.name} duplicates the global skill-memory reference link`,
-    );
-  }
-
-  const verificationRule = fs.readFileSync(
-    path.join(AGENTS_DIR, 'rules', 'verification-before-completion.md'),
-    'utf8',
-  );
-  assert.match(
-    verificationRule,
-    duplicatedLogging,
-    'Verification rule must own skill-memory logging',
-  );
-  assert.equal(
-    verificationRule.match(/\]\(\.\.\/references\/skill-memory\.md\)/g)
-      ?.length ?? 0,
-    1,
-    'Verification rule must link the canonical skill-memory reference once',
-  );
 });
 
 test('Agent Config - validates rule definitions', () => {
@@ -412,20 +331,7 @@ test('Agent Config - validates markdown links across all skills, rules, agents, 
 
 test('Agent Config - validates standardized shell script naming convention', () => {
   const scriptsDir = path.join(AGENTS_DIR, 'scripts');
-  const expectedScripts = [
-    'graph-foe-info-reindex.sh',
-    'graph-foe-info-update.sh',
-    'graph-foe-info-original-reindex.sh',
-    'graph-foe-info-original-update.sh',
-    'graph-forge-hammer-reindex.sh',
-    'graph-forge-hammer-update.sh',
-    'graph-low-tool-reindex.sh',
-    'graph-low-tool-update.sh',
-    'graph-metadata-reindex.sh',
-    'graph-metadata-update.sh',
-    'llama-swap-lifecycle.sh',
-    'run-graphify-local.sh',
-  ];
+  const expectedScripts = ['graphify.sh'];
 
   for (const script of expectedScripts) {
     const fullPath = path.join(scriptsDir, script);
