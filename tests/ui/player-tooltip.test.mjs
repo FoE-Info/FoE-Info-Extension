@@ -15,12 +15,21 @@ const {
 } = tooltipPkg.default || tooltipPkg;
 
 test('Player Tooltip & Ignore List UI Suite', async (t) => {
+  const originalFetch = globalThis.fetch;
   t.beforeEach(() => {
+    globalThis.fetch = async () => ({
+      ok: false,
+      text: async () => '',
+    });
     pendingScoreDBFetches.clear();
     setIgnoredPlayers({}, {});
     for (const key of Object.keys(playerNameCache)) {
       delete playerNameCache[key];
     }
+  });
+
+  t.afterEach(() => {
+    globalThis.fetch = originalFetch;
   });
 
   await t.test(
