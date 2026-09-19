@@ -14,11 +14,7 @@ const i18n = safeRequire(() => require('../fn/i18n.js'));
 const helper = safeRequire(() => require('../fn/helper.js'));
 const panelResize = safeRequire(() => require('./panelResize.js'));
 let globals = safeRequire(() => require('../fn/globals.js'));
-const SPECIAL_GOODS = new Set(
-  'promethium orichalcum mars_ore asteroid_ice venus_carbon unknown_dna crystallized_hydrocarbons dark_matter'.split(
-    ' ',
-  ),
-);
+const { SPECIAL_GOODS } = require('../calc/goods/goodsClassification.js');
 const NON_GOODS = new Set(
   'money supplies medals strategy_points credits colonists life_support castle_points tavern_silver guild_power clan_power population happiness'.split(
     ' ',

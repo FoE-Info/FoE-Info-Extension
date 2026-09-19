@@ -16,80 +16,14 @@ const {
   getPreviousEra,
   getNextEra,
 } = require('../utils/eraUtils.js');
-
-const NON_GOODS_KEYS = new Set([
-  'money',
-  'supplies',
-  'medals',
-  'strategy_points',
-  'clan_power',
-  'population',
-  'happiness',
-  'units',
-  'premium',
-]);
-
-const SPECIAL_GOODS = new Set([
-  'promethium',
-  'orichalcum',
-  'mars_ore',
-  'asteroid_ice',
-  'venus_carbon',
-  'unknown_dna',
-  'crystallized_hydrocarbons',
-  'dark_matter',
-  'stellar_void_shard',
-  'stel_void_shard',
-]);
-
-function isEntityMotivatable(entity, meta) {
-  if (!meta) return false;
-  const eid = String(entity?.cityentity_id || entity?.id || '');
-  if (
-    entity?.type === 'greatbuilding' ||
-    meta?.type === 'greatbuilding' ||
-    eid.startsWith('X_')
-  ) {
-    return false;
-  }
-  if (meta.__class__ === 'GenericCityEntity') {
-    if (meta.components?.AllAge?.socialInteraction !== undefined) return true;
-  }
-  if (Array.isArray(meta.abilities)) {
-    for (const a of meta.abilities) {
-      if (
-        a &&
-        (a.__class__ === 'MotivatableAbility' ||
-          a.__class__ === 'PolishableAbility' ||
-          a.__class__ === 'RandomUnitOfAgeWhenMotivatedAbility')
-      ) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-function isEntityAided(entity, meta) {
-  if (!entity?.state) return true;
-  const s = entity.state;
-  if (s.boosted === true || s.is_motivated === true) return true;
-  if (s.socialInteractionStartedAt > 0) {
-    if (s.socialInteractionId === 'motivate') return true;
-    if (s.socialInteractionId === 'polish') {
-      const now = Math.floor(Date.now() / 1000);
-      if (s.socialInteractionStartedAt + 43200 > now) return true;
-    }
-  }
-  if (
-    s.next_state_transition_in &&
-    Array.isArray(meta?.abilities) &&
-    meta.abilities.some((a) => a && a.__class__ === 'PolishableAbility')
-  ) {
-    return true;
-  }
-  return false;
-}
+const {
+  NON_GOODS_KEYS,
+  SPECIAL_GOODS,
+} = require('../goods/goodsClassification.js');
+const {
+  isEntityMotivatable,
+  isEntityAided,
+} = require('../entities/entityMotivation.js');
 
 function addPlayerResources(
   resObj,
