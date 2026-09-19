@@ -706,8 +706,8 @@ hr {
   background-color: #212529;
   color: #e9ecef;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  max-width: 320px;
-  max-height: 24em;
+  max-width: min(320px, calc(100vw - 16px));
+  max-height: min(24em, calc(100vh - 24px));
   overflow-y: auto;
   overflow-x: hidden;
   user-select: text;
@@ -717,6 +717,8 @@ hr {
   // CSS Anchor Positioning
   position: fixed;
   position-anchor: --active-popover-trigger;
+  top: anchor(bottom);
+  left: anchor(start);
   position-area: bottom span-all;
   position-try-fallbacks:
     flip-block,
@@ -817,6 +819,13 @@ hr {
     transition: none !important;
     transform: none !important;
   }
+}
+
+// Trigger elements styling to ensure consistent anchor bounding boxes
+.pop,
+[data-bs-toggle='popover'],
+[data-popover] {
+  display: inline-block;
 }
 
 // Unified Tooltips matching Dark Palette
