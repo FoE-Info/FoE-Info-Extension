@@ -103,6 +103,86 @@ function hideAllTooltips(doc = null, bs = null) {
 }
 
 /**
+ * Smoothly toggles a collapse target element using CSS Grid and standard lifecycle events.
+ *
+ * @param {HTMLElement|null} targetEl
+ * @param {boolean} isCollapsed - true if collapsing, false if expanding
+ */
+function toggleTargetElement(targetEl, isCollapsed) {
+  if (!targetEl || !targetEl.classList) return;
+
+  const willShow = !isCollapsed;
+  const isCurrentlyShow = targetEl.classList.contains('show');
+  if (willShow === isCurrentlyShow) return;
+
+  const startEvent = willShow ? 'show.bs.collapse' : 'hide.bs.collapse';
+  const completeEvent = willShow ? 'shown.bs.collapse' : 'hidden.bs.collapse';
+
+  if (typeof targetEl.dispatchEvent === 'function') {
+    try {
+      const evt =
+        typeof CustomEvent === 'function' ?
+          new CustomEvent(startEvent, { bubbles: true, cancelable: true })
+        : { type: startEvent, bubbles: true };
+      targetEl.dispatchEvent(evt);
+    } catch {}
+  }
+
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)')?.matches;
+
+  if (willShow) {
+    targetEl.classList.add('show');
+    if (targetEl.dataset && targetEl.dataset.foeSavedHeight) {
+      targetEl.style.height = targetEl.dataset.foeSavedHeight;
+    }
+  } else {
+    if (targetEl.style && targetEl.style.height) {
+      if (targetEl.dataset) {
+        targetEl.dataset.foeSavedHeight = targetEl.style.height;
+      }
+      targetEl.style.height = '';
+    }
+    targetEl.classList.remove('show');
+  }
+
+  const dispatchComplete = () => {
+    if (typeof targetEl.dispatchEvent === 'function') {
+      try {
+        const evt =
+          typeof CustomEvent === 'function' ?
+            new CustomEvent(completeEvent, { bubbles: true })
+          : { type: completeEvent, bubbles: true };
+        targetEl.dispatchEvent(evt);
+      } catch {}
+    }
+  };
+
+  if (prefersReducedMotion || typeof targetEl.addEventListener !== 'function') {
+    dispatchComplete();
+  } else {
+    let fired = false;
+    const onEnd = (e) => {
+      if (e && e.target !== targetEl) return;
+      if (fired) return;
+      fired = true;
+      targetEl.removeEventListener('transitionend', onEnd);
+      dispatchComplete();
+    };
+    targetEl.addEventListener('transitionend', onEnd);
+    setTimeout(() => {
+      if (!fired) {
+        fired = true;
+        targetEl.removeEventListener('transitionend', onEnd);
+        dispatchComplete();
+      }
+    }, 250);
+  }
+}
+
+/**
  * Executes a collapse toggle specification.
  *
  * @param {Object} spec
@@ -163,6 +243,14 @@ function executeToggle(spec, deps = {}) {
           icon.targetId(targetDoc)
         : icon.targetId;
       el?.updateIcon?.(iconId, targetId, next);
+
+      if (
+        targetDoc &&
+        targetId &&
+        typeof targetDoc.getElementById === 'function'
+      ) {
+        toggleTargetElement(targetDoc.getElementById(targetId), next);
+      }
     }
   }
 
@@ -183,5 +271,6 @@ function createToggle(spec, deps = {}) {
 module.exports = {
   executeToggle,
   createToggle,
+  toggleTargetElement,
   hideAllTooltips,
 };
