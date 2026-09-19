@@ -42,8 +42,8 @@ test('Taxonomy - canonical catalogs are generated and exact', () => {
   const skillNames = names(path.join(AGENTS, 'skills'));
   const agentNames = names(path.join(AGENTS, 'agents'), '.md');
 
-  assert.equal(skillNames.length, 51);
-  assert.equal(agentNames.length, 20);
+  assert.equal(skillNames.length, 38);
+  assert.equal(agentNames.length, 19);
   assert.deepEqual(
     catalogNames(path.join(ROOT, 'docs', 'SKILLS.md')),
     skillNames,
@@ -59,6 +59,12 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
     'using-superpowers',
     'verification-before-completion',
     'antigravity-interop',
+    'subagent-driven-development',
+    'finishing-a-development-branch',
+    'requesting-code-review',
+    'receiving-code-review',
+    'agent-orchestration-improve-agent',
+    'refactor-index-slice',
   ]) {
     assert.ok(
       !fs.existsSync(path.join(AGENTS, 'skills', obsoleteSkill)),
@@ -66,7 +72,9 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
     );
   }
 
-  assert.ok(fs.existsSync(path.join(AGENTS, 'rules', 'superpowers.md')));
+  assert.ok(
+    fs.existsSync(path.join(AGENTS, 'rules', 'skill-driven-development.md')),
+  );
   assert.ok(
     fs.existsSync(
       path.join(AGENTS, 'rules', 'verification-before-completion.md'),
@@ -187,7 +195,6 @@ test('Taxonomy - harness files are workstation neutral', () => {
 
 test('Taxonomy - playbooks match this repository and skill entrypoints stay lean', () => {
   const forbidden = {
-    'api-testing-observability-api-mock': /FastAPI|uvicorn|pytest|AsyncMock/,
     'protocol-reverse-engineering': /tcpdump|Wireshark|MITM|TLS decryption/i,
   };
 
