@@ -21,6 +21,11 @@ try {
   GbgCalculator = require('../calc/GbgCalculator.js');
 } catch {}
 
+let guildBattlegroundState = null;
+try {
+  ({ guildBattlegroundState } = require('../state/GuildBattlegroundState.js'));
+} catch {}
+
 const gbgProvinceView = require('./gbgProvinceView.js');
 
 function targetCopy() {
@@ -308,11 +313,17 @@ function renderTargetGeneratorPanel(params = {}) {
   const doc = typeof document !== 'undefined' ? document : null;
   if (!doc) return '';
 
+  const isChatActive =
+    params.guildBattlegroundState?.isTargetMessageActive?.() ??
+    guildBattlegroundState?.isTargetMessageActive?.() ??
+    false;
+
   const existingTargetsGBG = doc.getElementById('targetsGBG');
   if (
     existingTargetsGBG &&
     typeof existingTargetsGBG.innerHTML === 'string' &&
     existingTargetsGBG.innerHTML.includes('targetText') &&
+    isChatActive &&
     !params.signalChanged
   ) {
     return '';
@@ -393,7 +404,11 @@ function renderTargetGeneratorPanel(params = {}) {
     signalsCount: Array.isArray(signals) ? signals.length : 0,
   });
 
-  if (params.signalChanged && !textProvinceUnlocked && !textProvinceLocked) {
+  if (
+    (!isChatActive || params.signalChanged) &&
+    !textProvinceUnlocked &&
+    !textProvinceLocked
+  ) {
     if (targetGenerator) {
       targetGenerator.innerHTML = '';
     }

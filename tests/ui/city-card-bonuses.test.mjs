@@ -208,7 +208,9 @@ test('City Card Bonus Lines Suite', async (t) => {
           ccCriticalStrike: new BigNumber(25),
         },
       });
-      assert.match(html, /Crit Strike<\/span>: 33% \(AO\), 25% \(CC\)/);
+      assert.match(html, /Crit Strike<\/span>: 58%/);
+      assert.doesNotMatch(html, /\(AO\)/);
+      assert.doesNotMatch(html, /\(CC\)/);
     },
   );
 
@@ -276,7 +278,9 @@ test('City Card Bonus Lines Suite', async (t) => {
         html,
         /stat_supplies">Supplies<\/span>: 14,200,000 \(\+85%\)/,
       );
-      assert.match(html, /Crit Strike<\/span>: 33% \(AO\), 25% \(CC\)/);
+      assert.match(html, /Crit Strike<\/span>: 58%/);
+      assert.doesNotMatch(html, /\(AO\)/);
+      assert.doesNotMatch(html, /\(CC\)/);
     },
   );
 
