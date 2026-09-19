@@ -1,6 +1,6 @@
 ---
 trigger: always_on
-description: Mandatory modular file limits (<= 600 lines) and strict directory taxonomy in src/.
+description: Mandatory modular file limits (<= 500 lines) and strict directory taxonomy in src/.
 ---
 
 # Rule: Modular Architecture and File Boundaries
@@ -9,7 +9,7 @@ Write modular, single-responsibility files instead of large monolithic classes.
 
 ## Size budgets
 
-No new or refactored module in `src/js/` goes past 600 lines. The absolute ceiling for complex dispatch tables is 800. Aim for 100 to 300 lines per module.
+No module in `src/js/` goes past 500 lines. Aim for 100 to 300 lines per module.
 
 Each file does one thing: tally military boosts, calculate goods, bind popover events, and so on.
 
