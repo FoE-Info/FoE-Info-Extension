@@ -122,15 +122,15 @@ function buildUnaidedIndicatorHTML({
   const itemsHTML = unaidedList
     .map(
       (item) =>
-        `<div>• <strong>${escapeHtml(item.name)}${item.count > 1 ? ` (x${item.count})` : ''}</strong>: -${formatStatNumber(item.diff, { exact, comma: true })}</div>`,
+        `<div style="color: #e9ecef; margin-bottom: 2px;">• <strong style="color: #ffffff;">${escapeHtml(item.name)}${item.count > 1 ? ` (x${item.count})` : ''}</strong>: <span style="color: #ffca2c;">-${formatStatNumber(item.diff, { exact, comma: true })}</span></div>`,
     )
     .join('');
 
-  const body = `<div class="pop unaided-popover"><div class="alert alert-warning py-1 px-2 mb-2 d-flex align-items-center gap-1" style="font-size: 11px;"><span class="material-icons-outlined text-warning" style="font-size: 15px;">warning</span><strong>${tr('mass_self_aid_recommended', 'Mass Self-Aid recommended before collection!')}</strong></div><div class="mb-2" style="font-size: 11px; line-height: 1.4;"><div><strong>${tr('actual_yield', 'Actual')}:</strong> ${formatStatNumber(currentVal, { exact, comma: true })}</div><div><strong>${tr('max_yield', 'Max')}:</strong> ${formatStatNumber(maxVal, { exact, comma: true })}</div><div class="text-warning"><strong>${tr('missing_yield', 'Missing')}:</strong> -${formatStatNumber(diffVal, { exact, comma: true })}</div></div><div class="unaided-building-list" style="max-height: 160px; overflow-y: auto; font-size: 11px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px;"><div class="text-muted mb-1">${tr('unaided_buildings', 'Unaided Buildings')} (${totalCount}):</div>${itemsHTML}</div></div>`;
+  const body = `<div class="pop unaided-popover"><div class="py-1 px-2 mb-2 d-flex align-items-center gap-1" style="font-size: 11px; background-color: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.35); color: #ffca2c; border-radius: 4px;"><span class="material-icons-outlined" style="font-size: 15px; color: #ffca2c;">warning</span><strong style="color: #ffca2c;">${tr('mass_self_aid_recommended', 'Mass Self-Aid recommended before collection!')}</strong></div><div class="mb-2" style="font-size: 11px; line-height: 1.4;"><div style="color: #e9ecef;"><span style="color: #adb5bd;">${tr('actual_yield', 'Actual')}:</span> <strong style="color: #ffffff;">${formatStatNumber(currentVal, { exact, comma: true })}</strong></div><div style="color: #e9ecef;"><span style="color: #adb5bd;">${tr('max_yield', 'Max')}:</span> <strong style="color: #ffffff;">${formatStatNumber(maxVal, { exact, comma: true })}</strong></div><div style="color: #ffca2c;"><span style="color: #adb5bd;">${tr('missing_yield', 'Missing')}:</span> <strong style="color: #ffca2c;">-${formatStatNumber(diffVal, { exact, comma: true })}</strong></div></div><div class="unaided-building-list" style="max-height: 160px; overflow-y: auto; font-size: 11px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px;"><div class="mb-1" style="color: #adb5bd; font-weight: 500;">${tr('unaided_buildings', 'Unaided Buildings')} (${totalCount}):</div>${itemsHTML}</div></div>`;
 
   const escapedBody = body.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
 
-  return `<span id="${prefix}-${resource}-unaided" class="pop d-inline-flex align-items-center flex-shrink-0 ms-1" role="button" tabindex="0" aria-haspopup="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="${escapedTitle}" data-bs-content='${escapedBody}'><span class="material-icons-outlined text-warning" style="font-size: 14px; line-height: 1; vertical-align: middle; cursor: pointer;" title="${escapedTitle}">warning</span></span>`;
+  return `<span id="${prefix}-${resource}-unaided" class="pop d-inline-flex align-items-center flex-shrink-0 ms-1 text-nowrap" role="button" tabindex="0" aria-haspopup="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="${escapedTitle}" data-bs-content='${escapedBody}'><span class="material-icons-outlined text-warning" style="font-size: 14px; line-height: 1; vertical-align: middle; cursor: pointer;">warning</span></span>`;
 }
 
 function formatGoodsDisplay(stats = {}, playerInfo = {}) {
@@ -193,7 +193,12 @@ function formatGoodsHTML(
       rawGoodsHTML.includes('data-i18n="stat_daily_goods"')
     )
       return rawGoodsHTML;
-    return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${rawGoodsHTML.trim()}${boostText}${unaidedHTML}`;
+    const trimmedBoost = boostText ? boostText.trim() : '';
+    const trailingHTML =
+      trimmedBoost || unaidedHTML ?
+        `<span class="text-nowrap">${trimmedBoost}${unaidedHTML}</span>`
+      : '';
+    return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${rawGoodsHTML.trim()}${trailingHTML ? ` ${trailingHTML}` : ''}`;
   }
 
   const byEra =
@@ -235,7 +240,12 @@ function formatGoodsHTML(
         })
         .join(' ');
 
-      return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${spans}${boostText}${unaidedHTML}`;
+      const trimmedBoost = boostText ? boostText.trim() : '';
+      const trailingHTML =
+        trimmedBoost || unaidedHTML ?
+          `<span class="text-nowrap">${trimmedBoost}${unaidedHTML}</span>`
+        : '';
+      return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${spans}${trailingHTML ? ` ${trailingHTML}` : ''}`;
     }
   }
 
@@ -253,9 +263,14 @@ function formatGoodsHTML(
   if (total !== null || escapedTip) {
     const totalDisplay =
       total !== null ? formatStatNumber(total, { exact, comma: true }) : '';
-    const text = `${totalDisplay}${boostText}`;
+    const trimmedBoost = boostText ? boostText.trim() : '';
+    const trailingHTML =
+      trimmedBoost || unaidedHTML ?
+        `<span class="text-nowrap">${trimmedBoost}${unaidedHTML}</span>`
+      : '';
+    const text = `${totalDisplay}${trailingHTML ? ` ${trailingHTML}` : ''}`;
     const pop = `<span id="${prefix}-goods" class="pop" role="button" tabindex="0" aria-haspopup="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily Goods" data-bs-content='${escapedTip}'>${text}</span>`;
-    return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${escapedTip ? pop : text}${unaidedHTML}`;
+    return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${escapedTip ? pop : text}`;
   }
   return '';
 }
