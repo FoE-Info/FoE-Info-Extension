@@ -412,6 +412,53 @@ test('GuildBattlegroundService partial RPC payload guards', async (t) => {
         '',
         'Target generator container must be cleared when all focus signals are removed',
       );
+
+      // 12. User opens thread again, then exits map and comes back to it
+      conversationService({
+        requestMethod: 'getOverviewForCategory',
+        responseData: {
+          category: {
+            teasers: [
+              {
+                title: '🎯🎯 Battleground TARGETS 🎯🎯',
+                lastMessage: {
+                  text: 'Attack A1S again!',
+                  sender: { name: 'Commander' },
+                  date: 1700000020,
+                },
+              },
+            ],
+          },
+        },
+      });
+      assert.ok(targetsGBG.innerHTML.includes('Attack A1S again!'));
+      assert.equal(guildBattlegroundState.isTargetMessageActive(), true);
+
+      // User re-enters map (getBattleground)
+      service.getBattleground({
+        responseData: {
+          currentParticipantId: 1,
+          map: {
+            id: 'volcano_1',
+            provinces: [
+              { id: 1, lockedUntil: 0, totalBuildingSlots: 1 },
+              { id: 2, lockedUntil: 0, totalBuildingSlots: 1 },
+            ],
+          },
+          battlegroundParticipants: [
+            { participantId: 1, signals: [{ id: 1, type: 'focus' }] },
+          ],
+        },
+      });
+      assert.equal(
+        guildBattlegroundState.isTargetMessageActive(),
+        false,
+        'targetMessageActive must be reset to false when entering battleground map',
+      );
+      assert.ok(
+        targetsGBG.innerHTML.includes('GBG Target Generator:'),
+        'Must switch back to Target Generator when re-entering map',
+      );
     },
   );
 });

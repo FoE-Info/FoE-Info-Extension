@@ -91,13 +91,35 @@ function extractSpecialBonuses({ entity, meta, level }) {
     if (bonusVal != null) res.chatBonusPercent = toBigNumber(bonusVal);
   } else if (entityId === 'X_ArcticFuture_Landmark2') {
     // Arctic Orangery
-    const bonusVal =
-      entity.bonus?.value ?? meta?.entity_levels?.[level]?.bonuses?.[0]?.value;
+    let bonusVal = entity.bonus?.value;
+    if (bonusVal == null && Array.isArray(entity.bonuses)) {
+      bonusVal = entity.bonuses.find(
+        (b) => b.type === 'critical_hit_chance' || b.type === 'critical_hit',
+      )?.value;
+    }
+    if (bonusVal == null && meta?.entity_levels?.[level]?.bonuses) {
+      const bList = meta.entity_levels[level].bonuses;
+      const bMatch = bList.find(
+        (b) => b.type === 'critical_hit_chance' || b.type === 'critical_hit',
+      );
+      bonusVal = bMatch?.value ?? bList[0]?.value;
+    }
     if (bonusVal != null) res.aoCritPercent = toBigNumber(bonusVal);
   } else if (entityId === 'X_SpaceAgeSpaceHub_Landmark2') {
     // Cosmic Catalyst
-    const bonusVal =
-      entity.bonus?.value ?? meta?.entity_levels?.[level]?.bonuses?.[0]?.value;
+    let bonusVal = entity.bonus?.value;
+    if (bonusVal == null && Array.isArray(entity.bonuses)) {
+      bonusVal = entity.bonuses.find(
+        (b) => b.type === 'critical_hit_chance' || b.type === 'critical_hit',
+      )?.value;
+    }
+    if (bonusVal == null && meta?.entity_levels?.[level]?.bonuses) {
+      const bList = meta.entity_levels[level].bonuses;
+      const bMatch = bList.find(
+        (b) => b.type === 'critical_hit_chance' || b.type === 'critical_hit',
+      );
+      bonusVal = bMatch?.value ?? bList[0]?.value;
+    }
     if (bonusVal != null) res.ccCritPercent = toBigNumber(bonusVal);
   }
 
