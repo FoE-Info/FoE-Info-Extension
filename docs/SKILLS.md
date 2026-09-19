@@ -14,7 +14,7 @@ Canonical definitions live under `.agents/skills/<name>/SKILL.md`. Harnesses sho
 | `audit-memory-leaks`                        | Isolate detached DOM nodes and panel memory leaks via CDP.              |
 | `brainstorming`                             | Explore requirements, user intent, and architecture options.            |
 | `brooks-lint`                               | Detect architectural smells and module coupling.                        |
-| `browser-testing`                           | Test Chromium DevTools panel and CDP sockets on port 9222.              |
+| `browser-testing`                           | Observe game telemetry and test FoE-Info extension panel via OpenCLI.   |
 | `caveman`                                   | Terse communication mode cutting output tokens with technical accuracy. |
 | `changelog-automation`                      | Generate release notes from commits and pull requests.                  |
 | `chrome-devtools-troubleshooting`           | Troubleshoot DevTools MCP port binding and attachment.                  |

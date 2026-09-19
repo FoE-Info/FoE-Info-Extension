@@ -10,7 +10,7 @@ Commands you'll use:
 
 - `npm run verify` runs the whole gate: format, lint, i18n, test, build.
 - `npm run graph:<repo>:ast|update|reindex` runs one Graphify tier.
-- `foe-browser` starts the isolated Chromium on port 9222 for CDP work.
+- `opencli doctor` / `npm run browser:doctor` verifies browser bridge health.
 
 Config lives in `.agents/` (project subagents, rules, skills, hooks, and MCP).
 The repository is configured strictly for Antigravity.
