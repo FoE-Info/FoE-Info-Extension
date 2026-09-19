@@ -193,7 +193,6 @@ if (!profile) fail('Usage: mcp-profile.mjs <profile> [--root <path>]');
 
 const registryPath = join(root, '.agents', 'mcp-registry.json');
 const antigravityPath = join(root, '.agents', 'mcp_config.json');
-const opencodePath = join(root, 'opencode.json');
 const registry = readJson(registryPath);
 const selected = registry.profiles?.[profile];
 if (!selected) {
@@ -242,31 +241,6 @@ const antigravityServers = Object.fromEntries(
 
 const batchWrites = [[antigravityPath, { mcpServers: antigravityServers }]];
 
-if (inspectTarget(root, opencodePath).exists) {
-  const opencode = readJson(opencodePath);
-  const existingOpenCodeServers = opencode.mcp ?? {};
-  if (
-    !existingOpenCodeServers ||
-    typeof existingOpenCodeServers !== 'object' ||
-    Array.isArray(existingOpenCodeServers)
-  ) {
-    fail(`OpenCode mcp configuration must be an object: ${opencodePath}`);
-  }
-  const opencodeServers = Object.fromEntries(
-    Object.entries(registry.servers).map(([name, config]) => [
-      name,
-      { ...(config.opencode ?? {}), enabled: selectedNames.has(name) },
-    ]),
-  );
-  const registryServerNames = new Set(Object.keys(registry.servers));
-  const unmanagedOpenCodeServers = Object.fromEntries(
-    Object.entries(existingOpenCodeServers).filter(([name]) => !registryServerNames.has(name)),
-  );
-  batchWrites.push([
-    opencodePath,
-    { ...opencode, mcp: { ...unmanagedOpenCodeServers, ...opencodeServers } },
-  ]);
-}
 
 try {
   await writeJsonBatch(root, batchWrites);

@@ -32,20 +32,6 @@ function makeFixture(t) {
     join(root, '.agents', 'mcp_config.json'),
     `${JSON.stringify({ mcpServers: { existing: { command: 'keep-me' } } }, null, 2)}\n`,
   );
-  writeFileSync(
-    join(root, 'opencode.json'),
-    `${JSON.stringify(
-      {
-        model: 'fixture-model',
-        permission: { read: 'allow' },
-        mcp: {
-          custom: { type: 'local', command: ['custom-mcp'], enabled: true },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-  );
   return root;
 }
 
@@ -86,7 +72,7 @@ test('MCP profiles - registry defines lean and task-scoped server sets', () => {
   }
 });
 
-test('MCP profiles - activation writes Antigravity subset and OpenCode toggles', async (t) => {
+test('MCP profiles - activation writes Antigravity mcp_config.json', async (t) => {
   const root = makeFixture(t);
   const result = spawnSync('node', [SCRIPT, 'browser', '--root', root], {
     encoding: 'utf8',
@@ -99,32 +85,15 @@ test('MCP profiles - activation writes Antigravity subset and OpenCode toggles',
     'chrome-devtools',
   ]);
 
-  const opencode = readJson(join(root, 'opencode.json'));
-  assert.equal(opencode.model, 'fixture-model');
-  assert.deepEqual(opencode.permission, { read: 'allow' });
-  assert.deepEqual(opencode.mcp.custom, {
-    type: 'local',
-    command: ['custom-mcp'],
-    enabled: true,
-  });
-  assert.equal(opencode.mcp['graphify-foe-info'].enabled, true);
-  assert.equal(opencode.mcp['chrome-devtools'].enabled, true);
-  assert.equal(opencode.mcp['github-mcp'].enabled, false);
-  assert.equal(opencode.mcp['linux-tools'].enabled, false);
-
   const prettierConfig =
     (await resolveConfig(join(PROJECT_ROOT, 'package.json'))) ?? {};
-  for (const target of [
-    join(root, '.agents', 'mcp_config.json'),
-    join(root, 'opencode.json'),
-  ]) {
-    const generated = readFileSync(target, 'utf8');
-    const formatted = await format(generated, {
-      ...prettierConfig,
-      filepath: target,
-    });
-    assert.equal(generated, formatted, `${target} must be Prettier-stable`);
-  }
+  const target = join(root, '.agents', 'mcp_config.json');
+  const generated = readFileSync(target, 'utf8');
+  const formatted = await format(generated, {
+    ...prettierConfig,
+    filepath: target,
+  });
+  assert.equal(generated, formatted, `${target} must be Prettier-stable`);
 });
 
 test('MCP profiles - Antigravity environment placeholders resolve at generation time', (t) => {
@@ -146,15 +115,15 @@ test('MCP profiles - Antigravity environment placeholders resolve at generation 
 
 test('MCP profiles - unknown profile fails without changing configs', (t) => {
   const root = makeFixture(t);
-  const opencodePath = join(root, 'opencode.json');
-  const before = readFileSync(opencodePath, 'utf8');
+  const antigravityPath = join(root, '.agents', 'mcp_config.json');
+  const before = readFileSync(antigravityPath, 'utf8');
   const result = spawnSync('node', [SCRIPT, 'missing', '--root', root], {
     encoding: 'utf8',
   });
 
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /Unknown MCP profile "missing"/);
-  assert.equal(readFileSync(opencodePath, 'utf8'), before);
+  assert.equal(readFileSync(antigravityPath, 'utf8'), before);
 });
 
 test('MCP profiles - predictable temp symlinks cannot overwrite another file', (t) => {
@@ -162,7 +131,7 @@ test('MCP profiles - predictable temp symlinks cannot overwrite another file', (
   const victim = join(root, 'victim.json');
   const before = '{"protected":true}\n';
   writeFileSync(victim, before);
-  symlinkSync(victim, join(root, 'opencode.json.tmp'));
+  symlinkSync(victim, join(root, '.agents', 'mcp_config.json.tmp'));
 
   const result = spawnSync('node', [SCRIPT, 'browser', '--root', root], {
     encoding: 'utf8',
@@ -172,16 +141,14 @@ test('MCP profiles - predictable temp symlinks cannot overwrite another file', (
   assert.equal(readFileSync(victim, 'utf8'), before);
 });
 
-test('MCP profiles - symlinked destinations fail before either config changes', (t) => {
+test('MCP profiles - symlinked destinations fail before config changes', (t) => {
   const root = makeFixture(t);
   const antigravityPath = join(root, '.agents', 'mcp_config.json');
-  const opencodePath = join(root, 'opencode.json');
-  const antigravityBefore = readFileSync(antigravityPath, 'utf8');
-  const victim = join(root, 'external-opencode.json');
-  const victimBefore = readFileSync(opencodePath, 'utf8');
+  const victim = join(root, 'external-config.json');
+  const victimBefore = readFileSync(antigravityPath, 'utf8');
   writeFileSync(victim, victimBefore);
-  unlinkSync(opencodePath);
-  symlinkSync(victim, opencodePath);
+  unlinkSync(antigravityPath);
+  symlinkSync(victim, antigravityPath);
 
   const result = spawnSync('node', [SCRIPT, 'browser', '--root', root], {
     encoding: 'utf8',
@@ -189,6 +156,5 @@ test('MCP profiles - symlinked destinations fail before either config changes', 
 
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /symlink/i);
-  assert.equal(readFileSync(antigravityPath, 'utf8'), antigravityBefore);
   assert.equal(readFileSync(victim, 'utf8'), victimBefore);
 });

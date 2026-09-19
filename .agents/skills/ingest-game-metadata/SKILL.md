@@ -10,9 +10,9 @@ Use this skill to ingest new raw game metadata from InnoGames releases, update o
 
 ## Phase 1: Capture & Download Raw Metadata
 
-1. Launch Chromium and authenticate into the game:
+1. Ensure the user is logged into Forge of Empires in Chrome:
    ```bash
-   foe-browser
+   opencli doctor
    ```
 2. Trigger the automated offline metadata extraction:
    ```bash

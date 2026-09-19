@@ -13,29 +13,28 @@ Use this skill to detect, isolate, and eliminate memory leaks, detached DOM node
 
 ## Phase 1: Establish Baseline Memory Footprint
 
-1. Start the test browser with a clean session:
+1. Verify browser bridge is connected:
    ```bash
-   foe-browser --restart
+   opencli doctor
    ```
-2. Check initial Chromium process memory:
+2. Query initial extension panel JS heap size via OpenCLI:
    ```bash
-   ps aux | grep chrome-linux64/chrome | awk '{print $2, $4, $5, $6, $11}'
+   opencli browser foe-panel eval "performance.memory ? performance.memory.usedJSHeapSize : 'N/A'"
    ```
-3. Record initial RSS (Resident Set Size).
 
 ---
 
 ## Phase 2: Stress Simulation Cycle
 
-1. Run active gameplay or simulate repeated panel refreshes (repeat user interactions and panel view switches 5–10 times to amplify subtle leaks):
-   ```bash
-   for i in {1..5}; do foe-browser; sleep 2; done
-   ```
+1. Switch between panel tabs and views in the browser to stress DOM components.
 2. Monitor runtime logs and panel exceptions:
    ```bash
-   node .agents/scripts/inspect-extension.js 10000
+   opencli browser foe-panel console
    ```
-3. Measure RSS memory again. If RSS grows continuously by >100 MB without plateauing, a leak exists.
+3. Measure panel heap size again via OpenCLI:
+   ```bash
+   opencli browser foe-panel eval "performance.memory ? performance.memory.usedJSHeapSize : 'N/A'"
+   ```
 
 ---
 
@@ -112,9 +111,9 @@ npx memlab analyze snapshot --snapshot /tmp/target.heapsnapshot
    ```bash
    npm run build:dev
    ```
-2. Reload browser:
+2. Verify panel memory and console:
    ```bash
-   foe-browser
+   opencli browser foe-panel console
    ```
 3. Confirm memory stabilizes under repeated cycles.
 

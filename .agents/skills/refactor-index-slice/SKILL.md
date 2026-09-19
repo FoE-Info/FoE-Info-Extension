@@ -33,5 +33,6 @@ This skill outlines the step-by-step procedure to safely decouple logic from the
    ```
 
 5. **Runtime Verification**:
-   - Test in Chromium DevTools via `node .agents/scripts/inspect-extension.js 5000 --target panel.html` to confirm no ReferenceError or missing variable exceptions.
+   - Verify in extension panel via `opencli browser foe-panel console` to confirm no ReferenceError or missing variable exceptions.
+
 

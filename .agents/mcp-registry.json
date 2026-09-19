@@ -48,21 +48,6 @@
           "--allowUnrestrictedPaths",
           "--no-usage-statistics"
         ]
-      },
-      "opencode": {
-        "type": "local",
-        "command": [
-          "chrome-devtools-mcp",
-          "--browserUrl=http://127.0.0.1:9222",
-          "--experimentalMemory",
-          "--experimentalVision",
-          "--categoryExperimentalWebmcp",
-          "--experimentalDevtools",
-          "--experimentalIncludeAllPages",
-          "--experimentalPageIdRouting",
-          "--allowUnrestrictedPaths",
-          "--no-usage-statistics"
-        ]
       }
     },
     "graphify-foe-info": {
@@ -93,21 +78,6 @@
           "http_proxy": "",
           "https_proxy": "",
           "all_proxy": ""
-        }
-      },
-      "opencode": {
-        "type": "local",
-        "command": [
-          "graphify-mcp",
-          "graphify-out/foe-info/graph.json"
-        ],
-        "environment": {
-          "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
-          "OPENAI_API_KEY": "local",
-          "OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_NO_TIPS": "1"
         }
       }
     },
@@ -140,21 +110,6 @@
           "https_proxy": "",
           "all_proxy": ""
         }
-      },
-      "opencode": {
-        "type": "local",
-        "command": [
-          "graphify-mcp",
-          "../forge-hammer/graphify-out/graph.json"
-        ],
-        "environment": {
-          "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
-          "OPENAI_API_KEY": "local",
-          "OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_NO_TIPS": "1"
-        }
       }
     },
     "graphify-foe-info-original": {
@@ -185,21 +140,6 @@
           "http_proxy": "",
           "https_proxy": "",
           "all_proxy": ""
-        }
-      },
-      "opencode": {
-        "type": "local",
-        "command": [
-          "graphify-mcp",
-          "../FoE-Info-Extension-original/graphify-out/graph.json"
-        ],
-        "environment": {
-          "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
-          "OPENAI_API_KEY": "local",
-          "OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_NO_TIPS": "1"
         }
       }
     },
@@ -232,21 +172,6 @@
           "https_proxy": "",
           "all_proxy": ""
         }
-      },
-      "opencode": {
-        "type": "local",
-        "command": [
-          "graphify-mcp",
-          "../LoW-Tool/graphify-out/graph.json"
-        ],
-        "environment": {
-          "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
-          "OPENAI_API_KEY": "local",
-          "OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_NO_TIPS": "1"
-        }
       }
     },
     "graphify-metadata-store": {
@@ -278,21 +203,6 @@
           "https_proxy": "",
           "all_proxy": ""
         }
-      },
-      "opencode": {
-        "type": "local",
-        "command": [
-          "graphify-mcp",
-          "../metadata-store/graphify-out/graph.json"
-        ],
-        "environment": {
-          "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
-          "OPENAI_API_KEY": "local",
-          "OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
-          "GRAPHIFY_NO_TIPS": "1"
-        }
       }
     },
     "github-mcp": {
@@ -306,21 +216,6 @@
           "GITHUB_PERSONAL_ACCESS_TOKEN",
           "ghcr.io/github/github-mcp-server"
         ]
-      },
-      "opencode": {
-        "type": "local",
-        "command": [
-          "docker",
-          "run",
-          "-i",
-          "--rm",
-          "-e",
-          "GITHUB_PERSONAL_ACCESS_TOKEN",
-          "ghcr.io/github/github-mcp-server"
-        ],
-        "environment": {
-          "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}"
-        }
       }
     },
     "linux-tools": {
@@ -331,18 +226,6 @@
           "LINUX_MCP_LOG_LEVEL": "INFO",
           "LINUX_MCP_USER": "${USER}",
           "LINUX_MCP_SSH_KEY_PATH": "${HOME}/.ssh/id_ed25519"
-        }
-      },
-      "opencode": {
-        "type": "local",
-        "command": [
-          "linux-mcp-server"
-        ],
-        "environment": {
-          "LINUX_MCP_LOG_LEVEL": "INFO",
-          "LINUX_MCP_USER": "{env:USER}",
-          "LINUX_MCP_SSH_KEY_PATH": "{env:HOME}/.ssh/id_ed25519",
-          "LINUX_MCP_KEY_PASSPHRASE": "{env:LINUX_MCP_KEY_PASSPHRASE}"
         }
       }
     }

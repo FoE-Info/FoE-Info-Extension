@@ -1,0 +1,9 @@
+[project]
+name = "foe-info"
+version = "0.0.834"
+description = "Essential Info browser extension for Forge of Empires players"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "graphifyy[mcp,openai]>=0.9.61",
+]

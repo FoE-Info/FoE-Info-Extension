@@ -27,7 +27,7 @@ process.stdin.on('end', () => {
   const response = {
     injectSteps: [
       {
-        ephemeralMessage: `${prefixName} Guardrail Reminder: Default to direct execution as main agent; delegate only when an isolated domain specialist (FoE mechanics, Graphify exploration, CDP browser QA) or parallel review is required. Keep slices <= 100 lines and files <= 600 lines, verify with fresh evidence before completion, and never bundle static game metadata into runtime source code.`,
+        ephemeralMessage: `${prefixName} Guardrail Reminder: Default to direct execution as main agent; delegate only when an isolated domain specialist (FoE mechanics, Graphify exploration, browser observation & QA) or parallel review is required. Keep slices <= 100 lines and files <= 600 lines, verify with fresh evidence before completion, and never bundle static game metadata into runtime source code.`,
       },
     ],
   };

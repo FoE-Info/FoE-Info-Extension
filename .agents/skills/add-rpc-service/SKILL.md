@@ -10,11 +10,10 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
 
 ## Phase 1: Packet Capture & Reverse-Engineering
 
-1. Launch the test browser:
+1. Capture game RPC payloads using OpenCLI or saved HAR files:
    ```bash
-   foe-browser
+   opencli browser foe-game network --filter "jsonrpc"
    ```
-2. In Chrome DevTools, capture the raw JSON response payload from the Network tab or console logs.
 3. Save a sample envelope structure in `scratch/sample-<service>-payload.json`.
 4. Identify the request class and methods:
    ```json
@@ -87,10 +86,9 @@ Audit the new service contract across every pipeline stage using the `cross-plat
    ```bash
    npm run build:dev
    ```
-3. Test live in the browser:
+3. Verify live panel console:
    ```bash
-   foe-browser
-   node .agents/scripts/inspect-extension.js 5000
+   opencli browser foe-panel console
    ```
 4. Update the codebase knowledge graph:
    ```bash

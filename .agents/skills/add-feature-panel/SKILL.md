@@ -62,11 +62,12 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
    ```bash
    npm run build:dev
    ```
-2. Inspect the live panel in Chromium:
+2. Inspect the live panel in the browser:
    ```bash
-   foe-browser
+   opencli browser foe-panel state
+   opencli browser foe-panel console
    ```
-3. Verify panel rendering without runtime exceptions on port 9222 via CDP.
+3. Verify panel rendering without runtime exceptions.
 
 ---
 

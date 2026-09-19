@@ -1,7 +1,7 @@
 #!/bin/sh
 # Shared inference policy. No model startup, teardown, or stdout side effects.
 # Autodetection prefers these providers over OpenAI even with a local base URL.
-unset GEMINI_API_KEY GOOGLE_API_KEY MOONSHOT_API_KEY ANTHROPIC_API_KEY
+unset MOONSHOT_API_KEY ANTHROPIC_API_KEY
 unset DEEPSEEK_API_KEY AZURE_OPENAI_API_KEY AZURE_OPENAI_ENDPOINT
 unset HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
 export NO_PROXY='*' no_proxy='*'

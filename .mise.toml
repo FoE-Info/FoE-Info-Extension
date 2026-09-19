@@ -1,20 +1,20 @@
 [tools]
-"aqua:gokcehan/lf" = "latest"
-go = "latest"
 # Pinned to the verified dev toolchain. engines.node requires >=24; the
 # @types/node devDependency tracks the 26.x line. Refresh with `mise lock`.
 node = "26.8.2"
+python = "3.14"
+uv = "latest"
 
 [env]
 NODE_ENV = "development"
 
 [env._]
-path = [ "./.agents/scripts", "./node_modules/.bin", "./scripts" ]
+path = [ "./.venv/bin", "./.agents/scripts", "./node_modules/.bin", "./scripts" ]
 file = [ ".env", ".env.local" ]
 
 [tasks.setup]
-description = "Install npm dependencies for the pinned toolchain"
-run = "npm ci"
+description = "Install npm dependencies and sync uv Python environment"
+run = "npm ci && uv sync"
 
 [tasks.check]
 description = "Check project code formatting with Prettier"

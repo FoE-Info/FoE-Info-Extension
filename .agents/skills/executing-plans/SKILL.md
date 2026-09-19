@@ -81,3 +81,9 @@ This skill is applicable to execute the workflow or actions described in the ove
 - Use this skill only when the task clearly matches the scope described above.
 - Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
 - Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
+
+<!-- skill-memory:lessons:start -->
+## Learned Improvements
+
+- Pruning obsolete harness residue and legacy CDP scripts reduces test execution surface and prevents unintended toolchain coupling
+<!-- skill-memory:lessons:end -->

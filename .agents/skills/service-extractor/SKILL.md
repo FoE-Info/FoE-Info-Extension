@@ -51,6 +51,6 @@ For an existing legacy handler extraction, replace its current call site without
 1. **Slice Size**: Verify the diff is <100 lines: `git diff --stat`.
 2. **Build Verification**: Run `npm run build:dev`.
 3. **Debuggability Verification**: Confirm module instantiates `createLogger`, produces zero logs when debug is disabled, and emits detailed diagnostics when debug is enabled.
-4. **Runtime Test**: Run `foe-browser` and `node .agents/scripts/inspect-extension.js 3000` to confirm no runtime errors.
+4. **Runtime Test**: Verify with headless tests (`npm test`) and check live panel console: `opencli browser foe-panel console`.
 5. **Knowledge Graph Sync**: Run `npm run graph:foe-info:update`.
 
