@@ -17,6 +17,11 @@ try {
   // ESM or testing environment fallback
 }
 
+let initPopovers = null;
+try {
+  ({ initPopovers } = require('./components/PopoverManager.js'));
+} catch {}
+
 const AGES = [
   'sad',
   'sash',
@@ -86,7 +91,7 @@ function showTooltips({
     }
   }
 
-  if (PopoverClass) {
+  if (customPopover) {
     const options = {
       trigger: 'hover focus',
       html: true,
@@ -99,13 +104,15 @@ function showTooltips({
       : [];
     if (popoverTriggerList) {
       for (const popoverTriggerEl of popoverTriggerList) {
-        if (typeof PopoverClass.getOrCreateInstance === 'function') {
-          PopoverClass.getOrCreateInstance(popoverTriggerEl, options);
+        if (typeof customPopover.getOrCreateInstance === 'function') {
+          customPopover.getOrCreateInstance(popoverTriggerEl, options);
         } else {
-          new PopoverClass(popoverTriggerEl, options);
+          new customPopover(popoverTriggerEl, options);
         }
       }
     }
+  } else if (typeof initPopovers === 'function') {
+    initPopovers(doc);
   }
 }
 
