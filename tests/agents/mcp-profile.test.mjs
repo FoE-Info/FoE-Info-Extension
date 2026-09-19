@@ -113,7 +113,7 @@ test('MCP profiles - activation writes Antigravity subset and OpenCode toggles',
   assert.equal(opencode.mcp['linux-tools'].enabled, false);
 
   const prettierConfig =
-    (await resolveConfig(join(PROJECT_ROOT, 'opencode.json'))) ?? {};
+    (await resolveConfig(join(PROJECT_ROOT, 'package.json'))) ?? {};
   for (const target of [
     join(root, '.agents', 'mcp_config.json'),
     join(root, 'opencode.json'),

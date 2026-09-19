@@ -13,13 +13,12 @@ Commands you'll use:
 - `foe-browser` starts the isolated Chromium on port 9222 for CDP work.
 
 Config lives in `.agents/` (project subagents, rules, skills, hooks, and MCP).
-`.opencode/` adapts the canonical library for the OpenCode host.
+The repository is configured strictly for Antigravity.
 
 Start with [docs/README.md](docs/README.md) (coordination hub) and
 [docs/STATUS.md](docs/STATUS.md) (open work). Read
 [docs/HANDOFF.md](docs/HANDOFF.md) only when resuming a named thread or checking
 known verified state. Check git status and current source before trusting a plan.
-Host-specific wiring: [docs/OPENCODE.md](docs/OPENCODE.md).
 
 ## Rules that are not negotiable
 
