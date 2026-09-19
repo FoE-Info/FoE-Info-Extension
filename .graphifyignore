@@ -3,6 +3,13 @@
 AGENTS.md
 .gemini/
 .superpowers/
+.opencode/
+.claude/
+.cursor/
+.windsurf/
+
+# Implementation Plans & Ephemeral Task Checklists
+docs/plans/
 
 # Tests & Captured Fixtures (mirror src/, 45MB RPC payloads)
 tests/
@@ -18,9 +25,13 @@ worktrees/
 
 # Dependencies & Local Scratch
 node_modules/
+.venv/
+.uv/
 stuff/
 vendor/
 package-lock.json
+__pycache__/
+*.py[cod]
 
 # Build & Minified Artifacts
 build/
@@ -30,6 +41,7 @@ dist/
 *.min.css
 *.bundle.js
 *.chunk.js
+*.tsbuildinfo
 
 # Notes, Workspaces & IDE Files
 *note.html
@@ -39,11 +51,19 @@ dist/
 .husky/
 .DS_Store
 Thumbs.db
+desktop.ini
+.directory
+*.swp
+*.swo
+*~
 
 # Logs, Temp & Coverage
 *.log
 tmp/
 temp/
+*.tmp
+*.tmp.*
+*.tmp-*
 coverage/
 
 # Archives & Extension Packages
@@ -58,7 +78,12 @@ coverage/
 *.pem
 *.key
 *.heapsnapshot
+*.heaptimeline
 docs/heap-snapshot/
+docs/heap-snapshots/
+*.har
+*.har.gz
+docs/har/
 
 # Media & Binary Assets (avoids vision/parser overhead)
 *.png
