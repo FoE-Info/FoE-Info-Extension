@@ -253,7 +253,7 @@ export function renderGbgLeaderboardPanel(leaderboard, options = {}) {
   const leaderboardHTML = buildLeaderboardHTML(leaderboard);
   const tableMarkup =
     leaderboardHTML.startsWith('<table') ? leaderboardHTML : (
-      `<table class="goods-table w-100">${leaderboardHTML}</table>`
+      `<table class="goods-table w-100"><caption class="visually-hidden"><span data-i18n="leaderboard">GBG Leaderboard</span></caption>${leaderboardHTML}</table>`
     );
 
   const resolvedTarget =
