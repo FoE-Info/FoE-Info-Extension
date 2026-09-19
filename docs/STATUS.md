@@ -11,7 +11,8 @@ a changelog. See `docs/README.md` for the full hub.
 ## Todos
 
 - [x] Modern-web Tier 3 (Popovers & Tooltips): migrated `PopoverManager.js` to native HTML Popover API with CSS Anchor Positioning (`position-anchor`, `position-area: bottom span-all`) and smooth `@starting-style` transitions.
-- [ ] Modern-web Tier 3 (remaining): migrate Bootstrap collapse to native CSS Grid 0fr/1fr transitions or `<details>`, adopt `light-dark()`/`[data-bs-theme]` theming, and evaluate opt-in Built-in AI/WebMCP enhancements.
+- [x] Modern-web Tier 3 (Collapses & Theming): migrated Bootstrap collapse to native CSS Grid 0fr/1fr transitions with lifecycle event dispatching and height preservation (`.foe-resizable` support). Evaluated Bootstrap 5.3 `[data-bs-theme]` and rejected it to preserve FoE-Info's signature dark backdrop with pastel alert card palette.
+- [ ] Modern-web Tier 3 (remaining): evaluate opt-in Built-in AI/WebMCP enhancements.
 - [ ] Modern-web deferred items: `content-visibility` on measured card bodies (no safe stable selector yet), `MessageDispatcher` parse yielding, and residual table semantics. `renderBattlegroundsPanel.js` already has `<caption>`/`scope="col"`; the `renderInvestedPanel.js` table is a commented-out future feature.
 
 ## Open threads requiring a decision

@@ -1,23 +1,12 @@
 body {
-  /* background-color: var(--nord0); */
-  /* color: var(--nord8); */
-  /* font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, “Helvetica Neue”, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”; */
   /* default is 1rem or 16px */
   font-size: 0.8em;
-  /* fw: 400; */
   line-height: 1.25;
-  /* background-color: #000; */
-  /* background-color: white; */
-  /* color: black; */
   color: var(--color-text-primary);
   background: var(--color-background);
 }
 
 .dark-mode {
-  /* color: var(--color-text-primary); */
-  /* background: var(--color-background); */
-  /* background-color: black; */
-  /* color: white; */
   background-color: rgb(41 42 45);
 }
 
@@ -78,10 +67,41 @@ p,
   min-width: 280px;
 }
 
-// Eliminate Bootstrap collapse animation lag/stutter in DevTools panel
+// Native CSS Grid Collapse (Tier 3 Modern Web: replaces Bootstrap JS height calculations)
+.collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition:
+    grid-template-rows 0.2s ease-out,
+    visibility 0.2s ease-out;
+  visibility: hidden;
+
+  &.show {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  > * {
+    min-height: 0;
+  }
+
+  &:not(.show) {
+    display: grid !important; // override Bootstrap's display: none so grid-template-rows transitions
+    visibility: hidden;
+    overflow: hidden !important;
+  }
+}
+
+// Eliminate Bootstrap legacy JS collapse interference
 .collapsing {
   min-height: 0 !important;
   transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapse {
+    transition: none !important;
+  }
 }
 
 #expeditionText table,

@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   executeToggle,
   createToggle,
+  toggleTargetElement,
   hideAllTooltips,
 } = require('../../src/js/ui/collapseToggleRunner.js');
 
@@ -218,6 +219,101 @@ test('collapseToggleRunner Suite', async (t) => {
       assert.equal(state, true);
       toggleFn();
       assert.equal(state, false);
+    },
+  );
+
+  await t.test(
+    'toggleTargetElement dispatches lifecycle events and manages height',
+    () => {
+      const dispatchedEvents = [];
+      const classes = new Set(['show']);
+      const targetEl = {
+        classList: {
+          contains: (cls) => classes.has(cls),
+          add: (cls) => classes.add(cls),
+          remove: (cls) => classes.delete(cls),
+        },
+        style: { height: '220px' },
+        dataset: {},
+        dispatchEvent: (evt) => {
+          dispatchedEvents.push(evt.type);
+        },
+        addEventListener: (evt, cb) => {
+          // Immediately simulate transition completion
+          cb({ target: targetEl });
+        },
+        removeEventListener: () => {},
+      };
+
+      // Collapse targetEl
+      toggleTargetElement(targetEl, true);
+      assert.equal(classes.has('show'), false);
+      assert.equal(targetEl.style.height, '');
+      assert.equal(targetEl.dataset.foeSavedHeight, '220px');
+      assert.deepEqual(dispatchedEvents, [
+        'hide.bs.collapse',
+        'hidden.bs.collapse',
+      ]);
+
+      // Re-expand targetEl
+      dispatchedEvents.length = 0;
+      toggleTargetElement(targetEl, false);
+      assert.equal(classes.has('show'), true);
+      assert.equal(targetEl.style.height, '220px');
+      assert.deepEqual(dispatchedEvents, [
+        'show.bs.collapse',
+        'shown.bs.collapse',
+      ]);
+    },
+  );
+
+  await t.test(
+    'executeToggle automatically toggles target element in document',
+    () => {
+      let state = false;
+      const classes = new Set(['show']);
+      const targetEl = {
+        classList: {
+          contains: (cls) => classes.has(cls),
+          add: (cls) => classes.add(cls),
+          remove: (cls) => classes.delete(cls),
+        },
+        style: {},
+        dataset: {},
+        dispatchEvent: () => {},
+      };
+      const mockDoc = {
+        getElementById: (id) => (id === 'myPanelText' ? targetEl : null),
+        querySelectorAll: () => [],
+      };
+
+      executeToggle(
+        {
+          get: () => state,
+          set: (v) => {
+            state = v;
+          },
+          icons: [{ iconId: 'myIcon', targetId: 'myPanelText' }],
+        },
+        { doc: mockDoc },
+      );
+
+      // Collapsing -> removes 'show'
+      assert.equal(classes.has('show'), false);
+
+      executeToggle(
+        {
+          get: () => state,
+          set: (v) => {
+            state = v;
+          },
+          icons: [{ iconId: 'myIcon', targetId: 'myPanelText' }],
+        },
+        { doc: mockDoc },
+      );
+
+      // Expanding -> adds 'show'
+      assert.equal(classes.has('show'), true);
     },
   );
 });
