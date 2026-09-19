@@ -56,9 +56,9 @@ export var GBselected = {
   total: 0,
 };
 
-export var targetsTopic = 'targets';
+export var targetsTopic = 'Targets';
 export function setTargetsTopic(val) {
-  targetsTopic = typeof val === 'string' ? val : 'targets';
+  targetsTopic = typeof val === 'string' && val.trim() ? val.trim() : 'Targets';
 }
 export var targetText = '';
 export function setTargetText(val) {
