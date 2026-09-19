@@ -154,3 +154,40 @@ for (const [boost, expected, total] of [
     assert.equal(render().goods.byEra.sajm.toString(), boost ? '250' : '200');
   });
 }
+
+test('renderLiveCityStats does not invoke renderCityStats when no player or startup data is present', () => {
+  let called = false;
+  const { renderLiveCityStats } = renderLivePkg;
+  const result = renderLiveCityStats({
+    renderCityStats: () => {
+      called = true;
+    },
+  });
+  assert.equal(
+    called,
+    false,
+    'renderCityStats should not be called without player data',
+  );
+  assert.ok(result, 'should still return calculated stats');
+});
+
+test('renderLiveCityStats invokes renderCityStats when startup context is provided', () => {
+  let called = false;
+  let targetContainer = null;
+  const { renderLiveCityStats } = renderLivePkg;
+  renderLiveCityStats({
+    lastStartupContext: {
+      user: { id: 12345, user_name: 'TestUser', era: 'SpaceAgeSpaceHub' },
+    },
+    renderCityStats: (containerId) => {
+      called = true;
+      targetContainer = containerId;
+    },
+  });
+  assert.equal(
+    called,
+    true,
+    'renderCityStats should be called when startup user is present',
+  );
+  assert.equal(targetContainer, 'citystats');
+});

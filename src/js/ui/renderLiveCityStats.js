@@ -305,8 +305,17 @@ function renderLiveCityStats(ctx = {}) {
     },
   };
 
+  const hasPlayerData = Boolean(
+    ctx.forceRender ||
+    ctx.lastStartupContext?.user ||
+    MyInfo?.name ||
+    (MyInfo?.id && MyInfo.id !== 0) ||
+    user?.user_name ||
+    (user?.id && user.id !== 0),
+  );
+
   const renderCityStatsFn = ctx.renderCityStats || renderCityStats;
-  if (typeof renderCityStatsFn === 'function') {
+  if (typeof renderCityStatsFn === 'function' && hasPlayerData) {
     try {
       const userTooltipHTML =
         typeof getUserTooltipHTML === 'function' ? getUserTooltipHTML()
