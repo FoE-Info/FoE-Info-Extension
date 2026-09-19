@@ -87,6 +87,7 @@ function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
     },
     aoCriticalStrike: 0,
     ccCriticalStrike: 0,
+    criticalStrike: 0,
   };
 
   const goodsBoostPercent =

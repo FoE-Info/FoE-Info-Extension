@@ -233,6 +233,7 @@ class VisitedCityStatsCalculator {
         qiBoosts,
         aoCriticalStrike: aoCritPercent,
         ccCriticalStrike: ccCritPercent,
+        criticalStrike: aoCritPercent.plus(ccCritPercent),
       },
       clanPower,
       sohCount: clanSOHcount,

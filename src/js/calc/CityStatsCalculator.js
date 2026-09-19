@@ -200,6 +200,7 @@ class CityStatsCalculator {
         qiBoosts,
         aoCriticalStrike: aoCritPercent,
         ccCriticalStrike: ccCritPercent,
+        criticalStrike: aoCritPercent.plus(ccCritPercent),
       },
     };
   }
