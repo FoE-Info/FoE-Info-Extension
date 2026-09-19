@@ -11,6 +11,7 @@ dist/
 *.tar.gz
 *.tgz
 *.map
+*.tsbuildinfo
 
 # IDE & Editor Files
 .idea/
@@ -18,16 +19,31 @@ dist/
 *.code-workspace
 .DS_Store
 Thumbs.db
+desktop.ini
+.directory
+*.swp
+*.swo
+*~
 
 # Logs, Coverage & Temporary Files
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 tmp/
 temp/
+*.tmp
+*.tmp.*
+*.tmp-*
 coverage/
 stuff/
 *note.html
 __pycache__/
 *.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
 
 # Offline Metadata Dumps (not for extension bundle)
 /metadata-store/
@@ -40,6 +56,10 @@ graphify-out/
 .worktrees/
 worktrees/
 .superpowers/
+.opencode/
+.claude/
+.cursor/
+.windsurf/
 .agents/reviews/
 .agents/.last_graph_query_stamp
 
@@ -49,6 +69,7 @@ worktrees/
 docs/heap-snapshot/
 docs/heap-snapshots/
 *.har
+*.har.gz
 docs/har/
 
 # Environment & Secrets
