@@ -195,6 +195,7 @@ export function getBattleground(msg) {
           clan?.participantId == msg?.responseData?.currentParticipantId,
       )
     : null;
+  const prevSignals = Array.isArray(signals) ? [...signals] : [];
   signals = myClan?.signals ? [...myClan.signals] : [];
   if (Array.isArray(signals)) {
     signals.forEach((clan) => {
@@ -212,7 +213,8 @@ export function getBattleground(msg) {
 
   // console.debug(message.lastMessage.text);
 
-  checkProvinces();
+  const signalChanged = !areSignalsEqual(prevSignals, signals);
+  checkProvinces({ signalChanged });
 }
 
 export function getBuildings(msg) {
@@ -226,7 +228,7 @@ export function getBuildings(msg) {
     prov.placedBuildings = msg.responseData.placedBuildings;
     prov.availableBuildings = msg.responseData.availableBuildings;
   }
-  checkProvinces();
+  checkProvinces({ signalChanged: false });
   if (showOptions.buildingCosts && msg?.responseData?.availableBuildings)
     showBuildingCost(msg.responseData);
   // console.debug('getBuildings',msg.responseData,map);
@@ -238,6 +240,7 @@ export function getUpdatedProvinces(msg) {
     Array.isArray(msg?.responseData) ? msg.responseData
     : Array.isArray(msg) ? msg
     : [];
+  let signalRemoved = false;
   for (const updated of updatedProvinces) {
     if (!updated || updated.id === undefined) continue;
     const existing = map.find((p) => p.id == updated.id);
@@ -267,15 +270,19 @@ export function getUpdatedProvinces(msg) {
     }
     if (wasConquered) {
       if (Array.isArray(signals)) {
+        const prevCount = signals.length;
         signals = signals.filter(
           (p) =>
             Number(p.id !== undefined ? p.id : p.provinceId) !==
             Number(updated.id),
         );
+        if (signals.length !== prevCount) {
+          signalRemoved = true;
+        }
       }
     }
   }
-  checkProvinces();
+  checkProvinces({ signalChanged: signalRemoved });
 }
 
 export function updateSignal(msg, payload, context) {
@@ -293,7 +300,7 @@ export function updateSignal(msg, payload, context) {
     signals = applySignalToList(signals, provinceId, signalType);
   }
 
-  checkProvinces();
+  checkProvinces({ signalChanged: true });
 }
 
 export function setSignal(msg, payload, context) {
@@ -306,7 +313,7 @@ export function setSignal(msg, payload, context) {
   }
 
   signals = applySignalToList(signals, provinceId, signalType);
-  checkProvinces();
+  checkProvinces({ signalChanged: true });
 }
 
 export function removeSignal(msg, payload, context) {
@@ -319,13 +326,14 @@ export function removeSignal(msg, payload, context) {
   }
 
   signals = removeSignalFromList(signals, provinceId);
-  checkProvinces();
+  checkProvinces({ signalChanged: true });
 }
 
 export function clearBattleground() {
   BattlegroundPerformance.length = 0;
   GuildMembers.length = 0;
   map = {};
+  signals = [];
   if (document.getElementById('costs'))
     document.getElementById('costs').innerHTML = '';
 }
@@ -423,7 +431,33 @@ function attritionReduction(building) {
   return getAttritionReduction(building);
 }
 
-function checkProvinces() {
+function areSignalsEqual(a, b) {
+  if (!Array.isArray(a) || !Array.isArray(b)) return false;
+  if (a.length !== b.length) return false;
+  if (a.length === 0 && b.length === 0) return true;
+  const mapA = new Map();
+  for (const s of a) {
+    const id = Number(s.id !== undefined ? s.id : s.provinceId);
+    const type = s.type !== undefined ? s.type : s.signal;
+    mapA.set(id, type);
+  }
+  for (const s of b) {
+    const id = Number(s.id !== undefined ? s.id : s.provinceId);
+    const type = s.type !== undefined ? s.type : s.signal;
+    if (!mapA.has(id)) return false;
+    if (mapA.get(id) !== type) return false;
+  }
+  return true;
+}
+
+export function getSignals() {
+  return signals;
+}
+
+function checkProvinces({ signalChanged = false } = {}) {
+  if (signalChanged) {
+    guildBattlegroundState?.setTargetMessageActive?.(false);
+  }
   guildBattlegroundState.setTargets({
     map,
     signals,
@@ -436,6 +470,7 @@ function checkProvinces() {
     gameOrigin: typeof GameOrigin !== 'undefined' ? GameOrigin : '',
     targetText,
     formatTime: timeGBG,
+    signalChanged,
   });
 }
 

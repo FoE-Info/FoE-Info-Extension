@@ -81,12 +81,17 @@ try {
   const { createLogger } = require('../utils/logger.js');
   logger = createLogger('ConversationService');
 } catch {}
+let guildBattlegroundState = null;
+try {
+  ({ guildBattlegroundState } = require('../state/GuildBattlegroundState.js'));
+} catch {}
 
 let targetsTimer = null;
 let lastTargetsConversationId = null;
 
 function renderTargetMessage(message) {
   if (!message) return;
+  guildBattlegroundState?.setTargetMessageActive?.(true);
   const targetsGBG =
     document.getElementById('targetsGBG') ||
     (() => {
@@ -192,6 +197,7 @@ function renderTargetMessage(message) {
   targetsTimer = setTimeout(function () {
     if (targetsGBG) targetsGBG.innerHTML = '';
     targetsTimer = null;
+    guildBattlegroundState?.setTargetMessageActive?.(false);
   }, 600000);
   if (targetsTimer && typeof targetsTimer.unref === 'function') {
     targetsTimer.unref();
@@ -205,6 +211,15 @@ function renderTargetMessage(message) {
       .getElementById('targetPostID')
       ?.addEventListener('click', post_webstore.postTargetsToDiscord);
   }
+
+  const alertEl = document.getElementById(`alert-${timerId}`);
+  const handleAlertClose = () => {
+    guildBattlegroundState?.setTargetMessageActive?.(false);
+  };
+  alertEl?.addEventListener?.('closed.bs.alert', handleAlertClose);
+  alertEl
+    ?.querySelector?.('.btn-close')
+    ?.addEventListener?.('click', handleAlertClose);
 }
 
 function getLatestMessage(msgs) {
