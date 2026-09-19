@@ -107,6 +107,17 @@ function handleStorageChange(changes, namespace, deps = {}) {
         const { setDebugEnabled } = require('../utils/logger.js');
         setDebugEnabled(Boolean(newValue), { persist: false });
       } catch {}
+    } else if (key === 'CityEntityDefs') {
+      if (newValue && typeof newValue === 'object') {
+        resolved.processMetadataData?.(newValue);
+        resolved.setMetadataLoaded?.(true);
+        const lastStartupMsg =
+          resolved.getLastStartupMsg?.() ||
+          resolved.getServiceLastStartupMsg?.();
+        if (lastStartupMsg) {
+          resolved.startupService?.(lastStartupMsg);
+        }
+      }
     }
   }
 }
@@ -257,10 +268,13 @@ function handleReceiveStorage(result, deps = {}) {
       resolved.resolveMissingCityEntitiesFromMap?.(targetMapEntities);
     }
     const pendingStartupMsg = resolved.getPendingStartupMsg?.();
-    if (pendingStartupMsg) {
-      resolved.setLastStartupMsg?.(pendingStartupMsg);
-      resolved.startupService?.(pendingStartupMsg);
-      resolved.setPendingStartupMsg?.(null);
+    const startupMsgToProcess = pendingStartupMsg || lastStartupMsg;
+    if (startupMsgToProcess) {
+      resolved.setLastStartupMsg?.(startupMsgToProcess);
+      resolved.startupService?.(startupMsgToProcess);
+      if (pendingStartupMsg) {
+        resolved.setPendingStartupMsg?.(null);
+      }
     }
     resolved.renderLiveCityStats?.();
   }

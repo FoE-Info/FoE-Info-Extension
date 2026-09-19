@@ -40,20 +40,6 @@ function calculateDailyProductionAid({
   helper = null,
   ResourceDefs = [],
 } = {}) {
-  const fpBoostPercent = toBigNumber(
-    boosts.fp || boosts.fpProductionBoost || 0,
-  );
-  const goodsBoostPercent = toBigNumber(
-    boosts.goods || boosts.goodsProductionBoost || 0,
-  );
-  const guildGoodsBoostPercent = toBigNumber(
-    boosts.guildGoods || boosts.guildGoodsProductionBoost || 0,
-  );
-  const coinBoostPercent = toBigNumber(boosts.coin || boosts.CoinBoost || 0);
-  const supplyBoostPercent = toBigNumber(
-    boosts.supply || boosts.SupplyBoost || 0,
-  );
-
   let maxBoostableFp = new BigNumber(0);
   let maxUnboostableFp = new BigNumber(0);
   let currentBoostableFp = new BigNumber(0);
@@ -253,155 +239,60 @@ function calculateDailyProductionAid({
     }
   }
 
-  const maxFpBoostAmount =
-    fpBoostPercent.gt(0) ?
-      maxBoostableFp
-        .multipliedBy(fpBoostPercent)
-        .dividedBy(100)
-        .integerValue(BigNumber.ROUND_HALF_UP)
-    : new BigNumber(0);
-  const maxTotalFp = maxUnboostableFp
-    .plus(maxBoostableFp)
-    .plus(maxFpBoostAmount);
-
-  const curFpBoostAmount =
-    fpBoostPercent.gt(0) ?
-      currentBoostableFp
-        .multipliedBy(fpBoostPercent)
-        .dividedBy(100)
-        .integerValue(BigNumber.ROUND_HALF_UP)
-    : new BigNumber(0);
-  const curTotalFp = currentUnboostableFp
-    .plus(currentBoostableFp)
-    .plus(curFpBoostAmount);
-
-  const maxBoostedGoodsAmount =
-    goodsBoostPercent.gt(0) ?
-      maxBoostableGoods
-        .multipliedBy(goodsBoostPercent)
-        .dividedBy(100)
-        .integerValue(BigNumber.ROUND_HALF_UP)
-    : new BigNumber(0);
-  const maxTotalGoods = maxUnboostableGoods
-    .plus(maxBoostableGoods)
-    .plus(maxBoostedGoodsAmount);
-
-  const curBoostedGoodsAmount =
-    goodsBoostPercent.gt(0) ?
-      currentBoostableGoods
-        .multipliedBy(goodsBoostPercent)
-        .dividedBy(100)
-        .integerValue(BigNumber.ROUND_HALF_UP)
-    : new BigNumber(0);
-  const curTotalGoods = currentUnboostableGoods
-    .plus(currentBoostableGoods)
-    .plus(curBoostedGoodsAmount);
-
-  const maxGoodsByEra = {};
-  for (const [eraKey, baseAmt] of Object.entries(maxBaseGoodsByEra)) {
-    const boostablePart =
-      maxBaseBoostableGoodsByEra[eraKey] || new BigNumber(0);
-    const unboostablePart = baseAmt.minus(boostablePart);
-    const boostAmt =
-      goodsBoostPercent.gt(0) ?
-        boostablePart
-          .multipliedBy(goodsBoostPercent)
-          .dividedBy(100)
-          .integerValue(BigNumber.ROUND_HALF_UP)
-      : new BigNumber(0);
-    maxGoodsByEra[eraKey] = unboostablePart.plus(boostablePart).plus(boostAmt);
-  }
-
-  const currentGoodsByEra = {};
-  for (const [eraKey, baseAmt] of Object.entries(currentBaseGoodsByEra)) {
-    currentGoodsByEra[eraKey] = applyBoost(baseAmt, goodsBoostPercent);
-  }
-
-  const maxClanGoodsBoostAmount =
-    guildGoodsBoostPercent.gt(0) ?
-      maxBoostableClanGoods
-        .dividedBy(5)
-        .multipliedBy(guildGoodsBoostPercent)
-        .dividedBy(100)
-        .integerValue(BigNumber.ROUND_HALF_UP)
-        .multipliedBy(5)
-    : new BigNumber(0);
-  const maxTotalClanGoods = maxUnboostableClanGoods
-    .plus(maxBoostableClanGoods)
-    .plus(maxClanGoodsBoostAmount);
-
-  const curClanGoodsBoostAmount =
-    guildGoodsBoostPercent.gt(0) ?
-      currentBoostableClanGoods
-        .dividedBy(5)
-        .multipliedBy(guildGoodsBoostPercent)
-        .dividedBy(100)
-        .integerValue(BigNumber.ROUND_HALF_UP)
-        .multipliedBy(5)
-    : new BigNumber(0);
-  const curTotalClanGoods = currentUnboostableClanGoods
-    .plus(currentBoostableClanGoods)
-    .plus(curClanGoodsBoostAmount);
-
-  const maxTotalCoins = applyBoost(maxCoins, coinBoostPercent, true);
-  const curTotalCoins = applyBoost(currentCoins, coinBoostPercent, true);
-
-  const maxTotalSupplies = applyBoost(maxSupplies, supplyBoostPercent, true);
-  const curTotalSupplies = applyBoost(
-    currentSupplies,
-    supplyBoostPercent,
-    true,
-  );
-
-  const max = {
-    fp: maxTotalFp,
-    baseBoostableFp: maxBoostableFp,
-    baseUnboostableFp: maxUnboostableFp,
-    fpBoostAmount: maxFpBoostAmount,
-    goods: maxTotalGoods,
-    baseGoods: maxBaseGoods,
-    goodsByEra: maxGoodsByEra,
-    baseGoodsByEra: maxBaseGoodsByEra,
-    clanGoods: maxTotalClanGoods,
-    baseClanGoods: maxBaseClanGoods,
-    baseBoostableClanGoods: maxBoostableClanGoods,
-    baseUnboostableClanGoods: maxUnboostableClanGoods,
-    clanGoodsBoostAmount: maxClanGoodsBoostAmount,
-    units: maxUnits,
-    coins: maxTotalCoins,
-    supplies: maxTotalSupplies,
-  };
-
-  const current = {
-    fp: curTotalFp,
-    baseBoostableFp: currentBoostableFp,
-    baseUnboostableFp: currentUnboostableFp,
-    fpBoostAmount: curFpBoostAmount,
-    goods: curTotalGoods,
-    baseGoods: currentBaseGoods,
-    goodsByEra: currentGoodsByEra,
-    baseGoodsByEra: currentBaseGoodsByEra,
-    clanGoods: curTotalClanGoods,
-    baseClanGoods: currentBaseClanGoods,
-    baseBoostableClanGoods: currentBoostableClanGoods,
-    baseUnboostableClanGoods: currentUnboostableClanGoods,
-    clanGoodsBoostAmount: curClanGoodsBoostAmount,
-    units: currentUnits,
-    coins: curTotalCoins,
-    supplies: curTotalSupplies,
-  };
-
   const resKeys = ['fp', 'goods', 'clanGoods', 'units', 'coins', 'supplies'];
   const diff = {};
   const unaided = {};
   for (const k of resKeys) {
-    diff[k] = max[k].minus(current[k]);
+    diff[k] = new BigNumber(0);
     unaided[k] = finalizeUnaidedList(rawUnaidedMap[k]);
   }
 
-  return {
-    max,
-    current,
+  const aidStats = {
+    max: {
+      fp: new BigNumber(0),
+      baseBoostableFp: maxBoostableFp,
+      baseUnboostableFp: maxUnboostableFp,
+      fpBoostAmount: new BigNumber(0),
+      goods: new BigNumber(0),
+      baseGoods: maxBaseGoods,
+      baseBoostableGoods: maxBoostableGoods,
+      baseUnboostableGoods: maxUnboostableGoods,
+      goodsByEra: {},
+      baseGoodsByEra: maxBaseGoodsByEra,
+      baseBoostableGoodsByEra: maxBaseBoostableGoodsByEra,
+      clanGoods: new BigNumber(0),
+      baseClanGoods: maxBaseClanGoods,
+      baseBoostableClanGoods: maxBoostableClanGoods,
+      baseUnboostableClanGoods: maxUnboostableClanGoods,
+      clanGoodsBoostAmount: new BigNumber(0),
+      units: maxUnits,
+      coins: new BigNumber(0),
+      baseCoins: maxCoins,
+      supplies: new BigNumber(0),
+      baseSupplies: maxSupplies,
+    },
+    current: {
+      fp: new BigNumber(0),
+      baseBoostableFp: currentBoostableFp,
+      baseUnboostableFp: currentUnboostableFp,
+      fpBoostAmount: new BigNumber(0),
+      goods: new BigNumber(0),
+      baseGoods: currentBaseGoods,
+      baseBoostableGoods: currentBoostableGoods,
+      baseUnboostableGoods: currentUnboostableGoods,
+      goodsByEra: {},
+      baseGoodsByEra: currentBaseGoodsByEra,
+      clanGoods: new BigNumber(0),
+      baseClanGoods: currentBaseClanGoods,
+      baseBoostableClanGoods: currentBoostableClanGoods,
+      baseUnboostableClanGoods: currentUnboostableClanGoods,
+      clanGoodsBoostAmount: new BigNumber(0),
+      units: currentUnits,
+      coins: new BigNumber(0),
+      baseCoins: currentCoins,
+      supplies: new BigNumber(0),
+      baseSupplies: currentSupplies,
+    },
     diff,
     unaided,
     unaidedBuildings: unaidedBuildingsList,
@@ -410,6 +301,182 @@ function calculateDailyProductionAid({
     maxGoodsBuildings,
     maxClanGoodsBuildings,
   };
+
+  return recalculateAidStatsBoosts(aidStats, boosts);
+}
+
+function recalculateAidStatsBoosts(aidStats, boosts = {}) {
+  if (!aidStats || !aidStats.max || !aidStats.current) return aidStats;
+
+  const fpBoostPercent = toBigNumber(
+    boosts.fp || boosts.fpProductionBoost || 0,
+  );
+  const goodsBoostPercent = toBigNumber(
+    boosts.goods || boosts.goodsProductionBoost || 0,
+  );
+  const guildGoodsBoostPercent = toBigNumber(
+    boosts.guildGoods || boosts.guildGoodsProductionBoost || 0,
+  );
+  const coinBoostPercent = toBigNumber(boosts.coin || boosts.CoinBoost || 0);
+  const supplyBoostPercent = toBigNumber(
+    boosts.supply || boosts.SupplyBoost || 0,
+  );
+
+  // FP
+  const maxFpBoostAmount =
+    fpBoostPercent.gt(0) && aidStats.max.baseBoostableFp ?
+      aidStats.max.baseBoostableFp
+        .multipliedBy(fpBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+    : new BigNumber(0);
+  aidStats.max.fpBoostAmount = maxFpBoostAmount;
+  aidStats.max.fp = (aidStats.max.baseUnboostableFp || new BigNumber(0))
+    .plus(aidStats.max.baseBoostableFp || new BigNumber(0))
+    .plus(maxFpBoostAmount);
+
+  const curFpBoostAmount =
+    fpBoostPercent.gt(0) && aidStats.current.baseBoostableFp ?
+      aidStats.current.baseBoostableFp
+        .multipliedBy(fpBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+    : new BigNumber(0);
+  aidStats.current.fpBoostAmount = curFpBoostAmount;
+  aidStats.current.fp = (aidStats.current.baseUnboostableFp || new BigNumber(0))
+    .plus(aidStats.current.baseBoostableFp || new BigNumber(0))
+    .plus(curFpBoostAmount);
+
+  // Goods
+  const maxBoostedGoodsAmount =
+    goodsBoostPercent.gt(0) && aidStats.max.baseBoostableGoods ?
+      aidStats.max.baseBoostableGoods
+        .multipliedBy(goodsBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+    : new BigNumber(0);
+  aidStats.max.goods = (aidStats.max.baseUnboostableGoods || new BigNumber(0))
+    .plus(aidStats.max.baseBoostableGoods || new BigNumber(0))
+    .plus(maxBoostedGoodsAmount);
+
+  const curBoostedGoodsAmount =
+    goodsBoostPercent.gt(0) && aidStats.current.baseBoostableGoods ?
+      aidStats.current.baseBoostableGoods
+        .multipliedBy(goodsBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+    : new BigNumber(0);
+  aidStats.current.goods = (
+    aidStats.current.baseUnboostableGoods || new BigNumber(0)
+  )
+    .plus(aidStats.current.baseBoostableGoods || new BigNumber(0))
+    .plus(curBoostedGoodsAmount);
+
+  if (aidStats.max.baseGoodsByEra) {
+    aidStats.max.goodsByEra = {};
+    for (const [eraKey, baseAmt] of Object.entries(
+      aidStats.max.baseGoodsByEra,
+    )) {
+      const boostablePart =
+        aidStats.max.baseBoostableGoodsByEra?.[eraKey] || new BigNumber(0);
+      const unboostablePart = baseAmt.minus(boostablePart);
+      const boostAmt =
+        goodsBoostPercent.gt(0) ?
+          boostablePart
+            .multipliedBy(goodsBoostPercent)
+            .dividedBy(100)
+            .integerValue(BigNumber.ROUND_HALF_UP)
+        : new BigNumber(0);
+      aidStats.max.goodsByEra[eraKey] = unboostablePart
+        .plus(boostablePart)
+        .plus(boostAmt);
+    }
+  }
+
+  if (aidStats.current.baseGoodsByEra) {
+    aidStats.current.goodsByEra = {};
+    for (const [eraKey, baseAmt] of Object.entries(
+      aidStats.current.baseGoodsByEra,
+    )) {
+      aidStats.current.goodsByEra[eraKey] = applyBoost(
+        baseAmt,
+        goodsBoostPercent,
+      );
+    }
+  }
+
+  // Clan Goods
+  const maxClanGoodsBoostAmount =
+    guildGoodsBoostPercent.gt(0) && aidStats.max.baseBoostableClanGoods ?
+      aidStats.max.baseBoostableClanGoods
+        .dividedBy(5)
+        .multipliedBy(guildGoodsBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+        .multipliedBy(5)
+    : new BigNumber(0);
+  aidStats.max.clanGoodsBoostAmount = maxClanGoodsBoostAmount;
+  aidStats.max.clanGoods = (
+    aidStats.max.baseUnboostableClanGoods || new BigNumber(0)
+  )
+    .plus(aidStats.max.baseBoostableClanGoods || new BigNumber(0))
+    .plus(maxClanGoodsBoostAmount);
+
+  const curClanGoodsBoostAmount =
+    guildGoodsBoostPercent.gt(0) && aidStats.current.baseBoostableClanGoods ?
+      aidStats.current.baseBoostableClanGoods
+        .dividedBy(5)
+        .multipliedBy(guildGoodsBoostPercent)
+        .dividedBy(100)
+        .integerValue(BigNumber.ROUND_HALF_UP)
+        .multipliedBy(5)
+    : new BigNumber(0);
+  aidStats.current.clanGoodsBoostAmount = curClanGoodsBoostAmount;
+  aidStats.current.clanGoods = (
+    aidStats.current.baseUnboostableClanGoods || new BigNumber(0)
+  )
+    .plus(aidStats.current.baseBoostableClanGoods || new BigNumber(0))
+    .plus(curClanGoodsBoostAmount);
+
+  // Coins & Supplies
+  if (aidStats.max.baseCoins) {
+    aidStats.max.coins = applyBoost(
+      aidStats.max.baseCoins,
+      coinBoostPercent,
+      true,
+    );
+  }
+  if (aidStats.current.baseCoins) {
+    aidStats.current.coins = applyBoost(
+      aidStats.current.baseCoins,
+      coinBoostPercent,
+      true,
+    );
+  }
+  if (aidStats.max.baseSupplies) {
+    aidStats.max.supplies = applyBoost(
+      aidStats.max.baseSupplies,
+      supplyBoostPercent,
+      true,
+    );
+  }
+  if (aidStats.current.baseSupplies) {
+    aidStats.current.supplies = applyBoost(
+      aidStats.current.baseSupplies,
+      supplyBoostPercent,
+      true,
+    );
+  }
+
+  // Diffs
+  if (!aidStats.diff) aidStats.diff = {};
+  for (const k of ['fp', 'goods', 'clanGoods', 'units', 'coins', 'supplies']) {
+    if (aidStats.max[k] && aidStats.current[k]) {
+      aidStats.diff[k] = aidStats.max[k].minus(aidStats.current[k]);
+    }
+  }
+
+  return aidStats;
 }
 
 function recordUnaided(map, name, diffBn) {
@@ -442,5 +509,6 @@ module.exports = {
   isEntityAided,
   extractEntityProductionData,
   calculateDailyProductionAid,
+  recalculateAidStatsBoosts,
 };
 module.exports.default = module.exports;

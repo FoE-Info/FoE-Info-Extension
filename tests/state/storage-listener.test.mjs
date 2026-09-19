@@ -306,6 +306,69 @@ test('handleReceiveStorage populates lookup caches and collapse options', () => 
   assert.strictEqual(playerNames['101'], 'PlayerOne');
 });
 
+test('handleReceiveStorage re-processes lastStartupMsg when pendingStartupMsg is null', () => {
+  const calls = [];
+  const existingLastStartupMsg = {
+    responseData: { city_map: { entities: [{ id: 42 }] } },
+  };
+
+  const deps = {
+    storage: { getCurrentWorld: () => 'en1', updateCache: () => {} },
+    processMetadataData: (data) => calls.push(['processMetadataData', data]),
+    setMetadataLoaded: (val) => calls.push(['setMetadataLoaded', val]),
+    getPendingStartupMsg: () => null,
+    getLastStartupMsg: () => existingLastStartupMsg,
+    setLastStartupMsg: (val) => calls.push(['setLastStartupMsg', val]),
+    startupService: (msg) => calls.push(['startupService', msg]),
+    resolveMissingCityEntitiesFromMap: (entities) =>
+      calls.push(['resolveMissingCityEntitiesFromMap', entities]),
+    renderLiveCityStats: () => calls.push(['renderLiveCityStats']),
+  };
+
+  const result = {
+    CityEntityDefs: { b_blacksmith: { name: 'Blacksmith' } },
+  };
+
+  handleReceiveStorage(result, deps);
+
+  assert.deepStrictEqual(calls, [
+    ['processMetadataData', { b_blacksmith: { name: 'Blacksmith' } }],
+    ['setMetadataLoaded', true],
+    ['resolveMissingCityEntitiesFromMap', [{ id: 42 }]],
+    ['setLastStartupMsg', existingLastStartupMsg],
+    ['startupService', existingLastStartupMsg],
+    ['renderLiveCityStats'],
+  ]);
+});
+
+test('handleStorageChange processes CityEntityDefs and re-runs startupService', () => {
+  const calls = [];
+  const existingLastStartupMsg = {
+    responseData: { city_map: { entities: [{ id: 99 }] } },
+  };
+
+  const deps = {
+    processMetadataData: (data) => calls.push(['processMetadataData', data]),
+    setMetadataLoaded: (val) => calls.push(['setMetadataLoaded', val]),
+    getLastStartupMsg: () => existingLastStartupMsg,
+    startupService: (msg) => calls.push(['startupService', msg]),
+  };
+
+  const changes = {
+    CityEntityDefs: {
+      newValue: { b_alchemist: { name: 'Alchemist' } },
+    },
+  };
+
+  handleStorageChange(changes, 'local', deps);
+
+  assert.deepStrictEqual(calls, [
+    ['processMetadataData', { b_alchemist: { name: 'Alchemist' } }],
+    ['setMetadataLoaded', true],
+    ['startupService', existingLastStartupMsg],
+  ]);
+});
+
 test('handleStorageChange and handleReceiveStorage handle invalid inputs without throwing', () => {
   assert.doesNotThrow(() => handleStorageChange(null, 'local'));
   assert.doesNotThrow(() => handleStorageChange(undefined, 'local'));
