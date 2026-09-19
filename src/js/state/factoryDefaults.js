@@ -81,6 +81,7 @@ const FACTORY_WORLD_SETTINGS = Object.freeze({
 
 const FACTORY_GLOBAL_SETTINGS = Object.freeze({
   language: 'game',
+  theme: 'auto',
   knownWorlds: Object.freeze([]),
   lastActiveWorld: null,
   timeFormatting: Object.freeze({
