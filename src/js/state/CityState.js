@@ -41,6 +41,8 @@ function createFreshCityState() {
 
     SoH: 0,
     tGE: 0,
+    AOCriticalStrike: 0,
+    CCCriticalStrike: 0,
   };
 }
 

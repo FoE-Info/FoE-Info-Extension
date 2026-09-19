@@ -113,6 +113,7 @@ export function getLeaderboard(msg) {
 export function getState(msg) {
   // console.debug('getState:', msg);
   if (msg?.responseData?.stateId == 'subscribed') {
+    guildBattlegroundState?.setTargetMessageActive?.(false);
     console.debug('msg:', msg);
     storage.remove(GameOrigin + 'BGtime');
     storage.remove(GameOrigin);
@@ -156,6 +157,7 @@ export function getState(msg) {
 }
 
 export function getBattleground(msg) {
+  guildBattlegroundState?.setTargetMessageActive?.(false);
   mapName = msg?.responseData?.map?.id?.split('_')?.[0] || 'default';
   console.debug(mapName, msg);
   if (mapName == 'volcano') ProvinceDefs = VolcanoProvinceDefs;
@@ -330,6 +332,7 @@ export function removeSignal(msg, payload, context) {
 }
 
 export function clearBattleground() {
+  guildBattlegroundState?.setTargetMessageActive?.(false);
   BattlegroundPerformance.length = 0;
   GuildMembers.length = 0;
   map = {};
