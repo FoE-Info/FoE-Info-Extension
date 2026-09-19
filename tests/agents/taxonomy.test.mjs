@@ -42,7 +42,7 @@ test('Taxonomy - canonical catalogs are generated and exact', () => {
   const skillNames = names(path.join(AGENTS, 'skills'));
   const agentNames = names(path.join(AGENTS, 'agents'), '.md');
 
-  assert.equal(skillNames.length, 16);
+  assert.equal(skillNames.length, 12);
   assert.equal(agentNames.length, 14);
   assert.deepEqual(
     catalogNames(path.join(ROOT, 'docs', 'SKILLS.md')),
@@ -87,6 +87,10 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
     'complexity-cuts',
     'supply-chain-risk-auditor',
     'unslop-commit',
+    'migrate-jquery-to-native',
+    'codebase-audit-pre-push',
+    'frontend-security-coder',
+    'changelog-automation',
   ]) {
     assert.ok(
       !fs.existsSync(path.join(AGENTS, 'skills', obsoleteSkill)),
@@ -103,7 +107,9 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
     ),
   );
   assert.ok(
-    fs.existsSync(path.join(AGENTS, 'references', 'harness-adapters.md')),
+    fs.existsSync(
+      path.join(AGENTS, 'references', 'antigravity-environment.md'),
+    ),
   );
 });
 
@@ -196,7 +202,7 @@ test('Taxonomy - imported reference libraries have explicit catalogs', () => {
   }
 });
 
-test('Taxonomy - harness files are workstation neutral', () => {
+test('Taxonomy - agent and configuration files are workstation neutral', () => {
   const roots = [path.join(ROOT, '.agents'), path.join(ROOT, '.husky')];
   const offenders = [];
   const visit = (target) => {
@@ -236,17 +242,4 @@ test('Taxonomy - playbooks match this repository and skill entrypoints stay lean
     assert.doesNotMatch(content, pattern);
     assert.ok(content.split(/\r?\n/).length <= 200);
   }
-
-  const changelogPlaybook = fs.readFileSync(
-    path.join(
-      AGENTS,
-      'skills',
-      'changelog-automation',
-      'references',
-      'implementation-playbook.md',
-    ),
-    'utf8',
-  );
-  assert.ok(changelogPlaybook.split(/\r?\n/).length <= 200);
-  assert.match(changelogPlaybook, /package\.json|CHANGELOG\.md/);
 });

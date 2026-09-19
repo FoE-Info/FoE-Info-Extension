@@ -6,7 +6,7 @@
 (derived from the 4-stream suite in
 [`2026-09-12-quad-graph-exploration-and-comparison.md`](2026-09-12-quad-graph-exploration-and-comparison.md))
 
-> Standing constraint (`docs/COORDINATION.md`): no commit/push without explicit user
+> Standing constraint (`AGENTS.md`): no commit/push without explicit user
 > approval; investigate-and-report before fixing; one verified change at a time.
 > All slices ≤ 100 lines, files ≤ 600 L, BigNumber hybrid preserved, dynamic runtime
 > metadata preserved, failing-first tests added, and `npm run verify` green before
