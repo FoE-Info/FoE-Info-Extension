@@ -47,16 +47,20 @@ test('Canonical skills satisfy frontmatter rules', () => {
   }
 });
 
-test('Shared adapter exists and is linked by documentation', () => {
-  const adapter = path.join(AGENTS_DIR, 'references', 'harness-adapters.md');
+test('Environment reference exists and is linked by documentation', () => {
+  const adapter = path.join(
+    AGENTS_DIR,
+    'references',
+    'antigravity-environment.md',
+  );
   assert.ok(
     fs.existsSync(adapter),
-    'Missing .agents/references/harness-adapters.md',
+    'Missing .agents/references/antigravity-environment.md',
   );
 
   const handoff = fs.readFileSync(path.resolve('docs/HANDOFF.md'), 'utf8');
   assert.ok(
-    handoff.includes('.agents/references/harness-adapters.md'),
-    'docs/HANDOFF.md does not link the shared harness adapter',
+    handoff.includes('.agents/references/antigravity-environment.md'),
+    'docs/HANDOFF.md does not link the Antigravity environment reference',
   );
 });

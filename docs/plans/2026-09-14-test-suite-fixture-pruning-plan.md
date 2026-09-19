@@ -5,7 +5,7 @@
 **Branch**: `test-fixture-pruning` (worktree: `.worktrees/test-fixture-pruning`)
 **Source**: `docs/STATUS.md` Test Suite Footprint Optimization (Phase 3)
 
-> Standing constraint (`docs/COORDINATION.md`): no commit/push without explicit user
+> Standing constraint (`AGENTS.md`): no commit/push without explicit user
 > approval; investigate-and-report before fixing; one verified change at a time.
 > All slices ≤ 100 lines, files ≤ 600 L, BigNumber hybrid preserved, dynamic runtime
 > metadata preserved, failing-first tests added where applicable, and `npm run verify`

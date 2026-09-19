@@ -40,8 +40,8 @@ On-demand knowledge shared by canonical subagents and project skills. Keep deleg
 - [UI design-system architect](agents/ui-design-system-architect-examples.md)
 - [Webpack expert](agents/webpack-expert-examples.md)
 
-## Shared Harness References
+## Environment & Routing References
 
 - [Browser test environment](browser-test-environment.md)
-- [Harness adapters](harness-adapters.md)
+- [Antigravity environment](antigravity-environment.md)
 - [Subagent routing](subagent-routing.md)

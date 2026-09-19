@@ -1,4 +1,4 @@
-# Antigravity Harness & Environment Reference
+# Antigravity Environment Reference
 
 Operational reference for Antigravity-native execution across tools, subagent dispatch, workspace isolation, lifecycle hooks, and artifact management.
 

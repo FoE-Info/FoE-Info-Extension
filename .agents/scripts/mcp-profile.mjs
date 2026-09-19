@@ -218,9 +218,6 @@ function expandEnvironment(value) {
       if (resolved === undefined) fail(`Environment variable "${name}" is required`);
       return resolved;
     });
-    if (/\{env:[A-Z_][A-Z0-9_]*:-[^}]+\}/.test(result)) {
-      fail(`Unsupported OpenCode placeholder syntax in "${result}"`);
-    }
     return result;
   }
   if (Array.isArray(value)) return value.map(expandEnvironment);

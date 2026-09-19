@@ -19,4 +19,4 @@ Dispatch a subagent only for an independently bounded investigation, implementat
 | Bootstrap/SCSS design systems and responsive DevTools layouts | `ui-design-system-architect` |
 | Locale dictionaries, translation bindings, or i18n parity | `localization-expert` |
 
-Profiles live under `.agents/references/agents/`. Host-specific dispatch syntax lives in [Harness Adapters](harness-adapters.md).
+Profiles live under `.agents/references/agents/`. Antigravity dispatch syntax lives in [Environment Reference](antigravity-environment.md).
