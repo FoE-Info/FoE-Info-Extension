@@ -177,7 +177,15 @@ function showPopoverForTrigger(triggerEl) {
     if (!content && title) {
       // Compact tooltip variant
       popoverEl.className = 'popover-compact';
-      popoverEl.textContent = title;
+      const isHtml =
+        triggerEl.getAttribute('data-bs-html') === 'true' ||
+        triggerEl.getAttribute('data-html') === 'true' ||
+        /<[a-z][\s\S]*>/i.test(title);
+      if (isHtml) {
+        popoverEl.innerHTML = title;
+      } else {
+        popoverEl.textContent = title;
+      }
     } else {
       // Rich popover variant
       popoverEl.className = '';
@@ -299,6 +307,13 @@ function initPopovers(container) {
         }
         el.setAttribute('aria-haspopup', 'dialog');
         el.setAttribute('aria-expanded', 'false');
+
+        // Immediately strip title to prevent native browser tooltip collision
+        if (typeof el.hasAttribute === 'function' && el.hasAttribute('title')) {
+          const rawTitle = el.getAttribute('title');
+          if (rawTitle) el.setAttribute('data-foe-title', rawTitle);
+          el.removeAttribute('title');
+        }
       }
 
       el.addEventListener('mouseenter', () => showPopoverForTrigger(el));
