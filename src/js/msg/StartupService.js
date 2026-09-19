@@ -1,5 +1,6 @@
 /** Startup data RPC service orchestrating initial city and player ingestion. */
 import { processCityMapEntities } from '../calc/CityMapEntityProcessor.js';
+import { SPECIAL_GOODS } from '../calc/goods/goodsClassification.js';
 import {
   buildClanGoodsData as buildClanGoodsDataImpl,
   fGoodsHTML,
@@ -54,18 +55,7 @@ import {
 
 const logger = createLogger('StartupService');
 
-export const SPECIAL_GOODS = new Set([
-  'promethium',
-  'orichalcum',
-  'mars_ore',
-  'asteroid_ice',
-  'venus_carbon',
-  'unknown_dna',
-  'crystallized_hydrocarbons',
-  'dark_matter',
-  'stellar_void_shard',
-  'stel_void_shard',
-]);
+export { SPECIAL_GOODS };
 
 export { City } from '../state/CityState.js';
 
