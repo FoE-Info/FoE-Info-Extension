@@ -40,7 +40,7 @@ try {
   extractRateFromTitle = rp.extractRateFromTitle;
 } catch {}
 let targets = null;
-let targetsTopic = '🎯🎯 Battleground TARGETS 🎯🎯';
+let targetsTopic = 'Targets';
 if (typeof __webpack_require__ !== 'undefined') {
   try {
     const state = require('../vars/state.js');
@@ -57,20 +57,19 @@ function getTargetsTopic() {
   if (typeof __webpack_require__ !== 'undefined') {
     try {
       const state = require('../vars/state.js');
-      if (state?.targetsTopic) return state.targetsTopic;
+      if (state?.targetsTopic && state.targetsTopic.trim()) {
+        return state.targetsTopic.trim();
+      }
     } catch {}
   }
-  return targetsTopic || 'targets';
+  return (targetsTopic && targetsTopic.trim()) || 'Targets';
 }
 
 function isTargetsTopic(title) {
   if (!title || typeof title !== 'string') return false;
   const activeTopic = getTargetsTopic();
-  const lower = title.toLowerCase();
-  if (activeTopic && lower.includes(activeTopic.toLowerCase())) {
-    return true;
-  }
-  return lower.includes('targets') || title.includes('🎯');
+  if (!activeTopic) return false;
+  return title.toLowerCase().includes(activeTopic.toLowerCase());
 }
 let setCurrentPercent = () => {};
 try {
@@ -208,6 +207,20 @@ function renderTargetMessage(message) {
   }
 }
 
+function getLatestMessage(msgs) {
+  if (!Array.isArray(msgs) || msgs.length === 0) return null;
+  let latest = msgs[0];
+  let maxId = Number(latest?.id) || 0;
+  for (let i = 1; i < msgs.length; i++) {
+    const currentId = Number(msgs[i]?.id) || 0;
+    if (currentId > maxId) {
+      maxId = currentId;
+      latest = msgs[i];
+    }
+  }
+  return latest;
+}
+
 function conversationService(msg) {
   let messages = [];
   if (Array.isArray(msg?.responseData?.category?.teasers)) {
@@ -224,12 +237,23 @@ function conversationService(msg) {
     messages = msg.responseData;
   }
 
+  let bestTargetMessage = null;
+  let maxMsgId = -1;
+
   messages.forEach(function (message) {
     if (isTargetsTopic(message?.title)) {
-      if (message.id) lastTargetsConversationId = message.id;
-      renderTargetMessage(message);
+      const msgId = Number(message?.lastMessage?.id || message?.id) || 0;
+      if (msgId >= maxMsgId) {
+        maxMsgId = msgId;
+        bestTargetMessage = message;
+      }
     }
   });
+
+  if (bestTargetMessage) {
+    if (bestTargetMessage.id) lastTargetsConversationId = bestTargetMessage.id;
+    renderTargetMessage(bestTargetMessage);
+  }
 
   setCurrentPercent(0); // reset to custom %
 }
@@ -244,7 +268,7 @@ function getConversation(msg) {
   if (isTargetsTopic(resp.title)) {
     if (resp.id) lastTargetsConversationId = resp.id;
     const msgs = Array.isArray(resp.messages) ? resp.messages : [];
-    const latestMsg = msgs.length > 0 ? msgs[msgs.length - 1] : null;
+    const latestMsg = getLatestMessage(msgs);
     if (latestMsg) {
       renderTargetMessage({
         title: resp.title,
@@ -288,6 +312,7 @@ module.exports = {
   conversationService,
   getConversation,
   getNewMessage,
+  getLatestMessage,
   renderTargetMessage,
   extractRateFromTitle,
   setTargetsTopic,

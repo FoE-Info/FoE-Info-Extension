@@ -4,6 +4,7 @@ import {
   conversationService,
   extractRateFromTitle,
   getConversation,
+  getLatestMessage,
   getNewMessage,
   isTargetsTopic,
   setTargetsTopic,
@@ -76,7 +77,7 @@ describe('ConversationService Suite', () => {
     assert.ok(container.innerHTML.includes('Commander'));
   });
 
-  it('detects target thread from getConversation when user opens thread', () => {
+  it('detects target thread from getConversation and selects newest message', () => {
     const msg = {
       requestClass: 'ConversationService',
       requestMethod: 'getConversation',
@@ -85,9 +86,16 @@ describe('ConversationService Suite', () => {
         title: '🎯🎯 Battleground TARGETS 🎯🎯',
         messages: [
           {
-            text: 'D2A ATTACK (0%) @ NOW',
+            id: 80756048,
+            text: 'D2A ATTACK (0%) @ NOW (NEWEST)',
             sender: { name: 'General' },
             date: '09:15:00',
+          },
+          {
+            id: 80755000,
+            text: 'D4B HOLD @ OLD TIME (OLDEST)',
+            sender: { name: 'OldPoster' },
+            date: '08:00:00',
           },
         ],
       },
@@ -98,8 +106,25 @@ describe('ConversationService Suite', () => {
     const container = global.document.getElementById('targetsGBG');
     assert.ok(container);
     assert.ok(container.innerHTML.includes('GBG Targets'));
-    assert.ok(container.innerHTML.includes('D2A ATTACK'));
+    assert.ok(container.innerHTML.includes('D2A ATTACK (0%) @ NOW (NEWEST)'));
     assert.ok(container.innerHTML.includes('General'));
+    assert.ok(!container.innerHTML.includes('D4B HOLD'));
+  });
+
+  it('getLatestMessage selects the newest message by highest id / index 0', () => {
+    const msgsDescending = [
+      { id: 80756048, text: 'Latest directive', date: 'today at 1:27 am' },
+      { id: 80756030, text: 'Middle directive', date: 'today at 1:22 am' },
+      { id: 80755233, text: 'Oldest directive', date: 'yesterday at 10:50 pm' },
+    ];
+    assert.equal(getLatestMessage(msgsDescending).id, 80756048);
+    assert.equal(getLatestMessage(msgsDescending).text, 'Latest directive');
+
+    const msgsAscending = [
+      { id: 80755233, text: 'Oldest directive' },
+      { id: 80756048, text: 'Latest directive' },
+    ];
+    assert.equal(getLatestMessage(msgsAscending).id, 80756048);
   });
 
   it('updates target thread in real-time via getNewMessage WebSocket event', () => {
@@ -175,9 +200,9 @@ describe('ConversationService Suite', () => {
       true,
     );
     assert.equal(isTargetsTopic('Random Chat'), false);
-    // Fallbacks still work
-    assert.equal(isTargetsTopic('Battleground Targets'), true);
-    assert.equal(isTargetsTopic('🎯 Guild Orders'), true);
+    // Strict matching rejects non-matching topics even if they have targets or emoji
+    assert.equal(isTargetsTopic('Battleground Targets'), false);
+    assert.equal(isTargetsTopic('🎯 Guild Orders'), false);
 
     const msgCustom = {
       requestClass: 'ConversationService',
@@ -210,7 +235,73 @@ describe('ConversationService Suite', () => {
     assert.ok(container.innerHTML.includes('Tactician'));
 
     // Reset back
-    setTargetsTopic('targets');
+    setTargetsTopic('Targets');
+  });
+
+  it('strictly excludes non-target threads even if they contain 🎯 emoji', () => {
+    setTargetsTopic('Targets');
+
+    assert.equal(isTargetsTopic('🎯💬 Battleground CHAT 💬🎯'), false);
+    assert.equal(isTargetsTopic('🎯 Guild Announcements 🎯'), false);
+    assert.equal(isTargetsTopic('🎯 General Chat 🎯'), false);
+    assert.equal(isTargetsTopic('Battleground Targets'), true);
+    assert.equal(isTargetsTopic('🎯🎯 Battleground TARGETS 🎯🎯'), true);
+  });
+
+  it('resolves the teaser with the newest message ID when multiple threads match', () => {
+    setTargetsTopic('Targets');
+    const msg = {
+      requestClass: 'ConversationService',
+      requestMethod: 'getOverview',
+      responseData: {
+        categories: [
+          {
+            id: 'guild',
+            teasers: [
+              {
+                id: 'conv_old_targets',
+                title: 'Battleground Targets (Archived)',
+                lastMessage: {
+                  id: 80100000,
+                  text: 'OLD TARGET: D1A',
+                  sender: { name: 'OldGeneral' },
+                  date: 'last month',
+                },
+              },
+              {
+                id: 'conv_chat',
+                title: '🎯 Battleground Chat 🎯',
+                lastMessage: {
+                  id: 80900000,
+                  text: 'Hello chat!',
+                  sender: { name: 'Chatter' },
+                  date: 'just now',
+                },
+              },
+              {
+                id: 'conv_active_targets',
+                title: '🎯🎯 Battleground TARGETS 🎯🎯',
+                lastMessage: {
+                  id: 80800000,
+                  text: 'ACTIVE TARGET: B4B RUSH',
+                  sender: { name: 'ActiveLeader' },
+                  date: 'today',
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    conversationService(msg);
+
+    const container = global.document.getElementById('targetsGBG');
+    assert.ok(container);
+    assert.ok(container.innerHTML.includes('ACTIVE TARGET: B4B RUSH'));
+    assert.ok(container.innerHTML.includes('ActiveLeader'));
+    assert.ok(!container.innerHTML.includes('Hello chat!'));
+    assert.ok(!container.innerHTML.includes('OLD TARGET: D1A'));
   });
 
   it('formats numeric Unix epoch timestamps into human-readable times', () => {

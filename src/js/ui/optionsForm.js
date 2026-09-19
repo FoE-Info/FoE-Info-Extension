@@ -78,7 +78,7 @@ function readWorldSettingsFromForm() {
   const donation = {
     percent: donationPercent,
     suffix: document.getElementById('donationSuffix')?.value ?? '',
-    targets: document.getElementById('targets')?.value ?? '',
+    targets: document.getElementById('targets')?.value?.trim() || 'Targets',
     targetText: document.getElementById('targetText')?.value ?? '',
   };
 
@@ -173,8 +173,8 @@ function populateForm(worldSettings = {}, globalSettings = {}) {
   }
 
   const targetsEl = document.getElementById('targets');
-  if (targetsEl && donation.targets !== undefined) {
-    targetsEl.value = donation.targets;
+  if (targetsEl) {
+    targetsEl.value = donation.targets?.trim() ? donation.targets : 'Targets';
   }
 
   const targetTextEl = document.getElementById('targetText');
