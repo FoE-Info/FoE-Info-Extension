@@ -88,6 +88,13 @@ test('optionsForm - readWorldSettingsFromForm and readGlobalSettingsFromForm', (
   elements['minSize'].value = '';
   assert.strictEqual(readWorldSettingsFromForm().toolOptions.minSize, 50);
 
+  // When targets is empty or whitespace, defaults to 'Targets'
+  elements['targets'].value = '';
+  assert.strictEqual(readWorldSettingsFromForm().donation.targets, 'Targets');
+  elements['targets'].value = '   ';
+  assert.strictEqual(readWorldSettingsFromForm().donation.targets, 'Targets');
+  elements['targets'].value = 'targets_list';
+
   const globalSettings = readGlobalSettingsFromForm();
   assert.strictEqual(globalSettings.language, 'de');
   assert.strictEqual(
@@ -158,4 +165,12 @@ test('optionsForm - populateForm binds settings to DOM', () => {
   assert.strictEqual(elements['minSize'].value, 50);
   populateForm({ toolOptions: {} }, {});
   assert.strictEqual(elements['minSize'].value, 50);
+
+  // Test fallback to Targets when donation.targets is empty, whitespace, or undefined
+  populateForm({ donation: { targets: '' } }, {});
+  assert.strictEqual(elements['targets'].value, 'Targets');
+  populateForm({ donation: { targets: '   ' } }, {});
+  assert.strictEqual(elements['targets'].value, 'Targets');
+  populateForm({ donation: {} }, {});
+  assert.strictEqual(elements['targets'].value, 'Targets');
 });
