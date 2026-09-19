@@ -2,7 +2,6 @@
 name: i18n-audit
 description: 'Audit and synchronize 7-language translation dictionaries.'
 ---
-
 # i18n Translation Key Parity Audit
 
 This skill guides the agent in maintaining 100% translation dictionary key parity across all supported language files in `src/i18n/`.

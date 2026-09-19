@@ -2,7 +2,6 @@
 name: debate-review
 description: 'Two-model adversarial debate on plans, PRs, and designs.'
 ---
-
 # Debate Review & Adversarial Stress-Testing
 
 This skill runs an adversarial debate loop using [`adversarial-debater`](../../agents/adversarial-debater.md) to challenge decisions, stress-test implementation plans, refute false positives in code reviews, and expose blind spots before code merges.

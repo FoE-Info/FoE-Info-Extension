@@ -2,7 +2,6 @@
 name: agents-md
 description: 'Create, revise, or audit AGENTS.md from repo evidence and commands.'
 ---
-
 # Maintain AGENTS.md from repository evidence
 
 ## Overview

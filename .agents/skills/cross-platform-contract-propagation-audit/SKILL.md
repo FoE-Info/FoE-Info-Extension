@@ -2,7 +2,6 @@
 name: cross-platform-contract-propagation-audit
 description: 'Audit contract and enum propagation across layers.'
 ---
-
 # Cross-Platform Contract Propagation Audit
 
 ## Overview
@@ -154,7 +153,7 @@ older-client and explicit-null compatibility remain unverified.
 
 ## Modern Web Guidance (Project Overlay)
 
-Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Apply the FoE-Info modern web conventions: [project conventions](../../rules/modern-web-conventions.md).
 Primary reference categories: `js/`, `accessibility/`.
 Uphold:
 

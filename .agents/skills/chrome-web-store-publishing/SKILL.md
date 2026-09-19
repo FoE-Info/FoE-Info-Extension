@@ -1,8 +1,7 @@
 ---
 name: chrome-web-store-publishing
-description: Prepare and validate Chrome Web Store submissions.
+description: 'Prepare and validate Chrome Web Store submissions.'
 ---
-
 # Chrome Web Store Publishing
 
 Prepare store metadata, privacy disclosures, permission justifications, and review-ready artifacts for an existing Chrome extension. This skill does not authorize upload, publication, or account actions.

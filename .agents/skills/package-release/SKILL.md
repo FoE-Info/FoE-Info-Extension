@@ -2,7 +2,6 @@
 name: package-release
 description: 'Manifest version sync and production WebStore zip packaging.'
 ---
-
 # Workflow: Package WebStore Release
 
 Follow this skill to validate code quality and produce a production-ready extension package.

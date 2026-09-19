@@ -2,7 +2,6 @@
 name: chrome-devtools-troubleshooting
 description: 'Troubleshoot DevTools MCP port binding and attachment.'
 ---
-
 ## Troubleshooting Wizard
 
 You are acting as a troubleshooting wizard to help the user configure and fix their Chrome DevTools MCP server setup. When this skill is triggered (e.g., because `list_pages`, `new_page`, or `navigate_page` failed, or the server wouldn't start), follow this step-by-step diagnostic process:

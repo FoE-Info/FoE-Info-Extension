@@ -77,7 +77,7 @@ Load [Few-Shot Reasoning Example: Accessible Bootstrap 5.3 Panel Component](../r
 
 ## Modern Web Guidance (Project Overlay)
 
-Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Consult the FoE-Info modern web conventions: [project conventions](../rules/modern-web-conventions.md).
 Primary reference categories: `css/`, `visual-design/`, `ui-behaviors/`, `ui-atoms/`, `html/`.
 Uphold in this domain:
 

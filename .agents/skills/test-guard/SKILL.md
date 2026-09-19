@@ -2,7 +2,6 @@
 name: test-guard
 description: 'Audit test assertions, mocks, and test hygiene.'
 ---
-
 # Test Guard
 
 You are reviewing generated or changed test code before it ships. Enforce the rules below after the first test-writing pass and before the tests are presented, committed, or merged. Be a sharp reviewer, not a pedantic one: flag what wastes maintenance effort or hides real bugs, ignore cosmetic preferences.
@@ -26,9 +25,7 @@ These rules are universal, but their application is not. Before reviewing:
 
 1. Check the project's own agent instructions (AGENTS.md) and testing docs. Project-specific testing rules win over this skill when they conflict.
 2. Identify the test stack, then read the matching reference for concrete patterns:
-   - Python / pytest → [references/pytest.md](references/pytest.md)
-   - PHP / PHPUnit / Pest / WordPress → [references/phpunit.md](references/phpunit.md)
-   - JavaScript / TypeScript / Jest / Vitest → [references/jest.md](references/jest.md)
+   - JavaScript / TypeScript / Jest / Node.js test runner → [references/jest.md](references/jest.md)
 3. If the project calls LLM APIs, uses agent frameworks, or wires up observability/telemetry, also read [references/llm-app-testing.md](references/llm-app-testing.md) — it adds three rules specific to LLM applications.
 4. Map the project's system boundaries: network calls, databases, filesystem, clock and randomness, third-party SDKs, LLM APIs. Existing fixtures and test helpers usually reveal where the project already draws these lines.
 
@@ -119,9 +116,7 @@ Not all violations are equal. Use judgment:
 
 ## References
 
-- [references/pytest.md](references/pytest.md) — Python/pytest patterns: parametrize, fixtures, mock boundaries, real Pydantic instances
-- [references/phpunit.md](references/phpunit.md) — PHP/PHPUnit/Pest patterns, including WordPress and WooCommerce test boundaries
-- [references/jest.md](references/jest.md) — Jest/Vitest patterns: test.each, module mocks, msw, snapshot discipline
+- [references/jest.md](references/jest.md) — Jest/Vitest/Node test patterns: test.each, module mocks, msw, snapshot discipline
 - [references/llm-app-testing.md](references/llm-app-testing.md) — three extra rules for LLM applications: prompt contracts, observability wiring, agent-flow transitions
 
 ## What this skill does NOT do
@@ -135,7 +130,7 @@ Not all violations are equal. Use judgment:
 
 ## Modern Web Guidance (Project Overlay)
 
-Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Apply the FoE-Info modern web conventions: [project conventions](../../rules/modern-web-conventions.md).
 Primary reference categories: `accessibility/`, `performance/`.
 Uphold:
 

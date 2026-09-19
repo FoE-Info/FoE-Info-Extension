@@ -2,7 +2,6 @@
 name: add-feature-panel
 description: 'Scaffold accessible, localized UI panels in panel.html.'
 ---
-
 # Workflow: Add Feature UI Panel
 
 Use this skill when creating a new user-facing panel or collapsible card in the extension UI (e.g., Historical Allies, City Space Optimizer, Combat Boost Matrix).
@@ -81,7 +80,7 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
 
 ## Modern Web Guidance (Project Overlay)
 
-Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Apply the FoE-Info modern web conventions: [project conventions](../../rules/modern-web-conventions.md).
 Primary reference categories: `accessibility/`, `html/`, `ui-behaviors/`, `ui-atoms/`, `css/`.
 Uphold:
 

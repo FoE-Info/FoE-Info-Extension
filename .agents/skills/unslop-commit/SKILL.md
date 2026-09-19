@@ -2,7 +2,6 @@
 name: unslop-commit
 description: 'Write concise Conventional Commits under 72 characters.'
 ---
-
 # Unslop Commit
 
 ## When to Use

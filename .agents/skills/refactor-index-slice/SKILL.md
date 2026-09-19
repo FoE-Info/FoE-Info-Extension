@@ -2,7 +2,6 @@
 name: refactor-index-slice
 description: 'Extract modular domain services from monolithic index.js.'
 ---
-
 # Workflow: Refactor Monolithic Index Slice
 
 This skill outlines the step-by-step procedure to safely decouple logic from the monolithic `src/js/index.js` file into modular service files without breaking runtime state.

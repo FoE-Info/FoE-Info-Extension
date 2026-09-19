@@ -2,10 +2,9 @@
 name: writing-agents
 description: 'Design and verify custom subagents in .agents/agents/.'
 ---
-
 # Writing Subagents
 
-Runbook for creating, configuring, and testing specialized subagents in `.agents/agents/` (or `~/.gemini/config/agents/`). Host-specific tool names, dispatch, and shim formats live in [Harness Adapters](../../references/harness-adapters.md) and [opencode authoring](references/opencode.md).
+Runbook for creating, configuring, and testing specialized subagents in `.agents/agents/` (or `~/.gemini/config/agents/`). Tool names, dispatch, and adapter formats live in [Harness Adapters](../../references/harness-adapters.md).
 
 ---
 

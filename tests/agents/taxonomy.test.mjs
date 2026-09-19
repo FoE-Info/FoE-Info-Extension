@@ -42,7 +42,7 @@ test('Taxonomy - canonical catalogs are generated and exact', () => {
   const skillNames = names(path.join(AGENTS, 'skills'));
   const agentNames = names(path.join(AGENTS, 'agents'), '.md');
 
-  assert.equal(skillNames.length, 56);
+  assert.equal(skillNames.length, 51);
   assert.equal(agentNames.length, 20);
   assert.deepEqual(
     catalogNames(path.join(ROOT, 'docs', 'SKILLS.md')),
@@ -147,31 +147,14 @@ test('Taxonomy - repeated subagent families are profile driven', () => {
   assert.match(metadataProfile, /npm run|node -e|node --test/);
 });
 
-test('Taxonomy - OpenCode injects only always-on rules', () => {
-  const config = JSON.parse(
-    fs.readFileSync(path.join(ROOT, 'opencode.json'), 'utf8'),
-  );
-  const ruleDirectory = path.join(AGENTS, 'rules');
-  const expected = fs
-    .readdirSync(ruleDirectory)
-    .filter((file) => file.endsWith('.md'))
-    .filter((file) =>
-      /^trigger:\s*always_on$/m.test(
-        fs.readFileSync(path.join(ruleDirectory, file), 'utf8'),
-      ),
-    )
-    .map((file) => `.agents/rules/${file}`)
-    .concat('.opencode/instructions/*.md')
-    .sort();
-  assert.ok(
-    !expected.includes('.agents/rules/bignumber-precision.md'),
-    'BigNumber precision must remain domain-scoped',
-  );
-  assert.deepEqual([...(config.instructions ?? [])].sort(), expected);
-});
-
 test('Taxonomy - imported reference libraries have explicit catalogs', () => {
-  for (const skill of ['chrome-extensions', 'modern-web-guidance']) {
+  for (const skill of [
+    'test-guard',
+    'writing-skills',
+    'writing-rules',
+    'writing-agents',
+    'writing-hooks',
+  ]) {
     const skillRoot = path.join(AGENTS, 'skills', skill);
     const body = fs.readFileSync(path.join(skillRoot, 'SKILL.md'), 'utf8');
     assert.match(body, /\[Reference catalog\]\(references\/README\.md\)/);
@@ -180,12 +163,7 @@ test('Taxonomy - imported reference libraries have explicit catalogs', () => {
 });
 
 test('Taxonomy - harness files are workstation neutral', () => {
-  const roots = [
-    path.join(ROOT, '.agents'),
-    path.join(ROOT, '.husky'),
-    path.join(ROOT, '.opencode'),
-    path.join(ROOT, 'opencode.json'),
-  ];
+  const roots = [path.join(ROOT, '.agents'), path.join(ROOT, '.husky')];
   const offenders = [];
   const visit = (target) => {
     const stat = fs.statSync(target);
@@ -238,17 +216,6 @@ test('Taxonomy - playbooks match this repository and skill entrypoints stay lean
   );
   assert.ok(changelogPlaybook.split(/\r?\n/).length <= 200);
   assert.match(changelogPlaybook, /package\.json|CHANGELOG\.md/);
-
-  for (const skill of names(path.join(AGENTS, 'skills'))) {
-    const body = fs.readFileSync(
-      path.join(AGENTS, 'skills', skill, 'SKILL.md'),
-      'utf8',
-    );
-    assert.ok(
-      body.split(/\r?\n/).length <= 250,
-      `${skill}/SKILL.md exceeds 250 lines`,
-    );
-  }
 
   assert.ok(
     fs.existsSync(

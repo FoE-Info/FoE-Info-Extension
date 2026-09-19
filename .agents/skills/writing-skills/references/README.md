@@ -5,7 +5,6 @@ Load only the references required by the current task. The owning `SKILL.md` rem
 | Reference | Purpose |
 | --- | --- |
 | [`graphviz-conventions.dot`](graphviz-conventions.dot) | Graphviz Conventions guidance. |
-| [`opencode.md`](opencode.md) | Opencode guidance. |
 | [`persuasion-principles.md`](persuasion-principles.md) | Persuasion Principles guidance. |
 | [`progressive-disclosure.md`](progressive-disclosure.md) | Progressive Disclosure guidance. |
 | [`skill-specification.md`](skill-specification.md) | Skill Specification guidance. |

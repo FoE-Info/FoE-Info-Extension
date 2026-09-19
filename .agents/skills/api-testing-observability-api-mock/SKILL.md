@@ -2,7 +2,6 @@
 name: api-testing-observability-api-mock
 description: 'Create mock RPC services, simulation contracts, and fixtures.'
 ---
-
 # API Mocking Framework
 
 > [!NOTE]

@@ -2,7 +2,6 @@
 name: changelog-automation
 description: 'Generate release notes from commits and pull requests.'
 ---
-
 # Changelog Automation
 
 Patterns and tools for automating changelog generation, release notes, and version management following industry standards.

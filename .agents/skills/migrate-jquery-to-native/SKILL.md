@@ -2,7 +2,6 @@
 name: migrate-jquery-to-native
 description: 'Replace legacy jQuery with modern Web APIs and fetch.'
 ---
-
 # Migrate jQuery to Native Web APIs
 
 This runbook guides migrating legacy jQuery constructs across the FoE-Info Extension codebase to modern, dependency-free ECMAScript and native Web APIs (`querySelector`, `addEventListener`, `fetch`, CSS/Web Animations).
@@ -72,7 +71,7 @@ FoE-Info is actively transitioning to native DOM and modern Web APIs:
 
 ## Modern Web Guidance (Project Overlay)
 
-Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Apply the FoE-Info modern web conventions: [project conventions](../../rules/modern-web-conventions.md).
 Primary reference categories: `js/`, `ui-behaviors/`, `ui-atoms/`.
 Uphold:
 

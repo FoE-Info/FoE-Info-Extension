@@ -7,4 +7,3 @@ Load only the references required by the current task. The owning `SKILL.md` rem
 | [`hook-events-and-matchers.md`](hook-events-and-matchers.md) | Hook Events And Matchers guidance. |
 | [`hook-safety-recipes.md`](hook-safety-recipes.md) | Hook Safety Recipes guidance. |
 | [`input-output-contracts.md`](input-output-contracts.md) | Input Output Contracts guidance. |
-| [`opencode-plugins.md`](opencode-plugins.md) | Opencode Plugins guidance. |

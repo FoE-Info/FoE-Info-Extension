@@ -2,7 +2,6 @@
 name: audit-memory-leaks
 description: 'Isolate detached DOM nodes and panel memory leaks via CDP.'
 ---
-
 # Workflow: Audit Memory Leaks & Panel Performance
 
 Use this skill to detect, isolate, and eliminate memory leaks, detached DOM nodes, and unbounded object accumulation in the FoE-Info DevTools panel.
@@ -123,7 +122,7 @@ npx memlab analyze snapshot --snapshot /tmp/target.heapsnapshot
 
 ## Modern Web Guidance (Project Overlay)
 
-Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Apply the FoE-Info modern web conventions: [project conventions](../../rules/modern-web-conventions.md).
 Primary reference categories: `performance/`.
 Uphold:
 

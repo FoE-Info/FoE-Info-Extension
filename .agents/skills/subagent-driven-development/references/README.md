@@ -4,7 +4,6 @@ Load only the references required by the current task. The owning `SKILL.md` rem
 
 | Reference | Purpose |
 | --- | --- |
-| [`detailed-guide.md`](detailed-guide.md) | Detailed Guide guidance. |
 | [`implementer-prompt.md`](implementer-prompt.md) | Implementer Prompt guidance. |
 | [`parallel-dispatch.md`](parallel-dispatch.md) | Parallel Dispatch guidance. |
 | [`re-review-prompt.md`](re-review-prompt.md) | Re Review Prompt guidance. |

@@ -2,7 +2,6 @@
 name: project-curator
 description: 'Audit and curate shared skills from grounded usage.'
 ---
-
 # Project Curator
 
 Maintain the Git-tracked `.agents/` library shared by Antigravity, OpenCode,

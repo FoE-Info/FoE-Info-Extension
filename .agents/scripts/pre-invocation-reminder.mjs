@@ -27,7 +27,7 @@ process.stdin.on('end', () => {
   const response = {
     injectSteps: [
       {
-        ephemeralMessage: `${prefixName} Guardrail Reminder: Check task fit against the 20 canonical subagents. If a bounded specialist matches, delegate through the host's subagent tool and include any required target profile. If the task does NOT fit a subagent role, execute directly as main agent. Always consult <skills> and announce active skill ("Using [skill] to [purpose]") before code execution, verify with fresh evidence before completion, query Graphify before wide search, keep slices <= 100 lines and files <= 600 lines, and never bundle static game metadata into runtime source code.`,
+        ephemeralMessage: `${prefixName} Guardrail Reminder: Default to direct execution as main agent; delegate only when an isolated domain specialist (FoE mechanics, Graphify exploration, CDP browser QA) or parallel review is required. Keep slices <= 100 lines and files <= 600 lines, verify with fresh evidence before completion, and never bundle static game metadata into runtime source code.`,
       },
     ],
   };

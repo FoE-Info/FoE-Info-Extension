@@ -2,7 +2,6 @@
 name: browser-testing
 description: 'Test Chromium DevTools panel and CDP sockets on port 9222.'
 ---
-
 # Browser Testing & DevTools Automation Skill
 
 This skill teaches the agent how to test FoE-Info live in Chromium using the isolated `foe-browser` service and Chrome DevTools Protocol (CDP).
@@ -97,7 +96,7 @@ Before claiming any feature or bugfix is complete:
 
 ## Modern Web Guidance (Project Overlay)
 
-Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Apply the FoE-Info modern web conventions: [project conventions](../../rules/modern-web-conventions.md).
 Primary reference categories: `accessibility/`, `performance/`.
 Uphold:
 

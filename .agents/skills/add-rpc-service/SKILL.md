@@ -2,7 +2,6 @@
 name: add-rpc-service
 description: 'Scaffold decoupled JSON-RPC service handlers in src/js/msg/.'
 ---
-
 # Workflow: Add New InnoGames RPC Service
 
 Use this skill when InnoGames releases a new game feature, settlement, or mini-game with a new RPC service class (e.g. `QuantumIncursionService`, `HeroEventService`).
@@ -102,7 +101,7 @@ Audit the new service contract across every pipeline stage using the `cross-plat
 
 ## Modern Web Guidance (Project Overlay)
 
-Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Apply the FoE-Info modern web conventions: [project conventions](../../rules/modern-web-conventions.md).
 Primary reference categories: `js/`, `performance/`.
 Uphold:
 

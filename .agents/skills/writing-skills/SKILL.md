@@ -1,11 +1,10 @@
 ---
 name: writing-skills
-description: 'Author and test skills with progressive disclosure, both harnesses.'
+description: 'Author and test skills with progressive disclosure.'
 ---
-
 # Writing Skills
 
-Guide for authoring, structuring, and verifying high-performance skills using progressive disclosure and reference subdirectories. The body is harness-neutral; host-specific paths, frontmatter limits, and tool mappings live in [Harness Adapters](../../references/harness-adapters.md) and [opencode authoring](references/opencode.md).
+Guide for authoring, structuring, and verifying high-performance skills using progressive disclosure and reference subdirectories. Paths, frontmatter limits, and tool mappings live in [Harness Adapters](../../references/harness-adapters.md).
 
 ---
 

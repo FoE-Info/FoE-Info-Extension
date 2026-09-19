@@ -2,7 +2,6 @@
 name: cookie-debugging
 description: 'Inspect and debug cookies, auth headers, and session state.'
 ---
-
 ## Core Concepts
 
 ### HttpOnly vs Client-Side Storage

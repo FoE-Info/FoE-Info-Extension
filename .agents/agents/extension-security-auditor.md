@@ -79,7 +79,7 @@ Load [Few-Shot Reasoning Example: DOM XSS Prevention](../references/agents/exten
 
 ## Modern Web Guidance (Project Overlay)
 
-Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Consult the FoE-Info modern web conventions: [project conventions](../rules/modern-web-conventions.md).
 Primary reference categories: `security/`, `privacy/`.
 Uphold in this domain:
 

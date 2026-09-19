@@ -2,7 +2,6 @@
 name: graphify
 description: 'Run Graphify AST extraction, labeling, and visual exports.'
 ---
-
 # Graphify Knowledge Graph
 
 This skill runs the local Graphify knowledge graph extraction, community labeling, and export generation pipeline for `FoE-Info-Extension`.

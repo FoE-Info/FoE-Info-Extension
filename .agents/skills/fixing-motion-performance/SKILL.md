@@ -2,7 +2,6 @@
 name: fixing-motion-performance
 description: 'Audit and eliminate animation jank and layout thrashing.'
 ---
-
 # fixing-motion-performance
 
 ## When to Use
@@ -178,7 +177,7 @@ requestAnimationFrame(() => {
 
 ## Modern Web Guidance (Project Overlay)
 
-Apply the `modern-web-guidance` library with the FoE-Info overlay: [modern-web-guidance](../modern-web-guidance/SKILL.md) and [project conventions](../modern-web-guidance/references/project-conventions.md).
+Apply the FoE-Info modern web conventions: [project conventions](../../rules/modern-web-conventions.md).
 Primary reference categories: `ui-behaviors/`, `css/`.
 Uphold:
 

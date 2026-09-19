@@ -1,25 +1,6 @@
 ---
 name: dynamic-workflow
-description: Scaffold for dynamic workflow (fan-outs, adversarial waves). Curator-generated.
-version: 2.0.0
-author: Teknium + Hermes Agent
-license: MIT
-platforms: [linux, macos, windows]
-metadata:
-  hermes:
-    tags: [orchestration, fan-out, subagents, delegation, verification, migration, audit, research, campaign]
-    category: autonomous-ai-agents
-    related_skills: [hermes-agent, simplify-code]
-when_to_use:
-  - A task is too big for one context window AND you can describe the split (per-file, per-endpoint, per-source, per-record)
-  - You want orchestration codified as a re-runnable script plus a shared brief, not improvised turn by turn
-  - Quality matters more than token economy - independent attempts cross-checked and refuted before you trust the answer
-  - Codebase-wide sweeps, 100+ file migrations, multi-round refactor campaigns, multi-angle research
-when_not_to_use:
-  - Small bounded task (under ~10 units) - do it inline or call the tool directly
-  - Tight serial dependency (B needs A's output) - orchestration overhead is wasted
-  - Work that must outlive this process (days, restarts) - use `cronjob` or the kanban swarm instead
-
+description: 'Scaffold for dynamic workflow (fan-outs, adversarial waves).'
 ---
 # Dynamic Workflow Skill (Scaffold)
 

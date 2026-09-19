@@ -2,7 +2,6 @@
 name: ephemeral-llama-swap
 description: 'Local LLM backend: env policy, availability, VRAM eviction.'
 ---
-
 # Local Llama-Swap Backend
 
 How the workspace talks to the local OpenAI-compatible backend (`llama-swap` on

@@ -2,7 +2,6 @@
 name: complexity-cuts
 description: 'Lower algorithmic complexity via verify-revert-stop cycles.'
 ---
-
 # complexity-cuts — Lower Big-O on Existing Code
 
 **complexity-cuts** systematically reduces time or space complexity on existing code: code already exists, it works, but its algorithmic complexity is worse than necessary.

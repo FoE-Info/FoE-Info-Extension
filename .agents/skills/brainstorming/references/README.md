@@ -4,6 +4,5 @@ Load only the references required by the current task. The owning `SKILL.md` rem
 
 | Reference | Purpose |
 | --- | --- |
-| [`detailed-guide.md`](detailed-guide.md) | Detailed brainstorming and approval workflow. |
 | [`spec-document-reviewer-prompt.md`](spec-document-reviewer-prompt.md) | Spec Document Reviewer Prompt guidance. |
 | [`visual-companion.md`](visual-companion.md) | Visual Companion guidance. |

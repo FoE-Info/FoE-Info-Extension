@@ -74,7 +74,7 @@ Load [Few-Shot Reasoning Example: Production Release Pre-Flight Gate](../referen
 
 ## Modern Web Guidance (Project Overlay)
 
-Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Consult the FoE-Info modern web conventions: [project conventions](../rules/modern-web-conventions.md).
 Primary reference categories: `html/`, `performance/`.
 Uphold in this domain:
 

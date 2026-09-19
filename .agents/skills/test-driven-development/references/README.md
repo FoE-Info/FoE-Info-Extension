@@ -4,5 +4,4 @@ Load only the references required by the current task. The owning `SKILL.md` rem
 
 | Reference | Purpose |
 | --- | --- |
-| [`detailed-guide.md`](detailed-guide.md) | Detailed Guide guidance. |
 | [`writing-good-tests.md`](writing-good-tests.md) | Writing Good Tests guidance. |

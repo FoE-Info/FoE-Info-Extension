@@ -207,8 +207,8 @@ for (const name of selectedNames) {
   if (!registry.servers?.[name]) fail(`MCP profile "${profile}" references unknown server "${name}"`);
 }
 for (const [name, config] of Object.entries(registry.servers ?? {})) {
-  if (!config.antigravity || !config.opencode) {
-    fail(`MCP server "${name}" must define antigravity and opencode configs`);
+  if (!config.antigravity) {
+    fail(`MCP server "${name}" must define antigravity config`);
   }
 }
 
@@ -233,40 +233,43 @@ function expandEnvironment(value) {
   return value;
 }
 
-const opencode = readJson(opencodePath);
-const existingOpenCodeServers = opencode.mcp ?? {};
-if (
-  !existingOpenCodeServers ||
-  typeof existingOpenCodeServers !== 'object' ||
-  Array.isArray(existingOpenCodeServers)
-) {
-  fail(`OpenCode mcp configuration must be an object: ${opencodePath}`);
-}
 const antigravityServers = Object.fromEntries(
   selected.map((name) => [
     name,
     expandEnvironment(registry.servers[name].antigravity),
   ]),
 );
-const opencodeServers = Object.fromEntries(
-  Object.entries(registry.servers).map(([name, config]) => [
-    name,
-    { ...config.opencode, enabled: selectedNames.has(name) },
-  ]),
-);
-const registryServerNames = new Set(Object.keys(registry.servers));
-const unmanagedOpenCodeServers = Object.fromEntries(
-  Object.entries(existingOpenCodeServers).filter(([name]) => !registryServerNames.has(name)),
-);
+
+const batchWrites = [[antigravityPath, { mcpServers: antigravityServers }]];
+
+if (inspectTarget(root, opencodePath).exists) {
+  const opencode = readJson(opencodePath);
+  const existingOpenCodeServers = opencode.mcp ?? {};
+  if (
+    !existingOpenCodeServers ||
+    typeof existingOpenCodeServers !== 'object' ||
+    Array.isArray(existingOpenCodeServers)
+  ) {
+    fail(`OpenCode mcp configuration must be an object: ${opencodePath}`);
+  }
+  const opencodeServers = Object.fromEntries(
+    Object.entries(registry.servers).map(([name, config]) => [
+      name,
+      { ...(config.opencode ?? {}), enabled: selectedNames.has(name) },
+    ]),
+  );
+  const registryServerNames = new Set(Object.keys(registry.servers));
+  const unmanagedOpenCodeServers = Object.fromEntries(
+    Object.entries(existingOpenCodeServers).filter(([name]) => !registryServerNames.has(name)),
+  );
+  batchWrites.push([
+    opencodePath,
+    { ...opencode, mcp: { ...unmanagedOpenCodeServers, ...opencodeServers } },
+  ]);
+}
 
 try {
-  await writeJsonBatch(root, [
-    [antigravityPath, { mcpServers: antigravityServers }],
-    [
-      opencodePath,
-      { ...opencode, mcp: { ...unmanagedOpenCodeServers, ...opencodeServers } },
-    ],
-  ]);
+  await writeJsonBatch(root, batchWrites);
 } catch (error) {
   fail(`Cannot update MCP profile: ${error.message}`);
 }

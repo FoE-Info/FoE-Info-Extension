@@ -130,7 +130,7 @@ Load [Few-Shot Reasoning Example: Code Review Gate Evaluation](../references/age
 
 ## Modern Web Guidance (Project Overlay)
 
-Consult the `modern-web-guidance` library before implementing: [modern-web-guidance SKILL.md](../skills/modern-web-guidance/SKILL.md) and its [project conventions](../skills/modern-web-guidance/references/project-conventions.md).
+Consult the FoE-Info modern web conventions: [project conventions](../rules/modern-web-conventions.md).
 Primary reference categories: all (see the routing table in the overlay).
 Uphold in this domain:
 

@@ -2,7 +2,6 @@
 name: service-extractor
 description: 'Extract JSON-RPC handlers from monoliths into src/js/msg/.'
 ---
-
 # Service Extractor Runbook
 
 This skill outlines the step-by-step methodology for extracting an InnoGames RPC service handler out of `src/js/msg/StartupService.js` or `src/js/index.js` into an isolated, testable module in `src/js/msg/`.

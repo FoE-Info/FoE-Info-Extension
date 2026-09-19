@@ -2,7 +2,6 @@
 name: brooks-lint
 description: 'Detect architectural smells and module coupling.'
 ---
-
 # Brooks Lint
 
 ## Overview

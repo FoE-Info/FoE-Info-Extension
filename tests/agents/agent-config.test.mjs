@@ -56,17 +56,6 @@ test('Agent Config - validates subagent definitions', () => {
       `subagent must be true in ${file}`,
     );
   }
-
-  // 1:1 Parity with .opencode/agents/
-  const opencodeDir = path.join(PROJECT_ROOT, '.opencode', 'agents');
-  const opencodeFiles = fs
-    .readdirSync(opencodeDir)
-    .filter((f) => f.endsWith('.md'));
-  assert.deepEqual(
-    opencodeFiles.sort(),
-    agentFiles.sort(),
-    'Expected .opencode/agents filenames to exactly match the canonical roster',
-  );
 });
 
 test('Agent Config - validates skill definitions', () => {
@@ -77,8 +66,8 @@ test('Agent Config - validates skill definitions', () => {
 
   assert.equal(
     skillDirs.length,
-    56,
-    'Expected exactly 56 skills in .agents/skills',
+    51,
+    'Expected exactly 51 skills in .agents/skills',
   );
 
   for (const dir of skillDirs) {
@@ -196,8 +185,8 @@ test('Agent Config - validates rule definitions', () => {
 
   assert.equal(
     ruleFiles.length,
-    17,
-    'Expected exactly 17 rules in .agents/rules',
+    18,
+    'Expected exactly 18 rules in .agents/rules',
   );
 
   for (const file of ruleFiles) {
@@ -346,7 +335,6 @@ test('Agent Config - validates AGENTS.md integrity and internal links', () => {
   );
 
   assert.match(agentsMd, /Config lives in `\.agents\/`/);
-  assert.match(agentsMd, /`\.opencode\/` adapts the canonical library/);
   assert.match(agentsMd, /\[docs\/SKILLS\.md\]\(docs\/SKILLS\.md\)/);
   assert.match(
     agentsMd,

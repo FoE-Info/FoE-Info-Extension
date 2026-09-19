@@ -2,7 +2,6 @@
 name: github
 description: 'Use gh CLI for issues, PRs, checks, and GitHub queries.'
 ---
-
 # GitHub Skill
 
 Use the `gh` CLI to interact with GitHub. Always specify `--repo owner/repo` when not in a git directory, or use URLs directly.
