@@ -1,5 +1,7 @@
 # Dependencies
 node_modules/
+.venv/
+.uv/
 
 # Build & Distribution Artifacts
 build/
