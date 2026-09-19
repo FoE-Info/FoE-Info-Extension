@@ -211,6 +211,8 @@ function processCityMapEntities(mapEntities, options = {}) {
         } else {
           City.AOCriticalStrike = bVal;
         }
+        City.CriticalStrike =
+          (City.AOCriticalStrike || 0) + (City.CCCriticalStrike || 0);
       } else if (debugEnabled) {
         accum.unknownBonusTypes.set(
           bType,
@@ -231,7 +233,11 @@ function processCityMapEntities(mapEntities, options = {}) {
               b.type === 'critical_hit_chance' || b.type === 'critical_hit',
           )?.value
         : null);
-      if (bVal != null) City.AOCriticalStrike = bVal;
+      if (bVal != null) {
+        City.AOCriticalStrike = bVal;
+        City.CriticalStrike =
+          (City.AOCriticalStrike || 0) + (City.CCCriticalStrike || 0);
+      }
     } else if (
       mapID.cityentity_id === 'X_SpaceAgeSpaceHub_Landmark2' &&
       !City.CCCriticalStrike
@@ -244,7 +250,11 @@ function processCityMapEntities(mapEntities, options = {}) {
               b.type === 'critical_hit_chance' || b.type === 'critical_hit',
           )?.value
         : null);
-      if (bVal != null) City.CCCriticalStrike = bVal;
+      if (bVal != null) {
+        City.CCCriticalStrike = bVal;
+        City.CriticalStrike =
+          (City.AOCriticalStrike || 0) + (City.CCCriticalStrike || 0);
+      }
     }
 
     if (!harvest.found) {

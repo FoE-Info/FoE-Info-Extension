@@ -216,7 +216,7 @@ export function getBattleground(msg) {
   // console.debug(message.lastMessage.text);
 
   const signalChanged = !areSignalsEqual(prevSignals, signals);
-  checkProvinces({ signalChanged });
+  checkProvinces({ signalChanged: true });
 }
 
 export function getBuildings(msg) {
@@ -339,6 +339,8 @@ export function clearBattleground() {
   signals = [];
   if (document.getElementById('costs'))
     document.getElementById('costs').innerHTML = '';
+  if (document.getElementById('targetsGBG'))
+    document.getElementById('targetsGBG').innerHTML = '';
 }
 
 export function getServerMarket(origin) {
