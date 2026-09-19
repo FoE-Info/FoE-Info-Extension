@@ -16,16 +16,18 @@ let defaultState = {
   ResourceNames: {},
 };
 
-try {
-  storage = require('../fn/storage.js');
-} catch {}
-try {
-  const showOpt = require('../vars/showOptions.js');
-  showOptions = showOpt.showOptions || showOpt;
-} catch {}
-try {
-  defaultState = require('../vars/state.js');
-} catch {}
+if (typeof __webpack_require__ !== 'undefined') {
+  try {
+    storage = require('../fn/storage.js');
+  } catch {}
+  try {
+    const showOpt = require('../vars/showOptions.js');
+    showOptions = showOpt.showOptions || showOpt;
+  } catch {}
+  try {
+    defaultState = require('../vars/state.js');
+  } catch {}
+}
 
 const { createLogger, isDebugEnabled } = require('../utils/logger.js');
 const logger = createLogger('ResourceService');
