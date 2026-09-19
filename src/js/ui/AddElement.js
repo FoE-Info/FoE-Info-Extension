@@ -98,6 +98,24 @@ if (typeof document !== 'undefined' && !document._foeA11yBound) {
       e.target.click();
     }
   });
+
+  // Prevent legacy Bootstrap JS collapse from interfering with native CSS Grid transitions
+  document.addEventListener(
+    'click',
+    (e) => {
+      const trigger = e.target?.closest?.('[data-bs-toggle="collapse"]');
+      if (trigger && typeof trigger.addEventListener === 'function') {
+        trigger.addEventListener(
+          'click',
+          (ev) => {
+            ev.stopPropagation();
+          },
+          { capture: false, once: true },
+        );
+      }
+    },
+    true,
+  );
 }
 
 module.exports = {
