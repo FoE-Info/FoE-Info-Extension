@@ -80,6 +80,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "@jackwener/opencli": "^1.8.7",
     "@types/chrome": "^0.2.9",
     "@types/node": "^26.5.0",
     "@types/webextension-polyfill": "^0.12.6",
