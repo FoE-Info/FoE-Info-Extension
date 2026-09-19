@@ -14,15 +14,13 @@ Defined in `.agents/hooks.json`. Hooks run as Node.js scripts via Antigravity/Op
 
 All scripts in `.agents/scripts/`:
 
-- `safety-gate.mjs` — command interception
-- `pre-invocation-reminder.mjs` — guardrail injection
-- `stop-guard.mjs` — background task protection
+- `safety-gate.mjs` — command interception and destructive command safety gate
+- `generate-agent-catalogs.mjs` — frontmatter catalog generator for skills and subagents
+- `mcp-profile.mjs` — MCP profile activation and config generator
 - `llama-swap-env.sh` — shared inference policy (OPENAI_BASE_URL, model, keys)
-- `llama-swap-lifecycle.sh` — sources the inference policy for graphify scripts
-- `run-graphify-local.sh` — local graphify runner (MCP + watch modes)
-- `graph-*-ast.sh|update.sh|reindex.sh` — 10 graphify pipeline scripts
+- `graphify.sh` — unified runner for all knowledge graph targets (ast, update, reindex, export, watch)
 
-The graphify pipeline runs manually via `npm run graph:*:ast|update|reindex`.
+The graphify pipeline runs via `npm run graph:*:ast|update|reindex`.
 
 ## Hook Safety
 

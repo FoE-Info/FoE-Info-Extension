@@ -8,7 +8,7 @@
 
 ## Canonical Harness
 
-- 23 skills under `.agents/skills/` (Antigravity-native; obsolete out-of-domain and external framework residue purged).
+- 22 skills under `.agents/skills/` (Antigravity-native; obsolete out-of-domain and external framework residue purged).
 - 14 flat subagents under `.agents/agents/`.
 - 16 rules: 7 `always_on`, 9 `model_decision` (including `modern-web-conventions.md`).
 - `docs/SKILLS.md` and `docs/SUBAGENTS.md` are generated from canonical frontmatter by `.agents/scripts/generate-agent-catalogs.mjs`; `--check` detects drift.
@@ -32,10 +32,8 @@
 
 ## Self-Improvement
 
-- `.agents/rules/verification-before-completion.md` requires grounded verification evidence before completion; novel lessons are optionally logged to skill memory.
-- `.agents/scripts/skill-memory.mjs` records evidence and promotes verified lessons into canonical definitions.
-- `.agents/scripts/project-curator.mjs` is dry-run/read-only by default; apply mode only repairs already-recorded missing lesson promotions.
-- `.agents/references/skill-memory.md` is the sole shared explanation.
+- `.agents/rules/verification-before-completion.md` requires grounded verification evidence before completion.
+- Reusable constraints and operational lessons persist directly into `.agents/rules/` and via native Antigravity `/learn`.
 
 ## Verification
 
