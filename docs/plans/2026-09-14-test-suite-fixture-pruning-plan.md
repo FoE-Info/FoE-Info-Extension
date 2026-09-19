@@ -1,7 +1,7 @@
 # Test Suite Fixture Pruning Plan (Footprint Optimization Phase 3)
 
 **Date**: 2026-09-14
-**Status**: In Progress — Step 1 Active
+**Status**: Completed (2026-09-14) — Steps 1–5 complete
 **Branch**: `test-fixture-pruning` (worktree: `.worktrees/test-fixture-pruning`)
 **Source**: `docs/STATUS.md` Test Suite Footprint Optimization (Phase 3)
 
@@ -58,5 +58,5 @@ Phase 3 aims to systematically prune oversized fixtures while maintaining 100% t
   - Ran `npm run verify` (lint, typecheck, rpc contracts, i18n, full test suite, webpack dev build).
   - Total reduction: ~22.4 MB disk space trimmed, ~720,689 lines deleted across test fixtures.
 
-- [ ] **Step 5: Documentation & handoff**
+- [x] **Step 5: Documentation & handoff**
   - Update `docs/STATUS.md` and `docs/HANDOFF.md`.

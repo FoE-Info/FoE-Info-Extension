@@ -193,6 +193,19 @@ p,
   font-size: inherit;
 }
 
+// Modern-web performance: Defer offscreen layout and paint for dense table rows
+// without constraining resizable card containers.
+.goods-table tbody tr,
+.gbg-table tbody tr,
+#goodstable tbody tr,
+#treasurytable tbody tr,
+#friendsText2 tbody tr,
+#guildText2 tbody tr,
+#hoodText2 tbody tr {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 28px;
+}
+
 #goodstable,
 #treasurytable,
 .goods-table {

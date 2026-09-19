@@ -51,7 +51,7 @@ describe('gbgProvinceView Suite', () => {
       const html = buildLeaderboardHTML(leaderboard);
       assert.ok(
         html.includes(
-          '<tr><th class="text-start">Guild</th><th class="text-center">VP/hr</th><th class="text-center">Total VP</th></tr>',
+          '<tr><th scope="col" class="text-start">Guild</th><th scope="col" class="text-center">VP/hr</th><th scope="col" class="text-center">Total VP</th></tr>',
         ),
       );
       assert.ok(
@@ -93,7 +93,7 @@ describe('gbgProvinceView Suite', () => {
         helper,
       });
 
-      assert.ok(html.includes('<th>A1S [2]</th>'));
+      assert.ok(html.includes('<th scope="col">A1S [2]</th>'));
       assert.ok(html.includes('<td>Siege Camp</td>'));
       assert.ok(html.includes('<td>WOOD</td><td>50</td>'));
       assert.ok(html.includes('<td>IRON</td><td>25</td>'));
@@ -123,7 +123,7 @@ describe('gbgProvinceView Suite', () => {
         BuildingDefs,
       });
 
-      assert.ok(html.includes('<th>B1 [1]</th>'));
+      assert.ok(html.includes('<th scope="col">B1 [1]</th>'));
       assert.ok(html.includes('<td>Watchtower</td>'));
       assert.ok(html.includes('<td>marble</td><td>30</td>'));
     });
@@ -383,6 +383,11 @@ describe('gbgProvinceView Suite', () => {
       });
 
       assert.ok(costsDiv.innerHTML.includes('GBG Building Costs:'));
+      assert.ok(
+        costsDiv.innerHTML.includes(
+          '<caption class="visually-hidden"><span data-i18n="gbg_building_costs">GBG Building Costs</span></caption>',
+        ),
+      );
       assert.ok(costsDiv.innerHTML.includes('Sample Cost'));
       assert.equal(observed, true);
       assert.equal(observedHeight, 180);

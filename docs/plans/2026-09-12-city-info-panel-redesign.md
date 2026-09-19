@@ -8,6 +8,7 @@
 
 **Tech Stack:** JavaScript (ESM/CJS), Bootstrap 5.3, SCSS, BigNumber.js, Node.js test runner (`node:test`).
 
+**Status:** Completed & Shipped (2026-09-12)  
 **Spec:** Self-contained design in this document (aligned with conversation spec)
 
 ## Global Constraints
@@ -77,7 +78,7 @@
   - `spec.ccCritPercent`: `BigNumber` (from `X_SpaceAgeSpaceHub_Landmark2`).
   - `buildUnitsTooltipHTML(unitBuildingsList)` in `cityStatsTooltipBuilder.js`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/calc/unit-calculator-breakdown.test.mjs`:
 
@@ -190,12 +191,12 @@ test('Unit Calculator Breakdown & Critical Hit Suite', async (t) => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `node --test tests/calc/unit-calculator-breakdown.test.mjs`
 Expected: FAIL (accum.buildings is undefined, ccCritPercent not implemented, buildUnitsTooltipHTML not a function).
 
-- [ ] **Step 3: Implement calculation and tooltip changes**
+- [x] **Step 3: Implement calculation and tooltip changes**
 
 In `src/js/calc/units/UnitCalculator.js`:
 
@@ -227,12 +228,12 @@ In `src/js/ui/components/cityStatsTooltipBuilder.js`:
   Groups buildings by name, sums amounts, sorts descending by amount, and returns formatted HTML rows:
   `${item.amount} <strong>${escapeHtml(item.name)}</strong>${countStr}<br>`.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `node --test tests/calc/unit-calculator-breakdown.test.mjs`
 Expected: PASS (all 3 subtests pass).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/js/calc/units/UnitCalculator.js src/js/calc/CityStatsCalculator.js src/js/calc/VisitedCityStatsCalculator.js src/js/ui/components/cityStatsTooltipBuilder.js tests/calc/unit-calculator-breakdown.test.mjs
@@ -263,7 +264,7 @@ git commit -m "feat(calc): track unit buildings and AO/CC critical hit chance"
   - `formatUnitsHTML(stats, playerInfo, prefix, exact)`: returns formatted HTML for Daily Units with popover.
   - Localization keys: `daily_production`, `combat_boosts`, `crit_strike`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `tests/ui/stat-formatters-sections.test.mjs`:
 
@@ -349,12 +350,12 @@ test('Stat Formatters Sections & Boosts Suite', async (t) => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `node --test tests/ui/stat-formatters-sections.test.mjs`
 Expected: FAIL (`formatCritStrikeHTML` is not a function).
 
-- [ ] **Step 3: Implement formatters and update i18n dictionaries**
+- [x] **Step 3: Implement formatters and update i18n dictionaries**
 
 In `src/js/ui/components/statFormatters.js`:
 
@@ -379,14 +380,14 @@ In `src/i18n/en.json`:
 
 Run `npm run i18n:fix` and `npm run i18n:check` to propagate across `de`, `fr`, `es`, `it`, `el`, `gr`.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `node --test tests/ui/stat-formatters-sections.test.mjs`
 Expected: PASS.
 Run: `npm run i18n:check`
 Expected: Exit code 0 (all keys in parity).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/js/ui/components/statFormatters.js src/i18n/*.json tests/ui/stat-formatters-sections.test.mjs
@@ -405,7 +406,7 @@ git commit -m "feat(ui): add crit strike and units popover formatters with i18n 
 
 - Produces: `.foe-section-header` CSS class.
 
-- [ ] **Step 1: Add `.foe-section-header` rules to `src/css/custom.scss`**
+- [x] **Step 1: Add `.foe-section-header` rules to `src/css/custom.scss`**
 
 Add right under `.goods-era-header`:
 
@@ -425,12 +426,12 @@ Add right under `.goods-era-header`:
 }
 ```
 
-- [ ] **Step 2: Verify SCSS builds cleanly**
+- [x] **Step 2: Verify SCSS builds cleanly**
 
 Run: `npm run build:dev`
 Expected: Webpack builds successfully with 0 errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/css/custom.scss
@@ -466,7 +467,7 @@ git commit -m "style(ui): add .foe-section-header styles for dashboard cards"
     - `── COMBAT BOOSTS ──` header:
       - 8 attacker/defender lines.
 
-- [ ] **Step 1: Update existing bonus assertions and add section tests in `tests/ui/city-card-bonuses.test.mjs`**
+- [x] **Step 1: Update existing bonus assertions and add section tests in `tests/ui/city-card-bonuses.test.mjs`**
 
 Update `tests/ui/city-card-bonuses.test.mjs`:
 
@@ -478,12 +479,12 @@ Update `tests/ui/city-card-bonuses.test.mjs`:
 - Assert Crit Strike renders when `aoCriticalStrike` or `ccCriticalStrike` is present.
 - Assert symmetry: verify `buildVisitedCityCard` includes the same section headers and inline coin/supply boosts.
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `node --test tests/ui/city-card-bonuses.test.mjs`
 Expected: FAIL (headers not found, coin boost not formatted inline).
 
-- [ ] **Step 3: Update `ownCityCard.js` and `visitedCityCard.js`**
+- [x] **Step 3: Update `ownCityCard.js` and `visitedCityCard.js`**
 
 In `ownCityCard.js`:
 
@@ -513,12 +514,12 @@ In `renderLiveCityStats.js`:
 
 - Attach `unitsTooltipHTML: buildUnitsTooltipHTML(calculatedStats.units?.buildings)` to `renderCityStats` options.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `node --test tests/ui/city-card-bonuses.test.mjs`
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/js/ui/templates/ownCityCard.js src/js/ui/templates/visitedCityCard.js src/js/ui/renderLiveCityStats.js tests/ui/city-card-bonuses.test.mjs
@@ -531,27 +532,27 @@ git commit -m "feat(ui): redesign own and visited city cards with sections, inli
 
 **Files:** None (pipeline verification).
 
-- [ ] **Step 1: Run full unit test suite**
+- [x] **Step 1: Run full unit test suite**
 
 Run: `npm test`
 Expected: 1000+ tests PASS with 0 failures.
 
-- [ ] **Step 2: Run i18n parity check**
+- [x] **Step 2: Run i18n parity check**
 
 Run: `npm run i18n:check`
 Expected: 0 missing or redundant keys.
 
-- [ ] **Step 3: Run formatting and linting**
+- [x] **Step 3: Run formatting and linting**
 
 Run: `npm run check`
 Expected: Prettier and ESLint pass with 0 errors.
 
-- [ ] **Step 4: Run full verification gate**
+- [x] **Step 4: Run full verification gate**
 
 Run: `npm run verify`
 Expected: All 5 verification stages succeed.
 
-- [ ] **Step 5: Update documentation status**
+- [x] **Step 5: Update documentation status**
 
 Update `docs/STATUS.md` and `docs/HANDOFF.md` with the new City Info panel layout changes.
 
