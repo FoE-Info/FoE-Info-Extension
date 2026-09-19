@@ -84,7 +84,7 @@ async function getMetadataLookupFromBrowser() {
 
   if (!panelTarget) {
     throw new Error(
-      'FoE-Info panel.html target not found in Chrome! Is foe-browser running?',
+      'FoE-Info panel.html target not found in Chrome! Is the FoE-Info extension panel open?',
     );
   }
 
