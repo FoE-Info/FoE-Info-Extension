@@ -205,12 +205,46 @@ function processCityMapEntities(mapEntities, options = {}) {
         City.gbCityDefense = (City.gbCityDefense || 0) + bVal;
       } else if (bType === 'quest_boost') {
         City.ChatBonus = bVal;
+      } else if (bType === 'critical_hit_chance' || bType === 'critical_hit') {
+        if (mapID.cityentity_id === 'X_SpaceAgeSpaceHub_Landmark2') {
+          City.CCCriticalStrike = bVal;
+        } else {
+          City.AOCriticalStrike = bVal;
+        }
       } else if (debugEnabled) {
         accum.unknownBonusTypes.set(
           bType,
           (accum.unknownBonusTypes.get(bType) || 0) + 1,
         );
       }
+    }
+
+    if (
+      mapID.cityentity_id === 'X_ArcticFuture_Landmark2' &&
+      !City.AOCriticalStrike
+    ) {
+      const bVal =
+        mapID.bonus?.value ??
+        (Array.isArray(mapID.bonuses) ?
+          mapID.bonuses.find(
+            (b) =>
+              b.type === 'critical_hit_chance' || b.type === 'critical_hit',
+          )?.value
+        : null);
+      if (bVal != null) City.AOCriticalStrike = bVal;
+    } else if (
+      mapID.cityentity_id === 'X_SpaceAgeSpaceHub_Landmark2' &&
+      !City.CCCriticalStrike
+    ) {
+      const bVal =
+        mapID.bonus?.value ??
+        (Array.isArray(mapID.bonuses) ?
+          mapID.bonuses.find(
+            (b) =>
+              b.type === 'critical_hit_chance' || b.type === 'critical_hit',
+          )?.value
+        : null);
+      if (bVal != null) City.CCCriticalStrike = bVal;
     }
 
     if (!harvest.found) {

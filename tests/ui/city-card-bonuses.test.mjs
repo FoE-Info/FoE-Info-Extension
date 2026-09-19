@@ -213,6 +213,47 @@ test('City Card Bonus Lines Suite', async (t) => {
   );
 
   await t.test(
+    'buildOwnCityCard: renders crit strike directly under Arc bonus when only AO is present',
+    () => {
+      const html = buildOwnCityCard({
+        ...baseOwnParams,
+        spec: {
+          arcPercent: new BigNumber(100),
+          chatBonus: new BigNumber(0),
+          goodsPerQuest: new BigNumber(5),
+          aoCriticalStrike: new BigNumber(69.76),
+          ccCriticalStrike: new BigNumber(0),
+        },
+      });
+      assert.match(
+        html,
+        /<div>Arc <span data-i18n="bonus">Bonus<\/span>: 100%<\/div>\s*<div><span data-i18n="crit_strike">Crit Strike<\/span>: 69\.76%<\/div>/,
+        'Crit Strike must render directly under Arc Bonus when chatBonus is 0',
+      );
+    },
+  );
+
+  await t.test(
+    'buildOwnCityCard: renders crit strike when only CC is present',
+    () => {
+      const html = buildOwnCityCard({
+        ...baseOwnParams,
+        spec: {
+          arcPercent: new BigNumber(90),
+          chatBonus: new BigNumber(0),
+          goodsPerQuest: new BigNumber(5),
+          aoCriticalStrike: new BigNumber(0),
+          ccCriticalStrike: new BigNumber(25),
+        },
+      });
+      assert.match(
+        html,
+        /<div><span data-i18n="crit_strike">Crit Strike<\/span>: 25%<\/div>/,
+      );
+    },
+  );
+
+  await t.test(
     'buildVisitedCityCard: is symmetrical with headers, inline boosts, and crit strike',
     () => {
       const html = buildVisitedCityCard({

@@ -26,6 +26,13 @@ try {
   ({ setCurrentView } = require('../../ui/cardVisibility.js'));
 } catch {}
 
+let guildBattlegroundState = null;
+try {
+  ({
+    guildBattlegroundState,
+  } = require('../../state/GuildBattlegroundState.js'));
+} catch {}
+
 function extractGridId(msg) {
   const candidates = [
     msg?.responseData?.gridId,
@@ -121,6 +128,7 @@ function registerCityRoutes(ctx) {
       setCurrentView('QI');
     } else if (gridId === 'city' || gridId === 'main') {
       setCurrentView('OWN_CITY');
+      guildBattlegroundState?.setTargetMessageActive?.(false);
     }
   });
   dispatcher.register('CityMapService', 'updateEntity', (msg) => {
