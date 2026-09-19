@@ -5,16 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.835] - 2026-09-11
+## [0.0.834] - 2026-09-19
 
-Context-aware view filtering, incidents extraction, 15-panel stacking sequence, and codebase audit hardening.
+Guild Battlegrounds target lifecycle preservation and signal sync, City Overview Critical Strike calculation, context-aware dynamic view filtering, modular architecture deconstruction, and passive OpenCLI browser telemetry integration.
 
-### 🚀 Features & Architecture
+### 🎯 Guild Battlegrounds (GBG)
 
-- **Context-Aware Dynamic View Filtering**: Automatic view context switching between GBG Map view (gated to 6 combat-essential panels: Header, Army, Rewards, Target Generator, Battlegrounds Changes, Leaderboard) and City view (hiding battleground panels). Debug mode forces all 15 panels visible with informative diagnostic stubs.
-- **Standalone Incidents Card**: Extracted Incidents into dedicated module `renderIncidentsPanel.js` targeting `#incidents`, decoupled from Harvest and instrumented with scoped logger.
+- **Target Generator & Chat Target Message Lifecycle**: Preserved chat target message across routine background updates and sector conquests, preventing premature dismissal of the copy button when closing the target thread. Message state resets back to the generator only when a new marker is placed, an existing marker state changes (e.g. Stop sign / `ignore` or Attack sign / `focus`), or the user reloads/re-enters the GBG map (`BattlegroundService.getOverview`).
+- **Stop & Attack Signal Synchronization**: Handled `updateSignal` RPC payloads in `GuildBattlegroundService.js` to immediately update sector stop/attack flags and sync the target generator.
+- **Target Thread Discovery & Ordering**: Resolved target topic search and message ordering in `ConversationService.js` to reliably locate and parse the battlegrounds target thread.
+- **Viewport Ergonomics**: Increased default panel height to 400px with dynamic full-view expansion (`.gbg-changes-full`) for active battlegrounds racing.
+
+### 🏙️ City Overview & Combat Boosts
+
+- **Player Critical Strike Display**: Added Critical Strike chance percentage display under the Arc bonus in the City Info Header (`#header`), dynamically aggregating Arctic Orangery (`AO`) critical hit percentage and Cosmic Catalyst ally critical hit percentage with localized labels and `tabular-nums` formatting.
 - **City Info Header & Player Score**: Consolidated Player Points, Era, Guild, Income, and full Combat + City Boosts (Arc, CF, Coins, Supplies) into `#header`. Fixed multi-variant score extraction (`rank_points ?? player_points ?? score ?? points`).
+- **Floating-Point Precision Math**: Eliminated JavaScript floating-point rounding errors across combat boosts and Arc calculations using BigNumber exact rounding.
+
+### 🚀 Context-Aware Dynamic View Filtering
+
+- **Dynamic View Context Gating**: Automatic view context switching between GBG Map view (gated to 6 combat-essential panels: Header, Army, Rewards, Target Generator, Battlegrounds Changes, Leaderboard) and City view (hiding battleground panels). Debug mode forces all 15 panels visible with informative diagnostic stubs.
 - **15-Panel Vertical Mount Hierarchy**: Standardized `#content` stacking sequence matching canonical extension layout with full backward compatibility aliases.
+
+### 🏛️ Modular Architecture & Monolith Deconstruction
+
+- **Standalone Incidents Card**: Extracted Incidents into dedicated module `renderIncidentsPanel.js` targeting `#incidents`, decoupled from Harvest and instrumented with scoped logger.
+- **Social Lists Extraction**: Extracted `renderSocialListsPanel` and `socialRenderBinding` from legacy monoliths into dedicated modules with reactive state updates.
+- **Storage Bootstrap**: Extracted `storageBootstrap` from `indexUiBindings`.
+- **Collapse Toggle Runner**: Extracted `collapseToggleRunner` from `collapse.js`.
+- **GB Output Repair**: Extracted `gbOutputRepair` from `GreatBuildingsService`.
+- **City Map & Era Processors**: Extracted `CityMapEntityProcessor.js` and `eraMapping.js` for modular entity decoding.
+- **Protocol & Card Visibility**: Modernized `panelDispatcher.ts` and `cardVisibility.ts` with TypeScript type-safety.
+- **Batch Dispatch Performance**: Yielded periodically during batch message dispatch in the protocol layer to maintain UI responsiveness.
+
+### 🧪 Browser Testing & Telemetry
+
+- **Passive OpenCLI Integration**: Adopted OpenCLI (`@jackwener/opencli`) for non-interfering passive network RPC observation and DevTools panel inspection via headless daemon on `localhost:19825`, enforcing zero game tab interference, zero focus stealing, and zero window resizing.
 
 ### 🐛 Bug Fixes & Stability
 
@@ -23,14 +49,6 @@ Context-aware view filtering, incidents extraction, 15-panel stacking sequence, 
 - **Timestamp Formatting**: Formatted raw numeric Unix epoch timestamps in `ConversationService.js` using `dateUtils.formatTime` instead of displaying raw timestamp digits.
 - **Defensive Production Parsing**: Added optional chaining in `CityProductionService.js` for `reward.state?.current_product?.product?.resources` and nullish military units, preventing unhandled `TypeError` exceptions.
 - **DOM ID Collision Prevention**: Parameterized secondary place card footers in `gbDonationTables.js` to `copyText_${place}` to eliminate duplicate `#copyText` IDs.
-- **Code Hygiene**: Cleaned up unreferenced `playerPrefix` in `renderGbInfoPanel.js`.
-
-## [0.0.834] - 2026-09-11
-
-Comprehensive codebase audit fixes, protocol safety enhancements, and DOM reliability improvements.
-
-### 🐛 Bug Fixes & Stability
-
 - **UI DOM & Navigation**: Prevented DOM node detachment when closing visited city stats card (`#visit`), preserving container order and preventing layout freezing on subsequent player visits.
 - **City Stats Identifiers**: Fixed Colonial Age goods identifier typo (`cma` → `ca`) in tooltip initialization to properly bind tooltips to Colonial Age production breakdown.
 - **Card Visibility Toggling**: Bound `showStats` directly to `#citystats` panel container rather than inner collapse wrapper `#citystatsText`, cleanly hiding the entire card when disabled.
@@ -42,6 +60,7 @@ Comprehensive codebase audit fixes, protocol safety enhancements, and DOM reliab
 - **Calculation Edge Cases**: Guarded `isPositionSafe` in `InvestedCalculator` when `maxProgress` is zero or non-positive; safely handled null entity IDs in `UnitCalculator`.
 - **Spatial Calculations**: Enriched spatial entities with width/length metadata in `computeSetAdjacencies` and `computeChainLinkAdjacencies`.
 - **Debuggability**: Replaced raw `console.debug()` calls in `BonusService` and `CityProductionService` with module-scoped loggers obeying extension debug mode.
+- **Code Hygiene**: Cleaned up unreferenced `playerPrefix` in `renderGbInfoPanel.js`.
 
 ## [0.0.833] - 2026-09-11
 
