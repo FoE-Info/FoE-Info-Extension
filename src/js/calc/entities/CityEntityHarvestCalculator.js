@@ -20,18 +20,7 @@ try {
   };
 }
 
-const SPECIAL_GOODS = new Set([
-  'promethium',
-  'orichalcum',
-  'mars_ore',
-  'asteroid_ice',
-  'venus_carbon',
-  'unknown_dna',
-  'crystallized_hydrocarbons',
-  'dark_matter',
-  'stellar_void_shard',
-  'stel_void_shard',
-]);
+const { SPECIAL_GOODS } = require('../goods/goodsClassification.js');
 
 /**
  * Create a fresh mutable accumulator for a single city harvest batch.
