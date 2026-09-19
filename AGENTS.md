@@ -33,7 +33,7 @@ known verified state. Check git status and current source before trusting a plan
 
 Follow the
 [verification-before-completion rule](.agents/rules/verification-before-completion.md),
-including recording the grounded outcome for every project skill or subagent used.
+including verifying with fresh command evidence before claiming completion.
 
 ## Before you write code
 
