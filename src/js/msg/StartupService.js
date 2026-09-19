@@ -38,6 +38,7 @@ import {
   updatePlayerNameCache,
 } from '../vars/state.js';
 import { clearArmyUnits } from './ArmyUnitManagementService.js';
+import { applyBoostsToCity } from './BoostService.js';
 import { resolveMissingCityEntities } from './MetadataService.js';
 import { availableFP, ResourceDefs } from './ResourceService.js';
 import {
@@ -192,6 +193,9 @@ export function startupService(msg) {
   tooltipHTML.goods = [];
   // Galaxy.html = '';
   // Galaxy.amount = 0;
+  if (lastBoostsMsg) {
+    applyBoostsToCity(lastBoostsMsg, City);
+  }
   timingStep('P4a', 'startup reset and user preparation complete');
 
   const entityResult = processCityMapEntities(

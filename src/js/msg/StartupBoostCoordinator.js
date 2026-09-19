@@ -20,6 +20,12 @@ try {
     updateActivePopoverContent,
   } = require('../ui/components/PopoverManager.js'));
 } catch {}
+let recalculateAidStatsBoosts = null;
+try {
+  ({
+    recalculateAidStatsBoosts,
+  } = require('../calc/prod/DailyProductionAidCalculator.js'));
+} catch {}
 const { applyBoostsToCity } = require('./BoostService.js');
 
 /**
@@ -123,6 +129,35 @@ function handleBoostServiceAllBoosts({
       clanSpan.innerHTML = `<span data-i18n="guildgoods">Guild Goods</span>: ${boostedClanGoods}`;
       clanSpan.setAttribute('data-bs-content', tooltipHTML?.clanGoods);
     }
+  }
+
+  const currentBoosts = {
+    fp: City.fpProductionBoost || 0,
+    goods: City.goodsProductionBoost || 0,
+    guildGoods: City.guildGoodsProductionBoost || 0,
+    coin: City.CoinBoost || 0,
+    supply: City.SupplyBoost || 0,
+  };
+
+  if (City.aidStats && typeof recalculateAidStatsBoosts === 'function') {
+    recalculateAidStatsBoosts(City.aidStats, currentBoosts);
+    if (City.aidStats.max?.coins && City.aidStats.max.coins.gt(0)) {
+      City.Coins = City.aidStats.max.coins.toNumber();
+    }
+    if (City.aidStats.max?.supplies && City.aidStats.max.supplies.gt(0)) {
+      City.Supplies = City.aidStats.max.supplies.toNumber();
+    }
+    if (City.aidStats.max?.fp && City.aidStats.max.fp.gt(0)) {
+      City.ForgePoints = City.aidStats.max.fp.toNumber();
+    }
+  }
+
+  if (
+    lastStartupContext?.aidStats &&
+    lastStartupContext.aidStats !== City.aidStats &&
+    typeof recalculateAidStatsBoosts === 'function'
+  ) {
+    recalculateAidStatsBoosts(lastStartupContext.aidStats, currentBoosts);
   }
 
   if (typeof renderLiveCityStats === 'function') {
