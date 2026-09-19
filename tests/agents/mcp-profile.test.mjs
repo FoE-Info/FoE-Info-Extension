@@ -41,7 +41,7 @@ test('MCP profiles - registry defines lean and task-scoped server sets', () => {
   assert.doesNotMatch(
     serializedRegistry,
     /\{env:[A-Z_][A-Z0-9_]*:-[^}]+\}/,
-    'OpenCode supports {env:NAME}, not shell-style default expansion',
+    'MCP registry supports {env:NAME}, not shell-style default expansion',
   );
   const allServers = Object.keys(registry.servers).sort();
 
