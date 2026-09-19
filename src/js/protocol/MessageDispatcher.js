@@ -48,6 +48,10 @@ class MessageDispatcher {
       typeof options.maxCacheSize === 'number' ? options.maxCacheSize : 500;
     this.yieldInterval =
       typeof options.yieldInterval === 'number' ? options.yieldInterval : 10;
+    this.yieldParseThresholdBytes =
+      typeof options.yieldParseThresholdBytes === 'number' ?
+        options.yieldParseThresholdBytes
+      : 50 * 1024;
     this.yieldFn =
       typeof options.yieldFn === 'function' ? options.yieldFn : yieldToMain;
     this.dedupCache = new DedupCache({
@@ -259,6 +263,33 @@ class MessageDispatcher {
   }
 
   /**
+   * Parse JSON body with cooperative main-thread yielding for heavy payloads.
+   * @param {string|Object} textBody
+   * @returns {Promise<*>}
+   */
+  async parsePayload(textBody) {
+    if (!textBody) return null;
+    if (typeof textBody === 'object') return textBody;
+
+    const isHeavy =
+      this.yieldParseThresholdBytes > 0 &&
+      typeof textBody === 'string' &&
+      textBody.length >= this.yieldParseThresholdBytes;
+
+    if (isHeavy) {
+      await this.yieldFn();
+    }
+
+    const parsed = JSON.parse(textBody);
+
+    if (isHeavy) {
+      await this.yieldFn();
+    }
+
+    return parsed;
+  }
+
+  /**
    * Dispatch a single ServerRequest to its registered handler.
    * @param {Object} msg
    * @param {Object} [context]
@@ -355,6 +386,13 @@ class MessageDispatcher {
 
     let textBody;
     try {
+      if (
+        this.yieldParseThresholdBytes > 0 &&
+        typeof body === 'string' &&
+        body.length >= this.yieldParseThresholdBytes
+      ) {
+        await this.yieldFn();
+      }
       textBody = this.decodeBody(body, encoding);
     } catch (err) {
       console.error('[MessageDispatcher] Failed to decode body:', err);
@@ -370,7 +408,7 @@ class MessageDispatcher {
 
     let parsed;
     try {
-      parsed = typeof textBody === 'object' ? textBody : JSON.parse(textBody);
+      parsed = await this.parsePayload(textBody);
     } catch (err) {
       console.error('[MessageDispatcher] Failed to parse JSON body:', err);
       return { handled: false, error: 'json_parse_error', details: err };
@@ -382,6 +420,9 @@ class MessageDispatcher {
       const parsedItems = Array.isArray(parsed) ? parsed : [parsed];
 
       for (let i = 0; i < parsedItems.length; i++) {
+        if (this.yieldInterval > 0 && i > 0 && i % this.yieldInterval === 0) {
+          await this.yieldFn();
+        }
         const msg = parsedItems[i];
         if (msg && typeof msg === 'object') {
           let match = null;
