@@ -32,9 +32,13 @@ function getSchedulerApi() {
 async function yieldToMain() {
   const schedulerApi = getSchedulerApi();
   if (schedulerApi && typeof schedulerApi.yield === 'function') {
-    logger?.debug('Yielding to main thread via scheduler.yield');
-    await schedulerApi.yield();
-    return;
+    try {
+      logger?.debug('Yielding to main thread via scheduler.yield');
+      await schedulerApi.yield();
+      return;
+    } catch {
+      // Fall through to setTimeout fallback on abort or engine error
+    }
   }
   logger?.debug('Yielding to main thread via setTimeout fallback');
   await new Promise((resolve) => setTimeout(resolve, 0));

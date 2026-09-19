@@ -381,4 +381,100 @@ test('MessageDispatcher - Core Engine & Dispatching Protocol', async (t) => {
       assert.equal(yieldCalls, 3);
     },
   );
+
+  // Test 10: parsePayload yields before and after parsing for heavy text payloads
+  await t.test(
+    'parsePayload yields cooperatively for heavy JSON strings',
+    async () => {
+      let yieldCalls = 0;
+      const dispatcher = new MessageDispatcher({
+        yieldParseThresholdBytes: 100,
+        yieldFn: async () => {
+          yieldCalls++;
+        },
+      });
+
+      // Heavy payload (> 100 bytes)
+      const heavyObj = { data: 'x'.repeat(150), numbers: [1, 2, 3, 4, 5] };
+      const heavyJson = JSON.stringify(heavyObj);
+      assert.ok(heavyJson.length > 100);
+
+      const parsedHeavy = await dispatcher.parsePayload(heavyJson);
+      assert.deepEqual(parsedHeavy, heavyObj);
+      assert.equal(yieldCalls, 2); // 1 before, 1 after
+
+      // Light payload (< 100 bytes)
+      const lightObj = { id: 1 };
+      const lightJson = JSON.stringify(lightObj);
+      assert.ok(lightJson.length < 100);
+
+      const parsedLight = await dispatcher.parsePayload(lightJson);
+      assert.deepEqual(parsedLight, lightObj);
+      assert.equal(yieldCalls, 2); // Unchanged
+
+      // Object passed directly
+      const parsedObj = await dispatcher.parsePayload(lightObj);
+      assert.strictEqual(parsedObj, lightObj);
+      assert.equal(yieldCalls, 2); // Unchanged
+    },
+  );
+
+  // Test 11: dispatchRaw yields during large payload processing and requestPayload correlation
+  await t.test(
+    'dispatchRaw yields cooperatively when receiving large RPC body',
+    async () => {
+      let yieldCalls = 0;
+      const dispatcher = new MessageDispatcher({
+        yieldParseThresholdBytes: 80,
+        yieldInterval: 2,
+        yieldFn: async () => {
+          yieldCalls++;
+        },
+      });
+
+      dispatcher.register('TestService', 'action', () => ({ ok: true }));
+
+      const largeItems = Array.from({ length: 6 }, (_, i) => ({
+        __class__: 'ServerRequest',
+        requestClass: 'TestService',
+        requestMethod: 'action',
+        requestId: i + 1,
+        responseData: { index: i, pad: 'y'.repeat(20) },
+      }));
+
+      const largeJson = JSON.stringify(largeItems);
+      assert.ok(largeJson.length > 80);
+
+      const requestObj = {
+        request: {
+          postData: {
+            text: JSON.stringify(
+              largeItems.map((item) => ({
+                requestClass: item.requestClass,
+                requestMethod: item.requestMethod,
+                requestId: item.requestId,
+              })),
+            ),
+          },
+        },
+      };
+
+      const result = await dispatcher.dispatchRaw(
+        'https://en1.forgeofempires.com/game/json?h=test',
+        largeJson,
+        '',
+        [],
+        requestObj,
+      );
+
+      assert.equal(result.handled, true);
+      assert.equal(result.batchResult.succeeded, 6);
+      // Yield calls occurred during:
+      // - decode/pre-parse check
+      // - parsePayload (before + after JSON.parse)
+      // - requestPayload correlation loop (6 items with yieldInterval: 2)
+      // - dispatchBatch loop (6 items with yieldInterval: 2)
+      assert.ok(yieldCalls >= 5, `Expected >= 5 yields, got ${yieldCalls}`);
+    },
+  );
 });
