@@ -124,14 +124,55 @@ function renderLiveCityStats(ctx = {}) {
     }
   }
 
+  const aidStats =
+    ctx.lastStartupContext?.aidStats || ctx.aidStats || City.aidStats || null;
+
+  const maxTotalFp =
+    aidStats?.max?.fp && aidStats.max.fp.gt(0) ?
+      aidStats.max.fp
+    : new BigNumber(City.ForgePoints || 0);
+
+  const maxUnits =
+    aidStats?.max?.units && aidStats.max.units.gt(0) ?
+      aidStats.max.units
+    : new BigNumber(City.TrazUnits || 0);
+
+  const maxClanGoods =
+    aidStats?.max?.clanGoods && aidStats.max.clanGoods.gt(0) ?
+      aidStats.max.clanGoods.toNumber()
+    : ctx.lastStartupContext?.clanGoods || 0;
+
+  const maxCoins =
+    aidStats?.max?.coins && aidStats.max.coins.gt(0) ?
+      aidStats.max.coins
+    : new BigNumber(City.Coins || 0)
+        .multipliedBy(
+          new BigNumber(1).plus(
+            new BigNumber(City.CoinBoost || 0).dividedBy(100),
+          ),
+        )
+        .integerValue(BigNumber.ROUND_FLOOR);
+
+  const maxSupplies =
+    aidStats?.max?.supplies && aidStats.max.supplies.gt(0) ?
+      aidStats.max.supplies
+    : new BigNumber(City.Supplies || 0)
+        .multipliedBy(
+          new BigNumber(1).plus(
+            new BigNumber(City.SupplyBoost || 0).dividedBy(100),
+          ),
+        )
+        .integerValue(BigNumber.ROUND_FLOOR);
+
   const calculatedStats = {
     exactNumbers: true,
+    aidStats,
     availableFP:
       typeof ctx.availablePacksFP === 'number' ? ctx.availablePacksFP
       : typeof stateModule?.availablePacksFP === 'number' ?
         stateModule.availablePacksFP
       : availablePacksFP || 0,
-    clanGoods: ctx.lastStartupContext?.clanGoods || 0,
+    clanGoods: maxClanGoods,
     goodsHTML: liveGoodsHTML.trim(),
     goods: {
       total: totalGoodsAmount,
@@ -140,33 +181,21 @@ function renderLiveCityStats(ctx = {}) {
       tooltipsByEra: activeGoodsTooltips,
     },
     fp: {
-      total: new BigNumber(City.ForgePoints || 0),
+      total: maxTotalFp,
       boostPercent: new BigNumber(City.fpProductionBoost || 0),
       boostable: new BigNumber(City.baseBoostableFp || 0),
       unboostable: new BigNumber(City.baseUnboostableFp || 0),
     },
     units: {
-      daily: new BigNumber(City.TrazUnits || 0),
-      traz: new BigNumber(City.TrazUnits || 0),
+      daily: maxUnits,
+      traz: maxUnits,
     },
     coins: {
-      total: new BigNumber(City.Coins || 0)
-        .multipliedBy(
-          new BigNumber(1).plus(
-            new BigNumber(City.CoinBoost || 0).dividedBy(100),
-          ),
-        )
-        .integerValue(BigNumber.ROUND_FLOOR),
+      total: maxCoins,
       boostPercent: new BigNumber(City.CoinBoost || 0),
     },
     supplies: {
-      total: new BigNumber(City.Supplies || 0)
-        .multipliedBy(
-          new BigNumber(1).plus(
-            new BigNumber(City.SupplyBoost || 0).dividedBy(100),
-          ),
-        )
-        .integerValue(BigNumber.ROUND_FLOOR),
+      total: maxSupplies,
       boostPercent: new BigNumber(City.SupplyBoost || 0),
     },
     military: {
@@ -297,6 +326,7 @@ function renderLiveCityStats(ctx = {}) {
           userTooltipHTML: userTooltipHTMLEscaped,
           userTitle: userTitle,
           origin: origin ? origin.toUpperCase() : '',
+          aidStats: calculatedStats.aidStats,
         },
         {
           collapseStats: ctx.lastStartupContext?.collapseStats,

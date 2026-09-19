@@ -85,6 +85,54 @@ function escapeHtml(str) {
   );
 }
 
+let i18nModule = null;
+try {
+  i18nModule = require('../../utils/i18n.js');
+} catch {}
+
+function tr(key, fallback) {
+  const value = i18nModule?.t?.(key);
+  return value && value !== key ? value : fallback;
+}
+
+function buildUnaidedIndicatorHTML({
+  resource = '',
+  aidStats = null,
+  prefix = '',
+  exact = false,
+} = {}) {
+  if (
+    !aidStats ||
+    !aidStats.unaided ||
+    !Array.isArray(aidStats.unaided[resource])
+  ) {
+    return '';
+  }
+  const unaidedList = aidStats.unaided[resource];
+  if (unaidedList.length === 0) return '';
+
+  const currentVal = aidStats.current?.[resource] ?? 0;
+  const maxVal = aidStats.max?.[resource] ?? 0;
+  const diffVal = aidStats.diff?.[resource] ?? 0;
+  const totalCount = unaidedList.reduce((acc, x) => acc + (x.count || 1), 0);
+
+  const titleText = `${tr('unaided_buildings', 'Unaided Buildings')} (${totalCount})`;
+  const escapedTitle = escapeHtml(titleText);
+
+  const itemsHTML = unaidedList
+    .map(
+      (item) =>
+        `<div>• <strong>${escapeHtml(item.name)}${item.count > 1 ? ` (x${item.count})` : ''}</strong>: -${formatStatNumber(item.diff, { exact, comma: true })}</div>`,
+    )
+    .join('');
+
+  const body = `<div class="pop unaided-popover"><div class="alert alert-warning py-1 px-2 mb-2 d-flex align-items-center gap-1" style="font-size: 11px;"><span class="material-icons-outlined text-warning" style="font-size: 15px;">warning</span><strong>${tr('mass_self_aid_recommended', 'Mass Self-Aid recommended before collection!')}</strong></div><div class="mb-2" style="font-size: 11px; line-height: 1.4;"><div><strong>${tr('actual_yield', 'Actual')}:</strong> ${formatStatNumber(currentVal, { exact, comma: true })}</div><div><strong>${tr('max_yield', 'Max')}:</strong> ${formatStatNumber(maxVal, { exact, comma: true })}</div><div class="text-warning"><strong>${tr('missing_yield', 'Missing')}:</strong> -${formatStatNumber(diffVal, { exact, comma: true })}</div></div><div class="unaided-building-list" style="max-height: 160px; overflow-y: auto; font-size: 11px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px;"><div class="text-muted mb-1">${tr('unaided_buildings', 'Unaided Buildings')} (${totalCount}):</div>${itemsHTML}</div></div>`;
+
+  const escapedBody = body.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+  return `<span id="${prefix}-${resource}-unaided" class="pop d-inline-flex align-items-center flex-shrink-0 ms-1" role="button" tabindex="0" aria-haspopup="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="${escapedTitle}" data-bs-content='${escapedBody}'><span class="material-icons-outlined text-warning" style="font-size: 14px; line-height: 1; vertical-align: middle; cursor: pointer;" title="${escapedTitle}">warning</span></span>`;
+}
+
 function formatGoodsDisplay(stats = {}, playerInfo = {}) {
   const goods = stats.goods || {};
   const byEra = goods.byEra || stats.goodsByEra || playerInfo.goodsByEra;
@@ -130,6 +178,14 @@ function formatGoodsHTML(
     null;
   const boostText = formatBoostText(boostPercent);
 
+  const aidStats = stats.aidStats || playerInfo.aidStats || null;
+  const unaidedHTML = buildUnaidedIndicatorHTML({
+    resource: 'goods',
+    aidStats,
+    prefix,
+    exact,
+  });
+
   const rawGoodsHTML = playerInfo.goodsHTML || stats.goodsHTML || '';
   if (rawGoodsHTML) {
     if (
@@ -137,7 +193,7 @@ function formatGoodsHTML(
       rawGoodsHTML.includes('data-i18n="stat_daily_goods"')
     )
       return rawGoodsHTML;
-    return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${rawGoodsHTML.trim()}${boostText}`;
+    return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${rawGoodsHTML.trim()}${boostText}${unaidedHTML}`;
   }
 
   const byEra =
@@ -179,7 +235,7 @@ function formatGoodsHTML(
         })
         .join(' ');
 
-      return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${spans}${boostText}`;
+      return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${spans}${boostText}${unaidedHTML}`;
     }
   }
 
@@ -199,7 +255,7 @@ function formatGoodsHTML(
       total !== null ? formatStatNumber(total, { exact, comma: true }) : '';
     const text = `${totalDisplay}${boostText}`;
     const pop = `<span id="${prefix}-goods" class="pop" role="button" tabindex="0" aria-haspopup="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily Goods" data-bs-content='${escapedTip}'>${text}</span>`;
-    return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${escapedTip ? pop : text}`;
+    return `<span data-i18n="stat_daily_goods">Daily Goods</span>: ${escapedTip ? pop : text}${unaidedHTML}`;
   }
   return '';
 }
@@ -220,8 +276,14 @@ function formatClanGoodsHTML(stats = {}, playerInfo = {}, prefix = '') {
       : String(cg)
     : '';
   if (!display) return '';
+  const aidStats = stats.aidStats || playerInfo.aidStats || null;
+  const unaidedHTML = buildUnaidedIndicatorHTML({
+    resource: 'clanGoods',
+    aidStats,
+    prefix,
+  });
   const body = `<span id="${prefix}-clan-goods" class="pop" role="button" tabindex="0" aria-haspopup="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Guild Goods" data-bs-content='${escaped}'>${display}</span>`;
-  return `<span data-i18n="guildgoods">Guild Goods</span>: ${escaped ? body : display}`;
+  return `<span data-i18n="guildgoods">Guild Goods</span>: ${escaped ? body : display}${unaidedHTML}`;
 }
 
 function formatFpHTML(stats = {}, playerInfo = {}, prefix = '', exact = false) {
@@ -237,10 +299,17 @@ function formatFpHTML(stats = {}, playerInfo = {}, prefix = '', exact = false) {
     : '';
   const boost = formatBoostText(fp.boostPercent);
   const text = `${formatStatNumber(fp.total, { exact })}${boost}`;
+  const aidStats = stats.aidStats || playerInfo.aidStats || null;
+  const unaidedHTML = buildUnaidedIndicatorHTML({
+    resource: 'fp',
+    aidStats,
+    prefix,
+    exact,
+  });
   const body = `<span id="${prefix}-fp" class="pop" role="button" tabindex="0" aria-haspopup="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily FP" data-bs-content='${escaped}'>${text}</span>`;
   return {
     fpTooltipEscaped: escaped,
-    fpHTML: `<span data-i18n="stat_daily_fp">Daily FP</span>: ${escaped ? body : text}`,
+    fpHTML: `<span data-i18n="stat_daily_fp">Daily FP</span>: ${escaped ? body : text}${unaidedHTML}`,
   };
 }
 
@@ -295,11 +364,19 @@ function formatUnitsHTML(
       tooltip.replace(/'/g, '&#39;').replace(/"/g, '&quot;')
     : '';
 
+  const aidStats = stats.aidStats || playerInfo.aidStats || null;
+  const unaidedHTML = buildUnaidedIndicatorHTML({
+    resource: 'units',
+    aidStats,
+    prefix,
+    exact,
+  });
+
   if (escaped) {
     const body = `<span id="${prefix}-units" class="pop" role="button" tabindex="0" aria-haspopup="true" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Daily Units" data-bs-content='${escaped}'>${totalDisplay}</span>`;
-    return `<span data-i18n="stat_daily_units">Daily Units</span>: ${body}`;
+    return `<span data-i18n="stat_daily_units">Daily Units</span>: ${body}${unaidedHTML}`;
   }
-  return `<span data-i18n="stat_daily_units">Daily Units</span>: ${totalDisplay}`;
+  return `<span data-i18n="stat_daily_units">Daily Units</span>: ${totalDisplay}${unaidedHTML}`;
 }
 
 module.exports = {
@@ -314,5 +391,6 @@ module.exports = {
   formatFpHTML,
   formatCritStrikeHTML,
   formatUnitsHTML,
+  buildUnaidedIndicatorHTML,
 };
 module.exports.default = module.exports;
