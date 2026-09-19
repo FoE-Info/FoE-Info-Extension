@@ -230,6 +230,8 @@ function renderLiveCityStats(ctx = {}) {
         .dividedBy(20)
         .plus(5)
         .integerValue(BigNumber.ROUND_FLOOR),
+      aoCriticalStrike: new BigNumber(City.AOCriticalStrike || 0),
+      ccCriticalStrike: new BigNumber(City.CCCriticalStrike || 0),
     },
   };
 

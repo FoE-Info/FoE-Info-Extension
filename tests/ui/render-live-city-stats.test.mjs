@@ -72,13 +72,13 @@ test('guild goods total preserves the sum of building contributions', () => {
   assert.match(store.clanGoods, /31615 <strong>Guild producer<\/strong>/);
 });
 
-function loadLiveRenderer(goods, boost) {
+function loadLiveRenderer(goods, boost, cityOverrides = {}) {
   const moduleUrl = new URL(
     '../../src/js/ui/renderLiveCityStats.js',
     import.meta.url,
   );
   const require = createRequire(moduleUrl);
-  const city = { goodsProductionBoost: boost };
+  const city = { goodsProductionBoost: boost, ...cityOverrides };
   const ages = Object.keys(goods);
   // Replace browser-bound dependencies, executing the full renderer unchanged.
   const dependencies = {
@@ -87,7 +87,7 @@ function loadLiveRenderer(goods, boost) {
     '../fn/helper.js': {
       numAges: ages.length,
       fAgefromLevel: (level) => ages[level - 1],
-      fGVGagesname: (age) => age.toUpperCase(),
+      fGVGagesname: (age) => (age ? age.toUpperCase() : ''),
     },
     './renderCityStats.js': { renderCityStats() {} },
     '../utils/logger.js': { createLogger: () => ({ info() {} }) },
@@ -100,6 +100,18 @@ function loadLiveRenderer(goods, boost) {
   vm.runInNewContext(fs.readFileSync(moduleUrl, 'utf8'), context);
   return context.module.exports.renderLiveCityStats;
 }
+
+test('renderLiveCityStats passes AOCriticalStrike and CCCriticalStrike to special', () => {
+  const render = loadLiveRenderer({ fe: 100 }, 0, {
+    ArcBonus: 100,
+    AOCriticalStrike: 69.76,
+    CCCriticalStrike: 25,
+  });
+  const stats = render();
+  assert.equal(stats.special.arcPercent.toNumber(), 100);
+  assert.equal(stats.special.aoCriticalStrike.toNumber(), 69.76);
+  assert.equal(stats.special.ccCriticalStrike.toNumber(), 25);
+});
 
 for (const [boost, expected, total] of [
   [
