@@ -12,7 +12,7 @@ This skill defines the master architectural procedure to modernize the remaining
 
 - Planning multi-stage refactoring across the measured large-file inventory (see [`references/monolith-decomposition-phases.md`](references/monolith-decomposition-phases.md)): `StartupService.js` (422), `GreatBuildingsService.js` (468), `GuildBattlegroundService.js` (446), plus the 12-file >450 L backlog. `index.js` (174) is a thin entry point, and `helper.js` (203) / `legacyBridge.js` (62) are **not** monoliths.
 - Setting up or extending the hybrid JavaScript/TypeScript compilation pipeline.
-- Scaffolding bite-sized task briefs for parallel subagent execution via `subagent-driven-development`.
+- Scaffolding bite-sized task briefs for structured execution via `executing-plans`.
 
 ---
 
@@ -57,7 +57,7 @@ Author an isolated Task Brief specifying:
 - Source file and target file paths ($\le 250$ lines/file).
 - Strict interface contracts (no hidden globals, explicit parameter passing).
 - **Debuggability Invariant**: Every extracted module must instantiate `createLogger('<ModuleName>')` from `src/js/utils/logger.js`, log computations/caches/races in debug mode, and remain completely silent in standard mode.
-- Delegate to specialist (`monolith-refactoring-specialist`, `javascript-expert`, `foe-*`) using isolated worktrees (`Workspace: "share"`).
+- Delegate to specialist (`javascript-expert`, `typescript-expert`, `foe-*`) using isolated worktrees (`Workspace: "share"`).
 
 ### Step 4: Adversarial Plan Review
 

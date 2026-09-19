@@ -15,16 +15,15 @@ Never say or imply that a task is finished, a bug is fixed, a build succeeds, or
 2. Run it.
 3. Read the exit code, error output, and failure counts from stdout and stderr.
 4. Confirm the output actually supports the claim: zero errors, zero unexpected failures.
-5. For each project skill or subagent actually used, record the grounded outcome:
+5. Optional lesson capture: When work reveals a novel, reusable rule or fixes an operational defect, persist the lesson:
    ```sh
    node .agents/scripts/skill-memory.mjs log \
      --skill <name> \
      --outcome pass|fail|partial \
      --signal "<verification command>" \
-     [--lesson "<verified reusable rule + why>"]
+     --lesson "<verified reusable rule + why>"
    ```
-   Add `--lesson` only when evidence revealed reusable guidance. The helper
-   deduplicates and promotes a novel lesson into the canonical definition.
+   Routine passing runs without new operational lessons do not require logging.
 6. Only then tell the user, citing what you just ran.
 
 See [Skill Work Log & Memory](../references/skill-memory.md) for persistence,

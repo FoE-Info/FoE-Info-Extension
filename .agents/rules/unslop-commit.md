@@ -17,7 +17,7 @@ All Git commits in this workspace must adhere strictly to the `/unslop-commit` s
   - Length: Aim for $\le 50$ characters; hard maximum of 72 characters.
   - No trailing period. Lowercase after colon.
 - **Merge Commits**: When creating manual merge commits (`git merge --no-ff ... -m "..."`), the message is strictly validated by Husky's `commit-msg` hook.
-  - Pattern: `chore(merge): merge <branch>` (keep under 72 chars, aim $\le 50$, e.g. `chore(merge): merge feat/opencode-monolith-decomp`).
+  - Pattern: `chore(merge): merge <branch>` (keep under 72 chars, aim $\le 50$, e.g. `chore(merge): merge feat/monolith-decomp`).
   - Do not add verbose commentary to the subject line that pushes length over 72 characters.
 - **Body**: Required for all non-trivial commits (`feat`, `refactor`, multi-file `fix` or `docs`). Optional only for genuinely trivial 1-line tweaks (e.g. single typo fix).
   - **Format**: 2 to 4 concise bullet points (`- <action or rationale>`) explaining what was changed and why.

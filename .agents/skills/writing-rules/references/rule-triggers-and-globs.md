@@ -20,7 +20,7 @@ description: Enforces BigNumber arithmetic precision in calculation engines.
 
 | Trigger Mode         | Behavior                                                                             | Best Used For                                                                                                           |
 | :------------------- | :----------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
-| **`always_on`**      | Injected unconditionally into every model turn across the workspace.                 | Universal non-negotiable invariants: verification iron law, superpowers, small incremental slices, file caps.           |
+| **`always_on`**      | Injected unconditionally into every model turn across the workspace.                 | Universal non-negotiable invariants: verification iron law, skill-driven-development, small incremental slices, file caps. |
 | **`glob`**           | Injected only when viewing, creating, or modifying files matching the glob pattern.  | Language- or domain-specific constraints: math precision in `calc/`, style rules in `*.scss`, test rules in `tests/**`. |
 | **`model_decision`** | Injected when the model determines the rule description matches current user intent. | Process guidelines: release procedures, conventional commit formatting, refactoring guidelines.                         |
 | **`manual`**         | Injected only when explicitly referenced by the user or agent via `@rule-name`.      | Rarely needed edge-case checklists or deep migration protocols.                                                         |

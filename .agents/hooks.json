@@ -12,23 +12,5 @@
         ]
       }
     ]
-  },
-  "monolith-guardrail": {
-    "PreInvocation": [
-      {
-        "type": "command",
-        "command": "node ./scripts/pre-invocation-reminder.mjs",
-        "timeout": 5
-      }
-    ]
-  },
-  "stop-guard": {
-    "Stop": [
-      {
-        "type": "command",
-        "command": "node ./scripts/stop-guard.mjs",
-        "timeout": 5
-      }
-    ]
   }
 }

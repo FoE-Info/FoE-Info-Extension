@@ -21,7 +21,7 @@ tools:
   - grep_search
   - run_command
 skills:
-  - refactor-index-slice
+  - service-extractor
 ---
 ```
 

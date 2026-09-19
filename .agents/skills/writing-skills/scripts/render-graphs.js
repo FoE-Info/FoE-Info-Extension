@@ -95,9 +95,9 @@ function main() {
     console.error('  --combine    Combine all diagrams into one SVG');
     console.error('');
     console.error('Example:');
-    console.error('  ./render-graphs.js ../subagent-driven-development');
+    console.error('  ./render-graphs.js ../executing-plans');
     console.error(
-      '  ./render-graphs.js ../subagent-driven-development --combine',
+      '  ./render-graphs.js ../executing-plans --combine',
     );
     process.exit(1);
   }

@@ -102,7 +102,7 @@ is at `.agents/skills/`.
 Browse categories: `ls .agents/skills/`
 Search: `grep -r "keyword" .agents/skills/ --include="SKILL.md"`
 
-Instructions: `.agents/skills/using-superpowers/SKILL.md`
+Instructions: `.agents/rules/skill-driven-development.md`
 </available_skills>
 
 <important_info_about_skills>
@@ -138,7 +138,7 @@ Your workflow for every task:
 The skills library prevents you from repeating common mistakes.
 Not checking before you start is choosing to repeat those mistakes.
 
-Start here: `using-superpowers`
+Start here: `skill-driven-development`
 ```
 
 ## Testing Protocol

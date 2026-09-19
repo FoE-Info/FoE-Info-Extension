@@ -42,7 +42,6 @@ On-demand knowledge shared by canonical subagents and project skills. Keep deleg
 - [Extension security auditor](agents/extension-security-auditor-examples.md)
 - [JavaScript expert](agents/javascript-expert-examples.md)
 - [Localization expert](agents/localization-expert-examples.md)
-- [Monolith refactoring specialist](agents/monolith-refactoring-specialist-examples.md)
 - [Performance and memory profiler](agents/performance-memory-profiler-examples.md)
 - [TypeScript expert](agents/typescript-expert-examples.md)
 - [UI design-system architect](agents/ui-design-system-architect-examples.md)

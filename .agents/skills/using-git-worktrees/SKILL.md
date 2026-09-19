@@ -14,90 +14,42 @@ Git worktrees create isolated workspaces sharing the same repository, allowing w
 
 ## Directory Selection Process
 
-Follow this priority order:
+### Directory Location
 
-### 1. Check Existing Directories
-
-```bash
-# Check in priority order
-ls -d .worktrees 2>/dev/null     # Preferred (hidden)
-ls -d worktrees 2>/dev/null      # Alternative
-```
-
-**If found:** Use that directory. If both exist, `.worktrees` wins.
-
-### 2. Check CLAUDE.md
+Per project rule (`workspace-structure.md`), worktrees always live under `.worktrees/<branch>`.
 
 ```bash
-grep -i "worktree.*director" CLAUDE.md 2>/dev/null
-```
-
-**If preference specified:** Use it without asking.
-
-### 3. Ask User
-
-If no directory exists and no CLAUDE.md preference:
-
-```
-No worktree directory found. Where should I create worktrees?
-
-1. .worktrees/ (project-local, hidden)
-2. ~/.config/superpowers/worktrees/<project-name>/ (global location)
-
-Which would you prefer?
+mkdir -p .worktrees
 ```
 
 ## Safety Verification
 
-### For Project-Local Directories (.worktrees or worktrees)
-
-**MUST verify directory is ignored before creating worktree:**
+**Verify directory is ignored before creating worktree:**
 
 ```bash
-# Check if directory is ignored (respects local, global, and system gitignore)
-git check-ignore -q .worktrees 2>/dev/null || git check-ignore -q worktrees 2>/dev/null
+git check-ignore -q .worktrees 2>/dev/null
 ```
 
 **If NOT ignored:**
-
-Per Jesse's rule "Fix broken things immediately":
-1. Add appropriate line to .gitignore
+1. Add `.worktrees/` to `.gitignore`
 2. Commit the change
 3. Proceed with worktree creation
 
 **Why critical:** Prevents accidentally committing worktree contents to repository.
 
-### For Global Directory (~/.config/superpowers/worktrees)
-
-No .gitignore verification needed - outside project entirely.
-
 ## Creation Steps
 
-### 1. Detect Project Name
+### 1. Create Worktree
 
 ```bash
-project=$(basename "$(git rev-parse --show-toplevel)")
-```
-
-### 2. Create Worktree
-
-```bash
-# Determine full path
-case $LOCATION in
-  .worktrees|worktrees)
-    path="$LOCATION/$BRANCH_NAME"
-    ;;
-  ~/.config/superpowers/worktrees/*)
-    path="~/.config/superpowers/worktrees/$project/$BRANCH_NAME"
-    ;;
-esac
+path=".worktrees/$BRANCH_NAME"
 
 # Create worktree with new branch
 git worktree add "$path" -b "$BRANCH_NAME"
 cd "$path"
 ```
 
-### 3. Run Project Setup
+### 2. Run Project Setup
 
 Auto-detect and run appropriate setup:
 
@@ -147,7 +99,7 @@ Ready to implement <feature-name>
 | `.worktrees/` exists | Use it (verify ignored) |
 | `worktrees/` exists | Use it (verify ignored) |
 | Both exist | Use `.worktrees/` |
-| Neither exists | Check CLAUDE.md → Ask user |
+| Neither exists | Create `.worktrees/` (verify ignored) |
 | Directory not ignored | Add to .gitignore + commit |
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
@@ -162,7 +114,7 @@ Ready to implement <feature-name>
 ### Assuming directory location
 
 - **Problem:** Creates inconsistency, violates project conventions
-- **Fix:** Follow priority: existing > CLAUDE.md > ask
+- **Fix:** Always use `.worktrees/<branch>` per project workspace rules
 
 ### Proceeding with failing tests
 
@@ -185,7 +137,7 @@ You: I'm using the using-git-worktrees skill to set up an isolated workspace.
 [Run npm install]
 [Run npm test - 47 passing]
 
-Worktree ready at /Users/jesse/myproject/.worktrees/auth
+Worktree ready at .worktrees/auth
 Tests passing (47 tests, 0 failures)
 Ready to implement auth feature
 ```
@@ -196,11 +148,10 @@ Ready to implement auth feature
 - Create worktree without verifying it's ignored (project-local)
 - Skip baseline test verification
 - Proceed with failing tests without asking
-- Assume directory location when ambiguous
-- Skip CLAUDE.md check
+- Assume directory location outside `.worktrees/`
 
 **Always:**
-- Follow directory priority: existing > CLAUDE.md > ask
+- Follow directory standard: `.worktrees/<branch>`
 - Verify directory is ignored for project-local
 - Auto-detect and run project setup
 - Verify clean test baseline
@@ -208,12 +159,12 @@ Ready to implement auth feature
 ## Integration
 
 **Called by:**
-- **brainstorming** (Phase 4) - REQUIRED when design is approved and implementation follows
+- **brainstorming** (Phase 4) - when design is approved and implementation follows
 - Any skill needing isolated workspace
 
 **Pairs with:**
-- **finishing-a-development-branch** - REQUIRED for cleanup after work complete
-- **executing-plans** or **subagent-driven-development** - Work happens in this worktree
+- **unslop-commit** - Commit changes following repo standards
+- **executing-plans** - Work happens in this worktree
 
 ## When to Use
 This skill is applicable to execute the workflow or actions described in the overview.

@@ -12,7 +12,6 @@ Dispatch a subagent only for an independently bounded investigation, implementat
 | CDP pipelines, mock RPC, DOM assertions, or live panel errors | `cdp-test-engineer` |
 | Independent code review against repository invariants | `code-reviewer` |
 | Full legacy decomposition and gradual TypeScript migration planning | `codebase-modernization-architect` |
-| Extracting legacy monolith behavior into isolated modules | `monolith-refactoring-specialist` |
 | Manifest V3 security, DOM XSS, credentials, or host permissions | `extension-security-auditor` |
 | Panel latency, Core Web Vitals, heaps, or DOM leaks | `performance-memory-profiler` |
 | Discord webhooks, rate limits, embeds, or snipe notifications | `discord-webhook-integrator` |
