@@ -66,6 +66,25 @@ async function persistMetadataBatch(entries) {
   }
 }
 
+let lookupPersistTimer = null;
+function persistBuildingEntityLookupDebounced(lookup, delayMs = 2000) {
+  if (lookupPersistTimer) clearTimeout(lookupPersistTimer);
+  lookupPersistTimer = setTimeout(() => {
+    lookupPersistTimer = null;
+    const storage = getMetadataStorage();
+    if (
+      storage?.set &&
+      lookup &&
+      typeof lookup === 'object' &&
+      Object.keys(lookup).length > 0
+    ) {
+      storage.set({ BuildingEntityLookup: lookup }).catch((err) => {
+        logger?.warn('Failed to persist BuildingEntityLookup:', err);
+      });
+    }
+  }, delayMs);
+}
+
 function getCachedMetadata(cache, id) {
   const entry = cache?.[id];
   if (!entry?.data) return null;
@@ -167,7 +186,9 @@ async function resolveMissingCityEntities(
   }
 
   if (toFetch.length === 0) {
-    if (anyNewlyExisting && typeof onUpdate === 'function') onUpdate();
+    if ((cacheLoaded || anyNewlyExisting) && typeof onUpdate === 'function') {
+      onUpdate();
+    }
     return;
   }
 
@@ -314,4 +335,5 @@ module.exports = {
   processCityEntity,
   resolveMissingCityEntities,
   resolveMissingUnitTypes,
+  persistBuildingEntityLookupDebounced,
 };

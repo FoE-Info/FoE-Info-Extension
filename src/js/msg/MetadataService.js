@@ -64,6 +64,7 @@ const METADATA_HANDLERS = {
         metadataStore.registerLookupUrl(rawId, msg.url);
       }
     }
+    resolver.persistBuildingEntityLookupDebounced?.(BuildingEntityLookup);
   },
   UnitType(msg) {
     const unitTypeId = getEntityId(msg.unitTypeId) || msg.unitTypeId;
@@ -172,6 +173,7 @@ function processMetadataEntry(msg) {
         metadataStore.registerLookupUrl(rawId, msg.url);
     }
     notifyMetadataUpdated();
+    resolver.persistBuildingEntityLookupDebounced?.(BuildingEntityLookup);
     return;
   }
 
@@ -285,6 +287,7 @@ function processMetadataData(data, options = {}) {
     if (!wasBatch) {
       isBatchProcessing = false;
       notifyMetadataUpdated(options);
+      resolver.persistBuildingEntityLookupDebounced?.(BuildingEntityLookup);
     }
   }
 }

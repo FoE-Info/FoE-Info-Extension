@@ -377,3 +377,136 @@ test('handleStorageChange and handleReceiveStorage handle invalid inputs without
   assert.doesNotThrow(() => handleReceiveStorage(undefined));
   assert.doesNotThrow(() => handleReceiveStorage({}));
 });
+
+test('handleReceiveStorage hydrates entities from metadata:cityEntities and re-processes startupService', () => {
+  const calls = [];
+  const initialPendingMsg = {
+    responseData: { city_map: { entities: [{ id: 77 }] } },
+  };
+
+  const deps = {
+    storage: { getCurrentWorld: () => 'en1', updateCache: () => {} },
+    processMetadataData: (data) => calls.push(['processMetadataData', data]),
+    setMetadataLoaded: (val) => calls.push(['setMetadataLoaded', val]),
+    getPendingStartupMsg: () => initialPendingMsg,
+    getLastStartupMsg: () => null,
+    setLastStartupMsg: (msg) => calls.push(['setLastStartupMsg', msg]),
+    setPendingStartupMsg: (msg) => calls.push(['setPendingStartupMsg', msg]),
+    startupService: (msg) => calls.push(['startupService', msg]),
+    renderLiveCityStats: () => calls.push(['renderLiveCityStats']),
+  };
+
+  const result = {
+    'metadata:cityEntities': {
+      version: 1,
+      entries: {
+        b_blacksmith: {
+          fetchedAt: Date.now(),
+          data: { id: 'b_blacksmith', name: 'Blacksmith' },
+        },
+      },
+    },
+  };
+
+  handleReceiveStorage(result, deps);
+
+  assert.deepStrictEqual(calls, [
+    ['processMetadataData', [{ id: 'b_blacksmith', name: 'Blacksmith' }]],
+    ['setMetadataLoaded', true],
+    ['setLastStartupMsg', initialPendingMsg],
+    ['startupService', initialPendingMsg],
+    ['setPendingStartupMsg', null],
+    ['renderLiveCityStats'],
+  ]);
+});
+
+test('handleStorageChange processes metadata:cityEntities and re-runs startupService', () => {
+  const calls = [];
+  const existingLastStartupMsg = {
+    responseData: { city_map: { entities: [{ id: 88 }] } },
+  };
+
+  const deps = {
+    processMetadataData: (data) => calls.push(['processMetadataData', data]),
+    setMetadataLoaded: (val) => calls.push(['setMetadataLoaded', val]),
+    getLastStartupMsg: () => existingLastStartupMsg,
+    startupService: (msg) => calls.push(['startupService', msg]),
+  };
+
+  const changes = {
+    'metadata:cityEntities': {
+      newValue: {
+        version: 1,
+        entries: {
+          b_tannery: {
+            fetchedAt: Date.now(),
+            data: { id: 'b_tannery', name: 'Tannery' },
+          },
+        },
+      },
+    },
+  };
+
+  handleStorageChange(changes, 'local', deps);
+
+  assert.deepStrictEqual(calls, [
+    ['processMetadataData', [{ id: 'b_tannery', name: 'Tannery' }]],
+    ['setMetadataLoaded', true],
+    ['startupService', existingLastStartupMsg],
+  ]);
+});
+
+test('handleStorageChange updates BuildingEntityLookup', () => {
+  const lookup = {};
+  const deps = {
+    BuildingEntityLookup: lookup,
+  };
+
+  const changes = {
+    BuildingEntityLookup: {
+      newValue: {
+        b_market: 'https://example.invalid/market.json',
+      },
+    },
+  };
+
+  handleStorageChange(changes, 'local', deps);
+
+  assert.strictEqual(lookup.b_market, 'https://example.invalid/market.json');
+});
+
+test('handleReceiveStorage does not render citystats when no startup message is available', () => {
+  const calls = [];
+  const deps = {
+    storage: { getCurrentWorld: () => 'en1', updateCache: () => {} },
+    processMetadataData: (data) => calls.push(['processMetadataData', data]),
+    setMetadataLoaded: (val) => calls.push(['setMetadataLoaded', val]),
+    getPendingStartupMsg: () => null,
+    getLastStartupMsg: () => null,
+    renderLiveCityStats: () => calls.push(['renderLiveCityStats']),
+  };
+
+  const result = {
+    'metadata:cityEntities': {
+      version: 1,
+      entries: {
+        b_blacksmith: {
+          fetchedAt: Date.now(),
+          data: { id: 'b_blacksmith', name: 'Blacksmith' },
+        },
+      },
+    },
+  };
+
+  handleReceiveStorage(result, deps);
+
+  assert.deepStrictEqual(calls, [
+    ['processMetadataData', [{ id: 'b_blacksmith', name: 'Blacksmith' }]],
+    ['setMetadataLoaded', true],
+  ]);
+  assert.strictEqual(
+    calls.some(([fn]) => fn === 'renderLiveCityStats'),
+    false,
+    'renderLiveCityStats should not be called when startup message is absent',
+  );
+});
