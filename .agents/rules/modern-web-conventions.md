@@ -23,12 +23,13 @@ Enforced frontend conventions for the FoE-Info Chrome extension (Chromium-only M
 - Informational, non-error updates use `role="status" aria-live="polite"` (add `aria-atomic` where useful). Reserve `role="alert"` for genuine errors/failures.
 - Copy-to-clipboard actions announce success/failure through the shared live region `#foeCopyStatus` (created lazily in `src/js/utils/copy.js`); reuse the i18n keys `copied` / `copy_failed`.
 - Custom `role="button"` elements activate on **Enter `keydown`** and **Space `keyup`** (guard `e.repeat`); prefer a native `<button type="button">`.
+- Enclose search and filter inputs in a semantic `<search>` element (Chrome 118+ Baseline) rather than a generic `<div>` with `role="search"`.
 - One focusable control per collapse section; sync `aria-expanded` on the label trigger (the icon is `aria-hidden` + `tabindex="-1"`).
 - Data tables carry a `<caption>` (first child) and `<th scope="col|row">`.
 - Popovers expose `aria-haspopup`/`aria-expanded` and dismiss on Escape, returning focus to the trigger.
 
 ### Theming & CSS
-- Use `color-scheme` + `light-dark()` / Bootstrap 5.3 `[data-bs-theme]` tokens; avoid `matchMedia('(prefers-color-scheme: dark)')` + class-toggling for base theming.
+- Use `color-scheme` + `light-dark()` / Bootstrap 5.3 `[data-bs-theme]` tokens (set `document.documentElement.dataset.bsTheme = 'dark'|'light'`); avoid legacy class-toggling (`bg-dark`, `text-light`) for base theming.
 - Prefer standard `scrollbar-color` / `scrollbar-width` with `::-webkit-scrollbar` as fallback; honor `prefers-contrast: more`.
 - Honor `prefers-reduced-motion: reduce` for any transition/animation.
 - Prefer container queries (`@container`) for resizable docked panels over viewport `@media` alone.
@@ -41,6 +42,7 @@ Enforced frontend conventions for the FoE-Info Chrome extension (Chromium-only M
 ### Performance
 - Defer work through `src/js/utils/scheduler.js` (`yieldToMain()`, `postBackgroundTask()`), not bare `setTimeout`.
 - Heavy independent renders yield between steps.
+- Use `content-visibility: auto` with `contain-intrinsic-size` on long scrollable lists or dense data tables (e.g. GB contributions, large inventories) to defer offscreen layout and paint.
 - Non-critical enrichment/network fetches pass `{ priority: 'low' }`.
 - Reuse one long-lived `ResizeObserver` (disconnect before re-observing) instead of constructing one per render.
 - Cache `Intl.NumberFormat` per locale; batch DOM writes (no `innerHTML +=`); split long tasks.
