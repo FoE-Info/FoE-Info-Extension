@@ -60,3 +60,4 @@ Antigravity operates directly against the repository's canonical `.agents/` conf
 
 - Tools, subagent execution, and lifecycle hooks are documented in [.agents/references/antigravity-environment.md](../.agents/references/antigravity-environment.md).
 - Verification gates and pipelines are defined in [docs/COMMANDS.md](COMMANDS.md).
+- Automation opportunities and Python SDK integration design are documented in [docs/specs/2026-09-19-google-antigravity-sdk-automation.md](specs/2026-09-19-google-antigravity-sdk-automation.md).

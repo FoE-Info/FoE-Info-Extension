@@ -18,7 +18,11 @@ try {
 let helper = null;
 try {
   helper = require('../fn/helper.js');
-} catch {}
+} catch {
+  try {
+    helper = require('../calc/eraMapping.js');
+  } catch {}
+}
 
 let renderCityStats = null;
 try {
@@ -75,6 +79,11 @@ const {
   buildClanGoodsData,
 } = require('../calc/goodsTooltipFormatter.js');
 
+let getEraAcronym = (era) => String(era || '').toUpperCase();
+try {
+  ({ getEraAcronym } = require('../calc/utils/eraUtils.js'));
+} catch {}
+
 function renderLiveCityStats(ctx = {}) {
   const renderStart = performance.now();
   logger?.info(
@@ -90,6 +99,23 @@ function renderLiveCityStats(ctx = {}) {
       new BigNumber(1).plus(goodsBoostPercent.dividedBy(100))
     : null;
 
+  const aidStats =
+    ctx.lastStartupContext?.aidStats || ctx.aidStats || City.aidStats || null;
+
+  const maxEraGoodsMap = {};
+  if (aidStats?.max?.goodsByEra) {
+    for (const [eraKey, amt] of Object.entries(aidStats.max.goodsByEra)) {
+      const acronym = getEraAcronym(eraKey).toLowerCase();
+      const bnAmt = BigNumber.isBigNumber(amt) ? amt : new BigNumber(amt || 0);
+      if (bnAmt.gt(0)) {
+        maxEraGoodsMap[acronym] = (
+          maxEraGoodsMap[acronym] || new BigNumber(0)
+        ).plus(bnAmt);
+      }
+    }
+  }
+  const hasMaxEraGoods = Object.keys(maxEraGoodsMap).length > 0;
+
   const goodsByEra = {};
   let totalGoodsAmount = new BigNumber(0);
   let liveGoodsHTML = '';
@@ -97,35 +123,47 @@ function renderLiveCityStats(ctx = {}) {
   const activeGoodsTooltips =
     ctx.lastStartupContext?.tooltipHTML?.goods || ctx.tooltipHTML?.goods || {};
 
-  const numAges = helper?.numAges || 23;
+  const activeHelper = ctx.helper || helper;
+  const numAges = activeHelper?.numAges || 23;
   for (let index = 0; index < numAges; index++) {
     const age =
-      helper?.fGVGagesname && helper?.fAgefromLevel ?
-        helper.fGVGagesname(helper.fAgefromLevel(numAges - index)).toLowerCase()
+      activeHelper?.fGVGagesname && activeHelper?.fAgefromLevel ?
+        activeHelper
+          .fGVGagesname(activeHelper.fAgefromLevel(numAges - index))
+          .toLowerCase()
       : '';
     if (!age) continue;
 
-    const rawAmt = (Goods && Goods[age]) || 0;
+    const maxAmtBn = maxEraGoodsMap[age];
+    const rawAmt =
+      hasMaxEraGoods ?
+        maxAmtBn ? maxAmtBn.toNumber()
+        : 0
+      : (Goods && Goods[age]) || 0;
+
     if (rawAmt > 0) {
       const boostedAmt =
-        goodsBoostMultiplier ?
+        hasMaxEraGoods ? maxAmtBn || new BigNumber(rawAmt)
+        : goodsBoostMultiplier ?
           new BigNumber(rawAmt)
             .multipliedBy(goodsBoostMultiplier)
             .integerValue(BigNumber.ROUND_HALF_UP)
         : new BigNumber(rawAmt);
+
       goodsByEra[age] = boostedAmt;
       totalGoodsAmount = totalGoodsAmount.plus(boostedAmt);
       liveGoodsHTML += fGoodsHTML(
         age,
         activeGoodsTooltips,
-        Goods,
-        City.goodsProductionBoost,
+        hasMaxEraGoods ? { [age]: boostedAmt.toNumber() } : Goods,
+        hasMaxEraGoods ? 0 : City.goodsProductionBoost,
       );
     }
   }
 
-  const aidStats =
-    ctx.lastStartupContext?.aidStats || ctx.aidStats || City.aidStats || null;
+  if (aidStats?.max?.goods && aidStats.max.goods.gt(0)) {
+    totalGoodsAmount = aidStats.max.goods;
+  }
 
   const maxTotalFp =
     aidStats?.max?.fp && aidStats.max.fp.gt(0) ?
