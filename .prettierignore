@@ -1,6 +1,9 @@
 node_modules
 build
 package-lock.json
+uv.lock
+mise.lock
+*.toml
 .idea
 src/js/fn/constants.js
 .agents/
