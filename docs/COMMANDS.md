@@ -20,7 +20,7 @@ Run all commands from workspace root.
 | **Agent Tests**       | `npm run test:agents`             | Shared harness, curator, hooks, and memory tests         |
 | **Watch**             | `npm run dev`                     | Webpack watch mode                                       |
 | **Prod Build**        | `npm run build`                   | Webpack production bundle                                |
-| **CDP Browser**       | `foe-browser [--restart]`         | Isolated Chromium on port 9222                           |
+| **OpenCLI Browser**   | `npm run browser:doctor`          | Check OpenCLI daemon & browser bridge status             |
 | **Metadata Download** | `npm run metadata:download`       | Ingest live InnoGames entity datasets                    |
 | **Metadata Query**    | `npm run metadata:query`          | Query offline entity database                            |
 

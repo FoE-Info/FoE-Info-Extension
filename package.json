@@ -14,8 +14,10 @@
   "type": "commonjs",
   "scripts": {
     "browser": "foe-browser",
+    "browser:doctor": "opencli doctor",
     "browser:reload": "foe-browser --reload-ext",
     "browser:restart": "foe-browser --restart",
+    "browser:tabs": "opencli browser default tab list",
     "build": "webpack --config webpack.config.js --env target=prod",
     "build:beta": "webpack --config webpack.config.js --env target=beta",
     "build:dev": "webpack --config webpack.config.js --env target=dev",
