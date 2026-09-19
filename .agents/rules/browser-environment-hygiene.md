@@ -5,16 +5,19 @@ description: Strict invariant prohibiting autonomous browser launches, restarts,
 
 # Rule: Browser Environment Hygiene
 
-## Zero autonomous browser control
+## Zero autonomous browser interference
 
-The agent and every background process (MCP servers, subagents, hooks, scripts) must never launch `foe-browser`, attach over CDP, steal window focus, navigate, reload a game tab, or close browser tabs without the user's explicit permission in the current prompt.
+The agent and every background process (tools, subagents, hooks, scripts) must never steal window focus, navigate away, reload active game tabs, or close browser tabs.
 
-- Background MCP servers such as `chrome-devtools` stay passive. They never spawn a browser window or launch `foe-browser` when port 9222 is offline.
-- Never close existing browser tabs or navigate away from an active game session. No destructive reloads, no deduplication that kills tabs.
-- Standard verification runs headless: `npm test`, `npm run verify`, and friends. Do not reach for a browser to check routine work.
-- Global opencode plugins that can spawn or attach to a browser (for example `opencode-browser` from `~/.config/opencode/opencode.json`) must not be relied on while this invariant holds. Use only the passive `chrome-devtools` MCP server for inspection, and disable any global browser-automation plugin that violates this rule.
-- The game client sends its full state once, at boot. The user reloads the game tab when they want fresh data, never the agent.
+- **Primary Browser Interface**: Browser observation and testing rely on OpenCLI (`@jackwener/opencli`) via the local daemon (`localhost:19825`) and its lightweight browser bridge extension.
+- **Mandatory Background Invariant**: All browser session commands must use `--window background` to guarantee zero tab activation, window resizing, or focus stealing during gameplay.
+- **Dual-Mode Operational Boundary**:
+  - **Game Tabs (`*forgeofempires.com*`)**: Strictly **read-only observation**. The agent may inspect network RPC payloads (`opencli browser <session> network`) and monitor engine console output (`opencli browser <session> console`). The agent must **NEVER** trigger automated clicks, keystrokes, navigation, or form fills on game tabs.
+  - **Extension Panel (`chrome-extension://*`)**: Active debugging and verification are permitted (querying DOM state with `opencli browser <session> state`, testing buttons, auditing memory and exceptions).
+- **Tab Lifecycle**: Never close existing tabs or deduplicate tabs destructively. The game client transmits its full state once at initial boot (`StartupService.getData`); reloading is strictly user-controlled.
+- **Headless First**: Standard verification runs headless (`npm test`, `npm run verify`). Routine tasks must not reach for browser interaction when headless tests suffice.
 
-## Once the user has approved browser work
+## When browser interaction is requested
 
-Load `.agents/references/browser-test-environment.md` for the isolated profile, hardware flags, debug port, console-inspection protocol, and the `foe-browser` CLI.
+Load `.agents/references/browser-test-environment.md` for OpenCLI daemon commands, session binding syntax, network RPC observation, and extension panel debugging procedures.
+

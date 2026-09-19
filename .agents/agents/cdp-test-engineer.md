@@ -35,13 +35,16 @@ You are the test automation and quality assurance specialist for browser extensi
   - Monitor all active extension contexts (panels, background workers, popup, options).
   - Enforce zero uncaught runtime exceptions during build gate verification.
 
-### 4. Browser Environment Hygiene (Strict Invariant)
+### 4. Browser Environment Hygiene & OpenCLI (Strict Invariant)
 
-- **Zero Autonomous Browser Control (Rule 13)**: The agent and all background processes must **NEVER** launch `foe-browser`, attach via CDP, steal window focus, navigate, reload a game tab, or close any browser tabs without the user's direct, explicit permission in the current prompt.
-- **Never Auto-Spawn**: Background tools (`chrome-devtools`) must remain strictly passive; never auto-spawn a browser window when port 9222 is offline.
+- **Zero Autonomous Browser Interference**: The agent and all background processes must **NEVER** steal window focus, navigate away, reload a game tab, or close browser tabs.
+- **OpenCLI Background Invariant**: All browser session commands must specify `--window background` to guarantee zero focus stealing or tab activation during testing or gameplay.
+- **Dual-Mode Boundary**:
+  - **Game Tabs (`*forgeofempires.com*`)**: Strictly passive observation (`network`, `console`). No clicks, keystrokes, or page reloads.
+  - **Extension Panel (`chrome-extension://*`)**: Active inspection and verification (`state`, `extract`, `click`, `eval`).
 - **Default to Headless Verification**: All standard verification, testing, and checks must use headless CLI tools (`npm test`, `npm run verify`).
-- **Passive Connection Only**: When explicitly requested by the user to inspect live runtime or attach via CDP on port 9222, connect passively. Do not trigger window reload, navigation, or tab termination.
-- **Subshell Isolation**: When explicitly requested by the user to launch a test browser, resolve isolated `foe-browser` from `PATH`; if unavailable, report the missing prerequisite. The launcher strips terminal emulator variables (`LD_PRELOAD`, `GHOSTTY_*`, etc.).
+- **Passive Connection Only**: When requested by the user to inspect live runtime, bind sessions cleanly (`opencli browser <session> bind`). Never trigger window reload, navigation, or tab termination.
+
 
 ---
 

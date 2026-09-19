@@ -1,37 +1,58 @@
-# Browser Test Environment
+# Browser Test Environment: OpenCLI Workflow
 
-Operational detail for the isolated Chromium instance, the CDP port, and the extension console protocol. The always-on prohibition lives in `.agents/rules/browser-environment-hygiene.md`; this file is the reference you load once the user has actually approved browser work.
+Operational reference for browser observation, telemetry capture, and extension panel testing via **OpenCLI** (`@jackwener/opencli` v1.8.7). The always-on invariants live in `.agents/rules/browser-environment-hygiene.md`.
 
-## Subshell and terminal environment isolation
+## OpenCLI Architecture
 
-Never launch development browser instances directly inside terminal emulator subshells (Ghostty, Kitty) or subagent environments without stripping environment variables.
+OpenCLI operates via a local daemon on port `19825` that communicates with the user's primary browser through the lightweight OpenCLI Browser Bridge Chrome extension.
 
-When the user explicitly asks for a test browser, resolve the dedicated `foe-browser` command from `PATH`. It isolates the desktop environment and unsets terminal pollution variables: `LD_PRELOAD`, `GHOSTTY_*`, `LIBGL_*`, `MESA_*`, `ELECTRON_*`, `TERM`, `VTE_VERSION`. If the command is unavailable, stop and report that prerequisite instead of guessing a workstation path.
+- **Daemon endpoint**: `http://localhost:19825`
+- **Bridge extension**: Connects existing browser tabs without launching isolated browser instances or stealing window focus.
 
-## Hardware acceleration flags and isolated profile
+## Background Non-Interference Invariant
 
-Chromium runs decoupled via `setsid -f` with `--enable-zero-copy`, `--enable-features=AcceleratedVideoEncoder`, and `--disable-session-crashed-bubble`, against a dedicated profile at `~/.config/foe-info-chrome-profile`.
+All commands interacting with browser sessions **must** specify `--window background` to avoid stealing window focus or activating tabs while the user is actively working or playing.
 
-## Remote debugging port
+## Common Operational Workflows
 
-Port `9222` is bound by the external `foe-browser` launcher with `--remote-debugging-port=9222` and `--remote-debugging-address=0.0.0.0`. The launcher is not tracked in this repository.
+### 1. Health check & session discovery
+```bash
+# Check daemon and browser bridge status
+opencli doctor
 
-## Extension console and error inspection (panel.html context)
+# List open browser tabs in a session
+opencli browser default tab list
 
-- Inspect live extension output against the DevTools panel context (`chrome-extension://.../panel.html`) using `.agents/scripts/inspect-extension.js`.
-- Subscribe to `Runtime.exceptionThrown` and `Log.entryAdded` over CDP. Static initial window state misses exceptions that fire later.
-- `panel.html` runs inside an iframe under the main DevTools window (`devtools_app.html`), so CDP queries must filter for `url.includes('panel.html')`.
+```
 
-## Game lifecycle: reload is user-controlled
+### 2. Binding to target tabs
+```bash
+# Bind to the active Forge of Empires tab (strictly read-only observation)
+opencli browser foe-game bind --url "*forgeofempires.com*"
 
-The FoE game client transmits its full city topology, buildings, inventory, era, and production multipliers once, during initial boot, via `StartupService.getData`. Rebuilding or reloading the extension resets the DevTools panel, so the user reloads the game tab when they are ready to ingest fresh data. The agent never triggers a page reload on its own.
+# Bind to the FoE-Info extension DevTools panel
+opencli browser foe-panel bind --url "chrome-extension://*/panel.html"
+```
 
-## CLI control commands
+### 3. Passive game telemetry observation (Read-Only)
+```bash
+# Inspect recent network requests / JSON-RPC payloads
+opencli browser foe-game network
 
-| Command | Effect |
-| :--- | :--- |
-| `foe-browser` | Start or attach passively. Does not reload the game or close tabs. |
-| `foe-browser --reload` | Start or attach, then reload the game tab. |
-| `foe-browser --restart` | Clean restart with cleared session files. |
-| `foe-browser --stop`, `--kill` | Gracefully terminate the running test browser. |
-| `foe-browser --world <world>` | Target a specific game world, e.g. `--world en7`. |
+# Monitor browser console warnings/errors
+opencli browser foe-game console
+```
+
+### 4. Extension panel testing & inspection
+```bash
+# Extract panel DOM structure
+opencli browser foe-panel state
+
+# Query runtime properties or execute inspection
+opencli browser foe-panel eval "window.location.href"
+```
+
+## Game Lifecycle Note
+
+The FoE game client transmits its full city topology, buildings, inventory, era, and production multipliers once, during initial boot (`StartupService.getData`). The user reloads the game tab when ready for fresh data; the agent never forces a reload on active game sessions.
+

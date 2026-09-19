@@ -6,17 +6,17 @@ description: 'Troubleshoot DevTools MCP port binding and attachment.'
 
 You are acting as a troubleshooting wizard to help the user configure and fix their Chrome DevTools MCP server setup. When this skill is triggered (e.g., because `list_pages`, `new_page`, or `navigate_page` failed, or the server wouldn't start), follow this step-by-step diagnostic process:
 
-### Step 1: Find and Read Configuration
+### Step 1: Find and Read Configuration & Bridge Health
 
-Your first action should be to locate and read the MCP configuration file. Inspect the workspace configuration in `.agents/mcp_config.json` (the `chrome-devtools` entry: `command` + `args` including `--browserUrl=http://127.0.0.1:9222`), the matching `opencode.json` entry, or the global configuration `~/.gemini/config/config.json`. (Note: In this repository, the test browser is managed via `foe-browser` on CDP port 9222; launch `foe-browser` if the port is down).
+Your first action should be to check the browser bridge health and daemon status:
+```bash
+opencli doctor
+```
+If using OpenCLI (the project's standard browser environment), ensure:
+1. The OpenCLI daemon is running on port `19825`.
+2. The OpenCLI Browser Bridge extension is loaded in Chrome and connected.
+3. If checking headless CDP or mock pipelines, verify the MCP configuration file in `.agents/mcp_config.json` or `~/.gemini/config/config.json`.
 
-If you find a configuration file, read and interpret it to identify potential issues such as:
-
-- Incorrect arguments or flags.
-- Missing environment variables or un-sandboxed wrapper flags.
-- Verification whether CDP port 9222 is alive (`curl -s http://127.0.0.1:9222/json/version`).
-
-If you cannot find any of these files, only then should you ask the user to provide their configuration file content.
 
 ### Step 2: Triage Common Connection Errors
 
