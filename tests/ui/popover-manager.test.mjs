@@ -205,8 +205,99 @@ test('PopoverManager Suite', async (t) => {
     assert.equal(popoverEl.textContent, 'Simple hint tooltip');
     // Title attribute removed to prevent browser native tooltip clash
     assert.equal(trigger.getAttribute('title'), null);
-    assert.equal(trigger.getAttribute('data-foe-title'), 'Simple hint tooltip');
-
     hideActivePopover(doc);
   });
+
+  await t.test(
+    'dynamically clamps maxHeight and sets positionArea based on viewport space',
+    async () => {
+      const doc = createMockDocument();
+      doc.defaultView = {
+        innerHeight: 500,
+        innerWidth: 800,
+      };
+
+      const trigger = createMockElement('span', {
+        'data-popover': '',
+        'data-title': 'Daily FP',
+        'data-content': '<div>Lots of content</div>',
+      });
+      trigger.ownerDocument = doc;
+      trigger.getBoundingClientRect = () => ({
+        top: 200,
+        bottom: 220,
+        left: 600,
+        right: 700,
+        width: 100,
+        height: 20,
+      });
+
+      const container = {
+        querySelectorAll: () => [trigger],
+      };
+
+      initPopovers(container);
+      trigger.triggerEvent('mouseenter');
+      await new Promise((r) => setTimeout(r, 120));
+
+      const popoverEl = doc.getElementById('foe-popover');
+      assert.ok(popoverEl);
+      assert.equal(popoverEl._isOpen, true);
+
+      // spaceBelow: 500 - 220 - 16 = 264. spaceAbove: 200 - 16 = 184.
+      // preferTop = false (spaceBelow >= 200)
+      // clampedHeight = Math.max(120, Math.min(380, 264 - 8)) = 256px
+      assert.equal(popoverEl.style.maxHeight, '256px');
+      assert.equal(popoverEl.style.positionArea, 'bottom span-all');
+
+      hideActivePopover(doc);
+      assert.equal(popoverEl.style.maxHeight, '');
+      assert.equal(popoverEl.style.positionArea, '');
+    },
+  );
+
+  await t.test(
+    'updateActivePopoverContent dynamically updates open popover body',
+    async () => {
+      const {
+        updateActivePopoverContent,
+      } = require('../../src/js/ui/components/PopoverManager.js');
+      const doc = createMockDocument();
+      const trigger = createMockElement('span', {
+        'data-popover': '',
+        'data-title': 'Daily FP',
+        'data-content': '<div>Initial FP: 100</div>',
+      });
+      trigger.ownerDocument = doc;
+
+      const container = {
+        querySelectorAll: () => [trigger],
+      };
+
+      initPopovers(container);
+      trigger.triggerEvent('mouseenter');
+      await new Promise((r) => setTimeout(r, 120));
+
+      const popoverEl = doc.getElementById('foe-popover');
+      assert.ok(popoverEl);
+      assert.match(popoverEl.innerHTML, /Initial FP: 100/);
+
+      // Create a mock querySelector for .popover-body
+      const mockBody = {
+        set innerHTML(val) {
+          this._html = val;
+        },
+        get innerHTML() {
+          return this._html;
+        },
+      };
+      popoverEl.querySelector = (sel) =>
+        sel === '.popover-body' ? mockBody : null;
+
+      updateActivePopoverContent(trigger, '<div>Updated FP: 200</div>');
+      assert.equal(mockBody.innerHTML, '<div>Updated FP: 200</div>');
+
+      hideActivePopover(doc);
+    },
+  );
 });

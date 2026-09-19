@@ -13,6 +13,13 @@ try {
   const bootstrap = require('bootstrap');
   Popover = bootstrap.Popover;
 } catch {}
+
+let updateActivePopoverContent = null;
+try {
+  ({
+    updateActivePopoverContent,
+  } = require('../ui/components/PopoverManager.js'));
+} catch {}
 const { applyBoostsToCity } = require('./BoostService.js');
 
 /**
@@ -86,6 +93,9 @@ function handleBoostServiceAllBoosts({
       if (tooltipHTML?.fp && !tooltipHTML.fp.includes('Boost =')) {
         tooltipHTML.fp += `<br><strong>Base: ${totalBase.toString()}FP (+${City.fpProductionBoost}% Boost = ${City.ForgePoints}FP)</strong>`;
         fpSpan.setAttribute('data-bs-content', tooltipHTML.fp);
+        if (typeof updateActivePopoverContent === 'function') {
+          updateActivePopoverContent(fpSpan, tooltipHTML.fp);
+        }
         const popover =
           Popover?.getInstance ? Popover.getInstance(fpSpan) : null;
         if (popover) {
