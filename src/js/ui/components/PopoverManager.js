@@ -104,12 +104,21 @@ function bindPopoverElementEvents(popoverEl) {
 /**
  * Clears the active anchor CSS property and resets aria-expanded on trigger.
  */
-function clearActiveAnchor() {
+function clearActiveAnchor(doc) {
   if (activeTrigger) {
     try {
       activeTrigger.style.removeProperty('anchor-name');
       activeTrigger.setAttribute('aria-expanded', 'false');
     } catch {}
+    const targetDoc =
+      doc || (activeTrigger ? activeTrigger.ownerDocument : null) || document;
+    const popoverEl = targetDoc?.getElementById?.('foe-popover');
+    if (popoverEl) {
+      popoverEl.style.maxHeight = '';
+      popoverEl.style.positionArea = '';
+      popoverEl.style.top = '';
+      popoverEl.style.left = '';
+    }
     activeTrigger = null;
   }
 }
@@ -178,6 +187,38 @@ function showPopoverForTrigger(triggerEl) {
       }
       html += `<div class="popover-body">${content}</div>`;
       popoverEl.innerHTML = html;
+    }
+
+    const win =
+      doc.defaultView || (typeof window !== 'undefined' ? window : null);
+    const winHeight = win?.innerHeight || 600;
+    const winWidth = win?.innerWidth || 800;
+    const rect =
+      typeof triggerEl.getBoundingClientRect === 'function' ?
+        triggerEl.getBoundingClientRect()
+      : { top: 0, bottom: 0, left: 0, right: 0, width: 0, height: 0 };
+
+    const spaceBelow = winHeight - rect.bottom - 16;
+    const spaceAbove = rect.top - 16;
+    const preferTop = spaceBelow < 200 && spaceAbove > spaceBelow;
+    const maxAvailHeight = preferTop ? spaceAbove : spaceBelow;
+    const clampedHeight = Math.max(120, Math.min(380, maxAvailHeight - 8));
+
+    popoverEl.style.maxHeight = `${clampedHeight}px`;
+    popoverEl.style.positionArea =
+      preferTop ? 'top span-all' : 'bottom span-all';
+
+    // Fallback coordinates when CSS Anchor Positioning is not active
+    if (
+      typeof CSS === 'undefined' ||
+      !CSS.supports ||
+      !CSS.supports('position-anchor', '--foo')
+    ) {
+      const top =
+        preferTop ? Math.max(8, rect.top - clampedHeight - 6) : rect.bottom + 6;
+      const left = Math.max(8, Math.min(rect.left, winWidth - 330));
+      popoverEl.style.top = `${top}px`;
+      popoverEl.style.left = `${left}px`;
     }
 
     if (typeof popoverEl.showPopover === 'function') {
@@ -301,9 +342,27 @@ function initPopovers(container) {
   }
 }
 
+/**
+ * Dynamically updates the content of the currently active popover if open for this trigger.
+ * @param {HTMLElement} triggerEl
+ * @param {string} newContent
+ */
+function updateActivePopoverContent(triggerEl, newContent) {
+  if (!triggerEl || activeTrigger !== triggerEl) return;
+  const doc = triggerEl.ownerDocument || document;
+  const popoverEl = doc?.getElementById?.('foe-popover');
+  if (popoverEl) {
+    const body = popoverEl.querySelector('.popover-body');
+    if (body && newContent) {
+      body.innerHTML = newContent;
+    }
+  }
+}
+
 module.exports = {
   initPopovers,
   hideActivePopover,
   getOrCreatePopoverElement,
+  updateActivePopoverContent,
 };
 module.exports.default = initPopovers;
