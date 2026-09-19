@@ -27,7 +27,7 @@
     "dev": "webpack --config webpack.config.js --env target=dev --watch",
     "format": "prettier --write .",
     "graph:foe-info:ast": "bash .agents/scripts/graph-foe-info-ast.sh",
-    "graph:foe-info:export": "GRAPHIFY_OUT=graphify-out/foe-info graphify export wiki && GRAPHIFY_OUT=graphify-out/foe-info graphify export callflow-html && GRAPHIFY_OUT=graphify-out/foe-info graphify export obsidian && GRAPHIFY_OUT=graphify-out/foe-info graphify export svg && GRAPHIFY_OUT=graphify-out/foe-info graphify export html && GRAPHIFY_OUT=graphify-out/foe-info graphify tree",
+    "graph:foe-info:export": "GRAPHIFY_OUT=graphify-out/foe-info uv run graphify export wiki && GRAPHIFY_OUT=graphify-out/foe-info uv run graphify export callflow-html && GRAPHIFY_OUT=graphify-out/foe-info uv run graphify export obsidian && GRAPHIFY_OUT=graphify-out/foe-info uv run graphify export svg && GRAPHIFY_OUT=graphify-out/foe-info uv run graphify export html && GRAPHIFY_OUT=graphify-out/foe-info uv run graphify tree",
     "graph:foe-info:reindex": "bash .agents/scripts/graph-foe-info-reindex.sh",
     "graph:foe-info:watch": "GRAPHIFY_OUT=graphify-out/foe-info bash .agents/scripts/run-graphify-local.sh watch .",
     "graph:foe-info-original:ast": "bash .agents/scripts/graph-foe-info-original-ast.sh",
