@@ -3,7 +3,7 @@
 **Author:** Antigravity & OpenCode  
 **Date:** 2026-09-12  
 **Target Branch:** `feat/context-view-engine` (OpenCode) & `feat/goods-and-panel-lifecycle` (Antigravity) $\to$ `development`  
-**Status:** Approved for Parallel Execution
+**Status:** Completed & Merged (2026-09-12) — 6-context engine (`CONTEXT_ALLOWED_PANELS`) and `renderGoodsPanel` lifecycle shipped.
 
 ---
 

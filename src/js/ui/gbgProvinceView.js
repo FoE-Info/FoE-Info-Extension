@@ -90,9 +90,9 @@ function buildBuildingCostsTableHTML({
       name0 = name0.substr(0, 2);
     }
 
-    costsHTML += `<tr><th>${name0 + name1}${
+    costsHTML += `<tr><th scope="col">${name0 + name1}${
       slots ? ' [' + slots + ']' : ''
-    }</th><th>Resource 1</th><th>Qty</th><th>Resource 2</th><th>Qty</th><th>Resource 3</th><th>Qty</th></tr>`;
+    }</th><th scope="col">Resource 1</th><th scope="col">Qty</th><th scope="col">Resource 2</th><th scope="col">Qty</th><th scope="col">Resource 3</th><th scope="col">Qty</th></tr>`;
     costs.forEach((building) => {
       const bName =
         BuildingDefs && BuildingDefs[building.buildingId]?.name ?
@@ -150,6 +150,7 @@ function buildBuildingCostCardHTML({
     <strong>GBG Building Costs:</strong></p>` +
     copyBtn +
     `<table style="height: ${height}px"  id="buildingCostText" class="overflow-y table collapse ${isShow}">` +
+    `<caption class="visually-hidden"><span data-i18n="gbg_building_costs">GBG Building Costs</span></caption>` +
     costsHTML +
     `</table></div>`
   );
@@ -247,13 +248,14 @@ function renderBuildingCostCard({
 }
 
 function buildLeaderboardHTML(leaderboard = []) {
-  let leaderboardHTML = `<tr><th class="text-start">Guild</th><th class="text-center">VP/hr</th><th class="text-center">Total VP</th></tr>`;
+  let leaderboardHTML = `<thead><tr><th scope="col" class="text-start">Guild</th><th scope="col" class="text-center">VP/hr</th><th scope="col" class="text-center">Total VP</th></tr></thead><tbody>`;
   (leaderboard || []).forEach((guild) => {
     const name = guild?.clan?.name || '';
     const vpHourly = Number(guild?.victoryPointsHourly || 0).toLocaleString();
     const vpTotal = Number(guild?.victoryPointsTotal || 0).toLocaleString();
     leaderboardHTML += `<tr><td class="text-start">${name}</td><td class="text-center tabular-nums">${vpHourly}</td><td class="text-center tabular-nums">${vpTotal}</td></tr>`;
   });
+  leaderboardHTML += `</tbody>`;
   return leaderboardHTML;
 }
 

@@ -37,6 +37,8 @@
   "incident": "Incidents",
   "rank": "Rank",
   "status": "Live Status",
+  "player_status": "Status",
+  "gbg_building_costs": "GBG Building Costs",
   "treasury": "Treasury",
   "ge": "GE",
   "rogues": "Rogues",

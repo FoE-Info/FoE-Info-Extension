@@ -1,7 +1,7 @@
 # GB Donation + Rewards Routing — Continuation Plan
 
 **Date**: 2026-09-12
-**Status**: active plan (awaiting decisions on §5)
+**Status**: Completed & Shipped (2026-09-12) — §5 single-source reward routing shipped via `rewardCategories.js`; dead branches cleaned up; FP packages surfaced in `renderGbDonationPanel.js`.
 **Baseline commit**: `421591e` — `fix(gb): restore lock-based donation NET and safe-spot targeting`
 
 Related docs:
