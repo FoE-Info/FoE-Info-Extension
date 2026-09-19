@@ -11,6 +11,7 @@ const {
   escapeHtml,
   formatCritStrikeHTML,
   formatUnitsHTML,
+  buildUnaidedIndicatorHTML,
 } = require('../components/statFormatters.js');
 
 let showOptions = {};
@@ -104,13 +105,26 @@ function buildOwnCityCard({
   const showCoinBoost = showOptions.showCoinBoost !== false;
   const showSupplyBoost = showOptions.showSupplyBoost !== false;
 
+  const coinUnaidedHTML = buildUnaidedIndicatorHTML({
+    resource: 'coins',
+    aidStats: stats.aidStats || playerInfo.aidStats,
+    prefix,
+    exact,
+  });
+  const supplyUnaidedHTML = buildUnaidedIndicatorHTML({
+    resource: 'supplies',
+    aidStats: stats.aidStats || playerInfo.aidStats,
+    prefix,
+    exact,
+  });
+
   const dailyCoinsHTML =
     showDailyCoins ?
-      `<div><span data-i18n="stat_coins">Coins</span>: ${formatStatNumber(coins?.total ?? 0, { exact, comma: true })}${showCoinBoost && coinBoostVal > 0 ? ` (+${coins.boostPercent}%)` : ''}</div>`
+      `<div><span data-i18n="stat_coins">Coins</span>: ${formatStatNumber(coins?.total ?? 0, { exact, comma: true })}${showCoinBoost && coinBoostVal > 0 ? ` (+${coins.boostPercent}%)` : ''}${coinUnaidedHTML}</div>`
     : '';
   const dailySuppliesHTML =
     showDailySupplies ?
-      `<div><span data-i18n="stat_supplies">Supplies</span>: ${formatStatNumber(supplies?.total ?? 0, { exact, comma: true })}${showSupplyBoost && supplyBoostVal > 0 ? ` (+${supplies.boostPercent}%)` : ''}</div>`
+      `<div><span data-i18n="stat_supplies">Supplies</span>: ${formatStatNumber(supplies?.total ?? 0, { exact, comma: true })}${showSupplyBoost && supplyBoostVal > 0 ? ` (+${supplies.boostPercent}%)` : ''}${supplyUnaidedHTML}</div>`
     : '';
   const specBonusesHTML = `${arcBonusHTML}${cfBonusHTML}${critStrikeHTML}`;
   const unitsHTML = formatUnitsHTML(
