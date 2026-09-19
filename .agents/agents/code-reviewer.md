@@ -95,7 +95,7 @@ Every code review must evaluate the diff against these 8 mandatory gates:
 
 ### Commit & Git Hygiene (unslop-commit)
 
-Enforce the standards in `.agents/skills/unslop-commit/SKILL.md` (Rule 15):
+Enforce the standards in `.agents/rules/unslop-commit.md`:
 
 - **Banned AI Slop Words**: REJECT commit messages containing marketing fluff or generic AI phrasing (`"comprehensive"`, `"seamlessly"`, `"leverage"`, `"robust implementation"`, `"meticulously"`, `"streamlined"`, `"This commit..."`).
 - **Format & Length**: Must follow Conventional Commits (`type(scope): imperative summary`). Target $\le 50$ characters for the subject line (hard ceiling 72).

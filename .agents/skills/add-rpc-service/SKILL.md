@@ -50,14 +50,14 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
 
 ---
 
-## Phase 4: End-to-End Contract Propagation Audit
+## Phase 4: End-to-End Contract & RPC Verification
 
-Audit the new service contract across every pipeline stage using the `cross-platform-contract-propagation-audit` skill:
+Verify the new service contract across every pipeline stage and run `npm run rpc:contract:check`:
 
 1. **Wire Ingestion**: Confirm `xhrInterceptor.js` and `contentBridge.js` bridge the payload without dropping properties.
 2. **State & Storage**: Confirm state attributes are saved to `MetadataStore` or `src/js/vars/` with defensive defaults (`?.`, `??`).
 3. **DOM Presentation**: Confirm all user-visible text is safely inserted using `textContent` or sanitized elements (no unescaped `.html()`).
-4. **Deterministic Fixture**: Add a sample payload to `tests/protocol/` asserting envelope extraction and parsing without runtime errors.
+4. **Deterministic Fixture & Gate**: Add a sample payload to `tests/protocol/` asserting envelope extraction and parsing without runtime errors, then run `npm run rpc:contract:check`.
 
 ---
 
