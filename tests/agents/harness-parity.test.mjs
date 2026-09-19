@@ -47,27 +47,16 @@ test('Canonical skills satisfy frontmatter rules', () => {
   }
 });
 
-test('Shared adapter exists and is linked by workflow skills', () => {
+test('Shared adapter exists and is linked by documentation', () => {
   const adapter = path.join(AGENTS_DIR, 'references', 'harness-adapters.md');
   assert.ok(
     fs.existsSync(adapter),
     'Missing .agents/references/harness-adapters.md',
   );
 
-  const linked = [
-    'writing-skills',
-    'writing-agents',
-    'writing-rules',
-    'writing-hooks',
-  ];
-  for (const skill of linked) {
-    const body = fs.readFileSync(
-      path.join(AGENTS_DIR, 'skills', skill, 'SKILL.md'),
-      'utf8',
-    );
-    assert.ok(
-      body.includes('references/harness-adapters.md'),
-      `${skill} does not link the shared harness adapter`,
-    );
-  }
+  const handoff = fs.readFileSync(path.resolve('docs/HANDOFF.md'), 'utf8');
+  assert.ok(
+    handoff.includes('.agents/references/harness-adapters.md'),
+    'docs/HANDOFF.md does not link the shared harness adapter',
+  );
 });
