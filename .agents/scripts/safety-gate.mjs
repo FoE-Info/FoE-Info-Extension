@@ -186,7 +186,13 @@ export function isDangerousCommand(cmd) {
     return true;
   }
 
-  for (const segment of tokenizeCommand(cmd)) {
+  for (let segment of tokenizeCommand(cmd)) {
+    while (
+      segment.length > 0 &&
+      (segment[0] === 'rtk' || segment[0] === 'proxy')
+    ) {
+      segment = segment.slice(1);
+    }
     if (isDangerousRmTokens(segment)) return true;
     if (nestedShellDanger(segment)) return true;
   }

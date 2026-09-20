@@ -12,5 +12,39 @@
         ]
       }
     ]
+  },
+  "graphify-guard": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./scripts/graphify-guard.mjs",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "grep_search",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./scripts/graphify-guard.mjs",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "find_by_name",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./scripts/graphify-guard.mjs",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
   }
 }
