@@ -23,7 +23,7 @@ function catalogNames(file) {
   return [
     ...fs
       .readFileSync(file, 'utf8')
-      .matchAll(/^\|\s*`([a-z0-9][a-z0-9-]*)`\s*\|/gm),
+      .matchAll(/^\|\s*\[?`([a-z0-9][a-z0-9-]*)`\]?(?:\([^)]+\))?\s*\|/gm),
   ]
     .map((match) => match[1])
     .sort();

@@ -255,9 +255,10 @@ test('Agent Config - validates AGENTS.md integrity and internal links', () => {
 
   assert.match(agentsMd, /Config lives in `\.agents\/`/);
   assert.match(agentsMd, /\[docs\/SKILLS\.md\]\(docs\/SKILLS\.md\)/);
+  assert.match(agentsMd, /\[docs\/SUBAGENTS\.md\]\(docs\/SUBAGENTS\.md\)/);
   assert.match(
     agentsMd,
-    /\[rules\/subagent-delegation\.md\]\(\.agents\/rules\/subagent-delegation\.md\)/,
+    /\[\.agents\/rules\/subagent-delegation\.md\]\(\.agents\/rules\/subagent-delegation\.md\)/,
   );
 
   // Link validation

@@ -42,16 +42,16 @@ Every code review must evaluate the diff against these 8 mandatory gates:
 
 ### Gate 4: Modular Architecture & Directory Taxonomy
 
-- **Rule (Rule 6)**: Hard file cap of $\le 600$ lines/file (target 100–300 lines). Strict directory taxonomy:
+- **Rule (Rule 6)**: Hard file cap of $\le 500$ lines/file (target 100–300 lines). Strict directory taxonomy:
 - **Audit**:
-  - Does any new or refactored module in `src/js/` exceed **600 lines** (target: 100–300 lines)?
+  - Does any new or refactored module in `src/js/` exceed **500 lines** (target: 100–300 lines)?
   - **`src/js/calc/`**: Pure math/calculation logic ONLY. Must have **ZERO DOM references** (`document`, `window`, jQuery).
   - **`src/js/ui/`**: DOM generation, card templates, popover event bindings.
   - **`src/js/msg/`**: Decoupled InnoGames JSON-RPC service handlers (`*Service.js`).
   - **`src/js/protocol/`**: Network packet interception and envelope dispatching.
   - **`src/js/state/`**: In-memory state and MetadataStore lookup dictionaries.
   - **`src/js/utils/`**: General-purpose utilities (storage, copy, i18n).
-  - **Verdict**: REJECT if files exceed 600 lines or violate directory concerns (e.g. DOM in `calc/`).
+  - **Verdict**: REJECT if files exceed 500 lines or violate directory concerns (e.g. DOM in `calc/`).
 
 ### Gate 5: Dynamic Runtime Metadata (Zero Static Bundles)
 

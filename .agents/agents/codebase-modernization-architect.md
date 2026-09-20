@@ -46,13 +46,13 @@ You do NOT rush into writing features. You plan, sequence, and verify foundation
 ## Modernization Invariants
 
 - **Zero Runtime Regressions**: Every increment must pass headless unit tests (`npm test`) and full verify gates (`npm run verify`).
-- **Zero Autonomous Browser Control (Rule 13)**: Never spawn `foe-browser` or trigger automated browser page reloads without explicit user prompt instruction.
+- **Zero Autonomous Browser Control (Rule 13)**: Never drive browser automation or trigger automated browser page reloads without explicit user prompt instruction.
 - **Monolith Containment (Rule 7)**: Never add new features to legacy orchestrators (`StartupService.js`, `index.js`).
 - **BigNumber Precision (Rule 9)**: All calculation logic migrated or refactored must retain hybrid precision:
   - Half-up (`BigNumber.ROUND_HALF_UP`) for Arc rewards and suggested donations.
   - Ceiling (`BigNumber.ROUND_CEIL`) for spot locks and owner safe adds.
 - **Pure Calc Separation (Rule 6)**: All calculation modules must remain pure in `src/js/calc/` (zero DOM references, zero jQuery, zero browser globals).
-- **File Cap**: No file in `src/js/` may exceed 600 lines (target: 100–300 lines).
+- **File Cap**: No file in `src/js/` may exceed 500 lines (target: 100–300 lines).
 
 ---
 

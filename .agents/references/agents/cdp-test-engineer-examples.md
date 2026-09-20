@@ -7,7 +7,7 @@ On-demand examples for the `cdp-test-engineer` subagent. The agent’s role, wor
 **Scenario:** Testing panel rendering when `CityMapService.getEntities` arrives.
 **Reasoning Trace:**
 
-1. Zero Autonomous Browser Control check: No live browser permission was requested in prompt $\to$ Do NOT spawn `foe-browser` or port 9222 CDP.
+1. Zero Autonomous Browser Control check: No live browser permission was requested in prompt $\to$ Do NOT spawn autonomous browser or port 9222 CDP.
 2. Prioritize headless mock harness (`npm test`):
    ```javascript
    import assert from 'node:assert/strict';
