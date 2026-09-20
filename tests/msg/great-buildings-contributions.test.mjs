@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import BigNumber from 'bignumber.js';
 import { calculateInvestments } from '../../src/js/calc/InvestedCalculator.js';
-import { registerLegacyBridge } from '../../src/js/protocol/legacyBridge.js';
+import { greatBuildingsService } from '../../src/js/msg/GreatBuildingsService.js';
 import dispatcherPkg from '../../src/js/protocol/MessageDispatcher.js';
 
 const { MessageDispatcher } = dispatcherPkg;
@@ -99,7 +99,7 @@ test('Great Buildings Contributions Protocol & Calculation Suite', async (t) => 
   });
 
   await t.test(
-    'dispatches cleanly through MessageDispatcher and legacyBridge with isolated context',
+    'dispatches cleanly through MessageDispatcher and greatBuildingsService with isolated context',
     async () => {
       const dispatcher = new MessageDispatcher();
       let capturedMsg = null;
@@ -111,7 +111,7 @@ test('Great Buildings Contributions Protocol & Calculation Suite', async (t) => 
         return calculateInvestments(args[0], 90);
       };
 
-      registerLegacyBridge(dispatcher, {
+      greatBuildingsService.register(dispatcher, {
         getContributions: mockGetContributions,
       });
 

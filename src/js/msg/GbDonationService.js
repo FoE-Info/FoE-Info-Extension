@@ -9,6 +9,34 @@
 const { calculateSafeSpots } = require('../calc/GreatBuildingCalculator.js');
 const { gbDonationState } = require('../state/GbDonationState.js');
 
+let showOptions = {};
+if (typeof __webpack_require__ !== 'undefined') {
+  try {
+    const showOpt = require('../vars/showOptions.js');
+    showOptions = showOpt.showOptions || showOpt;
+  } catch {}
+}
+
+function extractRankingData(msg, context) {
+  if (Array.isArray(msg?.requestData)) return msg.requestData;
+  if (Array.isArray(context)) return context;
+  if (Array.isArray(context?.requestData)) return context.requestData;
+  if (Array.isArray(context?.request?.requestData)) {
+    return context.request.requestData;
+  }
+  if (context?.request?.postData) {
+    let post = context.request.postData;
+    if (typeof post === 'string') {
+      try {
+        post = JSON.parse(post);
+      } catch {}
+    }
+    if (Array.isArray(post)) return post;
+    if (Array.isArray(post?.requestData)) return post.requestData;
+  }
+  return [];
+}
+
 function extractRankingParams(msg, data, context) {
   const tryExtract = (target) => {
     if (!target) return null;
@@ -216,7 +244,7 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
       document.getElementById('cityrewards') ||
       document.getElementById('rewards');
   }
-  if (!container) {
+  if (!container && typeof __webpack_require__ !== 'undefined') {
     try {
       const statePkg = require('../state/state.js');
       container = statePkg.cityrewards;
@@ -337,13 +365,46 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
   return { success: true, rewardName, amount };
 }
 
-module.exports = {
+function register(dispatcher, options = {}) {
+  if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+
+  const rewardHandler = options.handleNewReward || handleNewReward;
+  const targetOptions = options.showOptions || showOptions;
+
+  dispatcher.register('BlueprintService', 'newReward', (msg) => {
+    let container = options.cityrewards || null;
+    if (!container && typeof document !== 'undefined') {
+      container =
+        document.getElementById('cityrewards') ||
+        document.getElementById('rewards');
+    }
+    if (!container && typeof __webpack_require__ !== 'undefined') {
+      try {
+        const statePkg = require('../state/state.js');
+        container = statePkg.cityrewards;
+      } catch {}
+    }
+    return rewardHandler(msg, targetOptions, container);
+  });
+
+  return this;
+}
+
+const gbDonationService = {
   calculateSafeSpots,
+  extractRankingData,
   extractRankingLevel,
   extractRankingParams,
   getSelfContribution,
   handleNewReward,
+  register,
   syncGbSelected,
   updateContributionProgress,
+};
+
+module.exports = {
+  ...gbDonationService,
+  gbDonationService,
+  GbDonationService: gbDonationService,
 };
 module.exports.default = module.exports;
