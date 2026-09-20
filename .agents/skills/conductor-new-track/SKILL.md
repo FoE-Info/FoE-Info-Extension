@@ -38,6 +38,10 @@ Create a new track (feature, bug fix, chore, or refactor) with a detailed specif
    - Read `conductor/tech-stack.md` for technical context
    - Read `conductor/workflow.md` for TDD/commit preferences
 
+3. Knowledge Graph Pre-Scan (Refactor & Architecture):
+   - For refactors or architecture tracks: Query Graphify MCP (`god_nodes`, `get_community`, `query_graph`).
+   - Identify dependent callers, god node rankings, and module clusters to design phases around natural graph boundaries.
+
 ## Track Classification
 
 Determine track type based on description or ask user:

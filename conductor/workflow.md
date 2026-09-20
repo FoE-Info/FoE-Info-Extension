@@ -14,6 +14,9 @@
    - Files in `src/js/` must strictly remain $\le 500$ lines, with an active refactoring target of $\le 250$ lines.
 5. **Verification Gate**:
    - Run `npm test` during development and `npm run verify` before completing any increment.
+6. **Knowledge Graph Integration (Graphify)**:
+   - Run `npm run graph:foe-info:ast` automatically via the `npm run verify` gate to ensure live AST freshness.
+   - Query Graphify MCP (`god_nodes`, `get_community`, `query_graph`) before planning refactors or architecture tracks to cluster tasks by dependency coupling.
 
 ## Conductor Track Lifecycle
 
