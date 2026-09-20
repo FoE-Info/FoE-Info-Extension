@@ -28,6 +28,9 @@ const { cityMapService } = require('./CityMapService.js');
 const { metadataService } = require('./MetadataService.js');
 const { otherPlayerService } = require('./OtherPlayerService.js');
 const { conversationService } = require('./ConversationService.js');
+const { guildBattlegroundService } = require('./GuildBattlegroundService.js');
+const { guildExpeditionService } = require('./GuildExpeditionService.js');
+const { armyUnitManagementService } = require('./ArmyUnitManagementService.js');
 
 const registeredDispatchers = new WeakSet();
 
@@ -70,6 +73,12 @@ function registerAllServices(dispatcher = messageDispatcher, options = {}) {
     otherPlayerService.register(dispatcher, options);
   if (conversationService?.register)
     conversationService.register(dispatcher, options);
+  if (guildBattlegroundService?.register)
+    guildBattlegroundService.register(dispatcher, options);
+  if (guildExpeditionService?.register)
+    guildExpeditionService.register(dispatcher, options);
+  if (armyUnitManagementService?.register)
+    armyUnitManagementService.register(dispatcher, options);
 
   registeredDispatchers.add(dispatcher);
   return dispatcher;

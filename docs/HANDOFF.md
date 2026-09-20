@@ -52,9 +52,10 @@ Use `docs/STATUS.md` and the 3-phase, 8-slice master modernization plan for acti
   - Legacy Bridge Modernization Slice 2: Great Buildings & Blueprints decommissioned into `GreatBuildingsService.js` and `GbDonationService.js` with `.register(dispatcher)`, wired into `registerServices.js`, `buildingRoutes.js` deleted.
   - Legacy Bridge Modernization Slice 3: City routes decommissioned into `CityMapService.js`, `CityProductionService.js`, `BonusService.js`, and `MetadataService.js` with `.register(dispatcher)`, wired into `registerServices.js`, `cityRoutes.js` deleted.
   - Legacy Bridge Modernization Slice 4: Social and conversation routes decommissioned into `OtherPlayerService.js` and `ConversationService.js` with `.register(dispatcher)`, wired into `registerServices.js`, decoupled via `src/js/state/viewState.js`, `socialRoutes.js` deleted.
+  - Legacy Bridge Modernization Slice 5: Combat routes decommissioned into `GuildBattlegroundService.js`, `GuildExpeditionService.js`, and `ArmyUnitManagementService.js` with `.register(dispatcher)`, wired into `registerServices.js`, unhooked from `legacyBridge.js`, `combatRoutes.js` and empty `routes/` directory deleted. All 5 legacy bridge route tables are now 100% decommissioned.
   - Slice 1A: `src/js/calc/prod/entityProductionParser.js` (497L -> 202L)
   - Slice 2A: `src/js/msg/GuildBattlegroundService.js` (489L -> 240L)
   - Slice 2B: `src/js/msg/StartupService.js` (424L -> 246L)
   - Slice 2C: `src/js/msg/GbgSignalService.js` (403L -> 221L)
-- **Next Slice to Resume**:
-  - **Legacy Bridge Modernization Slice 5**: Decommission `src/js/protocol/routes/combatRoutes.js` by adding `.register(dispatcher)` to relevant combat services (`GuildBattlegroundService.js`, `GuildExpeditionService.js`, `ArmyUnitManagementService.js`), wiring into `registerServices.js`, and deleting `combatRoutes.js`.
+- **Next Work to Resume**:
+  - Evaluate Phase 4 modernization (retiring or streamlining the remaining delegator shell in `src/js/protocol/legacyBridge.js` and entry point modernizations) or the next slice in the modernization roadmap.

@@ -194,10 +194,92 @@ function removeSignalFromList(signals, provinceId) {
   );
 }
 
+/**
+ * Extracts signal data array from RPC message and network context with full fallback cascade.
+ * @param {Object} msg
+ * @param {Object} context
+ * @returns {Array}
+ */
+function extractSignalData(msg, context) {
+  if (Array.isArray(msg) && msg.length > 0) return msg;
+  if (Array.isArray(msg?.requestData) && msg.requestData.length > 0) {
+    return msg.requestData;
+  }
+  if (Array.isArray(context?.requestData) && context.requestData.length > 0) {
+    return context.requestData;
+  }
+  if (
+    Array.isArray(context?.request?.requestData) &&
+    context.request.requestData.length > 0
+  ) {
+    return context.request.requestData;
+  }
+
+  const reqPayloadItems = resolveRequestPayloadItems(context);
+  if (reqPayloadItems.length > 0) {
+    const match =
+      (msg?.requestId !== undefined ?
+        reqPayloadItems.find((r) => r && r.requestId === msg.requestId)
+      : null) ||
+      reqPayloadItems.find(
+        (r) =>
+          r &&
+          (r.requestMethod === 'setSignal' ||
+            r.requestMethod === 'updateSignal' ||
+            r.requestMethod === 'removeSignal' ||
+            r.requestClass?.includes('GuildBattleground')),
+      ) ||
+      reqPayloadItems[0];
+    if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
+      return match.requestData;
+    }
+  }
+
+  const postText = resolvePostText(context);
+  if (postText) {
+    try {
+      const parsed =
+        typeof postText === 'string' ? JSON.parse(postText) : postText;
+      const reqItems = Array.isArray(parsed) ? parsed : [parsed];
+      const match =
+        (msg?.requestId !== undefined ?
+          reqItems.find((r) => r && r.requestId === msg.requestId)
+        : null) ||
+        reqItems.find(
+          (r) =>
+            r &&
+            (r.requestMethod === 'setSignal' ||
+              r.requestMethod === 'updateSignal' ||
+              r.requestMethod === 'removeSignal' ||
+              r.requestClass?.includes('GuildBattleground')),
+        ) ||
+        reqItems[0];
+      if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
+        return match.requestData;
+      }
+    } catch {}
+  }
+
+  if (Array.isArray(msg?.responseData) && msg.responseData.length > 0) {
+    return msg.responseData;
+  }
+  if (Array.isArray(context) && context.length > 0) return context;
+
+  const candidateObj = resolveCandidateObject(msg);
+  if (candidateObj) {
+    const pid = candidateObj.provinceId ?? candidateObj.id;
+    const stype = candidateObj.type ?? candidateObj.signal;
+    return [pid, stype];
+  }
+
+  return [];
+}
+
 module.exports = {
   resolveSignalData,
   resolveSignalTarget,
   applySignalToList,
   removeSignalFromList,
+  extractSignalData,
 };
 module.exports.default = module.exports;

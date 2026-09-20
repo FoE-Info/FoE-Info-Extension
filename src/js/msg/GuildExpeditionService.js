@@ -7,6 +7,17 @@
  * co-existing sub-panels.
  */
 
+let logger = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('GuildExpeditionService');
+} catch {}
+
+let setCurrentView = () => {};
+try {
+  ({ setCurrentView } = require('../ui/cardVisibility.js'));
+} catch {}
+
 const {
   extractTrialLevel,
   extractInternationalExpeditionEntries,
@@ -51,11 +62,60 @@ function guildExpeditionService(msg) {
   expeditionState.setContributionEntries(entries);
 }
 
+function register(dispatcher, options = {}) {
+  if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+  const targetSetCurrentView = options.setCurrentView || setCurrentView;
+  const targetGeService =
+    options.guildExpeditionService || guildExpeditionService;
+  const targetChampionship = options.championshipService || targetGeService;
+
+  const withGeContext =
+    (handler) =>
+    (msg, ...rest) => {
+      if (typeof targetSetCurrentView === 'function') {
+        try {
+          targetSetCurrentView('GE');
+        } catch {}
+      }
+      if (typeof handler === 'function') {
+        return handler(msg, ...rest);
+      }
+    };
+
+  dispatcher.register(
+    'ChampionshipService',
+    'getOverview',
+    withGeContext(targetChampionship),
+  );
+  dispatcher.register(
+    'GuildExpeditionService',
+    'getOverview',
+    withGeContext(targetGeService),
+  );
+  dispatcher.register(
+    'GuildExpeditionService',
+    'getChestOverview',
+    targetGeService,
+  );
+  dispatcher.register(
+    'GuildExpeditionService',
+    'getContributionList',
+    targetGeService,
+  );
+
+  logger?.debug('GuildExpeditionService registered RPC handlers');
+  return this;
+}
+
+guildExpeditionService.register = register;
+
 module.exports = {
   extractTrialLevel,
   extractInternationalExpeditionEntries,
   guildExpeditionService,
+  GuildExpeditionService: guildExpeditionService,
   championshipService: guildExpeditionService,
   resetExpeditionCache,
+  register,
 };
 module.exports.default = guildExpeditionService;

@@ -182,9 +182,9 @@ test('Domain Services Protocol & Registration Suite', async (t) => {
       assert.equal(directRes.rogues, 60);
       assert.equal(directRes.allUnits, 25);
 
-      // Dispatcher integration via legacy bridge
+      // Dispatcher integration via armyUnitManagementService.register
       const dispatcher = new MessageDispatcher();
-      registerLegacyBridge(dispatcher, { armyUnitManagementService });
+      armyUnitManagementService.register(dispatcher);
 
       const dispatchInfoRes = await dispatcher.dispatchBatch([msg]);
       assert.equal(dispatchInfoRes.succeeded, 1);

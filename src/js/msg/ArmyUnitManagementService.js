@@ -255,9 +255,38 @@ function clearArmyUnits() {
   ArmyUnits = {};
 }
 
+function register(dispatcher, options = {}) {
+  if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+  const targetArmyService =
+    options.armyUnitManagementService || armyUnitManagementService;
+
+  dispatcher.register(
+    'ArmyUnitManagementService',
+    'getArmyInfo',
+    targetArmyService,
+  );
+  dispatcher.register(
+    'ArmyUnitManagementService',
+    'getArmyOverview',
+    targetArmyService,
+  );
+  dispatcher.register(
+    'ArmyUnitManagementService',
+    'getArmyArtillery',
+    targetArmyService,
+  );
+
+  logger?.debug('ArmyUnitManagementService registered RPC handlers');
+  return this;
+}
+
+armyUnitManagementService.register = register;
+
 const exportsObj = {
   armyUnitManagementService,
+  ArmyUnitManagementService: armyUnitManagementService,
   clearArmyUnits,
+  register,
 };
 
 Object.defineProperty(exportsObj, 'ArmyUnits', {
@@ -272,4 +301,6 @@ Object.defineProperty(exportsObj, 'ArmyUnits', {
 module.exports = exportsObj;
 module.exports.default = exportsObj;
 module.exports.armyUnitManagementService = armyUnitManagementService;
+module.exports.ArmyUnitManagementService = armyUnitManagementService;
 module.exports.clearArmyUnits = clearArmyUnits;
+module.exports.register = register;
