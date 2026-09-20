@@ -23,6 +23,8 @@ a changelog. See `docs/README.md` for the full hub.
 - [x] Codebase Modernization Milestone 1 (Slice 2B): Decomposed `StartupService.js` (424L -> 246L) by extracting `StartupStateInitializer.js` (243L) and `StartupEntityCoordinator.js` (242L), maintaining $\le 250$ line budget across all modules, structured debug logging, and 100% test parity with new unit test suites.
 - [x] Codebase Modernization Milestone 1 (Slice 2C): Decomposed `GbgSignalService.js` (403L -> 221L) by extracting `GbgTargetListGenerator.js` (180L), delegating time formatting to `GbgTimeFormatter.js`, instrumenting structured logging, and adding unit tests, maintaining $\le 250$ line budget across all files.
 - [x] Documentation & Agent Link Audit: Audited and updated all stale links, paths, and catalog references across `AGENTS.md`, `docs/`, and `.agents/` (linked all non-negotiable rules and catalogs, added `docs/HOOKS.md` to documentation hub, fixed paths in `docs/ARCHITECTURE.md`, regenerated linked skills and subagent catalogs, and aligned 500-line ceiling references).
+- [x] Legacy Bridge Modernization (Slice 1): Decommissioned Quantum Incursions from `legacyBridge.js` by adding `.register(dispatcher)` to `GuildRaidsService.js`, connecting it to `registerServices.js`, permanently deleting `quantumRoutes.js`, and adding unit tests for QI registration and context switching.
+- [ ] Legacy Bridge Modernization (Slice 2): Decommission `buildingRoutes.js` by adding `.register(dispatcher)` to `GreatBuildingsService.js` and `GbDonationService.js`, co-registering `BlueprintService.newReward`, registering in `registerServices.js`, and deleting `buildingRoutes.js`.
 
 ## Open threads requiring a decision
 
