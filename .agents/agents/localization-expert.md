@@ -56,7 +56,7 @@ Load [Few-Shot Reasoning Example: Adding a Translatable Key](../references/agent
 - **Parity & Integrity Commands**:
   ```bash
   npm run i18n:check
-  npm test tests/agents/i18n.test.mjs
+  npm test tests/fn/i18n.test.mjs
   ```
 - **Automated Repair**:
   - Run `npm run i18n:fix` to auto-synchronize missing keys from `en.json` to other locales when needed.
