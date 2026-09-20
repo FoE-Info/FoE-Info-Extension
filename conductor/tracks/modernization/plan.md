@@ -21,13 +21,21 @@
 
 ---
 
+- [x] **Slice 4E**: Decompose `src/js/ui/renderGalaxyPanel.js` (283L $\rightarrow$ 215L)
+  - Extracted `galaxyBuildingGrouper.js` (76L) and `galaxyPanelEvents.js` (53L).
+  - Added unit test suites `tests/ui/galaxy-building-grouper.test.mjs` and `tests/ui/galaxy-panel-events.test.mjs`.
+  - Verified `renderGalaxyPanel.js` is 215 lines ($\le 250$ lines target).
+  - Confirmed 100% test parity and `npm run verify` gate pass.
+
+---
+
 ### Active Tasks
 
-#### [ ] Slice 4E: Decompose `src/js/ui/renderGalaxyPanel.js` (336L $\rightarrow \le 250$L)
+#### [ ] Slice 4F: Decompose `src/js/ui/renderLiveCityStats.js` (416L $\rightarrow \le 250$L)
 
-- **Goal**: Decompose Blue Galaxy collection grouping and display logic.
+- **Goal**: Decompose live city statistics and goods output rendering.
 - **Subtasks**:
-  - [ ] Extract Galaxy card rendering and building collection sorters.
+  - [ ] Extract goods output generators and city statistics table builders.
   - [ ] Verify test parity and line count $\le 250$ lines.
 
 ---
