@@ -23,6 +23,8 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
   const gbServicePkg =
     await import('../../src/js/msg/GreatBuildingsService.js');
   const { greatBuildingsService } = gbServicePkg.default || gbServicePkg;
+  const cityMapPkg = await import('../../src/js/msg/CityMapService.js');
+  const { cityMapService } = cityMapPkg.default || cityMapPkg;
 
   t.beforeEach(() => {
     reset();
@@ -386,6 +388,7 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
       };
       registerLegacyBridge(dispatcher, bridgeOptions);
       greatBuildingsService.register(dispatcher, bridgeOptions);
+      cityMapService.register(dispatcher, bridgeOptions);
 
       // 1. Startup arrives with own city entities (Château Frontenac, id: 104, level: 180)
       await dispatcher.dispatchSingle({

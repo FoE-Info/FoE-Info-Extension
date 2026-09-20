@@ -23,34 +23,47 @@ const { emissaryServiceInstance } = require('./EmissaryService.js');
 const resourceService = require('./ResourceService.js');
 const { guildRaidsService } = require('./GuildRaidsService.js');
 const { greatBuildingsService } = require('./GreatBuildingsService.js');
+const { cityProductionService } = require('./CityProductionService.js');
+const { cityMapService } = require('./CityMapService.js');
+const { metadataService } = require('./MetadataService.js');
 
 const registeredDispatchers = new WeakSet();
 
-function registerAllServices(dispatcher = messageDispatcher) {
+function registerAllServices(dispatcher = messageDispatcher, options = {}) {
   if (!dispatcher || typeof dispatcher.register !== 'function')
     return dispatcher;
 
   if (registeredDispatchers.has(dispatcher)) return dispatcher;
 
   // Modern domain services
-  if (hiddenRewardService?.register) hiddenRewardService.register(dispatcher);
-  if (castleSystemService?.register) castleSystemService.register(dispatcher);
-  if (boostService?.register) boostService.register(dispatcher);
-  if (allyService?.register) allyService.register(dispatcher);
-  if (inventoryService?.register) inventoryService.register(dispatcher);
-  if (outpostService?.register) outpostService.register(dispatcher);
-  if (autoAidService?.register) autoAidService.register(dispatcher);
-  if (friendsTavernService?.register) friendsTavernService.register(dispatcher);
-  if (treasuryService?.register) treasuryService.register(dispatcher);
-  if (questService?.register) questService.register(dispatcher);
-  if (itemExchangeService?.register) itemExchangeService.register(dispatcher);
-  if (timeService?.register) timeService.register(dispatcher);
+  if (hiddenRewardService?.register)
+    hiddenRewardService.register(dispatcher, options);
+  if (castleSystemService?.register)
+    castleSystemService.register(dispatcher, options);
+  if (boostService?.register) boostService.register(dispatcher, options);
+  if (allyService?.register) allyService.register(dispatcher, options);
+  if (inventoryService?.register)
+    inventoryService.register(dispatcher, options);
+  if (outpostService?.register) outpostService.register(dispatcher, options);
+  if (autoAidService?.register) autoAidService.register(dispatcher, options);
+  if (friendsTavernService?.register)
+    friendsTavernService.register(dispatcher, options);
+  if (treasuryService?.register) treasuryService.register(dispatcher, options);
+  if (questService?.register) questService.register(dispatcher, options);
+  if (itemExchangeService?.register)
+    itemExchangeService.register(dispatcher, options);
+  if (timeService?.register) timeService.register(dispatcher, options);
   if (emissaryServiceInstance?.register)
-    emissaryServiceInstance.register(dispatcher);
-  if (resourceService?.register) resourceService.register(dispatcher);
-  if (guildRaidsService?.register) guildRaidsService.register(dispatcher);
+    emissaryServiceInstance.register(dispatcher, options);
+  if (resourceService?.register) resourceService.register(dispatcher, options);
+  if (guildRaidsService?.register)
+    guildRaidsService.register(dispatcher, options);
   if (greatBuildingsService?.register)
-    greatBuildingsService.register(dispatcher);
+    greatBuildingsService.register(dispatcher, options);
+  if (cityProductionService?.register)
+    cityProductionService.register(dispatcher, options);
+  if (cityMapService?.register) cityMapService.register(dispatcher, options);
+  if (metadataService?.register) metadataService.register(dispatcher, options);
 
   registeredDispatchers.add(dispatcher);
   return dispatcher;

@@ -435,13 +435,12 @@ describe('Protocol Route Context Wiring', () => {
 
   it('CityMapService.getEntities restores OWN_CITY after leaving the city', async () => {
     setCurrentView('GBG');
-    const { registerCityRoutes } =
-      await import('../../src/js/protocol/routes/cityRoutes.js');
+    const { cityMapService } =
+      await import('../../src/js/msg/CityMapService.js');
 
     const dispatcher = createMockDispatcher();
-    registerCityRoutes({
-      dispatcher,
-      handlers: { MyInfo: { id: 1, name: 'me' } },
+    cityMapService.register(dispatcher, {
+      MyInfo: { id: 1, name: 'me' },
       gbRegistry: { registerGreatBuilding() {} },
     });
 
@@ -450,13 +449,12 @@ describe('Protocol Route Context Wiring', () => {
   });
 
   it('CityMapService.getCityMap maps gridId to SETTLEMENT, QI and OWN_CITY', async () => {
-    const { registerCityRoutes } =
-      await import('../../src/js/protocol/routes/cityRoutes.js');
+    const { cityMapService } =
+      await import('../../src/js/msg/CityMapService.js');
 
     const dispatcher = createMockDispatcher();
-    registerCityRoutes({
-      dispatcher,
-      handlers: { MyInfo: { id: 1, name: 'me' } },
+    cityMapService.register(dispatcher, {
+      MyInfo: { id: 1, name: 'me' },
       gbRegistry: { registerGreatBuilding() {} },
     });
 
