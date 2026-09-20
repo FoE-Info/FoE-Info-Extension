@@ -60,22 +60,24 @@ const {
   bindDonationEvents,
 } = require('./gbDonationFormatters.js');
 
+const { evaluateGbDonationPlaces } = require('./gbDonationPlaceEvaluator.js');
+const { attachGbDonationPanelEvents } = require('./gbDonationPanelEvents.js');
+
 const logger =
   typeof loggerModule.createLogger === 'function' ?
     loggerModule.createLogger('GbDonationPanel')
   : { debug: () => {}, warn: () => {} };
 
 const isPlacePassableFn =
-  typeof GreatBuildingCalculator.isPlacePassable === 'function' ?
-    GreatBuildingCalculator.isPlacePassable
-  : (remainingFp, occupantFp) =>
-      Number(occupantFp || 0) < Number(remainingFp || 0);
+  GreatBuildingCalculator.isPlacePassable ||
+  ((rem, occ) => Number(occ || 0) < Number(rem || 0));
 
 let useNewDonationPanel = false;
 try {
   if (typeof storage.getSync === 'function') {
     const syncVal = storage.getSync('useNewDonationPanel');
-    if (syncVal !== null) useNewDonationPanel = syncVal;
+    if (syncVal !== null && syncVal !== undefined)
+      useNewDonationPanel = syncVal;
   }
 } catch {}
 
@@ -111,28 +113,17 @@ function renderGbDonationPanel(params = {}) {
     availablePackageForgePoints,
   });
 
-  const escapeFn =
-    typeof depHelper.escapeHTML === 'function' ?
-      depHelper.escapeHTML
-    : (s) => String(s ?? '');
-  const gbShortNameFn =
-    typeof depHelper.fGBsname === 'function' ?
-      depHelper.fGBsname
-    : (s) => String(s ?? '');
-
+  const escapeFn = depHelper?.escapeHTML || ((s) => String(s ?? ''));
+  const gbShortNameFn = depHelper?.fGBsname || ((s) => String(s ?? ''));
   const formatNumberFn =
-    typeof depHelper?.fFormatNumber === 'function' ?
-      depHelper.fFormatNumber
-    : (n) => {
-        const num = Number(n || 0);
-        return Number.isFinite(num) ? num.toLocaleString('en-US') : String(n);
-      };
+    depHelper?.fFormatNumber ||
+    ((n) =>
+      Number.isFinite(Number(n)) ?
+        Number(n).toLocaleString('en-US')
+      : String(n));
 
   const calcPlaceValues =
     depTables.getPlaceValues || depTables.calcPlaceValues || (() => ({}));
-  const gbTabSafe = depTables.gbTabSafe || (() => '');
-  const gbTabNotSafe = depTables.gbTabNotSafe || (() => '');
-  const gbTabEmpty = depTables.gbTabEmpty || (() => '');
   const checkInactive = depTables.checkInactive || (() => '');
   const getPlayerLink = depTables.getPlayerLink || ((n) => escapeFn(n));
 
@@ -141,42 +132,39 @@ function renderGbDonationPanel(params = {}) {
       PlayerName.substr(0, PlayerName.indexOf(' '))
     : PlayerName;
 
-  let newdonationHTML = '';
-  let copyText = `<div id='copyText'>${
+  const guildPosPrefix =
     (
       showOptions.showGuildPosition &&
       PlayerName === MyInfo.name &&
       MyInfo.guildPosition
     ) ?
-      '#' + MyInfo.guildPosition + ' '
-    : ''
-  }${playerShortName ? playerShortName : PlayerName} ${gbShortNameFn(GBselected.name)} `;
+      `#${MyInfo.guildPosition} `
+    : '';
+  const prefixCopyText = `<div id='copyText'>${guildPosPrefix}${playerShortName || PlayerName} ${gbShortNameFn(GBselected.name)} `;
 
   const isCollapsed = Boolean(depCollapse.collapseDonation);
   const iconHtml =
-    typeof depElement.icon === 'function' ?
+    depElement.icon ?
       depElement.icon('donationicon', 'donationText3', isCollapsed)
     : `<span id="donationicon">[${isCollapsed ? '+' : '-'}]</span>`;
   const closeBtn =
-    typeof depElement.close === 'function' ?
+    depElement.close ?
       depElement.close()
     : '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
   const copyBtn =
-    typeof depElement.copy === 'function' ?
+    depElement.copy ?
       depElement.copy('donationCopyID', 'secondary', 'right', isCollapsed)
     : '<span id="donationCopyID" class="badge bg-secondary float-end">Copy</span>';
   const packageBadgeHtml =
     availablePackageForgePoints > 0 ?
-      `<span class="badge bg-secondary ms-1">Packages: ${formatNumberFn(
-        availablePackageForgePoints,
-      )} FP</span>`
+      `<span class="badge bg-secondary ms-1">Packages: ${formatNumberFn(availablePackageForgePoints)} FP</span>`
     : '';
 
   const isGbLocked = Boolean(
     GBselected.max_level > 0 && GBselected.level >= GBselected.max_level,
   );
 
-  let olddonationHTML = buildClassicDonationHeader({
+  const headerOldDonationHTML = buildClassicDonationHeader({
     isCollapsed,
     iconHtml,
     closeBtn,
@@ -200,216 +188,45 @@ function renderGbDonationPanel(params = {}) {
   }
 
   const BN = BigNumber || (typeof global !== 'undefined' && global.BigNumber);
-  let foundPlace = false;
-  let remaining = 0;
-  let Donation = BN ? new BN(0) : 0;
-  let RewardFP = BN ? new BN(0) : 0;
-  let Profit = 0;
-  let Percent = BN ? new BN(0) : 0;
-  let donateCustom = BN ? new BN(0) : 0;
-  let safeArr = [];
-  let donateSuggestArr = [];
 
-  for (let p = 1; p <= 5; p++) {
-    remaining = Math.max(
-      0,
-      (GBselected.total || 0) - (GBselected.current || 0),
-    );
+  const placeResult = evaluateGbDonationPlaces({
+    ...params,
+    isGbLocked,
+    calcPlaceValues,
+    isPlacePassableFn,
+    getSafe,
+    getFriendlyDonation,
+    getDonations,
+    ownerSafeAddFn: GreatBuildingCalculator.calculateOwnerSafeAdd,
+    BN,
+  });
 
-    const vals = calcPlaceValues(
-      GBselected,
-      p,
-      Top,
-      GBrewards,
-      currentPercent,
-      City?.ArcBonus ?? 90,
-    );
-    remaining = vals.remaining ?? remaining;
-    Donation = vals.donation ?? Donation;
-    RewardFP = vals.rewardFP ?? RewardFP;
-    Profit = vals.profit ?? Profit;
-    Percent = vals.percent ?? Percent;
-    donateCustom = vals.donateCustom ?? donateCustom;
-
-    const safeRes = getSafe({
-      place: p,
-      GBrewards,
-      currentPercent,
-      remaining,
-      Top,
-      calculateSuggestedDonation:
-        GreatBuildingCalculator.calculateSuggestedDonation,
-    });
-    safeArr = safeRes.safe;
-    donateSuggestArr = safeRes.donateSuggest;
-    const placeIdx = p - 1;
-
-    // Only target a place a rival can still overtake. Places whose occupant
-    // already holds >= the remaining pool are locked (adding enough to pass
-    // would level the GB first), so they are skipped.
-    const canBePassed = isPlacePassableFn(remaining, Top[placeIdx] || 0);
-
-    if (canBePassed) {
-      foundPlace = true;
-      const placeOrdinal =
-        p === 1 ? '1st'
-        : p === 2 ? '2nd'
-        : p === 3 ? '3rd'
-        : `${p}th`;
-
-      const outcome = vals.outcome || (Profit > 0 ? 'profit' : 'loss');
-      const netValue = Math.abs(vals.profitNum ?? 0);
-      const outcomeClass = outcome === 'loss' ? 'invest-bad' : 'invest-good';
-
-      if (outcome === 'loss') {
-        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="loss">Loss</span>: ${netValue}<br>`;
-        newdonationHTML += gbTabNotSafe(
-          p,
-          currentPercent,
-          Donation,
-          RewardFP,
-          donateCustom,
-          donateSuggestArr,
-          GBrewards,
-          GBselected.connected,
-          isGbLocked,
-          safeArr,
-        );
-      } else {
-        const outcomeLine =
-          outcome === 'safe' ?
-            `<span data-i18n="safe_net">Safe</span>: 0 NET`
-          : `<span data-i18n="profit">Profit</span>: ${netValue} (${Percent}%)`;
-        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br>${outcomeLine}<br>`;
-        newdonationHTML += gbTabSafe(
-          p,
-          currentPercent,
-          Donation,
-          RewardFP,
-          donateCustom,
-          donateSuggestArr,
-          GBrewards,
-          GBselected.connected,
-          isGbLocked,
-          safeArr,
-        );
-      }
-
-      if (GBrewards[placeIdx]) {
-        olddonationHTML += getFriendlyDonation(
-          donateCustom,
-          RewardFP,
-          currentPercent,
-          Donation,
-          vals.band,
-        );
-        olddonationHTML +=
-          p === 1 ? `BE: ${RewardFP}FP</p>` : `BE: ${RewardFP}FP<br></p>`;
-
-        const ownerSafeAddFn =
-          GreatBuildingCalculator.calculateOwnerSafeAdd || (() => 0);
-        const ownerAdd = ownerSafeAddFn(
-          remaining,
-          Top[placeIdx] || 0,
-          donateCustom,
-        );
-
-        if (PlayerName === MyInfo.name && ownerAdd > 0) {
-          olddonationHTML += `<p class=""><span data-i18n="add">Add</span> ${ownerAdd}FP <span data-i18n="safe">to make safe for</span> ${
-            currentPercent ? currentPercent / 100 : '1.9'
-          }</p>`;
-        }
-        copyText += getDonations({
-          place: p,
-          safe: safeArr,
-          donateSuggest: donateSuggestArr,
-          showOptions,
-        });
-      } else {
-        olddonationHTML += '</p>';
-        if (p === 1) {
-          copyText += getDonations({
-            place: 1,
-            safe: safeArr,
-            donateSuggest: donateSuggestArr,
-            showOptions,
-          });
-        }
-      }
-      break;
-    }
-  }
-
-  if (!foundPlace) {
-    copyText = '';
-    newdonationHTML += gbTabEmpty(
-      '-',
-      currentPercent,
-      Donation,
-      RewardFP,
-      donateCustom,
-      donateSuggestArr,
-      GBrewards,
-      GBselected.connected,
-      isGbLocked,
-    );
-  }
+  const { foundPlace } = placeResult;
+  const copyText = foundPlace ? prefixCopyText + placeResult.copyText : '';
+  const olddonationHTML = headerOldDonationHTML + placeResult.olddonationHTML;
+  const newdonationHTML = placeResult.newdonationHTML;
 
   if (showOptions?.showDonation !== false) {
     if (donation2DIV) {
-      if (useNewDonationPanel) {
-        donation2DIV.innerHTML = newdonationHTML + '</div>';
-      } else {
-        donation2DIV.innerHTML =
-          olddonationHTML +
-          copyText +
-          (donationSuffix ? donationSuffix : '') +
-          '</div>';
+      donation2DIV.innerHTML =
+        useNewDonationPanel ?
+          `${newdonationHTML}</div>`
+        : `${olddonationHTML}${copyText}${donationSuffix || ''}</div>`;
 
-        bindDonationEvents({
-          depCopy,
-          depCollapse,
-          depStorage,
-          onRerender,
-          getUseNewPanel: () => useNewDonationPanel,
-          setUseNewPanel: (val) => {
-            useNewDonationPanel = val;
-          },
-          copyText,
-        });
-      }
-
-      if (typeof document !== 'undefined') {
-        const gbSelectedEl = document.getElementById('GBselected');
-        if (gbSelectedEl) {
-          gbSelectedEl.addEventListener('click', (event) => {
-            if (event.shiftKey) {
-              useNewDonationPanel = !useNewDonationPanel;
-              if (typeof depStorage.set === 'function') {
-                depStorage.set('useNewDonationPanel', useNewDonationPanel);
-              }
-              if (typeof onRerender === 'function') {
-                onRerender();
-              }
-            }
-          });
-        }
-      }
-
-      if (typeof depHelper.translateContainer === 'function') {
-        depHelper.translateContainer(donation2DIV || donationDIV);
-      }
+      const eventResult = attachGbDonationPanelEvents({
+        ...params,
+        useNewDonationPanel,
+        copyText,
+        bindDonationEventsFn: bindDonationEvents,
+      });
+      useNewDonationPanel = eventResult.useNewDonationPanel;
     }
   } else {
     if (donation2DIV) donation2DIV.innerHTML = '';
     if (donationDIV) donationDIV.innerHTML = '';
   }
 
-  return {
-    foundPlace,
-    copyText,
-    useNewDonationPanel,
-  };
+  return { foundPlace, copyText, useNewDonationPanel };
 }
 
 module.exports = {

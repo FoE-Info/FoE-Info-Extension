@@ -667,6 +667,12 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
       const targetPath =
         (
           fs.existsSync(
+            path.join(process.cwd(), 'src/js/ui/gbDonationPlaceEvaluator.js'),
+          )
+        ) ?
+          path.join(process.cwd(), 'src/js/ui/gbDonationPlaceEvaluator.js')
+        : (
+          fs.existsSync(
             path.join(process.cwd(), 'src/js/ui/renderGbDonationPanel.js'),
           )
         ) ?
