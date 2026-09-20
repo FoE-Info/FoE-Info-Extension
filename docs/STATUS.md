@@ -34,6 +34,7 @@ a changelog. See `docs/README.md` for the full hub.
 - [x] Antigravity Customization Token Optimization: Switched workspace copies of `small-incremental-changes.md` and `verification-before-completion.md` to `trigger: model_decision`, deduplicating them from global `~/.gemini/config/rules/` `always_on` copies to free ~1,020 tokens (~5.1% budget) into available headroom.
 - [x] MCP Decommissioning: Removed `github-mcp` across `.agents/mcp-registry.json`, `tests/agents/mcp-profile.test.mjs`, documentation specs, global permission grants (`~/.gemini/config/config.json`), and schema caches.
 - [x] Hook RTK Compatibility & Graphify Interception: Updated `safety-gate.mjs` to strip `rtk` command prefixes, restored `graphify-guard.mjs` pre-tool hook to intercept broad searches (`grep`/`find`/`rg`/`fd`), registered in `.agents/hooks.json`, and added unit tests in `tests/agents/hooks.test.mjs`.
+- [x] Codebase Modernization Milestone 1 (Slice 3B): Decomposed `MetadataStore.js` (487L -> 245L) by extracting `entityResolver.js` (130L), `metadataRelations.js` (155L), `metadataDomainCollections.js` (147L), and `legacyEntityProxy.js` (62L), maintaining strictly $\le 250$ line budget across all files, preserving backward-compatible public APIs and prototype property bindings, adding structured logger instrumentation, and achieving 100% test parity with 4 unit test suites (85/85 suites passing).
 
 ## Open threads requiring a decision
 
