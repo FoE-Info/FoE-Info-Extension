@@ -498,11 +498,11 @@ describe('Protocol Route Context Wiring', () => {
   });
 
   it('quantum routes switch to QI', async () => {
-    const { registerQuantumRoutes } =
-      await import('../../src/js/protocol/routes/quantumRoutes.js');
+    const { guildRaidsService } =
+      await import('../../src/js/msg/GuildRaidsService.js');
 
     const dispatcher = createMockDispatcher();
-    registerQuantumRoutes({ dispatcher });
+    guildRaidsService.register(dispatcher);
 
     dispatcher.invoke('GuildRaidsMapService', 'getOverview', {});
     assert.equal(getCurrentView(), 'QI');
