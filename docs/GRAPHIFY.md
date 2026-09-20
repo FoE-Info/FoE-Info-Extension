@@ -26,13 +26,13 @@ Consult knowledge graphs before wide disk searches.
 
 The unified `graphify.sh` runner automatically sources `llama-swap-env.sh` before running semantic export or reindex operations.
 
-This guarantees an OpenAI-compatible backend (local llama.cpp on `http://127.0.0.1:8081/v1`) for semantic extraction and community labeling.
+This guarantees an OpenAI-compatible backend (local llama.cpp on `http://127.0.0.1:8080/v1`) for semantic extraction and community labeling.
 
 ## Local Execution Policy
 
 All Graphify npm scripts (`npm run graph:*:*`) delegate to `.agents/scripts/graphify.sh <target> <action>`. Restart/reconnect host MCP sessions after changing registrations; existing processes retain their launch environment. The original graph is a separate graph and server, not an alias of the current graph.
 
-The git rebuild hooks, update scripts, and inference policy share `.agents/scripts/llama-swap-env.sh`: OpenAI-compatible inference is pinned to `http://127.0.0.1:8081/v1`, key `local`, model `qwen2.5-vl-7b` (including `GRAPHIFY_OPENAI_MODEL`). Higher-priority cloud provider credentials and proxy variables are removed from the child environment. MCP and AST updates do not allocate GPU memory.
+The git rebuild hooks, update scripts, and inference policy share `.agents/scripts/llama-swap-env.sh`: OpenAI-compatible inference is pinned to `http://127.0.0.1:8080/v1`, key `local`, model `qwen2.5-vl-7b` (including `GRAPHIFY_OPENAI_MODEL`). Higher-priority cloud provider credentials and proxy variables are removed from the child environment. MCP and AST updates do not allocate GPU memory.
 
 `npm run graph:foe-info:ast` performs one AST update. Every code graph exposes the same `:ast` tier; the generated metadata graph has no AST tier. `npm run graph:foe-info:watch` starts a real foreground watcher when requested. Routine stdout/stderr goes to `~/.cache/foe-info/graphify-watch.log`; failures return nonzero and print the log path plus its last lines. `GRAPHIFY_LOG` selects another log file. MCP stdout remains the protocol stream; its stderr goes to `~/.cache/foe-info/graphify-mcp.log`.
 
