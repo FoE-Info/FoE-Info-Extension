@@ -59,6 +59,7 @@ test('Combat Services Registration Suite', async (t) => {
         'GuildBattlegroundService.getAction',
         'GuildBattlegroundSignalsService.updateSignal',
         'GuildBattlegroundService.updateSignal',
+        'GuildBattlegroundService.getPendingUpdate',
       ];
 
       for (const exp of expected) {
@@ -289,4 +290,28 @@ test('Combat Services Registration Suite', async (t) => {
       'ArmyUnitManagementService routes must be registered by registerAllServices',
     );
   });
+
+  await t.test(
+    'GuildBattlegroundService.handlePendingUpdate updates lock timestamps',
+    () => {
+      assert.equal(
+        typeof guildBattlegroundService.handlePendingUpdate,
+        'function',
+      );
+      assert.equal(
+        typeof guildBattlegroundService.getPendingUpdate,
+        'function',
+      );
+
+      // Verify graceful handling of null / malformed payloads
+      assert.doesNotThrow(() => {
+        guildBattlegroundService.handlePendingUpdate(null);
+        guildBattlegroundService.handlePendingUpdate({});
+        guildBattlegroundService.handlePendingUpdate({ responseData: {} });
+        guildBattlegroundService.handlePendingUpdate({
+          responseData: { updateAt: 123456, provinceIds: 'invalid' },
+        });
+      });
+    },
+  );
 });

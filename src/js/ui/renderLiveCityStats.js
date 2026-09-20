@@ -172,8 +172,8 @@ function renderLiveCityStats(ctx = {}) {
 
   const maxUnits =
     aidStats?.max?.units && aidStats.max.units.gt(0) ?
-      aidStats.max.units
-    : new BigNumber(City.TrazUnits || 0);
+      aidStats.max.units.integerValue(BigNumber.ROUND_FLOOR)
+    : new BigNumber(City.TrazUnits || 0).integerValue(BigNumber.ROUND_FLOOR);
 
   const maxClanGoods =
     aidStats?.max?.clanGoods && aidStats.max.clanGoods.gt(0) ?
