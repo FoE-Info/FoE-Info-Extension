@@ -10,11 +10,6 @@
 let debugEnabled = false;
 const subscribers = new Set();
 
-// Webpack DefinePlugin inlines DEBUG_BUILD: prod=false, beta/dev=true.
-// Falls back to true in Node/test environments where the global is absent so
-// tests can exercise debug logging via setDebugEnabled(true).
-const DEBUG_BUILD_ENABLED =
-  typeof DEBUG_BUILD === 'undefined' ? true : DEBUG_BUILD;
 // Only auto-enable debug in real debug builds (webpack-defined), never in
 // Node/test runs where a mock window may trigger initDebugState.
 const DEBUG_DEFAULT_ON =
@@ -98,11 +93,11 @@ function createLogger(moduleName = '') {
 
   return {
     debug: (...args) => {
-      if (!DEBUG_BUILD_ENABLED || !debugEnabled) return;
+      if (!debugEnabled) return;
       console.debug(prefix, ...args);
     },
     info: (...args) => {
-      if (!DEBUG_BUILD_ENABLED || !debugEnabled) return;
+      if (!debugEnabled) return;
       console.info(prefix, ...args);
     },
     warn: (...args) => {

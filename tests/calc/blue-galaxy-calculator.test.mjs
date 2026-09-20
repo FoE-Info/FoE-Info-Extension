@@ -255,13 +255,34 @@ describe('BlueGalaxyCalculator Suite', () => {
       assert.equal(computeEconomicScore(sorted[0], weights).toString(), '10');
     });
 
-    it('keeps FP ordering as default when no weights provided', () => {
+    it('keeps FP ordering as default when no weights provided and breaks ties with earlier collection', () => {
       const candidates = [
-        { id: 1, fp: 2, goods: 50, name: 'Goods' },
-        { id: 2, fp: 10, goods: 0, name: 'FP' },
+        {
+          id: 1,
+          fp: 10,
+          transition: 1700020000,
+          state: 'ProducingState',
+          name: 'Later',
+        },
+        {
+          id: 2,
+          fp: 10,
+          transition: 1700010000,
+          state: 'ProducingState',
+          name: 'Earlier',
+        },
+        {
+          id: 3,
+          fp: 10,
+          transition: 0,
+          state: 'ProductionFinishedState',
+          name: 'Finished',
+        },
       ];
       const sorted = filterAndSortGalaxyCandidates(candidates);
-      assert.equal(sorted[0].id, 2);
+      assert.equal(sorted[0].id, 3); // Finished first
+      assert.equal(sorted[1].id, 2); // Earlier transition second
+      assert.equal(sorted[2].id, 1); // Later transition third
     });
 
     it('applies older goods weight when computing score', () => {

@@ -300,7 +300,7 @@ describe('6-Context Panel Visibility Engine', () => {
     });
   }
 
-  it('debug mode stubs only visible panels with their raw data', () => {
+  it('debug mode respects context visibility without injecting stubs into panels', () => {
     setCurrentView('GBG');
     applyCardVisibility(null, true, 'GBG');
 
@@ -316,12 +316,12 @@ describe('6-Context Panel Visibility Engine', () => {
       const el = document.getElementById(id);
       assert.equal(el.style.display, '', `Panel #${id} must be visible`);
       assert.ok(
-        el.innerHTML.includes(`[DEBUG STUB]</strong> ${id}`),
-        `Visible panel #${id} must contain a debug stub`,
+        !el.innerHTML.includes('[DEBUG STUB]'),
+        `Visible panel #${id} must not contain a debug stub`,
       );
       assert.ok(
         el.innerHTML.includes(`Content for ${id}`),
-        `Stub for #${id} must embed its raw content`,
+        `Panel #${id} must retain its raw content`,
       );
     }
 
@@ -346,7 +346,7 @@ describe('6-Context Panel Visibility Engine', () => {
     }
   });
 
-  it('debug mode stubs QI contribution and leaderboard panels', () => {
+  it('debug mode preserves QI contribution and leaderboard panels without stubs', () => {
     setCurrentView('QI');
     applyCardVisibility(null, true, 'QI');
 
@@ -354,75 +354,13 @@ describe('6-Context Panel Visibility Engine', () => {
       const el = document.getElementById(id);
       assert.equal(el.style.display, '', `Panel #${id} must be visible`);
       assert.ok(
-        el.innerHTML.includes(`[DEBUG STUB]</strong> ${id}`),
-        `Panel #${id} must contain a debug stub`,
+        !el.innerHTML.includes('[DEBUG STUB]'),
+        `Panel #${id} must not contain a debug stub`,
       );
       assert.ok(
         el.innerHTML.includes(`Content for ${id}`),
-        `Stub for #${id} must embed its raw content`,
+        `Panel #${id} must retain its content`,
       );
-    }
-  });
-
-  it('debug mode stubs each Lists checker section separately', () => {
-    setCurrentView('OWN_CITY');
-    for (const id of ['friendsText', 'guildText', 'hoodText']) {
-      document.getElementById(id).innerHTML = `<span>${id} data</span>`;
-    }
-    applyCardVisibility(null, true, 'OWN_CITY');
-
-    for (const id of ['friendsText', 'guildText', 'hoodText']) {
-      const el = document.getElementById(id);
-      assert.ok(
-        el.innerHTML.includes(`[DEBUG STUB]</strong> ${id}`),
-        `#${id} must have its own stub`,
-      );
-      assert.ok(el.innerHTML.includes(`${id} data`));
-    }
-
-    const listsCard = document.getElementById('friends');
-    assert.ok(
-      !listsCard.innerHTML.includes('[DEBUG STUB]'),
-      'The Lists card must not be double-stubbed',
-    );
-  });
-
-  it('debug stubs refresh to a panel live content after re-render', () => {
-    setCurrentView('GBG');
-    applyCardVisibility(null, true, 'GBG');
-
-    const el = document.getElementById('army');
-    el.innerHTML = '<span>Army live 731972</span>';
-    applyCardVisibility(null, true, 'GBG');
-
-    assert.ok(el.innerHTML.includes('[DEBUG STUB]</strong> army'));
-    assert.ok(el.innerHTML.includes('Army live 731972'));
-  });
-
-  it('observer refreshes stubs when a panel mutates after render', async () => {
-    const observers = [];
-    globalThis.MutationObserver = class {
-      constructor(cb) {
-        this.cb = cb;
-        observers.push(this);
-      }
-      observe() {}
-      disconnect() {}
-    };
-    try {
-      setCurrentView('GBG');
-      applyCardVisibility(null, true, 'GBG');
-      assert.equal(observers.length, 1);
-
-      const el = document.getElementById('army');
-      el.innerHTML = '<span>Army observed 42</span>';
-      observers[0].cb([{ target: el, addedNodes: [], removedNodes: [] }]);
-      await new Promise((resolve) => setTimeout(resolve, 0));
-
-      assert.ok(el.innerHTML.includes('[DEBUG STUB]</strong> army'));
-      assert.ok(el.innerHTML.includes('Army observed 42'));
-    } finally {
-      delete globalThis.MutationObserver;
     }
   });
 });

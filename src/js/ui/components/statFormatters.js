@@ -366,7 +366,13 @@ function formatUnitsHTML(
   exact = false,
 ) {
   const units = stats.units || {};
-  const total = units.total || units.daily || units.traz || 0;
+  const rawTotal = units.total || units.daily || units.traz || 0;
+  const bn =
+    BigNumber.isBigNumber(rawTotal) ? rawTotal : new BigNumber(rawTotal);
+  const total =
+    bn.isNaN() || !bn.isFinite() ?
+      new BigNumber(0)
+    : bn.integerValue(BigNumber.ROUND_FLOOR);
   const totalDisplay = formatStatNumber(total, { exact, comma: true });
 
   const tooltip =

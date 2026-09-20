@@ -6,6 +6,7 @@
  * only — no tooltips, popovers, or interactive breakdowns.
  */
 
+const BigNumber = require('bignumber.js');
 const {
   formatStatNumber,
   formatPercent,
@@ -106,7 +107,13 @@ function buildVisitedCityCard({
       `<div><span data-i18n="guildgoods">Guild Goods</span>: ${formatStatNumber(clanGoods, { exact: true, comma: true })}</div>`
     : '';
 
-  const unitsTotal = units?.total || units?.daily || units?.traz || 0;
+  const rawUnits = units?.total || units?.daily || units?.traz || 0;
+  const unitsBn =
+    BigNumber.isBigNumber(rawUnits) ? rawUnits : new BigNumber(rawUnits);
+  const unitsTotal =
+    unitsBn.isNaN() || !unitsBn.isFinite() ?
+      new BigNumber(0)
+    : unitsBn.integerValue(BigNumber.ROUND_FLOOR);
   const unitsLine = `<div><span data-i18n="stat_daily_units">Daily Units</span>: ${formatStatNumber(unitsTotal, { exact, comma: true })}</div>`;
 
   return `

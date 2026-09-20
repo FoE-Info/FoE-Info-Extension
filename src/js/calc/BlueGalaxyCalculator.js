@@ -122,14 +122,24 @@ function computeEconomicScore(candidate, economicWeights) {
 function filterAndSortGalaxyCandidates(candidates, economicWeights) {
   if (!Array.isArray(candidates)) return [];
   const weights = resolveEconomicWeights(economicWeights);
-  if (!weights) {
-    return [...candidates].sort((a, b) => (b.fp || 0) - (a.fp || 0));
-  }
-  return [...candidates].sort((a, b) =>
-    computeEconomicScore(b, weights).comparedTo(
-      computeEconomicScore(a, weights),
-    ),
-  );
+  const compare = (a, b) => {
+    const scoreDiff =
+      weights ?
+        computeEconomicScore(b, weights).comparedTo(
+          computeEconomicScore(a, weights),
+        )
+      : (b.fp || 0) - (a.fp || 0);
+
+    if (scoreDiff !== 0) return scoreDiff;
+
+    const aFinished = a.state === 'ProductionFinishedState' ? 1 : 0;
+    const bFinished = b.state === 'ProductionFinishedState' ? 1 : 0;
+    if (aFinished !== bFinished) return bFinished - aFinished;
+
+    return (a.transition || 0) - (b.transition || 0);
+  };
+
+  return [...candidates].sort(compare);
 }
 
 function isCandidateReady(candidate, currentEpoch) {
