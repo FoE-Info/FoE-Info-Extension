@@ -41,7 +41,7 @@ engine (`src/js/utils/date.js`) are already shipped and are not pending work.
 
 ### Step 1: Map the Target Slice via Knowledge Graph
 
-Before modifying code, query `graphify-foe-info` with `get_node` and `get_neighbors` for the target symbol. Use `npm run graph:foe-info:ast` only to refresh a stale graph; it does not query dependencies. Measure current file lengths before planning a slice.
+Before modifying code, query `graphify-foe-info` with `get_node(label="<symbol>")` and `get_neighbors(label="<symbol>")` (note: argument is `label`, not `name` or `symbol`). Use `npm run graph:foe-info:ast` only to refresh a stale graph; it does not query dependencies. Measure current file lengths before planning a slice.
 
 ### Step 2: Lock Behavior with Characterization Tests
 
