@@ -11,7 +11,7 @@ InnoGames CDN & Game Client (RPC)
 DevTools Network Listener (`src/js/devtools.js`)
        │
        ▼
-Network Interceptor (`src/js/protocol/network-interceptor.js`)
+Network Listener (`src/js/protocol/networkListener.js`)
        │ (envelopes: requestData, responseData)
        ▼
 Message Dispatcher (`src/js/protocol/MessageDispatcher.js`)
@@ -32,7 +32,7 @@ Message Dispatcher (`src/js/protocol/MessageDispatcher.js`)
 Modular UI Renderers (`src/js/ui/render*Panel.js`)
        │ (DOM generation, badge counts, tables, tooltips)
        ▼
-DevTools Panel Viewport (`src/html/panel.html`)
+DevTools Panel Viewport (`src/chrome/panel.html`)
 ```
 
 ## Architectural Layers
@@ -48,7 +48,7 @@ DevTools Panel Viewport (`src/html/panel.html`)
 
 ## Non-Negotiable Architectural Invariants
 
-- **File Size Ceiling**: Maximum 600 lines per module in `src/js/` (absolute dispatch ceiling 800 lines). Target: 100–300 lines. See [.agents/rules/modular-architecture.md](../.agents/rules/modular-architecture.md).
+- **File Size Ceiling**: Maximum 500 lines per module in `src/js/` (absolute dispatch ceiling 800 lines). Target: 100–300 lines. See [.agents/rules/modular-architecture.md](../.agents/rules/modular-architecture.md).
 - **Zero Static Game Metadata**: Game metadata streams strictly from the live InnoGames CDN and RPC responses. No entity dumps or static game JSON inside `src/`.
 - **Passive Observation Only**: No botting, automation, active clicking, or request injection into the game client.
 - **BigNumber Precision**: Forge points, Great Building locks, treasury deposits, and boost calculations must preserve exact arithmetic without floating-point drift.

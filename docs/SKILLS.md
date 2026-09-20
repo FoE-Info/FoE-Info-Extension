@@ -4,20 +4,20 @@
 
 Canonical definitions live under `.agents/skills/<name>/SKILL.md`. Load a skill only when its frontmatter description matches the task.
 
-| Name                             | Purpose                                                               |
-| -------------------------------- | --------------------------------------------------------------------- |
-| `add-feature-panel`              | Scaffold accessible, localized UI panels in panel.html.               |
-| `add-rpc-service`                | Scaffold decoupled JSON-RPC service handlers in src/js/msg/.          |
-| `browser-testing`                | Observe game telemetry and test FoE-Info extension panel via OpenCLI. |
-| `codebase-modernization-planner` | Roadmap to decompose monoliths and migrate to TypeScript.             |
-| `graphify`                       | Run Graphify AST extraction, labeling, and visual exports.            |
-| `i18n-audit`                     | Audit and synchronize 7-language translation dictionaries.            |
-| `ingest-game-metadata`           | Ingest InnoGames metadata and update offline graphs.                  |
-| `package-release`                | Manifest version sync and production WebStore zip packaging.          |
-| `protocol-reverse-engineering`   | Analyze FoE JSON-RPC payloads and document handlers.                  |
-| `service-extractor`              | Extract JSON-RPC handlers from monoliths into src/js/msg/.            |
-| `test-guard`                     | Audit test assertions, mocks, and test hygiene.                       |
-| `ui-ux-pro-max`                  | UI design guidelines for Bootstrap 5.3 in DevTools panels.            |
+| Name                                                                                          | Purpose                                                               |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [`add-feature-panel`](../.agents/skills/add-feature-panel/SKILL.md)                           | Scaffold accessible, localized UI panels in panel.html.               |
+| [`add-rpc-service`](../.agents/skills/add-rpc-service/SKILL.md)                               | Scaffold decoupled JSON-RPC service handlers in src/js/msg/.          |
+| [`browser-testing`](../.agents/skills/browser-testing/SKILL.md)                               | Observe game telemetry and test FoE-Info extension panel via OpenCLI. |
+| [`codebase-modernization-planner`](../.agents/skills/codebase-modernization-planner/SKILL.md) | Roadmap to decompose monoliths and migrate to TypeScript.             |
+| [`graphify`](../.agents/skills/graphify/SKILL.md)                                             | Run Graphify AST extraction, labeling, and visual exports.            |
+| [`i18n-audit`](../.agents/skills/i18n-audit/SKILL.md)                                         | Audit and synchronize 7-language translation dictionaries.            |
+| [`ingest-game-metadata`](../.agents/skills/ingest-game-metadata/SKILL.md)                     | Ingest InnoGames metadata and update offline graphs.                  |
+| [`package-release`](../.agents/skills/package-release/SKILL.md)                               | Manifest version sync and production WebStore zip packaging.          |
+| [`protocol-reverse-engineering`](../.agents/skills/protocol-reverse-engineering/SKILL.md)     | Analyze FoE JSON-RPC payloads and document handlers.                  |
+| [`service-extractor`](../.agents/skills/service-extractor/SKILL.md)                           | Extract JSON-RPC handlers from monoliths into src/js/msg/.            |
+| [`test-guard`](../.agents/skills/test-guard/SKILL.md)                                         | Audit test assertions, mocks, and test hygiene.                       |
+| [`ui-ux-pro-max`](../.agents/skills/ui-ux-pro-max/SKILL.md)                                   | UI design guidelines for Bootstrap 5.3 in DevTools panels.            |
 
 ## Supporting knowledge
 
