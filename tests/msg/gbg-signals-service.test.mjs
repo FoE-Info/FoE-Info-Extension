@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
-import { registerLegacyBridge } from '../../src/js/protocol/legacyBridge.js';
+import { guildBattlegroundService } from '../../src/js/msg/GuildBattlegroundService.js';
 import { MessageDispatcher } from '../../src/js/protocol/MessageDispatcher.js';
 
 describe('GBG Signals & MessageDispatcher RPC Suite', () => {
@@ -50,7 +50,7 @@ describe('GBG Signals & MessageDispatcher RPC Suite', () => {
       checkedProvincesCount++;
     };
 
-    registerLegacyBridge(dispatcher, {
+    guildBattlegroundService.register(dispatcher, {
       setSignal: mockSetSignal,
       removeSignal: mockRemoveSignal,
     });
@@ -276,7 +276,7 @@ describe('GBG Signals & MessageDispatcher RPC Suite', () => {
 
   it('routes GuildBattlegroundService.getProvinces to getUpdatedProvinces handler', async () => {
     let updatedCalledWith = null;
-    registerLegacyBridge(dispatcher, {
+    guildBattlegroundService.register(dispatcher, {
       getUpdatedProvinces: (msg) => {
         updatedCalledWith = msg?.responseData;
       },
