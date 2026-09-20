@@ -44,6 +44,16 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "call_mcp_tool",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ./scripts/graphify-guard.mjs",
+            "timeout": 5
+          }
+        ]
       }
     ]
   }

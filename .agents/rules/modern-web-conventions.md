@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Web conventions: Unix timestamps in seconds, a11y, and forms.
+description: "Web conventions: Unix timestamps in seconds, a11y, and forms."
 ---
 
 # Rule: FoE-Info Modern Web Conventions

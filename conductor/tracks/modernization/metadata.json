@@ -1,0 +1,18 @@
+{
+  "id": "modernization",
+  "title": "Codebase Modernization",
+  "type": "refactor",
+  "status": "in_progress",
+  "created": "2026-09-18T00:00:00Z",
+  "updated": "2026-09-20T16:30:00Z",
+  "current_phase": 4,
+  "current_task": "4.4",
+  "phases": {
+    "total": 4,
+    "completed": 3
+  },
+  "tasks": {
+    "total": 12,
+    "completed": 10
+  }
+}

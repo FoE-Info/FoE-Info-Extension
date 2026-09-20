@@ -24,7 +24,7 @@ This rule defines how agent activities and project repositories are structured w
    - On this machine, Antigravity operates across two surfaces:
      - **Antigravity Desktop / IDE**: `<appDataDir>` is `~/.gemini/antigravity/` (`brain/`).
      - **Antigravity CLI (`agy`)**: `<appDataDir>` is `~/.gemini/antigravity-cli/` (`brain/`, `history.jsonl`, and `conversation_summaries.db`).
-   - When asked to review history, execute `/learn`, or inspect brain memories across sessions or surfaces, inspect both brain directories (`~/.gemini/antigravity/brain/*/` and `~/.gemini/antigravity-cli/brain/*/`) as well as `docs/HANDOFF.md` and `~/.gemini/antigravity-cli/history.jsonl`. Never claim history is missing without checking both surfaces.
+   - When asked to review history, execute `/learn`, or inspect brain memories across sessions or surfaces, inspect both brain directories (`~/.gemini/antigravity/brain/*/` and `~/.gemini/antigravity-cli/brain/*/`) as well as `conductor/tracks/` and `~/.gemini/antigravity-cli/history.jsonl`. Never claim history is missing without checking both surfaces.
 1. **Working Directory Scoping**:
    - All builds, formatting, tests, git operations, and scripts execute directly from the active project root (`.` / `process.cwd()`).
 2. **Artifact & Agent Management**:

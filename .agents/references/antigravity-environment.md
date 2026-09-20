@@ -33,6 +33,9 @@ Canonical configuration lives under `.agents/`.
     - `"inherit"` (default): Shares current working directory.
     - `"share"`: Shared repo checkout via git worktree (ideal for independent branch work without duplicating disk space).
     - `"branch"`: Fully isolated clone/branch.
+- **Tool Capabilities & Write Invariant**:
+  - Predefined subagents are read-only by default in the Antigravity runtime.
+  - To delegate tasks requiring file edits or shell command verification (`run_command`), dispatch via `TypeName: "self"` with `Role: "<subagent-name>"` to inherit full tool permissions, or register via `define_subagent` with `enable_write_tools: true`.
 
 ---
 

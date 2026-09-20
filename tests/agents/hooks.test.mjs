@@ -81,9 +81,11 @@ test('Safety Gate Hook - permits safe read/build/test commands', () => {
     'rm -rf build',
     'rm -rf ./build',
     'rm -rf build dist node_modules',
-    'rm -rf .agents/skills/ui-ux-pro-max/scripts/__pycache__',
+    'rm -rf .agents/skills/graphify/scripts/__pycache__',
     'rm -rf .worktrees/ts-hygiene-phase0',
     'rm -rf .worktrees/chore',
+    'rm -rf .sdd/2026-09-12-ts-hygiene-phase0',
+    'rm -rf .worktrees/foo && rm -rf .sdd/bar',
     'rm -rf .superpowers/sdd/2026-09-12-ts-hygiene-phase0',
     'rm -rf .worktrees/foo && rm -rf .superpowers/sdd/bar',
     'node -e "rm -rf .agents"',
@@ -121,6 +123,10 @@ test('Antigravity hooks.json - config validates schema and matchers', async () =
   assert.equal(
     hooksConfig['graphify-guard'].PreToolUse[2].matcher,
     'find_by_name',
+  );
+  assert.equal(
+    hooksConfig['graphify-guard'].PreToolUse[3].matcher,
+    'call_mcp_tool',
   );
 });
 

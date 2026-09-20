@@ -38,6 +38,7 @@ const GENERATED_ARTIFACTS = new Set([
   '__pycache__',
   '.cache',
   '.worktrees',
+  '.sdd',
   '.superpowers',
   'coverage',
   'tmp',

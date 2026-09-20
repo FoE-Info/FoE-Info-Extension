@@ -10,6 +10,7 @@ description: Prohibit wildcard tool grants and redundant MCP registrations.
 - NEVER use wildcard patterns (`*`, `tool:*`, `tool/*`, `mcp(*)`) when configuring tool permission grants in configuration files (`~/.gemini/config/config.json`, project JSON files, `settings.json`).
 - ALWAYS grant permissions using explicit, fully-qualified tool names with the Antigravity MCP wrapper syntax (e.g., `mcp(chrome-devtools/click)`, `mcp(chrome-devtools/navigate_page)`, `mcp(graphify-foe-info/query_graph)`). Bare `server/tool` strings without `mcp(...)` are rejected by the Antigravity permission store.
 - Wildcard grants bypass granular security controls and present unacceptable security risks.
+- **Single Source of Truth**: Declare global permissions in `~/.gemini/config/config.json` (`globalPermissionGrants`). Antigravity CLI inherits these directly as `shared` rules, eliminating duplicate maintenance in `settings.json`.
 
 ## 2. Prevent Redundant MCP Server Definitions
 
@@ -22,5 +23,5 @@ description: Prohibit wildcard tool grants and redundant MCP registrations.
 When retiring or removing an MCP server:
 - **Workspace Registry**: Remove the server definition and any associated profiles or references from `.agents/mcp-registry.json`.
 - **Test Parity**: Update registry test assertions in `tests/agents/mcp-profile.test.mjs` to keep invariant test suites green.
-- **Permission Cleanup**: Remove corresponding `mcp(<server>/*)` grants from `~/.gemini/config/config.json`.
+- **Permission Cleanup**: Remove all corresponding explicit tool grants `mcp(<server>/<tool>)` for that server from `~/.gemini/config/config.json`.
 - **Schema Cache Invalidation**: Delete cached schema directories in both `~/.gemini/antigravity/mcp/<server>/` and `~/.gemini/antigravity-cli/mcp/<server>/` to prevent ghost tool definitions from consuming customization tokens.

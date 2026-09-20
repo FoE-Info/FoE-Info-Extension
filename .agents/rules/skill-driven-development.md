@@ -18,9 +18,9 @@ Before you modify code, design architecture, debug, or refactor:
 ## Which skill for what
 
 - Exploring code: `graphify`, or the knowledge graph skills, before manual searches.
-- Implementing: domain specialists for calculations. `add-rpc-service` or `service-extractor` for protocol handlers. `add-feature-panel` or `ui-ux-pro-max` for UI.
+- Implementing: domain specialists for calculations. `add-rpc-service` or `service-extractor` for protocol handlers. `add-feature-panel`, `ui-ux-designer`, or `frontend-developer` for UI.
 - Debugging: `browser-testing` or `chrome-devtools` for runtime panel checks.
-- Workflow: native `/plan` or `/grill-me` for design and architecture, `unslop-commit` for commits, `verification-before-completion` before you call anything finished.
+- Workflow: native `/plan` or `/grill-me` for design and architecture, Husky Conventional Commits for commit formatting, and `npm run verify` before concluding increments.
 
 The catalog has the complete list of runbooks and their triggers.
 

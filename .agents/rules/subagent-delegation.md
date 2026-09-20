@@ -16,4 +16,10 @@ Before deep investigation, implementation, or review, check whether a canonical 
 
 Dispatch via Antigravity's native `invoke_subagent` per [Environment Reference](../references/antigravity-environment.md).
 
+### Subagent Execution Capabilities & Write Invariant
+- **Read-Only Default**: Predefined subagents launched via `invoke_subagent` inherit read-only inspection tools by default.
+- **Verification & Command Execution**: When delegating work that requires running shell commands, executing tests, or modifying files:
+  1. Delegate via `invoke_subagent` using `TypeName: "self"` with `Role: "<subagent-name>"` and the specialist's system instructions, which inherits all parent write and command tools (`run_command`, `replace_file_content`, `write_to_file`).
+  2. Or define dynamically via `define_subagent` with `enable_write_tools: true`.
+
 Do not delegate merely to avoid a simple direct task, and do not let parallel writers modify the same checkout or files.
