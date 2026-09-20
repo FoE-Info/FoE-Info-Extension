@@ -323,8 +323,48 @@ function getPercent(title) {
   }
 }
 
+function register(dispatcher, options = {}) {
+  if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+
+  const targetConversationService =
+    options.conversationService || conversationService;
+  const targetGetConversation = options.getConversation || getConversation;
+  const targetGetNewMessage =
+    options.getNewMessage || getNewMessage || targetConversationService;
+
+  dispatcher.register('ConversationService', 'getTeasers', (msg, req, ctx) =>
+    targetConversationService(msg, req, ctx),
+  );
+  dispatcher.register('ConversationService', 'getCategory', (msg, req, ctx) =>
+    targetConversationService(msg, req, ctx),
+  );
+  dispatcher.register(
+    'ConversationService',
+    'getOverviewForCategory',
+    (msg, req, ctx) => targetConversationService(msg, req, ctx),
+  );
+  dispatcher.register('ConversationService', 'getOverview', (msg, req, ctx) =>
+    targetConversationService(msg, req, ctx),
+  );
+  dispatcher.register('ConversationService', 'getNewMessage', (msg, req, ctx) =>
+    targetGetNewMessage(msg, req, ctx),
+  );
+  dispatcher.register(
+    'ConversationService',
+    'getConversation',
+    (msg, req, ctx) => targetGetConversation(msg, req, ctx),
+  );
+
+  logger?.debug?.('ConversationService registered RPC handlers');
+  return this;
+}
+
+const conversationServiceExport = conversationService;
+conversationServiceExport.register = register;
+
 module.exports = {
   conversationService,
+  ConversationService: conversationServiceExport,
   getConversation,
   getNewMessage,
   getLatestMessage,
@@ -333,5 +373,6 @@ module.exports = {
   setTargetsTopic,
   getTargetsTopic,
   isTargetsTopic,
+  register,
 };
 module.exports.default = module.exports;

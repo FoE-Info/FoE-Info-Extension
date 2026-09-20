@@ -40,12 +40,37 @@ try {
   ({ castleSystemService } = require('./CastleSystemService.js'));
 } catch {}
 
+let defaultGbRegistry = null;
+try {
+  defaultGbRegistry = require('../state/GreatBuildingRegistry.js');
+} catch {}
+
+let GbDonationService = null;
+try {
+  GbDonationService = require('./GbDonationService.js');
+} catch {}
+
+let setCurrentView = () => {};
+try {
+  ({ setCurrentView } = require('../state/viewState.js'));
+} catch {}
+
+let clearVisitPlayer = () => {};
+let updateIgnoreListUI = () => {};
+let renderGuildPanel = () => {};
+
+let showOptions = {};
+try {
+  showOptions = require('../vars/showOptions.js').showOptions || {};
+} catch {}
+
 let setPlayerName = () => {};
 let updatePlayerNameCache = () => {};
 let PlayerName = '';
 let MyInfo = null;
 let CityProtections = [];
 let PlayerID = 0;
+let gbSelected = null;
 
 try {
   const state = require('../vars/state.js');
@@ -57,6 +82,7 @@ try {
     if (state.CityProtections) CityProtections = state.CityProtections;
     if (state.PlayerID !== undefined) PlayerID = state.PlayerID;
     if (state.MyInfo) MyInfo = state.MyInfo;
+    if (state.GBselected !== undefined) gbSelected = state.GBselected;
   }
 } catch {
   // Graceful fallback when state.js is an ES module outside of bundler
@@ -277,12 +303,166 @@ function checkInactivePlunder(friendsList = []) {
   return html;
 }
 
+function register(dispatcher, options = {}) {
+  if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+
+  const targetOtherPlayerService =
+    options.otherPlayerService || otherPlayerService;
+  const targetUpdateActions =
+    options.otherPlayerServiceUpdateActions || otherPlayerServiceUpdateActions;
+  const targetSetCurrentView = options.setCurrentView || setCurrentView;
+  const targetGbRegistry =
+    options.gbRegistry || options.GreatBuildingRegistry || defaultGbRegistry;
+  const targetGbSelected = options.GBselected || gbSelected;
+  const targetShowOptions = options.showOptions || showOptions;
+  const targetClearVisit = options.clearVisitPlayer || clearVisitPlayer;
+  const targetUpdateIgnoreList =
+    options.updateIgnoreListUI || updateIgnoreListUI;
+  const targetRenderGuildPanel = options.renderGuildPanel || renderGuildPanel;
+
+  // Other Players & Social
+  dispatcher.register('OtherPlayerService', 'getEventsList', (msg, req, ctx) =>
+    targetOtherPlayerService(msg, req, ctx),
+  );
+
+  dispatcher.register('OtherPlayerService', 'visitPlayer', (msg, context) => {
+    if (typeof targetSetCurrentView === 'function') {
+      targetSetCurrentView('OTHER_PLAYER');
+    }
+    const gbs = msg?.responseData?.city_map?.entities || [];
+    const pid =
+      msg?.responseData?.other_player?.player_id ||
+      (Array.isArray(context?.requestData) ? context.requestData[0] : null);
+    if (targetGbRegistry?.registerGreatBuildings) {
+      targetGbRegistry.registerGreatBuildings(gbs, pid);
+    }
+    if (targetShowOptions?.showVisit) {
+      if (typeof targetClearVisit === 'function') targetClearVisit();
+      targetOtherPlayerService(msg);
+    }
+  });
+
+  dispatcher.register(
+    'OtherPlayerService',
+    'updatePlayerActions',
+    (msg, opts) => targetUpdateActions(msg, opts),
+  );
+
+  for (const method of [
+    'getSocialList',
+    'getFriendsList',
+    'getClanMemberList',
+    'getNeighborList',
+    'getNeighbourList',
+  ]) {
+    dispatcher.register('OtherPlayerService', method, (msg) => {
+      targetUpdateActions(msg?.responseData);
+    });
+  }
+
+  dispatcher.register('OtherPlayerService', 'getOtherPlayerOverview', (msg) => {
+    targetUpdateActions(msg?.responseData);
+  });
+
+  const guildHandler = (msg) => {
+    const data = msg?.responseData || msg;
+    if (typeof document !== 'undefined' && document.getElementById) {
+      const guildOverviewEl = document.getElementById('guildOverview');
+      if (guildOverviewEl) {
+        if (guildOverviewEl.classList?.contains('d-none')) {
+          guildOverviewEl.classList.remove('d-none');
+        }
+        if (guildOverviewEl.style) {
+          guildOverviewEl.style.display = '';
+        }
+      }
+    }
+    if (typeof targetRenderGuildPanel === 'function' && data) {
+      targetRenderGuildPanel(data);
+    }
+    if (typeof targetUpdateActions === 'function' && data) {
+      targetUpdateActions(data, { autoExpandGuild: true });
+    }
+  };
+
+  dispatcher.register('ClanMemberService', 'getMemberList', guildHandler);
+  dispatcher.register('ClanService', 'getMembers', guildHandler);
+  dispatcher.register('ClanService', 'getOverview', guildHandler);
+  dispatcher.register('ClanService', 'getOwnClanData', guildHandler);
+  dispatcher.register('ClanService', 'getClanData', guildHandler);
+
+  dispatcher.register(
+    'GreatBuildingsService',
+    'getOtherPlayerOverview',
+    (msg) => {
+      if (
+        Array.isArray(msg?.responseData) &&
+        targetGbRegistry?.registerGreatBuilding
+      ) {
+        for (const item of msg.responseData) {
+          const pId = item.player?.player_id || item.player_id;
+          targetGbRegistry.registerGreatBuilding(item, pId);
+        }
+      }
+      targetUpdateActions(msg?.responseData);
+    },
+  );
+
+  dispatcher.register('IgnorePlayerService', 'getIgnoreList', (msg) => {
+    if (typeof targetUpdateIgnoreList === 'function') {
+      targetUpdateIgnoreList(msg);
+    }
+  });
+
+  dispatcher.register(
+    'OtherPlayerService',
+    'getOtherPlayerCityMapEntity',
+    (msg) => {
+      const selected = msg?.responseData;
+      if (selected) {
+        const pId = selected.player_id || selected.player?.player_id || 0;
+        const pName =
+          (options.playerNameCache && options.playerNameCache[pId]) ||
+          (options.getPlayerName ? options.getPlayerName(pId) : '') ||
+          selected.player_name ||
+          selected.player?.name ||
+          '';
+        const targetSetPlayerName = options.setPlayerName || setPlayerName;
+        if (pId && typeof targetSetPlayerName === 'function') {
+          targetSetPlayerName(pName, pId);
+        }
+
+        const gb =
+          targetGbRegistry?.registerGreatBuilding ?
+            targetGbRegistry.registerGreatBuilding(selected, pId)
+          : null;
+        const target = options.GBselected || targetGbSelected;
+        if (target) {
+          if (GbDonationService?.syncGbSelected) {
+            GbDonationService.syncGbSelected(target, gb || selected);
+          }
+          if (pId) target.player = pId;
+          if (pName) target.player_name = pName;
+        }
+      }
+    },
+  );
+
+  logger?.debug('OtherPlayerService registered RPC handlers');
+  return this;
+}
+
+const otherPlayerServiceExport = otherPlayerService;
+otherPlayerServiceExport.register = register;
+
 module.exports = {
   otherPlayerService,
+  OtherPlayerService: otherPlayerServiceExport,
   otherPlayerServiceUpdateActions,
   formatShieldCountdown,
   friends,
   guildMembers,
   hoodlist,
+  register,
 };
 module.exports.default = otherPlayerService;

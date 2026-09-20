@@ -25,6 +25,8 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
   const { greatBuildingsService } = gbServicePkg.default || gbServicePkg;
   const cityMapPkg = await import('../../src/js/msg/CityMapService.js');
   const { cityMapService } = cityMapPkg.default || cityMapPkg;
+  const otherPlayerPkg = await import('../../src/js/msg/OtherPlayerService.js');
+  const { otherPlayerService } = otherPlayerPkg.default || otherPlayerPkg;
 
   t.beforeEach(() => {
     reset();
@@ -297,6 +299,10 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
         GreatBuildingRegistry: gbRegistryPkg.default || gbRegistryPkg,
         getConstruction: mockGetConstruction,
       });
+      otherPlayerService.register(dispatcher, {
+        GBselected: mockGBselected,
+        GreatBuildingRegistry: gbRegistryPkg.default || gbRegistryPkg,
+      });
 
       // 3. Dispatch OtherPlayerService.getOtherPlayerCityMapEntity
       await dispatcher.dispatchSingle({
@@ -389,6 +395,7 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
       registerLegacyBridge(dispatcher, bridgeOptions);
       greatBuildingsService.register(dispatcher, bridgeOptions);
       cityMapService.register(dispatcher, bridgeOptions);
+      otherPlayerService.register(dispatcher, bridgeOptions);
 
       // 1. Startup arrives with own city entities (Château Frontenac, id: 104, level: 180)
       await dispatcher.dispatchSingle({

@@ -26,6 +26,8 @@ const { greatBuildingsService } = require('./GreatBuildingsService.js');
 const { cityProductionService } = require('./CityProductionService.js');
 const { cityMapService } = require('./CityMapService.js');
 const { metadataService } = require('./MetadataService.js');
+const { otherPlayerService } = require('./OtherPlayerService.js');
+const { conversationService } = require('./ConversationService.js');
 
 const registeredDispatchers = new WeakSet();
 
@@ -64,6 +66,10 @@ function registerAllServices(dispatcher = messageDispatcher, options = {}) {
     cityProductionService.register(dispatcher, options);
   if (cityMapService?.register) cityMapService.register(dispatcher, options);
   if (metadataService?.register) metadataService.register(dispatcher, options);
+  if (otherPlayerService?.register)
+    otherPlayerService.register(dispatcher, options);
+  if (conversationService?.register)
+    conversationService.register(dispatcher, options);
 
   registeredDispatchers.add(dispatcher);
   return dispatcher;
