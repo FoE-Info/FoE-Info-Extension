@@ -5,7 +5,7 @@
 - **Track ID**: `modernization`
 - **Status**: `in_progress`
 - **Active Phase**: Phase 4 — Cluster 4: UI & Panels Decomposition
-- **Active Task**: **Slice 4F** — Decompose `src/js/ui/renderLiveCityStats.js` (416L) down to $\le 250$ lines.
+- **Active Task**: **Slice 4G** — Decompose `src/js/ui/indexUiBindings.js` (422L) down to $\le 250$ lines.
 
 ## Plan & Tasks
 
@@ -22,7 +22,8 @@ See the detailed phased execution plan in [plan.md](./plan.md).
 - [x] **Slice 4C**: `src/js/ui/renderTargetGeneratorCard.js` (442L $\rightarrow$ 180L) by extracting `targetTokenAssembler.js` (160L) and `targetGeneratorEvents.js` (93L).
 - [x] **Slice 4D**: `src/js/ui/renderGbDonationPanel.js` (422L $\rightarrow$ 239L) by extracting `gbDonationPlaceEvaluator.js` (198L) and `gbDonationPanelEvents.js` (67L).
 - [x] **Slice 4E**: `src/js/ui/renderGalaxyPanel.js` (283L $\rightarrow$ 215L) by extracting `galaxyBuildingGrouper.js` (76L) and `galaxyPanelEvents.js` (53L).
-- [ ] **Slice 4F** _(NEXT)_: `src/js/ui/renderLiveCityStats.js` (416L $\rightarrow \le 250$L).
+- [x] **Slice 4F**: `src/js/ui/renderLiveCityStats.js` (416L $\rightarrow$ 233L) by extracting `liveCityGoodsAggregator.js` (126L), `liveCityStatsCalculator.js` (182L), and `liveCityViewDataBuilder.js` (100L).
+- [ ] **Slice 4G** _(NEXT)_: `src/js/ui/indexUiBindings.js` (422L $\rightarrow \le 250$L).
 
 ---
 

@@ -27,15 +27,21 @@
   - Verified `renderGalaxyPanel.js` is 215 lines ($\le 250$ lines target).
   - Confirmed 100% test parity and `npm run verify` gate pass.
 
+- [x] **Slice 4F**: Decompose `src/js/ui/renderLiveCityStats.js` (416L $\rightarrow$ 233L)
+  - Extracted `liveCityGoodsAggregator.js` (126L), `liveCityStatsCalculator.js` (182L), and `liveCityViewDataBuilder.js` (100L).
+  - Added unit test suites `tests/ui/live-city-goods-aggregator.test.mjs`, `tests/ui/live-city-stats-calculator.test.mjs`, and `tests/ui/live-city-view-data-builder.test.mjs`.
+  - Verified `renderLiveCityStats.js` is 233 lines ($\le 250$ lines target).
+  - Confirmed 100% test parity and `npm run verify` gate pass.
+
 ---
 
 ### Active Tasks
 
-#### [ ] Slice 4F: Decompose `src/js/ui/renderLiveCityStats.js` (416L $\rightarrow \le 250$L)
+#### [ ] Slice 4G: Decompose `src/js/ui/indexUiBindings.js` (422L $\rightarrow \le 250$L)
 
-- **Goal**: Decompose live city statistics and goods output rendering.
+- **Goal**: Decompose DevTools UI lifecycle bindings and event listeners.
 - **Subtasks**:
-  - [ ] Extract goods output generators and city statistics table builders.
+  - [ ] Extract panel attachment, tab switching, and container resize listeners.
   - [ ] Verify test parity and line count $\le 250$ lines.
 
 ---
