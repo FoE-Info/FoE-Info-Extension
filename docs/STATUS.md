@@ -18,6 +18,7 @@ a changelog. See `docs/README.md` for the full hub.
 - [x] Modern-web deferred items (MessageDispatcher Parse Yielding): Implemented cooperative parse yielding via `scheduler.yield()` / setTimeout fallback for large JSON bodies, decode stages, and requestPayload correlation.
 - [x] Historical Plans in docs/plans/: All 19 completed implementation plans verified, closed, and purged.
 - [x] Modern-web deferred items: Implemented `content-visibility: auto` with `contain-intrinsic-size: auto 28px` on dense table rows (`.goods-table`, `.gbg-table`, `#friendsText2`, `#guildText2`, `#hoodText2`) and completed 100% accessible table semantics (visually-hidden `<caption>` and `<th scope="col">` across GBG building costs and social lists).
+- [x] Codebase Modernization Milestone 1 (Slice 1A): Decomposed `entityProductionParser.js` (497L -> 202L) by extracting `productionResourceAccumulator.js` (211L) and `entityMetadataProductionParser.js` (208L), maintaining $\le 250$ line budget, BigNumber precision, structured debug logging, and 100% test parity.
 
 ## Open threads requiring a decision
 
