@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: model_decision
 description: Requires fresh verification evidence and records grounded skill outcomes before completion.
 ---
 

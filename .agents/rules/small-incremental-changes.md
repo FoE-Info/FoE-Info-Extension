@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: model_decision
 description: Mandate small incremental edits (<100 lines), surgical blast radius, and stop-the-line debugging.
 ---
 

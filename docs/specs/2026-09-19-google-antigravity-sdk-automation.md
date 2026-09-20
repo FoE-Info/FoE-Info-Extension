@@ -56,7 +56,7 @@ The Google Antigravity SDK operates purely within the **tooling, analysis, and C
 
 | SDK Feature                                        | Role in FoE-Info Tooling                                                                                           |
 | :------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
-| **MCP Integration** (`mcp_servers`)                | Native connectivity to `graphify-foe-info`, `graphify-metadata-store`, and `github-mcp`.                           |
+| **MCP Integration** (`mcp_servers`)                | Native connectivity to `graphify-foe-info`, `graphify-metadata-store`, and `chrome-devtools`.                      |
 | **Local Model Support** (`LiteRT` / `LocalOpenAI`) | Zero-cost, privacy-preserving execution on local developer machines using on-device Gemma or Ollama.               |
 | **Safety Policies & Predicates**                   | Enforce game rules: hard limits preventing write actions or automated gameplay, guaranteeing read-only boundaries. |
 | **Structured Output** (`Pydantic`)                 | Guarantees strict JSON schema conformance for RPC contracts, i18n tables, and test reports.                        |
