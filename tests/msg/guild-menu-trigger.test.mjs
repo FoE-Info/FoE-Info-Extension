@@ -19,8 +19,16 @@ test('Guild Menu RPC Ingestion Suite', async (t) => {
         routedOptions = options;
       };
 
+      const otherPlayerPkg =
+        await import('../../src/js/msg/OtherPlayerService.js');
+      const { otherPlayerService } = otherPlayerPkg.default || otherPlayerPkg;
+
       const dispatcher = new MessageDispatcher();
       registerLegacyBridge(dispatcher, {
+        otherPlayerServiceUpdateActions: mockOtherPlayerServiceUpdateActions,
+        gbRegistry: { registerGreatBuilding: () => {} },
+      });
+      otherPlayerService.register(dispatcher, {
         otherPlayerServiceUpdateActions: mockOtherPlayerServiceUpdateActions,
         gbRegistry: { registerGreatBuilding: () => {} },
       });
