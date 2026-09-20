@@ -84,6 +84,21 @@ try {
   ({ getEraAcronym } = require('../calc/utils/eraUtils.js'));
 } catch {}
 
+let aggregateLiveGoods = null;
+try {
+  ({ aggregateLiveGoods } = require('./liveCityGoodsAggregator.js'));
+} catch {}
+
+let calculateLiveCityStats = null;
+try {
+  ({ calculateLiveCityStats } = require('./liveCityStatsCalculator.js'));
+} catch {}
+
+let buildLiveCityViewData = null;
+try {
+  ({ buildLiveCityViewData } = require('./liveCityViewDataBuilder.js'));
+} catch {}
+
 function renderLiveCityStats(ctx = {}) {
   const renderStart = performance.now();
   logger?.info(
@@ -93,217 +108,61 @@ function renderLiveCityStats(ctx = {}) {
   const user = ctx.lastStartupContext?.user || MyInfo;
   const currentEra = user?.era || 'SpaceAgeSpaceHub';
 
-  const goodsBoostPercent = new BigNumber(City.goodsProductionBoost || 0);
-  const goodsBoostMultiplier =
-    goodsBoostPercent.isGreaterThan(0) ?
-      new BigNumber(1).plus(goodsBoostPercent.dividedBy(100))
-    : null;
-
   const aidStats =
     ctx.lastStartupContext?.aidStats || ctx.aidStats || City.aidStats || null;
-
-  const maxEraGoodsMap = {};
-  if (aidStats?.max?.goodsByEra) {
-    for (const [eraKey, amt] of Object.entries(aidStats.max.goodsByEra)) {
-      const acronym = getEraAcronym(eraKey).toLowerCase();
-      const bnAmt = BigNumber.isBigNumber(amt) ? amt : new BigNumber(amt || 0);
-      if (bnAmt.gt(0)) {
-        maxEraGoodsMap[acronym] = (
-          maxEraGoodsMap[acronym] || new BigNumber(0)
-        ).plus(bnAmt);
-      }
-    }
-  }
-  const hasMaxEraGoods = Object.keys(maxEraGoodsMap).length > 0;
-
-  const goodsByEra = {};
-  let totalGoodsAmount = new BigNumber(0);
-  let liveGoodsHTML = '';
-
   const activeGoodsTooltips =
     ctx.lastStartupContext?.tooltipHTML?.goods || ctx.tooltipHTML?.goods || {};
-
   const activeHelper = ctx.helper || helper;
-  const numAges = activeHelper?.numAges || 23;
-  for (let index = 0; index < numAges; index++) {
-    const age =
-      activeHelper?.fGVGagesname && activeHelper?.fAgefromLevel ?
-        activeHelper
-          .fGVGagesname(activeHelper.fAgefromLevel(numAges - index))
-          .toLowerCase()
-      : '';
-    if (!age) continue;
 
-    const maxAmtBn = maxEraGoodsMap[age];
-    const rawAmt =
-      hasMaxEraGoods ?
-        maxAmtBn ? maxAmtBn.toNumber()
-        : 0
-      : (Goods && Goods[age]) || 0;
-
-    if (rawAmt > 0) {
-      const boostedAmt =
-        hasMaxEraGoods ? maxAmtBn || new BigNumber(rawAmt)
-        : goodsBoostMultiplier ?
-          new BigNumber(rawAmt)
-            .multipliedBy(goodsBoostMultiplier)
-            .integerValue(BigNumber.ROUND_HALF_UP)
-        : new BigNumber(rawAmt);
-
-      goodsByEra[age] = boostedAmt;
-      totalGoodsAmount = totalGoodsAmount.plus(boostedAmt);
-      liveGoodsHTML += fGoodsHTML(
-        age,
+  const goodsData =
+    typeof aggregateLiveGoods === 'function' ?
+      aggregateLiveGoods({
+        city: City,
+        aidStats,
+        goods: Goods,
+        helper: activeHelper,
         activeGoodsTooltips,
-        hasMaxEraGoods ? { [age]: boostedAmt.toNumber() } : Goods,
-        hasMaxEraGoods ? 0 : City.goodsProductionBoost,
-      );
-    }
-  }
+        getEraAcronymFn: getEraAcronym,
+        fGoodsHTMLFn: fGoodsHTML,
+      })
+    : {
+        goodsBoostPercent: new BigNumber(City?.goodsProductionBoost || 0),
+        goodsBoostMultiplier: null,
+        goodsByEra: {},
+        totalGoodsAmount: new BigNumber(0),
+        liveGoodsHTML: '',
+      };
 
-  if (aidStats?.max?.goods && aidStats.max.goods.gt(0)) {
-    totalGoodsAmount = aidStats.max.goods;
-  }
+  const resolvedAvailableFP =
+    typeof ctx.availablePacksFP === 'number' ? ctx.availablePacksFP
+    : typeof stateModule?.availablePacksFP === 'number' ?
+      stateModule.availablePacksFP
+    : availablePacksFP || 0;
 
-  const maxTotalFp =
-    aidStats?.max?.fp && aidStats.max.fp.gt(0) ?
-      aidStats.max.fp
-    : new BigNumber(City.ForgePoints || 0);
-
-  const maxUnits =
-    aidStats?.max?.units && aidStats.max.units.gt(0) ?
-      aidStats.max.units.integerValue(BigNumber.ROUND_FLOOR)
-    : new BigNumber(City.TrazUnits || 0).integerValue(BigNumber.ROUND_FLOOR);
-
-  const maxClanGoods =
-    aidStats?.max?.clanGoods && aidStats.max.clanGoods.gt(0) ?
-      aidStats.max.clanGoods.toNumber()
-    : ctx.lastStartupContext?.clanGoods || 0;
-
-  const maxCoins =
-    aidStats?.max?.coins && aidStats.max.coins.gt(0) ?
-      aidStats.max.coins
-    : new BigNumber(City.Coins || 0)
-        .multipliedBy(
-          new BigNumber(1).plus(
-            new BigNumber(City.CoinBoost || 0).dividedBy(100),
-          ),
-        )
-        .integerValue(BigNumber.ROUND_FLOOR);
-
-  const maxSupplies =
-    aidStats?.max?.supplies && aidStats.max.supplies.gt(0) ?
-      aidStats.max.supplies
-    : new BigNumber(City.Supplies || 0)
-        .multipliedBy(
-          new BigNumber(1).plus(
-            new BigNumber(City.SupplyBoost || 0).dividedBy(100),
-          ),
-        )
-        .integerValue(BigNumber.ROUND_FLOOR);
-
-  const calculatedStats = {
-    exactNumbers: true,
-    aidStats,
-    availableFP:
-      typeof ctx.availablePacksFP === 'number' ? ctx.availablePacksFP
-      : typeof stateModule?.availablePacksFP === 'number' ?
-        stateModule.availablePacksFP
-      : availablePacksFP || 0,
-    clanGoods: maxClanGoods,
-    goodsHTML: liveGoodsHTML.trim(),
-    goods: {
-      total: totalGoodsAmount,
-      boostPercent: goodsBoostPercent,
-      byEra: goodsByEra,
-      tooltipsByEra: activeGoodsTooltips,
-    },
-    fp: {
-      total: maxTotalFp,
-      boostPercent: new BigNumber(City.fpProductionBoost || 0),
-      boostable: new BigNumber(City.baseBoostableFp || 0),
-      unboostable: new BigNumber(City.baseUnboostableFp || 0),
-    },
-    units: {
-      daily: maxUnits,
-      traz: maxUnits,
-    },
-    coins: {
-      total: maxCoins,
-      boostPercent: new BigNumber(City.CoinBoost || 0),
-    },
-    supplies: {
-      total: maxSupplies,
-      boostPercent: new BigNumber(City.SupplyBoost || 0),
-    },
-    military: {
-      red: {
-        base: {
-          att: new BigNumber(City.Attack || 0),
-          def: new BigNumber(City.Defense || 0),
+  const calculatedStats =
+    typeof calculateLiveCityStats === 'function' ?
+      calculateLiveCityStats({
+        city: City,
+        aidStats,
+        ctx,
+        availableFP: resolvedAvailableFP,
+        goodsData: {
+          ...goodsData,
+          activeGoodsTooltips,
         },
-        gbg: {
-          att: new BigNumber(City.GBGAttackingAttack || 0).plus(
-            City.Attack || 0,
-          ),
-          def: new BigNumber(City.GBGAttackingDefense || 0).plus(
-            City.Defense || 0,
-          ),
+      })
+    : {
+        exactNumbers: true,
+        aidStats,
+        availableFP: resolvedAvailableFP,
+        goods: {
+          total: goodsData.totalGoodsAmount,
+          boostPercent: goodsData.goodsBoostPercent,
+          byEra: goodsData.goodsByEra,
+          tooltipsByEra: activeGoodsTooltips,
         },
-        ge: {
-          att: new BigNumber(City.GEAttackingAttack || 0).plus(
-            City.Attack || 0,
-          ),
-          def: new BigNumber(City.GEAttackingDefense || 0).plus(
-            City.Defense || 0,
-          ),
-        },
-        qi: {
-          att: new BigNumber(City.QIAttackingAttack || 0),
-          def: new BigNumber(City.QIAttackingDefense || 0),
-        },
-      },
-      blue: {
-        base: {
-          att: new BigNumber(City.CityAttack || 0),
-          def: new BigNumber(City.CityDefense || 0),
-        },
-        gbg: {
-          att: new BigNumber(City.GBGDefendingAttack || 0).plus(
-            City.CityAttack || 0,
-          ),
-          def: new BigNumber(City.GBGDefendingDefense || 0).plus(
-            City.CityDefense || 0,
-          ),
-        },
-        ge: {
-          att: new BigNumber(City.GEDefendingAttack || 0).plus(
-            City.CityAttack || 0,
-          ),
-          def: new BigNumber(City.GEDefendingDefense || 0).plus(
-            City.CityDefense || 0,
-          ),
-        },
-        qi: {
-          att: new BigNumber(City.QIDefendingAttack || 0),
-          def: new BigNumber(City.QIDefendingDefense || 0),
-        },
-      },
-    },
-    special: {
-      arcPercent: new BigNumber(City.ArcBonus || 0),
-      chatBonus: new BigNumber(City.ChatBonus || 0),
-      goodsPerQuest: new BigNumber(City.ChatBonus || 0)
-        .dividedBy(20)
-        .plus(5)
-        .integerValue(BigNumber.ROUND_FLOOR),
-      aoCriticalStrike: new BigNumber(City.AOCriticalStrike || 0),
-      ccCriticalStrike: new BigNumber(City.CCCriticalStrike || 0),
-      criticalStrike: new BigNumber(City.AOCriticalStrike || 0).plus(
-        new BigNumber(City.CCCriticalStrike || 0),
-      ),
-    },
-  };
+        goodsHTML: goodsData.liveGoodsHTML.trim(),
+      };
 
   const hasPlayerData = Boolean(
     ctx.forceRender ||
@@ -317,72 +176,25 @@ function renderLiveCityStats(ctx = {}) {
   const renderCityStatsFn = ctx.renderCityStats || renderCityStats;
   if (typeof renderCityStatsFn === 'function' && hasPlayerData) {
     try {
-      const userTooltipHTML =
-        typeof getUserTooltipHTML === 'function' ? getUserTooltipHTML()
-        : typeof ctx.getUserTooltipHTML === 'function' ?
-          ctx.getUserTooltipHTML()
-        : '';
-      const userTooltipHTMLEscaped = userTooltipHTML
-        .replace(/'/g, '&#39;')
-        .replace(/"/g, '&quot;');
-      const origin =
-        typeof getScoreDBOrigin === 'function' ? getScoreDBOrigin()
-        : typeof ctx.getScoreDBOrigin === 'function' ? ctx.getScoreDBOrigin()
-        : '';
-      const userTitle = `Playing <strong>FoE</strong> since<br>${formatDate ? formatDate(MyInfo?.createdAt) : ''}`;
-
-      const fpList =
-        ctx.lastStartupContext?.fpBuildings || ctx.fpBuildings || [];
-      const goodsList =
-        ctx.lastStartupContext?.goodsBuildings || ctx.goodsBuildings || [];
-
-      renderCityStatsFn(
-        'citystats',
-        calculatedStats,
-        {
-          isOwnCity: true,
-          name: user?.user_name || MyInfo?.name || 'My City',
-          era: currentEra,
-          score:
-            (Number(MyInfo?.score) > 0 ? Number(MyInfo.score) : null) ??
-            (Number(user?.score) > 0 ? Number(user.score) : null) ??
-            (storage?.getSync ?
-              Number(storage.getSync('playerScore')) || null
-            : null) ??
-            0,
-          guild: user?.clan_name || MyInfo?.clan || '',
-          totalGoods: totalGoodsAmount,
-          goodsBoostPercent: goodsBoostPercent,
-          goodsByEra: goodsByEra,
-          goodsHTML: liveGoodsHTML.trim(),
-          clanGoods: calculatedStats.clanGoods,
-          clanGoodsTooltipHTML:
-            ctx.lastStartupContext?.tooltipHTML?.clanGoods ||
-            ctx.tooltipHTML?.clanGoods,
-          fpTooltipHTML:
-            (buildFpTooltipHTML &&
-              buildFpTooltipHTML(fpList, City.fpProductionBoost)) ||
-            ctx.lastStartupContext?.tooltipHTML?.fp ||
-            ctx.tooltipHTML?.fp,
-          totalGoodsTooltipHTML:
-            (buildTotalGoodsTooltipHTML &&
-              buildTotalGoodsTooltipHTML(goodsList)) ||
-            ctx.lastStartupContext?.tooltipHTML?.totalGoods ||
-            ctx.tooltipHTML?.totalGoods,
-          availableFP: calculatedStats.availableFP,
-          userTooltipHTML: userTooltipHTMLEscaped,
-          userTitle: userTitle,
-          origin: origin ? origin.toUpperCase() : '',
-          aidStats: calculatedStats.aidStats,
-        },
-        {
-          collapseStats: ctx.lastStartupContext?.collapseStats,
-          unitsTooltipHTML:
-            buildUnitsTooltipHTML ?
-              buildUnitsTooltipHTML(calculatedStats.units?.buildings)
-            : '',
-        },
-      );
+      if (typeof buildLiveCityViewData === 'function') {
+        const { viewData, renderOpts } = buildLiveCityViewData({
+          user,
+          myInfo: MyInfo,
+          currentEra,
+          goodsData,
+          calculatedStats,
+          ctx,
+          city: City,
+          formatDate,
+          storage,
+          getUserTooltipHTML,
+          getScoreDBOrigin,
+          buildFpTooltipHTML,
+          buildTotalGoodsTooltipHTML,
+          buildUnitsTooltipHTML,
+        });
+        renderCityStatsFn('citystats', calculatedStats, viewData, renderOpts);
+      }
       const renderEnd = performance.now();
       logger?.info(
         `[TIMING:P6] renderCityStats panel DOM updated | duration = ${(renderEnd - renderStart).toFixed(2)}ms | t = ${renderEnd.toFixed(2)}ms`,
@@ -403,6 +215,9 @@ module.exports = {
   buildFpTooltipHTML,
   buildTotalGoodsTooltipHTML,
   buildUnitsTooltipHTML,
+  aggregateLiveGoods,
+  calculateLiveCityStats,
+  buildLiveCityViewData,
   default: {
     renderLiveCityStats,
     fGoodsHTML,
@@ -411,5 +226,8 @@ module.exports = {
     buildFpTooltipHTML,
     buildTotalGoodsTooltipHTML,
     buildUnitsTooltipHTML,
+    aggregateLiveGoods,
+    calculateLiveCityStats,
+    buildLiveCityViewData,
   },
 };
