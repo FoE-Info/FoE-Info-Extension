@@ -5,6 +5,7 @@ const {
   ingestBattlegroundBuildingMetadata,
 } = require('./GbgMetadataHandler.js');
 const resolver = require('./MetadataResolver.js');
+const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 
 let logger = null;
 try {
@@ -308,6 +309,35 @@ const resolveMissingUnitTypes = (onUpdate) =>
     processMetadataData,
   );
 
+function register(dispatcher = messageDispatcher, options = {}) {
+  if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+  const entryHandler = options.processMetadataEntry || processMetadataEntry;
+  const dataHandler = options.processMetadataData || processMetadataData;
+
+  dispatcher.register('StaticDataService', 'getMetadata', entryHandler);
+  if (typeof dispatcher.registerDirectMetadata === 'function') {
+    dispatcher.registerDirectMetadata(dataHandler);
+  } else if (typeof dispatcher.setDirectMetadataHandler === 'function') {
+    dispatcher.setDirectMetadataHandler(dataHandler);
+  }
+
+  logger?.debug(
+    'MetadataService registered StaticDataService and direct metadata',
+  );
+  return this;
+}
+
+const metadataService = {
+  register,
+  processMetadataEntry,
+  processMetadataData,
+  resolveMissingCityEntities,
+  resolveMissingUnitTypes,
+  onMetadataUpdated,
+  notifyMetadataUpdated,
+  triggerMetadataUpdated,
+};
+
 module.exports = {
   fetchedMetadataUrls: resolver.fetchedMetadataUrls,
   getEntityId,
@@ -322,5 +352,9 @@ module.exports = {
   VolcanoProvinceDefs,
   WaterfallProvinceDefs,
   BuildingDefs,
+  register,
+  metadataService,
 };
 module.exports.default = module.exports;
+module.exports.register = register;
+module.exports.metadataService = metadataService;

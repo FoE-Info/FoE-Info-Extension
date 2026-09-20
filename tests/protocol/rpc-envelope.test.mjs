@@ -2,16 +2,18 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { messageDispatcher } from '../../src/js/protocol/MessageDispatcher.js';
 import '../../src/js/msg/registerServices.js';
+import { cityMapService } from '../../src/js/msg/CityMapService.js';
 import { registerLegacyBridge } from '../../src/js/protocol/legacyBridge.js';
 
 test('RPC Envelope Routing - end-to-end multi-service batch dispatch', async () => {
   let legacyStartupCalled = false;
-  registerLegacyBridge(messageDispatcher, {
+  cityMapService.register(messageDispatcher, {
     startupService: (msg) => {
       legacyStartupCalled = true;
       return { success: true };
     },
   });
+  registerLegacyBridge(messageDispatcher);
 
   const envelope = [
     {
