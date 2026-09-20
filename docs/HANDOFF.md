@@ -39,7 +39,7 @@
 
 Verified on 2026-09-20:
 
-- `npm run verify` — passed formatting, ESLint (0 errors), TypeScript, RPC contract, i18n, complete Node tests (81/81 suites), and development webpack build.
+- `npm run verify` — passed formatting, ESLint (0 errors), TypeScript, RPC contract, i18n, complete Node tests (85/85 suites), and development webpack build.
 - `node .agents/scripts/generate-agent-catalogs.mjs --check` — both catalogs current.
 - `git status` — clean working tree on `development`.
 
@@ -60,6 +60,7 @@ Use `docs/STATUS.md` and the 3-phase, 8-slice master modernization plan for acti
   - Slice 2B: `src/js/msg/StartupService.js` (424L -> 246L)
   - Slice 2C: `src/js/msg/GbgSignalService.js` (403L -> 221L)
   - Slice 3A: `src/js/protocol/MessageDispatcher.js` (494L -> 187L)
+  - Slice 3B: `src/js/state/MetadataStore.js` (487L -> 245L) decomposed into `entityResolver.js` (130L), `metadataRelations.js` (155L), `metadataDomainCollections.js` (147L), and `legacyEntityProxy.js` (62L), all $\le 250$ lines.
   - RTK Compatibility & Graphify Guard: `safety-gate.mjs` updated to strip `rtk`/`proxy` tokens; `graphify-guard.mjs` restored to intercept broad unoriented searches and direct agent to Graphify; registered in `.agents/hooks.json` and tested in `tests/agents/hooks.test.mjs`.
 - **Next Work to Resume**:
-  - Cluster 3 Protocol & State decomposition Slice 3B: `src/js/state/MetadataStore.js` (486L), followed by `src/js/protocol/networkListener.js` (476L) and `src/js/state/storageListener.js` (402L) down to <= 250 lines per file.
+  - Cluster 3 Protocol & State decomposition Slice 3C: `src/js/protocol/networkListener.js` (476L), followed by `src/js/state/storageListener.js` (402L) down to <= 250 lines per file.
