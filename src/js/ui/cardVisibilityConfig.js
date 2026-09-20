@@ -230,30 +230,6 @@ const ALL_KNOWN_PANEL_IDS = Array.from(
   ]),
 );
 
-/**
- * Panels eligible for a debug stub. Only the visible topmost non-empty target in
- * a subtree is stubbed, so wrappers and empty shells are skipped. The Lists card
- * (#friends) is unwrapped into its three per-checker sections, and the GE cards
- * are targeted directly rather than their hidden wrappers.
- */
-const DEBUG_STUB_EXCLUDED = new Set([
-  'friends',
-  'geChampionship',
-  'geContributions',
-  'geContributionSection',
-  'geInternationalSection',
-  'donationDIV2',
-  'donation2DIV',
-]);
-const DEBUG_STUB_PANEL_IDS = new Set([
-  ...ALL_KNOWN_PANEL_IDS.filter((id) => !DEBUG_STUB_EXCLUDED.has(id)),
-  'friendsText',
-  'guildText',
-  'hoodText',
-  'geChampionshipCard',
-  'geContributionCard',
-]);
-
 module.exports = {
   GAME_CONTEXTS,
   CONTEXT_ALLOWED_PANELS,
@@ -266,7 +242,5 @@ module.exports = {
   SECONDARY_PANEL_IDS,
   CONTEXT_PANEL_IDS,
   ALL_KNOWN_PANEL_IDS,
-  DEBUG_STUB_EXCLUDED,
-  DEBUG_STUB_PANEL_IDS,
 };
 module.exports.default = module.exports;

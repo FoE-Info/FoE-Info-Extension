@@ -109,4 +109,15 @@ test('Stat Formatters Sections & Boosts Suite', async (t) => {
       assert.match(html, /84/);
     },
   );
+
+  await t.test('formatUnitsHTML floors fractional units to integer', () => {
+    const html = formatUnitsHTML(
+      { units: { daily: new BigNumber('3318.8') } },
+      {},
+      'citystats',
+      true,
+    );
+    assert.match(html, /3,318/);
+    assert.doesNotMatch(html, /3,318\.8/);
+  });
 });

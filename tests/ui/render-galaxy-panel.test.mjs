@@ -131,6 +131,10 @@ describe('renderGalaxyPanel Suite', () => {
     assert.ok(container.innerHTML.includes('20FP Pirate Hideout'));
     assert.ok(!container.innerHTML.includes('Small Shrine')); // Capped by 2 charges
     assert.ok(container.innerHTML.includes('id="galaxyID">2</span>'));
+    assert.match(
+      container.innerHTML,
+      /<div id="galaxyText"[^>]*>\s*<div class="foe-panel-body">/,
+    );
   });
 
   it('binds toggle collapse callback to galaxyicon', () => {
@@ -206,6 +210,118 @@ describe('renderGalaxyPanel Suite', () => {
 
     assert.equal(container.style.display, 'none');
     assert.equal(container.innerHTML, '');
+  });
+
+  it('groups duplicate buildings with identical collection time and FP in debug mode', () => {
+    const candidates = [
+      {
+        id: 1,
+        name: 'Eternal Market',
+        fp: 504,
+        state: 'ProducingState',
+        transition: 1700010000,
+      },
+      {
+        id: 2,
+        name: 'Eternal Market',
+        fp: 504,
+        state: 'ProducingState',
+        transition: 1700010000,
+      },
+      {
+        id: 3,
+        name: 'Ascended Snowdrop Garden',
+        fp: 270,
+        state: 'ProductionFinishedState',
+        transition: 0,
+      },
+    ];
+
+    renderGalaxyPanel({
+      container,
+      candidates,
+      charges: 0,
+      currentEpoch: 1700000000,
+      isDebug: true,
+      isCollapsed: false,
+    });
+
+    assert.equal(container.style.display, 'block');
+    assert.match(
+      container.innerHTML,
+      /2x 504FP Eternal Market \[\d{2}:\d{2}:\d{2}\]/,
+    );
+    assert.match(
+      container.innerHTML,
+      /1x 270FP Ascended Snowdrop Garden \[READY\]/,
+    );
+  });
+
+  it('lists duplicate buildings with different collection times on separate lines in debug mode', () => {
+    const candidates = [
+      {
+        id: 1,
+        name: 'Eternal Market',
+        fp: 504,
+        state: 'ProducingState',
+        transition: 1700010000,
+      },
+      {
+        id: 2,
+        name: 'Eternal Market',
+        fp: 504,
+        state: 'ProducingState',
+        transition: 1700020000,
+      },
+    ];
+
+    renderGalaxyPanel({
+      container,
+      candidates,
+      charges: 0,
+      currentEpoch: 1700000000,
+      isDebug: true,
+      isCollapsed: false,
+    });
+
+    assert.equal(container.style.display, 'block');
+    const matches = container.innerHTML.match(/1x 504FP Eternal Market/g);
+    assert.equal(matches?.length, 2);
+  });
+
+  it('groups duplicate ready buildings in normal mode up to charge limit', () => {
+    const candidates = [
+      {
+        id: 1,
+        name: 'Snowdrop Garden',
+        fp: 270,
+        state: 'ProductionFinishedState',
+      },
+      {
+        id: 2,
+        name: 'Snowdrop Garden',
+        fp: 270,
+        state: 'ProductionFinishedState',
+      },
+      {
+        id: 3,
+        name: 'Snowdrop Garden',
+        fp: 270,
+        state: 'ProductionFinishedState',
+      },
+    ];
+
+    renderGalaxyPanel({
+      container,
+      candidates,
+      charges: 2,
+      currentEpoch: 1700000000,
+      isDebug: false,
+      isCollapsed: false,
+    });
+
+    assert.equal(container.style.display, 'block');
+    assert.ok(container.innerHTML.includes('2x 270FP Snowdrop Garden'));
   });
 
   it('showGalaxy and updateGalaxy delegate seamlessly', async () => {
