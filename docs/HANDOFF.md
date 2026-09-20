@@ -39,7 +39,7 @@
 
 Verified on 2026-09-20:
 
-- `npm run verify` — passed formatting, ESLint (0 errors), TypeScript, RPC contract, i18n, complete Node tests (93/93 suites), and development webpack build.
+- `npm run verify` — passed formatting, ESLint (0 errors), TypeScript, RPC contract, i18n, complete Node tests (96/96 suites), and development webpack build.
 - `node .agents/scripts/generate-agent-catalogs.mjs --check` — both catalogs current.
 - `git status` — clean working tree on `development`.
 
@@ -64,5 +64,7 @@ Use `docs/STATUS.md` and the 3-phase, 8-slice master modernization plan for acti
   - Slice 3C: `src/js/protocol/networkListener.js` (477L -> 231L) decomposed into `networkPayloadDeduplicator.js` (65L), `gameVersionTracker.js` (89L), `networkContentReader.js` (132L), `networkWorldDetector.js` (100L), `networkPacketDispatcher.js` (64L), and `networkDevtoolsHandler.js` (78L), all $\le 250$ lines.
   - Slice 3D: `src/js/state/storageListener.js` (403L -> 193L) decomposed into `storageWorldSettings.js` (164L) and `storageMetadataHydrator.js` (196L), all $\le 250$ lines. Cluster 3 Protocol & State decomposition is 100% complete.
   - RTK Compatibility & Graphify Guard: `safety-gate.mjs` updated to strip `rtk`/`proxy` tokens; `graphify-guard.mjs` restored to intercept broad unoriented searches and direct agent to Graphify; registered in `.agents/hooks.json` and tested in `tests/agents/hooks.test.mjs`.
+  - Graphify MCP Schemas: Registered parameter schemas and instructions for lazy-loaded tools (`query_graph`, `get_node`, `get_neighbors`, `shortest_path`) in `.agents/rules/graphify.md`, `codebase-modernization-planner/SKILL.md`, and `~/.gemini/antigravity/mcp/graphify-foe-info/instructions.md`.
+  - Slice 4A: `src/js/ui/panelDispatcher.js` (475L -> 131L) decomposed into `renderTreasuryPanel.js` (220L), `treasuryTableBuilder.js` (110L), and `treasuryPanelEvents.js` (130L), all $\le 250$ lines.
 - **Next Work to Resume**:
-  - Cluster 4 UI & Panels decomposition Slice 4A: `src/js/ui/panelDispatcher.js` (475L) down to <= 250 lines per file.
+  - Cluster 4 UI & Panels decomposition Slice 4B: `src/js/fn/collapse.js` (449L) down to <= 250 lines per file.
