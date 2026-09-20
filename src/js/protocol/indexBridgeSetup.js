@@ -50,6 +50,7 @@ import {
   emissaryService,
   startupService,
 } from '../msg/StartupService.js';
+import { setCurrentView } from '../ui/cardVisibility.js';
 import { clearVisitPlayer } from '../ui/panelDispatcher.js';
 import { updateIgnoreListUI } from '../ui/playerTooltip.js';
 import { renderGuildPanel } from '../ui/renderGuildPanel.js';
@@ -69,7 +70,19 @@ const dispatcherLogger = createLogger('DispatcherErrors');
 export function setupIndexBridge(dispatcher, options = {}) {
   if (!dispatcher || typeof dispatcher.register !== 'function') return;
 
-  registerAllServices(dispatcher);
+  registerAllServices(dispatcher, {
+    clearVisitPlayer,
+    renderGuildPanel,
+    updateIgnoreListUI,
+    setCurrentView,
+    GBselected,
+    playerNameCache,
+    getPlayerName,
+    setPlayerName,
+    showOptions,
+    MyInfo,
+    ...options,
+  });
 
   dispatcher.onError((error, msg, context) => {
     dispatcherLogger.debug(
