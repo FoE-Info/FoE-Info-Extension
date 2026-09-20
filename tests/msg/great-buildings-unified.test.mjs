@@ -20,6 +20,10 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
     calculateSafeSpots,
   } = gbDonationPkg.default || gbDonationPkg;
 
+  const gbServicePkg =
+    await import('../../src/js/msg/GreatBuildingsService.js');
+  const { greatBuildingsService } = gbServicePkg.default || gbServicePkg;
+
   t.beforeEach(() => {
     reset();
   });
@@ -286,6 +290,11 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
         GreatBuildingRegistry: gbRegistryPkg.default || gbRegistryPkg,
         getConstruction: mockGetConstruction,
       });
+      greatBuildingsService.register(dispatcher, {
+        GBselected: mockGBselected,
+        GreatBuildingRegistry: gbRegistryPkg.default || gbRegistryPkg,
+        getConstruction: mockGetConstruction,
+      });
 
       // 3. Dispatch OtherPlayerService.getOtherPlayerCityMapEntity
       await dispatcher.dispatchSingle({
@@ -364,7 +373,7 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
         player_name: 'Overlord Negan',
       };
 
-      registerLegacyBridge(dispatcher, {
+      const bridgeOptions = {
         GBselected: mockGBselected,
         GreatBuildingRegistry: gbRegistryPkg.default || gbRegistryPkg,
         setPlayerName: mockSetPlayerName,
@@ -374,7 +383,9 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
           : '',
         MyInfo: mockMyInfo,
         startupService: () => {},
-      });
+      };
+      registerLegacyBridge(dispatcher, bridgeOptions);
+      greatBuildingsService.register(dispatcher, bridgeOptions);
 
       // 1. Startup arrives with own city entities (Château Frontenac, id: 104, level: 180)
       await dispatcher.dispatchSingle({

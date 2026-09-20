@@ -156,15 +156,12 @@ const { gbDonationState } = gbDonationStatePkg;
 
 const greatBuildingsServicePkg =
   await import('../../src/js/msg/GreatBuildingsService.js');
-const { showGreatBuldingDonation } =
+const { showGreatBuldingDonation, greatBuildingsService } =
   greatBuildingsServicePkg.default || greatBuildingsServicePkg;
 
 const greatBuildingsStatePkg =
   await import('../../src/js/state/GreatBuildingsState.js');
 const { greatBuildingsState } = greatBuildingsStatePkg;
-
-const bridgePkg = await import('../../src/js/protocol/legacyBridge.js');
-const { registerLegacyBridge } = bridgePkg.default || bridgePkg;
 
 const dispatcherPkg =
   await import('../../src/js/protocol/MessageDispatcher.js');
@@ -393,14 +390,14 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
   );
 
   await t.test(
-    'legacyBridge routes getConstructionRanking and BlueprintService.newReward',
+    'greatBuildingsService routes getConstructionRanking and BlueprintService.newReward',
     async () => {
       const dispatcher = new MessageDispatcher();
       let capturedRankingMsg = null;
       let capturedRankingData = null;
       let capturedRewardMsg = null;
 
-      registerLegacyBridge(dispatcher, {
+      greatBuildingsService.register(dispatcher, {
         getConstructionRanking: (msg, data) => {
           capturedRankingMsg = msg;
           capturedRankingData = data;
