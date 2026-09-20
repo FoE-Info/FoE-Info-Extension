@@ -39,7 +39,7 @@
 
 Verified on 2026-09-20:
 
-- `npm run verify` — passed formatting, ESLint (0 errors), TypeScript, RPC contract, i18n, complete Node tests (80/80 suites), and development webpack build.
+- `npm run verify` — passed formatting, ESLint (0 errors), TypeScript, RPC contract, i18n, complete Node tests (81/81 suites), and development webpack build.
 - `node .agents/scripts/generate-agent-catalogs.mjs --check` — both catalogs current.
 - `git status` — clean working tree on `development`.
 
@@ -50,9 +50,10 @@ Use `docs/STATUS.md` and the 3-phase, 8-slice master modernization plan for acti
 - **Completed**:
   - Legacy Bridge Modernization Slice 1: Quantum Incursions decommissioned into `GuildRaidsService.js` with `.register(dispatcher)`, `quantumRoutes.js` deleted.
   - Legacy Bridge Modernization Slice 2: Great Buildings & Blueprints decommissioned into `GreatBuildingsService.js` and `GbDonationService.js` with `.register(dispatcher)`, wired into `registerServices.js`, `buildingRoutes.js` deleted.
+  - Legacy Bridge Modernization Slice 3: City routes decommissioned into `CityMapService.js`, `CityProductionService.js`, `BonusService.js`, and `MetadataService.js` with `.register(dispatcher)`, wired into `registerServices.js`, `cityRoutes.js` deleted.
   - Slice 1A: `src/js/calc/prod/entityProductionParser.js` (497L -> 202L)
   - Slice 2A: `src/js/msg/GuildBattlegroundService.js` (489L -> 240L)
   - Slice 2B: `src/js/msg/StartupService.js` (424L -> 246L)
   - Slice 2C: `src/js/msg/GbgSignalService.js` (403L -> 221L)
 - **Next Slice to Resume**:
-  - **Legacy Bridge Modernization Slice 3**: Decommission `src/js/protocol/routes/cityRoutes.js` by adding `.register(dispatcher)` to relevant city services (`CityProductionService.js` / `CityMapService`), wiring into `registerServices.js`, and deleting `cityRoutes.js`.
+  - **Legacy Bridge Modernization Slice 4**: Decommission `src/js/protocol/routes/socialRoutes.js` by adding `.register(dispatcher)` to relevant social services (`OtherPlayerService.js`, `ConversationService.js`), wiring into `registerServices.js`, and deleting `socialRoutes.js`.
