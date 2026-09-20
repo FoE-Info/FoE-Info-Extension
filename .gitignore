@@ -55,6 +55,7 @@ graphify-out/
 # Git Worktrees & Subagent Artifacts
 .worktrees/
 worktrees/
+.sdd/
 .superpowers/
 .claude/
 .cursor/
