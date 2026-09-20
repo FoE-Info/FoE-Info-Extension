@@ -507,16 +507,13 @@ describe('Protocol Route Context Wiring', () => {
   });
 
   it('OtherPlayerService.visitPlayer switches to OTHER_PLAYER', async () => {
-    const { registerSocialRoutes } =
-      await import('../../src/js/protocol/routes/socialRoutes.js');
+    const { otherPlayerService } =
+      await import('../../src/js/msg/OtherPlayerService.js');
 
     const dispatcher = createMockDispatcher();
-    registerSocialRoutes({
-      dispatcher,
-      handlers: {
-        otherPlayerService: () => {},
-        MyInfo: { id: 1, name: 'me' },
-      },
+    otherPlayerService.register(dispatcher, {
+      otherPlayerService: () => {},
+      MyInfo: { id: 1, name: 'me' },
       gbRegistry: { registerGreatBuildings() {} },
       showOptions: { showVisit: true },
     });
