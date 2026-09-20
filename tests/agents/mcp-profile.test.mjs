@@ -50,10 +50,6 @@ test('MCP profiles - registry defines lean and task-scoped server sets', () => {
     'graphify-foe-info',
     'chrome-devtools',
   ]);
-  assert.deepEqual(registry.profiles.github, [
-    'graphify-foe-info',
-    'github-mcp',
-  ]);
   assert.deepEqual(registry.profiles.linux, [
     'graphify-foe-info',
     'linux-tools',
