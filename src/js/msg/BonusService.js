@@ -1,4 +1,5 @@
 /** Server boost RPC service surfacing limited and city-wide bonuses. */
+import { messageDispatcher } from '../protocol/MessageDispatcher.js';
 import { blueGalaxyState } from '../state/BlueGalaxyState.js';
 import { bonusState } from '../state/BonusState.js';
 import { City } from '../state/CityState.js';
@@ -58,3 +59,23 @@ export function getLimitedBonuses(msg) {
     });
   }
 }
+
+export class BonusService {
+  constructor() {
+    this.getLimitedBonuses = getLimitedBonuses;
+    this.register = this.register.bind(this);
+  }
+
+  register(dispatcher = messageDispatcher, options = {}) {
+    if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+    const handler = options.getLimitedBonuses || getLimitedBonuses;
+    dispatcher.register('BonusService', 'getLimitedBonuses', handler);
+    logger.debug('BonusService registered getLimitedBonuses');
+    return this;
+  }
+}
+
+export const bonusService = new BonusService();
+export const register = (dispatcher, options) =>
+  bonusService.register(dispatcher, options);
+export default bonusService;
