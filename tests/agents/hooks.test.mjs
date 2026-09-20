@@ -1,5 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import {
+  evaluateGraphifyGuard,
+  isBroadSourceSearch,
+  isCodebaseSourceSearch,
+} from '../../.agents/scripts/graphify-guard.mjs';
 import { isDangerousCommand } from '../../.agents/scripts/safety-gate.mjs';
 
 test('Safety Gate Hook - flags destructive commands', () => {
@@ -41,6 +46,9 @@ test('Safety Gate Hook - flags destructive commands', () => {
     'foe-browser --kill',
     'pkill -f chrome',
     'killall chrome',
+    'rtk rm -rf src/',
+    'rtk proxy rm -rf tests/',
+    'rtk git reset --hard',
   ];
 
   for (const cmd of dangerousCommands) {
@@ -80,6 +88,7 @@ test('Safety Gate Hook - permits safe read/build/test commands', () => {
     'rm -rf .worktrees/foo && rm -rf .superpowers/sdd/bar',
     'node -e "rm -rf .agents"',
     'git commit -m "rm -rf src"',
+    'rtk rm -rf build',
   ];
 
   for (const cmd of safeCommands) {
@@ -100,4 +109,76 @@ test('Antigravity hooks.json - config validates schema and matchers', async () =
 
   assert.ok(hooksConfig['safety-gate']?.PreToolUse);
   assert.equal(hooksConfig['safety-gate'].PreToolUse[0].matcher, 'run_command');
+  assert.ok(hooksConfig['graphify-guard']?.PreToolUse);
+  assert.equal(
+    hooksConfig['graphify-guard'].PreToolUse[0].matcher,
+    'run_command',
+  );
+  assert.equal(
+    hooksConfig['graphify-guard'].PreToolUse[1].matcher,
+    'grep_search',
+  );
+  assert.equal(
+    hooksConfig['graphify-guard'].PreToolUse[2].matcher,
+    'find_by_name',
+  );
+});
+
+test('Graphify Guard Hook - detects broad codebase searches with and without RTK', () => {
+  assert.equal(isBroadSourceSearch('grep -rn "MessageDispatcher" src/'), true);
+  assert.equal(
+    isBroadSourceSearch('rtk grep -rn "MessageDispatcher" src/'),
+    true,
+  );
+  assert.equal(
+    isBroadSourceSearch('rtk proxy rg "MessageDispatcher" src/'),
+    true,
+  );
+  assert.equal(isBroadSourceSearch('find src/ -name "*.js"'), true);
+  assert.equal(isBroadSourceSearch('rtk find src/ -name "*.js"'), true);
+  assert.equal(isBroadSourceSearch('rtk fd "MessageDispatcher" src/'), true);
+
+  // Targeted searches
+  assert.equal(isBroadSourceSearch('grep -rn "test" tests/'), false);
+  assert.equal(isBroadSourceSearch('rtk grep -rn "test" tests/'), false);
+  assert.equal(
+    isBroadSourceSearch(
+      'rtk grep "MessageDispatcher" src/js/protocol/MessageDispatcher.js',
+    ),
+    false,
+  );
+  assert.equal(isBroadSourceSearch('npm test'), false);
+});
+
+test('Graphify Guard Hook - detects tool calls targeting codebase', () => {
+  assert.equal(
+    isCodebaseSourceSearch('grep_search', { SearchPath: 'src/' }),
+    true,
+  );
+  assert.equal(
+    isCodebaseSourceSearch('grep_search', { SearchPath: 'tests/' }),
+    false,
+  );
+  assert.equal(
+    isCodebaseSourceSearch('find_by_name', { SearchDirectory: 'src/' }),
+    true,
+  );
+  assert.equal(
+    isCodebaseSourceSearch('find_by_name', { SearchDirectory: 'tests/' }),
+    false,
+  );
+});
+
+test('Graphify Guard Hook - intercepts broad search and allows after graph query', () => {
+  const mcpResult = evaluateGraphifyGuard({
+    name: 'call_mcp_tool',
+    args: { ServerName: 'graphify-foe-info', ToolName: 'query_graph' },
+  });
+  assert.equal(mcpResult.decision, 'allow');
+
+  const searchResult = evaluateGraphifyGuard({
+    name: 'run_command',
+    args: { CommandLine: 'rtk grep -rn "test" src/' },
+  });
+  assert.equal(searchResult.decision, 'allow');
 });
