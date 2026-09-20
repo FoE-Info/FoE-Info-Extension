@@ -22,6 +22,7 @@ const { timeService } = require('./TimeService.js');
 const { emissaryServiceInstance } = require('./EmissaryService.js');
 const resourceService = require('./ResourceService.js');
 const { guildRaidsService } = require('./GuildRaidsService.js');
+const { greatBuildingsService } = require('./GreatBuildingsService.js');
 
 const registeredDispatchers = new WeakSet();
 
@@ -48,6 +49,8 @@ function registerAllServices(dispatcher = messageDispatcher) {
     emissaryServiceInstance.register(dispatcher);
   if (resourceService?.register) resourceService.register(dispatcher);
   if (guildRaidsService?.register) guildRaidsService.register(dispatcher);
+  if (greatBuildingsService?.register)
+    greatBuildingsService.register(dispatcher);
 
   registeredDispatchers.add(dispatcher);
   return dispatcher;

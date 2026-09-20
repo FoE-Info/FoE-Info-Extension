@@ -20,7 +20,6 @@ try {
 
 const defaultGbRegistry = require('../state/GreatBuildingRegistry.js');
 const { registerCityRoutes } = require('./routes/cityRoutes.js');
-const { registerBuildingRoutes } = require('./routes/buildingRoutes.js');
 const { registerSocialRoutes } = require('./routes/socialRoutes.js');
 const { registerCombatRoutes } = require('./routes/combatRoutes.js');
 
@@ -45,7 +44,6 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
   };
 
   registerCityRoutes(ctx);
-  registerBuildingRoutes(ctx);
   registerSocialRoutes(ctx);
   registerCombatRoutes(ctx);
 
