@@ -19,7 +19,6 @@ try {
 }
 
 const defaultGbRegistry = require('../state/GreatBuildingRegistry.js');
-const { registerSocialRoutes } = require('./routes/socialRoutes.js');
 const { registerCombatRoutes } = require('./routes/combatRoutes.js');
 
 function registerLegacyBridge(dispatcher, handlers = {}) {
@@ -42,7 +41,6 @@ function registerLegacyBridge(dispatcher, handlers = {}) {
     showOptions: handlers.showOptions || {},
   };
 
-  registerSocialRoutes(ctx);
   registerCombatRoutes(ctx);
 
   logger.debug('Legacy bridge routes registered');
