@@ -6,16 +6,12 @@
  * direct CDN metadata URL routing, and per-message failure isolation.
  */
 
-let logger = null;
-try {
-  const { createLogger } = require('../utils/logger.js');
-  logger = createLogger('Dispatcher');
-} catch {}
-
 const { DedupCache } = require('./dedupCache.js');
-const { shouldLogUnhandledRpc } = require('./rpcScope.js');
-const { extractRequestPayload } = require('./requestPayload.js');
-const { routeDirectMetadata } = require('./directMetadata.js');
+const { MessagePriorityManager } = require('./MessagePriorityManager.js');
+const { decodeBody, parsePayload } = require('./payloadCodec.js');
+const { executeBatchDispatch } = require('./batchExecutor.js');
+const { executeRawDispatch } = require('./rawDispatchPipeline.js');
+const { RpcRouter } = require('./rpcRouter.js');
 
 let yieldToMain = async () => new Promise((resolve) => setTimeout(resolve, 0));
 try {
@@ -24,8 +20,6 @@ try {
     yieldToMain = scheduler.yieldToMain;
   }
 } catch {}
-
-const combinedHandlerMembers = new WeakMap();
 
 class MessageDispatcher {
   /**
@@ -36,9 +30,9 @@ class MessageDispatcher {
    * @param {Function} [options.yieldFn] - Custom yielding function (defaults to yieldToMain)
    */
   constructor(options = {}) {
-    this.handlers = new Map();
-    this.classFallbacks = new Map();
-    this.globalFallback = null;
+    this.router = new RpcRouter();
+    this.handlers = this.router.handlers;
+    this.classFallbacks = this.router.classFallbacks;
     this.directMetadataHandler = null;
     this.errorHandler = null;
 
@@ -58,87 +52,43 @@ class MessageDispatcher {
       windowMs: this.dedupWindowMs,
       maxSize: this.maxCacheSize,
     });
-    this.priorities = new Map();
+    this.priorityManager = new MessagePriorityManager();
+    this.priorities = this.priorityManager.priorities;
   }
 
-  /**
-   * Register a handler for a specific requestClass and requestMethod.
-   * @param {string} requestClass
-   * @param {string} requestMethod
-   * @param {Function} handlerFn
-   * @returns {MessageDispatcher} this
-   */
+  get globalFallback() {
+    return this.router.globalFallback;
+  }
+
+  set globalFallback(fallbackFn) {
+    this.router.globalFallback = fallbackFn;
+  }
+
+  /** Register a handler for a specific requestClass and requestMethod. */
   register(requestClass, requestMethod, handlerFn) {
-    if (!requestClass || !requestMethod || typeof handlerFn !== 'function') {
-      return this;
-    }
-    const key = `${requestClass}.${requestMethod}`;
-    const existing = this.handlers.get(key);
-    if (!existing) {
-      this.handlers.set(key, handlerFn);
-    } else {
-      const members =
-        combinedHandlerMembers.get(existing) || new Set([existing]);
-      if (members.has(handlerFn)) return this;
-      const combined = async (msg, ctx) => {
-        const res1 = await existing(msg, ctx);
-        const res2 = await handlerFn(msg, ctx);
-        return res2 !== undefined ? res2 : res1;
-      };
-      combinedHandlerMembers.set(combined, new Set([...members, handlerFn]));
-      this.handlers.set(key, combined);
-    }
+    this.router.register(requestClass, requestMethod, handlerFn);
     return this;
   }
 
-  /**
-   * Register an entire service bundle where methods map to requestMethods.
-   * @param {string} requestClass
-   * @param {Object} handlersMap
-   * @returns {MessageDispatcher} this
-   */
+  /** Register an entire service bundle where methods map to requestMethods. */
   registerService(requestClass, handlersMap) {
-    if (!requestClass || !handlersMap || typeof handlersMap !== 'object') {
-      return this;
-    }
-    for (const key of Object.keys(handlersMap)) {
-      if (typeof handlersMap[key] === 'function') {
-        this.register(requestClass, key, handlersMap[key].bind(handlersMap));
-      }
-    }
+    this.router.registerService(requestClass, handlersMap);
     return this;
   }
 
-  /**
-   * Register a fallback handler for unhandled methods on a known class.
-   * @param {string} requestClass
-   * @param {Function} fallbackFn
-   * @returns {MessageDispatcher} this
-   */
+  /** Register a fallback handler for unhandled methods on a known class. */
   registerFallback(requestClass, fallbackFn) {
-    if (requestClass && typeof fallbackFn === 'function') {
-      this.classFallbacks.set(requestClass, fallbackFn);
-    }
+    this.router.registerFallback(requestClass, fallbackFn);
     return this;
   }
 
-  /**
-   * Register a global fallback handler for completely unhandled messages.
-   * @param {Function} fallbackFn
-   * @returns {MessageDispatcher} this
-   */
+  /** Register a global fallback handler for completely unhandled messages. */
   registerGlobalFallback(fallbackFn) {
-    if (typeof fallbackFn === 'function') {
-      this.globalFallback = fallbackFn;
-    }
+    this.router.registerGlobalFallback(fallbackFn);
     return this;
   }
 
-  /**
-   * Register a dedicated handler for direct CDN metadata requests.
-   * @param {Function} handlerFn
-   * @returns {MessageDispatcher} this
-   */
+  /** Register a dedicated handler for direct CDN metadata requests. */
   registerDirectMetadata(handlerFn) {
     if (typeof handlerFn === 'function') {
       this.directMetadataHandler = handlerFn;
@@ -150,11 +100,7 @@ class MessageDispatcher {
     return this.registerDirectMetadata(handlerFn);
   }
 
-  /**
-   * Register an error listener for isolated message dispatch exceptions.
-   * @param {Function} errorHandlerFn
-   * @returns {MessageDispatcher} this
-   */
+  /** Register an error listener for isolated message dispatch exceptions. */
   onError(errorHandlerFn) {
     if (typeof errorHandlerFn === 'function') {
       this.errorHandler = errorHandlerFn;
@@ -162,322 +108,70 @@ class MessageDispatcher {
     return this;
   }
 
-  /**
-   * Assign a dispatch priority to a specific method or entire class.
-   * @param {string} requestClass
-   * @param {string|null} requestMethod
-   * @param {number} priority
-   * @returns {MessageDispatcher} this
-   */
+  /** Assign a dispatch priority to a specific method or entire class. */
   setPriority(requestClass, requestMethod, priority) {
-    const key =
-      requestMethod ? `${requestClass}.${requestMethod}` : `${requestClass}.*`;
-    this.priorities.set(key, priority);
+    this.priorityManager.setPriority(requestClass, requestMethod, priority);
     return this;
   }
 
-  /**
-   * Calculate priority weight for a message (higher executes earlier).
-   * @param {Object} msg
-   * @returns {number}
-   */
+  /** Calculate priority weight for a message (higher executes earlier). */
   getMessagePriority(msg) {
-    if (!msg || typeof msg !== 'object') return 0;
-    const specificKey = `${msg.requestClass}.${msg.requestMethod}`;
-    if (this.priorities.has(specificKey)) {
-      return this.priorities.get(specificKey);
-    }
-    const classKey = `${msg.requestClass}.*`;
-    if (this.priorities.has(classKey)) {
-      return this.priorities.get(classKey);
-    }
-    // InnoGames Invariant: StaticDataService metadata must load before StartupService data
-    if (
-      msg.requestClass === 'StaticDataService' &&
-      msg.requestMethod === 'getMetadata'
-    ) {
-      return 100;
-    }
-    if (msg.requestClass === 'StaticDataService') {
-      return 90;
-    }
-    return 0;
+    return this.priorityManager.getMessagePriority(msg);
   }
 
-  /**
-   * Stably sort an array of messages by priority descending.
-   * @param {Array} messages
-   * @returns {Array}
-   */
+  /** Stably sort an array of messages by priority descending. */
   sortBatch(messages) {
-    if (!Array.isArray(messages) || messages.length <= 1) return messages;
-    return messages
-      .map((msg, index) => ({
-        msg,
-        index,
-        priority: this.getMessagePriority(msg),
-      }))
-      .sort((a, b) => b.priority - a.priority || a.index - b.index)
-      .map((item) => item.msg);
+    return this.priorityManager.sortBatch(messages);
   }
 
-  /**
-   * Decode network payload string according to transfer encoding.
-   * @param {string|Object} body
-   * @param {string} [encoding]
-   * @returns {string}
-   */
+  /** Decode network payload string according to transfer encoding. */
   decodeBody(body, encoding) {
-    if (!body) return '';
-    if (encoding === 'base64' && typeof body === 'string') {
-      if (typeof Buffer !== 'undefined') {
-        return Buffer.from(body, 'base64').toString('utf8');
-      }
-      const binaryStr = atob(body);
-      const bytes = new Uint8Array(binaryStr.length);
-      for (let i = 0; i < binaryStr.length; i++) {
-        bytes[i] = binaryStr.charCodeAt(i);
-      }
-      return new TextDecoder('utf-8').decode(bytes);
-    }
-    return typeof body === 'string' ? body : JSON.stringify(body);
+    return decodeBody(body, encoding);
   }
 
-  /**
-   * Determine if the payload is an identical duplicate within dedup window.
-   * @param {string} reqUrl
-   * @param {string} textBody
-   * @param {Object|string|number} [requestPayload=null]
-   * @param {number} [now=Date.now()]
-   * @returns {boolean}
-   */
+  /** Determine if the payload is an identical duplicate within dedup window. */
   isDuplicate(reqUrl, textBody, requestPayload = null, now = Date.now()) {
     return this.dedupCache.isDuplicate(reqUrl, textBody, requestPayload, now);
   }
 
-  /**
-   * Clear the deduplication cache.
-   */
+  /** Clear the deduplication cache. */
   clearDedupCache() {
     this.dedupCache.clear();
   }
 
-  /**
-   * Parse JSON body with cooperative main-thread yielding for heavy payloads.
-   * @param {string|Object} textBody
-   * @returns {Promise<*>}
-   */
+  /** Parse JSON body with cooperative main-thread yielding for heavy payloads. */
   async parsePayload(textBody) {
-    if (!textBody) return null;
-    if (typeof textBody === 'object') return textBody;
-
-    const isHeavy =
-      this.yieldParseThresholdBytes > 0 &&
-      typeof textBody === 'string' &&
-      textBody.length >= this.yieldParseThresholdBytes;
-
-    if (isHeavy) {
-      await this.yieldFn();
-    }
-
-    const parsed = JSON.parse(textBody);
-
-    if (isHeavy) {
-      await this.yieldFn();
-    }
-
-    return parsed;
+    return parsePayload(textBody, {
+      yieldParseThresholdBytes: this.yieldParseThresholdBytes,
+      yieldFn: this.yieldFn,
+    });
   }
 
-  /**
-   * Dispatch a single ServerRequest to its registered handler.
-   * @param {Object} msg
-   * @param {Object} [context]
-   * @returns {Promise<*>}
-   */
+  /** Dispatch a single ServerRequest to its registered handler. */
   async dispatchSingle(msg, context = {}) {
-    if (!msg || typeof msg !== 'object') return null;
-    const { requestClass, requestMethod } = msg;
-    const key = `${requestClass}.${requestMethod}`;
-
-    const handler = this.handlers.get(key);
-    if (handler) {
-      logger?.debug(`Routing RPC: ${key}`, { requestId: msg.requestId });
-      return await handler(msg, context);
-    }
-
-    const classFallback = this.classFallbacks.get(requestClass);
-    if (classFallback) {
-      logger?.debug(`Routing RPC fallback for class: ${requestClass}`);
-      return await classFallback(msg, context);
-    }
-
-    if (this.globalFallback) {
-      logger?.debug(`Routing RPC to global fallback: ${key}`);
-      return await this.globalFallback(msg, context);
-    }
-
-    if (shouldLogUnhandledRpc(requestClass)) {
-      logger?.debug(`Unhandled RPC service method: ${key}`);
-    }
-    return { unhandled: true, requestClass, requestMethod };
+    return this.router.dispatchSingle(msg, context);
   }
 
-  /**
-   * Dispatch a batch of ServerRequests with error isolation.
-   * @param {Array<Object>|Object} serverRequests
-   * @param {Object} [context]
-   * @returns {Promise<{ total: number, succeeded: number, failed: number, results: Array }>}
-   */
+  /** Dispatch a batch of ServerRequests with error isolation. */
   async dispatchBatch(serverRequests, context = {}) {
-    if (!serverRequests) {
-      return { total: 0, succeeded: 0, failed: 0, results: [] };
-    }
-    const requests =
-      Array.isArray(serverRequests) ? [...serverRequests] : [serverRequests];
-    const sorted = this.sortBatch(requests);
-    const results = [];
-    let succeeded = 0;
-    let failed = 0;
-
-    for (let i = 0; i < sorted.length; i++) {
-      if (this.yieldInterval > 0 && i > 0 && i % this.yieldInterval === 0) {
-        await this.yieldFn();
-      }
-      const msg = sorted[i];
-      try {
-        const res = await this.dispatchSingle(msg, context);
-        succeeded++;
-        results.push({ success: true, message: msg, result: res });
-      } catch (err) {
-        failed++;
-        results.push({ success: false, message: msg, error: err });
-        if (typeof this.errorHandler === 'function') {
-          try {
-            this.errorHandler(err, msg, context);
-          } catch (loggingErr) {
-            console.error(
-              '[MessageDispatcher] Error in errorHandler:',
-              loggingErr,
-            );
-          }
-        }
-      }
-    }
-
-    return { total: sorted.length, succeeded, failed, results };
+    return executeBatchDispatch(serverRequests, context, {
+      dispatchSingle: (msg, ctx) => this.dispatchSingle(msg, ctx),
+      sortBatch: (msgs) => this.sortBatch(msgs),
+      yieldInterval: this.yieldInterval,
+      yieldFn: this.yieldFn,
+      errorHandler: this.errorHandler,
+    });
   }
 
-  /**
-   * Core entrypoint called by DevTools & content bridges.
-   * Decodes, deduplicates, and routes raw network responses.
-   *
-   * @param {string} reqUrl
-   * @param {string|Object} body
-   * @param {string} [encoding]
-   * @param {Array} [headers=[]]
-   * @param {Object} [request=null]
-   * @returns {Promise<Object>}
-   */
+  /** Core entrypoint called by DevTools & content bridges to decode, dedup, and route. */
   async dispatchRaw(reqUrl, body, encoding = '', headers = [], request = null) {
-    if (!reqUrl || !body) {
-      return { handled: false, reason: 'empty_input' };
-    }
-
-    let textBody;
-    try {
-      if (
-        this.yieldParseThresholdBytes > 0 &&
-        typeof body === 'string' &&
-        body.length >= this.yieldParseThresholdBytes
-      ) {
-        await this.yieldFn();
-      }
-      textBody = this.decodeBody(body, encoding);
-    } catch (err) {
-      console.error('[MessageDispatcher] Failed to decode body:', err);
-      return { handled: false, error: 'decode_error', details: err };
-    }
-
-    // Parse request payload if available to attach requestData and differentiate duplicate requests
-    const requestPayload = extractRequestPayload(request);
-
-    if (this.isDuplicate(reqUrl, textBody, requestPayload)) {
-      return { handled: false, duplicate: true };
-    }
-
-    let parsed;
-    try {
-      parsed = await this.parsePayload(textBody);
-    } catch (err) {
-      console.error('[MessageDispatcher] Failed to parse JSON body:', err);
-      return { handled: false, error: 'json_parse_error', details: err };
-    }
-
-    if (requestPayload) {
-      const reqItems =
-        Array.isArray(requestPayload) ? requestPayload : [requestPayload];
-      const parsedItems = Array.isArray(parsed) ? parsed : [parsed];
-
-      for (let i = 0; i < parsedItems.length; i++) {
-        if (this.yieldInterval > 0 && i > 0 && i % this.yieldInterval === 0) {
-          await this.yieldFn();
-        }
-        const msg = parsedItems[i];
-        if (msg && typeof msg === 'object') {
-          let match = null;
-          if (msg.requestId !== undefined) {
-            match = reqItems.find((r) => r && r.requestId === msg.requestId);
-          }
-          if (
-            !match &&
-            reqItems[i] &&
-            (reqItems[i].requestClass === msg.requestClass || !msg.requestClass)
-          ) {
-            match = reqItems[i];
-          }
-          if (!match) {
-            match = reqItems.find(
-              (r) =>
-                r &&
-                r.requestClass === msg.requestClass &&
-                r.requestMethod === msg.requestMethod,
-            );
-          }
-          if (!match && reqItems.length === 1) {
-            match = reqItems[0];
-          }
-          if (match) {
-            if (!msg.requestClass && match.requestClass) {
-              msg.requestClass = match.requestClass;
-            }
-            if (!msg.requestMethod && match.requestMethod) {
-              msg.requestMethod = match.requestMethod;
-            }
-            if (
-              match.requestData !== undefined &&
-              (msg.requestData === undefined || msg.requestData === null)
-            ) {
-              msg.requestData = match.requestData;
-            }
-          }
-        }
-      }
-    }
-
-    const context = { reqUrl, headers, request, requestPayload };
-
-    // Direct CDN metadata routing
-    const direct = await routeDirectMetadata(this, {
-      parsed,
+    return executeRawDispatch(this, {
       reqUrl,
+      body,
+      encoding,
       headers,
       request,
     });
-    if (direct) return direct;
-
-    const batchResult = await this.dispatchBatch(parsed, context);
-    return { handled: true, duplicate: false, batchResult };
   }
 }
 
