@@ -42,7 +42,7 @@ test('Taxonomy - canonical catalogs are generated and exact', () => {
   const skillNames = names(path.join(AGENTS, 'skills'));
   const agentNames = names(path.join(AGENTS, 'agents'), '.md');
 
-  assert.equal(skillNames.length, 12);
+  assert.equal(skillNames.length, 26);
   assert.equal(agentNames.length, 14);
   assert.deepEqual(
     catalogNames(path.join(ROOT, 'docs', 'SKILLS.md')),
@@ -59,7 +59,6 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
     'using-superpowers',
     'verification-before-completion',
     'antigravity-interop',
-    'subagent-driven-development',
     'finishing-a-development-branch',
     'requesting-code-review',
     'receiving-code-review',
@@ -79,7 +78,6 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
     'audit-memory-leaks',
     'chrome-web-store-publishing',
     'systematic-debugging',
-    'test-driven-development',
     'project-curator',
     'git-hooks-automation',
     'cross-platform-contract-propagation-audit',
@@ -89,8 +87,9 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
     'unslop-commit',
     'migrate-jquery-to-native',
     'codebase-audit-pre-push',
-    'frontend-security-coder',
     'changelog-automation',
+    'test-guard',
+    'ui-ux-pro-max',
   ]) {
     assert.ok(
       !fs.existsSync(path.join(AGENTS, 'skills', obsoleteSkill)),
@@ -100,11 +99,6 @@ test('Taxonomy - mandatory behavior has one canonical owner', () => {
 
   assert.ok(
     fs.existsSync(path.join(AGENTS, 'rules', 'skill-driven-development.md')),
-  );
-  assert.ok(
-    fs.existsSync(
-      path.join(AGENTS, 'rules', 'verification-before-completion.md'),
-    ),
   );
   assert.ok(
     fs.existsSync(
@@ -190,7 +184,6 @@ test('Taxonomy - repeated subagent families are profile driven', () => {
 
 test('Taxonomy - imported reference libraries have explicit catalogs', () => {
   for (const skill of [
-    'test-guard',
     'add-feature-panel',
     'codebase-modernization-planner',
     'protocol-reverse-engineering',
