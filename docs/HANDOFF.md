@@ -37,13 +37,19 @@
 
 ## Verification
 
-Verified on 2026-09-19:
+Verified on 2026-09-20:
 
-- `node --test tests/agents/*.test.mjs` — 38/38 passed.
+- `npm run verify` — passed formatting, ESLint (0 errors), TypeScript, RPC contract, i18n, complete Node tests (80/80 suites), and development webpack build.
 - `node .agents/scripts/generate-agent-catalogs.mjs --check` — both catalogs current.
-- `npm run verify` — passed formatting, ESLint, TypeScript, RPC contract, i18n, complete Node tests, and development webpack build.
-- `git diff --check` — passed.
+- `git status` — clean working tree on `development`.
 
 ## Current Work
 
-Use `docs/STATUS.md` for open product work. Harness is lean, canonical, and Antigravity-focused. Next phase is core FoE-Info feature and bugfix work.
+Use `docs/STATUS.md` and `docs/specs/2026-09-20-codebase-modernization-roadmap.md` for active modernization work.
+
+- **Completed**:
+  - Slice 1A: `src/js/calc/prod/entityProductionParser.js` (497L -> 202L)
+  - Slice 2A: `src/js/msg/GuildBattlegroundService.js` (489L -> 240L)
+  - Slice 2B: `src/js/msg/StartupService.js` (424L -> 246L)
+- **Next Slice to Resume**:
+  - Milestone 1, Cluster 2 (Slice 2C): decompose `src/js/msg/GbgSignalService.js` (402L down to $\le 250$L).
