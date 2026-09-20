@@ -2,6 +2,7 @@
 name: ingest-game-metadata
 description: 'Ingest InnoGames metadata and update offline graphs.'
 ---
+
 # Workflow: Ingest Game Metadata & Update Knowledge Graph
 
 Use this skill to ingest new raw game metadata from InnoGames releases, update offline datasets, rebuild `graphify-out/metadata/graph.json`, and ensure 100% relational integrity.
@@ -61,4 +62,3 @@ Use this skill to ingest new raw game metadata from InnoGames releases, update o
    ```bash
    npm test
    ```
-

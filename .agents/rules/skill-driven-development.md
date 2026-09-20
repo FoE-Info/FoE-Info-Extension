@@ -24,13 +24,6 @@ Before you modify code, design architecture, debug, or refactor:
 
 The catalog has the complete list of runbooks and their triggers.
 
-## Excuses that do not hold
-
-- "It's just a simple question." Check the catalog first.
-- "I need to explore before I know what to do." Skills define how to explore.
-- "The skill is overkill, or I remember it." Skills carry evolving checklists that memory does not.
-- "I'll do this one quick thing first." The invariant is check-before-act, not check-eventually.
-
 ## Precedence
 
 1. The user's explicit directive.

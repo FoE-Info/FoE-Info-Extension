@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Mandate that all user-visible text, tooltips, and labels use internationalization (i18n) bindings rather than hardcoded English strings.
+description: Use i18n bindings for all user-visible text, tooltips, and labels.
 ---
 
 # Rule: Internationalization (i18n) Compliance

@@ -80,4 +80,3 @@ Uphold in this domain:
 
 - confirm `color-scheme` meta and CSP `base-uri 'none'` in packaged HTML/manifest
 - require `npm run verify` green before packaging
-

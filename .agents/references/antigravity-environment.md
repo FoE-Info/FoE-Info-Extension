@@ -8,18 +8,18 @@ Canonical configuration lives under `.agents/`.
 
 ## 1. Tool Resolution & Primitives
 
-| Action | Antigravity Tool | Operational Notes |
-| :--- | :--- | :--- |
-| Run commands | `run_command` | Execute commands in project root or subdirectories. Persistent terminals supported. |
-| Read file | `view_file` | Slice viewing up to 800 lines; supports text and binary inspection. |
-| Edit file | `replace_file_content` | Contiguous block replacement. Line numbers and exact target text required. |
-| Create file | `write_to_file` | Create or overwrite files. Use `ArtifactMetadata` only in brain directories. |
-| Text search | `run_command` (`git grep`) | Fast text search across tracked repository files. |
-| Subagent dispatch | `invoke_subagent` | Dispatch project specialists (`TypeName`, `Role`, `Prompt`, `Workspace`). |
-| Manage subagents | `manage_subagents` / `send_message` | List, query status, kill, or message running subagents. |
-| MCP tools | `call_mcp_tool` / native tools | Eagerly loaded tools or lazy-loaded MCP tools via `call_mcp_tool`. |
-| Browser tasks | OpenCLI (`opencli browser ...`) | Connected via local daemon on `19825`. Mandatory `--window background`. |
-| Interactive input | `ask_question` | Structured multi-choice question prompts for user decisions. |
+| Action            | Antigravity Tool                    | Operational Notes                                                                   |
+| :---------------- | :---------------------------------- | :---------------------------------------------------------------------------------- |
+| Run commands      | `run_command`                       | Execute commands in project root or subdirectories. Persistent terminals supported. |
+| Read file         | `view_file`                         | Slice viewing up to 800 lines; supports text and binary inspection.                 |
+| Edit file         | `replace_file_content`              | Contiguous block replacement. Line numbers and exact target text required.          |
+| Create file       | `write_to_file`                     | Create or overwrite files. Use `ArtifactMetadata` only in brain directories.        |
+| Text search       | `run_command` (`git grep`)          | Fast text search across tracked repository files.                                   |
+| Subagent dispatch | `invoke_subagent`                   | Dispatch project specialists (`TypeName`, `Role`, `Prompt`, `Workspace`).           |
+| Manage subagents  | `manage_subagents` / `send_message` | List, query status, kill, or message running subagents.                             |
+| MCP tools         | `call_mcp_tool` / native tools      | Eagerly loaded tools or lazy-loaded MCP tools via `call_mcp_tool`.                  |
+| Browser tasks     | OpenCLI (`opencli browser ...`)     | Connected via local daemon on `19825`. Mandatory `--window background`.             |
+| Interactive input | `ask_question`                      | Structured multi-choice question prompts for user decisions.                        |
 
 ---
 
@@ -59,4 +59,3 @@ Antigravity executes shell commands with a JSON stdin/stdout contract on key lif
 - **User-facing artifacts**: Written to `<appDataDir>/brain/<conversation-id>/` using `write_to_file` with `ArtifactMetadata`.
 - **Repository documentation**: Implementation plans, specs, and persistent architectural records live in `docs/plans/` and `docs/specs/`.
 - **Scratch scripts**: Temporary one-off debug scripts belong in `<appDataDir>/brain/<conversation-id>/scratch/`.
-

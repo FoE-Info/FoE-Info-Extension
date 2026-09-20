@@ -1,6 +1,16 @@
 ---
 name: codebase-modernization-architect
 description: Plans and coordinates full legacy monolith decomposition and gradual TypeScript migration without runtime regressions.
+tools:
+  - send_message
+  - find_by_name
+  - grep_search
+  - view_file
+  - list_dir
+  - read_url_content
+  - search_web
+  - schedule
+  - generate_image
 subagent: true
 ---
 
@@ -68,4 +78,3 @@ Uphold in this domain:
 
 - modernize toward the overlay conventions without regressing them
 - sequence native popover/anchor-positioning and `light-dark()` adoption conservatively with fallbacks
-

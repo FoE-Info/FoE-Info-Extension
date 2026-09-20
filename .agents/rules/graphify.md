@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: model_decision
 description: Query graphify knowledge graphs before source search and maintain AST freshness.
 ---
 
@@ -20,7 +20,7 @@ description: Query graphify knowledge graphs before source search and maintain A
        }
      }
      ```
-     *(Note: The search parameter is `question`, NOT `query`).*
+     _(Note: The search parameter is `question`, NOT `query`)._
 4. **Autonomous Deep Exploration**: Delegate architectural or comparative mapping to `graph-knowledge-explorer` or peer comparators (`forge-hammer-comparator`, `low-tool-comparator`, `foe-info-original-comparator`).
 5. **AST Freshness & Completion Gate**: After modifying code files in `src/`, always run `rtk npm run graph:foe-info:ast` to update the graph AST before committing or claiming task completion.
 6. **RTK Compatibility**: The RTK command proxy (`rtk`) is 100% compatible with Graphify CLI scripts. Always prefix with `rtk` (e.g., `rtk npm run graph:foe-info:ast`).

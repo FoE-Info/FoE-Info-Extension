@@ -2,6 +2,7 @@
 name: package-release
 description: 'Manifest version sync and production WebStore zip packaging.'
 ---
+
 # Workflow: Package WebStore Release
 
 Follow this skill to validate code quality and produce a production-ready extension package.
@@ -51,4 +52,3 @@ Follow this skill to validate code quality and produce a production-ready extens
 
 5. **Verify Distribution Bundle**:
    Confirm that `build/FoE-Info-Prod/manifest.json` exists, that all required icons and bundles are present, and that the zip file is ready for Chrome Web Store Developer Dashboard upload.
-

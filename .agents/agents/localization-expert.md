@@ -61,4 +61,3 @@ Load [Few-Shot Reasoning Example: Adding a Translatable Key](../references/agent
 - **Automated Repair**:
   - Run `npm run i18n:fix` to auto-synchronize missing keys from `en.json` to other locales when needed.
 - **Stop-the-Line Protocol**: If `i18n:check` reports any missing or mismatched key across the 7 dictionaries, the build gate fails. Synchronize the keys across all 7 locales before proceeding.
-

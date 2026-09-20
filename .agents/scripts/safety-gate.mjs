@@ -5,12 +5,11 @@
  * Blocks or asks for confirmation before executing destructive commands.
  *
  * Command matching is operand-aware via an internal minimal shell tokenizer,
- * so behavior is identical across the Antigravity hook runner and the opencode
- * plugin regardless of module resolution (no runtime dependency on
- * `shell-quote`). Only real `rm` invocations — or `rm` nested in a POSIX shell
- * — are checked, so unrelated strings such as commit messages or `node -e`
- * payloads do not trip the gate. Git and browser guards stay regex-based over
- * the quote-stripped command.
+ * so behavior is identical across execution contexts regardless of module
+ * resolution (no runtime dependency on `shell-quote`). Only real `rm`
+ * invocations — or `rm` nested in a POSIX shell — are checked, so unrelated
+ * strings such as commit messages or `node -e` payloads do not trip the gate.
+ * Git and browser guards stay regex-based over the quote-stripped command.
  */
 import { fileURLToPath } from 'node:url';
 

@@ -2,6 +2,7 @@
 name: protocol-reverse-engineering
 description: 'Analyze FoE JSON-RPC payloads and document handlers.'
 ---
+
 # Protocol Reverse Engineering
 
 Derive Forge of Empires service behavior from observed InnoGames JSON-RPC traffic. This skill owns capture analysis and protocol contracts; use `add-rpc-service` only after the contract is verified and implementation begins.

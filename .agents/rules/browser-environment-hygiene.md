@@ -1,6 +1,6 @@
 ---
-trigger: always_on
-description: Strict invariant prohibiting autonomous browser launches, restarts, focus-stealing, or tab manipulation without user permission.
+trigger: model_decision
+description: Invariant prohibiting autonomous browser launches, focus-stealing, or game tab clicks; OpenCLI zero-focus background hygiene.
 ---
 
 # Rule: Browser Environment Hygiene
@@ -20,4 +20,3 @@ The agent and every background process (tools, subagents, hooks, scripts) must n
 ## When browser interaction is requested
 
 Load `.agents/references/browser-test-environment.md` for OpenCLI daemon commands, session binding syntax, network RPC observation, and extension panel debugging procedures.
-

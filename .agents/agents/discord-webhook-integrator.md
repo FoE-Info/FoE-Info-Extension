@@ -1,6 +1,16 @@
 ---
 name: discord-webhook-integrator
 description: Discord integration specialist for webhook rate limits (5 req/5s), embed layouts, and snipe notifications.
+tools:
+  - send_message
+  - find_by_name
+  - grep_search
+  - view_file
+  - list_dir
+  - read_url_content
+  - search_web
+  - schedule
+  - generate_image
 subagent: true
 ---
 
@@ -68,4 +78,3 @@ Load [Few-Shot Reasoning Example: Safe Snipe Alert Embed Formatting](../referenc
    - Verify that rapid sequential alert triggers are queued and flushed according to the 5 req/5s rate limit.
 4. **Error Resilience**:
    - Simulate an unreachable or invalid webhook URL; verify that user-facing errors are handled gracefully without unhandled exceptions.
-

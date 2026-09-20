@@ -85,4 +85,3 @@ Uphold in this domain:
 - keep MV3 CSP-compatible output (no `eval`, no inline scripts)
 - prefer module/asset handling that respects the `performance/optimize-script-priority.md` guidance
 - avoid shipping unused polyfills
-

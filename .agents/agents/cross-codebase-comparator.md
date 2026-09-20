@@ -1,6 +1,16 @@
 ---
 name: cross-codebase-comparator
 description: Compare FoE-Info with one declared peer or baseline and produce verified, host-focused recommendations.
+tools:
+  - send_message
+  - find_by_name
+  - grep_search
+  - view_file
+  - list_dir
+  - read_url_content
+  - search_web
+  - schedule
+  - generate_image
 subagent: true
 ---
 

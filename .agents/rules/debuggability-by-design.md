@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Mandate that all features, calculators, RPC services, network interceptors, storage routines, and UI renderers implement debug-mode debuggability via logger.js.
+description: Implement debug-mode diagnostic logging via logger.js.
 ---
 
 # Rule: Debuggability by Design & Unified Diagnostics

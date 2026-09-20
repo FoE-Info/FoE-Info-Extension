@@ -5,11 +5,13 @@ Concrete applications of test hygiene for `node:test` and `node:assert/strict` i
 ## Rule 2: Mock Boundaries in Node.js
 
 Justified mock targets:
+
 - Global `fetch` or network requests at the true boundary (`mock.method(global, 'fetch', ...)`)
 - Clock and timers (`mock.timers.enable()`, `mock.timers.tick(...)`)
 - Filesystem I/O when testing error handling
 
 Unjustified mocks:
+
 - Mocking internal calculator functions (e.g. `mock.method(UnitCalculator, ...)`). Test actual calculations directly.
 - Mocking state stores to test state stores. Initialize a real store with test fixtures instead.
 - Hand-crafted object literals masquerading as game entities when real fixtures exist under `tests/fixtures/`.
@@ -19,8 +21,8 @@ Unjustified mocks:
 Avoid repeating near-identical test blocks. Use loop-based parameterization:
 
 ```javascript
-import test from 'node:test';
 import assert from 'node:assert/strict';
+import test from 'node:test';
 
 const testCases = [
   { era: 'SpaceAgeSpaceHub', expected: 'SASH' },

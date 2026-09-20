@@ -16,6 +16,7 @@ All commands interacting with browser sessions **must** specify `--window backgr
 ## Common Operational Workflows
 
 ### 1. Health check & session discovery
+
 ```bash
 # Check daemon and browser bridge status
 opencli doctor
@@ -26,6 +27,7 @@ opencli browser default tab list
 ```
 
 ### 2. Binding to target tabs
+
 ```bash
 # Bind to the active Forge of Empires tab (strictly read-only observation)
 opencli browser foe-game bind --url "*forgeofempires.com*"
@@ -35,6 +37,7 @@ opencli browser foe-panel bind --url "chrome-extension://*/panel.html"
 ```
 
 ### 3. Passive game telemetry observation (Read-Only)
+
 ```bash
 # Inspect recent network requests / JSON-RPC payloads
 opencli browser foe-game network
@@ -44,6 +47,7 @@ opencli browser foe-game console
 ```
 
 ### 4. Extension panel testing & inspection
+
 ```bash
 # Extract panel DOM structure
 opencli browser foe-panel state
@@ -55,4 +59,3 @@ opencli browser foe-panel eval "window.location.href"
 ## Game Lifecycle Note
 
 The FoE game client transmits its full city topology, buildings, inventory, era, and production multipliers once, during initial boot (`StartupService.getData`). The user reloads the game tab when ready for fresh data; the agent never forces a reload on active game sessions.
-

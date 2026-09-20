@@ -2,6 +2,7 @@
 name: codebase-modernization-planner
 description: 'Roadmap to decompose monoliths and migrate to TypeScript.'
 ---
+
 # Codebase Modernization & Migration Planner
 
 This skill defines the master architectural procedure to modernize the remaining legacy FoE-Info codebase (eliminating all monolithic files and migrating to TypeScript) without breaking extension functionality, corrupting user data, or causing game session desynchronization.

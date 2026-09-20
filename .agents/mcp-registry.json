@@ -1,12 +1,7 @@
 {
   "profiles": {
-    "default": [
-      "graphify-foe-info"
-    ],
-    "browser": [
-      "graphify-foe-info",
-      "chrome-devtools"
-    ],
+    "default": ["graphify-foe-info"],
+    "browser": ["graphify-foe-info", "chrome-devtools"],
     "research": [
       "graphify-foe-info",
       "graphify-forge-hammer",
@@ -14,14 +9,8 @@
       "graphify-low-tool",
       "graphify-metadata-store"
     ],
-    "github": [
-      "graphify-foe-info",
-      "github-mcp"
-    ],
-    "linux": [
-      "graphify-foe-info",
-      "linux-tools"
-    ],
+    "github": ["graphify-foe-info", "github-mcp"],
+    "linux": ["graphify-foe-info", "linux-tools"],
     "full": [
       "chrome-devtools",
       "graphify-foe-info",
@@ -53,9 +42,7 @@
     "graphify-foe-info": {
       "antigravity": {
         "command": "graphify-mcp",
-        "args": [
-          "graphify-out/foe-info/graph.json"
-        ],
+        "args": ["graphify-out/foe-info/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
           "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -84,9 +71,7 @@
     "graphify-forge-hammer": {
       "antigravity": {
         "command": "graphify-mcp",
-        "args": [
-          "../forge-hammer/graphify-out/graph.json"
-        ],
+        "args": ["../forge-hammer/graphify-out/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
           "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -115,9 +100,7 @@
     "graphify-foe-info-original": {
       "antigravity": {
         "command": "graphify-mcp",
-        "args": [
-          "../FoE-Info-Extension-original/graphify-out/graph.json"
-        ],
+        "args": ["../FoE-Info-Extension-original/graphify-out/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
           "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -146,9 +129,7 @@
     "graphify-low-tool": {
       "antigravity": {
         "command": "graphify-mcp",
-        "args": [
-          "../LoW-Tool/graphify-out/graph.json"
-        ],
+        "args": ["../LoW-Tool/graphify-out/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
           "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
@@ -177,9 +158,7 @@
     "graphify-metadata-store": {
       "antigravity": {
         "command": "graphify-mcp",
-        "args": [
-          "../metadata-store/graphify-out/graph.json"
-        ],
+        "args": ["../metadata-store/graphify-out/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
           "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",

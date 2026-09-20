@@ -2,6 +2,7 @@
 name: service-extractor
 description: 'Extract JSON-RPC handlers from monoliths into src/js/msg/.'
 ---
+
 # Service Extractor Runbook
 
 This skill outlines the step-by-step methodology for extracting an InnoGames RPC service handler out of `src/js/msg/StartupService.js` or `src/js/index.js` into an isolated, testable module in `src/js/msg/`.
@@ -53,4 +54,3 @@ For an existing legacy handler extraction, replace its current call site without
 3. **Debuggability Verification**: Confirm module instantiates `createLogger`, produces zero logs when debug is disabled, and emits detailed diagnostics when debug is enabled.
 4. **Runtime Test**: Verify with headless tests (`npm test`) and check live panel console: `opencli browser foe-panel console`.
 5. **Knowledge Graph Sync**: Run `npm run graph:foe-info:update`.
-

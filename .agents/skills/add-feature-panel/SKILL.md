@@ -2,6 +2,7 @@
 name: add-feature-panel
 description: 'Scaffold accessible, localized UI panels in panel.html.'
 ---
+
 # Workflow: Add Feature UI Panel
 
 Use this skill when creating a new user-facing panel or collapsible card in the extension UI (e.g., Historical Allies, City Space Optimizer, Combat Boost Matrix).

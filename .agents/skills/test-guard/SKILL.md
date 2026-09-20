@@ -2,6 +2,7 @@
 name: test-guard
 description: 'Audit test assertions, mocks, and test hygiene.'
 ---
+
 # Test Guard
 
 You are reviewing generated or changed test code before it ships. Enforce the rules below after the first test-writing pass and before the tests are presented, committed, or merged. Be a sharp reviewer, not a pedantic one: flag what wastes maintenance effort or hides real bugs, ignore cosmetic preferences.

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+import { randomBytes } from 'node:crypto';
 import {
   closeSync,
   lstatSync,
@@ -11,7 +11,6 @@ import {
   unlinkSync,
   writeFileSync,
 } from 'node:fs';
-import { randomBytes } from 'node:crypto';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { format, resolveConfig } from 'prettier';
@@ -64,14 +63,20 @@ function inspectTarget(root, path) {
   const canonicalRoot = realpathSync(root);
   const canonicalParent = realpathSync(dirname(path));
   const fromRoot = relative(canonicalRoot, canonicalParent);
-  if (fromRoot === '..' || fromRoot.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`) || isAbsolute(fromRoot)) {
+  if (
+    fromRoot === '..' ||
+    fromRoot.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`) ||
+    isAbsolute(fromRoot)
+  ) {
     throw new Error(`Destination escapes root: ${path}`);
   }
 
   try {
     const metadata = lstatSync(path);
-    if (metadata.isSymbolicLink()) throw new Error(`Refusing symlink destination: ${path}`);
-    if (!metadata.isFile()) throw new Error(`Destination is not a regular file: ${path}`);
+    if (metadata.isSymbolicLink())
+      throw new Error(`Refusing symlink destination: ${path}`);
+    if (!metadata.isFile())
+      throw new Error(`Destination is not a regular file: ${path}`);
     return { exists: true, mode: statSync(path).mode & 0o777 };
   } catch (error) {
     if (error?.code === 'ENOENT') return { exists: false, mode: 0o644 };
@@ -124,13 +129,10 @@ async function writeJsonBatch(root, entries) {
           ...prettierConfig,
           filepath: path,
         });
-        replacement = createOwnedFile(
-          path,
-          content,
-          target.mode,
-        );
-        backup = target.exists
-          ? createOwnedFile(path, readFileSync(path), target.mode)
+        replacement = createOwnedFile(path, content, target.mode);
+        backup =
+          target.exists ?
+            createOwnedFile(path, readFileSync(path), target.mode)
           : undefined;
         prepared.push({ path, replacement, backup, existed: target.exists });
       } catch (error) {
@@ -181,7 +183,10 @@ async function writeJsonBatch(root, entries) {
         rollbackErrors.push(cleanupError.message);
       }
     }
-    const suffix = rollbackErrors.length > 0 ? `; rollback errors: ${rollbackErrors.join('; ')}` : '';
+    const suffix =
+      rollbackErrors.length > 0 ?
+        `; rollback errors: ${rollbackErrors.join('; ')}`
+      : '';
     throw new Error(`${error.message}${suffix}`, { cause: error });
   }
 
@@ -203,7 +208,8 @@ if (!selected) {
 
 const selectedNames = new Set(selected);
 for (const name of selectedNames) {
-  if (!registry.servers?.[name]) fail(`MCP profile "${profile}" references unknown server "${name}"`);
+  if (!registry.servers?.[name])
+    fail(`MCP profile "${profile}" references unknown server "${name}"`);
 }
 for (const [name, config] of Object.entries(registry.servers ?? {})) {
   if (!config.antigravity) {
@@ -213,17 +219,24 @@ for (const [name, config] of Object.entries(registry.servers ?? {})) {
 
 function expandEnvironment(value) {
   if (typeof value === 'string') {
-    const result = value.replace(/\$\{([A-Z_][A-Z0-9_]*)\}/g, (_match, name) => {
-      const resolved = process.env[name];
-      if (resolved === undefined) fail(`Environment variable "${name}" is required`);
-      return resolved;
-    });
+    const result = value.replace(
+      /\$\{([A-Z_][A-Z0-9_]*)\}/g,
+      (_match, name) => {
+        const resolved = process.env[name];
+        if (resolved === undefined)
+          fail(`Environment variable "${name}" is required`);
+        return resolved;
+      },
+    );
     return result;
   }
   if (Array.isArray(value)) return value.map(expandEnvironment);
   if (value && typeof value === 'object') {
     return Object.fromEntries(
-      Object.entries(value).map(([key, nested]) => [key, expandEnvironment(nested)]),
+      Object.entries(value).map(([key, nested]) => [
+        key,
+        expandEnvironment(nested),
+      ]),
     );
   }
   return value;
@@ -237,7 +250,6 @@ const antigravityServers = Object.fromEntries(
 );
 
 const batchWrites = [[antigravityPath, { mcpServers: antigravityServers }]];
-
 
 try {
   await writeJsonBatch(root, batchWrites);

@@ -1,16 +1,15 @@
 #!/usr/bin/env node
-
+import { randomBytes } from 'node:crypto';
 import {
   closeSync,
   openSync,
-  readFileSync,
   readdirSync,
+  readFileSync,
   renameSync,
   unlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
-import { randomBytes } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { format, resolveConfig } from 'prettier';
 
@@ -21,10 +20,12 @@ const CHECK_ONLY = process.argv.includes('--check');
 function frontmatter(file) {
   const content = readFileSync(file, 'utf8');
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!match) throw new Error(`Missing frontmatter: ${relative(PROJECT_ROOT, file)}`);
+  if (!match)
+    throw new Error(`Missing frontmatter: ${relative(PROJECT_ROOT, file)}`);
   const field = (key) => {
     const found = match[1].match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
-    if (!found) throw new Error(`Missing ${key}: ${relative(PROJECT_ROOT, file)}`);
+    if (!found)
+      throw new Error(`Missing ${key}: ${relative(PROJECT_ROOT, file)}`);
     return found[1].trim().replace(/^["']|["']$/g, '');
   };
   return { name: field('name'), description: field('description') };
@@ -37,7 +38,9 @@ function skillRows() {
     .map((entry) => {
       const definition = frontmatter(join(root, entry.name, 'SKILL.md'));
       if (definition.name !== entry.name) {
-        throw new Error(`Skill name mismatch: ${entry.name} != ${definition.name}`);
+        throw new Error(
+          `Skill name mismatch: ${entry.name} != ${definition.name}`,
+        );
       }
       return definition;
     })
@@ -52,7 +55,9 @@ function agentRows() {
       const definition = frontmatter(join(root, entry.name));
       const expected = entry.name.replace(/\.md$/, '');
       if (definition.name !== expected) {
-        throw new Error(`Subagent name mismatch: ${expected} != ${definition.name}`);
+        throw new Error(
+          `Subagent name mismatch: ${expected} != ${definition.name}`,
+        );
       }
       return definition;
     })
@@ -124,8 +129,14 @@ for (const [file, expected] of outputs) {
   if (current === expected) continue;
   stale = true;
   if (!CHECK_ONLY) atomicWrite(file, expected);
-  else process.stderr.write(`Stale generated catalog: ${relative(PROJECT_ROOT, file)}\n`);
+  else
+    process.stderr.write(
+      `Stale generated catalog: ${relative(PROJECT_ROOT, file)}\n`,
+    );
 }
 
 if (CHECK_ONLY && stale) process.exitCode = 1;
-else process.stdout.write(`${CHECK_ONLY ? 'Current' : 'Generated'} ${outputs.length} catalogs\n`);
+else
+  process.stdout.write(
+    `${CHECK_ONLY ? 'Current' : 'Generated'} ${outputs.length} catalogs\n`,
+  );

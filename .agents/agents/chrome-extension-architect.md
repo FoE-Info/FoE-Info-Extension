@@ -1,6 +1,16 @@
 ---
 name: chrome-extension-architect
 description: Manifest V3 architect for DevTools panel iframe bridging, CSP rules, cross-context messaging, and storage.
+tools:
+  - send_message
+  - find_by_name
+  - grep_search
+  - view_file
+  - list_dir
+  - read_url_content
+  - search_web
+  - schedule
+  - generate_image
 subagent: true
 ---
 
@@ -87,4 +97,3 @@ Uphold in this domain:
 - `<form id="optionsForm">` semantics with native constraints and `:user-invalid`
 - CSP-compliant message/context boundaries
 - no static game metadata in `src/`
-

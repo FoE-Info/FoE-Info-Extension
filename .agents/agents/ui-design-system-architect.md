@@ -86,4 +86,3 @@ Uphold in this domain:
 - container queries (`@container`) for resizable docked panels
 - native `<dialog>`/popover + `inert` for overlays
 - `<caption>` and `<th scope>` on data tables
-

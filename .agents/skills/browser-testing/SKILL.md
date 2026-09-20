@@ -2,6 +2,7 @@
 name: browser-testing
 description: 'Observe game telemetry and test FoE-Info extension panel via OpenCLI.'
 ---
+
 # Browser Testing & Observation Skill (OpenCLI)
 
 This skill teaches the agent how to observe Forge of Empires game telemetry and test the FoE-Info extension panel live in the user's browser using **OpenCLI** (`@jackwener/opencli` v1.8.7) via the local daemon (`localhost:19825`) and Browser Bridge.
@@ -101,8 +102,7 @@ Before claiming any extension UI feature or RPC handler is verified live:
 Apply the FoE-Info modern web conventions: [project conventions](../../rules/modern-web-conventions.md).
 Primary reference categories: `accessibility/`, `performance/`.
 Uphold:
+
 - Assert live regions/roles and table semantics
 - Check for detached observers
 - Measure render timing after scheduler changes
-
-

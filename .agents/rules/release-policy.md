@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Forbid automatic version bumps, git tagging, or package creation during routine task verification; enforce opt-in release process.
+description: Forbid auto version bumps or git tags during routine verification.
 ---
 
 # AGENT RELEASE & VERIFICATION POLICY

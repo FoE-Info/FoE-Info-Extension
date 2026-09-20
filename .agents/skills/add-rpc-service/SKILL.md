@@ -2,6 +2,7 @@
 name: add-rpc-service
 description: 'Scaffold decoupled JSON-RPC service handlers in src/js/msg/.'
 ---
+
 # Workflow: Add New InnoGames RPC Service
 
 Use this skill when InnoGames releases a new game feature, settlement, or mini-game with a new RPC service class (e.g. `QuantumIncursionService`, `HeroEventService`).
@@ -14,8 +15,8 @@ Use this skill when InnoGames releases a new game feature, settlement, or mini-g
    ```bash
    opencli browser foe-game network --filter "jsonrpc"
    ```
-3. Save a sample envelope structure in `scratch/sample-<service>-payload.json`.
-4. Identify the request class and methods:
+2. Save a sample envelope structure in `scratch/sample-<service>-payload.json`.
+3. Identify the request class and methods:
    ```json
    {
      "requestClass": "<ServiceName>",
@@ -106,4 +107,3 @@ Uphold:
 - parse seconds/ms via `resolveDate()`
 - defer rendering via `scheduler.js`
 - keep handlers DOM-free and delegate rendering
-

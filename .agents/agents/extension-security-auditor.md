@@ -1,6 +1,16 @@
 ---
 name: extension-security-auditor
 description: Manifest V3 security auditor for DOM XSS prevention, credential leak protection, and host permission checks.
+tools:
+  - send_message
+  - find_by_name
+  - grep_search
+  - view_file
+  - list_dir
+  - read_url_content
+  - search_web
+  - schedule
+  - generate_image
 subagent: true
 ---
 
@@ -87,4 +97,3 @@ Uphold in this domain:
 - no `eval`/`new Function`
 - render untrusted/AI text with `textContent`
 - avoid plaintext secrets and minimize host permissions
-

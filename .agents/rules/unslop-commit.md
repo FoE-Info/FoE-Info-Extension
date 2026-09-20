@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: Mandate Conventional Commits following the unslop-commit standard with concise subjects (<=72 chars, aim <=50).
+description: Conventional Commits standard with concise subjects (<=72 chars).
 ---
 
 # Rule: Unslop Conventional Commits

@@ -1,6 +1,6 @@
 ---
-trigger: always_on
-description: Delegate bounded specialist work through the canonical subagent roster and target profiles.
+trigger: model_decision
+description: Delegate bounded specialist work through the canonical subagent roster.
 ---
 
 # Rule: Proactive Subagent Delegation
