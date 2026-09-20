@@ -30,7 +30,7 @@ Every graph follows the same three-tier contract: **ast → update → reindex**
 
 1. **Automated Local LLM Environment** (reindex only):
    - Reindexing scripts automatically source `.agents/scripts/llama-swap-env.sh`.
-   - Directs requests to the local `llama-swap` vision instance on `http://127.0.0.1:8081/v1`.
+   - Directs requests to the local `llama-swap` vision instance on `http://127.0.0.1:8080/v1`.
 
 2. **Tier 1 — Fast AST (no LLM, no exports)**: Use to refresh a stale graph before querying.
 

@@ -45,7 +45,7 @@
         "args": ["graphify-out/foe-info/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8080/v1",
           "OPENAI_API_KEY": "local",
           "OPENAI_MODEL": "qwen2.5-vl-7b",
           "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
@@ -74,7 +74,7 @@
         "args": ["../forge-hammer/graphify-out/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8080/v1",
           "OPENAI_API_KEY": "local",
           "OPENAI_MODEL": "qwen2.5-vl-7b",
           "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
@@ -103,7 +103,7 @@
         "args": ["../FoE-Info-Extension-original/graphify-out/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8080/v1",
           "OPENAI_API_KEY": "local",
           "OPENAI_MODEL": "qwen2.5-vl-7b",
           "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
@@ -132,7 +132,7 @@
         "args": ["../LoW-Tool/graphify-out/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8080/v1",
           "OPENAI_API_KEY": "local",
           "OPENAI_MODEL": "qwen2.5-vl-7b",
           "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
@@ -161,7 +161,7 @@
         "args": ["../metadata-store/graphify-out/graph.json"],
         "env": {
           "GRAPHIFY_BACKEND": "openai",
-          "OPENAI_BASE_URL": "http://127.0.0.1:8081/v1",
+          "OPENAI_BASE_URL": "http://127.0.0.1:8080/v1",
           "OPENAI_API_KEY": "local",
           "OPENAI_MODEL": "qwen2.5-vl-7b",
           "GRAPHIFY_OPENAI_MODEL": "qwen2.5-vl-7b",
