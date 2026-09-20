@@ -33,7 +33,7 @@ Sequenced strictly by blast radius:
 2. **Cluster 2: Domain Services**
    - `src/js/msg/GuildBattlegroundService.js` (489 L $\rightarrow$ **240 L**, **Completed in Slice 2A**)
    - `src/js/msg/StartupService.js` (424 L $\rightarrow$ **246 L**, **Completed in Slice 2B**)
-   - `src/js/msg/GbgSignalService.js` (402 L)
+   - `src/js/msg/GbgSignalService.js` (402 L $\rightarrow$ **221 L**, **Completed in Slice 2C**)
 3. **Cluster 3: Protocol & State**
    - `src/js/protocol/MessageDispatcher.js` (493 L)
    - `src/js/state/MetadataStore.js` (486 L)
@@ -83,3 +83,7 @@ Every extracted slice adheres to:
   - `src/js/msg/StartupStateInitializer.js` (243 L)
   - `src/js/msg/StartupEntityCoordinator.js` (242 L)
   - Added unit test suites `tests/msg/startup-state-initializer.test.mjs` and `tests/msg/startup-entity-coordinator.test.mjs`.
+- **Slice 2C (2026-09-20)**: Decomposed `GbgSignalService.js` (403 L $\rightarrow$ 221 L) by extracting:
+  - `src/js/msg/GbgTargetListGenerator.js` (180 L)
+  - Delegated `timeGBG` and `getServerMarket` to `src/js/msg/GbgTimeFormatter.js`
+  - Added unit test suite `tests/msg/gbg-target-list-generator.test.mjs`.
