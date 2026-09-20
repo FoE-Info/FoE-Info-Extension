@@ -52,10 +52,12 @@ Use `docs/STATUS.md` and the 3-phase, 8-slice master modernization plan for acti
   - Legacy Bridge Modernization Slice 2: Great Buildings & Blueprints decommissioned into `GreatBuildingsService.js` and `GbDonationService.js` with `.register(dispatcher)`, wired into `registerServices.js`, `buildingRoutes.js` deleted.
   - Legacy Bridge Modernization Slice 3: City routes decommissioned into `CityMapService.js`, `CityProductionService.js`, `BonusService.js`, and `MetadataService.js` with `.register(dispatcher)`, wired into `registerServices.js`, `cityRoutes.js` deleted.
   - Legacy Bridge Modernization Slice 4: Social and conversation routes decommissioned into `OtherPlayerService.js` and `ConversationService.js` with `.register(dispatcher)`, wired into `registerServices.js`, decoupled via `src/js/state/viewState.js`, `socialRoutes.js` deleted.
-  - Legacy Bridge Modernization Slice 5: Combat routes decommissioned into `GuildBattlegroundService.js`, `GuildExpeditionService.js`, and `ArmyUnitManagementService.js` with `.register(dispatcher)`, wired into `registerServices.js`, unhooked from `legacyBridge.js`, `combatRoutes.js` and empty `routes/` directory deleted. All 5 legacy bridge route tables are now 100% decommissioned.
+  - Legacy Bridge Modernization Slice 5: Combat routes decommissioned into `GuildBattlegroundService.js`, `GuildExpeditionService.js`, and `ArmyUnitManagementService.js` with `.register(dispatcher)`, wired into `registerServices.js`, unhooked from `legacyBridge.js`, combatRoutes.js and empty `routes/` directory deleted. All 5 legacy bridge route tables are now 100% decommissioned.
+  - Legacy Bridge Modernization Phase 4: `indexBridgeSetup.js` streamlined (149L -> 56L) removing 30+ dead handler imports, `legacyBridge.js` formalized as deprecated no-op delegator, completing legacy bridge retirement.
+  - Operational Hygiene (/learn): Invariants for clean working tree checkpoints, verified format commands, cross-session brain inspection, and standard `/boost` handoffs persisted into `.agents/rules/` and skills.
   - Slice 1A: `src/js/calc/prod/entityProductionParser.js` (497L -> 202L)
   - Slice 2A: `src/js/msg/GuildBattlegroundService.js` (489L -> 240L)
   - Slice 2B: `src/js/msg/StartupService.js` (424L -> 246L)
   - Slice 2C: `src/js/msg/GbgSignalService.js` (403L -> 221L)
 - **Next Work to Resume**:
-  - Evaluate Phase 4 modernization (retiring or streamlining the remaining delegator shell in `src/js/protocol/legacyBridge.js` and entry point modernizations) or the next slice in the modernization roadmap.
+  - Cluster 3 Protocol & State decomposition: `src/js/protocol/MessageDispatcher.js` (493L), `src/js/state/MetadataStore.js` (486L), `src/js/protocol/networkListener.js` (476L), and `src/js/state/storageListener.js` (402L) down to <= 250 lines per file.
