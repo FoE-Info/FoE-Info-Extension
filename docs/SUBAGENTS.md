@@ -4,21 +4,21 @@
 
 Canonical personas live under `.agents/agents/<name>.md`. Use a subagent for an independently delegated role with a bounded deliverable.
 
-| Name                               | Purpose                                                                                                                           |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `cdp-test-engineer`                | CDP & QA specialist running mock RPC test pipelines, DOM assertions, and live panel exception interception on port 9222.          |
-| `chrome-extension-architect`       | Manifest V3 architect for DevTools panel iframe bridging, CSP rules, cross-context messaging, and storage.                        |
-| `code-reviewer`                    | Audits staged changes and PRs against repo invariants, monolith containment, BigNumber math, MV3 CSP, and modular rules.          |
-| `codebase-modernization-architect` | Plans and coordinates full legacy monolith decomposition and gradual TypeScript migration without runtime regressions.            |
-| `cross-codebase-comparator`        | Compare FoE-Info with one declared peer or baseline and produce verified, host-focused recommendations.                           |
-| `discord-webhook-integrator`       | Discord integration specialist for webhook rate limits (5 req/5s), embed layouts, and snipe notifications.                        |
-| `extension-release-engineer`       | Release engineer for Chrome Web Store packaging, MV3 manifest version sync, release pre-flight gates, and changelogs.             |
-| `extension-security-auditor`       | Manifest V3 security auditor for DOM XSS prevention, credential leak protection, and host permission checks.                      |
-| `foe-combat-analyst`               | Analyze FoE combat, GBG, GE, Quantum Incursions, and PvP mechanics from verified game data.                                       |
-| `foe-economy-analyst`              | Analyze FoE Great Buildings, sniping, settlements, and ally economics from verified game data.                                    |
-| `graph-knowledge-explorer`         | Explore one declared project or metadata graph and produce a verified architecture report.                                        |
-| `localization-expert`              | Internationalization specialist managing 7-language dictionaries in src/i18n/ and translation bindings.                           |
-| `ui-design-system-architect`       | Frontend UI specialist for Bootstrap 5.3 layouts, SCSS themes, responsive DevTools docking, container queries, and semantic HTML. |
-| `webpack-expert`                   | Webpack 5 specialist for multi-target configs, asset modules, bundle splitting, and MV3 extension packaging.                      |
+| Name                                                                                        | Purpose                                                                                                                           |
+| ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| [`cdp-test-engineer`](../.agents/agents/cdp-test-engineer.md)                               | CDP & QA specialist running mock RPC test pipelines, DOM assertions, and live panel exception interception on port 9222.          |
+| [`chrome-extension-architect`](../.agents/agents/chrome-extension-architect.md)             | Manifest V3 architect for DevTools panel iframe bridging, CSP rules, cross-context messaging, and storage.                        |
+| [`code-reviewer`](../.agents/agents/code-reviewer.md)                                       | Audits staged changes and PRs against repo invariants, monolith containment, BigNumber math, MV3 CSP, and modular rules.          |
+| [`codebase-modernization-architect`](../.agents/agents/codebase-modernization-architect.md) | Plans and coordinates full legacy monolith decomposition and gradual TypeScript migration without runtime regressions.            |
+| [`cross-codebase-comparator`](../.agents/agents/cross-codebase-comparator.md)               | Compare FoE-Info with one declared peer or baseline and produce verified, host-focused recommendations.                           |
+| [`discord-webhook-integrator`](../.agents/agents/discord-webhook-integrator.md)             | Discord integration specialist for webhook rate limits (5 req/5s), embed layouts, and snipe notifications.                        |
+| [`extension-release-engineer`](../.agents/agents/extension-release-engineer.md)             | Release engineer for Chrome Web Store packaging, MV3 manifest version sync, release pre-flight gates, and changelogs.             |
+| [`extension-security-auditor`](../.agents/agents/extension-security-auditor.md)             | Manifest V3 security auditor for DOM XSS prevention, credential leak protection, and host permission checks.                      |
+| [`foe-combat-analyst`](../.agents/agents/foe-combat-analyst.md)                             | Analyze FoE combat, GBG, GE, Quantum Incursions, and PvP mechanics from verified game data.                                       |
+| [`foe-economy-analyst`](../.agents/agents/foe-economy-analyst.md)                           | Analyze FoE Great Buildings, sniping, settlements, and ally economics from verified game data.                                    |
+| [`graph-knowledge-explorer`](../.agents/agents/graph-knowledge-explorer.md)                 | Explore one declared project or metadata graph and produce a verified architecture report.                                        |
+| [`localization-expert`](../.agents/agents/localization-expert.md)                           | Internationalization specialist managing 7-language dictionaries in src/i18n/ and translation bindings.                           |
+| [`ui-design-system-architect`](../.agents/agents/ui-design-system-architect.md)             | Frontend UI specialist for Bootstrap 5.3 layouts, SCSS themes, responsive DevTools docking, container queries, and semantic HTML. |
+| [`webpack-expert`](../.agents/agents/webpack-expert.md)                                     | Webpack 5 specialist for multi-target configs, asset modules, bundle splitting, and MV3 extension packaging.                      |
 
 See [the routing table](../.agents/references/subagent-routing.md) for task-to-role selection and profile requirements.

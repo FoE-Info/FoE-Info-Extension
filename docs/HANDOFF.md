@@ -51,5 +51,6 @@ Use `docs/STATUS.md` and `docs/specs/2026-09-20-codebase-modernization-roadmap.m
   - Slice 1A: `src/js/calc/prod/entityProductionParser.js` (497L -> 202L)
   - Slice 2A: `src/js/msg/GuildBattlegroundService.js` (489L -> 240L)
   - Slice 2B: `src/js/msg/StartupService.js` (424L -> 246L)
+  - Slice 2C: `src/js/msg/GbgSignalService.js` (403L -> 221L)
 - **Next Slice to Resume**:
-  - Milestone 1, Cluster 2 (Slice 2C): decompose `src/js/msg/GbgSignalService.js` (402L down to $\le 250$L).
+  - Milestone 1, Cluster 3 (Slice 3A): decompose `src/js/protocol/MessageDispatcher.js` (493L down to $\le 250$L).

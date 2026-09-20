@@ -4,9 +4,9 @@ Defined in `.agents/hooks.json`. Hooks run as Node.js scripts via Antigravity li
 
 ## Active Hooks (1)
 
-| Hook          | Event        | Matcher       | Script                    | Timeout | Purpose                        |
-| ------------- | ------------ | ------------- | ------------------------- | ------- | ------------------------------ |
-| `safety-gate` | `PreToolUse` | `run_command` | `scripts/safety-gate.mjs` | 5s      | Intercept destructive commands |
+| Hook          | Event        | Matcher       | Script                            | Timeout | Purpose                        |
+| ------------- | ------------ | ------------- | --------------------------------- | ------- | ------------------------------ |
+| `safety-gate` | `PreToolUse` | `run_command` | `.agents/scripts/safety-gate.mjs` | 5s      | Intercept destructive commands |
 
 ## Script Locations
 
