@@ -56,12 +56,12 @@ graphify-out/
 .worktrees/
 worktrees/
 .superpowers/
-.opencode/
 .claude/
 .cursor/
 .windsurf/
 .agents/reviews/
 .agents/.last_graph_query_stamp
+.agents/plugins/
 
 # CDP Heap Snapshots & Network Traces
 *.heapsnapshot

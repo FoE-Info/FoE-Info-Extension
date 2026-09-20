@@ -177,13 +177,13 @@ test('Taxonomy - repeated subagent families are profile driven', () => {
   ]) {
     assert.match(
       graphProfiles,
-      new RegExp('^\\| `' + profile + '` \\|', 'm'),
+      new RegExp('^\\|\\s*`' + profile + '`\\s*\\|', 'm'),
       `Missing graph target profile ${profile}`,
     );
   }
   const metadataProfile = graphProfiles
     .split('\n')
-    .find((line) => line.startsWith('| `metadata` |'));
+    .find((line) => /^\|\s*`metadata`\s*\|/.test(line));
   assert.match(metadataProfile, /graphify-metadata-store/);
   assert.match(metadataProfile, /npm run|node -e|node --test/);
 });
