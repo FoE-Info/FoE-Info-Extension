@@ -45,12 +45,13 @@ Verified on 2026-09-20:
 
 ## Current Work
 
-Use `docs/STATUS.md` and `docs/specs/2026-09-20-codebase-modernization-roadmap.md` for active modernization work.
+Use `docs/STATUS.md` and the 3-phase, 8-slice master modernization plan for active modernization work.
 
 - **Completed**:
+  - Legacy Bridge Modernization Slice 1: Quantum Incursions decommissioned into `GuildRaidsService.js` with `.register(dispatcher)`, `quantumRoutes.js` deleted.
   - Slice 1A: `src/js/calc/prod/entityProductionParser.js` (497L -> 202L)
   - Slice 2A: `src/js/msg/GuildBattlegroundService.js` (489L -> 240L)
   - Slice 2B: `src/js/msg/StartupService.js` (424L -> 246L)
   - Slice 2C: `src/js/msg/GbgSignalService.js` (403L -> 221L)
 - **Next Slice to Resume**:
-  - Milestone 1, Cluster 3 (Slice 3A): decompose `src/js/protocol/MessageDispatcher.js` (493L down to $\le 250$L).
+  - **Legacy Bridge Modernization Slice 2**: Decommission `src/js/protocol/routes/buildingRoutes.js` by adding `.register(dispatcher)` to `GreatBuildingsService.js` and `GbDonationService.js`, co-registering `BlueprintService.newReward`, wiring into `registerServices.js`, and deleting `buildingRoutes.js`.
