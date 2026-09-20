@@ -1,62 +1,48 @@
 /** Startup data RPC service orchestrating initial city and player ingestion. */
-import { processCityMapEntities } from '../calc/CityMapEntityProcessor.js';
 import { SPECIAL_GOODS } from '../calc/goods/goodsClassification.js';
-import {
-  buildClanGoodsData as buildClanGoodsDataImpl,
-  fGoodsHTML,
-} from '../calc/goodsTooltipFormatter.js';
+import { buildClanGoodsData as buildClanGoodsDataImpl } from '../calc/goodsTooltipFormatter.js';
 import * as element from '../fn/AddElement.js';
 import * as collapse from '../fn/collapse.js';
 import * as copy from '../fn/copy.js';
 import * as helper from '../fn/helper.js';
 import { t, translateContainer } from '../fn/i18n.js';
-import { formatLiveName } from '../fn/liveNameResolver.js';
-import { parseUserAccount } from '../parsers/accountParser.js';
 import { blueGalaxyState } from '../state/BlueGalaxyState.js';
 import { City } from '../state/CityState.js';
 import { metadataStore } from '../state/MetadataStore.js';
-import { resolvePlayerScore } from '../state/playerScoreResolver.js';
 import { startupRenderState } from '../state/StartupRenderState.js';
-import { formatDate, formatDateTime } from '../utils/date.js';
+import { formatDateTime } from '../utils/date.js';
 import { createLogger, isDebugEnabled } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
 import * as state from '../vars/state.js';
-import {
-  availablePacksFP,
-  checkDebug,
-  CityEntityDefs,
-  debug,
-  EpocTime,
-  Goods,
-  ignoredPlayers,
-  language,
-  MyInfo,
-  playerNameCache,
-  removeDebug,
-  setIgnoredPlayers,
-  setMyInfo,
-  setMyScore,
-  updatePlayerNameCache,
-} from '../vars/state.js';
 import { clearArmyUnits } from './ArmyUnitManagementService.js';
 import { applyBoostsToCity } from './BoostService.js';
 import { resolveMissingCityEntities } from './MetadataService.js';
-import { availableFP, ResourceDefs } from './ResourceService.js';
+import { ResourceDefs } from './ResourceService.js';
 import {
   handleBoostServiceAllBoosts,
   subscribeBoostUpdates,
 } from './StartupBoostCoordinator.js';
-import { aggregateCityStats } from './StartupCityStatsAggregator.js';
+import {
+  coordinateStartupEntities,
+  ensureCitystatsContainer,
+} from './StartupEntityCoordinator.js';
 import {
   renderWhenStartupReady,
   scheduleStartupRender,
   subscribeMetadataRenders,
 } from './StartupRenderOrchestrator.js';
+import {
+  createStartupContext,
+  createTimingTracker,
+  initializeStartupSession,
+  initStartupUser,
+  resetCityStartupState,
+  updateCombatTotals as updateCombatTotalsState,
+} from './StartupStateInitializer.js';
 
 const logger = createLogger('StartupService');
 
 export { SPECIAL_GOODS };
-
 export { City } from '../state/CityState.js';
 
 var tooltipHTML = {
@@ -67,265 +53,111 @@ var tooltipHTML = {
   SoH: [],
   tGE: [],
 };
-
 export var Galaxy = blueGalaxyState.getLegacyShim();
 
-var buildingsReady = [];
-var fpBuildings = [];
-var goodsBuildings = [];
-var clanGoodsBuildings = [];
-let lastStartupContext = null;
+var buildingsReady = [],
+  fpBuildings = [],
+  goodsBuildings = [],
+  clanGoodsBuildings = [];
+let lastStartupContext = null,
+  startupTimingRun = 0;
 export let lastStartupMsg = null;
 export let lastBoostsMsg = null;
-let startupTimingRun = 0;
 
 export function startupService(msg) {
-  const debugEnabled = isDebugEnabled();
   const timingRun = ++startupTimingRun;
-  const timingStart = performance.now();
-  let timingPrevious = timingStart;
-  let galaxyEntityMs = 0;
-  let entityProductionMs = 0;
-  let entityAbilityMs = 0;
-  const unknownBonusTypes = new Map();
-  const timingStep = (phase, step) => {
-    if (!debugEnabled) return;
-    const now = performance.now();
-    logger.info(
-      `[TIMING:${phase}] ${step} | t = ${now.toFixed(2)}ms | run = ${timingRun} | requestId = ${msg?.requestId} | stepMs = ${(now - timingPrevious).toFixed(2)} | totalMs = ${(now - timingStart).toFixed(2)}`,
-    );
-    timingPrevious = now;
-  };
+  const { debugEnabled, timingStep } = createTimingTracker(
+    logger,
+    timingRun,
+    msg?.requestId,
+  );
   logger.info(
     `[TIMING:P4] StartupService.startupService(msg) execution started | t = ${performance.now().toFixed(2)}ms | requestId = ${msg?.requestId}`,
   );
-  const user = msg.responseData ? msg.responseData.user_data : null;
-  if (!user) {
-    console.error('startupService received payload without user_data', msg);
-    return;
-  }
-  const parsedUser = parseUserAccount(user);
-  resolvePlayerScore(parsedUser, user, {
-    setMyScore,
-    renderLiveCityStats: () => renderLiveCityStats(),
+
+  const user = initializeStartupSession(msg, {
+    City,
+    renderLiveCityStats,
+    state,
+    helper,
+    clearArmyUnits,
+    blueGalaxyState,
+    applyBoostsToCity,
+    lastBoostsMsg,
+    DEV: typeof DEV !== 'undefined' ? DEV : false,
+    logger,
   });
-  user.score = parsedUser.score;
-  setMyInfo(
-    parsedUser.name,
-    parsedUser.id,
-    parsedUser.clan,
-    parsedUser.clanId,
-    parsedUser.createdAt,
-    parsedUser.era,
-    parsedUser.score,
-  );
-  const ignoredBy =
-    msg.responseData?.ignoredByPlayerIds ||
-    user?.ignoredByPlayerIds ||
-    msg.responseData?.ignored_by_player_ids;
-  const ignoring =
-    msg.responseData?.ignoredPlayerIds ||
-    user?.ignoredPlayerIds ||
-    msg.responseData?.ignored_player_ids;
-  if (ignoredBy || ignoring) {
-    setIgnoredPlayers(ignoredBy, ignoring);
-  }
-  helper.setMyGuildPermissions(user.clan_permissions);
-  clearArmyUnits();
-  blueGalaxyState.reset();
+  if (!user) return;
+
   lastStartupMsg = msg;
   buildingsReady = [];
   fpBuildings = [];
   goodsBuildings = [];
   clanGoodsBuildings = [];
-
-  City.ForgePoints = 0;
-  City.baseBoostableFp = 0;
-  City.baseUnboostableFp = 0;
-  City.TrazUnits = 0;
-  City.baseUnits = 0;
-  City.gbAttack = 0;
-  City.gbDefense = 0;
-  City.gbCityAttack = 0;
-  City.gbCityDefense = 0;
-  City.Coins = 0;
-  City.Supplies = 0;
-  City.CoinBoost = 0;
-  City.SupplyBoost = 0;
-  City.Attack = 0;
-  City.Defense = 0;
-  City.CityAttack = 0;
-  City.CityDefense = 0;
-  City.ArcBonus = 0;
-  City.ChatBonus = 0;
-  City.AOCriticalStrike = 0;
-  City.CCCriticalStrike = 0;
-  City.CriticalStrike = 0;
-
-  logger.debug('window', window);
-
-  logger.debug('user :', MyInfo);
-  if (language != 'auto') {
-    $.i18n({
-      locale: language,
-    });
-  }
-  logger.debug(language, $.i18n().locale, $.i18n.debug);
-
-  // console.log('checkBeta:', users.checkBeta());
-  if (!DEV) {
-    removeDebug();
-  }
-  var clanPower = 0;
-  var clanGoods = 0;
-  var totalGoods = 0;
-  var goodsList = [];
   tooltipHTML.goods = [];
-  // Galaxy.html = '';
-  // Galaxy.amount = 0;
-  if (lastBoostsMsg) {
-    applyBoostsToCity(lastBoostsMsg, City);
-  }
   timingStep('P4a', 'startup reset and user preparation complete');
 
-  const entityResult = processCityMapEntities(
-    msg.responseData?.city_map?.entities,
-    {
-      City,
-      CityEntityDefs,
-      metadataStore,
-      user,
-      MyInfo,
-      ResourceDefs,
-      blueGalaxyState,
-      Galaxy,
-      helper,
-      formatLiveName,
-      checkDebug,
-      debugEnabled,
-      DEV,
-      debugEl: typeof debug !== 'undefined' ? debug : null,
-      fEntityName,
-    },
-  );
-
-  buildingsReady = entityResult.buildingsReady;
-  fpBuildings = entityResult.fpBuildings;
-  goodsBuildings = entityResult.goodsBuildings;
-  clanGoodsBuildings = entityResult.clanGoodsBuildings;
-  goodsList = entityResult.goodsList;
-  clanPower = entityResult.clanPower;
-  clanGoods = entityResult.clanGoods;
-  totalGoods = entityResult.totalGoods;
-  galaxyEntityMs = entityResult.timing.galaxyEntityMs;
-  entityProductionMs = entityResult.timing.entityProductionMs;
-  entityAbilityMs = entityResult.timing.entityAbilityMs;
-  for (const [k, v] of entityResult.unknownBonusTypes.entries()) {
-    unknownBonusTypes.set(k, v);
-  }
-
-  timingStep(
-    'P4b',
-    `city entity loop complete; entities = ${msg.responseData.city_map?.entities?.length || 0}; blueGalaxy.addEntityMs = ${galaxyEntityMs.toFixed(2)}; productionAndNamesMs = ${entityProductionMs.toFixed(2)}; metadataAndAbilitiesMs = ${entityAbilityMs.toFixed(2)}`,
-  );
-  if (debugEnabled && unknownBonusTypes.size) {
-    logger.debug(
-      'Startup entity batch: unhandled bonus type counts',
-      Object.fromEntries(unknownBonusTypes),
-    );
-  }
-  City.baseUnits = City.TrazUnits;
-  City.TrazUnits = (City.baseUnits || 0) + (City.emissaryUnits || 0);
-  updateCombatTotals();
-  if (lastBoostsMsg) {
-    timingStep(
-      'P4c',
-      'cached boosts begin; includes early renderLiveCityStats',
-    );
-    boostServiceAllBoosts(lastBoostsMsg);
-  }
-  timingStep('P4d', 'combat totals and cached boosts complete');
-
-  blueGalaxyState.notify();
-  timingStep('P4e', 'blueGalaxy notify complete');
-
-  renderBuildingCollectionTimes();
-  timingStep('P4g', 'building collection render complete');
-
-  aggregateCityStats({
+  const entityResult = coordinateStartupEntities({
+    msg,
+    user,
     City,
-    fpBuildings,
-    goodsList,
-    ResourceDefs,
-    Goods,
-    specialGoods: SPECIAL_GOODS,
-    helper,
+    Galaxy,
     tooltipHTML,
-    fGoodsHTML,
+    timingStep,
+    updateCombatTotals,
+    lastBoostsMsg,
+    boostServiceAllBoosts,
+    renderBuildingCollectionTimes,
+    buildClanGoodsData,
+    logger,
+    debugEnabled,
+    state,
+    helper,
+    ResourceDefs,
+    DEV: typeof DEV !== 'undefined' ? DEV : false,
+    blueGalaxyState,
+    metadataStore,
   });
 
-  timingStep('P4h', 'goods and FP tooltip grouping complete');
-  clanGoods = buildClanGoodsData();
-  timingStep('P4i', 'clan goods aggregation complete');
-  timingStep('P4j', 'goods era tally and HTML complete');
-  var citystats = document.getElementById('citystats');
+  ({ buildingsReady, fpBuildings, goodsBuildings, clanGoodsBuildings } =
+    entityResult);
 
-  if (citystats == null) {
-    citystats = document.createElement('div');
-    var list =
-      document.getElementById('content') ||
-      document.body ||
-      document.documentElement;
-    if (list) list.insertBefore(citystats, list.childNodes[0] || null);
-    citystats.id = 'citystats';
-  }
+  const citystats = ensureCitystatsContainer();
 
-  lastStartupContext = {
+  lastStartupContext = createStartupContext({
     user,
-    clanGoods,
-    clanPower,
-    availablePacksFP,
-    collapseStats: collapse.collapseStats,
+    entityResult,
+    state,
+    collapse,
     fpBuildings,
     goodsBuildings,
-    aidStats: entityResult.aidStats,
-    tooltipHTML: {
-      fp: tooltipHTML.fp,
-      clanGoods: tooltipHTML.clanGoods,
-      goods: tooltipHTML.goods,
-    },
-  };
+    tooltipHTML,
+  });
   timingStep('P4k', 'render preparation complete; entering metadata gate');
+
+  const finishRender = () => {
+    renderLiveCityStats();
+    if (!collapse.collapseStats) {
+      document
+        .getElementById('citystatsCopyID')
+        ?.addEventListener('click', copy.fCityStatsCopy);
+    }
+    translateContainer(document.body);
+  };
+
   scheduleStartupRender({
     timingRun,
     msg,
     citystats,
-    renderLiveCityStats: () => {
-      renderLiveCityStats();
-      if (!collapse.collapseStats) {
-        document
-          .getElementById('citystatsCopyID')
-          ?.addEventListener('click', copy.fCityStatsCopy);
-      }
-      translateContainer(document.body);
-    },
+    renderLiveCityStats: finishRender,
     resolveMissingCityEntities,
     onResolved: () => {
       timingStep(
         'P4r',
         'metadata gate callback; recomputing existing lastStartupMsg',
       );
-      if (lastStartupMsg) {
-        startupService(lastStartupMsg);
-      } else {
-        renderLiveCityStats();
-        if (!collapse.collapseStats) {
-          document
-            .getElementById('citystatsCopyID')
-            ?.addEventListener('click', copy.fCityStatsCopy);
-        }
-        translateContainer(document.body);
-      }
+      if (lastStartupMsg) startupService(lastStartupMsg);
+      else finishRender();
     },
     getCityEntityDef: (cid) => helper.getCityEntityDef(cid),
     logger,
@@ -333,7 +165,6 @@ export function startupService(msg) {
     translateContainer,
   });
   timingStep('P4z', 'startup synchronous invocation complete');
-  // console.debug('tooltipHTML:',tooltipHTML);
 }
 
 export function buildClanGoodsData() {
@@ -367,17 +198,13 @@ export function renderLiveCityStats(ctx) {
   );
 }
 
-export function updateCombatTotals() {
-  City.Attack = (City.rawBoostAttack || 0) + (City.gbAttack || 0);
-  City.Defense = (City.rawBoostDefense || 0) + (City.gbDefense || 0);
-  City.CityAttack = (City.rawBoostCityAttack || 0) + (City.gbCityAttack || 0);
-  City.CityDefense =
-    (City.rawBoostCityDefense || 0) + (City.gbCityDefense || 0);
+export function updateCombatTotals(targetCity = City) {
+  updateCombatTotalsState(targetCity);
 }
 
 export { emissaryService } from './EmissaryService.js';
 
-export function boostService(msg) {}
+export function boostService(_msg) {}
 
 export function boostServiceAllBoosts(msg) {
   lastBoostsMsg = msg;
@@ -395,15 +222,10 @@ export function boostServiceAllBoosts(msg) {
 
 subscribeBoostUpdates(boostServiceAllBoosts);
 
-function fEntityName(entity) {
-  const def = helper.getCityEntityDef(entity);
-  return def && def.name ? def.name : entity;
-}
-
 export function renderBuildingCollectionTimes(options = {}) {
   return startupRenderState.setBuildingCollectionOptions({
     buildingsReady: options.buildingsReady || buildingsReady,
-    epocTime: options.epocTime ?? EpocTime,
+    epocTime: options.epocTime ?? state.EpocTime,
     showOptions,
     helper,
     element,
