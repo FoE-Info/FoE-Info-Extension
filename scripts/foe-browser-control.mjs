@@ -2,10 +2,11 @@
 
 /**
  * Orchestrates foe-browser CDP automation:
- * 1. Tab deduplication: Reuses existing FoE tab, closes redundant game tabs.
- * 2. Extension reload: Triggers reload in chrome://extensions or via chrome.runtime.
- * 3. DevTools docking & focus: Ensures DevTools is open and FoE-Info panel is focused.
- * 4. World navigation: Navigates to requested world (default en7, or en16) without opening new tabs.
+ * 1. Closes any DevTools attached to non-FoE tabs.
+ * 2. Reuses existing FoE game tab (en0 or world); never opens new tabs on reload.
+ * 3. Launches/attaches DevTools strictly on the FoE tab and focuses FoE-Info panel.
+ * 4. Waits for FoE-Info panel to attach before navigating/logging in to requested world.
+ * 5. Reloads existing tab in-place on reload.
  */
 
 const CDP_BASE = process.env.CDP_BASE || 'http://127.0.0.1:9222';
@@ -49,6 +50,23 @@ async function fetchTargets() {
   const res = await fetch(`${CDP_BASE}/json`);
   if (!res.ok) throw new Error(`CDP HTTP error: ${res.status}`);
   return res.json();
+}
+
+async function closeNonFoeDevTools(targets) {
+  const dtTargets = targets.filter(
+    (t) => t.url && t.url.startsWith('devtools://'),
+  );
+  for (const dt of dtTargets) {
+    const title = (dt.title || '').toLowerCase();
+    if (title && !title.includes('forgeofempires') && !title.includes('foe')) {
+      try {
+        await fetch(`${CDP_BASE}/json/close/${dt.id}`);
+        console.log(
+          `[foe-browser-control] Closed non-FoE DevTools: ${dt.title}`,
+        );
+      } catch {}
+    }
+  }
 }
 
 async function reloadExtension(targets) {
@@ -106,52 +124,88 @@ async function reloadExtension(targets) {
   return false;
 }
 
-async function focusDevToolsPanel(gameTab) {
+function findFoeDevTools(targets) {
+  return targets.find(
+    (t) =>
+      t.url &&
+      t.url.startsWith('devtools://') &&
+      (!t.title ||
+        t.title.toLowerCase().includes('forgeofempires') ||
+        t.title.toLowerCase().includes('foe')),
+  );
+}
+
+async function ensureDevToolsOnFoeTab(gameTab) {
   const isFoeTab =
     gameTab &&
     /^https?:\/\/(?:[a-z]{2}[0-9]*|zz[0-9]*)\.forgeofempires\.com/i.test(
       gameTab.url || '',
     );
-
-  for (let attempt = 0; attempt < 25; attempt++) {
-    const targets = await fetchTargets();
-    const dt = targets.find((t) => t.url && t.url.startsWith('devtools://'));
-    if (!dt && attempt === 2 && isFoeTab) {
-      try {
-        await fetch(`${CDP_BASE}/json/activate/${gameTab.id}`);
-        const { execSync } = await import('node:child_process');
-        execSync('ydotool key 88:1 88:0', { stdio: 'ignore', timeout: 1000 });
-      } catch {}
-    }
-    if (dt) {
-      try {
-        const res = await sendCdp(dt.webSocketDebuggerUrl, 'Runtime.evaluate', {
-          expression: `(async () => {
-            try {
-              const UI = await import('devtools://devtools/bundled/ui/legacy/legacy.js');
-              const vm = UI.ViewManager.ViewManager.instance();
-              if (!vm || !vm.views) return false;
-              const key = Array.from(vm.views.keys()).find((k) => k.includes('FoE-Info'));
-              if (key) {
-                await vm.showView(key);
-                return true;
-              }
-            } catch {}
-            return false;
-          })()`,
-          awaitPromise: true,
-          returnByValue: true,
-        });
-        if (res?.result?.value) {
-          console.log(
-            '[foe-browser-control] FoE-Info panel focused in DevTools.',
-          );
-          return true;
-        }
-      } catch {}
-    }
-    await sleep(250);
+  if (!isFoeTab) {
+    console.warn(
+      `[foe-browser-control] Target tab is not a FoE website (${gameTab?.url}). DevTools will NOT be opened.`,
+    );
+    return false;
   }
+
+  // Ensure game tab is focused before triggering F12
+  try {
+    await fetch(`${CDP_BASE}/json/activate/${gameTab.id}`);
+    await sleep(250);
+  } catch {}
+
+  let targets = await fetchTargets();
+  let dt = findFoeDevTools(targets);
+
+  if (!dt) {
+    console.log('[foe-browser-control] Launching DevTools on FoE tab...');
+    try {
+      const { execSync } = await import('node:child_process');
+      execSync('ydotool key 88:1 88:0', { stdio: 'ignore', timeout: 1000 });
+    } catch (err) {
+      console.warn(
+        '[foe-browser-control] ydotool F12 invocation failed:',
+        err.message,
+      );
+    }
+
+    for (let attempt = 0; attempt < 25; attempt++) {
+      await sleep(200);
+      targets = await fetchTargets();
+      dt = findFoeDevTools(targets);
+      if (dt) break;
+    }
+  }
+
+  if (dt) {
+    try {
+      const res = await sendCdp(dt.webSocketDebuggerUrl, 'Runtime.evaluate', {
+        expression: `(async () => {
+          try {
+            const UI = await import('devtools://devtools/bundled/ui/legacy/legacy.js');
+            const vm = UI.ViewManager.ViewManager.instance();
+            if (!vm || !vm.views) return false;
+            const key = Array.from(vm.views.keys()).find((k) => k.includes('FoE-Info'));
+            if (key) {
+              await vm.showView(key);
+              return true;
+            }
+          } catch {}
+          return false;
+        })()`,
+        awaitPromise: true,
+        returnByValue: true,
+      });
+      if (res?.result?.value) {
+        console.log(
+          '[foe-browser-control] FoE-Info panel focused in DevTools.',
+        );
+      }
+    } catch {}
+    return true;
+  }
+
+  console.warn('[foe-browser-control] Could not attach DevTools to FoE tab.');
   return false;
 }
 
@@ -170,15 +224,20 @@ async function main() {
   console.log(`[foe-browser-control] Target world: ${world} (${targetUrl})`);
 
   let targets = await fetchTargets();
+
+  // 1. Immediately close any DevTools attached to non-FoE tabs
+  await closeNonFoeDevTools(targets);
+
+  // 2. Resolve existing FoE tabs — deduplicate, never create new tabs on reload
+  targets = await fetchTargets();
   const foeTabs = targets.filter(
     (t) => t.type === 'page' && t.url && t.url.includes('forgeofempires.com'),
   );
 
-  // Deduplicate game tabs: keep exactly 1, close extras
   let primaryGameTab = foeTabs[0];
   if (foeTabs.length > 1) {
     console.log(
-      `[foe-browser-control] Found ${foeTabs.length} FoE tabs. Deduplicating...`,
+      `[foe-browser-control] Found ${foeTabs.length} FoE tabs. Deduplicating to single tab...`,
     );
     for (let i = 1; i < foeTabs.length; i++) {
       try {
@@ -186,13 +245,19 @@ async function main() {
       } catch {}
     }
   } else if (!primaryGameTab) {
+    // Only open en0 if zero FoE tabs exist
     const blankTab = targets.find(
       (t) =>
         t.type === 'page' &&
         (t.url === 'about:blank' || t.url.includes('chrome://newtab')),
     );
     if (blankTab) {
+      console.log('[foe-browser-control] Reusing blank tab for en0...');
       primaryGameTab = blankTab;
+      await sendCdp(primaryGameTab.webSocketDebuggerUrl, 'Page.navigate', {
+        url: 'https://en0.forgeofempires.com/',
+      });
+      await sleep(1000);
     } else {
       console.log(
         '[foe-browser-control] No existing FoE tab found. Opening initial en0 tab...',
@@ -201,38 +266,51 @@ async function main() {
         `${CDP_BASE}/json/new?https://en0.forgeofempires.com/`,
       );
       primaryGameTab = await newRes.json();
+      await sleep(1000);
     }
   }
 
-  // Reload the extension
-  await reloadExtension(targets);
-  await sleep(400);
-
-  // Reload DevTools window if open to refresh extension bindings
+  // 3. Reload the extension
   targets = await fetchTargets();
-  const dtTarget = targets.find(
-    (t) => t.url && t.url.startsWith('devtools://'),
-  );
+  await reloadExtension(targets);
+  await sleep(300);
+
+  // 4. If DevTools is already open for FoE tab, reload it to pick up fresh extension assets
+  targets = await fetchTargets();
+  const dtTarget = findFoeDevTools(targets);
   if (dtTarget) {
     try {
       await sendCdp(dtTarget.webSocketDebuggerUrl, 'Page.reload');
+      await sleep(300);
     } catch {}
   }
 
-  // Focus FoE-Info panel
-  await focusDevToolsPanel(primaryGameTab);
+  // 5. Ensure DevTools is open and FoE-Info panel is focused on the FoE tab
+  await ensureDevToolsOnFoeTab(primaryGameTab);
 
-  // Wait up to 3s for panel.html to mount
-  for (let i = 0; i < 15; i++) {
+  // 6. Wait until FoE-Info panel.html is confirmed mounted and listening
+  console.log(
+    '[foe-browser-control] Waiting for FoE-Info-Extension panel to attach...',
+  );
+  let panelMounted = false;
+  for (let i = 0; i < 25; i++) {
     const current = await fetchTargets();
     if (current.some((t) => t.url && t.url.includes('panel.html'))) {
-      console.log('[foe-browser-control] panel.html confirmed mounted.');
+      panelMounted = true;
+      console.log(
+        '[foe-browser-control] FoE-Info-Extension panel confirmed attached.',
+      );
       break;
     }
     await sleep(200);
   }
+  if (!panelMounted) {
+    console.warn(
+      '[foe-browser-control] Warning: panel.html not detected after 5s. Proceeding with game navigation.',
+    );
+  }
 
-  // Reuse existing game tab: navigate to world or reload if already there
+  // 7. ONLY AFTER FoE-Info-Extension is attached, navigate or reload on the EXISTING game tab
   console.log(
     `[foe-browser-control] Reusing existing game tab (${primaryGameTab.id})...`,
   );
@@ -241,22 +319,24 @@ async function main() {
     primaryGameTab.url.includes(`${world}.forgeofempires.com`)
   ) {
     console.log(
-      '[foe-browser-control] Already on target world. Reloading game page...',
+      `[foe-browser-control] Already on target world ${world}. Reloading existing tab in-place...`,
     );
     await sendCdp(primaryGameTab.webSocketDebuggerUrl, 'Page.reload');
   } else {
-    console.log(`[foe-browser-control] Navigating game tab to ${targetUrl}...`);
+    console.log(
+      `[foe-browser-control] Navigating existing game tab to ${targetUrl}...`,
+    );
     await sendCdp(primaryGameTab.webSocketDebuggerUrl, 'Page.navigate', {
       url: targetUrl,
     });
   }
 
-  // Activate game tab so it stays the user's active view
+  // 8. Re-activate the game tab so it stays the user's active view
   try {
     await fetch(`${CDP_BASE}/json/activate/${primaryGameTab.id}`);
   } catch {}
 
-  // Bind OpenCLI session if opencli is available
+  // 9. Bind OpenCLI session if opencli daemon is active
   try {
     const { execSync } = await import('node:child_process');
     execSync('opencli browser foe-game bind', {
@@ -267,7 +347,7 @@ async function main() {
   } catch {}
 
   console.log(
-    '[foe-browser-control] Done. FoE-Info attached, DevTools docked, game loading.',
+    '[foe-browser-control] Done. FoE-Info attached, DevTools docked, game loading on existing tab.',
   );
 }
 
