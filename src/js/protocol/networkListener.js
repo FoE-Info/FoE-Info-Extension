@@ -2,8 +2,30 @@
  * networkListener.js
  *
  * Network packet interception, DevTools request routing, and payload deduplication.
- * Decoupled from index.js monolith.
+ * Streamlined orchestrator delegating to specialized protocol modules.
  */
+
+const {
+  isDuplicatePayload,
+  clearDuplicatePayloadCache,
+} = require('./networkPayloadDeduplicator.js');
+const {
+  getGameVersion,
+  setGameVersion,
+  notifyGameVersionChange,
+} = require('./gameVersionTracker.js');
+const {
+  safeProcessContent,
+  getType,
+  isFoeNetworkUrl,
+} = require('./networkContentReader.js');
+const { detectAndSyncWorldOrigin } = require('./networkWorldDetector.js');
+const {
+  processContentDirect: directDispatch,
+} = require('./networkPacketDispatcher.js');
+const {
+  handleRequestFinished: devtoolsHandleFinished,
+} = require('./networkDevtoolsHandler.js');
 
 let defaultMessageDispatcher;
 try {
@@ -37,25 +59,7 @@ try {
   logger = createLogger('NetworkListener');
 } catch {}
 
-let postBackgroundTask = (fn) => setTimeout(fn, 0);
-try {
-  const scheduler = require('../utils/scheduler.js');
-  if (typeof scheduler.postBackgroundTask === 'function') {
-    postBackgroundTask = scheduler.postBackgroundTask;
-  }
-} catch {}
-
-let appendGameVersionStatus = null;
-try {
-  const versionStatus = require('../ui/gameVersionStatus.js');
-  if (typeof versionStatus.appendGameVersionStatus === 'function') {
-    appendGameVersionStatus = versionStatus.appendGameVersionStatus;
-  }
-} catch {}
-
 let activeDeps = {};
-let currentGameVersion = 0;
-const processedPayloadCache = new Map();
 let firstRpcPacketIntercepted = false;
 
 function getDeps(overrideDeps = {}) {
@@ -75,69 +79,7 @@ function getDeps(overrideDeps = {}) {
   };
 }
 
-function getType(type) {
-  if (!type || typeof type !== 'string') return '';
-  return type.replace(/.*(javascript|image|html|font|json|css|text).*/g, '$1');
-}
-
-function isDuplicatePayload(reqUrl, textBody) {
-  if (!reqUrl || !textBody) return false;
-  const sample = typeof textBody === 'string' ? textBody.slice(0, 100) : '';
-  const len = typeof textBody === 'string' ? textBody.length : 0;
-  const key = `${reqUrl}:${len}:${sample}`;
-  const now = Date.now();
-  if (processedPayloadCache.has(key)) {
-    const lastTime = processedPayloadCache.get(key);
-    if (now - lastTime < 3000) {
-      return true;
-    }
-  }
-  processedPayloadCache.set(key, now);
-  if (processedPayloadCache.size > 300) {
-    const firstKey = processedPayloadCache.keys().next().value;
-    processedPayloadCache.delete(firstKey);
-  }
-  return false;
-}
-
-function clearDuplicatePayloadCache() {
-  processedPayloadCache.clear();
-}
-
-function getGameVersion() {
-  return currentGameVersion;
-}
-
-function setGameVersion(version) {
-  currentGameVersion = version;
-}
-
-function notifyGameVersionChange(newVersion, deps) {
-  const currentVersion =
-    typeof deps.getGameVersion === 'function' ?
-      deps.getGameVersion()
-    : currentGameVersion;
-  if (currentVersion != newVersion) {
-    currentGameVersion = newVersion;
-    if (typeof deps.setGameVersion === 'function') {
-      deps.setGameVersion(newVersion);
-    }
-    if (typeof deps.onGameVersionChange === 'function') {
-      deps.onGameVersionChange(newVersion);
-    } else if (
-      deps.citystats &&
-      typeof appendGameVersionStatus === 'function'
-    ) {
-      appendGameVersionStatus(deps.citystats, {
-        version: newVersion,
-        extName: deps.extName || 'FoE-Info',
-        toolVersion: deps.toolVersion || '',
-      });
-    }
-  }
-}
-
-async function processContentDirect(
+function processContentDirect(
   reqUrl,
   body,
   encoding,
@@ -145,98 +87,8 @@ async function processContentDirect(
   request = null,
   deps = {},
 ) {
-  if (!body) return;
   const mergedDeps = getDeps(deps);
-  const dispatcher = mergedDeps.messageDispatcher;
-  const logRpc = mergedDeps.logRpcMessage;
-
-  try {
-    if (dispatcher && typeof dispatcher.dispatchRaw === 'function') {
-      const res = await dispatcher.dispatchRaw(
-        reqUrl,
-        body,
-        encoding,
-        headers,
-        request,
-      );
-      if (res && res.batchResult && Array.isArray(res.batchResult.results)) {
-        if (typeof logRpc === 'function') {
-          for (const item of res.batchResult.results) {
-            logRpc(item.message, !item.result?.unhandled && item.success);
-          }
-        }
-      }
-      return res;
-    }
-  } catch (err) {
-    console.error('Error in processContentDirect dispatch:', err);
-  }
-}
-
-function safeProcessContent(request, processContent) {
-  if (!request || typeof request.getContent !== 'function') return;
-  try {
-    let called = false;
-    const safeProcess = (content, encoding) => {
-      if (called) return;
-      if (!content) {
-        setTimeout(() => {
-          if (called) return;
-          // Defer the retry attempt to a background task so the timer callback
-          // stays lightweight and other main-thread work can interleave.
-          postBackgroundTask(() => {
-            try {
-              let p;
-              try {
-                p = request.getContent();
-              } catch (e) {
-                request.getContent((retryContent, retryEncoding) => {
-                  if (retryContent) {
-                    called = true;
-                    processContent(retryContent, retryEncoding);
-                  }
-                });
-                return;
-              }
-              if (p && typeof p.then === 'function') {
-                p.then((res) => {
-                  const [retryContent, retryEncoding] =
-                    Array.isArray(res) ? res : [res, ''];
-                  if (retryContent) {
-                    called = true;
-                    processContent(retryContent, retryEncoding);
-                  }
-                }).catch(() => {});
-              }
-            } catch (e) {}
-          });
-        }, 150);
-        return;
-      }
-      called = true;
-      processContent(content, encoding);
-    };
-
-    let res;
-    try {
-      res = request.getContent();
-    } catch (err) {
-      res = request.getContent((content, encoding) => {
-        safeProcess(content, encoding);
-      });
-    }
-
-    if (res && typeof res.then === 'function') {
-      res
-        .then((args) => {
-          if (Array.isArray(args)) safeProcess(args[0], args[1]);
-          else safeProcess(args, '');
-        })
-        .catch((err) => console.error('getContent promise error', err));
-    }
-  } catch (e) {
-    console.error('Error in safeProcessContent', e);
-  }
+  return directDispatch(reqUrl, body, encoding, headers, request, mergedDeps);
 }
 
 function handleRawNetworkEntry(
@@ -250,81 +102,23 @@ function handleRawNetworkEntry(
   if (!reqUrl) return;
   const mergedDeps = getDeps(deps);
 
-  const originMatch = reqUrl.match(/^(https?:\/\/[^/]+)/i);
-  if (originMatch) {
-    const worldMatch = originMatch[1].match(
-      /https?:\/\/([a-z]+[1-9][0-9]*)\.forgeofempires\.com/i,
-    );
-    if (worldMatch && worldMatch[1]) {
-      const detectedWorld = worldMatch[1].toLowerCase();
-      const inspectedWorld =
-        typeof mergedDeps.getInspectedWorldId === 'function' ?
-          mergedDeps.getInspectedWorldId()
-        : (mergedDeps.inspectedWorldId ?? null);
-      if (inspectedWorld && detectedWorld !== inspectedWorld) {
-        if (inspectedWorld.endsWith('0') || inspectedWorld === 'www') {
-          if (typeof mergedDeps.setInspectedWorldId === 'function') {
-            mergedDeps.setInspectedWorldId(detectedWorld);
-          }
-        } else {
-          return;
-        }
-      }
-      if (typeof mergedDeps.setGameOrigin === 'function') {
-        mergedDeps.setGameOrigin(originMatch[1]);
-      }
-      const storage = mergedDeps.storage;
-      if (storage) {
-        if (
-          typeof storage.getCurrentWorld === 'function' &&
-          storage.getCurrentWorld() !== detectedWorld
-        ) {
-          if (typeof storage.setWorld === 'function') {
-            storage.setWorld(detectedWorld);
-          }
-          if (typeof storage.getWorldSettings === 'function') {
-            Promise.resolve(storage.getWorldSettings(detectedWorld)).then(
-              (worldSettings) => {
-                if (
-                  worldSettings?.showOptions &&
-                  typeof mergedDeps.setOptions === 'function'
-                ) {
-                  mergedDeps.setOptions(
-                    'showOptions',
-                    worldSettings.showOptions,
-                  );
-                  if (typeof mergedDeps.applyCardVisibility === 'function') {
-                    mergedDeps.applyCardVisibility();
-                  }
-                }
-              },
-            );
-          }
-        }
-        if (typeof storage.registerKnownWorld === 'function') {
-          storage.registerKnownWorld(detectedWorld);
-        }
-      }
-    }
+  const worldCheck = detectAndSyncWorldOrigin(reqUrl, mergedDeps);
+  if (!worldCheck.accepted) {
+    return;
   }
 
-  if (
-    reqUrl.includes('/game/json') ||
-    reqUrl.includes('metadata?id=') ||
-    reqUrl.includes('/metadata') ||
-    reqUrl.includes('/start/metadata')
-  ) {
+  if (isFoeNetworkUrl(reqUrl)) {
     if (!firstRpcPacketIntercepted) {
       firstRpcPacketIntercepted = true;
       logger?.info(
         `[TIMING:P3] NetworkListener first RPC packet received/dispatched | t = ${performance.now().toFixed(2)}ms | url = ${reqUrl}`,
       );
     }
-    const contentTypeHeader = (headers || []).find(
+    const clientIdentHeader = (headers || []).find(
       (h) => h && h.name && h.name.toLowerCase() === 'client-identification',
     );
-    if (contentTypeHeader && contentTypeHeader.value) {
-      notifyGameVersionChange(contentTypeHeader.value.substr(8, 5), mergedDeps);
+    if (clientIdentHeader && clientIdentHeader.value) {
+      notifyGameVersionChange(clientIdentHeader.value.substr(8, 5), mergedDeps);
     }
     processContentDirect(
       reqUrl,
@@ -338,53 +132,12 @@ function handleRawNetworkEntry(
 }
 
 function handleRequestFinished(request, deps = {}) {
-  if (!request) return;
   const mergedDeps = getDeps(deps);
-  const response = request.response || {};
-  const responseHeaders = response.headers || [];
-  const requestHeaders = (request.request && request.request.headers) || [];
-
-  let contentType = '';
-  const contentHeader = responseHeaders.find(
-    (header) =>
-      header && header.name && header.name.toLowerCase() === 'content-type',
-  );
-
-  if (contentHeader) {
-    const getTypeFn = mergedDeps.getType || getType;
-    contentType = getTypeFn(contentHeader.value);
-  }
-
-  const reqUrl =
-    request.request && request.request.url ? request.request.url : '';
-  if (
-    reqUrl.includes('/game/json') ||
-    reqUrl.includes('metadata?id=') ||
-    reqUrl.includes('/metadata') ||
-    reqUrl.includes('/start/metadata')
-  ) {
-    const clientIdentHeader = requestHeaders.find(
-      (header) =>
-        header &&
-        header.name &&
-        header.name.toLowerCase() === 'client-identification',
-    );
-
-    if (clientIdentHeader && clientIdentHeader.value) {
-      notifyGameVersionChange(clientIdentHeader.value.substr(8, 5), mergedDeps);
-    }
-
-    const processContent = (body, encoding) =>
-      processContentDirect(
-        reqUrl,
-        body,
-        encoding,
-        request.request ? request.request.headers : [],
-        request,
-        mergedDeps,
-      );
-    safeProcessContent(request, processContent);
-  }
+  return devtoolsHandleFinished(request, {
+    ...mergedDeps,
+    processContentDirect: (url, body, enc, hdrs, req, d) =>
+      processContentDirect(url, body, enc, hdrs, req, d || mergedDeps),
+  });
 }
 
 function initNetworkListeners(deps = {}) {
@@ -427,7 +180,9 @@ function initNetworkListeners(deps = {}) {
           );
         }
       });
-    } catch (e) {}
+    } catch (e) {
+      logger?.debug('Error attaching runtime onMessage listener', e);
+    }
   }
 
   if (typeof window !== 'undefined') {
