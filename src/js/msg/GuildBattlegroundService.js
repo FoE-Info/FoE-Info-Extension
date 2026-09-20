@@ -188,6 +188,26 @@ function getUpdatedProvinces(msg) {
   checkProvinces({ signalChanged: signalRemoved });
 }
 
+function handlePendingUpdate(msg) {
+  const data = msg?.responseData;
+  if (!data || !data.updateAt || !Array.isArray(data.provinceIds)) return;
+  if (!Array.isArray(map)) return;
+
+  let changed = false;
+  for (const id of data.provinceIds) {
+    if (id === undefined || id === null) continue;
+    const province = map.find((p) => p.id == id);
+    if (province && province.lockedUntil !== data.updateAt) {
+      province.lockedUntil = data.updateAt;
+      changed = true;
+    }
+  }
+
+  if (changed) {
+    checkProvinces({ signalChanged: false });
+  }
+}
+
 function applySignalAction(msg, payload, context, action, mutate) {
   const data = resolveSignalData(msg, payload, context, action);
   const target = resolveSignalTarget(msg, payload, data);
@@ -293,6 +313,8 @@ function register(dispatcher, options = {}) {
   const targetGetBuildings = options.getBuildings || getBuildings;
   const targetGetUpdatedProvinces =
     options.getUpdatedProvinces || getUpdatedProvinces;
+  const targetGetPendingUpdate =
+    options.getPendingUpdate || handlePendingUpdate;
   const targetSetSignal = options.setSignal || setSignal;
   const targetRemoveSignal = options.removeSignal || removeSignal;
   const targetUpdateSignal = options.updateSignal || updateSignal;
@@ -341,6 +363,11 @@ function register(dispatcher, options = {}) {
     'GuildBattlegroundService',
     'getProvinces',
     targetGetUpdatedProvinces,
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'getPendingUpdate',
+    targetGetPendingUpdate,
   );
 
   const handleSetSignal = (msg, context) => {
@@ -415,6 +442,8 @@ const guildBattlegroundService = {
   getBattleground,
   getBuildings,
   getUpdatedProvinces,
+  handlePendingUpdate,
+  getPendingUpdate: handlePendingUpdate,
   updateSignal,
   setSignal,
   removeSignal,
@@ -432,6 +461,8 @@ module.exports = {
   getBattleground,
   getBuildings,
   getUpdatedProvinces,
+  handlePendingUpdate,
+  getPendingUpdate: handlePendingUpdate,
   updateSignal,
   setSignal,
   removeSignal,

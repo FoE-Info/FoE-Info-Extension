@@ -26,6 +26,37 @@ function contextAllowsGalaxy() {
   }
 }
 
+function groupGalaxyBuildings(buildings, isDebug = false) {
+  if (!Array.isArray(buildings) || buildings.length === 0) return [];
+
+  const groups = [];
+  for (const item of buildings) {
+    const timerStr =
+      isDebug ?
+        item.transition && item.transition <= 2000000000 ?
+          formatTime(item.transition)
+        : 'READY'
+      : '';
+    const isReady = Boolean(item.isReady);
+    const key = `${item.name}|${item.fp}|${isReady}|${timerStr}`;
+
+    const existing = groups.find((g) => g.key === key);
+    if (existing) {
+      existing.count += 1;
+    } else {
+      groups.push({
+        key,
+        count: 1,
+        name: item.name,
+        fp: item.fp,
+        isReady,
+        timerStr,
+      });
+    }
+  }
+  return groups;
+}
+
 function renderGalaxyPanel({
   container = null,
   candidates = [],
@@ -37,16 +68,26 @@ function renderGalaxyPanel({
   t = null,
   showOptions = null,
 } = {}) {
+  if (!contextAllowsGalaxy()) {
+    const el =
+      container ||
+      (typeof document !== 'undefined' ?
+        document.getElementById('galaxy')
+      : null);
+    if (el) {
+      el.style.display = 'none';
+      el.innerHTML = '';
+    }
+    return;
+  }
+
   const el =
     container ||
     (typeof document !== 'undefined' ?
       document.getElementById('galaxy')
     : null);
-  if (!el) return;
 
-  if (!contextAllowsGalaxy()) {
-    el.style.display = 'none';
-    el.innerHTML = '';
+  if (!el) {
     return;
   }
 
@@ -78,22 +119,19 @@ function renderGalaxyPanel({
     currentEpoch,
     isDebug,
   );
+  const groupedBuildings = groupGalaxyBuildings(topBuildings, isDebug);
 
   let buildingsHtml = '';
-  if (topBuildings.length === 0) {
+  if (groupedBuildings.length === 0) {
     buildingsHtml =
       '<p class="text-muted mb-0">No ready buildings with FP production</p>';
   } else {
     buildingsHtml = '<p class="mb-0">';
-    for (const item of topBuildings) {
+    for (const group of groupedBuildings) {
       if (isDebug) {
-        const timerStr =
-          item.transition && item.transition <= 2000000000 ?
-            formatTime(item.transition)
-          : 'READY';
-        buildingsHtml += `${item.fp}FP ${item.name} [${item.isReady ? 'READY' : timerStr}]<br>`;
+        buildingsHtml += `${group.count}x ${group.fp}FP ${group.name} [${group.isReady ? 'READY' : group.timerStr}]<br>`;
       } else {
-        buildingsHtml += `${item.fp}FP ${item.name}<br>`;
+        buildingsHtml += `${group.count}x ${group.fp}FP ${group.name}<br>`;
       }
     }
     buildingsHtml += '</p>';
@@ -109,8 +147,10 @@ function renderGalaxyPanel({
         <strong><span data-i18n="galaxy_double_collection">${titleText}</span></strong>
       </p>
       <div id="galaxyText" class="resize collapse ${collapseClass}" style="max-height: 20em; overflow-y: auto;">
-        <p class="mb-1"><span data-i18n="tries_remaining">${triesText}</span> <span id="galaxyID">${validCharges}</span></p>
-        ${buildingsHtml}
+        <div class="foe-panel-body">
+          <p class="mb-1"><span data-i18n="tries_remaining">${triesText}</span> <span id="galaxyID">${validCharges}</span></p>
+          ${buildingsHtml}
+        </div>
       </div>
     </div>
   `.trim();
@@ -234,6 +274,7 @@ if (
 }
 
 module.exports = {
+  groupGalaxyBuildings,
   renderGalaxyPanel,
   showGalaxy,
   updateGalaxy,
