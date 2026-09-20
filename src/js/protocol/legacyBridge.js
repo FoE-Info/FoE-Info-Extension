@@ -4,6 +4,9 @@
  * Bridge connecting legacy FoE-Info service handlers to MessageDispatcher.
  * Retained as a backward-compatible delegator; all route tables have been
  * decommissioned to dedicated domain services in src/js/msg/.
+ *
+ * @deprecated All routes have been migrated to domain services registered via
+ * registerAllServices in src/js/msg/registerServices.js.
  */
 
 let logger = null;
