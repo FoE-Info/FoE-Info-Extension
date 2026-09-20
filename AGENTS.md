@@ -18,6 +18,7 @@ Config lives in `.agents/` (project subagents, rules, skills, hooks, and MCP). T
 - Observation only. Never drive the game or browser without asking first: follow [browser hygiene rule](.agents/rules/browser-environment-hygiene.md).
 - `ArtifactMetadata` is for `<appDataDir>/brain/<conversation-id>/` artifacts.
 - Worktrees live in `.worktrees/<branch>`: follow [workspace structure rule](.agents/rules/workspace-structure.md).
+- Graphify-First: Query Graphify MCP (`call_mcp_tool` on `graphify-foe-info`: `query_graph`, `get_node`, `get_neighbors`) before searching code or files. Prohibited as a first step: `grep_search`, `find_by_name`, and shell searches (`rtk grep`, `rtk find`, `rtk rg`): follow [graphify rule](.agents/rules/graphify.md).
 - Verification: run `npm run verify` and obtain fresh command evidence before claiming completion.
 - Before coding: consult [docs/SKILLS.md](docs/SKILLS.md) and follow [skill-driven-development rule](.agents/rules/skill-driven-development.md).
 - Subagent delegation: consult [docs/SUBAGENTS.md](docs/SUBAGENTS.md) and follow protocol in [.agents/rules/subagent-delegation.md](.agents/rules/subagent-delegation.md).
