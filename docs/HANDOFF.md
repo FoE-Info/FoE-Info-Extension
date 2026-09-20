@@ -10,7 +10,7 @@
 
 - 12 domain-specific skills under `.agents/skills/` (Antigravity-native; generic AAS residue purged).
 - 14 flat subagents under `.agents/agents/`.
-- 16 rules: 7 `always_on`, 9 `model_decision` (including `modern-web-conventions.md`).
+- 16 rules: 1 `always_on`, 15 `model_decision` (including `modern-web-conventions.md`).
 - `docs/SKILLS.md` and `docs/SUBAGENTS.md` are generated from canonical frontmatter by `.agents/scripts/generate-agent-catalogs.mjs`; `--check` detects drift.
 - Optional skill depth lives in owned `references/` libraries with explicit `references/README.md` catalogs.
 
@@ -59,5 +59,6 @@ Use `docs/STATUS.md` and the 3-phase, 8-slice master modernization plan for acti
   - Slice 2A: `src/js/msg/GuildBattlegroundService.js` (489L -> 240L)
   - Slice 2B: `src/js/msg/StartupService.js` (424L -> 246L)
   - Slice 2C: `src/js/msg/GbgSignalService.js` (403L -> 221L)
+  - Slice 3A: `src/js/protocol/MessageDispatcher.js` (494L -> 187L)
 - **Next Work to Resume**:
-  - Cluster 3 Protocol & State decomposition: `src/js/protocol/MessageDispatcher.js` (493L), `src/js/state/MetadataStore.js` (486L), `src/js/protocol/networkListener.js` (476L), and `src/js/state/storageListener.js` (402L) down to <= 250 lines per file.
+  - Cluster 3 Protocol & State decomposition Slice 3B: `src/js/state/MetadataStore.js` (486L), followed by `src/js/protocol/networkListener.js` (476L) and `src/js/state/storageListener.js` (402L) down to <= 250 lines per file.
