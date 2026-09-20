@@ -74,9 +74,8 @@ globalThis.document = {
 
 globalThis.window = globalThis;
 
-// Dynamic imports to ensure DOM & chrome runtime mocks are initialized first
-const { registerLegacyBridge } =
-  await import('../../src/js/protocol/legacyBridge.js');
+const { guildBattlegroundService } =
+  await import('../../src/js/msg/GuildBattlegroundService.js');
 const dispatcherPkg =
   await import('../../src/js/protocol/MessageDispatcher.js');
 const { MessageDispatcher } = dispatcherPkg;
@@ -150,7 +149,7 @@ test('GuildBattleground Signals and Dispatching Suite', async (t) => {
     'PostData extraction routes setSignal and removeSignal via request postData.text',
     async () => {
       const dispatcher = new MessageDispatcher();
-      registerLegacyBridge(dispatcher, {
+      guildBattlegroundService.register(dispatcher, {
         setSignal,
         removeSignal,
       });
@@ -245,7 +244,7 @@ test('GuildBattleground Signals and Dispatching Suite', async (t) => {
     'removeSignal resolves provinceId from context.requestPayload when responseData is empty',
     async () => {
       const dispatcher = new MessageDispatcher();
-      registerLegacyBridge(dispatcher, {
+      guildBattlegroundService.register(dispatcher, {
         setSignal,
         removeSignal,
       });
@@ -309,7 +308,7 @@ test('GuildBattleground Signals and Dispatching Suite', async (t) => {
 
       // 2. Dispatcher call with responseData as object
       const dispatcher = new MessageDispatcher();
-      registerLegacyBridge(dispatcher, {
+      guildBattlegroundService.register(dispatcher, {
         setSignal,
         removeSignal,
       });

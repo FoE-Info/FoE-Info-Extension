@@ -2,7 +2,8 @@
  * legacyBridge.js
  *
  * Bridge connecting legacy FoE-Info service handlers to MessageDispatcher.
- * Delegates handler registration to the protocol/routes/* route tables.
+ * Retained as a backward-compatible delegator; all route tables have been
+ * decommissioned to dedicated domain services in src/js/msg/.
  */
 
 let logger = null;
@@ -18,32 +19,12 @@ try {
   };
 }
 
-const defaultGbRegistry = require('../state/GreatBuildingRegistry.js');
-const { registerCombatRoutes } = require('./routes/combatRoutes.js');
-
-function registerLegacyBridge(dispatcher, handlers = {}) {
+function registerLegacyBridge(dispatcher, _handlers = {}) {
   if (!dispatcher || typeof dispatcher.register !== 'function') return;
 
-  const gbRegistry = handlers.GreatBuildingRegistry || defaultGbRegistry;
-  let gbSelected = handlers.GBselected;
-  if (!gbSelected) {
-    try {
-      const statePkg = require('../state/state.js');
-      gbSelected = statePkg.GBselected;
-    } catch {}
-  }
-
-  const ctx = {
-    dispatcher,
-    handlers,
-    gbRegistry,
-    gbSelected,
-    showOptions: handlers.showOptions || {},
-  };
-
-  registerCombatRoutes(ctx);
-
-  logger.debug('Legacy bridge routes registered');
+  logger.debug(
+    'Legacy bridge invoked (all routes modernized to domain services)',
+  );
 
   return dispatcher;
 }

@@ -311,9 +311,9 @@ describe('GuildExpeditionService with Trial Levels', () => {
     );
   });
 
-  it('routes ChampionshipService.getOverview and getContributionList in legacyBridge', async () => {
-    const { registerLegacyBridge } = await import(
-      `../../src/js/protocol/legacyBridge.js?t=${Date.now()}`
+  it('routes ChampionshipService.getOverview and getContributionList via register', async () => {
+    const { guildExpeditionService } = await import(
+      `../../src/js/msg/GuildExpeditionService.js?t=${Date.now()}`
     );
     const { MessageDispatcher } =
       await import('../../src/js/protocol/MessageDispatcher.js');
@@ -325,7 +325,7 @@ describe('GuildExpeditionService with Trial Levels', () => {
       return { success: true };
     };
 
-    registerLegacyBridge(dispatcher, {
+    guildExpeditionService.register(dispatcher, {
       guildExpeditionService: mockGeHandler,
     });
 
