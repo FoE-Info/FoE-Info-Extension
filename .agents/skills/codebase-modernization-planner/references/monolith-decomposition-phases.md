@@ -1,34 +1,41 @@
 # Monolith Decomposition Roadmap & Debt Inventory
 
-Verified inventory (measured 2026-09-12) and proposed breakdown strategy for the largest files in `src/js/`. Proposed target filenames are not an inventory of implemented modules.
+Verified inventory (measured 2026-09-20) and proposed breakdown strategy for the largest files in `src/js/`. Proposed target filenames are not an inventory of implemented modules.
 
 ---
 
 ## 1. Monolith Inventory & Debt Analysis
 
-| File                              | Current L | Status         |
-| :-------------------------------- | --------: | :------------- |
-| `msg/StartupService.js`           |       422 | decompose      |
-| `index.js`                        |       174 | thin           |
-| `msg/GreatBuildingsService.js`    |       468 | decompose      |
-| `fn/helper.js`                    |       203 | not a monolith |
-| `msg/GuildBattlegroundService.js` |       446 | decompose      |
-| `protocol/legacyBridge.js`        |        62 | not a monolith |
+| File                                | Current L | Status         | Notes                                                   |
+| :---------------------------------- | --------: | :------------- | :------------------------------------------------------ |
+| `calc/prod/entityProductionParser.js`|       202 | **decomposed** | Slice 1A: decomposed from 497 L into <= 250 L modules   |
+| `msg/StartupService.js`             |       246 | **decomposed** | Slice 2B: decomposed from 424 L into <= 250 L modules   |
+| `index.js`                          |       174 | thin           | Entry orchestrator                                      |
+| `msg/GreatBuildingsService.js`      |       389 | decompose      | Milestone 2                                             |
+| `fn/helper.js`                      |       203 | not a monolith | Helper utilities                                        |
+| `msg/GuildBattlegroundService.js`   |       240 | **decomposed** | Slice 2A: decomposed from 489 L into <= 250 L modules   |
+| `protocol/legacyBridge.js`          |        62 | not a monolith | Thin routing bridge                                     |
 
-**>450 L decomposition backlog (measured 2026-09-12):**
+**Milestone 1 backlog (400–497 L, measured 2026-09-20):**
 
-- `protocol/MessageDispatcher.js` (586)
-- `ui/containerBinding.js` (571)
-- `ui/indexUiBindings.js` (528)
-- `calc/entities/CityEntityHarvestCalculator.js` (513)
-- `ui/renderGbDonationPanel.js` (504)
-- `ui/cardVisibility.js` (503)
-- `ui/gbDonationTables.js` (503)
-- `msg/OtherPlayerService.js` (500)
-- `fn/collapse.js` (493)
-- `state/MetadataStore.js` (486)
-- `protocol/networkListener.js` (476)
-- `ui/panelDispatcher.js` (475)
+- `calc/prod/entityProductionParser.js` (202 L — **Done**, Slice 1A)
+- `msg/GuildBattlegroundService.js` (240 L — **Done**, Slice 2A)
+- `msg/StartupService.js` (246 L — **Done**, Slice 2B)
+- `protocol/MessageDispatcher.js` (493 L)
+- `state/MetadataStore.js` (486 L)
+- `protocol/networkListener.js` (476 L)
+- `ui/panelDispatcher.js` (475 L)
+- `fn/collapse.js` (449 L)
+- `ui/renderTargetGeneratorCard.js` (441 L)
+- `msg/StartupService.js` (424 L)
+- `ui/renderGbDonationPanel.js` (422 L)
+- `ui/indexUiBindings.js` (422 L)
+- `ui/gbPlaceTableRows.js` (417 L)
+- `ui/renderLiveCityStats.js` (415 L)
+- `ui/components/statFormatters.js` (411 L)
+- `state/storageListener.js` (402 L)
+- `msg/GbgSignalService.js` (402 L)
+- `ui/components/PopoverManager.js` (400 L)
 
 ---
 
