@@ -49,11 +49,6 @@ const {
   optionToElementId,
   ALL_KNOWN_PANEL_IDS,
 } = require('./cardVisibilityConfig.js');
-const {
-  syncDebugStubs,
-  ensureDebugStubObserver,
-  removeDebugStubs,
-} = require('./cardVisibilityDebugStubs.js');
 
 let currentView = null; // one of GAME_CONTEXTS or null (unconstrained default)
 const viewListeners = new Set();
@@ -168,31 +163,13 @@ function applyCardVisibility(
     }
   }
 
-  // --- 1. DEBUG MODE OVERRIDE (isDebug === true) ---
-  // Respect the active context/options visibility, then annotate every visible
-  // panel with a stub carrying its raw rendered content. A MutationObserver
-  // keeps the stubs in sync as panels mount and re-render after this pass.
-  if (isDebug) {
-    if (activeView && CONTEXT_ALLOWED_PANELS[activeView]) {
-      applyContextVisibility(opts, activeView);
-    } else {
-      applyUnconstrainedVisibility(opts);
-    }
-    syncDebugStubs();
-    ensureDebugStubObserver();
-    return;
-  }
-
-  // --- Remove any debug stubs if debug mode is inactive ---
-  removeDebugStubs();
-
-  // --- 2. CONTEXT-CONSTRAINED VIEW ---
+  // --- 1. CONTEXT-CONSTRAINED VIEW ---
   if (activeView && CONTEXT_ALLOWED_PANELS[activeView]) {
     applyContextVisibility(opts, activeView);
     return;
   }
 
-  // --- 3. UNCONSTRAINED DEFAULT (activeView === null) ---
+  // --- 2. UNCONSTRAINED DEFAULT (activeView === null) ---
   applyUnconstrainedVisibility(opts);
 }
 
