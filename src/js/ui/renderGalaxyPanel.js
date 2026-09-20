@@ -8,12 +8,16 @@
 const {
   getTopReadyGalaxyBuildings,
 } = require('../calc/BlueGalaxyCalculator.js');
-const { formatTime } = require('../utils/date.js');
 const {
   blueGalaxyState: defaultBlueGalaxyState,
 } = require('../state/BlueGalaxyState.js');
 const element = require('./AddElement.js');
 const { backfillPendingNames } = require('../fn/liveNameResolver.js');
+const {
+  groupGalaxyBuildings,
+  renderGalaxyBuildingList,
+} = require('./galaxyBuildingGrouper.js');
+const { bindGalaxyCollapseEvents } = require('./galaxyPanelEvents.js');
 
 /** Galaxy is context-gated: hidden in GBG/GE/QI/SETTLEMENT/OTHER_PLAYER. */
 function contextAllowsGalaxy() {
@@ -24,37 +28,6 @@ function contextAllowsGalaxy() {
   } catch {
     return true;
   }
-}
-
-function groupGalaxyBuildings(buildings, isDebug = false) {
-  if (!Array.isArray(buildings) || buildings.length === 0) return [];
-
-  const groups = [];
-  for (const item of buildings) {
-    const timerStr =
-      isDebug ?
-        item.transition && item.transition <= 2000000000 ?
-          formatTime(item.transition)
-        : 'READY'
-      : '';
-    const isReady = Boolean(item.isReady);
-    const key = `${item.name}|${item.fp}|${isReady}|${timerStr}`;
-
-    const existing = groups.find((g) => g.key === key);
-    if (existing) {
-      existing.count += 1;
-    } else {
-      groups.push({
-        key,
-        count: 1,
-        name: item.name,
-        fp: item.fp,
-        isReady,
-        timerStr,
-      });
-    }
-  }
-  return groups;
 }
 
 function renderGalaxyPanel({
@@ -120,22 +93,7 @@ function renderGalaxyPanel({
     isDebug,
   );
   const groupedBuildings = groupGalaxyBuildings(topBuildings, isDebug);
-
-  let buildingsHtml = '';
-  if (groupedBuildings.length === 0) {
-    buildingsHtml =
-      '<p class="text-muted mb-0">No ready buildings with FP production</p>';
-  } else {
-    buildingsHtml = '<p class="mb-0">';
-    for (const group of groupedBuildings) {
-      if (isDebug) {
-        buildingsHtml += `${group.count}x ${group.fp}FP ${group.name} [${group.isReady ? 'READY' : group.timerStr}]<br>`;
-      } else {
-        buildingsHtml += `${group.count}x ${group.fp}FP ${group.name}<br>`;
-      }
-    }
-    buildingsHtml += '</p>';
-  }
+  const buildingsHtml = renderGalaxyBuildingList(groupedBuildings, isDebug);
 
   const collapseClass = isCollapsed ? '' : 'show';
   const collapseIcon = isCollapsed ? '[+]' : '[-]';
@@ -157,32 +115,7 @@ function renderGalaxyPanel({
 
   el.style.display = 'block';
   backfillPendingNames(el);
-
-  const labelEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('galaxyTextLabel')
-    : el.querySelector?.('#galaxyTextLabel');
-  if (labelEl && typeof onToggleCollapse === 'function') {
-    labelEl.addEventListener('click', (e) => {
-      if (
-        e?.target &&
-        typeof e.target.closest === 'function' &&
-        e.target.closest('#galaxyicon')
-      ) {
-        return;
-      }
-      onToggleCollapse();
-    });
-  }
-  const iconEl =
-    typeof document !== 'undefined' ?
-      document.getElementById('galaxyicon')
-    : el.querySelector?.('#galaxyicon');
-  if (iconEl && iconEl !== labelEl && typeof onToggleCollapse === 'function') {
-    iconEl.addEventListener('click', () => {
-      onToggleCollapse();
-    });
-  }
+  bindGalaxyCollapseEvents({ el, onToggleCollapse });
 }
 
 function showGalaxy({
