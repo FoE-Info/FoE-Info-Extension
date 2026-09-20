@@ -72,6 +72,21 @@ Run the complete 5-stage verification gate:
 npm run verify
 ```
 
+### Step 6: Documentation & Commit Checkpoint
+
+1. Update `docs/STATUS.md` (mark completed slice, detail extracted modules).
+2. Update `docs/HANDOFF.md` (record verification date, results, and explicit next slice).
+3. Ensure formatting is clean (`npm run format`).
+4. Request user approval to commit with a conventional commit subject.
+
+### Step 7: Clean Session Handoff
+
+Provide the user with the exact prompt to resume in a fresh session:
+
+```text
+/boost Resume active modernization work from docs/HANDOFF.md and docs/STATUS.md.
+```
+
 ---
 
 ## 4. References

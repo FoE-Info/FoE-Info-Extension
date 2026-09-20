@@ -25,7 +25,12 @@ Prefer the direct implementation over a premature abstraction. If 50 lines would
 
 ## Increment cycle
 
-Implement the minimal logic for the slice, run `npm test` and the type and build checks, checkpoint with a clear commit message, then start the next slice from green.
+1. **Implement**: Minimal logic for the slice (<100 lines budget).
+2. **Format**: Use `npm run format` (or `npx prettier --write <files>`). Never invoke unverified script names like `npm run fix:format`.
+3. **Verify**: Run `npm test` and `npm run verify`.
+4. **Synchronize Docs**: Update `docs/STATUS.md` and `docs/HANDOFF.md` to reflect completed items and active next slice.
+5. **Checkpoint & Commit**: Request user approval and commit with an unslop commit message. Never leave dirty uncommitted work across session boundaries.
+6. **Session Handoff**: If concluding the turn or increment, provide the exact copy-pasteable command/prompt to resume in a fresh session (e.g. `/boost Resume active modernization work from docs/HANDOFF.md and docs/STATUS.md.`).
 
 ## Stop the line
 
