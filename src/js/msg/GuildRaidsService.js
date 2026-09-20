@@ -12,6 +12,12 @@ try {
   logger = createLogger('GuildRaidsService');
 } catch {}
 
+let setCurrentView = () => {};
+try {
+  ({ setCurrentView } = require('../ui/cardVisibility.js'));
+} catch {}
+
+const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 const { quantumState } = require('../state/QuantumState.js');
 
 class GuildRaidsService {
@@ -19,6 +25,72 @@ class GuildRaidsService {
     this.memberActivity = [];
     this.leaderboard = [];
     this.lastSaved = null;
+
+    this.handleMemberActivityOverview =
+      this.handleMemberActivityOverview.bind(this);
+    this.handleSearchRanking = this.handleSearchRanking.bind(this);
+    this.handleOverview = this.handleOverview.bind(this);
+    this.handleState = this.handleState.bind(this);
+    this.register = this.register.bind(this);
+  }
+
+  /**
+   * Register RPC routes with a MessageDispatcher instance.
+   * @param {Object} [dispatcher=messageDispatcher]
+   * @returns {GuildRaidsService} this
+   */
+  register(dispatcher = messageDispatcher) {
+    if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+
+    const withQiContext =
+      (handler) =>
+      (msg, ...rest) => {
+        try {
+          setCurrentView('QI');
+        } catch {}
+        if (typeof handler === 'function') return handler(msg, ...rest);
+      };
+
+    dispatcher.register(
+      'GuildRaidsService',
+      'getMemberActivityOverview',
+      withQiContext((msg) => this.handleMemberActivityOverview(msg)),
+    );
+
+    dispatcher.register(
+      'RankingService',
+      'searchRanking',
+      withQiContext((msg) => this.handleSearchRanking(msg)),
+    );
+
+    dispatcher.register(
+      'GuildRaidsMapService',
+      'getOverview',
+      withQiContext((msg) => this.handleOverview(msg)),
+    );
+
+    dispatcher.register(
+      'GuildRaidsService',
+      'getState',
+      withQiContext((msg) => this.handleState(msg)),
+    );
+
+    logger?.debug('GuildRaidsService registered RPC handlers');
+    return this;
+  }
+
+  handleOverview(msg) {
+    logger?.debug('GuildRaidsMapService.getOverview received', {
+      hasData: !!msg?.responseData,
+    });
+    return { success: true };
+  }
+
+  handleState(msg) {
+    logger?.debug('GuildRaidsService.getState received', {
+      hasData: !!msg?.responseData,
+    });
+    return { success: true };
   }
 
   getMemberActivity() {
