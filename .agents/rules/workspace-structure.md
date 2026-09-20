@@ -20,9 +20,11 @@ This rule defines how agent activities and project repositories are structured w
 
 ## 2. Agent Operational Directives
 
-0. **Cross-Session Memory & Brain Traversal**:
-   - The conversational brain persists in `<appDataDir>/brain/<conversation-id>/`.
-   - When asked to review history, execute `/learn`, or trace recent decisions across sessions, inspect recent sibling directories in `<appDataDir>/brain/*/` (specifically `transcript.jsonl`, `implementation_plan.md`, `walkthrough.md`) and `docs/HANDOFF.md`. Never claim history is missing simply because the active session transcript is empty.
+0. **Cross-Session & Cross-Surface Memory Traversal**:
+   - On this machine, Antigravity operates across two surfaces:
+     - **Antigravity Desktop / IDE**: `<appDataDir>` is `~/.gemini/antigravity/` (`brain/`).
+     - **Antigravity CLI (`agy`)**: `<appDataDir>` is `~/.gemini/antigravity-cli/` (`brain/`, `history.jsonl`, and `conversation_summaries.db`).
+   - When asked to review history, execute `/learn`, or inspect brain memories across sessions or surfaces, inspect both brain directories (`~/.gemini/antigravity/brain/*/` and `~/.gemini/antigravity-cli/brain/*/`) as well as `docs/HANDOFF.md` and `~/.gemini/antigravity-cli/history.jsonl`. Never claim history is missing without checking both surfaces.
 1. **Working Directory Scoping**:
    - All builds, formatting, tests, git operations, and scripts execute directly from the active project root (`.` / `process.cwd()`).
 2. **Artifact & Agent Management**:
