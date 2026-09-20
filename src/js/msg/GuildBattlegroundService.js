@@ -1,40 +1,63 @@
-/** Guild Battlegrounds RPC service for map, state, and leaderboards. */
-import { guildBattlegroundState } from '../state/GuildBattlegroundState.js';
-import { createLogger } from '../utils/logger.js';
-import { showOptions } from '../vars/showOptions.js';
-import {
-  BattlegroundPerformance,
-  BuildingDefs,
-  donationDIV,
-  EpocTime,
-  GameOrigin,
-  GBGdata,
-  GuildMembers,
-  setBGtime,
-  targetText,
-  VolcanoProvinceDefs,
-  WaterfallProvinceDefs,
-} from '../vars/state.js';
-import {
+/**
+ * GuildBattlegroundService.js
+ *
+ * Guild Battlegrounds RPC service for map, state, and leaderboards.
+ */
+
+let logger = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('GBG');
+} catch {}
+
+const {
+  guildBattlegroundState,
+} = require('../state/GuildBattlegroundState.js');
+const { metadataStore } = require('../state/MetadataStore.js');
+let showOptions = {};
+try {
+  const showOpt = require('../vars/showOptions.js');
+  showOptions = showOpt.showOptions || showOpt;
+} catch {}
+
+let defaultState = {};
+try {
+  defaultState = require('../vars/state.js');
+} catch {}
+
+const BattlegroundPerformance = defaultState.BattlegroundPerformance || [];
+const BuildingDefs =
+  metadataStore?.buildingDefs || defaultState.BuildingDefs || {};
+const donationDIV = defaultState.donationDIV || null;
+const EpocTime = defaultState.EpocTime || 0;
+const GameOrigin = defaultState.GameOrigin || '';
+const GBGdata = defaultState.GBGdata || {};
+const GuildMembers = defaultState.GuildMembers || [];
+const setBGtime = defaultState.setBGtime || (() => {});
+const targetText =
+  typeof defaultState.targetText === 'string' ? defaultState.targetText : '';
+const VolcanoProvinceDefs =
+  metadataStore?.volcanoProvinces || defaultState.VolcanoProvinceDefs || [];
+const WaterfallProvinceDefs =
+  metadataStore?.waterfallProvinces || defaultState.WaterfallProvinceDefs || [];
+
+const {
   handleBattlegroundState,
   handlePlayerLeaderboard,
-} from './GbgLeaderboardHandler.js';
-import {
+} = require('./GbgLeaderboardHandler.js');
+const {
   isProvinceConquered,
   normalizeClanSignals,
   preserveProvinceBuildings,
-} from './GbgMapUtils.js';
-import {
+} = require('./GbgMapUtils.js');
+const {
   applySignalToList,
   removeSignalFromList,
   resolveSignalData,
   resolveSignalTarget,
-} from './GbgSignalPayloadHandler.js';
-import { getServerMarket, timeGBG } from './GbgTimeFormatter.js';
-
-export { getServerMarket, timeGBG };
-
-const logger = createLogger('GBG');
+  extractSignalData,
+} = require('./GbgSignalPayloadHandler.js');
+const { getServerMarket, timeGBG } = require('./GbgTimeFormatter.js');
 
 let map = [];
 let signals = [];
@@ -43,7 +66,7 @@ let mapName = '';
 let ProvinceDefs = [];
 let currentParticipantId = 0;
 
-export function getPlayerLeaderboard(msg) {
+function getPlayerLeaderboard(msg) {
   handlePlayerLeaderboard(msg, {
     state: {
       BattlegroundPerformance,
@@ -64,11 +87,11 @@ export function getPlayerLeaderboard(msg) {
   });
 }
 
-export function getLeaderboard(msg) {
+function getLeaderboard(msg) {
   guildBattlegroundState.setLeaderboard({ leaderboard: msg?.responseData });
 }
 
-export function getState(msg) {
+function getState(msg) {
   handleBattlegroundState(msg, {
     state: {
       GameOrigin,
@@ -78,10 +101,10 @@ export function getState(msg) {
   });
 }
 
-export function getBattleground(msg) {
+function getBattleground(msg) {
   guildBattlegroundState?.setTargetMessageActive?.(false);
   mapName = msg?.responseData?.map?.id?.split('_')?.[0] || 'default';
-  logger.debug('GBG mapName:', mapName);
+  logger?.debug('GBG mapName:', mapName);
   if (mapName === 'volcano') ProvinceDefs = VolcanoProvinceDefs;
   else if (mapName === 'waterfall') ProvinceDefs = WaterfallProvinceDefs;
 
@@ -107,7 +130,7 @@ export function getBattleground(msg) {
   checkProvinces({ signalChanged: true });
 }
 
-export function getBuildings(msg) {
+function getBuildings(msg) {
   const provinceId = msg?.responseData?.provinceId || 0;
   const prov = Array.isArray(map) ? map.find((p) => p.id === provinceId) : null;
   if (prov) {
@@ -120,7 +143,8 @@ export function getBuildings(msg) {
   }
 }
 
-export function getUpdatedProvinces(msg) {
+// export function getUpdatedProvinces(msg)
+function getUpdatedProvinces(msg) {
   if (!Array.isArray(map)) return;
   const updatedProvinces =
     Array.isArray(msg?.responseData) ? msg.responseData
@@ -148,6 +172,7 @@ export function getUpdatedProvinces(msg) {
     } else {
       map.push(updated);
     }
+
     if (wasConquered && Array.isArray(signals)) {
       const prevCount = signals.length;
       signals = signals.filter(
@@ -174,7 +199,7 @@ function applySignalAction(msg, payload, context, action, mutate) {
   checkProvinces({ signalChanged: true });
 }
 
-export function updateSignal(msg, payload, context) {
+function updateSignal(msg, payload, context) {
   applySignalAction(msg, payload, context, 'updateSignal', (list, pid, type) =>
     !type || type === 'none' || type === 'clear' ?
       removeSignalFromList(list, pid)
@@ -182,31 +207,33 @@ export function updateSignal(msg, payload, context) {
   );
 }
 
-export function setSignal(msg, payload, context) {
+function setSignal(msg, payload, context) {
   applySignalAction(msg, payload, context, 'setSignal', (list, pid, type) =>
     applySignalToList(list, pid, type),
   );
 }
 
-export function removeSignal(msg, payload, context) {
+function removeSignal(msg, payload, context) {
   applySignalAction(msg, payload, context, 'removeSignal', (list, pid) =>
     removeSignalFromList(list, pid),
   );
 }
 
-export function clearBattleground() {
+function clearBattleground() {
   guildBattlegroundState?.setTargetMessageActive?.(false);
   BattlegroundPerformance.length = 0;
   GuildMembers.length = 0;
   map = {};
   signals = [];
-  const costsEl = document.getElementById('costs');
-  if (costsEl) costsEl.innerHTML = '';
-  const targetsGbgEl = document.getElementById('targetsGBG');
-  if (targetsGbgEl) targetsGbgEl.innerHTML = '';
+  if (typeof document !== 'undefined' && document.getElementById) {
+    const costsEl = document.getElementById('costs');
+    if (costsEl) costsEl.innerHTML = '';
+    const targetsGbgEl = document.getElementById('targetsGBG');
+    if (targetsGbgEl) targetsGbgEl.innerHTML = '';
+  }
 }
 
-export function getSignals() {
+function getSignals() {
   return signals;
 }
 
@@ -222,8 +249,11 @@ function checkProvinces({ signalChanged = false } = {}) {
     waterfallProvinceDefs: WaterfallProvinceDefs,
     currentParticipantId,
     mapName,
-    epocTime: EpocTime,
-    gameOrigin: typeof GameOrigin !== 'undefined' ? GameOrigin : '',
+    epocTime: defaultState?.EpocTime ?? EpocTime,
+    gameOrigin:
+      typeof defaultState?.GameOrigin !== 'undefined' ? defaultState.GameOrigin
+      : typeof GameOrigin !== 'undefined' ? GameOrigin
+      : '',
     targetText,
     formatTime: timeGBG,
     signalChanged,
@@ -238,3 +268,179 @@ function showBuildingCost(_msg) {
     buildingDefs: BuildingDefs,
   });
 }
+
+function register(dispatcher, options = {}) {
+  if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+  const targetSetCurrentView = options.setCurrentView;
+  const withGbgContext =
+    (handler) =>
+    (msg, ...rest) => {
+      if (typeof targetSetCurrentView === 'function') {
+        try {
+          targetSetCurrentView('GBG');
+        } catch {}
+      }
+      if (typeof handler === 'function') {
+        return handler(msg, ...rest);
+      }
+    };
+
+  const targetGetPlayerLeaderboard =
+    options.getPlayerLeaderboard || getPlayerLeaderboard;
+  const targetGetLeaderboard = options.getLeaderboard || getLeaderboard;
+  const targetGetState = options.getState || getState;
+  const targetGetBattleground = options.getBattleground || getBattleground;
+  const targetGetBuildings = options.getBuildings || getBuildings;
+  const targetGetUpdatedProvinces =
+    options.getUpdatedProvinces || getUpdatedProvinces;
+  const targetSetSignal = options.setSignal || setSignal;
+  const targetRemoveSignal = options.removeSignal || removeSignal;
+  const targetUpdateSignal = options.updateSignal || updateSignal;
+
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'getPlayerLeaderboard',
+    targetGetPlayerLeaderboard,
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'getLeaderboard',
+    targetGetLeaderboard,
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'getState',
+    withGbgContext(targetGetState),
+  );
+  dispatcher.register(
+    'GuildBattlegroundStateService',
+    'getState',
+    withGbgContext(targetGetState),
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'getBattleground',
+    withGbgContext(targetGetBattleground),
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'getBuildings',
+    targetGetBuildings,
+  );
+  dispatcher.register(
+    'GuildBattlegroundBuildingService',
+    'getBuildings',
+    targetGetBuildings,
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'getUpdatedProvinces',
+    targetGetUpdatedProvinces,
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'getProvinces',
+    targetGetUpdatedProvinces,
+  );
+
+  const handleSetSignal = (msg, context) => {
+    const payload = extractSignalData(msg, context);
+    return targetSetSignal(msg, payload, context);
+  };
+
+  const handleRemoveSignal = (msg, context) => {
+    const payload = extractSignalData(msg, context);
+    return targetRemoveSignal(msg, payload, context);
+  };
+
+  dispatcher.register('GuildBattlegroundService', 'setSignal', handleSetSignal);
+  dispatcher.register(
+    'GuildBattlegroundSignalsService',
+    'setSignal',
+    handleSetSignal,
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'removeSignal',
+    handleRemoveSignal,
+  );
+  dispatcher.register(
+    'GuildBattlegroundSignalsService',
+    'removeSignal',
+    handleRemoveSignal,
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'getAction',
+    (msg, context) => {
+      if (msg?.responseData?.action === 'province_conquered') {
+        return handleRemoveSignal(msg, context);
+      }
+    },
+  );
+
+  const handleUpdateSignal = (msg, context) => {
+    const payload = extractSignalData(msg, context);
+    if (typeof options.updateSignal === 'function') {
+      return options.updateSignal(msg, payload, context);
+    }
+    const signalType =
+      payload?.[1] ?? msg?.responseData?.type ?? msg?.responseData?.signal;
+    if (signalType && signalType !== 'none' && signalType !== 'clear') {
+      return handleSetSignal(msg, context);
+    } else {
+      return handleRemoveSignal(msg, context);
+    }
+  };
+
+  dispatcher.register(
+    'GuildBattlegroundSignalsService',
+    'updateSignal',
+    handleUpdateSignal,
+  );
+  dispatcher.register(
+    'GuildBattlegroundService',
+    'updateSignal',
+    handleUpdateSignal,
+  );
+
+  logger?.debug('GuildBattlegroundService registered RPC handlers');
+  return this;
+}
+
+const guildBattlegroundService = {
+  getPlayerLeaderboard,
+  getLeaderboard,
+  getState,
+  getBattleground,
+  getBuildings,
+  getUpdatedProvinces,
+  updateSignal,
+  setSignal,
+  removeSignal,
+  clearBattleground,
+  getSignals,
+  register,
+  getServerMarket,
+  timeGBG,
+};
+
+module.exports = {
+  getPlayerLeaderboard,
+  getLeaderboard,
+  getState,
+  getBattleground,
+  getBuildings,
+  getUpdatedProvinces,
+  updateSignal,
+  setSignal,
+  removeSignal,
+  clearBattleground,
+  getSignals,
+  register,
+  getServerMarket,
+  timeGBG,
+  guildBattlegroundService,
+  GuildBattlegroundService: guildBattlegroundService,
+};
+module.exports.default = guildBattlegroundService;
