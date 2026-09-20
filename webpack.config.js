@@ -50,7 +50,7 @@ module.exports = (env = {}, argv = {}) => {
 
   const isProdMode = target === 'prod' || target === 'beta';
   const isDebugBuild = target === 'dev' || target === 'beta';
-  const forceFixtures = target === 'dev';
+  const forceFixtures = false;
 
   const config = {
     mode: isProdMode ? 'production' : 'development',
@@ -123,12 +123,7 @@ module.exports = (env = {}, argv = {}) => {
             ecma: 2020,
             compress: {
               drop_console: false,
-              // Beta keeps console output for field debugging; prod strips
-              // debug/info/log but preserves logger.warn/error.
-              pure_funcs:
-                target === 'beta' ?
-                  []
-                : ['console.debug', 'console.info', 'console.log'],
+              pure_funcs: [],
             },
             format: {
               comments: false,
@@ -139,33 +134,6 @@ module.exports = (env = {}, argv = {}) => {
         new CssMinimizerPlugin(),
       ],
     };
-  }
-
-  if (forceFixtures) {
-    // Dev-only forced-state loader: this entry (and its fixtures) are compiled
-    // into the dev bundle only, never into beta/prod.
-    config.entry = {
-      app: ['./src/js/index.js', './src/js/dev/forcedStateBootstrap.js'],
-    };
-    config.plugins.push(
-      new CopyPlugin({
-        patterns: [
-          { from: './tests/fixtures/forced', to: 'fixtures' },
-          {
-            from: './tests/fixtures/rpc/CityMapService.getEntities.json',
-            to: 'fixtures/rpc/CityMapService.getEntities.json',
-          },
-          {
-            from: './tests/fixtures/rpc/BlueprintService.newReward.json',
-            to: 'fixtures/rpc/BlueprintService.newReward.json',
-          },
-          {
-            from: './tests/fixtures/rpc/CityProductionService.pickupProduction.json',
-            to: 'fixtures/rpc/CityProductionService.pickupProduction.json',
-          },
-        ],
-      }),
-    );
   }
 
   return merge(common, config);
