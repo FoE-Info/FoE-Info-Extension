@@ -13,20 +13,15 @@
 - [x] **Slice 4C**: Decompose `src/js/ui/renderTargetGeneratorCard.js` (442L $\rightarrow$ 180L)
   - Extracted `targetTokenAssembler.js`, `targetGeneratorEvents.js`.
   - Added unit test suite `tests/ui/target-token-assembler.test.mjs`.
+- [x] **Slice 4D**: Decompose `src/js/ui/renderGbDonationPanel.js` (422L $\rightarrow$ 239L)
+  - Extracted `gbDonationPlaceEvaluator.js` (198L) and `gbDonationPanelEvents.js` (67L).
+  - Added unit test suites `tests/ui/gb-donation-place-evaluator.test.mjs` and `tests/ui/gb-donation-panel-events.test.mjs`.
+  - Verified `renderGbDonationPanel.js` is 239 lines ($\le 250$ lines target).
+  - Confirmed 100% test parity and `npm run verify` gate pass.
 
 ---
 
 ### Active Tasks
-
-#### [ ] Slice 4D: Decompose `src/js/ui/renderGbDonationPanel.js` (422L $\rightarrow \le 250$L)
-
-- **Goal**: Extract table generation and user event handlers while preserving BigNumber precision and existing exports.
-- **Subtasks**:
-  - [ ] Extract GB donation row rendering / formatters into dedicated sub-module.
-  - [ ] Extract GB donation event listeners into dedicated handler module.
-  - [ ] Add unit test suite for newly extracted components.
-  - [ ] Verify `renderGbDonationPanel.js` is strictly $\le 250$ lines.
-  - [ ] Run `npm run verify` to confirm 100% test parity and build success.
 
 #### [ ] Slice 4E: Decompose `src/js/ui/renderGalaxyPanel.js` (336L $\rightarrow \le 250$L)
 

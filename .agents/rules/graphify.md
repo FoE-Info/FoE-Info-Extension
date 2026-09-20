@@ -5,7 +5,7 @@ description: Query graphify knowledge graphs before source search and maintain A
 
 # Rule: Knowledge Graph Integration (Graphify)
 
-1. **Query-First Protocol**: Always query Graphify before wide text searches or reading multiple source files for architecture, module relationships, or game data. Live telemetry debugging (OpenCLI) does NOT excuse skipping Graphify when inspecting code symbols, state variables, or module relationships.
+1. **Query-First Protocol**: Always query Graphify before wide text searches or reading multiple source files for architecture, module relationships, or game data. Using native search tools (`grep_search`, `find_by_name`) or shell search commands (`rtk grep`, `rtk find`, `rtk rg`) as a first step is strictly forbidden. Live telemetry debugging (OpenCLI) does NOT excuse skipping Graphify when inspecting code symbols, state variables, or module relationships.
 2. **Query-First Discipline**: Run `rtk npm run graph:<repo>:ast` after code edits, and query the MCP graph before broad searches.
 3. **Lazy-Loaded MCP Invocation**: Call `call_mcp_tool` on `graphify-foe-info`, `graphify-metadata-store`, `graphify-forge-hammer`, `graphify-low-tool`, or `graphify-foe-info-original` (`query_graph`, `get_node`, `get_neighbors`, `shortest_path`, `god_nodes`).
    - **Exact Argument Schemas**:

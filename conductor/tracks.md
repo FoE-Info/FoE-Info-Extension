@@ -3,7 +3,7 @@
 ## Active Tracks
 
 - [~] **modernization** - [Codebase Modernization (Cluster 4: UI & Panels)](./tracks/modernization/index.md)
-  - Current Slice: **Slice 4D** (`src/js/ui/renderGbDonationPanel.js` 422L $\rightarrow \le 250$L).
+  - Current Slice: **Slice 4E** (`src/js/ui/renderGalaxyPanel.js` 336L $\rightarrow \le 250$L).
   - Status: `in_progress`
 
 ## Completed Tracks (Archived)
