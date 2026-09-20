@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
+import yaml from 'yaml';
 
 const PROJECT_ROOT = path.resolve('.');
 const AGENTS_DIR = path.join(PROJECT_ROOT, '.agents');
@@ -38,23 +39,17 @@ test('Agent Config - validates subagent definitions', () => {
     const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
     assert.ok(match, `Missing YAML frontmatter in ${file}`);
 
-    const frontmatter = match[1];
-    const nameMatch = frontmatter.match(/^name:\s*(.+)$/m);
-    const descMatch = frontmatter.match(/^description:\s*(.+)$/m);
-    const subagentMatch = frontmatter.match(/^subagent:\s*(.+)$/m);
+    let data;
+    assert.doesNotThrow(() => {
+      data = yaml.parse(match[1]);
+    }, `Invalid YAML frontmatter in ${file}`);
 
-    assert.ok(nameMatch, `Missing "name" in ${file}`);
-    assert.ok(descMatch, `Missing "description" in ${file}`);
-    assert.ok(subagentMatch, `Missing "subagent: true" in ${file}`);
+    assert.ok(data?.name, `Missing "name" in ${file}`);
+    assert.ok(data?.description, `Missing "description" in ${file}`);
+    assert.equal(data?.subagent, true, `subagent must be true in ${file}`);
 
-    const nameVal = nameMatch[1].trim().replace(/^["']|["']$/g, '');
     const expectedName = file.replace(/\.md$/, '');
-    assert.equal(nameVal, expectedName, `Name mismatch in ${file}`);
-    assert.equal(
-      subagentMatch[1].trim(),
-      'true',
-      `subagent must be true in ${file}`,
-    );
+    assert.equal(data.name, expectedName, `Name mismatch in ${file}`);
   }
 });
 
@@ -66,8 +61,8 @@ test('Agent Config - validates skill definitions', () => {
 
   assert.equal(
     skillDirs.length,
-    12,
-    'Expected exactly 12 skills in .agents/skills',
+    26,
+    'Expected exactly 26 skills in .agents/skills',
   );
 
   for (const dir of skillDirs) {
@@ -78,20 +73,22 @@ test('Agent Config - validates skill definitions', () => {
     const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
     assert.ok(match, `Missing YAML frontmatter in ${dir.name}/SKILL.md`);
 
-    const frontmatter = match[1];
-    const nameMatch = frontmatter.match(/^name:\s*(.+)$/m);
-    const descMatch = frontmatter.match(/^description:\s*(.+)$/m);
+    let data;
+    assert.doesNotThrow(() => {
+      data = yaml.parse(match[1]);
+    }, `Invalid YAML frontmatter in ${dir.name}/SKILL.md`);
 
-    assert.ok(nameMatch, `Missing "name" in ${dir.name}/SKILL.md`);
-    assert.ok(descMatch, `Missing "description" in ${dir.name}/SKILL.md`);
-
-    const nameVal = nameMatch[1].trim().replace(/^["']|["']$/g, '');
-    assert.equal(nameVal, dir.name, `Skill name mismatch in ${dir.name}`);
+    assert.ok(data?.name, `Missing "name" in ${dir.name}/SKILL.md`);
+    assert.ok(
+      data?.description,
+      `Missing "description" in ${dir.name}/SKILL.md`,
+    );
+    assert.equal(data.name, dir.name, `Skill name mismatch in ${dir.name}`);
 
     const nonStandardKeys = ['category', 'risk', 'source', 'date_added'];
     for (const key of nonStandardKeys) {
       assert.ok(
-        !new RegExp(`^${key}:`, 'm').test(frontmatter),
+        !(key in (data || {})),
         `Non-standard frontmatter key "${key}" in ${dir.name}/SKILL.md`,
       );
     }
@@ -104,8 +101,8 @@ test('Agent Config - validates rule definitions', () => {
 
   assert.equal(
     ruleFiles.length,
-    16,
-    'Expected exactly 16 rules in .agents/rules',
+    14,
+    'Expected exactly 14 rules in .agents/rules',
   );
 
   for (const file of ruleFiles) {
@@ -113,17 +110,17 @@ test('Agent Config - validates rule definitions', () => {
     const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
     assert.ok(match, `Missing YAML frontmatter in ${file}`);
 
-    const frontmatter = match[1];
-    const triggerMatch = frontmatter.match(/^trigger:\s*(.+)$/m);
-    const descMatch = frontmatter.match(/^description:\s*(.+)$/m);
+    let data;
+    assert.doesNotThrow(() => {
+      data = yaml.parse(match[1]);
+    }, `Invalid YAML frontmatter in ${file}`);
 
-    assert.ok(triggerMatch, `Missing "trigger" in ${file}`);
-    assert.ok(descMatch, `Missing "description" in ${file}`);
+    assert.ok(data?.trigger, `Missing "trigger" in ${file}`);
+    assert.ok(data?.description, `Missing "description" in ${file}`);
 
-    const triggerVal = triggerMatch[1].trim();
     assert.ok(
-      triggerVal === 'always_on' || triggerVal === 'model_decision',
-      `Invalid trigger "${triggerVal}" in ${file}`,
+      data.trigger === 'always_on' || data.trigger === 'model_decision',
+      `Invalid trigger "${data.trigger}" in ${file}`,
     );
   }
 
@@ -291,6 +288,7 @@ test('Agent Config - validates markdown links across all skills, rules, agents, 
     path.join(AGENTS_DIR, 'agents'),
     path.join(AGENTS_DIR, 'references'),
     path.join(PROJECT_ROOT, 'docs'),
+    path.join(PROJECT_ROOT, 'conductor'),
   ];
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
 
@@ -301,8 +299,9 @@ test('Agent Config - validates markdown links across all skills, rules, agents, 
         walk(full);
       } else if (entry.name.endsWith('.md')) {
         const content = fs.readFileSync(full, 'utf8');
+        const prose = content.replace(/```[\s\S]*?```/g, '');
         let match;
-        while ((match = linkRegex.exec(content)) !== null) {
+        while ((match = linkRegex.exec(prose)) !== null) {
           const link = match[2];
           if (
             link.startsWith('http://') ||
@@ -415,9 +414,9 @@ test('Agent Config - enforces context budget limits and rule size thresholds', (
     const content = fs.readFileSync(path.join(agentsDir, file), 'utf8');
     const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
     assert.ok(match, `Missing YAML frontmatter in ${file}`);
-    const descMatch = match[1].match(/^description:\s*(.+)$/m);
-    assert.ok(descMatch, `Missing description in ${file}`);
-    const desc = descMatch[1].trim();
+    const data = yaml.parse(match[1]);
+    const desc = data?.description?.trim() || '';
+    assert.ok(desc, `Missing description in ${file}`);
     assert.ok(
       desc.length <= 150,
       `Subagent ${file} description is too long (${desc.length} chars, max 150) - risks context budget exclusion`,
@@ -432,9 +431,9 @@ test('Agent Config - enforces context budget limits and rule size thresholds', (
     const content = fs.readFileSync(skillFile, 'utf8');
     const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
     assert.ok(match, `Missing YAML frontmatter in ${dir.name}/SKILL.md`);
-    const descMatch = match[1].match(/^description:\s*(.+)$/m);
-    assert.ok(descMatch, `Missing description in ${dir.name}/SKILL.md`);
-    const desc = descMatch[1].trim();
+    const data = yaml.parse(match[1]);
+    const desc = data?.description?.trim() || '';
+    assert.ok(desc, `Missing description in ${dir.name}/SKILL.md`);
     assert.ok(
       desc.length <= 80,
       `Skill ${dir.name} description is too long (${desc.length} chars, max 80) - risks context budget exclusion`,

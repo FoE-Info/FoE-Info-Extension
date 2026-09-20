@@ -58,9 +58,12 @@ test('Environment reference exists and is linked by documentation', () => {
     'Missing .agents/references/antigravity-environment.md',
   );
 
-  const handoff = fs.readFileSync(path.resolve('docs/HANDOFF.md'), 'utf8');
+  const workflow = fs.readFileSync(
+    path.resolve('conductor/workflow.md'),
+    'utf8',
+  );
   assert.ok(
-    handoff.includes('.agents/references/antigravity-environment.md'),
-    'docs/HANDOFF.md does not link the Antigravity environment reference',
+    workflow.includes('.agents/references/antigravity-environment.md'),
+    'conductor/workflow.md does not link the Antigravity environment reference',
   );
 });

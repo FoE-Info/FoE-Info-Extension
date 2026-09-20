@@ -14,7 +14,8 @@
   "type": "commonjs",
   "scripts": {
     "browser:doctor": "opencli doctor",
-    "browser:tabs": "opencli browser default tab list",
+    "browser:state": "opencli browser foe-game state --window background",
+    "browser:tabs": "opencli browser foe-game tab list",
     "build": "webpack --config webpack.config.js --env target=prod",
     "build:beta": "webpack --config webpack.config.js --env target=beta",
     "build:dev": "webpack --config webpack.config.js --env target=dev",

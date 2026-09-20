@@ -4,10 +4,10 @@ Defined in `.agents/hooks.json`. Hooks run as Node.js scripts via Antigravity li
 
 ## Active Hooks (2)
 
-| Hook             | Event        | Matcher                                      | Script                               | Timeout | Purpose                                                         |
-| ---------------- | ------------ | -------------------------------------------- | ------------------------------------ | ------- | --------------------------------------------------------------- |
-| `safety-gate`    | `PreToolUse` | `run_command`                                | `.agents/scripts/safety-gate.mjs`    | 5s      | Intercept destructive commands (RTK-compatible)                 |
-| `graphify-guard` | `PreToolUse` | `run_command`, `grep_search`, `find_by_name` | `.agents/scripts/graphify-guard.mjs` | 5s      | Enforce Query-First protocol on broad searches (RTK-compatible) |
+| Hook             | Event        | Matcher                                                       | Script                               | Timeout | Purpose                                                         |
+| ---------------- | ------------ | ------------------------------------------------------------- | ------------------------------------ | ------- | --------------------------------------------------------------- |
+| `safety-gate`    | `PreToolUse` | `run_command`                                                 | `.agents/scripts/safety-gate.mjs`    | 5s      | Intercept destructive commands (RTK-compatible)                 |
+| `graphify-guard` | `PreToolUse` | `run_command`, `grep_search`, `find_by_name`, `call_mcp_tool` | `.agents/scripts/graphify-guard.mjs` | 5s      | Enforce Query-First protocol on broad searches (RTK-compatible) |
 
 ## Script Locations
 
