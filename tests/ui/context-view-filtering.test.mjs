@@ -475,17 +475,20 @@ describe('Protocol Route Context Wiring', () => {
   });
 
   it('combat routes switch to GBG and GE', async () => {
-    const { registerCombatRoutes } =
-      await import('../../src/js/protocol/routes/combatRoutes.js');
+    const { guildBattlegroundService } =
+      await import('../../src/js/msg/GuildBattlegroundService.js');
+    const { guildExpeditionService } =
+      await import('../../src/js/msg/GuildExpeditionService.js');
 
     const dispatcher = createMockDispatcher();
-    registerCombatRoutes({
-      dispatcher,
-      handlers: {
-        getBattleground: () => {},
-        getState: () => {},
-        guildExpeditionService: () => {},
-      },
+    guildBattlegroundService.register(dispatcher, {
+      setCurrentView,
+      getBattleground: () => {},
+      getState: () => {},
+    });
+    guildExpeditionService.register(dispatcher, {
+      setCurrentView,
+      guildExpeditionService: () => {},
     });
 
     dispatcher.invoke('GuildBattlegroundService', 'getBattleground', {});
