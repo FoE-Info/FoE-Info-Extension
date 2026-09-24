@@ -4,7 +4,9 @@ Passive Chrome MV3 extension for Forge of Empires. Reads game traffic through De
 
 Commands:
 
-- `npm run verify` runs the whole gate: format, lint, i18n, test, build.
+- `npm run verify` runs the base gate: format, lint, typecheck, rpc:contract, i18n, test, build:dev.
+- `npm run verify:full` adds the Graphify AST refresh; requires `npm run setup:full`.
+- `npm run setup` installs npm dependencies; `npm run setup:full` adds the uv graphify env and MCP profile.
 - `npm run graph:<repo>:ast|update|reindex` runs one Graphify tier.
 
 Config lives in `.agents/` (project subagents, rules, skills, hooks, and MCP). The repository is configured strictly for Antigravity. Start with [docs/README.md](docs/README.md) (documentation hub) and [conductor/](conductor/index.md) (tracks, product specs, and session handoffs).
