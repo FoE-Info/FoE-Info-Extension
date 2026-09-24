@@ -19,11 +19,6 @@ url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-darwin-x64.tar.gz"
 checksum = "sha256:cf02f5d0c06c794b84f277177d5cf3743d0924ca49f6641cd435dd7cb6ee9085"
 url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-win-x64.zip"
 
-[[tools."npm:@jackwener/opencli"]]
-version = "1.8.7"
-backend = "npm:@jackwener/opencli"
-specifiers = ["1.8.7"]
-
 [[tools.python]]
 version = "3.14.7"
 backend = "core:python"
