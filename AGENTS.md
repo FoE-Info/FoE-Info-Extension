@@ -6,7 +6,6 @@ Commands:
 
 - `npm run verify` runs the whole gate: format, lint, i18n, test, build.
 - `npm run graph:<repo>:ast|update|reindex` runs one Graphify tier.
-- `opencli doctor` / `npm run browser:doctor` verifies browser bridge health.
 
 Config lives in `.agents/` (project subagents, rules, skills, hooks, and MCP). The repository is configured strictly for Antigravity. Start with [docs/README.md](docs/README.md) (documentation hub) and [conductor/](conductor/index.md) (tracks, product specs, and session handoffs).
 

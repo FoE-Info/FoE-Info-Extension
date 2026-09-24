@@ -63,11 +63,7 @@ Use this skill when creating a new user-facing panel or collapsible card in the 
    ```bash
    npm run build:dev
    ```
-2. Inspect the live panel in the browser:
-   ```bash
-   opencli browser foe-panel state
-   opencli browser foe-panel console
-   ```
+2. Inspect the live panel in the attached browser session (DOM state, console).
 3. Verify panel rendering without runtime exceptions.
 
 ---

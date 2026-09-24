@@ -1,36 +1,27 @@
 ---
 name: browser-testing
-description: 'Observe game telemetry and test FoE-Info extension panel via OpenCLI.'
+description: 'Test game telemetry and extension panel in the browser.'
 ---
 
-# Browser Testing & Observation Skill (OpenCLI)
+# Browser Testing & Observation Skill
 
-This skill teaches the agent how to observe Forge of Empires game telemetry and test the FoE-Info extension panel live in the user's browser using **OpenCLI** (`@jackwener/opencli` v1.8.7) via the local daemon (`localhost:19825`) and Browser Bridge.
+This skill teaches the agent how to observe Forge of Empires game telemetry and test the FoE-Info extension panel live in the user's attached browser session.
 
 ---
 
 ## Non-Interference Invariants
 
 1. **Zero autonomous browser control**: Never close tabs, navigate away from the game, or steal window focus.
-2. **Mandatory background flag**: Always invoke OpenCLI browser commands with `--window background`.
+2. **Background context**: Always interact with browser sessions in the background context.
 3. **Dual-mode scope**:
-   - **Game tabs (`*forgeofempires.com*`)**: Read-only passive observation (`network`, `console`). Never `click`, `type`, or navigate.
-   - **Extension panel (`chrome-extension://*`)**: Active inspection and interaction allowed (`state`, `extract`, `click`, `eval`).
+   - **Game tabs (`*forgeofempires.com*`)**: Read-only passive observation. Never click, type, or navigate.
+   - **Extension panel (`chrome-extension://*`)**: Active inspection and interaction allowed.
 
 ---
 
 ## 1. Health Check & Discovery
 
-Verify the daemon and browser bridge status before running commands:
-
-```bash
-# Check daemon & bridge extension connection
-opencli doctor
-
-# List open browser tabs in a session
-opencli browser default tab list
-
-```
+Verify the attached browser session and enumerate tabs before interacting.
 
 ---
 
@@ -38,51 +29,25 @@ opencli browser default tab list
 
 Bind sessions to specific target tabs using URL matching:
 
-```bash
-# Bind to the active Forge of Empires game tab (read-only telemetry)
-opencli browser foe-game bind --url "*forgeofempires.com*"
-
-# Bind to the active FoE-Info DevTools extension panel
-opencli browser foe-panel bind --url "chrome-extension://*/panel.html"
-```
+- Forge of Empires game tab (read-only telemetry): `*forgeofempires.com*`
+- FoE-Info DevTools extension panel: `chrome-extension://*/panel.html`
 
 ---
 
 ## 3. Observing Game Telemetry (Read-Only)
 
-Monitor InnoGames JSON-RPC messages and engine console output passively:
-
-```bash
-# View recent network requests / RPC payloads
-opencli browser foe-game network
-
-# Filter for specific RPC requests or JSON payloads
-opencli browser foe-game network --filter "jsonrpc"
-
-# Monitor browser console logs and errors from the game tab
-opencli browser foe-game console
-```
+Monitor InnoGames JSON-RPC messages and engine console output passively from the game tab. Never click, type, or navigate there.
 
 ---
 
 ## 4. Testing & Inspecting the FoE-Info Panel
 
-Perform active inspection, DOM state extraction, and JavaScript evaluation on the extension panel:
+Perform active inspection, DOM state extraction, and JavaScript evaluation on the extension panel only:
 
-```bash
-# Extract full DOM state of panel.html
-opencli browser foe-panel state
-
-# Query rendered text or extract structured content
-opencli browser foe-panel extract
-
-# Execute JavaScript in panel context to inspect runtime objects
-opencli browser foe-panel eval "window.location.href"
-opencli browser foe-panel eval "document.querySelectorAll('.nav-link').length"
-
-# Tail panel console errors
-opencli browser foe-panel console
-```
+- Extract full DOM state of panel.html
+- Query rendered text or extract structured content
+- Evaluate JavaScript in panel context (e.g. count nav links)
+- Tail panel console errors
 
 ---
 
@@ -91,9 +56,9 @@ opencli browser foe-panel console
 Before claiming any extension UI feature or RPC handler is verified live:
 
 1. Build development bundle: `npm run build:dev`
-2. Ensure `opencli doctor` reports connected daemon and browser bridge.
-3. Verify panel errors: `opencli browser foe-panel console` yields zero unhandled exceptions.
-4. Verify DOM rendering: `opencli browser foe-panel state` confirms expected cards and elements render.
+2. Confirm the attached browser session is connected.
+3. Verify panel console yields zero unhandled exceptions.
+4. Verify DOM rendering confirms expected cards and elements render.
 
 ---
 

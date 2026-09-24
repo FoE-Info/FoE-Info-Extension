@@ -1,60 +1,31 @@
-# Browser Test Environment: OpenCLI Workflow
+# Browser Test Environment
 
-Operational reference for browser observation, telemetry capture, and extension panel testing via **OpenCLI** (`@jackwener/opencli` v1.8.7). The always-on invariants live in `.agents/rules/browser-environment-hygiene.md`.
-
-## OpenCLI Architecture
-
-OpenCLI operates via a local daemon on port `19825` that communicates with the user's primary browser through the lightweight OpenCLI Browser Bridge Chrome extension.
-
-- **Daemon endpoint**: `http://localhost:19825`
-- **Bridge extension**: Connects existing browser tabs without launching isolated browser instances or stealing window focus.
+Operational reference for browser observation, telemetry capture, and extension panel testing through the agent's attached browser session. The always-on invariants live in `.agents/rules/browser-environment-hygiene.md`.
 
 ## Background Non-Interference Invariant
 
-All commands interacting with browser sessions **must** specify `--window background` to avoid stealing window focus or activating tabs while the user is actively working or playing.
+All commands interacting with browser sessions **must** run in the background context to avoid stealing window focus or activating tabs while the user is actively working or playing.
 
 ## Common Operational Workflows
 
 ### 1. Health check & session discovery
 
-```bash
-# Check daemon and browser bridge status
-opencli doctor
-
-# List open browser tabs in a session
-opencli browser default tab list
-
-```
+Verify the attached browser session and enumerate tabs before interacting.
 
 ### 2. Binding to target tabs
 
-```bash
-# Bind to the active Forge of Empires tab (strictly read-only observation)
-opencli browser foe-game bind --url "*forgeofempires.com*"
+Bind sessions to specific target tabs using URL matching:
 
-# Bind to the FoE-Info extension DevTools panel
-opencli browser foe-panel bind --url "chrome-extension://*/panel.html"
-```
+- Forge of Empires game tab (strictly read-only observation): `*forgeofempires.com*`
+- FoE-Info extension DevTools panel: `chrome-extension://*/panel.html`
 
 ### 3. Passive game telemetry observation (Read-Only)
 
-```bash
-# Inspect recent network requests / JSON-RPC payloads
-opencli browser foe-game network
-
-# Monitor browser console warnings/errors
-opencli browser foe-game console
-```
+Inspect recent network requests / JSON-RPC payloads and monitor browser console output passively. Never click, type, or navigate on game tabs.
 
 ### 4. Extension panel testing & inspection
 
-```bash
-# Extract panel DOM structure
-opencli browser foe-panel state
-
-# Query runtime properties or execute inspection
-opencli browser foe-panel eval "window.location.href"
-```
+Active inspection is permitted on the extension panel only: extract panel DOM state, query rendered text, evaluate JavaScript in panel context, tail panel console errors.
 
 ## Game Lifecycle Note
 

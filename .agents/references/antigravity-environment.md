@@ -18,7 +18,7 @@ Canonical configuration lives under `.agents/`.
 | Subagent dispatch | `invoke_subagent`                   | Dispatch project specialists (`TypeName`, `Role`, `Prompt`, `Workspace`).           |
 | Manage subagents  | `manage_subagents` / `send_message` | List, query status, kill, or message running subagents.                             |
 | MCP tools         | `call_mcp_tool` / native tools      | Eagerly loaded tools or lazy-loaded MCP tools via `call_mcp_tool`.                  |
-| Browser tasks     | OpenCLI (`opencli browser ...`)     | Connected via local daemon on `19825`. Mandatory `--window background`.             |
+| Browser tasks     | Attached browser session            | Zero-focus background observation; game tabs read-only.                             |
 | Interactive input | `ask_question`                      | Structured multi-choice question prompts for user decisions.                        |
 
 ---

@@ -5,7 +5,10 @@ Thanks for your interest in improving FoE-Info.
 ## Getting started
 
 1. Fork and clone the repository.
-2. Install dependencies: `npm install`.
+2. Install everything (npm deps, uv Python env with graphify-mcp, default MCP profile):
+   - With mise: `mise run setup`
+   - Without mise (needs Node.js >= 24 and Python with pip): `npm run setup`
+     Both run `scripts/setup.mjs` and produce the same environment.
 3. Start a development build with a watch loop: `npm run dev`.
 4. Load `build/FoE-Info-DEV` as an unpacked extension in `chrome://extensions`.
 

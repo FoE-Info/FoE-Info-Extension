@@ -58,5 +58,5 @@ For every single slice extracted from any monolith:
    - Verify `git diff --stat` shows a net reduction in monolith size.
 5. **Verification Gate**:
    - Run `npm run check && npm test && npm run build:dev` (or the full `npm run verify` gate). This headless gate is mandatory for every slice.
-   - Live browser verification (OpenCLI / browser bridge) runs only on explicit user request; autonomous browser launches or tab reloads violate the Browser Hygiene rule.
+   - Live browser verification runs only on explicit user request; autonomous browser launches or tab reloads violate the Browser Hygiene rule.
    - Sync Knowledge Graph: `npm run graph:foe-info:update`.

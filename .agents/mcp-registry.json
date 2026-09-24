@@ -9,15 +9,13 @@
       "graphify-low-tool",
       "graphify-metadata-store"
     ],
-    "linux": ["graphify-foe-info", "linux-tools"],
     "full": [
       "chrome-devtools",
       "graphify-foe-info",
       "graphify-forge-hammer",
       "graphify-foe-info-original",
       "graphify-low-tool",
-      "graphify-metadata-store",
-      "linux-tools"
+      "graphify-metadata-store"
     ]
   },
   "servers": {
@@ -179,17 +177,6 @@
           "http_proxy": "",
           "https_proxy": "",
           "all_proxy": ""
-        }
-      }
-    },
-    "linux-tools": {
-      "antigravity": {
-        "command": "linux-mcp-server",
-        "args": [],
-        "env": {
-          "LINUX_MCP_LOG_LEVEL": "INFO",
-          "LINUX_MCP_USER": "${USER}",
-          "LINUX_MCP_SSH_KEY_PATH": "${HOME}/.ssh/id_ed25519"
         }
       }
     }

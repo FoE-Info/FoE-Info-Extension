@@ -336,16 +336,6 @@ async function main() {
     await fetch(`${CDP_BASE}/json/activate/${primaryGameTab.id}`);
   } catch {}
 
-  // 9. Bind OpenCLI session if opencli daemon is active
-  try {
-    const { execSync } = await import('node:child_process');
-    execSync('opencli browser foe-game bind', {
-      stdio: 'ignore',
-      timeout: 3000,
-    });
-    console.log('[foe-browser-control] Bound OpenCLI "foe-game" session.');
-  } catch {}
-
   console.log(
     '[foe-browser-control] Done. FoE-Info attached, DevTools docked, game loading on existing tab.',
   );
