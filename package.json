@@ -3,7 +3,7 @@
   "displayName": "FoE-Info Extension",
   "version": "0.0.834",
   "private": true,
-  "description": "Essential Info browser extension for Forge of Empires players",
+  "description": "Essential game information panels for Forge of Empires players",
   "license": "AGPL-3.0-or-later",
   "sideEffects": [
     "*.css",
@@ -83,7 +83,6 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
-    "@jackwener/opencli": "^1.8.7",
     "@types/chrome": "^0.2.9",
     "@types/node": "^26.5.0",
     "@types/webextension-polyfill": "^0.12.6",
