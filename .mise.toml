@@ -4,7 +4,6 @@
 node = "26.8.2"
 python = "3.14"
 uv = "latest"
-"npm:@jackwener/opencli" = "1.8.7"
 
 [env]
 NODE_ENV = "development"
@@ -15,7 +14,7 @@ file = [ ".env", ".env.local" ]
 
 [tasks.setup]
 description = "Install npm dependencies and sync uv Python environment"
-run = "npm ci && uv sync"
+run = "npm run setup"
 
 [tasks.check]
 description = "Check project code formatting with Prettier"

@@ -13,9 +13,6 @@
   ],
   "type": "commonjs",
   "scripts": {
-    "browser:doctor": "opencli doctor",
-    "browser:state": "opencli browser foe-game state --window background",
-    "browser:tabs": "opencli browser foe-game tab list",
     "build": "webpack --config webpack.config.js --env target=prod",
     "build:beta": "webpack --config webpack.config.js --env target=beta",
     "build:dev": "webpack --config webpack.config.js --env target=dev",
@@ -57,7 +54,7 @@
     "release:prod": "npm run lint && npm run test && npm run build:prod && node scripts/package-extension.js --env=prod",
     "rpc:contract": "node scripts/rpc-contract.mjs",
     "rpc:contract:check": "node scripts/rpc-contract.mjs --check",
-    "setup": "npm ci && uv sync",
+    "setup": "node scripts/setup.mjs",
     "test": "node --test --test-reporter=dot tests/**/*.test.mjs",
     "test:agents": "node --test tests/agents/*.test.mjs",
     "test:verbose": "node --test tests/**/*.test.mjs",
@@ -117,8 +114,7 @@
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,
-    "core-js@3.50.0": true,
-    "@jackwener/opencli@1.8.7": true
+    "core-js@3.50.0": true
   },
   "primaryGraph": "graphify-foe-info"
 }
