@@ -4,11 +4,6 @@ Thanks for your interest in improving FoE-Info.
 
 ## Getting started
 
-1. Fork and clone the repository.
-2. Install dependencies: `npm install`.
-3. Start a development build with a watch loop: `npm run dev`.
-4. Load `build/FoE-Info-DEV` as an unpacked extension in `chrome://extensions`.
-
 ## Before you commit
 
 Run the full verification gate:
