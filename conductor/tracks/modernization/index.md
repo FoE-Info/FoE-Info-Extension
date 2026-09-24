@@ -3,9 +3,8 @@
 ## Track Overview
 
 - **Track ID**: `modernization`
-- **Status**: `in_progress`
-- **Active Phase**: Phase 4 — Cluster 4: UI & Panels Decomposition
-- **Active Task**: **Slice 4G** — Decompose `src/js/ui/indexUiBindings.js` (422L) down to $\le 250$ lines.
+- **Status**: `complete`
+- **Completed**: Phase 4 — Cluster 4: UI & Panels Decomposition (all 7 slices 4A–4G done; `src/js/ui/indexUiBindings.js` 422L $\rightarrow$ 220L via `uiElementBindings.js`, `runtimeLifecycle.js`, `networkBridge.js` + 3 test suites).
 
 ## Plan & Tasks
 
@@ -23,7 +22,7 @@ See the detailed phased execution plan in [plan.md](./plan.md).
 - [x] **Slice 4D**: `src/js/ui/renderGbDonationPanel.js` (422L $\rightarrow$ 239L) by extracting `gbDonationPlaceEvaluator.js` (198L) and `gbDonationPanelEvents.js` (67L).
 - [x] **Slice 4E**: `src/js/ui/renderGalaxyPanel.js` (283L $\rightarrow$ 215L) by extracting `galaxyBuildingGrouper.js` (76L) and `galaxyPanelEvents.js` (53L).
 - [x] **Slice 4F**: `src/js/ui/renderLiveCityStats.js` (416L $\rightarrow$ 233L) by extracting `liveCityGoodsAggregator.js` (126L), `liveCityStatsCalculator.js` (182L), and `liveCityViewDataBuilder.js` (100L).
-- [ ] **Slice 4G** _(NEXT)_: `src/js/ui/indexUiBindings.js` (422L $\rightarrow \le 250$L).
+- [x] **Slice 4G**: `src/js/ui/indexUiBindings.js` (422L $\rightarrow$ 220L) by extracting `uiElementBindings.js` (55L), `runtimeLifecycle.js` (79L), and `networkBridge.js` (133L).
 
 ---
 

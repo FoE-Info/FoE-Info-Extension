@@ -2,9 +2,9 @@
 
 ## Active Tracks
 
-- [~] **modernization** - [Codebase Modernization (Cluster 4: UI & Panels)](./tracks/modernization/index.md)
-  - Current Slice: **Slice 4G** (`src/js/ui/indexUiBindings.js` 422L $\rightarrow \le 250$L).
-  - Status: `in_progress`
+- [x] **modernization** - [Codebase Modernization (Cluster 4: UI & Panels)](./tracks/modernization/index.md)
+  - Completed: all 7 Cluster 4 slices (4A–4G); `src/js/ui/indexUiBindings.js` 422L $\rightarrow$ 220L.
+  - Status: `complete`
 
 ## Completed Tracks (Archived)
 

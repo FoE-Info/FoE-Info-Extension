@@ -11,7 +11,6 @@ Decompose legacy monolithic files across `src/js/` to comply with the project's 
 3. **No Dynamic Regressions**: Existing service registrations with `MessageDispatcher.js` and public APIs must maintain full backward compatibility.
 4. **Test-First Parity**: Every extracted module must be accompanied by a dedicated unit test suite under `tests/`.
 
-## Active Phase: Cluster 4 (UI & Panels Decomposition)
+## Completed Phase: Cluster 4 (UI & Panels Decomposition)
 
-- **Active Task**: Slice 4D — `src/js/ui/renderGbDonationPanel.js` (422L $\rightarrow \le 250$L).
-- **Target**: Extract donation table row generators, sniper formatters, and panel event handlers into discrete sub-modules.
+- **Result**: All 7 slices (4A–4G) complete — `src/js/ui/indexUiBindings.js` (422L $\rightarrow$ 220L) via `uiElementBindings.js`, `runtimeLifecycle.js`, `networkBridge.js` with 3 new test suites. Track status: `complete`.
