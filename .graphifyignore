@@ -1,40 +1,31 @@
 # Agent & Assistant Metadata
 .agents/
+.agent/
 AGENTS.md
-.gemini/
-.superpowers/
-.claude/
-.cursor/
-.windsurf/
 
-# Implementation Plans & Ephemeral Task Checklists
-docs/plans/
+# Docs & Specs (prose, not source)
+docs/
 
 # Tests & Captured Fixtures (mirror src/, 45MB RPC payloads)
 tests/
 
-# Graphify Outputs & Offline Indexes (prevent self-indexing)
+# Graphify Outputs (prevent self-indexing)
 graphify-out/
-metadata-store/
-offline-metadata/
 
 # Git Worktrees (prevent duplicate tree indexing)
 .worktrees/
-worktrees/
 
-# Dependencies & Local Scratch
+# Dependencies & Lockfiles
 node_modules/
+package-lock.json
+uv.lock
 .venv/
 .uv/
-stuff/
-vendor/
-package-lock.json
 __pycache__/
-*.py[cod]
+*.py[c]
 
-# Build & Minified Artifacts
+# Build Outputs (webpack emits into build/)
 build/
-dist/
 *.map
 *.min.js
 *.min.css
@@ -42,12 +33,14 @@ dist/
 *.chunk.js
 *.tsbuildinfo
 
-# Notes, Workspaces & IDE Files
-*note.html
-*.code-workspace
+# Hooks & Workflows (shell/yaml, not source)
+.husky/
+.github/
+
+# Editor Files
 .vscode/
 .idea/
-.husky/
+*.code-workspace
 .DS_Store
 Thumbs.db
 desktop.ini
@@ -56,14 +49,13 @@ desktop.ini
 *.swo
 *~
 
-# Logs, Temp & Coverage
+# Logs & Temp
 *.log
 tmp/
 temp/
 *.tmp
 *.tmp.*
 *.tmp-*
-coverage/
 
 # Archives & Extension Packages
 *.zip
@@ -78,11 +70,8 @@ coverage/
 *.key
 *.heapsnapshot
 *.heaptimeline
-docs/heap-snapshot/
-docs/heap-snapshots/
 *.har
 *.har.gz
-docs/har/
 
 # Media & Binary Assets (avoids vision/parser overhead)
 *.png
