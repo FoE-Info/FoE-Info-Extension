@@ -13,8 +13,8 @@ path = [ "./.venv/bin", "./.agents/scripts", "./node_modules/.bin", "./scripts" 
 file = [ ".env", ".env.local" ]
 
 [tasks.setup]
-description = "Install npm dependencies and sync uv Python environment"
-run = "npm run setup"
+description = "Install npm dependencies and the uv Graphify environment"
+run = "npm run setup:full"
 
 [tasks.check]
 description = "Check project code formatting with Prettier"
@@ -45,8 +45,12 @@ description = "Run unit tests (node:test)"
 run = "npm test"
 
 [tasks.verify]
-description = "Run full verification gate (check + lint + i18n + test + build)"
+description = "Run the base verification gate (check + lint + typecheck + i18n + test + build)"
 run = "npm run verify"
+
+[tasks.verify-full]
+description = "Run the full verification gate including the Graphify AST refresh"
+run = "npm run verify:full"
 
 [tasks.lint]
 description = "Lint source with ESLint"
