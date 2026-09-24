@@ -4,9 +4,15 @@ Thanks for your interest in improving FoE-Info.
 
 ## Getting started
 
-## Before you commit
+   Both entrypoints run `scripts/setup.mjs`, so the installed project is the
+   same. mise only selects which Node/Python/uv binaries are on PATH; the Node
+   version requirement lives in `package.json` `engines` and is checked by the
+   script.
 
-Run the full verification gate:
+3. Start a development build with a watch loop: `npm run dev`.
+4. Load `build/FoE-Info-DEV` as an unpacked extension in `chrome://extensions`.
+
+## Before you commit
 
 ```bash
 npm run verify
