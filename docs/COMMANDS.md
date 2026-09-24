@@ -4,22 +4,21 @@ Run all commands from workspace root.
 
 ## Pipeline Stages
 
-| Stage                 | Command                           | Purpose                                                  |
-| --------------------- | --------------------------------- | -------------------------------------------------------- |
-| **Verification Gate** | `npm run verify`                  | Full 5-stage: format, lint, i18n, test, dev build        |
-| **Unit Tests**        | `npm test` / `npm run test:watch` | Node.js tests (`tests/**/*.test.mjs`, includes hooks)    |
-| **Format Check**      | `npm run check`                   | Prettier dry-run                                         |
-| **Format Write**      | `npm run format`                  | Prettier write                                           |
-| **Lint**              | `npm run lint`                    | ESLint                                                   |
-| **i18n Check**        | `npm run i18n:check`              | Key parity across 7 locales (de, el, en, es, fr, gr, it) |
-| **i18n Fix**          | `npm run i18n:fix`                | Auto-fix missing keys                                    |
-| **Dev Build**         | `npm run build:dev`               | Webpack dev bundle                                       |
-| **Agent Tests**       | `npm run test:agents`             | Antigravity configs, taxonomy, hooks, and contract tests |
-| **Watch**             | `npm run dev`                     | Webpack watch mode                                       |
-| **Prod Build**        | `npm run build`                   | Webpack production bundle                                |
-| **OpenCLI Browser**   | `npm run browser:doctor`          | Check OpenCLI daemon & browser bridge status             |
-| **Metadata Download** | `npm run metadata:download`       | Ingest live InnoGames entity datasets                    |
-| **Metadata Query**    | `npm run metadata:query`          | Query offline entity database                            |
+| Stage                 | Command                            | Purpose                                                  |
+| --------------------- | ---------------------------------- | -------------------------------------------------------- |
+| **Verification Gate** | `npm run verify`                   | Full 5-stage: format, lint, i18n, test, dev build        |
+| **Setup**             | `npm run setup` / `mise run setup` | Install npm deps + sync uv env (graphify-mcp included)   |
+| **Unit Tests**        | `npm test` / `npm run test:watch`  | Node.js tests (`tests/**/*.test.mjs`, includes hooks)    |
+| **Format Check**      | `npm run check`                    | Prettier dry-run                                         |
+| **Format Write**      | `npm run format`                   | Prettier write                                           |
+| **Lint**              | `npm run lint`                     | ESLint                                                   |
+| **i18n Check**        | `npm run i18n:check`               | Key parity across 7 locales (de, el, en, es, fr, gr, it) |
+| **i18n Fix**          | `npm run i18n:fix`                 | Auto-fix missing keys                                    |
+| **Dev Build**         | `npm run build:dev`                | Webpack dev bundle                                       |
+| **Agent Tests**       | `npm run test:agents`              | Antigravity configs, taxonomy, hooks, and contract tests |
+| **Watch**             | `npm run dev`                      | Webpack watch mode                                       |
+| **Prod Build**        | `npm run build`                    | Webpack production bundle                                |
+| **Metadata Download** | `npm run metadata:download`        | Ingest live InnoGames entity datasets                    |
 
 ## Graphify Commands (3-tier contract)
 

@@ -50,10 +50,6 @@ test('MCP profiles - registry defines lean and task-scoped server sets', () => {
     'graphify-foe-info',
     'chrome-devtools',
   ]);
-  assert.deepEqual(registry.profiles.linux, [
-    'graphify-foe-info',
-    'linux-tools',
-  ]);
   assert.deepEqual([...registry.profiles.full].sort(), allServers);
 
   for (const [profile, servers] of Object.entries(registry.profiles)) {
@@ -92,21 +88,18 @@ test('MCP profiles - activation writes Antigravity mcp_config.json', async (t) =
   assert.equal(generated, formatted, `${target} must be Prettier-stable`);
 });
 
-test('MCP profiles - Antigravity environment placeholders resolve at generation time', (t) => {
+test('MCP profiles - browser profile resolves graphify env at generation time', (t) => {
   const root = makeFixture(t);
-  const result = spawnSync('node', [SCRIPT, 'linux', '--root', root], {
+  const result = spawnSync('node', [SCRIPT, 'browser', '--root', root], {
     encoding: 'utf8',
     env: { ...process.env, HOME: '/portable/home', USER: 'portable-user' },
   });
   assert.equal(result.status, 0, result.stderr);
 
   const antigravity = readJson(join(root, '.agents', 'mcp_config.json'));
-  const environment = antigravity.mcpServers['linux-tools'].env;
-  assert.equal(environment.LINUX_MCP_USER, 'portable-user');
-  assert.equal(
-    environment.LINUX_MCP_SSH_KEY_PATH,
-    '/portable/home/.ssh/id_ed25519',
-  );
+  const environment = antigravity.mcpServers['graphify-foe-info'].env;
+  assert.equal(environment.OPENAI_BASE_URL, 'http://127.0.0.1:8080/v1');
+  assert.equal(environment.GRAPHIFY_BACKEND, 'openai');
 });
 
 test('MCP profiles - unknown profile fails without changing configs', (t) => {

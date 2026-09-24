@@ -8,7 +8,7 @@ Canonical definitions live under `.agents/skills/<name>/SKILL.md`. Load a skill 
 | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | [`add-feature-panel`](../.agents/skills/add-feature-panel/SKILL.md)                           | Scaffold accessible, localized UI panels in panel.html.                       |
 | [`add-rpc-service`](../.agents/skills/add-rpc-service/SKILL.md)                               | Scaffold decoupled JSON-RPC service handlers in src/js/msg/.                  |
-| [`browser-testing`](../.agents/skills/browser-testing/SKILL.md)                               | Observe game telemetry and test FoE-Info extension panel via OpenCLI.         |
+| [`browser-testing`](../.agents/skills/browser-testing/SKILL.md)                               | Test game telemetry and extension panel in the browser.                       |
 | [`codebase-modernization-planner`](../.agents/skills/codebase-modernization-planner/SKILL.md) | Roadmap to decompose monoliths and migrate to TypeScript.                     |
 | [`conductor-implement`](../.agents/skills/conductor-implement/SKILL.md)                       | Execute tasks from a track's implementation plan following TDD workflow       |
 | [`conductor-manage`](../.agents/skills/conductor-manage/SKILL.md)                             | Manage track lifecycle: archive, restore, delete, rename, and cleanup         |
