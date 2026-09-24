@@ -70,15 +70,21 @@ test('webpack.config.js - manifestTransform injects correct target environment n
   }
 });
 
-test('package.json - enforces version 0.0.834 and decoupled verify script', () => {
+test('package.json - enforces version 0.0.834 and decoupled verify scripts', () => {
   const pkg = JSON.parse(
     fs.readFileSync(path.resolve(root, 'package.json'), 'utf8'),
   );
   assert.equal(pkg.version, '0.0.834');
   assert.equal(
     pkg.scripts.verify,
-    'npm run check && npm run lint && npm run typecheck && npm run rpc:contract:check && npm run i18n:check && npm test && npm run build:dev && npm run graph:foe-info:ast',
+    'npm run check && npm run lint && npm run typecheck && npm run rpc:contract:check && npm run i18n:check && npm test && npm run build:dev',
   );
+  assert.equal(
+    pkg.scripts['verify:full'],
+    'npm run verify && npm run graph:foe-info:ast',
+  );
+  assert.equal(pkg.scripts.setup, 'node scripts/setup.mjs');
+  assert.equal(pkg.scripts['setup:full'], 'node scripts/setup.mjs --full');
   assert.ok(pkg.scripts['rpc:contract:check']);
   assert.ok(pkg.scripts['build:dev']);
   assert.ok(pkg.scripts['build:beta']);
