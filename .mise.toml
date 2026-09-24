@@ -4,6 +4,7 @@
 node = "26.8.2"
 python = "3.14"
 uv = "latest"
+"npm:@jackwener/opencli" = "1.8.7"
 
 [env]
 NODE_ENV = "development"
