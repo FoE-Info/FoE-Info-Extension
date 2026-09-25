@@ -10,9 +10,16 @@ const { toBigNumber } = require('../utils/bignumberUtils.js');
 
 function addResource(res, k, v) {
   if (v == null) return;
-  res[k] = toBigNumber(res[k] || 0)
-    .plus(toBigNumber(v))
-    .toNumber();
+  const current = res[k] ?? 0;
+  const curVal =
+    typeof current?.toNumber === 'function' ? current.toNumber()
+    : typeof current === 'number' ? current
+    : Number(current) || 0;
+  const addVal =
+    typeof v?.toNumber === 'function' ? v.toNumber()
+    : typeof v === 'number' ? v
+    : Number(v) || 0;
+  res[k] = curVal + addVal;
 }
 
 function addGuildResources(res, guildRes) {
@@ -29,13 +36,18 @@ function applyGenericReward(reward, res, multiplier = 1) {
   if (!reward) return;
   const mult =
     typeof multiplier === 'function' ? multiplier : (
-      (v) =>
-        toBigNumber(v)
-          .times(toBigNumber(multiplier))
-          .integerValue(BigNumber.ROUND_HALF_UP)
-          .toNumber()
+      (v) => {
+        const val =
+          typeof v?.toNumber === 'function' ? v.toNumber()
+          : typeof v === 'number' ? v
+          : Number(v) || 0;
+        const m =
+          typeof multiplier?.toNumber === 'function' ? multiplier.toNumber()
+          : typeof multiplier === 'number' ? multiplier
+          : Number(multiplier) || 1;
+        return Math.round(val * m + Number.EPSILON);
+      }
     );
-
   if (reward.type === 'unit') {
     addResource(res, 'units', mult(reward.amount || 1));
   } else if (reward.type === 'chest') {

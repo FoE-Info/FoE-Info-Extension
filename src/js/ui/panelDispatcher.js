@@ -104,6 +104,9 @@ function clearStartup(containers = {}, resetState = {}) {
   if (typeof resetState.clearRewardsState === 'function') {
     resetState.clearRewardsState();
   }
+  if (typeof resetState.resetDailyBonusAccumulator === 'function') {
+    resetState.resetDailyBonusAccumulator();
+  }
 }
 
 function clearCultural() {

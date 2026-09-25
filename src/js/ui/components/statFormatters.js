@@ -43,7 +43,8 @@ function formatPercent(val, options = {}) {
 function formatBoostText(val) {
   if (!val) return '';
   const bn = BigNumber.isBigNumber(val) ? val : new BigNumber(val);
-  return !bn.isZero() ? ` (+${bn.toString()}%)` : '';
+  if (bn.isNaN() || !bn.isFinite() || bn.isZero()) return '';
+  return ` (+${bn.decimalPlaces(2, BigNumber.ROUND_HALF_UP).toString()}%)`;
 }
 
 function formatEraName(era) {
