@@ -102,7 +102,7 @@ function renderCityStats(containerId, stats, playerInfo = {}, options = {}) {
         !goodsBoostPercent.isZero()
       : goodsBoostPercent > 0)
     ) ?
-      ` (+${goodsBoostPercent.toString()}%)`
+      ` (+${formatPercent(goodsBoostPercent)})`
     : '';
 
   const goodsDisplay = formatGoodsDisplay(stats, playerInfo);
