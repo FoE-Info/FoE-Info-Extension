@@ -2,6 +2,8 @@
 # Pinned to the verified dev toolchain. engines.node requires >=24; the
 # @types/node devDependency tracks the 26.x line. Refresh with `mise lock`.
 node = "26.8.2"
+python = "3.14.7"
+uv = "latest"
 
 [env]
 NODE_ENV = "development"
@@ -30,13 +32,16 @@ description = "Start Webpack development build watcher"
 run = "npm run dev"
 
 [tasks.build]
-description = "Build development extension bundle"
-run = "npm run build:dev"
-
-[tasks.build-prod]
 description = "Build optimized production extension bundle"
 run = "npm run build"
 
+[tasks.build-dev]
+description = "Build development extension bundle"
+run = "npm run build:dev"
+
+[tasks.build-beta]
+description = "Build beta extension bundle"
+run = "npm run build:beta"
 [tasks.clean]
 description = "Remove build output"
 run = "npm run clean"
@@ -45,6 +50,13 @@ run = "npm run clean"
 description = "Run unit tests (node:test)"
 run = "npm test"
 
+[tasks.test-watch]
+description = "Run unit tests in watch mode"
+run = "npm run test:watch"
+
+[tasks.test-verbose]
+description = "Run unit tests with verbose output"
+run = "npm run test:verbose"
 [tasks.verify]
 description = "Run the base verification gate (check + lint + typecheck + i18n + test + build)"
 run = "npm run verify"
@@ -56,6 +68,9 @@ run = "npm run verify && mise run graph-ast"
 description = "Lint source with ESLint"
 run = "npm run lint"
 
+[tasks.lint-fix]
+description = "Automatically fix lint errors"
+run = "npm run lint:fix"
 [tasks.typecheck]
 description = "Type-check sources with tsc"
 run = "npm run typecheck"
@@ -64,6 +79,9 @@ run = "npm run typecheck"
 description = "Check i18n key parity across locales"
 run = "npm run i18n:check"
 
+[tasks.i18n-fix]
+description = "Automatically synchronize missing i18n keys"
+run = "npm run i18n:fix"
 [tasks.metadata-download]
 description = "Ingest offline metadata datasets"
 run = "npm run metadata:download"
@@ -72,6 +90,33 @@ run = "npm run metadata:download"
 description = "Query the offline metadata store"
 run = "npm run metadata:query"
 
+[tasks.metadata-extract-hars]
+description = "Extract JSON-RPC payloads from captured HARs"
+run = "npm run metadata:extract-hars"
+
+[tasks.rpc-contract]
+description = "Run RPC contract generator / auditor"
+run = "npm run rpc:contract"
+
+[tasks.rpc-contract-check]
+description = "Validate RPC schemas and contract fixtures"
+run = "npm run rpc:contract:check"
+
+[tasks.package-beta]
+description = "Verify and package beta Chrome Web Store zip"
+run = "npm run package:beta"
+
+[tasks.release]
+description = "Run extension release script"
+run = "npm run release"
+
+[tasks.release-prod]
+description = "Verify, build, and package production Web Store release"
+run = "npm run release:prod"
+
+[tasks.graph]
+description = "Run Graphify automation across targets (foe-info, forge-hammer, low-tool, metadata)"
+run = "bash .agents/scripts/graphify.sh"
 [tasks.graph-ast]
 description = "Update FoE-Info Graphify AST"
 run = "bash .agents/scripts/graphify.sh foe-info ast"
