@@ -4,13 +4,8 @@ import test from 'node:test';
 test('Great Buildings Unified Panel & Registry Suite', async (t) => {
   const gbRegistryPkg =
     await import('../../src/js/state/GreatBuildingRegistry.js');
-  const {
-    calculateLevelCost,
-    registerGreatBuilding,
-    registerGreatBuildings,
-    getGreatBuilding,
-    reset,
-  } = gbRegistryPkg.default || gbRegistryPkg;
+  const { calculateLevelCost, registerGreatBuilding, getGreatBuilding, reset } =
+    gbRegistryPkg.default || gbRegistryPkg;
 
   const gbDonationPkg = await import('../../src/js/msg/GbDonationService.js');
   const {
@@ -367,11 +362,9 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
         connected: false,
       };
 
-      let currentPlayerId = 0;
       let currentPlayerName = '';
-      const mockSetPlayerName = (name, id) => {
+      const mockSetPlayerName = (name) => {
         currentPlayerName = name;
-        currentPlayerId = id;
         mockGBselected.player_name = name;
       };
 

@@ -187,7 +187,7 @@ browser.devtools.network.onRequestFinished.addListener((request) => {
     let res;
     try {
       res = request.getContent(handleContent);
-    } catch (e) {
+    } catch {
       handleContent(null, '');
     }
 
@@ -202,7 +202,7 @@ browser.devtools.network.onRequestFinished.addListener((request) => {
           handleContent(null, '');
         });
     }
-  } catch (err) {
+  } catch {
     forwardOrBufferEntry({
       url: reqUrl,
       headers,

@@ -61,8 +61,6 @@ function renderTargetGeneratorCard({
   targetCopy: onTargetCopy = targetCopy,
   targetPost: onTargetPost = null,
   Tooltip = null,
-  helper = {},
-  url = {},
   post_webstore = {},
 } = {}) {
   if (textProvinceUnlocked || textProvinceLocked) {

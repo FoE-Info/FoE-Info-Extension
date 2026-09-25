@@ -32,7 +32,7 @@ const GRAPH_PATH =
 
 if (!fs.existsSync(GRAPH_PATH)) {
   console.error(`[query] Error: Knowledge graph not found at ${GRAPH_PATH}`);
-  console.error('Run `npm run metadata:graph` first to build the graph.');
+  console.error('Ensure metadata graph exists or set METADATA_GRAPH_PATH.');
   process.exit(1);
 }
 

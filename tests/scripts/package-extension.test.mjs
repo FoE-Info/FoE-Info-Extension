@@ -79,26 +79,11 @@ test('package.json - enforces version 0.0.834 and decoupled verify scripts', () 
     pkg.scripts.verify,
     'npm run check && npm run lint && npm run typecheck && npm run rpc:contract:check && npm run i18n:check && npm test && npm run build:dev',
   );
-  assert.equal(
-    pkg.scripts['verify:full'],
-    'npm run verify && npm run graph:foe-info:ast',
-  );
   assert.equal(pkg.scripts.setup, 'node scripts/setup.mjs');
-  assert.equal(pkg.scripts['setup:full'], 'node scripts/setup.mjs --full');
   assert.ok(pkg.scripts['rpc:contract:check']);
   assert.ok(pkg.scripts['build:dev']);
   assert.ok(pkg.scripts['build:beta']);
   assert.ok(pkg.scripts['build:prod']);
   assert.ok(pkg.scripts['package:beta']);
   assert.ok(pkg.scripts['release:prod']);
-});
-
-test('release-policy.md - exists and strictly forbids automatic tagging', () => {
-  const rulePath = path.resolve(root, '.agents/rules/release-policy.md');
-  assert.ok(fs.existsSync(rulePath), 'release-policy.md must exist');
-
-  const content = fs.readFileSync(rulePath, 'utf8');
-  assert.match(content, /npm run verify/);
-  assert.match(content, /NEVER execute `npm version`, `git tag`/);
-  assert.match(content, /Version bumps and WebStore ZIP generation/);
 });

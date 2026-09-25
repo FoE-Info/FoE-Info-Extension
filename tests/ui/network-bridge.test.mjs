@@ -54,10 +54,10 @@ test('bindNetworkBridge detects world from hostname', async () => {
     registerKnownWorld(world) {
       storageRegisterKnownWorldCalls.push(world);
     },
-    getWorldSettings(world) {
+    getWorldSettings() {
       return Promise.resolve({ showOptions: true });
     },
-    isPlayableWorld(world) {
+    isPlayableWorld() {
       return true;
     },
   };
@@ -224,7 +224,7 @@ test('bindNetworkBridge ignores non‑playable URL onNavigated', async () => {
     getWorldSettings() {
       return Promise.resolve({});
     },
-    isPlayableWorld(world) {
+    isPlayableWorld() {
       return false;
     },
   };

@@ -6,10 +6,6 @@
  * Pure module: zero DOM dependencies.
  */
 
-const { createLogger } = require('../../utils/logger.js');
-
-const logger = createLogger('entityMotivation');
-
 /**
  * Checks whether an entity can receive motivation or polishing.
  *

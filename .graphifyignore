@@ -1,10 +1,12 @@
 # Agent & Assistant Metadata
 .agents/
 .agent/
+.omp/
 AGENTS.md
 
 # Docs & Specs (prose, not source)
 docs/
+conductor/
 
 # Tests & Captured Fixtures (mirror src/, 45MB RPC payloads)
 tests/

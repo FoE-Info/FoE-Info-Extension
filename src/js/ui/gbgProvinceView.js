@@ -237,7 +237,7 @@ function renderBuildingCostCard({
         }
       });
       resizeObserver.observe(costsDiv);
-    } catch (e) {}
+    } catch {}
   }
 
   if (costsDiv && typeof helper?.translateContainer === 'function') {

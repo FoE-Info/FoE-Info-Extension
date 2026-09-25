@@ -7,9 +7,6 @@
  */
 
 const { SPECIAL_GOODS } = require('../goods/goodsClassification.js');
-const { createLogger } = require('../../utils/logger.js');
-
-const logger = createLogger('harvestAccumulator');
 
 /**
  * Create a fresh mutable accumulator for a single city harvest batch.

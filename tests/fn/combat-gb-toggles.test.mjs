@@ -39,8 +39,7 @@ registerHooks({
 });
 
 const combatToggles = await import('../../src/js/fn/combatGbToggles.js');
-const { collapseBattleground, setCollapse } =
-  await import('../../src/js/fn/collapseState.js');
+const { setCollapse } = await import('../../src/js/fn/collapseState.js');
 
 test('combatGbToggles unit test suite', async (t) => {
   await t.test(

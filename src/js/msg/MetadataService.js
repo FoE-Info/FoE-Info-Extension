@@ -24,7 +24,7 @@ try {
 let defaultState = {};
 try {
   defaultState = require('../vars/state.js');
-} catch (e) {
+} catch {
   // Defensive fallback for environments where state.js is not loaded or during Node testing
 }
 

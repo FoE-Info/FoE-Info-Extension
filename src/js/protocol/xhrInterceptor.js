@@ -187,9 +187,9 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
     }
 
     const origSend = OriginalWebSocket.prototype.send;
-    OriginalWebSocket.prototype.send = function (data) {
+    OriginalWebSocket.prototype.send = function (...args) {
       attachWsListener(this);
-      return origSend.apply(this, arguments);
+      return origSend.apply(this, args);
     };
 
     const PatchedWebSocket = function (...args) {

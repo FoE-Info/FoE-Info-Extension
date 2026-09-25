@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import BigNumber from 'bignumber.js';
 import { calculateInvestments } from '../../src/js/calc/InvestedCalculator.js';
 
 test('InvestedCalculator Test Suite', async (t) => {

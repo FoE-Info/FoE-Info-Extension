@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import BigNumber from 'bignumber.js';
 import { calculateLiveCityStats } from '../../src/js/ui/liveCityStatsCalculator.js';
 
 test('liveCityStatsCalculator Unit Suite', async (t) => {

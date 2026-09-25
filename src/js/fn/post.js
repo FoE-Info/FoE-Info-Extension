@@ -175,7 +175,6 @@ function postTargetGenToDiscord() {
 function postGBGtoSS() {
   // console.debug(data[0]);
   var googleSheetAPI = url.sheetGuildURL;
-  var copytext = document.getElementById('battlegroundText');
 
   var reqData = {
     sheet: 'GBG',

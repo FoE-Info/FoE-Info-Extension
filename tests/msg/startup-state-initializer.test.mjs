@@ -113,14 +113,10 @@ describe('StartupStateInitializer Suite', () => {
     });
 
     it('delegates to state object methods when passed via options.state', () => {
-      let scoreSet = null;
       let infoSet = null;
       let ignoredSet = null;
 
       const mockState = {
-        setMyScore: (s) => {
-          scoreSet = s;
-        },
         setMyInfo: (...args) => {
           infoSet = args;
         },

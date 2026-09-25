@@ -32,13 +32,13 @@ function evaluateGbDonationPlaces(options = {}) {
   const gbTabEmpty = depTables.gbTabEmpty || (() => '');
 
   let foundPlace = false;
-  let remaining = 0;
+  let remaining;
   let Donation = BN ? new BN(0) : 0;
   let RewardFP = BN ? new BN(0) : 0;
   let Profit = 0;
   let Percent = BN ? new BN(0) : 0;
   let donateCustom = BN ? new BN(0) : 0;
-  let safeArr = [];
+  let safeArr;
   let donateSuggestArr = [];
 
   let olddonationHTML = '';
