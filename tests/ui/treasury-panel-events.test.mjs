@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 const eventsPkg = await import('../../src/js/ui/treasuryPanel.js');
-const { bindTreasuryEvents } = eventsPkg.default || eventsPkg;
+const { bindTreasuryEvents, disconnectTreasuryResize } =
+  eventsPkg.default || eventsPkg;
 
 test('treasuryPanelEvents: bindTreasuryEvents attaches copy, collapse, icon listeners and resizable binding', () => {
   const listeners = {};
@@ -64,4 +65,26 @@ test('treasuryPanelEvents: ignores null container safely', () => {
   assert.doesNotThrow(() => {
     bindTreasuryEvents({ treasuryContainer: null });
   });
+});
+
+test('treasuryPanelEvents: captures bindResizableCollapse return and disconnects on unmount/rebind', () => {
+  let disconnected = false;
+  const mockContainer = {
+    querySelector: () => ({
+      addEventListener: () => {},
+    }),
+  };
+
+  bindTreasuryEvents({
+    treasuryContainer: mockContainer,
+    bindResizableCollapse: () => ({
+      disconnect: () => {
+        disconnected = true;
+      },
+    }),
+  });
+
+  assert.equal(disconnected, false);
+  disconnectTreasuryResize();
+  assert.equal(disconnected, true);
 });

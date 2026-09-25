@@ -55,4 +55,37 @@ test('expeditionParser - extractInternationalExpeditionEntries', async (t) => {
     assert.deepEqual(extractInternationalExpeditionEntries(null), []);
     assert.deepEqual(extractInternationalExpeditionEntries({}), []);
   });
+
+  await t.test(
+    'safely handles and filters out null and undefined items in payload',
+    () => {
+      const entries = extractInternationalExpeditionEntries({
+        responseData: {
+          ranking: [
+            null,
+            { participantId: 1, rank: 1, points: 500 },
+            undefined,
+          ],
+          participants: [
+            null,
+            { id: 1, name: 'Alpha', worldName: 'en1' },
+            undefined,
+          ],
+        },
+      });
+
+      assert.deepEqual(entries, [
+        { rank: 1, name: 'Alpha', server: 'en1', points: 500 },
+      ]);
+
+      const plainEntries = extractInternationalExpeditionEntries([
+        null,
+        { name: 'Solo Guild', points: 20 },
+        undefined,
+      ]);
+      assert.deepEqual(plainEntries, [
+        { rank: 1, name: 'Solo Guild', server: '', points: 20 },
+      ]);
+    },
+  );
 });

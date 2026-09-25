@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { calculateInvestments } from '../../src/js/calc/InvestedCalculator.js';
+import BigNumber from 'bignumber.js';
+import {
+  calculateInvestments,
+  isPositionSafe,
+} from '../../src/js/calc/InvestedCalculator.js';
 
 test('InvestedCalculator Test Suite', async (t) => {
   const sampleData = [
@@ -125,6 +129,21 @@ test('InvestedCalculator Test Suite', async (t) => {
       assert.equal(res.totalInvested, 831); // Still excluded from calculation!
       assert.equal(res.totalReturn, 1030);
       assert.equal(res.netProfitLoss, 199);
+    },
+  );
+
+  await t.test(
+    'isPositionSafe handles BigNumber and prevents precision loss with large integers',
+    () => {
+      const largeInvested = new BigNumber('9007199254740995'); // > Number.MAX_SAFE_INTEGER
+      const largeMax = new BigNumber('9007199254741000');
+      const largeCur = new BigNumber('5'); // remaining is 9007199254740995
+
+      assert.equal(isPositionSafe(largeInvested, largeCur, largeMax), true);
+      assert.equal(
+        isPositionSafe(largeInvested.minus(1), largeCur, largeMax),
+        false,
+      );
     },
   );
 });

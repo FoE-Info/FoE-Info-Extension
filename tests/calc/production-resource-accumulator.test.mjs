@@ -146,3 +146,24 @@ test('productionResourceAccumulator - applyGenericRewardToResult handles units, 
   applyGenericRewardToResult(unitChestReward, result);
   assert.equal(result.units.toString(), '6'); // 4 + 2
 });
+
+test('productionResourceAccumulator - goodsMap stores and accumulates BigNumber instances', () => {
+  const result = createBlankResult();
+  const resObj1 = { good_titan: 50 };
+  const resObj2 = { good_titan: 25 };
+
+  addPlayerResources(resObj1, result, 1, true, false, 'SpaceAgeTitan');
+  assert.ok(BigNumber.isBigNumber(result.goodsMap.good_titan));
+  assert.equal(result.goodsMap.good_titan.toString(), '50');
+
+  addPlayerResources(resObj2, result, 1, true, false, 'SpaceAgeTitan');
+  assert.ok(BigNumber.isBigNumber(result.goodsMap.good_titan));
+  assert.equal(result.goodsMap.good_titan.toString(), '75');
+
+  applyGenericRewardToResult(
+    { type: 'goods', id: 'good_titan', amount: 15 },
+    result,
+  );
+  assert.ok(BigNumber.isBigNumber(result.goodsMap.good_titan));
+  assert.equal(result.goodsMap.good_titan.toString(), '90');
+});

@@ -33,14 +33,17 @@ function extractInternationalExpeditionEntries(data) {
     const rankMap = new Map();
     const rankingArr = Array.isArray(payload.ranking) ? payload.ranking : [];
     for (const r of rankingArr) {
-      const id = r?.participantId ?? r?.guildId ?? r?.id;
+      if (!r) continue;
+      const id = r.participantId ?? r.guildId ?? r.id;
       if (id !== undefined) rankMap.set(String(id), r);
     }
 
     const participants =
       Array.isArray(payload.participants) ? payload.participants : [];
     const entries = participants
+      .filter((p) => Boolean(p))
       .map((p, idx) => {
+        if (!p) return null;
         const id = p.id ?? p.guildId ?? p.participantId;
         const info = rankMap.get(String(id)) || {};
         return {
@@ -51,6 +54,7 @@ function extractInternationalExpeditionEntries(data) {
           points: info.points ?? p.points ?? info.progress ?? p.progress ?? 0,
         };
       })
+      .filter(Boolean)
       .sort((a, b) => (Number(a.rank) || 0) - (Number(b.rank) || 0));
     logger?.debug('Parsed international expedition entries', {
       count: entries.length,
@@ -65,6 +69,7 @@ function extractInternationalExpeditionEntries(data) {
     : [];
 
   const entries = list
+    .filter((item) => Boolean(item))
     .map((item, idx) => ({
       rank: item.rank ?? idx + 1,
       name: item.name || item.guildName || 'Unknown',

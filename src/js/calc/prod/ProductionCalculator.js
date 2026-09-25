@@ -8,13 +8,20 @@
 const BigNumber = require('bignumber.js');
 const { toBigNumber } = require('../utils/bignumberUtils.js');
 
+function addResource(res, k, v) {
+  if (v == null) return;
+  res[k] = toBigNumber(res[k] || 0)
+    .plus(toBigNumber(v))
+    .toNumber();
+}
+
 function addGuildResources(res, guildRes) {
   if (!guildRes) return;
   for (const [k, v] of Object.entries(guildRes)) {
-    if (k === 'clan_power') res.clan_power = (res.clan_power || 0) + v;
-    else if (k === 'all_goods_of_age')
-      res.clan_goods = (res.clan_goods || 0) + v;
-    else if (typeof v === 'number') res.clan_goods = (res.clan_goods || 0) + v;
+    if (k === 'clan_power') addResource(res, 'clan_power', v);
+    else if (k === 'all_goods_of_age') addResource(res, 'clan_goods', v);
+    else if (typeof v === 'number' || v instanceof BigNumber)
+      addResource(res, 'clan_goods', v);
   }
 }
 
@@ -22,11 +29,15 @@ function applyGenericReward(reward, res, multiplier = 1) {
   if (!reward) return;
   const mult =
     typeof multiplier === 'function' ? multiplier : (
-      (v) => Math.round(v * multiplier)
+      (v) =>
+        toBigNumber(v)
+          .times(toBigNumber(multiplier))
+          .integerValue(BigNumber.ROUND_HALF_UP)
+          .toNumber()
     );
 
   if (reward.type === 'unit') {
-    res.units = (res.units || 0) + mult(reward.amount || 1);
+    addResource(res, 'units', mult(reward.amount || 1));
   } else if (reward.type === 'chest') {
     let chestUnits = 0;
     if (Array.isArray(reward.possible_rewards)) {
@@ -46,13 +57,12 @@ function applyGenericReward(reward, res, multiplier = 1) {
       if (match) chestUnits = parseInt(match[0], 10);
     }
     if (chestUnits > 0) {
-      res.units = (res.units || 0) + mult(chestUnits);
+      addResource(res, 'units', mult(chestUnits));
     }
   } else if (reward.subType === 'strategy_points') {
-    res.strategy_points = (res.strategy_points || 0) + mult(reward.amount || 0);
+    addResource(res, 'strategy_points', mult(reward.amount || 0));
   } else if (reward.type === 'goods') {
-    res.random_good_of_age =
-      (res.random_good_of_age || 0) + mult(reward.amount || 0);
+    addResource(res, 'random_good_of_age', mult(reward.amount || 0));
   }
 }
 
@@ -69,22 +79,24 @@ function extractEntityProduction(
   // 1. From active state current_product (if present)
   if (currentProduct) {
     if (currentProduct.product?.resources) {
-      Object.assign(res, currentProduct.product.resources);
+      for (const [k, v] of Object.entries(currentProduct.product.resources)) {
+        addResource(res, k, v);
+      }
     }
     if (currentProduct.guildProduct?.resources) {
       for (const [k, v] of Object.entries(
         currentProduct.guildProduct.resources,
       )) {
-        res[k] = (res[k] || 0) + v;
+        addResource(res, k, v);
       }
     }
     if (currentProduct.name === 'clan_goods') {
       if (Array.isArray(currentProduct.goods)) {
         for (const g of currentProduct.goods) {
-          res.clan_goods = (res.clan_goods || 0) + (g.value || 0);
+          addResource(res, 'clan_goods', g.value || 0);
         }
       } else if (currentProduct.goods?.value) {
-        res.clan_goods = (res.clan_goods || 0) + currentProduct.goods.value;
+        addResource(res, 'clan_goods', currentProduct.goods.value);
       }
     }
   }
@@ -100,7 +112,7 @@ function extractEntityProduction(
       for (const p of pList) {
         if (p.playerResources?.resources) {
           for (const [k, v] of Object.entries(p.playerResources.resources)) {
-            res[k] = (res[k] || 0) + v;
+            addResource(res, k, v);
           }
         }
         addGuildResources(
@@ -128,7 +140,7 @@ function extractEntityProduction(
       for (const p of pList) {
         if (p.playerResources?.resources) {
           for (const [k, v] of Object.entries(p.playerResources.resources)) {
-            res[k] = (res[k] || 0) + v;
+            addResource(res, k, v);
           }
         }
         addGuildResources(
@@ -138,7 +150,7 @@ function extractEntityProduction(
             (p.type === 'guildResources' ? p.resources : null),
         );
         if (p.type === 'unit') {
-          res.units = (res.units || 0) + (p.unit?.amount || p.amount || 1);
+          addResource(res, 'units', p.unit?.amount || p.amount || 1);
         } else if (p.type === 'genericReward') {
           const reward = lookup[p.reward?.id];
           applyGenericReward(reward, res);
@@ -161,7 +173,7 @@ function extractEntityProduction(
               for (const [k, v] of Object.entries(
                 prod.playerResources.resources,
               )) {
-                res[k] = (res[k] || 0) + rw(v);
+                addResource(res, k, rw(v));
               }
             }
           }
@@ -173,7 +185,7 @@ function extractEntityProduction(
       if (lvlObj?.production_values) {
         for (const pv of lvlObj.production_values) {
           if (pv.type && pv.value != null) {
-            res[pv.type] = (res[pv.type] || 0) + pv.value;
+            addResource(res, pv.type, pv.value);
           }
         }
       }
@@ -201,13 +213,12 @@ function extractEntityProduction(
         for (const resObj of resObjects) {
           for (const [k, v] of Object.entries(resObj)) {
             if (isTreasuryAbility) {
-              if (k === 'clan_power')
-                res.clan_power = (res.clan_power || 0) + v;
+              if (k === 'clan_power') addResource(res, 'clan_power', v);
               else if (k === 'all_goods_of_age' || typeof v === 'number') {
-                res.clan_goods = (res.clan_goods || 0) + v;
+                addResource(res, 'clan_goods', v);
               }
             } else {
-              res[k] = (res[k] || 0) + v;
+              addResource(res, k, v);
             }
           }
         }
@@ -222,8 +233,7 @@ function extractEntityProduction(
             a.bonuses[i].revenue?.[targetEra]?.resources ||
             a.bonuses[i].revenue?.AllAge?.resources;
           if (rev) {
-            for (const [k, v] of Object.entries(rev))
-              res[k] = (res[k] || 0) + v;
+            for (const [k, v] of Object.entries(rev)) addResource(res, k, v);
           }
         }
       }
@@ -232,8 +242,7 @@ function extractEntityProduction(
           const rev =
             b.revenue?.[targetEra]?.resources || b.revenue?.AllAge?.resources;
           if (rev) {
-            for (const [k, v] of Object.entries(rev))
-              res[k] = (res[k] || 0) + v;
+            for (const [k, v] of Object.entries(rev)) addResource(res, k, v);
           }
         }
       }

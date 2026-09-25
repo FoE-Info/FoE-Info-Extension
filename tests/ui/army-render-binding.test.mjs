@@ -4,7 +4,7 @@ import statePkg from '../../src/js/state/ArmyState.js';
 import bindingPkg from '../../src/js/ui/armyPanel.js';
 
 const { ArmyState } = statePkg;
-const { bindArmyPanel } = bindingPkg;
+const { bindArmyPanel, disconnectArmyResize } = bindingPkg;
 
 test('armyRenderBinding - renders the published payload', async (t) => {
   await t.test('forwards the payload to renderArmyPanel', () => {
@@ -39,5 +39,12 @@ test('armyRenderBinding - renders the published payload', async (t) => {
     const off = bindArmyPanel(null, {});
     assert.equal(typeof off, 'function');
     assert.doesNotThrow(() => off());
+  });
+
+  await t.test('unmount callback invokes disconnectArmyResize safely', () => {
+    const state = new ArmyState();
+    const off = bindArmyPanel(state, {});
+    assert.doesNotThrow(() => off());
+    assert.doesNotThrow(() => disconnectArmyResize());
   });
 });

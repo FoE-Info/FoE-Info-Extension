@@ -24,9 +24,24 @@ const collapse = safeRequire(() => require('../fn/collapse.js'));
 const helper = safeRequire(() => require('../fn/helper.js'));
 const panelResize = safeRequire(() => require('./panelResize.js'));
 
+let armyResizeBinding = null;
 let armyResizeObserver = null;
 let armyResizeTarget = null;
 let armyResizeHandler = null;
+
+function disconnectArmyResize() {
+  if (armyResizeBinding && typeof armyResizeBinding.disconnect === 'function') {
+    armyResizeBinding.disconnect();
+    armyResizeBinding = null;
+  }
+  if (
+    armyResizeObserver &&
+    typeof armyResizeObserver.disconnect === 'function'
+  ) {
+    armyResizeObserver.disconnect();
+    armyResizeObserver = null;
+  }
+}
 
 function renderArmyPanel(params = {}) {
   const {
@@ -112,13 +127,14 @@ function renderArmyPanel(params = {}) {
 
   const armyDiv = document.getElementById('armyText');
   if (armyDiv) {
+    disconnectArmyResize();
     const bindFn =
       bindFnOverride ||
       (panelResize && typeof panelResize.bindResizableCollapse === 'function' ?
         panelResize.bindResizableCollapse
       : null);
     if (bindFn) {
-      bindFn({
+      armyResizeBinding = bindFn({
         element: armyDiv,
         initialSize: armySize,
         minSize: 50,
@@ -171,15 +187,20 @@ function bindArmyPanel(
   { renderArmy = renderArmyPanel } = {},
 ) {
   if (!state || typeof state.subscribe !== 'function') return () => {};
-  return state.subscribe((snapshot, channel) => {
+  const unsubscribe = state.subscribe((snapshot, channel) => {
     if (channel !== 'army' && channel !== 'all') return;
     const payload = snapshot.getArmyPanel();
     if (payload) renderArmy(payload);
   });
+  return () => {
+    disconnectArmyResize();
+    unsubscribe();
+  };
 }
 
 module.exports = {
   renderArmyPanel,
   bindArmyPanel,
+  disconnectArmyResize,
 };
 module.exports.default = renderArmyPanel;

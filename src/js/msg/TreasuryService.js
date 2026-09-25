@@ -62,7 +62,8 @@ class TreasuryService {
     this.totalGoodsDonated = new BigNumber(0);
     this.playerDonations = new Map();
     this.lastUpdated = null;
-
+    this.currentGeneration = 0;
+    this.lastRequestId = null;
     this.getTreasuryLogs = this.getTreasuryLogs.bind(this);
     this.getTreasuryBag = this.getTreasuryBag.bind(this);
     this.getTreasury = this.getTreasury.bind(this);
@@ -149,9 +150,36 @@ class TreasuryService {
         Number(msg.requestData[1]) || 0
       : Number(msg?.offset) || 0;
 
-    // A fresh offset-0 request starts a new scan; later offsets append.
-    if (offset === 0) this.logsByIndex.clear();
+    const hasHigherOffsets = [...this.logsByIndex.keys()].some((k) => k >= 10);
+    const hasOffsetZero = this.logsByIndex.has(0);
 
+    const isStaleRequestId =
+      msg?.requestId != null &&
+      this.lastRequestId != null &&
+      msg.requestId < this.lastRequestId;
+
+    const isNewGeneration =
+      msg?.generationId != null ?
+        msg.generationId !== this.currentGeneration
+      : false;
+
+    if (msg?.generationId != null) {
+      this.currentGeneration = msg.generationId;
+    }
+
+    if (msg?.requestId != null) {
+      this.lastRequestId = Math.max(this.lastRequestId || 0, msg.requestId);
+    }
+
+    // A fresh offset-0 request starts a new scan if:
+    // - Explicit new generation requested, OR
+    // - Not stale by requestId and not an out-of-order arrival (higher offsets already present without offset 0)
+    if (offset === 0) {
+      const isOutOfOrderArrival = hasHigherOffsets && !hasOffsetZero;
+      if (isNewGeneration || (!isStaleRequestId && !isOutOfOrderArrival)) {
+        this.logsByIndex.clear();
+      }
+    }
     rawLogs.forEach((raw, index) => {
       this.logsByIndex.set(offset + index, new TreasuryLogEntry(raw));
     });
@@ -225,6 +253,18 @@ class TreasuryService {
         }
       }
     }
+  }
+
+  resetLogs(generationId = null) {
+    this.logsByIndex.clear();
+    this.logs = [];
+    this.totalLogCount = 0;
+    if (generationId != null) {
+      this.currentGeneration = generationId;
+    } else {
+      this.currentGeneration++;
+    }
+    this.lastRequestId = null;
   }
 
   getReserve(resourceId) {

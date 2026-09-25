@@ -14,6 +14,7 @@
  */
 
 const BigNumber = require('bignumber.js');
+const { toBigNumber } = require('../utils/bignumberUtils.js');
 const {
   isEntityMotivatable,
   isEntityAided,
@@ -179,7 +180,10 @@ function calculateDailyProductionAid({
         goods: maxProd.goods.toNumber(),
       });
       for (const [gKey, gAmt] of Object.entries(maxProd.goodsMap)) {
-        maxGoodsList[gKey] = (maxGoodsList[gKey] || 0) + gAmt;
+        maxGoodsList[gKey] = (
+          maxGoodsList[gKey] instanceof BigNumber ?
+            maxGoodsList[gKey]
+          : toBigNumber(maxGoodsList[gKey] || 0)).plus(toBigNumber(gAmt));
       }
     }
 

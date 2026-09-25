@@ -27,6 +27,9 @@ function isRelevantRequest(request) {
 }
 
 function deliverEntry(entry) {
+  if (!panelWindow || typeof panelWindow.postMessage !== 'function') {
+    return false;
+  }
   if (entry.body) {
     return postNetworkEntry(panelWindow, {
       url: entry.url,
@@ -54,7 +57,12 @@ function bufferEntry(entry) {
 }
 
 function forwardOrBufferEntry(entry) {
-  if (panelWindow && panelReady && (entry.body || entry.request)) {
+  if (
+    panelWindow &&
+    typeof panelWindow.postMessage === 'function' &&
+    panelReady &&
+    (entry.body || entry.request)
+  ) {
     try {
       if (isDebugEnabled()) {
         devtoolsLogger.debug('Forwarding network entry to panel:', {
@@ -79,7 +87,14 @@ function forwardOrBufferEntry(entry) {
 }
 
 function flushPending() {
-  if (!panelWindow || !panelReady || pendingEntries.length === 0) return;
+  if (
+    !panelWindow ||
+    typeof panelWindow.postMessage !== 'function' ||
+    !panelReady ||
+    pendingEntries.length === 0
+  ) {
+    return;
+  }
   const toProcess = pendingEntries;
   pendingEntries = [];
   toProcess.forEach((entry) => {
@@ -91,18 +106,19 @@ function flushPending() {
   });
 }
 
+let hostMessageHandler = null;
 if (typeof window !== 'undefined') {
-  window.addEventListener(
-    'message',
-    createHostMessageHandler({
-      getPanelWindow: () => panelWindow,
-      onReady: (source) => {
-        if (source) panelWindow = source;
+  hostMessageHandler = createHostMessageHandler({
+    getPanelWindow: () => panelWindow,
+    onReady: (source) => {
+      if (source && typeof source.postMessage === 'function') {
+        panelWindow = source;
         panelReady = true;
         flushPending();
-      },
-    }),
-  );
+      }
+    },
+  });
+  window.addEventListener('message', hostMessageHandler);
 }
 
 let firstRelevantRequestIntercepted = false;
@@ -127,6 +143,10 @@ browser.devtools.panels.create(EXT_NAME, null, 'panel.html').then((panel) => {
 
 if (typeof window !== 'undefined') {
   window.addEventListener('unload', () => {
+    if (hostMessageHandler) {
+      window.removeEventListener('message', hostMessageHandler);
+      hostMessageHandler = null;
+    }
     panelWindow = null;
     panelReady = false;
     pendingEntries = [];
