@@ -14,6 +14,9 @@ file = [ ".env", ".env.local" ]
 description = "Install npm dependencies"
 run = "npm run setup"
 
+[tasks.setup-full]
+description = "Install npm dependencies and synchronize uv Graphify environment"
+run = "npm run setup:full"
 [tasks.check]
 description = "Check project code formatting with Prettier"
 run = "npm run check"
@@ -46,6 +49,9 @@ run = "npm test"
 description = "Run the base verification gate (check + lint + typecheck + i18n + test + build)"
 run = "npm run verify"
 
+[tasks.verify-full]
+description = "Run base verification gate plus Graphify AST refresh"
+run = "npm run verify:full"
 [tasks.lint]
 description = "Lint source with ESLint"
 run = "npm run lint"
@@ -65,3 +71,15 @@ run = "npm run metadata:download"
 [tasks.metadata-query]
 description = "Query the offline metadata store"
 run = "npm run metadata:query"
+
+[tasks.graph-ast]
+description = "Update FoE-Info Graphify AST"
+run = "npm run graph:foe-info:ast"
+
+[tasks.graph-update]
+description = "Incremental update of FoE-Info Graphify knowledge graph"
+run = "npm run graph:foe-info:update"
+
+[tasks.graph-reindex]
+description = "Full semantic reindex of FoE-Info knowledge graph"
+run = "npm run graph:foe-info:reindex"
