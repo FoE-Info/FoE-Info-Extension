@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import orchestrator from '../../src/js/msg/StartupRenderOrchestrator.js';
-import { bindStartupMetadataLoading } from '../../src/js/ui/startupMetadataLoadingBinding.js';
+import orchestrator from '../../src/js/msg/StartupService.js';
+import { bindStartupMetadataLoading } from '../../src/js/ui/startupPanel.js';
 
 bindStartupMetadataLoading();
 

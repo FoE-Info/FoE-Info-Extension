@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/GuildBattlegroundState.js';
+import statePkg from '../../src/js/state/GuildDomainState.js';
 
 const { GuildBattlegroundState } = statePkg;
 
@@ -60,7 +60,7 @@ if (typeof globalThis.ResizeObserver === 'undefined') {
   };
 }
 
-const bindingPkg = await import('../../src/js/ui/gbgRenderBinding.js');
+const bindingPkg = await import('../../src/js/ui/gbgPanel.js');
 const binding = bindingPkg.default || bindingPkg;
 const { bindGuildBattlegroundPanels } = binding;
 

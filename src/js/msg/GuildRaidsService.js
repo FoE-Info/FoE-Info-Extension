@@ -18,7 +18,7 @@ try {
 } catch {}
 
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
-const { quantumState } = require('../state/QuantumState.js');
+const { quantumState } = require('../state/GuildDomainState.js');
 
 class GuildRaidsService {
   constructor() {

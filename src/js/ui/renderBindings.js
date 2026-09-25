@@ -5,28 +5,24 @@
  * instead of side-effect execution upon module load.
  */
 
-const { bindArmyPanel } = require('./armyRenderBinding.js');
-const { bindBonusPanel } = require('./bonusRenderBinding.js');
-const { bindExpeditionPanel } = require('./expeditionRenderBinding.js');
-const { bindGalaxyRender } = require('./galaxyRenderBinding.js');
-const { bindGbDonationPanels } = require('./gbDonationRenderBinding.js');
-const { bindGuildBattlegroundPanels } = require('./gbgRenderBinding.js');
-const {
-  bindGreatBuildingsPanels,
-} = require('./greatBuildingsRenderBinding.js');
-const { bindIncidentPanels } = require('./incidentRenderBinding.js');
-const { bindInvestedPanel } = require('./investedRenderBinding.js');
-const { bindOutpostPanel } = require('./outpostRenderBinding.js');
-const { bindQuantumPanels } = require('./quantumRenderBinding.js');
-const { bindResourcePanel } = require('./resourceRenderBinding.js');
+const { bindArmyPanel } = require('./armyPanel.js');
+const { bindBonusPanel } = require('./bonusPanel.js');
+const { bindExpeditionPanel } = require('./expeditionPanel.js');
+const { bindGalaxyRender } = require('./galaxyPanel.js');
+const { bindGbDonationPanels } = require('./gbDonationPanel.js');
+const { bindGuildBattlegroundPanels } = require('./gbgPanel.js');
+const { bindGreatBuildingsPanels } = require('./greatBuildingsPanel.js');
+const { bindIncidentPanels } = require('./incidentsPanel.js');
+const { bindInvestedPanel } = require('./investedPanel.js');
+const { bindOutpostPanel } = require('./outpostPanel.js');
+const { bindQuantumPanels } = require('./quantumPanel.js');
+const { bindResourcePanel } = require('./resourcePanel.js');
 const { bindRewardPanel } = require('./rewardRenderBinding.js');
-const { bindSocialLists } = require('./socialRenderBinding.js');
-const {
-  bindStartupMetadataLoading,
-} = require('./startupMetadataLoadingBinding.js');
-const { bindStartupRenderState } = require('./startupRenderBinding.js');
-const { bindTreasuryPanel } = require('./treasuryRenderBinding.js');
-const { bindVisitedCityRender } = require('./visitedCityRenderBinding.js');
+const { bindSocialLists } = require('./socialPanel.js');
+const { bindStartupMetadataLoading } = require('./startupPanel.js');
+const { bindStartupRenderState } = require('./startupPanel.js');
+const { bindTreasuryPanel } = require('./treasuryPanel.js');
+const { bindVisitedCityRender } = require('./socialPanel.js');
 
 /**
  * Initializes all UI render bindings with explicit dependency injection.

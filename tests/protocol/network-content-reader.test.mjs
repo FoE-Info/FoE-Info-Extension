@@ -4,7 +4,7 @@ import {
   getType,
   isFoeNetworkUrl,
   safeProcessContent,
-} from '../../src/js/protocol/networkContentReader.js';
+} from '../../src/js/protocol/networkListener.js';
 
 test('networkContentReader - Utilities and safe extraction', async (t) => {
   await t.test('getType parses standard MIME types correctly', () => {

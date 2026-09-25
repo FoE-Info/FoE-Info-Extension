@@ -9,7 +9,7 @@ const BigNumber = require('bignumber.js');
 
 let City = null;
 try {
-  ({ City } = require('../state/CityState.js'));
+  ({ City } = require('../state/CityDomainState.js'));
 } catch {}
 
 let Goods = null;

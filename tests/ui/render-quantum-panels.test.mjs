@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
-import renderQuantumPanelsPkg from '../../src/js/ui/renderQuantumPanels.js';
+import renderQuantumPanelsPkg from '../../src/js/ui/quantumPanel.js';
 
 const { renderQuantumContributionsCard, renderQuantumLeaderboardCard } =
   renderQuantumPanelsPkg.default || renderQuantumPanelsPkg;

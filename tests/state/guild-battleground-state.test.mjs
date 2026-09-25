@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/GuildBattlegroundState.js';
+import statePkg from '../../src/js/state/GuildDomainState.js';
 
 const { GuildBattlegroundState, guildBattlegroundState } = statePkg;
 

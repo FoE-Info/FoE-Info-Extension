@@ -55,9 +55,9 @@ registerHooks({
 });
 
 const { handleBattlegroundState, handleLeaderboard, handlePlayerLeaderboard } =
-  await import('../../src/js/msg/GbgLeaderboardHandler.js');
+  await import('../../src/js/msg/GuildBattlegroundService.js');
 const { guildBattlegroundState } =
-  await import('../../src/js/state/GuildBattlegroundState.js');
+  await import('../../src/js/state/GuildDomainState.js');
 const { showOptions } = await import('../../src/js/state/showOptions.js');
 const { BattlegroundPerformance, GBGdata, GuildMembers } =
   await import('../../src/js/state/state.js');

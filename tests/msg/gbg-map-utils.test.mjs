@@ -5,7 +5,7 @@ import {
   isProvinceConquered,
   normalizeClanSignals,
   preserveProvinceBuildings,
-} from '../../src/js/msg/GbgMapUtils.js';
+} from '../../src/js/msg/GuildBattlegroundService.js';
 
 describe('GbgMapUtils Suite', () => {
   describe('preserveProvinceBuildings', () => {

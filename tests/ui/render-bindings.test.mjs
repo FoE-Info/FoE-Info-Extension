@@ -72,23 +72,23 @@ test('renderBindings composition root wires every shared store', async (t) => {
     async () => {
       const modules = [
         ['armyState', '../../src/js/state/ArmyState.js'],
-        ['bonusState', '../../src/js/state/BonusState.js'],
-        ['expeditionState', '../../src/js/state/ExpeditionState.js'],
-        ['gbDonationState', '../../src/js/state/GbDonationState.js'],
+        ['bonusState', '../../src/js/state/CityDomainState.js'],
+        ['expeditionState', '../../src/js/state/GuildDomainState.js'],
+        ['gbDonationState', '../../src/js/state/GreatBuildingDomainState.js'],
+        ['guildBattlegroundState', '../../src/js/state/GuildDomainState.js'],
         [
-          'guildBattlegroundState',
-          '../../src/js/state/GuildBattlegroundState.js',
+          'greatBuildingsState',
+          '../../src/js/state/GreatBuildingDomainState.js',
         ],
-        ['greatBuildingsState', '../../src/js/state/GreatBuildingsState.js'],
-        ['incidentState', '../../src/js/state/IncidentState.js'],
-        ['investedState', '../../src/js/state/InvestedState.js'],
-        ['outpostState', '../../src/js/state/OutpostState.js'],
-        ['quantumState', '../../src/js/state/QuantumState.js'],
-        ['resourceState', '../../src/js/state/ResourceState.js'],
+        ['incidentState', '../../src/js/state/CityDomainState.js'],
+        ['investedState', '../../src/js/state/GreatBuildingDomainState.js'],
+        ['outpostState', '../../src/js/state/CityDomainState.js'],
+        ['quantumState', '../../src/js/state/GuildDomainState.js'],
+        ['resourceState', '../../src/js/state/CityDomainState.js'],
         ['rewardState', '../../src/js/state/RewardState.js'],
-        ['socialState', '../../src/js/state/SocialState.js'],
+        ['socialState', '../../src/js/state/SocialDomainState.js'],
         ['startupRenderState', '../../src/js/state/StartupRenderState.js'],
-        ['treasuryState', '../../src/js/state/TreasuryState.js'],
+        ['treasuryState', '../../src/js/state/GuildDomainState.js'],
       ];
       for (const [name, path] of modules) {
         const pkg = await import(path);

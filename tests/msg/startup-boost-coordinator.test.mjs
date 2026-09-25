@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import BigNumber from 'bignumber.js';
-import coordinatorPkg from '../../src/js/msg/StartupBoostCoordinator.js';
+import coordinatorPkg from '../../src/js/msg/StartupService.js';
 
 const { handleBoostServiceAllBoosts } =
   coordinatorPkg.default || coordinatorPkg;

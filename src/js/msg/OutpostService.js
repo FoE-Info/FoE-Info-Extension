@@ -7,7 +7,7 @@
  */
 
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
-const { outpostState } = require('../state/OutpostState.js');
+const { outpostState } = require('../state/CityDomainState.js');
 
 const CULTURAL_GOODS_MAP = {
   vikings: ['axes', 'mead', 'horns', 'wool'],

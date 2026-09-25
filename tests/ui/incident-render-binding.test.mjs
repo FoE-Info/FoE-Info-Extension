@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { IncidentState } from '../../src/js/state/IncidentState.js';
-import { bindIncidentPanels } from '../../src/js/ui/incidentRenderBinding.js';
+import { IncidentState } from '../../src/js/state/CityDomainState.js';
+import { bindIncidentPanels } from '../../src/js/ui/incidentsPanel.js';
 
 test('incidentRenderBinding Suite', async (t) => {
   await t.test(

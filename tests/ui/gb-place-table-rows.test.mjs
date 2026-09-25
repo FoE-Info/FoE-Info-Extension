@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { socialState } from '../../src/js/state/SocialState.js';
+import { socialState } from '../../src/js/state/SocialDomainState.js';
 import {
   buildCardFooter,
   checkInactive,
@@ -11,7 +11,7 @@ import {
   getPlayerLink,
   inactiveHTML,
   resolveCardParams,
-} from '../../src/js/ui/renderGbDonationPanel.js';
+} from '../../src/js/ui/gbDonationPanel.js';
 
 test('gbPlaceTableRows UI Helper Suite', async (t) => {
   await t.test(

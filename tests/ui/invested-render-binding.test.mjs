@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/InvestedState.js';
-import bindingPkg from '../../src/js/ui/investedRenderBinding.js';
+import statePkg from '../../src/js/state/GreatBuildingDomainState.js';
+import bindingPkg from '../../src/js/ui/investedPanel.js';
 
 const { InvestedState } = statePkg;
 const { bindInvestedPanel } = bindingPkg;

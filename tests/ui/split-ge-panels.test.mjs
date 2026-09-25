@@ -5,7 +5,7 @@ import {
   buildInternationalTable,
   wrapChampionshipCard,
   wrapContributionCard,
-} from '../../src/js/ui/expeditionTables.js';
+} from '../../src/js/ui/expeditionPanel.js';
 
 test('Split GE Panels Suite', async (t) => {
   await t.test('wrapChampionshipCard renders independent alert card', () => {

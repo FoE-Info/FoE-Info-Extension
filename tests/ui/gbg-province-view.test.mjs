@@ -4,14 +4,12 @@ import {
   buildBuildingCostsTableHTML,
   buildLeaderboardHTML,
   buildProvinceTableHTML,
-  renderBuildingCostCard,
-} from '../../src/js/ui/gbgProvinceView.js';
-import {
   buildTargetGeneratorMarkup,
   buildTargetGeneratorTargets,
+  renderBuildingCostCard,
   renderTargetGeneratorCard,
   renderTargetGeneratorPanel,
-} from '../../src/js/ui/renderTargetGeneratorCard.js';
+} from '../../src/js/ui/gbgPanel.js';
 import { createMockElement, setupMockDOM } from '../helpers/test-mocks.mjs';
 
 describe('gbgProvinceView Suite', () => {

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import aggPkg from '../../src/js/msg/StartupCityStatsAggregator.js';
+import aggPkg from '../../src/js/msg/StartupService.js';
 
 const { aggregateCityStats } = aggPkg;
 

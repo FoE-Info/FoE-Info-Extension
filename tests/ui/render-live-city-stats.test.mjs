@@ -82,7 +82,7 @@ function loadLiveRenderer(goods, boost, cityOverrides = {}) {
   const ages = Object.keys(goods);
   // Replace browser-bound dependencies, executing the full renderer unchanged.
   const dependencies = {
-    '../state/CityState.js': { City: city },
+    '../state/CityDomainState.js': { City: city },
     '../vars/state.js': { Goods: goods },
     '../fn/helper.js': {
       numAges: ages.length,

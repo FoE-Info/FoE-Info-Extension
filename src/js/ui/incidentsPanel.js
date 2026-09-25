@@ -6,6 +6,13 @@
  */
 
 const { resolveDate } = require('../utils/date.js');
+const { incidentState } = require('../state/CityDomainState.js');
+
+let logger = null;
+try {
+  const { createLogger } = require('../utils/logger.js');
+  logger = createLogger('IncidentsPanel');
+} catch {}
 
 const INCIDENT_LOOKUP = {
   incident_fallen_tree_1x1: { type: 'r', text: 'Fallen Tree' },
@@ -207,11 +214,72 @@ function fShowIncidents(incidentsTarget = null, context = {}) {
   }
 }
 
+function renderIncidentsPanel(targetEl = null, context = {}) {
+  const target =
+    targetEl ||
+    (typeof document !== 'undefined' ?
+      document.getElementById('incidents')
+    : null);
+
+  const rewards =
+    context.hiddenRewards ||
+    (typeof window !== 'undefined' ? window.hiddenRewards : []);
+
+  if (logger) {
+    logger.debug('renderIncidentsPanel invoked', {
+      hasTarget: !!target,
+      rewardsCount: rewards ? rewards.length : 0,
+    });
+  }
+
+  return fShowIncidents(target, context);
+}
+
+function bindIncidentPanels(
+  state = incidentState,
+  {
+    renderer = renderIncidentsPanel,
+    targetEl = null,
+    showOptions = null,
+    collapseIncidents = null,
+    fCollapseIncidents = null,
+  } = {},
+) {
+  if (!state || typeof state.subscribe !== 'function') return () => {};
+  return state.subscribe((snapshot, channel) => {
+    if (
+      channel !== 'incidents' &&
+      channel !== 'serverTime' &&
+      channel !== 'all'
+    ) {
+      return;
+    }
+    if (typeof renderer !== 'function') return;
+
+    const incidents = snapshot.getIncidents?.() || [];
+    const serverTime = snapshot.getServerTime?.() || 0;
+
+    const doc = typeof document !== 'undefined' ? document : null;
+    const target = targetEl || (doc ? doc.getElementById('incidents') : null);
+
+    renderer(target, {
+      hiddenRewards: incidents,
+      serverTime,
+      showOptions:
+        typeof showOptions === 'function' ? showOptions() : showOptions,
+      collapseIncidents,
+      fCollapseIncidents,
+    });
+  });
+}
+
 module.exports = {
   INCIDENT_LOOKUP,
   fIncidentName,
   buildIncidentTooltip,
   buildIncidentMarkup,
   fShowIncidents,
-  renderIncidentsPanel: fShowIncidents,
+  renderIncidentsPanel,
+  bindIncidentPanels,
+  default: renderIncidentsPanel,
 };

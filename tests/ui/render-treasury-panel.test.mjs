@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 const { renderTreasuryPanel, clearForTreasury } =
-  await import('../../src/js/ui/renderTreasuryPanel.js');
+  await import('../../src/js/ui/treasuryPanel.js');
 
 function createMockContainer() {
   return {

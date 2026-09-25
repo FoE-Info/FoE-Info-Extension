@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '../..');
 
-const scope = await import('../../src/js/protocol/rpcScope.js');
+const scope = await import('../../src/js/protocol/rpcRouter.js');
 const {
   IGNORED_RPC_CLASSES,
   isIgnoredRpcClass,

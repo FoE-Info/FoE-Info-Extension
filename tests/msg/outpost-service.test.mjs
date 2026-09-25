@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { bindOutpostPanel } from '../../src/js/ui/outpostRenderBinding.js';
-import culturalPkg from '../../src/js/ui/renderCulturalPanel.js';
+import culturalPkg, { bindOutpostPanel } from '../../src/js/ui/outpostPanel.js';
 
 const { renderCulturalPanel, setShowOptions } = culturalPkg;
 

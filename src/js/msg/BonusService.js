@@ -1,8 +1,6 @@
 /** Server boost RPC service surfacing limited and city-wide bonuses. */
 import { messageDispatcher } from '../protocol/MessageDispatcher.js';
-import { blueGalaxyState } from '../state/BlueGalaxyState.js';
-import { bonusState } from '../state/BonusState.js';
-import { City } from '../state/CityState.js';
+import { blueGalaxyState, bonusState, City } from '../state/CityDomainState.js';
 import { createLogger } from '../utils/logger.js';
 import { showOptions } from '../vars/showOptions.js';
 import { Bonus } from '../vars/state.js';

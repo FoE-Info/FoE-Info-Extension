@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/GreatBuildingsState.js';
-import bindingPkg from '../../src/js/ui/greatBuildingsRenderBinding.js';
+import statePkg from '../../src/js/state/GreatBuildingDomainState.js';
+import bindingPkg from '../../src/js/ui/greatBuildingsPanel.js';
 
 const { GreatBuildingsState } = statePkg;
 const { bindGreatBuildingsPanels } = bindingPkg;

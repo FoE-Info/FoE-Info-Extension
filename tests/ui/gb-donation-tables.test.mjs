@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { socialState } from '../../src/js/state/SocialState.js';
-import gbDonationPkg from '../../src/js/ui/gbDonationTables.js';
+import { socialState } from '../../src/js/state/SocialDomainState.js';
+import gbDonationPkg from '../../src/js/ui/gbDonationPanel.js';
 
 const {
   fPercentBanded,

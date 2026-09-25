@@ -7,7 +7,7 @@
  */
 
 const { calculateSafeSpots } = require('../calc/GreatBuildingCalculator.js');
-const { gbDonationState } = require('../state/GbDonationState.js');
+const { gbDonationState } = require('../state/GreatBuildingDomainState.js');
 
 let showOptions = {};
 if (typeof __webpack_require__ !== 'undefined') {

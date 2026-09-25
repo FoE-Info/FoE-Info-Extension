@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { City } from '../../src/js/state/CityState.js';
+import { City } from '../../src/js/state/CityDomainState.js';
 
 test('EmissaryService - extracts strategy points and units from emissary bonuses', async () => {
   const emissaryPkg = await import('../../src/js/msg/EmissaryService.js');

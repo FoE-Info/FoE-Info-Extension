@@ -23,10 +23,7 @@ try {
   ({ setCurrentView } = require('./cardVisibility.js'));
 } catch {}
 
-const {
-  renderTreasuryPanel,
-  clearForTreasury,
-} = require('./renderTreasuryPanel.js');
+const { renderTreasuryPanel, clearForTreasury } = require('./treasuryPanel.js');
 
 let renderSequence = 0;
 

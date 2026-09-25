@@ -4,7 +4,7 @@ import path from 'node:path';
 import test from 'node:test';
 import BigNumber from 'bignumber.js';
 import factoryDefaultsPkg from '../../src/js/state/factoryDefaults.js';
-import { bindArmyPanel } from '../../src/js/ui/armyRenderBinding.js';
+import { bindArmyPanel } from '../../src/js/ui/armyPanel.js';
 import panelDispatcherPkg from '../../src/js/ui/panelDispatcher.js';
 
 const { createFreshWorldSettings, FACTORY_WORLD_SETTINGS } = factoryDefaultsPkg;
@@ -76,7 +76,7 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
     'Services include resize classes on collapsible panel containers',
     () => {
       const armySrc = fs.readFileSync(
-        path.resolve('src/js/ui/renderArmyPanel.js'),
+        path.resolve('src/js/ui/armyPanel.js'),
         'utf8',
       );
       assert.match(
@@ -86,7 +86,7 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
       );
 
       const socialListsSrc = fs.readFileSync(
-        path.resolve('src/js/ui/renderSocialListsPanel.js'),
+        path.resolve('src/js/ui/socialPanel.js'),
         'utf8',
       );
       assert.match(
@@ -111,7 +111,7 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
       );
 
       const gbgResultCardSrc = fs.readFileSync(
-        path.resolve('src/js/ui/renderBattlegroundResultCard.js'),
+        path.resolve('src/js/ui/gbgPanel.js'),
         'utf8',
       );
       assert.match(
@@ -126,7 +126,7 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
     'Battleground panel sizing adapts to showBattlegroundChanges mode',
     () => {
       const battlegroundSrc = fs.readFileSync(
-        path.resolve('src/js/ui/renderBattlegroundsPanel.js'),
+        path.resolve('src/js/ui/gbgPanel.js'),
         'utf8',
       );
       const globalsSrc = fs.readFileSync(

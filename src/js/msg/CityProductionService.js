@@ -20,7 +20,7 @@ try {
 
 let blueGalaxyState = { updateEntity: () => {} };
 try {
-  ({ blueGalaxyState } = require('../state/BlueGalaxyState.js'));
+  ({ blueGalaxyState } = require('../state/CityDomainState.js'));
 } catch {}
 
 let rewardStatePkg = {};

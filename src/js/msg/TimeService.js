@@ -12,7 +12,7 @@ let defaultState = null;
 let defaultHelper = null;
 let incidentState = null;
 try {
-  ({ incidentState } = require('../state/IncidentState.js'));
+  ({ incidentState } = require('../state/CityDomainState.js'));
 } catch {}
 if (typeof __webpack_require__ !== 'undefined') {
   try {

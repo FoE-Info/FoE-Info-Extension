@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import resolver from '../../src/js/msg/MetadataResolver.js';
-import { scheduleStartupRender } from '../../src/js/msg/StartupRenderOrchestrator.js';
+import { scheduleStartupRender } from '../../src/js/msg/StartupService.js';
 
 for (const failure of ['http', 'network', 'json']) {
   test(`city metadata retries after ${failure} failure`, async (t) => {

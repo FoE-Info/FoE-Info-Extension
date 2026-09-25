@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { generateTargetList } from '../../src/js/msg/GbgTargetListGenerator.js';
+import { generateTargetList } from '../../src/js/msg/GbgSignalService.js';
 
 describe('GbgTargetListGenerator Suite', () => {
   it('returns empty results when called with defaults or empty parameters', () => {

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
-import statePkg from '../../src/js/state/GbDonationState.js';
+import statePkg from '../../src/js/state/GreatBuildingDomainState.js';
 
 const { GbDonationState } = statePkg;
 const root = process.cwd();

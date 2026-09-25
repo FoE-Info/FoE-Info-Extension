@@ -9,10 +9,10 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '../../');
 
 test('Great Buildings Close -> Reopen Lifecycle & Static Invariants Suite', async (t) => {
-  const gbOverviewPkg = await import('../../src/js/ui/gbOverviewCard.js');
+  const gbOverviewPkg = await import('../../src/js/ui/greatBuildingsPanel.js');
   const { renderGbDonorsCard } = gbOverviewPkg.default || gbOverviewPkg;
 
-  const gbInfoPkg = await import('../../src/js/ui/renderGbInfoPanel.js');
+  const gbInfoPkg = await import('../../src/js/ui/greatBuildingsPanel.js');
   const { renderGbInfoPanel } = gbInfoPkg.default || gbInfoPkg;
 
   await t.test(
@@ -113,7 +113,7 @@ test('Great Buildings Close -> Reopen Lifecycle & Static Invariants Suite', asyn
 
       // 1b. The reactive binding owns the donors renderer wiring
       const bindingSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/ui/greatBuildingsRenderBinding.js'),
+        path.join(ROOT_DIR, 'src/js/ui/greatBuildingsPanel.js'),
         'utf8',
       );
       assert.match(
@@ -131,7 +131,7 @@ test('Great Buildings Close -> Reopen Lifecycle & Static Invariants Suite', asyn
 
       // 3. Container displays must be restored in gbOutputRepair
       const repairSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/ui/gbOutputRepair.js'),
+        path.join(ROOT_DIR, 'src/js/ui/greatBuildingsPanel.js'),
         'utf8',
       );
       assert.match(

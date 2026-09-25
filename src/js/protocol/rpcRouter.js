@@ -1,17 +1,221 @@
 /**
  * rpcRouter.js
  *
- * Route registry and single-message dispatcher for InnoGames JSON-RPC packets.
- * Maintains registered method handlers, class-level fallbacks, and global fallbacks.
+ * Route registry, RPC scope filtering, and debug telemetry for InnoGames JSON-RPC packets.
+ * Maintains registered method handlers, class-level fallbacks, global fallbacks,
+ * out-of-scope RPC filtering, and rolling in-memory RPC logs.
  */
 
+const { createLogger, isDebugEnabled } = require('../utils/logger.js');
+
 let logger = null;
+let rpcLogger = null;
 try {
-  const { createLogger } = require('../utils/logger.js');
   logger = createLogger('RpcRouter');
+  rpcLogger = createLogger('RPC');
 } catch {}
 
-const { shouldLogUnhandledRpc } = require('./rpcScope.js');
+// --- RPC Scope & Filtering ---
+
+const STORAGE_KEY = 'showIgnoredRpc';
+
+const IGNORED_RPC_CLASSES = new Set([
+  'AnnouncementsService',
+  'CampaignService',
+  'CashShopService',
+  'ChallengeService',
+  'ClanRecruitmentService',
+  'CrmService',
+  'ForgePlusPackageService',
+  'FriendService',
+  'ItemAuctionService',
+  'ItemShopService',
+  'ItemStoreService',
+  'LogService',
+  'MessageService',
+  'PlayerProfileService',
+  'PremiumService',
+  'ResearchService',
+  'SaleInfoService',
+  'SettingsService',
+  'TrackingService',
+  'TutorialService',
+  'VisitAllService',
+]);
+
+let showIgnoredRpc = false;
+const subscribers = new Set();
+
+function getBrowserStorage() {
+  if (typeof chrome !== 'undefined' && chrome?.storage?.local) {
+    return chrome.storage.local;
+  }
+  if (typeof browser !== 'undefined' && browser?.storage?.local) {
+    return browser.storage.local;
+  }
+  return null;
+}
+
+function isIgnoredRpcClass(requestClass) {
+  return !!requestClass && IGNORED_RPC_CLASSES.has(requestClass);
+}
+
+function isIgnoredRpcLoggingEnabled() {
+  return showIgnoredRpc;
+}
+
+function shouldLogUnhandledRpc(requestClass) {
+  return !isIgnoredRpcClass(requestClass) || showIgnoredRpc;
+}
+
+function setIgnoredRpcLoggingEnabled(value, { persist = true } = {}) {
+  const next = Boolean(value);
+  if (showIgnoredRpc === next) return showIgnoredRpc;
+  showIgnoredRpc = next;
+
+  if (persist) {
+    const storage = getBrowserStorage();
+    if (storage?.set) {
+      try {
+        const p = storage.set({ [STORAGE_KEY]: next });
+        if (p && typeof p.catch === 'function') {
+          p.catch(() => {});
+        }
+      } catch {}
+    }
+  }
+
+  logger?.info(`Ignored RPC logging ${next ? 'enabled' : 'disabled'}`);
+
+  for (const cb of subscribers) {
+    try {
+      cb(showIgnoredRpc);
+    } catch (e) {
+      console.warn('[FoE-Info:RpcScope] Subscriber error:', e);
+    }
+  }
+
+  return showIgnoredRpc;
+}
+
+function toggleIgnoredRpcLogging(opts = {}) {
+  return setIgnoredRpcLoggingEnabled(!showIgnoredRpc, opts);
+}
+
+function onIgnoredRpcToggle(callback) {
+  if (typeof callback !== 'function') return () => {};
+  subscribers.add(callback);
+  return () => subscribers.delete(callback);
+}
+
+async function initIgnoredRpcState() {
+  const storage = getBrowserStorage();
+  if (storage?.get) {
+    try {
+      const res = await storage.get(STORAGE_KEY);
+      if (res && typeof res[STORAGE_KEY] === 'boolean') {
+        setIgnoredRpcLoggingEnabled(res[STORAGE_KEY], { persist: false });
+      }
+    } catch {}
+  }
+
+  const onChanged =
+    (typeof chrome !== 'undefined' && chrome?.storage?.onChanged) ||
+    (typeof browser !== 'undefined' && browser?.storage?.onChanged);
+
+  if (onChanged?.addListener) {
+    try {
+      onChanged.addListener((changes, areaName) => {
+        if (areaName && areaName !== 'local') return;
+        if (changes?.[STORAGE_KEY]) {
+          setIgnoredRpcLoggingEnabled(Boolean(changes[STORAGE_KEY].newValue), {
+            persist: false,
+          });
+        }
+      });
+    } catch {}
+  }
+}
+
+if (typeof window !== 'undefined' || typeof self !== 'undefined') {
+  initIgnoredRpcState().catch(() => {});
+  if (typeof window !== 'undefined') {
+    window.foeShowIgnoredRpc = (value) =>
+      value === undefined ?
+        toggleIgnoredRpcLogging()
+      : setIgnoredRpcLoggingEnabled(value);
+  }
+}
+
+function _resetForTesting() {
+  showIgnoredRpc = false;
+  subscribers.clear();
+}
+
+// --- RPC Logging & Debug Telemetry ---
+
+const rpcLog = [];
+if (typeof window !== 'undefined') {
+  window.foeRpcLog = rpcLog;
+}
+
+function logRpcMessage(msg, isHandled) {
+  if (!msg || typeof msg !== 'object') return;
+  const reqClass = msg.requestClass || msg.__class__ || 'Metadata/Unknown';
+  const reqMethod = msg.requestMethod || 'N/A';
+  const debug = typeof isDebugEnabled === 'function' ? isDebugEnabled() : false;
+  const handled = !!isHandled;
+  const ignored = !handled && isIgnoredRpcClass(reqClass);
+
+  if (ignored && !shouldLogUnhandledRpc(reqClass)) return;
+
+  const entry = {
+    timestamp: new Date().toISOString(),
+    requestClass: reqClass,
+    requestMethod: reqMethod,
+    requestId: msg.requestId ?? null,
+    handled,
+    ignored,
+    responseData:
+      debug ?
+        msg.responseData !== undefined ?
+          msg.responseData
+        : msg
+      : `${reqClass}.${reqMethod}`,
+  };
+
+  rpcLog.push(entry);
+  if (rpcLog.length > 500) {
+    rpcLog.shift();
+  }
+
+  const tag =
+    handled ? '[HANDLED]'
+    : ignored ? '[IGNORED]'
+    : '[UNHANDLED]';
+  const style =
+    handled ? 'color: #2e7d32; font-weight: bold;'
+    : ignored ? 'color: #f57c00; font-weight: bold;'
+    : 'color: #d32f2f; font-weight: bold;';
+
+  if (debug) {
+    console.groupCollapsed(
+      `%c[FoE-RPC] ${tag} ${reqClass}.${reqMethod}`,
+      style,
+    );
+    console.debug('Full Message:', msg);
+    console.debug('Response Data:', entry.responseData);
+    console.groupEnd();
+    rpcLogger?.debug(`${tag} ${reqClass}.${reqMethod}`, {
+      requestClass: reqClass,
+      requestMethod: reqMethod,
+      requestId: entry.requestId,
+      responseData: entry.responseData,
+    });
+  }
+}
+
+// --- RPC Router Registry ---
 
 const combinedHandlerMembers = new WeakMap();
 
@@ -134,4 +338,19 @@ class RpcRouter {
 
 module.exports = {
   RpcRouter,
+  // RpcScope
+  STORAGE_KEY,
+  IGNORED_RPC_CLASSES,
+  isIgnoredRpcClass,
+  isIgnoredRpcLoggingEnabled,
+  shouldLogUnhandledRpc,
+  setIgnoredRpcLoggingEnabled,
+  toggleIgnoredRpcLogging,
+  onIgnoredRpcToggle,
+  initIgnoredRpcState,
+  _resetForTesting,
+  // RpcLogger
+  rpcLog,
+  logRpcMessage,
 };
+module.exports.default = module.exports;
