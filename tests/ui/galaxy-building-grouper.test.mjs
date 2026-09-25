@@ -3,7 +3,7 @@ import { describe, it } from 'node:test';
 import {
   groupGalaxyBuildings,
   renderGalaxyBuildingList,
-} from '../../src/js/ui/galaxyBuildingGrouper.js';
+} from '../../src/js/ui/galaxyPanel.js';
 
 describe('galaxyBuildingGrouper Suite', () => {
   it('returns empty array when given null, undefined, or empty array', () => {

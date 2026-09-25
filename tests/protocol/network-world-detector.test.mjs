@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { detectAndSyncWorldOrigin } from '../../src/js/protocol/networkWorldDetector.js';
+import { detectAndSyncWorldOrigin } from '../../src/js/protocol/networkListener.js';
 
 test('networkWorldDetector - World detection and storage sync', async (t) => {
   await t.test('detects valid world and sets origin and storage', async () => {

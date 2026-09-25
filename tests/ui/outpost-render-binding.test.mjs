@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/OutpostState.js';
-import bindingPkg from '../../src/js/ui/outpostRenderBinding.js';
+import statePkg from '../../src/js/state/CityDomainState.js';
+import bindingPkg from '../../src/js/ui/outpostPanel.js';
 
 const { OutpostState } = statePkg;
 const { bindOutpostPanel } = bindingPkg;

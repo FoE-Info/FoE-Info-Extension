@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/InvestedState.js';
+import statePkg from '../../src/js/state/GreatBuildingDomainState.js';
 
 const { InvestedState, investedState } = statePkg;
 

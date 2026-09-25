@@ -4,7 +4,7 @@ import {
   getServerMarket,
   SERVER_TIMEZONES,
   timeGBG,
-} from '../../src/js/msg/GbgTimeFormatter.js';
+} from '../../src/js/msg/GbgSignalService.js';
 
 describe('GbgTimeFormatter Suite', () => {
   describe('getServerMarket', () => {

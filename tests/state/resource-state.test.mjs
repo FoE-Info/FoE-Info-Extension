@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/ResourceState.js';
+import statePkg from '../../src/js/state/CityDomainState.js';
 
 const { ResourceState, resourceState } = statePkg;
 

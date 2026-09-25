@@ -8,7 +8,7 @@
 
 const BigNumber = require('bignumber.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
-const { treasuryState } = require('../state/TreasuryState.js');
+const { treasuryState } = require('../state/GuildDomainState.js');
 
 let showOptions = { showTreasury: true };
 

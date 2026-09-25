@@ -7,7 +7,7 @@ import {
   getDonations,
   getFriendlyDonation,
   getSafe,
-} from '../../src/js/ui/gbDonationFormatters.js';
+} from '../../src/js/ui/gbDonationPanel.js';
 
 test('gbDonationFormatters Helper Suite', async (t) => {
   await t.test('getFriendlyDonation handles green and red styles', () => {

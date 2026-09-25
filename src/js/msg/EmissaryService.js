@@ -6,7 +6,7 @@
  * tracking emissary bonuses (Strategy Points, Military Units) and updating City stats.
  */
 
-const { City } = require('../state/CityState.js');
+const { City } = require('../state/CityDomainState.js');
 const { startupRenderState } = require('../state/StartupRenderState.js');
 const { createLogger } = require('../utils/logger.js');
 

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import BigNumber from 'bignumber.js';
-import { evaluateGbDonationPlaces } from '../../src/js/ui/gbDonationPlaceEvaluator.js';
+import { evaluateGbDonationPlaces } from '../../src/js/ui/gbDonationPanel.js';
 
 test('gbDonationPlaceEvaluator Suite', async (t) => {
   const dummyTables = {

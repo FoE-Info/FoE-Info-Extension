@@ -10,12 +10,12 @@ const logger = createLogger('OtherPlayerService');
 
 let visitedCityState = null;
 try {
-  ({ visitedCityState } = require('../state/VisitedCityState.js'));
+  ({ visitedCityState } = require('../state/SocialDomainState.js'));
 } catch {}
 
 let socialState = null;
 try {
-  ({ socialState } = require('../state/SocialState.js'));
+  ({ socialState } = require('../state/SocialDomainState.js'));
 } catch {}
 
 let formatShieldCountdown = () => '';

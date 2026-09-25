@@ -204,7 +204,7 @@ test('Collapse Icons & Titles Characterization Suite', async (t) => {
         gbTabSafe,
         gbTabNotSafe,
         gbTabEmpty,
-      } = require('../../src/js/ui/gbDonationTables.js');
+      } = require('../../src/js/ui/gbDonationPanel.js');
       const safeHtml = gbTabSafe(
         1,
         190,

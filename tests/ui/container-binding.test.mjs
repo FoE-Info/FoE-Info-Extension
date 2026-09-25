@@ -217,7 +217,7 @@ test('Container Binding & DOM Lifecycle Suite', async (t) => {
         'utf8',
       );
       const repairSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/ui/gbOutputRepair.js'),
+        path.join(ROOT_DIR, 'src/js/ui/greatBuildingsPanel.js'),
         'utf8',
       );
 

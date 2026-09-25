@@ -1,13 +1,11 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
+  buildTargetGeneratorTargets,
   buildTargetGeneratorTargets as reExportedBuildTargets,
   sortProvincesByLock as reExportedSortProvinces,
-} from '../../src/js/ui/renderTargetGeneratorCard.js';
-import {
-  buildTargetGeneratorTargets,
   sortProvincesByLock,
-} from '../../src/js/ui/targetTokenAssembler.js';
+} from '../../src/js/ui/gbgPanel.js';
 
 describe('targetTokenAssembler Suite', () => {
   describe('Backward compatibility re-exports', () => {

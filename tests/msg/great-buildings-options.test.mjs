@@ -151,7 +151,7 @@ const {
 } = gbDonationServicePkg.default || gbDonationServicePkg;
 
 const gbDonationStatePkg =
-  await import('../../src/js/state/GbDonationState.js');
+  await import('../../src/js/state/GreatBuildingDomainState.js');
 const { gbDonationState } = gbDonationStatePkg;
 
 const greatBuildingsServicePkg =
@@ -160,7 +160,7 @@ const { showGreatBuldingDonation, greatBuildingsService } =
   greatBuildingsServicePkg.default || greatBuildingsServicePkg;
 
 const greatBuildingsStatePkg =
-  await import('../../src/js/state/GreatBuildingsState.js');
+  await import('../../src/js/state/GreatBuildingDomainState.js');
 const { greatBuildingsState } = greatBuildingsStatePkg;
 
 const dispatcherPkg =
@@ -286,7 +286,7 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
     'renderGbInfoPanel renders card with level, progress, and remaining FP',
     async () => {
       const { renderGbInfoPanel } =
-        await import('../../src/js/ui/renderGbInfoPanel.js');
+        await import('../../src/js/ui/greatBuildingsPanel.js');
       const targetEl = createMockElement('div', 'gbInfo');
       const gbData = {
         name: 'Himeji Castle',
@@ -667,16 +667,16 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
       const targetPath =
         (
           fs.existsSync(
-            path.join(process.cwd(), 'src/js/ui/gbDonationPlaceEvaluator.js'),
+            path.join(process.cwd(), 'src/js/ui/gbDonationPanel.js'),
           )
         ) ?
-          path.join(process.cwd(), 'src/js/ui/gbDonationPlaceEvaluator.js')
+          path.join(process.cwd(), 'src/js/ui/gbDonationPanel.js')
         : (
           fs.existsSync(
-            path.join(process.cwd(), 'src/js/ui/renderGbDonationPanel.js'),
+            path.join(process.cwd(), 'src/js/ui/gbDonationPanel.js'),
           )
         ) ?
-          path.join(process.cwd(), 'src/js/ui/renderGbDonationPanel.js')
+          path.join(process.cwd(), 'src/js/ui/gbDonationPanel.js')
         : path.join(process.cwd(), 'src/js/msg/GreatBuildingsService.js');
       const src = fs.readFileSync(targetPath, 'utf8');
       assert.doesNotMatch(

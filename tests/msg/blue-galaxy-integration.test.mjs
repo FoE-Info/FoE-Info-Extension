@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
-import { blueGalaxyState } from '../../src/js/state/BlueGalaxyState.js';
-import { renderGalaxyPanel } from '../../src/js/ui/renderGalaxyPanel.js';
+import { blueGalaxyState } from '../../src/js/state/CityDomainState.js';
+import { renderGalaxyPanel } from '../../src/js/ui/galaxyPanel.js';
 
 function createMockDom() {
   const elementsById = new Map();

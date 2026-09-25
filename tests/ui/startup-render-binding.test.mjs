@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import statePkg from '../../src/js/state/StartupRenderState.js';
-import bindingPkg from '../../src/js/ui/startupRenderBinding.js';
+import bindingPkg from '../../src/js/ui/startupPanel.js';
 
 const { StartupRenderState } = statePkg;
 const { bindStartupRenderState } = bindingPkg;

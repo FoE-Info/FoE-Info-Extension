@@ -4,7 +4,7 @@ import {
   formatShieldCountdown,
   getFriendsHTML,
   renderSocialListsPanel,
-} from '../../src/js/ui/renderSocialListsPanel.js';
+} from '../../src/js/ui/socialPanel.js';
 
 function createMockElement(id = '') {
   const listeners = new Map();

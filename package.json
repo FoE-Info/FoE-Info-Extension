@@ -25,6 +25,7 @@
     "i18n:fix": "node scripts/audit-i18n.mjs --fix",
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix",
+    "mcp:profile": "node .agents/scripts/mcp-profile.mjs",
     "metadata:download": "node scripts/download-offline-metadata.mjs",
     "metadata:extract-hars": "node scripts/ingest-hars-to-metadata.mjs",
     "metadata:query": "node scripts/query-metadata-store.mjs",

@@ -51,9 +51,7 @@ test('Reactive Metadata Updates & Building Collection Times Suite', async (t) =>
         'metadata listener must re-render collection times',
       );
 
-      const orchestratorPath = path.resolve(
-        'src/js/msg/StartupRenderOrchestrator.js',
-      );
+      const orchestratorPath = path.resolve('src/js/msg/StartupService.js');
       const orchestrator = fs.readFileSync(orchestratorPath, 'utf8');
 
       assert.ok(

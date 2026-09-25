@@ -4,7 +4,7 @@ import {
   coordinateStartupEntities,
   ensureCitystatsContainer,
   fEntityName,
-} from '../../src/js/msg/StartupEntityCoordinator.js';
+} from '../../src/js/msg/StartupService.js';
 
 describe('StartupEntityCoordinator Suite', () => {
   describe('fEntityName', () => {

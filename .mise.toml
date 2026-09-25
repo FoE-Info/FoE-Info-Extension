@@ -135,3 +135,7 @@ run = "bash .agents/scripts/graphify.sh foe-info update"
 [tasks.graph-reindex]
 description = "Full semantic reindex of FoE-Info knowledge graph"
 run = "bash .agents/scripts/graphify.sh foe-info reindex"
+
+[tasks.mcp-profile]
+description = "Switch active MCP profile (default, browser, research, full)"
+run = "node .agents/scripts/mcp-profile.mjs"

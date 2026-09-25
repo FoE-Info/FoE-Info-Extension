@@ -7,7 +7,7 @@
  */
 
 const { createLogger } = require('../../utils/logger.js');
-const { blueGalaxyState } = require('../../state/BlueGalaxyState.js');
+const { blueGalaxyState } = require('../../state/CityDomainState.js');
 const { createGalaxyCandidate } = require('../../calc/BlueGalaxyCalculator.js');
 const { loadFixture } = require('../fixtureClient.js');
 
@@ -20,7 +20,7 @@ async function seedGalaxy(
   const entities = await loadFixture(fixture);
   if (!Array.isArray(entities)) return 0;
 
-  require('../../ui/renderGalaxyPanel.js');
+  require('../../ui/galaxyPanel.js');
 
   const candidates = [];
   for (const entity of entities) {

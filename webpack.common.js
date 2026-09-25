@@ -87,6 +87,11 @@ module.exports = {
         { from: './src/icons/common', to: 'icons' },
         { from: './src/icons/foe-info', to: 'icons' },
         { from: './src/images', to: 'images', noErrorOnMissing: true },
+        {
+          from: './src/images/logo90.png',
+          to: 'icons/logo90.png',
+          noErrorOnMissing: true,
+        },
       ],
     }),
   ],

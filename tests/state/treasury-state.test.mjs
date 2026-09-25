@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/TreasuryState.js';
+import statePkg from '../../src/js/state/GuildDomainState.js';
 
 const { TreasuryState, treasuryState } = statePkg;
 

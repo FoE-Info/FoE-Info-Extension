@@ -3,7 +3,7 @@ import test from 'node:test';
 import {
   fCheckOutput,
   repairGbOutput,
-} from '../../src/js/ui/gbOutputRepair.js';
+} from '../../src/js/ui/greatBuildingsPanel.js';
 
 function createMockDOM() {
   const elementsById = new Map();

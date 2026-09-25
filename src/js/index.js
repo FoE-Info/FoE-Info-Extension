@@ -21,7 +21,7 @@ import {
   handleRawNetworkEntry,
   handleRequestFinished,
 } from './protocol/networkListener.js';
-import { logRpcMessage, rpcLog } from './protocol/rpcLogger.js';
+import { logRpcMessage, rpcLog } from './protocol/rpcRouter.js';
 import {
   initEntityDefsLifecycle,
   resolveMissingCityEntitiesFromMap,

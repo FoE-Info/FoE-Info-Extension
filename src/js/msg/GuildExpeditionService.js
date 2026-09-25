@@ -22,7 +22,7 @@ const {
   extractTrialLevel,
   extractInternationalExpeditionEntries,
 } = require('../parsers/expeditionParser.js');
-const { expeditionState } = require('../state/ExpeditionState.js');
+const { expeditionState } = require('../state/GuildDomainState.js');
 
 function resetExpeditionCache() {
   expeditionState.reset();

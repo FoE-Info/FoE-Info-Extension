@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/TreasuryState.js';
-import bindingPkg from '../../src/js/ui/treasuryRenderBinding.js';
+import statePkg from '../../src/js/state/GuildDomainState.js';
+import bindingPkg from '../../src/js/ui/treasuryPanel.js';
 
 const { TreasuryState } = statePkg;
 const { bindTreasuryPanel } = bindingPkg;
