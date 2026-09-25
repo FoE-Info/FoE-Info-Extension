@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/QuantumState.js';
-import bindingPkg from '../../src/js/ui/quantumRenderBinding.js';
+import statePkg from '../../src/js/state/GuildDomainState.js';
+import bindingPkg from '../../src/js/ui/quantumPanel.js';
 
 const { QuantumState } = statePkg;
 const { bindQuantumPanels } = bindingPkg;

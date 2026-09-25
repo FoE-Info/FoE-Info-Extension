@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/BlueGalaxyState.js';
-import bindingPkg from '../../src/js/ui/galaxyRenderBinding.js';
+import statePkg from '../../src/js/state/CityDomainState.js';
+import bindingPkg from '../../src/js/ui/galaxyPanel.js';
 
 const { BlueGalaxyState } = statePkg;
 const { bindGalaxyRender } = bindingPkg;

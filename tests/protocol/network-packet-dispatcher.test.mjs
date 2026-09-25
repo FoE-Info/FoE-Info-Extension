@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { processContentDirect } from '../../src/js/protocol/networkPacketDispatcher.js';
+import { processContentDirect } from '../../src/js/protocol/networkListener.js';
 
 test('networkPacketDispatcher - Direct payload dispatch', async (t) => {
   await t.test('dispatches raw packet and logs rpc items', async () => {

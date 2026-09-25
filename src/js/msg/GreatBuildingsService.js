@@ -9,7 +9,7 @@ const { calculateArcReward } = require('../calc/GreatBuildingCalculator.js');
 const GreatBuildingRegistry = require('../state/GreatBuildingRegistry.js');
 const {
   greatBuildingsState: defaultGreatBuildingsState,
-} = require('../state/GreatBuildingsState.js');
+} = require('../state/GreatBuildingDomainState.js');
 const GbDonationService = require('./GbDonationService.js');
 const { getContributions } = require('./InvestedService.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import BigNumber from 'bignumber.js';
 
-const builderPkg = await import('../../src/js/ui/treasuryTableBuilder.js');
+const builderPkg = await import('../../src/js/ui/treasuryPanel.js');
 const { getResourceAmount, buildTreasuryTableHtml } =
   builderPkg.default || builderPkg;
 

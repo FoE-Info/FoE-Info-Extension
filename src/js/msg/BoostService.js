@@ -262,7 +262,7 @@ class BoostService {
 
     let city = null;
     try {
-      const cityStateMod = require('../state/CityState.js');
+      const cityStateMod = require('../state/CityDomainState.js');
       city = cityStateMod.City || cityStateMod.default?.City;
     } catch {}
     if (city) {

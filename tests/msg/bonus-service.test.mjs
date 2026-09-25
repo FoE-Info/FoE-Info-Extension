@@ -19,7 +19,7 @@ test('BonusService publishes to BonusState without importing ui/', () => {
   );
   assert.match(
     source,
-    /import \{ bonusState \} from '\.\.\/state\/BonusState\.js'/,
+    /import \{[^}]*\bbonusState\b[^}]*\} from '\.\.\/state\/CityDomainState\.js'/,
     'BonusService must import the reactive BonusState store',
   );
   assert.match(

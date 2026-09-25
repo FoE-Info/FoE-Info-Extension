@@ -7,7 +7,7 @@ import {
   initStartupUser,
   resetCityStartupState,
   updateCombatTotals,
-} from '../../src/js/msg/StartupStateInitializer.js';
+} from '../../src/js/msg/StartupService.js';
 
 describe('StartupStateInitializer Suite', () => {
   describe('initStartupUser', () => {

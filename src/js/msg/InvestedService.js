@@ -7,7 +7,7 @@
  */
 
 const { calculateInvestments } = require('../calc/InvestedCalculator.js');
-const { investedState } = require('../state/InvestedState.js');
+const { investedState } = require('../state/GreatBuildingDomainState.js');
 
 let City;
 try {

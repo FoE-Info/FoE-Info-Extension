@@ -78,7 +78,7 @@ try {
 } catch {}
 let guildBattlegroundState = null;
 try {
-  ({ guildBattlegroundState } = require('../state/GuildBattlegroundState.js'));
+  ({ guildBattlegroundState } = require('../state/GuildDomainState.js'));
 } catch {}
 
 let targetsTimer = null;

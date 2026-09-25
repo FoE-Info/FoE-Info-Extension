@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
-import statePkg from '../../src/js/state/QuantumState.js';
+import statePkg from '../../src/js/state/GuildDomainState.js';
 
 const { quantumState } = statePkg;
 

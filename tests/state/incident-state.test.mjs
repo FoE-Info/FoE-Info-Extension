@@ -3,7 +3,7 @@ import test from 'node:test';
 import {
   IncidentState,
   incidentState,
-} from '../../src/js/state/IncidentState.js';
+} from '../../src/js/state/CityDomainState.js';
 
 test('IncidentState Suite', async (t) => {
   await t.test('singleton instance exists and initializes defaults', () => {

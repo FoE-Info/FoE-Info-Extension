@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/GbDonationState.js';
-import bindingPkg from '../../src/js/ui/gbDonationRenderBinding.js';
+import statePkg from '../../src/js/state/GreatBuildingDomainState.js';
+import bindingPkg from '../../src/js/ui/gbDonationPanel.js';
 
 const { GbDonationState } = statePkg;
 const { bindGbDonationPanels } = bindingPkg;

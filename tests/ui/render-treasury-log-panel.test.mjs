@@ -3,7 +3,7 @@ import test from 'node:test';
 import BigNumber from 'bignumber.js';
 
 test('renderTreasuryLogPanel UI Module Suite', async (t) => {
-  const mod = await import('../../src/js/ui/renderTreasuryLogPanel.js');
+  const mod = await import('../../src/js/ui/treasuryPanel.js');
   const { renderTreasuryLogPanel } = mod.default || mod;
 
   const makeEntry = (overrides = {}) => ({

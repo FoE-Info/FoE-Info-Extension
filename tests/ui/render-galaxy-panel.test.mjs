@@ -3,7 +3,7 @@ import { beforeEach, describe, it } from 'node:test';
 import metadataService from '../../src/js/msg/MetadataService.js';
 import metadataState from '../../src/js/state/MetadataStore.js';
 import { setCurrentView } from '../../src/js/ui/cardVisibility.js';
-import { renderGalaxyPanel } from '../../src/js/ui/renderGalaxyPanel.js';
+import { renderGalaxyPanel } from '../../src/js/ui/galaxyPanel.js';
 
 const { triggerMetadataUpdated } = metadataService;
 const { metadataStore } = metadataState;
@@ -326,7 +326,7 @@ describe('renderGalaxyPanel Suite', () => {
 
   it('showGalaxy and updateGalaxy delegate seamlessly', async () => {
     const { showGalaxy, updateGalaxy } =
-      await import('../../src/js/ui/renderGalaxyPanel.js');
+      await import('../../src/js/ui/galaxyPanel.js');
     assert.equal(typeof showGalaxy, 'function');
     assert.equal(typeof updateGalaxy, 'function');
   });

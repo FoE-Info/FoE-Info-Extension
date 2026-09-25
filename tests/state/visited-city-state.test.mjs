@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/VisitedCityState.js';
+import statePkg from '../../src/js/state/SocialDomainState.js';
 
 const { VisitedCityState, visitedCityState } = statePkg;
 

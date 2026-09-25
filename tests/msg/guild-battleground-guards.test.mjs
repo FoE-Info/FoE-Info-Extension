@@ -73,11 +73,11 @@ const { GBGdata, BattlegroundPerformance, VolcanoProvinceDefs } =
   await import('../../src/js/state/state.js');
 const { showOptions } = await import('../../src/js/state/showOptions.js');
 const { guildBattlegroundState } =
-  await import('../../src/js/state/GuildBattlegroundState.js');
+  await import('../../src/js/state/GuildDomainState.js');
 const { conversationService } =
   await import('../../src/js/msg/ConversationService.js');
 const { bindGuildBattlegroundPanels } =
-  await import('../../src/js/ui/gbgRenderBinding.js');
+  await import('../../src/js/ui/gbgPanel.js');
 bindGuildBattlegroundPanels();
 
 showOptions.showBattleground = false;

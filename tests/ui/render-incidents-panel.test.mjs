@@ -5,7 +5,7 @@ import {
   buildIncidentTooltip,
   fIncidentName,
   renderIncidentsPanel,
-} from '../../src/js/ui/renderIncidentsPanel.js';
+} from '../../src/js/ui/incidentsPanel.js';
 
 describe('renderIncidentsPanel standalone UI module', () => {
   it('correctly looks up known and unknown incident descriptors', () => {

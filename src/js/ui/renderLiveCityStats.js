@@ -7,7 +7,7 @@
  */
 
 const BigNumber = require('bignumber.js');
-const { City } = require('../state/CityState.js');
+const { City } = require('../state/CityDomainState.js');
 
 let logger = null;
 try {

@@ -203,7 +203,7 @@ test('GuildBattleground UI Panels and Integration Suite', async (t) => {
     'fshowBattleground and getLeaderboard render to dedicated containers with null guards',
     () => {
       const rendererSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/ui/renderBattlegroundsPanel.js'),
+        path.join(ROOT_DIR, 'src/js/ui/gbgPanel.js'),
         'utf8',
       );
       const gbgServiceSource = fs.readFileSync(
@@ -211,11 +211,11 @@ test('GuildBattleground UI Panels and Integration Suite', async (t) => {
         'utf8',
       );
       const gbgBindingSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/ui/gbgRenderBinding.js'),
+        path.join(ROOT_DIR, 'src/js/ui/gbgPanel.js'),
         'utf8',
       );
       const resultCardSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/ui/renderBattlegroundResultCard.js'),
+        path.join(ROOT_DIR, 'src/js/ui/gbgPanel.js'),
         'utf8',
       );
 
@@ -302,7 +302,7 @@ test('GuildBattleground UI Panels and Integration Suite', async (t) => {
     'renderBattlegroundResultCard renders GBG table with centered rank, member start, centered negs/fights/attrition, and clickable title',
     () => {
       const resultCardSource = fs.readFileSync(
-        path.resolve('src/js/ui/renderBattlegroundResultCard.js'),
+        path.resolve('src/js/ui/gbgPanel.js'),
         'utf8',
       );
       assert.match(

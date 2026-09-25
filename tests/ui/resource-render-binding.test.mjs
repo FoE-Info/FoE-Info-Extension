@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import statePkg from '../../src/js/state/ResourceState.js';
-import bindingPkg from '../../src/js/ui/resourceRenderBinding.js';
+import statePkg from '../../src/js/state/CityDomainState.js';
+import bindingPkg from '../../src/js/ui/resourcePanel.js';
 
 const { ResourceState } = statePkg;
 const { bindResourcePanel } = bindingPkg;

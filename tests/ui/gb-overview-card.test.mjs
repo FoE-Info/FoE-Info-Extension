@@ -6,7 +6,7 @@ import { createMockElement, setupMockDOM } from '../helpers/test-mocks.mjs';
 const { domStore } = setupMockDOM();
 
 test('gbOverviewCard UI Suite', async (t) => {
-  const gbOverviewPkg = await import('../../src/js/ui/gbOverviewCard.js');
+  const gbOverviewPkg = await import('../../src/js/ui/greatBuildingsPanel.js');
   const { renderGbDonorsCard, renderGbOverviewCard } =
     gbOverviewPkg.default || gbOverviewPkg;
 

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { SocialState } from '../../src/js/state/SocialState.js';
-import { bindSocialLists } from '../../src/js/ui/socialRenderBinding.js';
+import { SocialState } from '../../src/js/state/SocialDomainState.js';
+import { bindSocialLists } from '../../src/js/ui/socialPanel.js';
 
 test('socialRenderBinding Suite', async (t) => {
   await t.test(

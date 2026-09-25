@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import cityStatePkg from '../../src/js/state/CityState.js';
+import cityStatePkg from '../../src/js/state/CityDomainState.js';
 
 const { City, createFreshCityState, getCityState, resetCityState } =
   cityStatePkg.default || cityStatePkg;

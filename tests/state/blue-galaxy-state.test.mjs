@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
-import { BlueGalaxyState } from '../../src/js/state/BlueGalaxyState.js';
+import { BlueGalaxyState } from '../../src/js/state/CityDomainState.js';
 
 describe('BlueGalaxyState Suite', () => {
   let state;

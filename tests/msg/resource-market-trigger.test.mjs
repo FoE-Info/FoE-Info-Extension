@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import resourcePkg from '../../src/js/msg/ResourceService.js';
 import dispatcherPkg from '../../src/js/protocol/MessageDispatcher.js';
-import { bindResourcePanel } from '../../src/js/ui/resourceRenderBinding.js';
+import { bindResourcePanel } from '../../src/js/ui/resourcePanel.js';
 import loggerPkg from '../../src/js/utils/logger.js';
 
 const { MessageDispatcher } = dispatcherPkg;

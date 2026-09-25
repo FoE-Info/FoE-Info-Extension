@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { handleRequestFinished } from '../../src/js/protocol/networkDevtoolsHandler.js';
+import { handleRequestFinished } from '../../src/js/protocol/networkListener.js';
 
 test('networkDevtoolsHandler - DevTools onRequestFinished interception', async (t) => {
   await t.test(

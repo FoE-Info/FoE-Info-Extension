@@ -4,7 +4,7 @@ import {
   clearDuplicatePayloadCache,
   isDuplicatePayload,
   processedPayloadCache,
-} from '../../src/js/protocol/networkPayloadDeduplicator.js';
+} from '../../src/js/protocol/networkListener.js';
 
 test('networkPayloadDeduplicator - Core operations', async (t) => {
   clearDuplicatePayloadCache();

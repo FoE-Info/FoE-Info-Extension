@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
-import renderBattlegroundResultCardPkg from '../../src/js/ui/renderBattlegroundResultCard.js';
+import renderBattlegroundResultCardPkg from '../../src/js/ui/gbgPanel.js';
 import { escapeHTML } from '../../src/js/utils/formatters.js';
 
 const { renderBattlegroundResultCard, buildBattlegroundResultCardHTML } =

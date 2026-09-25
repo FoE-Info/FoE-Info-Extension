@@ -3,7 +3,7 @@ import test from 'node:test';
 import BigNumber from 'bignumber.js';
 
 test('renderGbDonationPanel UI Module Suite', async (t) => {
-  const panelPkg = await import('../../src/js/ui/renderGbDonationPanel.js');
+  const panelPkg = await import('../../src/js/ui/gbDonationPanel.js');
   const { renderGbDonationPanel, getSafe, getDonations, getFriendlyDonation } =
     panelPkg.default || panelPkg;
 

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import statePkg from '../../src/js/state/ArmyState.js';
-import bindingPkg from '../../src/js/ui/armyRenderBinding.js';
+import bindingPkg from '../../src/js/ui/armyPanel.js';
 
 const { ArmyState } = statePkg;
 const { bindArmyPanel } = bindingPkg;

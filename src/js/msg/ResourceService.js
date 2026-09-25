@@ -31,7 +31,7 @@ if (typeof __webpack_require__ !== 'undefined') {
 
 const { createLogger, isDebugEnabled } = require('../utils/logger.js');
 const logger = createLogger('ResourceService');
-const { resourceState } = require('../state/ResourceState.js');
+const { resourceState } = require('../state/CityDomainState.js');
 
 const ResourceDefs = defaultState?.ResourceDefs || [];
 const ResourceNames = defaultState?.ResourceNames || {};

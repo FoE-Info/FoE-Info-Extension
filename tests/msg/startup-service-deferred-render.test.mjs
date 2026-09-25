@@ -3,8 +3,8 @@ import { beforeEach, describe, it } from 'node:test';
 import {
   detectMissingCityEntities,
   scheduleStartupRender,
-} from '../../src/js/msg/StartupRenderOrchestrator.js';
-import { bindStartupMetadataLoading } from '../../src/js/ui/startupMetadataLoadingBinding.js';
+} from '../../src/js/msg/StartupService.js';
+import { bindStartupMetadataLoading } from '../../src/js/ui/startupPanel.js';
 
 bindStartupMetadataLoading();
 
