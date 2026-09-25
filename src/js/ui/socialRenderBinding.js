@@ -54,7 +54,5 @@ function bindSocialLists(
   });
 }
 
-bindSocialLists();
-
 module.exports = { bindSocialLists };
 module.exports.default = module.exports;

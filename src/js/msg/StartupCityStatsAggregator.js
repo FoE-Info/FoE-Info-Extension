@@ -42,9 +42,6 @@ function aggregateCityStats({
       }
     });
 
-    if (baseBoostableFp === 20961 || baseBoostableFp === 21231) {
-      baseBoostableFp = 21207;
-    }
     City.baseBoostableFp = baseBoostableFp;
     City.baseUnboostableFp = baseUnboostableFp;
     const unboostedBaseTotal = baseBoostableFp + baseUnboostableFp;

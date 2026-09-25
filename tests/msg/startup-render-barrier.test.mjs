@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import orchestrator from '../../src/js/msg/StartupRenderOrchestrator.js';
-import '../../src/js/ui/startupMetadataLoadingBinding.js';
+import { bindStartupMetadataLoading } from '../../src/js/ui/startupMetadataLoadingBinding.js';
+
+bindStartupMetadataLoading();
 
 const msg = {
   responseData: { city_map: { entities: [{ cityentity_id: 'pending' }] } },

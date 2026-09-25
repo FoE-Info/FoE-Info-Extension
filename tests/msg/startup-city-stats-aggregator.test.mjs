@@ -63,16 +63,19 @@ test('aggregateCityStats', async (t) => {
     assert.match(args.tooltipHTML.fp, /Base: 25FP \(\+100% Boost = 45FP\)/);
   });
 
-  await t.test('normalizes the known 21231 anomaly to 21207', () => {
-    const args = baseArgs({
-      fpBuildings: [{ id: 'A', name: 'Alpha', fp: 21231, isBoostable: true }],
-    });
+  await t.test(
+    'calculates baseBoostableFp dynamically without hardcoded anomalies',
+    () => {
+      const args = baseArgs({
+        fpBuildings: [{ id: 'A', name: 'Alpha', fp: 21231, isBoostable: true }],
+      });
 
-    aggregateCityStats(args);
+      aggregateCityStats(args);
 
-    assert.equal(args.City.baseBoostableFp, 21207);
-    assert.equal(args.City.ForgePoints, 21207);
-  });
+      assert.equal(args.City.baseBoostableFp, 21231);
+      assert.equal(args.City.ForgePoints, 21231);
+    },
+  );
 
   await t.test('tallies goods, skips special goods, builds goods HTML', () => {
     const Goods = { ba: 0, ia: 0 };

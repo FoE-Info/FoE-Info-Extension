@@ -17,7 +17,7 @@ const {
   inactiveHTML,
   checkInactive,
   getDonations_new,
-} = require('./gbPlaceTableRows.js');
+} = require('./renderGbDonationPanel.js');
 
 let stateModule;
 try {

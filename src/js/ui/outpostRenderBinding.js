@@ -25,7 +25,5 @@ function bindOutpostPanel(
   });
 }
 
-bindOutpostPanel();
-
 module.exports = { bindOutpostPanel };
 module.exports.default = module.exports;

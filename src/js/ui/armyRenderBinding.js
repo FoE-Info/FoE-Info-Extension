@@ -20,7 +20,5 @@ function bindArmyPanel(
   });
 }
 
-bindArmyPanel();
-
 module.exports = { bindArmyPanel };
 module.exports.default = module.exports;

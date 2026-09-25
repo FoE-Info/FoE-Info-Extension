@@ -53,6 +53,34 @@ try {
   defaultCardVisibility = require('../ui/cardVisibility.js');
 } catch {}
 
+let defaultGreatBuildingsService = null;
+try {
+  const {
+    createGreatBuildingsService,
+  } = require('../msg/GreatBuildingsService.js');
+  const { greatBuildingsState } = require('../state/GreatBuildingsState.js');
+  const metadataStorePkg = require('../state/MetadataStore.js');
+  defaultGreatBuildingsService = createGreatBuildingsService({
+    greatBuildingsState,
+    metadataStore: metadataStorePkg?.metadataStore,
+  });
+} catch {}
+
+let defaultStartupService = null;
+try {
+  const { createStartupService } = require('../msg/StartupService.js');
+  const { startupRenderState } = require('../state/StartupRenderState.js');
+  const metadataStorePkg = require('../state/MetadataStore.js');
+  const { blueGalaxyState } = require('../state/BlueGalaxyState.js');
+  const { City } = require('../state/CityState.js');
+  defaultStartupService = createStartupService({
+    startupRenderState,
+    metadataStore: metadataStorePkg?.metadataStore,
+    blueGalaxyState,
+    city: City,
+  });
+} catch {}
+
 let logger = null;
 try {
   const { createLogger } = require('../utils/logger.js');
@@ -69,6 +97,8 @@ function getDeps(overrideDeps = {}) {
     setOptions: defaultShowOptions?.default || defaultShowOptions?.setOptions,
     applyCardVisibility: defaultCardVisibility?.applyCardVisibility,
     messageDispatcher: defaultMessageDispatcher,
+    greatBuildingsService: defaultGreatBuildingsService,
+    startupService: defaultStartupService,
     logRpcMessage: null,
     browser:
       typeof browser !== 'undefined' ? browser
@@ -206,6 +236,8 @@ function initNetworkListeners(deps = {}) {
     processContentDirect,
     safeProcessContent,
     clearDuplicatePayloadCache,
+    greatBuildingsService: mergedDeps.greatBuildingsService,
+    startupService: mergedDeps.startupService,
   };
 }
 
@@ -227,5 +259,7 @@ module.exports = {
   getGameVersion,
   setGameVersion,
   getType,
+  greatBuildingsService: defaultGreatBuildingsService,
+  startupService: defaultStartupService,
 };
 module.exports.default = module.exports;

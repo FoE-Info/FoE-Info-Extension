@@ -42,7 +42,5 @@ function bindVisitedCityRender(
   });
 }
 
-bindVisitedCityRender();
-
 module.exports = { bindVisitedCityRender };
 module.exports.default = module.exports;

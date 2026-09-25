@@ -20,7 +20,15 @@ function postToWindow(targetWindow, type, payload = {}) {
     return false;
   }
   try {
-    targetWindow.postMessage({ source: CHANNEL, type, payload }, '*');
+    const targetOrigin =
+      (
+        typeof window !== 'undefined' &&
+        window.location?.origin &&
+        window.location.origin.startsWith('chrome-extension://')
+      ) ?
+        window.location.origin
+      : '*';
+    targetWindow.postMessage({ source: CHANNEL, type, payload }, targetOrigin);
     return true;
   } catch (err) {
     logger.warn('postMessage failed', err);

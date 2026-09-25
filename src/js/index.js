@@ -31,8 +31,8 @@ import {
   setupPanelContainers,
   setupPanelHeader,
 } from './ui/containerBinding.js';
-import './ui/renderBindings.js';
 import { initIndexUiBindings } from './ui/indexUiBindings.js';
+import { initializeUIBindings } from './ui/renderBindings.js';
 import { initTheme } from './ui/themeManager.js';
 import { escapeHTML } from './utils/formatters.js';
 import { isDebugEnabled, onDebugToggle, toggleDebug } from './utils/logger.js';
@@ -48,6 +48,8 @@ import {
   output,
   targets,
 } from './vars/state.js';
+
+initializeUIBindings();
 
 if (typeof window !== 'undefined') {
   window.bootstrap = bootstrap;

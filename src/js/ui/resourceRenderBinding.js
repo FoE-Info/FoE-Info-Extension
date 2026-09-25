@@ -51,7 +51,5 @@ function bindResourcePanel(
   });
 }
 
-bindResourcePanel();
-
 module.exports = { bindResourcePanel };
 module.exports.default = module.exports;

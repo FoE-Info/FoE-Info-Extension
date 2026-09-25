@@ -31,7 +31,5 @@ function bindTreasuryPanel(
   });
 }
 
-bindTreasuryPanel();
-
 module.exports = { bindTreasuryPanel };
 module.exports.default = module.exports;

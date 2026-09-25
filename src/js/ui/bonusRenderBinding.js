@@ -35,7 +35,5 @@ function bindBonusPanel(
   });
 }
 
-bindBonusPanel();
-
 module.exports = { bindBonusPanel };
 module.exports.default = module.exports;

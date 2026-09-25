@@ -33,7 +33,5 @@ function bindGbDonationPanels(
   });
 }
 
-bindGbDonationPanels();
-
 module.exports = { bindGbDonationPanels };
 module.exports.default = module.exports;

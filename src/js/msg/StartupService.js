@@ -1,49 +1,71 @@
 /** Startup data RPC service orchestrating initial city and player ingestion. */
-import { SPECIAL_GOODS } from '../calc/goods/goodsClassification.js';
-import { buildClanGoodsData as buildClanGoodsDataImpl } from '../calc/goodsTooltipFormatter.js';
-import * as element from '../fn/AddElement.js';
-import * as collapse from '../fn/collapse.js';
-import * as copy from '../fn/copy.js';
-import * as helper from '../fn/helper.js';
-import { t, translateContainer } from '../fn/i18n.js';
-import { blueGalaxyState } from '../state/BlueGalaxyState.js';
-import { City } from '../state/CityState.js';
-import { metadataStore } from '../state/MetadataStore.js';
-import { startupRenderState } from '../state/StartupRenderState.js';
-import { formatDateTime } from '../utils/date.js';
-import { createLogger, isDebugEnabled } from '../utils/logger.js';
-import { showOptions } from '../vars/showOptions.js';
-import * as state from '../vars/state.js';
-import { clearArmyUnits } from './ArmyUnitManagementService.js';
-import { applyBoostsToCity } from './BoostService.js';
-import { resolveMissingCityEntities } from './MetadataService.js';
-import { ResourceDefs } from './ResourceService.js';
-import {
+const { SPECIAL_GOODS } = require('../calc/goods/goodsClassification.js');
+const {
+  buildClanGoodsData: buildClanGoodsDataImpl,
+} = require('../calc/goodsTooltipFormatter.js');
+let element = {};
+try {
+  element = require('../fn/AddElement.js');
+} catch {}
+let collapse = {};
+try {
+  collapse = require('../fn/collapse.js');
+} catch {}
+let copy = {};
+try {
+  copy = require('../fn/copy.js');
+} catch {}
+let helper = {};
+try {
+  helper = require('../fn/helper.js');
+} catch {}
+let t = (k, f) => f || k;
+let translateContainer = () => {};
+try {
+  ({ t, translateContainer } = require('../fn/i18n.js'));
+} catch {}
+const { blueGalaxyState } = require('../state/BlueGalaxyState.js');
+const { City } = require('../state/CityState.js');
+const { metadataStore } = require('../state/MetadataStore.js');
+const { startupRenderState } = require('../state/StartupRenderState.js');
+const { formatDateTime } = require('../utils/date.js');
+const { createLogger, isDebugEnabled } = require('../utils/logger.js');
+let showOptions = {};
+try {
+  ({ showOptions } = require('../vars/showOptions.js'));
+} catch {}
+let state = {};
+try {
+  state = require('../vars/state.js');
+} catch {}
+const { clearArmyUnits } = require('./ArmyUnitManagementService.js');
+const { applyBoostsToCity } = require('./BoostService.js');
+const { resolveMissingCityEntities } = require('./MetadataService.js');
+const { ResourceDefs } = require('./ResourceService.js');
+const {
   handleBoostServiceAllBoosts,
   subscribeBoostUpdates,
-} from './StartupBoostCoordinator.js';
-import {
+} = require('./StartupBoostCoordinator.js');
+const {
   coordinateStartupEntities,
   ensureCitystatsContainer,
-} from './StartupEntityCoordinator.js';
-import {
+} = require('./StartupEntityCoordinator.js');
+const {
   renderWhenStartupReady,
   scheduleStartupRender,
   subscribeMetadataRenders,
-} from './StartupRenderOrchestrator.js';
-import {
+} = require('./StartupRenderOrchestrator.js');
+const {
   createStartupContext,
   createTimingTracker,
   initializeStartupSession,
-  updateCombatTotals as updateCombatTotalsState,
-} from './StartupStateInitializer.js';
+  updateCombatTotals: updateCombatTotalsState,
+} = require('./StartupStateInitializer.js');
+const { emissaryService } = require('./EmissaryService.js');
 
 const logger = createLogger('StartupService');
 
-export { SPECIAL_GOODS };
-export { City } from '../state/CityState.js';
-
-var tooltipHTML = {
+let tooltipHTML = {
   goods: [],
   fp: [],
   clanGoods: [],
@@ -51,39 +73,46 @@ var tooltipHTML = {
   SoH: [],
   tGE: [],
 };
-export var Galaxy = blueGalaxyState.getLegacyShim();
+let Galaxy = blueGalaxyState.getLegacyShim();
 
-var buildingsReady = [],
+let buildingsReady = [],
   fpBuildings = [],
   goodsBuildings = [],
   clanGoodsBuildings = [];
 let lastStartupContext = null,
   startupTimingRun = 0;
-export let lastStartupMsg = null;
-export let lastBoostsMsg = null;
+let lastStartupMsg = null;
+let lastBoostsMsg = null;
 
-export function startupService(msg) {
+function startupService(msg, dependencies = {}) {
+  const activeCity = dependencies.City || dependencies.city || City;
+  const activeLogger = dependencies.logger || logger;
+  const _activeStartupRenderState =
+    dependencies.startupRenderState || startupRenderState;
+  const activeBlueGalaxyState = dependencies.blueGalaxyState || blueGalaxyState;
+  const activeMetadataStore = dependencies.metadataStore || metadataStore;
+
   const timingRun = ++startupTimingRun;
   const { debugEnabled, timingStep } = createTimingTracker(
-    logger,
+    activeLogger,
     timingRun,
     msg?.requestId,
   );
-  logger.info(
+  activeLogger.info(
     `[TIMING:P4] StartupService.startupService(msg) execution started | t = ${performance.now().toFixed(2)}ms | requestId = ${msg?.requestId}`,
   );
 
   const user = initializeStartupSession(msg, {
-    City,
+    City: activeCity,
     renderLiveCityStats,
     state,
     helper,
     clearArmyUnits,
-    blueGalaxyState,
+    blueGalaxyState: activeBlueGalaxyState,
     applyBoostsToCity,
     lastBoostsMsg,
     DEV: typeof DEV !== 'undefined' ? DEV : false,
-    logger,
+    logger: activeLogger,
   });
   if (!user) return;
 
@@ -98,7 +127,7 @@ export function startupService(msg) {
   const entityResult = coordinateStartupEntities({
     msg,
     user,
-    City,
+    City: activeCity,
     Galaxy,
     tooltipHTML,
     timingStep,
@@ -107,14 +136,14 @@ export function startupService(msg) {
     boostServiceAllBoosts,
     renderBuildingCollectionTimes,
     buildClanGoodsData,
-    logger,
+    logger: activeLogger,
     debugEnabled,
     state,
     helper,
     ResourceDefs,
     DEV: typeof DEV !== 'undefined' ? DEV : false,
-    blueGalaxyState,
-    metadataStore,
+    blueGalaxyState: activeBlueGalaxyState,
+    metadataStore: activeMetadataStore,
   });
 
   ({ buildingsReady, fpBuildings, goodsBuildings, clanGoodsBuildings } =
@@ -136,11 +165,15 @@ export function startupService(msg) {
   const finishRender = () => {
     renderLiveCityStats();
     if (!collapse.collapseStats) {
-      document
-        .getElementById('citystatsCopyID')
-        ?.addEventListener('click', copy.fCityStatsCopy);
+      if (typeof document !== 'undefined') {
+        document
+          .getElementById('citystatsCopyID')
+          ?.addEventListener('click', copy.fCityStatsCopy);
+      }
     }
-    translateContainer(document.body);
+    if (typeof document !== 'undefined' && document.body) {
+      translateContainer(document.body);
+    }
   };
 
   scheduleStartupRender({
@@ -154,18 +187,18 @@ export function startupService(msg) {
         'P4r',
         'metadata gate callback; recomputing existing lastStartupMsg',
       );
-      if (lastStartupMsg) startupService(lastStartupMsg);
+      if (lastStartupMsg) startupService(lastStartupMsg, dependencies);
       else finishRender();
     },
-    getCityEntityDef: (cid) => helper.getCityEntityDef(cid),
-    logger,
+    getCityEntityDef: (cid) => helper.getCityEntityDef?.(cid),
+    logger: activeLogger,
     loadingText: t('loading-metadata') || 'Loading metadata...',
     translateContainer,
   });
   timingStep('P4z', 'startup synchronous invocation complete');
 }
 
-export function buildClanGoodsData() {
+function buildClanGoodsData() {
   return buildClanGoodsDataImpl(
     clanGoodsBuildings,
     City.guildGoodsProductionBoost,
@@ -173,7 +206,8 @@ export function buildClanGoodsData() {
   );
 }
 
-export function renderLiveCityStats(ctx) {
+// export function renderLiveCityStats(ctx) {
+function renderLiveCityStats(ctx) {
   if (isDebugEnabled()) {
     logger.info(
       `[TIMING:P6s] renderLiveCityStats wrapper entered | t = ${performance.now().toFixed(2)}ms | run = ${startupTimingRun} | caller = ${new Error().stack?.split('\n').slice(2, 4).join(' <- ')}`,
@@ -196,15 +230,13 @@ export function renderLiveCityStats(ctx) {
   );
 }
 
-export function updateCombatTotals(targetCity = City) {
+function updateCombatTotals(targetCity = City) {
   updateCombatTotalsState(targetCity);
 }
 
-export { emissaryService } from './EmissaryService.js';
+function boostService(_msg) {}
 
-export function boostService(_msg) {}
-
-export function boostServiceAllBoosts(msg) {
+function boostServiceAllBoosts(msg) {
   lastBoostsMsg = msg;
   handleBoostServiceAllBoosts({
     msg,
@@ -220,7 +252,8 @@ export function boostServiceAllBoosts(msg) {
 
 subscribeBoostUpdates(boostServiceAllBoosts);
 
-export function renderBuildingCollectionTimes(options = {}) {
+// export function renderBuildingCollectionTimes(
+function renderBuildingCollectionTimes(options = {}) {
   return startupRenderState.setBuildingCollectionOptions({
     buildingsReady: options.buildingsReady || buildingsReady,
     epocTime: options.epocTime ?? state.EpocTime,
@@ -242,3 +275,57 @@ subscribeMetadataRenders({
   onRenderGalaxy: () => blueGalaxyState.notify(),
   onRenderLiveCityStats: renderLiveCityStats,
 });
+
+function createStartupService({
+  startupRenderState: injectedStartupRenderState = startupRenderState,
+  metadataStore: injectedMetadataStore = metadataStore,
+  blueGalaxyState: injectedBlueGalaxyState = blueGalaxyState,
+  city: injectedCity = City,
+  logger: injectedLogger = logger,
+} = {}) {
+  return {
+    startupService: (msg, opts = {}) =>
+      startupService(msg, {
+        startupRenderState: injectedStartupRenderState,
+        metadataStore: injectedMetadataStore,
+        blueGalaxyState: injectedBlueGalaxyState,
+        city: injectedCity,
+        logger: injectedLogger,
+        ...opts,
+      }),
+    renderLiveCityStats: (ctx) => renderLiveCityStats(ctx),
+    renderBuildingCollectionTimes: (options = {}) =>
+      renderBuildingCollectionTimes(options),
+    updateCombatTotals: (targetCity) =>
+      updateCombatTotals(targetCity || injectedCity),
+    buildClanGoodsData: () => buildClanGoodsData(),
+    boostServiceAllBoosts,
+    startupRenderState: injectedStartupRenderState,
+    metadataStore: injectedMetadataStore,
+    blueGalaxyState: injectedBlueGalaxyState,
+    city: injectedCity,
+    logger: injectedLogger,
+  };
+}
+
+module.exports = {
+  SPECIAL_GOODS,
+  City,
+  Galaxy,
+  startupService,
+  buildClanGoodsData,
+  renderLiveCityStats,
+  updateCombatTotals,
+  emissaryService,
+  boostService,
+  boostServiceAllBoosts,
+  renderBuildingCollectionTimes,
+  createStartupService,
+  get lastStartupMsg() {
+    return lastStartupMsg;
+  },
+  get lastBoostsMsg() {
+    return lastBoostsMsg;
+  },
+};
+module.exports.default = module.exports;
