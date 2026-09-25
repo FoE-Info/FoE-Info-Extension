@@ -56,6 +56,7 @@ export default [
         'warn',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
+      'no-var': 'warn',
       'no-console': 'off',
       'no-prototype-builtins': 'warn',
       'no-redeclare': 'warn',

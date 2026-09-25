@@ -24,7 +24,5 @@ function bindStartupMetadataLoading(
   });
 }
 
-bindStartupMetadataLoading();
-
 module.exports = { bindStartupMetadataLoading };
 module.exports.default = module.exports;

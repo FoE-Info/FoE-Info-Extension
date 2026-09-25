@@ -218,8 +218,6 @@ function bindGuildBattlegroundPanels(
   });
 }
 
-bindGuildBattlegroundPanels();
-
 module.exports = {
   bindGuildBattlegroundPanels,
   buildTargetParams,

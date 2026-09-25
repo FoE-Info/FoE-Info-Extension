@@ -322,3 +322,80 @@ test('networkListener - getType helper', () => {
   assert.equal(getType('text/javascript'), 'javascript');
   assert.equal(getType(null), '');
 });
+
+test('networkListener - Explicit Dependency Injection for Message Services', async (t) => {
+  await t.test('initNetworkListeners exposes injected message services', () => {
+    const customGbService = { isMockGb: true };
+    const customStartupService = { isMockStartup: true };
+    const listeners = initNetworkListeners({
+      greatBuildingsService: customGbService,
+      startupService: customStartupService,
+    });
+
+    assert.equal(listeners.greatBuildingsService, customGbService);
+    assert.equal(listeners.startupService, customStartupService);
+  });
+
+  await t.test(
+    'default exports include instantiated greatBuildingsService and startupService',
+    () => {
+      assert.ok(
+        pkg.greatBuildingsService,
+        'greatBuildingsService should be instantiated',
+      );
+      assert.ok(pkg.startupService, 'startupService should be instantiated');
+      assert.equal(typeof pkg.greatBuildingsService.register, 'function');
+      assert.equal(typeof pkg.startupService.startupService, 'function');
+    },
+  );
+
+  await t.test(
+    'createGreatBuildingsService accepts explicit dependencies',
+    async () => {
+      const { createGreatBuildingsService } =
+        await import('../../src/js/msg/GreatBuildingsService.js');
+      assert.equal(typeof createGreatBuildingsService, 'function');
+
+      const mockGbState = {
+        setDonors: () => {},
+        setInfo: () => {},
+        setDonation: () => {},
+      };
+      const mockLogger = {
+        debug: () => {},
+        info: () => {},
+        warn: () => {},
+        error: () => {},
+      };
+      const service = createGreatBuildingsService({
+        greatBuildingsState: mockGbState,
+        logger: mockLogger,
+      });
+
+      assert.equal(service.greatBuildingsState, mockGbState);
+      assert.equal(service.logger, mockLogger);
+      assert.equal(typeof service.getConstruction, 'function');
+      assert.equal(typeof service.register, 'function');
+    },
+  );
+
+  await t.test(
+    'createStartupService accepts explicit dependencies',
+    async () => {
+      const { createStartupService } =
+        await import('../../src/js/msg/StartupService.js');
+      assert.equal(typeof createStartupService, 'function');
+
+      const mockRenderState = { setCityStatsContext: () => {} };
+      const mockCity = { name: 'TestCity' };
+      const service = createStartupService({
+        startupRenderState: mockRenderState,
+        city: mockCity,
+      });
+
+      assert.equal(service.startupRenderState, mockRenderState);
+      assert.equal(service.city, mockCity);
+      assert.equal(typeof service.startupService, 'function');
+    },
+  );
+});

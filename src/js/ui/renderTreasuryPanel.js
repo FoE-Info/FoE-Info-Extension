@@ -7,7 +7,6 @@
  */
 
 const { buildTreasuryTableHtml } = require('./treasuryTableBuilder.js');
-const { bindTreasuryEvents } = require('./treasuryPanelEvents.js');
 
 let defaultElement = null;
 let defaultCollapse = null;
@@ -102,6 +101,102 @@ function resolveTreasuryDeps(deps = {}) {
     translate:
       deps.translateContainer || defaultTranslateContainer || (() => {}),
   };
+}
+
+function bindTreasuryEvents({
+  treasuryContainer,
+  doc,
+  cpy,
+  col,
+  treasuryHeight,
+  setTreasuryHeight,
+  bindResizableCollapse,
+  ResizeObs,
+}) {
+  if (!treasuryContainer) return;
+
+  logger?.debug('Binding treasury panel events', {
+    hasContainer: !!treasuryContainer,
+    hasDoc: !!doc,
+    hasCopy: !!cpy?.TreasuryCopy,
+    hasCollapse: !!col?.fCollapseTreasury,
+  });
+
+  const copyBtn =
+    (typeof treasuryContainer.querySelector === 'function' ?
+      treasuryContainer.querySelector('#treasuryCopyID')
+    : null) ||
+    (doc && typeof doc.getElementById === 'function' ?
+      doc.getElementById('treasuryCopyID')
+    : null);
+  if (copyBtn && typeof cpy?.TreasuryCopy === 'function') {
+    copyBtn.addEventListener('click', cpy.TreasuryCopy);
+  }
+
+  const labelBtn =
+    (typeof treasuryContainer.querySelector === 'function' ?
+      treasuryContainer.querySelector('#treasuryTextLabel')
+    : null) ||
+    (doc && typeof doc.getElementById === 'function' ?
+      doc.getElementById('treasuryTextLabel')
+    : null);
+  if (labelBtn && typeof col?.fCollapseTreasury === 'function') {
+    labelBtn.addEventListener('click', (e) => {
+      if (
+        e?.target &&
+        typeof e.target.closest === 'function' &&
+        e.target.closest('#treasuryicon')
+      ) {
+        return;
+      }
+      col.fCollapseTreasury();
+    });
+  }
+
+  const iconBtn =
+    (typeof treasuryContainer.querySelector === 'function' ?
+      treasuryContainer.querySelector('#treasuryicon')
+    : null) ||
+    (doc && typeof doc.getElementById === 'function' ?
+      doc.getElementById('treasuryicon')
+    : null);
+  if (
+    iconBtn &&
+    iconBtn !== labelBtn &&
+    typeof col?.fCollapseTreasury === 'function'
+  ) {
+    iconBtn.addEventListener('click', () => {
+      col.fCollapseTreasury();
+    });
+  }
+
+  const treasuryDiv =
+    (typeof treasuryContainer.querySelector === 'function' ?
+      treasuryContainer.querySelector('#treasuryText')
+    : null) ||
+    (doc && typeof doc.getElementById === 'function' ?
+      doc.getElementById('treasuryText')
+    : null);
+  if (treasuryDiv) {
+    const bindResize =
+      bindResizableCollapse || defaultPanelResize?.bindResizableCollapse;
+    if (typeof bindResize === 'function') {
+      try {
+        bindResize({
+          element: treasuryDiv,
+          initialHeight: treasuryHeight,
+          onHeightChange: (h) => {
+            if (typeof setTreasuryHeight === 'function') {
+              setTreasuryHeight(h);
+            }
+          },
+          ResizeObserverClass: ResizeObs,
+        });
+      } catch (err) {
+        logger?.warn('Failed to bind resizable collapse on treasuryText', err);
+      }
+    }
+  }
 }
 
 function renderTreasuryPanel(resources, deps = {}) {
@@ -212,9 +307,11 @@ function renderTreasuryPanel(resources, deps = {}) {
 
 module.exports = {
   renderTreasuryPanel,
+  bindTreasuryEvents,
   clearForTreasury,
   default: {
     renderTreasuryPanel,
+    bindTreasuryEvents,
     clearForTreasury,
   },
 };

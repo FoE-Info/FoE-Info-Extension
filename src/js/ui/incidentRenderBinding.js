@@ -62,7 +62,5 @@ function bindIncidentPanels(
   });
 }
 
-bindIncidentPanels();
-
 module.exports = { bindIncidentPanels };
 module.exports.default = module.exports;

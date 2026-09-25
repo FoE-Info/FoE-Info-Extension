@@ -28,7 +28,5 @@ function bindRewardPanel(
   });
 }
 
-bindRewardPanel();
-
 module.exports = { bindRewardPanel };
 module.exports.default = module.exports;

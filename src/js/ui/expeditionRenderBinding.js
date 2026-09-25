@@ -55,7 +55,5 @@ function bindExpeditionPanel(
   });
 }
 
-bindExpeditionPanel();
-
 module.exports = { bindExpeditionPanel, renderExpeditionFromState };
 module.exports.default = module.exports;

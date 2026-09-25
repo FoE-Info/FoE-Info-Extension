@@ -46,6 +46,6 @@
     "https://*.scoredb.io/*"
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'none'; base-uri 'none';"
+    "extension_pages": "script-src 'self'; object-src 'none'; base-uri 'none'; connect-src 'self' https://*.forgeofempires.com https://*.innogamescdn.com https://discord.com https://discordapp.com https://script.google.com https://*.scoredb.io; img-src 'self' https://*.innogamescdn.com data:;"
   }
 }

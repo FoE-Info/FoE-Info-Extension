@@ -27,7 +27,5 @@ function bindInvestedPanel(
   });
 }
 
-bindInvestedPanel();
-
 module.exports = { bindInvestedPanel };
 module.exports.default = module.exports;
