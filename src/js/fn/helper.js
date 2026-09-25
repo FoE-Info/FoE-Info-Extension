@@ -1,15 +1,8 @@
 /** Legacy helper facade re-exporting GB naming, formatters, i18n, and city lookups. */
-import browser from 'webextension-polyfill';
 import { fGBname } from '../calc/gbNaming.js';
 import { metadataStore } from '../state/MetadataStore.js';
 import { fResourceShortName as formattersResourceShortName } from '../utils/formatters.js';
-import {
-  BuildingEntityLookup,
-  CityEntityDefs,
-  Goods,
-  ResourceNames,
-  url,
-} from '../vars/state.js';
+import { CityEntityDefs, Goods, ResourceNames, url } from '../vars/state.js';
 import { translateContainer as nativeTranslateContainer } from './i18n.js';
 
 export {

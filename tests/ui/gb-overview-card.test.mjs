@@ -19,10 +19,9 @@ test('gbOverviewCard UI Suite', async (t) => {
 
   const mockElement = {
     close: () => '<button class="btn-close"></button>',
-    copy: (id, style, align, collapseState) =>
+    copy: (id, style, align) =>
       `<button id="${id}" class="${style} ${align}">Copy</button>`,
-    icon: (name, target, collapseState) =>
-      `<i class="${name}" data-target="${target}"></i>`,
+    icon: (name, target) => `<i class="${name}" data-target="${target}"></i>`,
   };
 
   const mockCollapse = {

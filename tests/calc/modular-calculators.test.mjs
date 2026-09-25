@@ -43,7 +43,7 @@ import {
 } from '../../src/js/calc/utils/spatialUtils.js';
 import { MetadataStore } from '../../src/js/state/MetadataStore.js';
 
-test('Modular Calculators - eraUtils', (t) => {
+test('Modular Calculators - eraUtils', () => {
   assert.equal(ERAS[0], 'StoneAge');
   assert.equal(getEraIndex('StoneAge'), 0);
   assert.equal(getPreviousEra('IronAge'), 'BronzeAge');
@@ -59,7 +59,7 @@ test('Modular Calculators - eraUtils', (t) => {
   );
 });
 
-test('Modular Calculators - bignumberUtils', (t) => {
+test('Modular Calculators - bignumberUtils', () => {
   assert.equal(toBigNumber(123).toNumber(), 123);
   assert.equal(toBigNumber('456.78').toNumber(), 456.78);
   assert.equal(toBigNumber(null).toNumber(), 0);
@@ -69,7 +69,7 @@ test('Modular Calculators - bignumberUtils', (t) => {
   assert.strictEqual(toBigNumber(bn), bn);
 });
 
-test('Modular Calculators - spatialUtils', (t) => {
+test('Modular Calculators - spatialUtils', () => {
   const b1 = { x: 0, y: 0, width: 2, length: 2 };
   const b2 = { x: 2, y: 0, width: 2, length: 2 }; // Right adjacent
   const b3 = { x: 0, y: 2, width: 2, length: 2 }; // Bottom adjacent
@@ -81,7 +81,7 @@ test('Modular Calculators - spatialUtils', (t) => {
   assert.equal(areBuildingsAdjacent(null, b1), false);
 });
 
-test('Modular Calculators - MilitaryBoostCalculator', (t) => {
+test('Modular Calculators - MilitaryBoostCalculator', () => {
   const raw = createRawBoosts();
   tallySingleBoost(
     { type: 'att_boost_attacker', targetedFeature: 'all', value: 20 },
@@ -102,7 +102,7 @@ test('Modular Calculators - MilitaryBoostCalculator', (t) => {
   assert.equal(formatted.blue.base.def.toNumber(), 30);
 });
 
-test('Modular Calculators - ProductionCalculator', (t) => {
+test('Modular Calculators - ProductionCalculator', () => {
   const res = applyProductionBoosts({
     baseCoins: new BigNumber(1000),
     baseSupplies: new BigNumber(500),
@@ -119,7 +119,7 @@ test('Modular Calculators - ProductionCalculator', (t) => {
   assert.equal(res.fp.total.toNumber(), 17);
 });
 
-test('Modular Calculators - GoodsCalculator', (t) => {
+test('Modular Calculators - GoodsCalculator', () => {
   const accum = createGoodsAccumulator();
   processEntityGoods({
     prodResources: {
@@ -147,7 +147,7 @@ test('Modular Calculators - GoodsCalculator', (t) => {
   assert.equal(finalized.treasury.toNumber(), 60);
 });
 
-test('Modular Calculators - UnitCalculator', (t) => {
+test('Modular Calculators - UnitCalculator', () => {
   assert.equal(computeChateauGoods(new BigNumber(500)).toNumber(), 30);
   assert.equal(computeChateauGoods(new BigNumber(0)).toNumber(), 5);
 
@@ -159,7 +159,7 @@ test('Modular Calculators - UnitCalculator', (t) => {
   assert.equal(special.arcBonusPercent.toNumber(), 90);
 });
 
-test('Modular Calculators - GoodsCalculator GB treasury vs Event treasury', (t) => {
+test('Modular Calculators - GoodsCalculator GB treasury vs Event treasury', () => {
   const accum = createGoodsAccumulator();
   processEntityGoods({
     prodResources: {
@@ -192,7 +192,7 @@ test('Modular Calculators - GoodsCalculator GB treasury vs Event treasury', (t) 
   assert.equal(finalized.currentEra.toNumber(), 0);
 });
 
-test('Modular Calculators - UnitCalculator penal_unit single-counting', (t) => {
+test('Modular Calculators - UnitCalculator penal_unit single-counting', () => {
   const accum = createUnitsAccumulator();
   processEntityUnits({
     entity: {
@@ -207,7 +207,7 @@ test('Modular Calculators - UnitCalculator penal_unit single-counting', (t) => {
   assert.equal(accum.dailyUnits.toNumber(), 85);
 });
 
-test('Modular Calculators - GoodsCalculator ignores units', (t) => {
+test('Modular Calculators - GoodsCalculator ignores units', () => {
   const accum = createGoodsAccumulator();
   processEntityGoods({
     prodResources: {
@@ -231,7 +231,7 @@ test('Modular Calculators - GoodsCalculator ignores units', (t) => {
   assert.equal(accum.otherGoods.toNumber(), 0);
 });
 
-test('Modular Calculators - ProductionCalculator excludes penal_unit from res.units', (t) => {
+test('Modular Calculators - ProductionCalculator excludes penal_unit from res.units', () => {
   const entity = {
     cityentity_id: 'X_ProgressiveEra_Landmark1',
     state: { current_product: { name: 'penal_unit', amount: 80 } },
@@ -240,7 +240,7 @@ test('Modular Calculators - ProductionCalculator excludes penal_unit from res.un
   assert.equal(res.units, undefined);
 });
 
-test('Modular Calculators - ProductionCalculator handles genericReward unit chests', (t) => {
+test('Modular Calculators - ProductionCalculator handles genericReward unit chests', () => {
   const meta = {
     components: {
       SpaceAgeSpaceHub: {
@@ -284,7 +284,7 @@ test('Modular Calculators - ProductionCalculator handles genericReward unit ches
   assert.equal(res.units, 60);
 });
 
-test('Modular Calculators - spatialUtils set and chain link adjacencies', (t) => {
+test('Modular Calculators - spatialUtils set and chain link adjacencies', () => {
   const store = new MetadataStore();
   store.registerBuildingSets([
     {

@@ -48,16 +48,8 @@ DevTools Panel Viewport (`src/chrome/panel.html`)
 
 ## Non-Negotiable Architectural Invariants
 
-- **File Size Ceiling**: Maximum 500 lines per module in `src/js/` (absolute dispatch ceiling 800 lines). Target: 100–300 lines. See [.agents/rules/modular-architecture.md](../.agents/rules/modular-architecture.md).
+- **File Size Ceiling**: Maximum 500 lines per module in `src/js/` (absolute dispatch ceiling 800 lines). Target: 100–300 lines.
 - **Zero Static Game Metadata**: Game metadata streams strictly from the live InnoGames CDN and RPC responses. No entity dumps or static game JSON inside `src/`.
 - **Passive Observation Only**: No botting, automation, active clicking, or request injection into the game client.
 - **BigNumber Precision**: Forge points, Great Building locks, treasury deposits, and boost calculations must preserve exact arithmetic without floating-point drift.
 - **Strict Debuggability**: Every service, calculator, and renderer instantiates a scoped logger via `createLogger('ModuleName')`.
-
-## Agent & Environment Integration
-
-Antigravity operates directly against the repository's canonical `.agents/` configuration:
-
-- Tools, subagent execution, and lifecycle hooks are documented in [.agents/references/antigravity-environment.md](../.agents/references/antigravity-environment.md).
-- Verification gates and pipelines are defined in [docs/COMMANDS.md](COMMANDS.md).
-- Automation opportunities and Python SDK integration design are documented in [docs/specs/2026-09-19-google-antigravity-sdk-automation.md](specs/2026-09-19-google-antigravity-sdk-automation.md).

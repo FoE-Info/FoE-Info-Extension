@@ -90,7 +90,7 @@ if (typeof window !== 'undefined' && !window.__foe_info_bridge_active) {
             postData,
           })
           .catch(() => {});
-      } catch (e) {}
+      } catch {}
     }
   });
 }

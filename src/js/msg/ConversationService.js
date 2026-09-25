@@ -1,9 +1,4 @@
 /** Messages and teasers RPC service for player conversation threads. */
-let Alert;
-try {
-  const bs = require('bootstrap');
-  Alert = bs.Alert;
-} catch {}
 let dateUtils = {};
 try {
   dateUtils = require('../utils/date.js');

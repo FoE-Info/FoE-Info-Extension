@@ -317,7 +317,6 @@ function register(dispatcher, options = {}) {
     options.getPendingUpdate || handlePendingUpdate;
   const targetSetSignal = options.setSignal || setSignal;
   const targetRemoveSignal = options.removeSignal || removeSignal;
-  const targetUpdateSignal = options.updateSignal || updateSignal;
 
   dispatcher.register(
     'GuildBattlegroundService',

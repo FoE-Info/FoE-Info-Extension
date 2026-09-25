@@ -8,7 +8,7 @@ import { registerLegacyBridge } from '../../src/js/protocol/legacyBridge.js';
 test('RPC Envelope Routing - end-to-end multi-service batch dispatch', async () => {
   let legacyStartupCalled = false;
   cityMapService.register(messageDispatcher, {
-    startupService: (msg) => {
+    startupService: () => {
       legacyStartupCalled = true;
       return { success: true };
     },

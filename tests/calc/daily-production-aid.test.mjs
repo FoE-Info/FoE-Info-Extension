@@ -3,16 +3,13 @@ import test from 'node:test';
 import BigNumber from 'bignumber.js';
 import {
   calculateDailyProductionAid,
-  extractEntityProductionData,
   isEntityAided,
   isEntityMotivatable,
 } from '../../src/js/calc/prod/DailyProductionAidCalculator.js';
 import {
   buildUnaidedIndicatorHTML,
-  formatClanGoodsHTML,
   formatFpHTML,
   formatGoodsHTML,
-  formatUnitsHTML,
 } from '../../src/js/ui/components/statFormatters.js';
 import { renderLiveCityStats } from '../../src/js/ui/renderLiveCityStats.js';
 import { buildOwnCityCard } from '../../src/js/ui/templates/ownCityCard.js';

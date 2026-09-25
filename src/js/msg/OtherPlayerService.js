@@ -68,7 +68,6 @@ let setPlayerName = () => {};
 let updatePlayerNameCache = () => {};
 let PlayerName = '';
 let MyInfo = null;
-let CityProtections = [];
 let PlayerID = 0;
 let gbSelected = null;
 
@@ -79,7 +78,6 @@ try {
     if (state.updatePlayerNameCache)
       updatePlayerNameCache = state.updatePlayerNameCache;
     if (state.PlayerName !== undefined) PlayerName = state.PlayerName;
-    if (state.CityProtections) CityProtections = state.CityProtections;
     if (state.PlayerID !== undefined) PlayerID = state.PlayerID;
     if (state.MyInfo) MyInfo = state.MyInfo;
     if (state.GBselected !== undefined) gbSelected = state.GBselected;
@@ -177,7 +175,7 @@ function otherPlayerService(msg) {
   }
 }
 
-function otherPlayerServiceUpdateActions(msg, options = {}) {
+function otherPlayerServiceUpdateActions(msg) {
   const payload = msg?.responseData || msg || {};
   const friendsList = payload.friends || [];
   const guildList =

@@ -94,9 +94,8 @@ test('renderGuildPanel UI Suite', async (t) => {
         },
         element: {
           close: () => '<button class="btn-close"></button>',
-          copy: (id, style, align, isCol) =>
-            `<button id="${id}" class="copy-btn">Copy</button>`,
-          icon: (id, target, isCol) => `<span id="${id}">[-]</span>`,
+          copy: (id) => `<button id="${id}" class="copy-btn">Copy</button>`,
+          icon: (id) => `<span id="${id}">[-]</span>`,
         },
         helper: {
           escapeHTML: (s) => s,

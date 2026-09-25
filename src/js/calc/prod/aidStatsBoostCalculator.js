@@ -9,9 +9,6 @@
 
 const BigNumber = require('bignumber.js');
 const { toBigNumber } = require('../utils/bignumberUtils.js');
-const { createLogger } = require('../../utils/logger.js');
-
-const logger = createLogger('aidStatsBoostCalc');
 
 /**
  * Applies a percentage boost to a BigNumber base amount.

@@ -35,8 +35,6 @@ import {
   createStartupContext,
   createTimingTracker,
   initializeStartupSession,
-  initStartupUser,
-  resetCityStartupState,
   updateCombatTotals as updateCombatTotalsState,
 } from './StartupStateInitializer.js';
 

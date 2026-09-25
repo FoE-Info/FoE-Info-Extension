@@ -35,7 +35,6 @@ try {
 } catch {}
 
 let ArmyUnits = {};
-let lastArmyMsg = null;
 
 const ERA_LEVELS = {
   BronzeAge: 1,
@@ -141,7 +140,6 @@ function armyUnitManagementService(msg, deps = {}) {
     };
   }
 
-  lastArmyMsg = msg;
   const MilitaryDefs = deps.MilitaryDefs || defaultState?.MilitaryDefs || {};
   const unitsPerEra = [];
   let allUnits = 0;

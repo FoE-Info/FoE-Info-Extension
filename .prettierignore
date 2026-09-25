@@ -1,11 +1,11 @@
 node_modules
 build
 package-lock.json
-uv.lock
 mise.lock
 *.toml
 .idea
 src/js/fn/constants.js
+.agent/
 .agents/
 tests/fixtures/
 src/fonts/
@@ -16,6 +16,3 @@ scripts/scratch-*.mjs
 docs/har/
 docs/heap-snapshots/
 .worktrees/
-worktrees/
-# Existing local agent conversation prompts; preserve their original contents.
-docs/antigravity_prompt_*.md

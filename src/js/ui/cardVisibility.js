@@ -25,12 +25,8 @@ if (typeof __webpack_require__ !== 'undefined') {
   }
 }
 
-let isDebugEnabledGlobal = () => false;
 try {
   const loggerModule = require('../utils/logger.js');
-  if (typeof loggerModule.isDebugEnabled === 'function') {
-    isDebugEnabledGlobal = loggerModule.isDebugEnabled;
-  }
   if (typeof loggerModule.onDebugToggle === 'function') {
     loggerModule.onDebugToggle(() => {
       applyCardVisibility();
@@ -143,17 +139,10 @@ function applyContextVisibility(opts, activeView) {
   return true;
 }
 
-function applyCardVisibility(
-  optionsOverride = null,
-  debugOverride = null,
-  viewOverride = null,
-) {
+function applyCardVisibility(optionsOverride = null) {
+  const viewOverride = arguments.length > 2 ? arguments[2] : null;
   if (typeof document === 'undefined') return;
   const opts = optionsOverride || showOptionsState || {};
-  const isDebug =
-    debugOverride !== null && debugOverride !== undefined ?
-      Boolean(debugOverride)
-    : isDebugEnabledGlobal();
 
   let activeView = currentView;
   if (viewOverride !== null && viewOverride !== undefined) {

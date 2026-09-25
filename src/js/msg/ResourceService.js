@@ -168,7 +168,7 @@ function lockGoodsPanel() {
   return false;
 }
 
-function onMarketOpened(msg) {
+function onMarketOpened() {
   unlockGoodsPanel();
   const currentGoods = exportsObj.goods || Resources;
   if (!currentGoods || Object.keys(currentGoods).length === 0) {
