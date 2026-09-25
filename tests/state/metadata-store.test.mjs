@@ -4,7 +4,7 @@ import metadataServicePkg from '../../src/js/msg/MetadataService.js';
 import pkg from '../../src/js/state/MetadataStore.js';
 
 const { MetadataStore, metadataStore } = pkg;
-const { processMetadataEntry, processMetadataData } = metadataServicePkg;
+const { processMetadataEntry } = metadataServicePkg;
 
 test('MetadataStore - Entity Registration & Canonical Lookup', () => {
   const store = new MetadataStore();

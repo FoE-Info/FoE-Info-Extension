@@ -115,7 +115,7 @@ function extractRankingParams(msg, data, context) {
     if (typeof post === 'string') {
       try {
         post = JSON.parse(post);
-      } catch (e) {
+      } catch {
         post = null;
       }
     }
@@ -252,7 +252,7 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
   }
 
   const data = msg?.responseData || msg;
-  let rewardName = '';
+  let rewardName;
   let subType = '';
   let rewardType = 'blueprint';
   let amount = 1;

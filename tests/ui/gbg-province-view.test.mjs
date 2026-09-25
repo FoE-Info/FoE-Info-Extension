@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import {
-  buildBuildingCostCardHTML,
   buildBuildingCostsTableHTML,
   buildLeaderboardHTML,
   buildProvinceTableHTML,
@@ -349,7 +348,7 @@ describe('gbgProvinceView Suite', () => {
         constructor(cb) {
           this.cb = cb;
         }
-        observe(el) {
+        observe() {
           observed = true;
           this.cb([{ contentRect: { height: 180 } }]);
         }

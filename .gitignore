@@ -41,9 +41,13 @@ __pycache__/
 # Graphify Outputs (git-ignored per workspace rules)
 graphify-out/
 
-# Git Worktrees & Agent Runtime Stamps
+# Agent Runtime, Workspace & Worktrees (Externalized)
+/.agent
+/.agents
+/.omp
+/conductor
+/AGENTS.md
 .worktrees/
-.agents/.last_graph_query_stamp
 
 # CDP Heap Snapshots & Network Traces (browser-testing skill output)
 *.heapsnapshot

@@ -81,7 +81,7 @@ function extractSignalData(msg, payload, context) {
       if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
         return match.requestData;
       }
-    } catch (e) {}
+    } catch {}
   }
 
   if (Array.isArray(msg?.responseData) && msg.responseData.length > 0) {

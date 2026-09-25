@@ -112,12 +112,8 @@ var Top = [0, 0, 0, 0, 0, 0];
 var GBrewards = [0, 0, 0, 0, 0];
 var Reward = [0, 0, 0, 0, 0];
 var currentPercent = state?.donationPercent ? state.donationPercent : 190;
-var googleSheetGame = '';
 var rankings;
 var availablePackageForgePoints = 0;
-
-if (state?.url && state.url.hasOwnProperty('sheetGameURL'))
-  googleSheetGame = state.url.sheetGameURL;
 
 function syncRankingPayload(
   msg,

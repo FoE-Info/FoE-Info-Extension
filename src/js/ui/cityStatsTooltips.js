@@ -6,17 +6,6 @@
  * Decoupled from StartupService monolith.
  */
 
-let Tooltip = null;
-let Popover = null;
-
-try {
-  const bs = require('bootstrap');
-  Tooltip = bs.Tooltip;
-  Popover = bs.Popover;
-} catch {
-  // ESM or testing environment fallback
-}
-
 let initPopovers = null;
 try {
   ({ initPopovers } = require('./components/PopoverManager.js'));
@@ -55,20 +44,6 @@ function showTooltips({
 } = {}) {
   const doc = customDoc;
   if (!doc) return;
-
-  const TooltipClass =
-    customTooltip ||
-    (typeof window !== 'undefined' && window.bootstrap ?
-      window.bootstrap.Tooltip
-    : null) ||
-    Tooltip;
-
-  const PopoverClass =
-    customPopover ||
-    (typeof window !== 'undefined' && window.bootstrap ?
-      window.bootstrap.Popover
-    : null) ||
-    Popover;
 
   if (customTooltip) {
     const options = {

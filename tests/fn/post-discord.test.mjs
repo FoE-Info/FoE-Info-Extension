@@ -51,7 +51,7 @@ describe('Discord Post & Target Sanitization Suite', () => {
         remove() {},
         cloneNode() {
           const clone = createEl(this.id, this.innerHTML);
-          clone.querySelectorAll = (sel) => {
+          clone.querySelectorAll = () => {
             if (clone.innerHTML.includes('text-muted')) {
               return [
                 {
@@ -164,7 +164,7 @@ describe('Discord Post & Target Sanitization Suite', () => {
             cloneNode() {
               return {
                 innerHTML: threadHtml,
-                querySelectorAll(sel) {
+                querySelectorAll() {
                   const mockClone = this;
                   return [
                     {

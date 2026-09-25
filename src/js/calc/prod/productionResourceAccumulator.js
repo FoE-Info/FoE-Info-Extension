@@ -49,7 +49,7 @@ function addPlayerResources(
       result.goods = result.goods.plus(goodsAmt);
       result.goodsMap[k] = (result.goodsMap[k] || 0) + goodsAmt.toNumber();
 
-      let goodEra = bEra;
+      let goodEra;
       const resDef = resourceDefMap?.get(k);
       if (resDef?.era) {
         goodEra = resDef.era;

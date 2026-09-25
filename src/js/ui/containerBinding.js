@@ -41,7 +41,6 @@ function mountPanels(contentEl, containers = {}) {
     quantumLeaderboard,
     quantumContributions,
     goodsInventory,
-    goodsDIV,
     guildOverview,
     guild,
     treasury,

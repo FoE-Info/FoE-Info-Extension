@@ -100,7 +100,6 @@ const helperUrl = new URL('../../src/js/fn/helper.js', import.meta.url);
 const helperSource = readFileSync(helperUrl, 'utf8');
 const helper = await import(helperUrl.href);
 const formatters = await import('../../src/js/utils/formatters.js');
-const renderer = await import('../../src/js/ui/renderBattlegroundsPanel.js');
 
 test('helper.js re-exports the pure formatters with identity parity', () => {
   for (const name of ['fRound', 'fNumber', 'fFormatNumber', 'fAgestring']) {

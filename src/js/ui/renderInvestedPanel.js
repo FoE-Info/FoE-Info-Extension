@@ -19,7 +19,6 @@ import * as state from '../vars/state.js';
 
 let cachedContributions = [];
 let cachedArcBonus = 90;
-let settingsDrawerOpen = false;
 
 function getStoredHiddenKeys() {
   const sync = storage.getSync('hiddenInvestments');
@@ -32,15 +31,6 @@ function getStoredHiddenKeys() {
   } catch {
     return new Set();
   }
-}
-
-function saveHiddenKeys(keySubSet) {
-  const arr = Array.from(keySubSet);
-  storage.set('hiddenInvestments', arr);
-  try {
-    if (typeof localStorage !== 'undefined')
-      localStorage.setItem('foe_hidden_investments', JSON.stringify(arr));
-  } catch {}
 }
 
 function getStoredInvestSettings() {
@@ -64,14 +54,6 @@ function getStoredInvestSettings() {
     }
   } catch {}
   return { showHiddenGb: false, calculateOnlySafeProfit: false };
-}
-
-function saveInvestSettings(settings) {
-  storage.set('investSettings', settings);
-  try {
-    if (typeof localStorage !== 'undefined')
-      localStorage.setItem('foe_invest_settings', JSON.stringify(settings));
-  } catch {}
 }
 
 /**
