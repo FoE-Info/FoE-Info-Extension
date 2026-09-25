@@ -51,7 +51,7 @@ run = "npm run verify"
 
 [tasks.verify-full]
 description = "Run base verification gate plus Graphify AST refresh"
-run = "npm run verify:full"
+run = "npm run verify && mise run graph-ast"
 [tasks.lint]
 description = "Lint source with ESLint"
 run = "npm run lint"
@@ -74,12 +74,12 @@ run = "npm run metadata:query"
 
 [tasks.graph-ast]
 description = "Update FoE-Info Graphify AST"
-run = "npm run graph:foe-info:ast"
+run = "bash .agents/scripts/graphify.sh foe-info ast"
 
 [tasks.graph-update]
 description = "Incremental update of FoE-Info Graphify knowledge graph"
-run = "npm run graph:foe-info:update"
+run = "bash .agents/scripts/graphify.sh foe-info update"
 
 [tasks.graph-reindex]
 description = "Full semantic reindex of FoE-Info knowledge graph"
-run = "npm run graph:foe-info:reindex"
+run = "bash .agents/scripts/graphify.sh foe-info reindex"
