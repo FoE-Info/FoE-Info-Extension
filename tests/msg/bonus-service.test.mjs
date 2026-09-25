@@ -93,3 +93,32 @@ test('BonusService - getLimitedBonuses does not infinitely accumulate City.Forge
   });
   assert.equal(City.ForgePoints, 115);
 });
+
+test('StartupService.resetCityStartupState clears daily bonus accumulator', async () => {
+  const { getLimitedBonuses, resetDailyBonusAccumulator } =
+    await import('../../src/js/msg/BonusService.js');
+  const { City } = await import('../../src/js/state/CityDomainState.js');
+  const { resetCityStartupState } =
+    await import('../../src/js/msg/StartupService.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.js');
+
+  showOptions.showBonus = true;
+  resetDailyBonusAccumulator();
+  City.ForgePoints = 0;
+
+  // Session 1: receive 10 FP daily bonus
+  getLimitedBonuses({
+    responseData: [{ type: 'daily_strategypoint', value: 10 }],
+  });
+  assert.equal(City.ForgePoints, 10);
+
+  // Reload/switch session: resetCityStartupState is called
+  resetCityStartupState(City);
+  assert.equal(City.ForgePoints, 0);
+
+  // Session 2: fresh startup receives 10 FP daily bonus
+  getLimitedBonuses({
+    responseData: [{ type: 'daily_strategypoint', value: 10 }],
+  });
+  assert.equal(City.ForgePoints, 10);
+});

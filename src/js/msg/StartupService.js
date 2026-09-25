@@ -100,6 +100,10 @@ const { resolveMissingCityEntities } = require('./MetadataService.js');
 const { ResourceDefs } = require('./ResourceService.js');
 const { emissaryService } = require('./EmissaryService.js');
 
+let resetDailyBonusAccumulator = () => {};
+try {
+  ({ resetDailyBonusAccumulator } = require('./BonusService.js'));
+} catch {}
 const logger = createLogger('StartupService');
 
 // --- Module-Level State ---
@@ -205,6 +209,11 @@ function resetCityStartupState(City, options = {}) {
   City.ArcBonus = City.ChatBonus = 0;
   City.AOCriticalStrike = City.CCCriticalStrike = City.CriticalStrike = 0;
 
+  const resetBonus =
+    options.resetDailyBonusAccumulator || resetDailyBonusAccumulator;
+  if (typeof resetBonus === 'function') {
+    resetBonus();
+  }
   if (typeof window !== 'undefined') {
     log.debug?.('window', window);
   }
