@@ -76,7 +76,9 @@ const { guildBattlegroundState } =
   await import('../../src/js/state/GuildBattlegroundState.js');
 const { conversationService } =
   await import('../../src/js/msg/ConversationService.js');
-await import('../../src/js/ui/gbgRenderBinding.js');
+const { bindGuildBattlegroundPanels } =
+  await import('../../src/js/ui/gbgRenderBinding.js');
+bindGuildBattlegroundPanels();
 
 showOptions.showBattleground = false;
 

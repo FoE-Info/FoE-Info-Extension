@@ -59,19 +59,19 @@ async function postData(targetUrl = '', data = {}) {
 }
 
 function postToDiscord(text) {
-  var webHookUrl = url?.discordTargetURL;
+  let webHookUrl = url?.discordTargetURL;
   if (!webHookUrl) {
     logger?.debug('Discord Webhook URL is not configured in options.');
     return;
   }
 
   if (typeof window !== 'undefined' && window.getSelection) {
-    var selection = window.getSelection();
+    let selection = window.getSelection();
     if (selection && selection.removeAllRanges) selection.removeAllRanges();
   }
 
-  var oReq = new XMLHttpRequest();
-  var params = {
+  let oReq = new XMLHttpRequest();
+  let params = {
     username: MyInfo?.name || 'FoE-Info',
     avatar_url: '',
     content: text,
@@ -174,15 +174,15 @@ function postTargetGenToDiscord() {
 
 function postGBGtoSS() {
   // console.debug(data[0]);
-  var googleSheetAPI = url.sheetGuildURL;
+  let googleSheetAPI = url.sheetGuildURL;
 
-  var reqData = {
+  let reqData = {
     sheet: 'GBG',
     epoc: EpocTime,
     GBGdata: GBGdata,
   };
 
-  var oReq = new XMLHttpRequest();
+  let oReq = new XMLHttpRequest();
   oReq.open('POST', googleSheetAPI, true);
   oReq.setRequestHeader('Content-type', 'application/json');
   oReq.setRequestHeader('Access-Control-Allow-Origin', '*');
@@ -198,22 +198,22 @@ function postGBGtoSS() {
 }
 
 function postAlerttoDsicord() {
-  var copytext = document.getElementById('alertText').textContent;
+  let copytext = document.getElementById('alertText').textContent;
   postToDiscord(copytext);
 }
 
 function logToDiscord(text) {
-  var webHookUrl = url.discordLogURL || url.discordTargetURL;
+  let webHookUrl = url.discordLogURL || url.discordTargetURL;
   if (!webHookUrl) {
     console.warn('Discord Log Webhook URL is not configured.');
     return;
   }
 
-  var selection = window.getSelection();
+  let selection = window.getSelection();
   selection.removeAllRanges();
 
-  var oReq = new XMLHttpRequest();
-  var params = {
+  let oReq = new XMLHttpRequest();
+  let params = {
     username: MyInfo.name,
     avatar_url: '',
     content: text,
@@ -230,33 +230,39 @@ function logToDiscord(text) {
 
 function postPlayerToSS(visitData) {
   // console.debug(visitData);
-  var googleSheetAPI = url.sheetGuildURL;
+  let googleSheetAPI = url.sheetGuildURL;
 
   alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
 		${element.close()}
 		<p id="alertText"><strong>Posting Guild Stats to SS ... </strong><br>${visitData[0].Name}</p></div>`;
 
-  var reqData = {
+  let reqData = {
     sheet: 'Guild',
     playerData: visitData,
     user: MyInfo.name,
   };
 
-  var oReq = new XMLHttpRequest();
+  let oReq = new XMLHttpRequest();
   oReq.open('POST', googleSheetAPI, true);
   oReq.setRequestHeader('Content-type', 'application/json');
-  oReq.setRequestHeader('Access-Control-Allow-Origin', '*');
   oReq.onreadystatechange = function () {
     if (oReq.readyState == XMLHttpRequest.DONE) {
       // alert(oReq.responseText);
       console.debug(oReq.responseText);
       try {
+        const resObj = JSON.parse(oReq.responseText);
+        const resultText = document.createTextNode(resObj.result || '');
         alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
 				${element.close()}
-				<p id="alertText"><strong>Guild Stats: </strong><br>${JSON.parse(oReq.responseText).result}
-				</p></div>`;
+				<p id="alertText"><strong>Guild Stats: </strong><br></p></div>`;
+        const pTag = alerts.querySelector('#alertText');
+        if (pTag) pTag.appendChild(resultText);
       } catch {
-        alerts.innerHTML = oReq.responseText;
+        alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
+				${element.close()}
+				<p id="alertText"><strong>Error: </strong><br></p></div>`;
+        const pTag = alerts.querySelector('#alertText');
+        if (pTag) pTag.appendChild(document.createTextNode(oReq.responseText));
       }
       setTimeout(function () {
         const alert = Alert.getOrCreateInstance(`#alertText`);

@@ -1,12 +1,14 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
-import statePkg from '../../src/js/state/ExpeditionState.js';
-import '../../src/js/ui/expeditionRenderBinding.js';
 import {
   guildExpeditionService,
   resetExpeditionCache,
 } from '../../src/js/msg/GuildExpeditionService.js';
+import statePkg from '../../src/js/state/ExpeditionState.js';
+import { bindExpeditionPanel } from '../../src/js/ui/expeditionRenderBinding.js';
 import { buildExpeditionContentHtml } from '../../src/js/ui/expeditionTables.js';
+
+bindExpeditionPanel();
 
 const { expeditionState } = statePkg;
 

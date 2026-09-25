@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import '../../src/js/ui/outpostRenderBinding.js';
+import { bindOutpostPanel } from '../../src/js/ui/outpostRenderBinding.js';
 import culturalPkg from '../../src/js/ui/renderCulturalPanel.js';
 
 const { renderCulturalPanel, setShowOptions } = culturalPkg;
@@ -39,6 +39,7 @@ function createMockDOM() {
 
 test('OutpostService & Cultural Settlement Lifecycle Suite', async (t) => {
   createMockDOM();
+  bindOutpostPanel();
   const outpostPkg = await import('../../src/js/msg/OutpostService.js');
   const { OutpostService, Settlement, isSettlementActive } =
     outpostPkg.default || outpostPkg;

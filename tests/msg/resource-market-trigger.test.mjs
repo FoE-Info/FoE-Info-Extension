@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import resourcePkg from '../../src/js/msg/ResourceService.js';
-import '../../src/js/ui/resourceRenderBinding.js';
 import dispatcherPkg from '../../src/js/protocol/MessageDispatcher.js';
+import { bindResourcePanel } from '../../src/js/ui/resourceRenderBinding.js';
 import loggerPkg from '../../src/js/utils/logger.js';
 
 const { MessageDispatcher } = dispatcherPkg;
@@ -52,6 +52,7 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
   };
 
   const goodsDiv = global.document.getElementById('goods');
+  bindResourcePanel();
 
   const openMarket = async (method = 'getTradeList') => {
     const dispatcher = new MessageDispatcher();

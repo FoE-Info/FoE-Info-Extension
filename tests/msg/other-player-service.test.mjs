@@ -4,7 +4,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import startupPkg from '../../src/js/state/StartupRenderState.js';
-import '../../src/js/ui/visitedCityRenderBinding.js';
+import { bindVisitedCityRender } from '../../src/js/ui/visitedCityRenderBinding.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURES_DIR = path.resolve(__dirname, '../fixtures/visits');
@@ -38,6 +38,7 @@ test('OtherPlayerService Protocol & Lifecycle Suite', async (t) => {
       appendChild: () => {},
     }),
   };
+  bindVisitedCityRender();
 
   const {
     otherPlayerService,

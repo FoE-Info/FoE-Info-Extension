@@ -4,8 +4,8 @@ import path from 'node:path';
 import test from 'node:test';
 import BigNumber from 'bignumber.js';
 import factoryDefaultsPkg from '../../src/js/state/factoryDefaults.js';
+import { bindArmyPanel } from '../../src/js/ui/armyRenderBinding.js';
 import panelDispatcherPkg from '../../src/js/ui/panelDispatcher.js';
-import '../../src/js/ui/armyRenderBinding.js';
 
 const { createFreshWorldSettings, FACTORY_WORLD_SETTINGS } = factoryDefaultsPkg;
 
@@ -258,6 +258,7 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
           return null;
         },
       };
+      bindArmyPanel();
 
       try {
         const payload = {

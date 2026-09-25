@@ -11,7 +11,7 @@ import {
   getPlayerLink,
   inactiveHTML,
   resolveCardParams,
-} from '../../src/js/ui/gbPlaceTableRows.js';
+} from '../../src/js/ui/renderGbDonationPanel.js';
 
 test('gbPlaceTableRows UI Helper Suite', async (t) => {
   await t.test(

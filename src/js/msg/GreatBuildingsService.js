@@ -7,7 +7,9 @@ try {
 
 const { calculateArcReward } = require('../calc/GreatBuildingCalculator.js');
 const GreatBuildingRegistry = require('../state/GreatBuildingRegistry.js');
-const { greatBuildingsState } = require('../state/GreatBuildingsState.js');
+const {
+  greatBuildingsState: defaultGreatBuildingsState,
+} = require('../state/GreatBuildingsState.js');
 const GbDonationService = require('./GbDonationService.js');
 const { getContributions } = require('./InvestedService.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
@@ -108,12 +110,12 @@ function getPlayerName(id) {
   return '';
 }
 
-var Top = [0, 0, 0, 0, 0, 0];
-var GBrewards = [0, 0, 0, 0, 0];
-var Reward = [0, 0, 0, 0, 0];
-var currentPercent = state?.donationPercent ? state.donationPercent : 190;
-var rankings;
-var availablePackageForgePoints = 0;
+let Top = [0, 0, 0, 0, 0, 0];
+let GBrewards = [0, 0, 0, 0, 0];
+let Reward = [0, 0, 0, 0, 0];
+let currentPercent = state?.donationPercent ? state.donationPercent : 190;
+let rankings;
+let availablePackageForgePoints = 0;
 
 function syncRankingPayload(
   msg,
@@ -216,127 +218,6 @@ function syncRankingPayload(
   }
 }
 
-function getConstruction(msg, data, context) {
-  const rankingParams = GbDonationService.extractRankingParams(
-    msg,
-    data,
-    context,
-  );
-  const extractedLevel =
-    rankingParams?.level ??
-    GbDonationService.extractRankingLevel(msg, data, context);
-  syncRankingPayload(msg, rankingParams, extractedLevel);
-
-  if (
-    (!GBselected.current || GBselected.current === 0) &&
-    Array.isArray(rankings)
-  ) {
-    const investedSum = (rankings || []).reduce(
-      (sum, r) => sum + (Number(r?.forge_points) || 0),
-      0,
-    );
-    if (investedSum > 0) GBselected.current = investedSum;
-  }
-
-  if (!GBselected.max_level || GBselected.max_level === 0) {
-    GBselected.max_level = (GBselected.level || 0) + 1;
-  }
-
-  showGreatBuldingDonation();
-}
-
-function contributeForgePoints(msg, data, context) {
-  const rankingParams = GbDonationService.extractRankingParams(
-    msg,
-    data,
-    context,
-  );
-  const extractedLevel =
-    rankingParams?.level ??
-    GbDonationService.extractRankingLevel(msg, data, context);
-  syncRankingPayload(msg, rankingParams, extractedLevel);
-
-  const currentViewerId = state?.PlayerID || 0;
-  GbDonationService.updateContributionProgress(
-    GBselected,
-    rankings,
-    rankingParams,
-    currentViewerId,
-  );
-
-  const pId = rankingParams?.playerId || GBselected.player || currentViewerId;
-  const eId = rankingParams?.entityId || GBselected.id || GBselected.entity_id;
-  if (eId) {
-    const cached = GreatBuildingRegistry.getGreatBuilding(pId, eId);
-    if (cached) {
-      cached.current = GBselected.current;
-      cached.current_progress = GBselected.current;
-    }
-  }
-
-  if (!GBselected.max_level || GBselected.max_level === 0) {
-    GBselected.max_level = (GBselected.level || 0) + 1;
-  }
-
-  showGreatBuldingDonation();
-}
-
-function showGreatBuldingDonation() {
-  fCheckOutput();
-  if (!Array.isArray(rankings)) {
-    rankings = [];
-  }
-
-  const pName = state?.PlayerName || GBselected.player_name || '';
-  const pId = state?.PlayerID || 0;
-
-  greatBuildingsState.setDonors({
-    GBselected,
-    rankings,
-    showOptions,
-    greatbuilding: state?.greatbuilding || null,
-    Top,
-    GBrewards,
-    Reward,
-    City,
-    PlayerID: pId,
-    playerName: pName,
-    setPlayerName,
-    helper,
-    element,
-    collapse,
-    copy,
-    calculateArcReward,
-  });
-  greatBuildingsState.setInfo({
-    targetEl: state?.gbInfoDIV || null,
-    gbData: GBselected,
-    playerName: pName,
-    showOptions,
-  });
-
-  greatBuildingsState.setDonation({
-    GBselected,
-    showOptions,
-    donationDIV: state?.donationDIV || null,
-    donation2DIV: state?.donation2DIV || null,
-    Top,
-    GBrewards,
-    currentPercent,
-    City,
-    PlayerID: pId,
-    PlayerName: pName,
-    MyInfo,
-    donationSuffix: state?.donationSuffix || '',
-    availablePackageForgePoints,
-    onRerender: showGreatBuldingDonation,
-  });
-}
-
-function getConstructionRanking(msg, data, context) {
-  return getConstruction(msg, data, context);
-}
-
 function handleNewReward(msg) {
   const container =
     state?.cityrewards ||
@@ -374,112 +255,293 @@ function extractRankingData(msg, context) {
   return GbDonationService.extractRankingData(msg, context);
 }
 
-function register(dispatcher = messageDispatcher, options = {}) {
-  if (!dispatcher || typeof dispatcher.register !== 'function') return this;
+function createGreatBuildingsService({
+  greatBuildingsState: injectedGbState = null,
+  metadataStore: _injectedMetadataStore = null,
+  gbRegistry: injectedGbRegistry = null,
+  logger: injectedLogger = null,
+  state: injectedState = null,
+  showOptions: injectedShowOptions = null,
+} = {}) {
+  const greatBuildingsState = injectedGbState || defaultGreatBuildingsState;
+  const activeGbRegistry = injectedGbRegistry || GreatBuildingRegistry;
+  const activeLogger = injectedLogger || logger;
+  const activeState = injectedState || state;
+  const activeShowOptions = injectedShowOptions || showOptions;
 
-  const targetGbSelected =
-    options.GBselected || options.gbSelected || GBselected;
-  const targetGbRegistry =
-    options.gbRegistry ||
-    options.GreatBuildingRegistry ||
-    GreatBuildingRegistry;
-  const targetMyInfo = options.MyInfo || MyInfo;
-  const targetSetPlayerName = options.setPlayerName || setPlayerName;
-  const customGetConstruction = options.getConstruction;
-  const customGetConstructionRanking = options.getConstructionRanking;
-  const customGetContributions = options.getContributions;
-  const customGetAvailablePackageFp = options.getAvailablePackageForgePoints;
+  function localSyncRankingPayload(
+    msg,
+    rankingParams,
+    extractedLevel,
+    target = GBselected,
+  ) {
+    return syncRankingPayload(
+      msg,
+      rankingParams,
+      extractedLevel,
+      target,
+      activeGbRegistry,
+      activeState?.MyInfo || MyInfo,
+      setPlayerName,
+    );
+  }
 
-  dispatcher.register(
-    'GreatBuildingsService',
-    'getConstruction',
-    (msg, context) => {
-      const reqData = extractRankingData(msg, context);
-      return (customGetConstruction || getConstruction)(msg, reqData, context);
-    },
-  );
+  function localShowGreatBuldingDonation() {
+    fCheckOutput();
+    if (!Array.isArray(rankings)) {
+      rankings = [];
+    }
 
-  dispatcher.register(
-    'GreatBuildingsService',
-    'contributeForgePoints',
-    (msg, context) => {
-      const reqData = extractRankingData(msg, context);
-      return (options.contributeForgePoints || contributeForgePoints)(
-        msg,
-        reqData,
-        context,
+    const pName = activeState?.PlayerName || GBselected.player_name || '';
+    const pId = activeState?.PlayerID || 0;
+
+    greatBuildingsState.setDonors({
+      GBselected,
+      rankings,
+      showOptions: activeShowOptions,
+      greatbuilding: activeState?.greatbuilding || null,
+      Top,
+      GBrewards,
+      Reward,
+      City,
+      PlayerID: pId,
+      playerName: pName,
+      setPlayerName,
+      helper,
+      element,
+      collapse,
+      copy,
+      calculateArcReward,
+    });
+    greatBuildingsState.setInfo({
+      targetEl: activeState?.gbInfoDIV || null,
+      gbData: GBselected,
+      playerName: pName,
+      showOptions: activeShowOptions,
+    });
+
+    greatBuildingsState.setDonation({
+      GBselected,
+      showOptions: activeShowOptions,
+      donationDIV: activeState?.donationDIV || null,
+      donation2DIV: activeState?.donation2DIV || null,
+      Top,
+      GBrewards,
+      currentPercent,
+      City,
+      PlayerID: pId,
+      PlayerName: pName,
+      MyInfo,
+      donationSuffix: activeState?.donationSuffix || '',
+      availablePackageForgePoints,
+      onRerender: localShowGreatBuldingDonation,
+    });
+  }
+
+  function localGetConstruction(msg, data, context) {
+    const rankingParams = GbDonationService.extractRankingParams(
+      msg,
+      data,
+      context,
+    );
+    const extractedLevel =
+      rankingParams?.level ??
+      GbDonationService.extractRankingLevel(msg, data, context);
+    localSyncRankingPayload(msg, rankingParams, extractedLevel);
+
+    if (
+      (!GBselected.current || GBselected.current === 0) &&
+      Array.isArray(rankings)
+    ) {
+      const investedSum = (rankings || []).reduce(
+        (sum, r) => sum + (Number(r?.forge_points) || 0),
+        0,
       );
-    },
-  );
+      if (investedSum > 0) GBselected.current = investedSum;
+    }
 
-  dispatcher.register(
-    'GreatBuildingsService',
-    'getConstructionRanking',
-    (msg, context) => {
-      const reqData = extractRankingData(msg, context);
-      if (customGetConstructionRanking) {
-        return customGetConstructionRanking(msg, reqData, context);
+    if (!GBselected.max_level || GBselected.max_level === 0) {
+      GBselected.max_level = (GBselected.level || 0) + 1;
+    }
+
+    localShowGreatBuldingDonation();
+  }
+
+  function localContributeForgePoints(msg, data, context) {
+    const rankingParams = GbDonationService.extractRankingParams(
+      msg,
+      data,
+      context,
+    );
+    const extractedLevel =
+      rankingParams?.level ??
+      GbDonationService.extractRankingLevel(msg, data, context);
+    localSyncRankingPayload(msg, rankingParams, extractedLevel);
+
+    const currentViewerId = activeState?.PlayerID || 0;
+    GbDonationService.updateContributionProgress(
+      GBselected,
+      rankings,
+      rankingParams,
+      currentViewerId,
+    );
+
+    const pId = rankingParams?.playerId || GBselected.player || currentViewerId;
+    const eId =
+      rankingParams?.entityId || GBselected.id || GBselected.entity_id;
+    if (eId) {
+      const cached = activeGbRegistry.getGreatBuilding(pId, eId);
+      if (cached) {
+        cached.current = GBselected.current;
+        cached.current_progress = GBselected.current;
       }
-      if (options.GBselected || options.gbSelected) {
-        const rankingParams = GbDonationService.extractRankingParams(
+    }
+
+    if (!GBselected.max_level || GBselected.max_level === 0) {
+      GBselected.max_level = (GBselected.level || 0) + 1;
+    }
+
+    localShowGreatBuldingDonation();
+  }
+
+  function localGetConstructionRanking(msg, data, context) {
+    return localGetConstruction(msg, data, context);
+  }
+
+  function localRegister(dispatcher = messageDispatcher, options = {}) {
+    if (!dispatcher || typeof dispatcher.register !== 'function')
+      return instance;
+
+    const targetGbSelected =
+      options.GBselected || options.gbSelected || GBselected;
+    const targetGbRegistry =
+      options.gbRegistry || options.GreatBuildingRegistry || activeGbRegistry;
+    const targetMyInfo = options.MyInfo || MyInfo;
+    const targetSetPlayerName = options.setPlayerName || setPlayerName;
+    const customGetConstruction = options.getConstruction;
+    const customGetConstructionRanking = options.getConstructionRanking;
+    const customGetContributions = options.getContributions;
+    const customGetAvailablePackageFp = options.getAvailablePackageForgePoints;
+
+    dispatcher.register(
+      'GreatBuildingsService',
+      'getConstruction',
+      (msg, context) => {
+        const reqData = extractRankingData(msg, context);
+        return (customGetConstruction || localGetConstruction)(
           msg,
           reqData,
           context,
         );
-        const extractedLevel =
-          rankingParams?.level ??
-          GbDonationService.extractRankingLevel(msg, reqData, context);
-        syncRankingPayload(
+      },
+    );
+
+    dispatcher.register(
+      'GreatBuildingsService',
+      'contributeForgePoints',
+      (msg, context) => {
+        const reqData = extractRankingData(msg, context);
+        return (options.contributeForgePoints || localContributeForgePoints)(
           msg,
-          rankingParams,
-          extractedLevel,
-          targetGbSelected,
-          targetGbRegistry,
-          targetMyInfo,
-          targetSetPlayerName,
+          reqData,
+          context,
         );
-        return;
-      }
-      return getConstructionRanking(msg, reqData, context);
-    },
-  );
+      },
+    );
 
-  dispatcher.register('GreatBuildingsService', 'getContributions', (msg) => {
-    return (customGetContributions || getContributions)(msg);
-  });
+    dispatcher.register(
+      'GreatBuildingsService',
+      'getConstructionRanking',
+      (msg, context) => {
+        const reqData = extractRankingData(msg, context);
+        if (customGetConstructionRanking) {
+          return customGetConstructionRanking(msg, reqData, context);
+        }
+        if (options.GBselected || options.gbSelected) {
+          const rankingParams = GbDonationService.extractRankingParams(
+            msg,
+            reqData,
+            context,
+          );
+          const extractedLevel =
+            rankingParams?.level ??
+            GbDonationService.extractRankingLevel(msg, reqData, context);
+          syncRankingPayload(
+            msg,
+            rankingParams,
+            extractedLevel,
+            targetGbSelected,
+            targetGbRegistry,
+            targetMyInfo,
+            targetSetPlayerName,
+          );
+          return;
+        }
+        return localGetConstructionRanking(msg, reqData, context);
+      },
+    );
 
-  dispatcher.register(
-    'GreatBuildingsService',
-    'getAvailablePackageForgePoints',
-    (msg, context) =>
-      (customGetAvailablePackageFp || getAvailablePackageForgePoints)(
-        msg,
-        context,
-      ),
-  );
+    dispatcher.register('GreatBuildingsService', 'getContributions', (msg) => {
+      return (customGetContributions || getContributions)(msg);
+    });
 
-  GbDonationService.register(dispatcher, options);
+    dispatcher.register(
+      'GreatBuildingsService',
+      'getAvailablePackageForgePoints',
+      (msg, context) =>
+        (customGetAvailablePackageFp || getAvailablePackageForgePoints)(
+          msg,
+          context,
+        ),
+    );
 
-  logger?.debug('GreatBuildingsService registered RPC handlers');
-  return this;
+    GbDonationService.register(dispatcher, options);
+
+    activeLogger?.debug('GreatBuildingsService registered RPC handlers');
+    return instance;
+  }
+
+  const instance = {
+    getConstruction: localGetConstruction,
+    contributeForgePoints: localContributeForgePoints,
+    showGreatBuldingDonation: localShowGreatBuldingDonation,
+    getConstructionRanking: localGetConstructionRanking,
+    setCurrentPercent,
+    getContributions,
+    fCheckOutput,
+    getAvailablePackageForgePoints,
+    getAvailablePackageFp,
+    handleNewReward,
+    extractRankingData,
+    register: localRegister,
+    syncRankingPayload: localSyncRankingPayload,
+    greatBuildingsState,
+    gbRegistry: activeGbRegistry,
+    logger: activeLogger,
+  };
+
+  return instance;
 }
 
-const greatBuildingsService = exports;
+const defaultGreatBuildingsService = createGreatBuildingsService();
 
-exports.getConstruction = getConstruction;
-exports.contributeForgePoints = contributeForgePoints;
-exports.showGreatBuldingDonation = showGreatBuldingDonation;
-exports.getConstructionRanking = getConstructionRanking;
+exports.createGreatBuildingsService = createGreatBuildingsService;
+exports.getConstruction = defaultGreatBuildingsService.getConstruction;
+exports.contributeForgePoints =
+  defaultGreatBuildingsService.contributeForgePoints;
+exports.showGreatBuldingDonation =
+  defaultGreatBuildingsService.showGreatBuldingDonation;
+exports.getConstructionRanking =
+  defaultGreatBuildingsService.getConstructionRanking;
 exports.setCurrentPercent = setCurrentPercent;
 exports.getContributions = getContributions;
-// export function fCheckOutput
 exports.fCheckOutput = fCheckOutput;
 exports.getAvailablePackageForgePoints = getAvailablePackageForgePoints;
 exports.getAvailablePackageFp = getAvailablePackageFp;
 exports.handleNewReward = handleNewReward;
 exports.extractRankingData = extractRankingData;
-exports.register = register;
-exports.greatBuildingsService = greatBuildingsService;
-exports.GreatBuildingsService = greatBuildingsService;
-exports.default = exports;
+exports.register = defaultGreatBuildingsService.register;
+exports.greatBuildingsService = defaultGreatBuildingsService;
+exports.GreatBuildingsService = defaultGreatBuildingsService;
+exports.default = defaultGreatBuildingsService;
 module.exports = exports;

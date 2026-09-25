@@ -17,7 +17,6 @@ const {
   groupGalaxyBuildings,
   renderGalaxyBuildingList,
 } = require('./galaxyBuildingGrouper.js');
-const { bindGalaxyCollapseEvents } = require('./galaxyPanelEvents.js');
 
 /** Galaxy is context-gated: hidden in GBG/GE/QI/SETTLEMENT/OTHER_PLAYER. */
 function contextAllowsGalaxy() {
@@ -27,6 +26,48 @@ function contextAllowsGalaxy() {
     return allowed ? allowed.has('galaxy') : true;
   } catch {
     return true;
+  }
+}
+
+/**
+ * Binds click listeners for collapsing/expanding the Galaxy panel.
+ *
+ * @param {Object} params
+ * @param {HTMLElement|Object} params.el - Container element.
+ * @param {Function} params.onToggleCollapse - Collapse toggle callback.
+ */
+function bindGalaxyCollapseEvents({ el, onToggleCollapse }) {
+  if (!el || typeof onToggleCollapse !== 'function') {
+    return;
+  }
+
+  const labelEl =
+    typeof document !== 'undefined' ?
+      document.getElementById('galaxyTextLabel')
+    : el.querySelector?.('#galaxyTextLabel');
+
+  if (labelEl) {
+    labelEl.addEventListener('click', (e) => {
+      if (
+        e?.target &&
+        typeof e.target.closest === 'function' &&
+        e.target.closest('#galaxyicon')
+      ) {
+        return;
+      }
+      onToggleCollapse();
+    });
+  }
+
+  const iconEl =
+    typeof document !== 'undefined' ?
+      document.getElementById('galaxyicon')
+    : el.querySelector?.('#galaxyicon');
+
+  if (iconEl && iconEl !== labelEl) {
+    iconEl.addEventListener('click', () => {
+      onToggleCollapse();
+    });
   }
 }
 
@@ -207,6 +248,7 @@ if (
 }
 
 module.exports = {
+  bindGalaxyCollapseEvents,
   groupGalaxyBuildings,
   renderGalaxyPanel,
   showGalaxy,

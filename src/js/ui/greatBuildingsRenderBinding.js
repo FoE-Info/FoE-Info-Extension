@@ -48,7 +48,5 @@ function bindGreatBuildingsPanels(
   });
 }
 
-bindGreatBuildingsPanels();
-
 module.exports = { bindGreatBuildingsPanels };
 module.exports.default = module.exports;

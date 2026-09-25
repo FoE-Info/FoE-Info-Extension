@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-const eventsPkg = await import('../../src/js/ui/treasuryPanelEvents.js');
+const eventsPkg = await import('../../src/js/ui/renderTreasuryPanel.js');
 const { bindTreasuryEvents } = eventsPkg.default || eventsPkg;
 
 test('treasuryPanelEvents: bindTreasuryEvents attaches copy, collapse, icon listeners and resizable binding', () => {

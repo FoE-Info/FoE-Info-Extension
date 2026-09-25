@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { attachGbDonationPanelEvents } from '../../src/js/ui/gbDonationPanelEvents.js';
+import { attachGbDonationPanelEvents } from '../../src/js/ui/renderGbDonationPanel.js';
 
 test('gbDonationPanelEvents Suite', async (t) => {
   await t.test(

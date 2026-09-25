@@ -27,7 +27,5 @@ function bindQuantumPanels(
   });
 }
 
-bindQuantumPanels();
-
 module.exports = { bindQuantumPanels };
 module.exports.default = module.exports;

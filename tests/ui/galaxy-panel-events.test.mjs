@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
-import { bindGalaxyCollapseEvents } from '../../src/js/ui/galaxyPanelEvents.js';
+import { bindGalaxyCollapseEvents } from '../../src/js/ui/renderGalaxyPanel.js';
 
 function createMockNode(id = '') {
   const listeners = new Map();

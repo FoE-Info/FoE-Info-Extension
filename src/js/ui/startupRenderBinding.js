@@ -38,7 +38,5 @@ function bindStartupRenderState(
   });
 }
 
-bindStartupRenderState();
-
 module.exports = { bindStartupRenderState };
 module.exports.default = module.exports;

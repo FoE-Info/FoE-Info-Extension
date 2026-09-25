@@ -103,15 +103,45 @@ test('renderBindings composition root wires every shared store', async (t) => {
     },
   );
 
-  await t.test('importing the barrel subscribes each store', async () => {
-    await import('../../src/js/ui/renderBindings.js');
-    for (const [name, store] of Object.entries(stores)) {
-      assert.ok(
-        store.subscribers.size >= 1,
-        `${name} gained no subscriber from renderBindings.js`,
-      );
-    }
-  });
+  await t.test(
+    'importing the barrel does not eagerly subscribe stores',
+    async () => {
+      await import('../../src/js/ui/renderBindings.js');
+      for (const [name, store] of Object.entries(stores)) {
+        assert.equal(
+          store.subscribers.size,
+          0,
+          `${name} gained subscribers from import alone`,
+        );
+      }
+    },
+  );
+
+  await t.test(
+    'calling initializeUIBindings subscribes each store and returns cleanup',
+    async () => {
+      const { initializeUIBindings } =
+        await import('../../src/js/ui/renderBindings.js');
+      assert.equal(typeof initializeUIBindings, 'function');
+      const unbind = initializeUIBindings();
+      for (const [name, store] of Object.entries(stores)) {
+        assert.ok(
+          store.subscribers.size >= 1,
+          `${name} gained no subscriber from initializeUIBindings()`,
+        );
+      }
+      if (typeof unbind === 'function') {
+        unbind();
+        for (const [name, store] of Object.entries(stores)) {
+          assert.equal(
+            store.subscribers.size,
+            0,
+            `${name} still had subscribers after unbind()`,
+          );
+        }
+      }
+    },
+  );
 
   await t.test('barrel exposes no bind* named exports', async () => {
     const barrel = await import('../../src/js/ui/renderBindings.js');

@@ -19,7 +19,5 @@ function bindGalaxyRender(
   return () => state.setRenderCallback(null);
 }
 
-bindGalaxyRender();
-
 module.exports = { bindGalaxyRender };
 module.exports.default = module.exports;

@@ -89,3 +89,4 @@ temp/
 *.mp3
 *.wav
 *.ogg
+.npmrc
