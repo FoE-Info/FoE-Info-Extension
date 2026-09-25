@@ -18,7 +18,7 @@ run = "npm run setup"
 
 [tasks.setup-full]
 description = "Install npm dependencies and synchronize uv Graphify environment"
-run = "npm run setup:full"
+run = "node scripts/setup.mjs --full"
 [tasks.check]
 description = "Check project code formatting with Prettier"
 run = "npm run check"
@@ -38,6 +38,10 @@ run = "npm run build"
 [tasks.build-dev]
 description = "Build development extension bundle"
 run = "npm run build:dev"
+
+[tasks.build-prod]
+description = "Build optimized production extension bundle (alias for build)"
+run = "npm run build:prod"
 
 [tasks.build-beta]
 description = "Build beta extension bundle"
@@ -113,6 +117,9 @@ run = "npm run release"
 [tasks.release-prod]
 description = "Verify, build, and package production Web Store release"
 run = "npm run release:prod"
+[tasks.browser-control]
+description = "Run Chrome DevTools CDP browser controller"
+run = "node scripts/foe-browser-control.mjs"
 
 [tasks.graph]
 description = "Run Graphify automation across targets (foe-info, forge-hammer, low-tool, metadata)"
