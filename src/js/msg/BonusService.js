@@ -7,6 +7,11 @@ import { Bonus } from '../vars/state.js';
 
 const logger = createLogger('BonusService');
 
+let lastDailyBonusFp = 0;
+
+export function resetDailyBonusAccumulator() {
+  lastDailyBonusFp = 0;
+}
 export function getLimitedBonuses(msg) {
   if (
     showOptions &&
@@ -16,6 +21,7 @@ export function getLimitedBonuses(msg) {
   ) {
     let bonusHTML = '';
     let dailyForgePoints = null;
+    let currentPayloadDailyFp = 0;
     logger.debug('Limited bonuses received:', msg.responseData);
 
     msg.responseData.forEach((entry) => {
@@ -42,10 +48,19 @@ export function getLimitedBonuses(msg) {
         entry.__class__ == 'DailyStrategyPointBonus'
       ) {
         const fp = entry.value ?? entry.amount ?? 0;
-        City.ForgePoints += fp;
-        dailyForgePoints = City.ForgePoints;
+        currentPayloadDailyFp += fp;
       }
     });
+
+    if (currentPayloadDailyFp > 0 || lastDailyBonusFp > 0) {
+      const baseFp =
+        (City.ForgePoints || 0) >= lastDailyBonusFp ?
+          (City.ForgePoints || 0) - lastDailyBonusFp
+        : City.ForgePoints || 0;
+      City.ForgePoints = baseFp + currentPayloadDailyFp;
+      lastDailyBonusFp = currentPayloadDailyFp;
+      dailyForgePoints = City.ForgePoints;
+    }
 
     bonusState.setSummary({
       bonusHTML,
@@ -61,6 +76,7 @@ export function getLimitedBonuses(msg) {
 export class BonusService {
   constructor() {
     this.getLimitedBonuses = getLimitedBonuses;
+    this.resetDailyBonusAccumulator = resetDailyBonusAccumulator;
     this.register = this.register.bind(this);
   }
 

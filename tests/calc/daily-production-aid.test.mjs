@@ -395,6 +395,8 @@ test('DailyProductionAidCalculator - calculates max potential goods by era with 
   assert.equal(result.max.goodsByEra.TomorrowEra.toNumber(), 28);
   assert.equal(result.max.goodsByEra.ArcticFuture.toNumber(), 22);
 
+  assert.ok(BigNumber.isBigNumber(result.maxGoodsList.all_goods_of_age));
+  assert.equal(result.maxGoodsList.all_goods_of_age.toString(), '50');
   // Total max goods: 55 + 28 + 22 = 105
   assert.equal(result.max.goods.toNumber(), 105);
 

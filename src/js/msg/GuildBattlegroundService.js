@@ -434,30 +434,33 @@ function handlePlayerLeaderboard(
       state.donationDIV
     : getStateVar('donationDIV', null);
 
-  perfList.length = 0;
-  gbgList.length = 0;
+  const localPerfList = [];
+  const localGbgList = [];
   const entries = Array.isArray(msg?.responseData) ? msg.responseData : [];
   logger?.debug('handlePlayerLeaderboard parsed entries:', entries.length);
 
   entries.forEach((entry) => {
-    let wonNegotiations = 0;
-    let wonBattles = 0;
-    let attrition = 0;
-    if (entry?.negotiationsWon) wonNegotiations = entry.negotiationsWon;
-    if (entry?.battlesWon) wonBattles = entry.battlesWon;
-    if (entry?.attrition) attrition = entry.attrition;
+    const wonNegotiations =
+      entry?.negotiationsWon ?? entry?.wonNegotiations ?? 0;
+    const wonBattles = entry?.battlesWon ?? entry?.wonBattles ?? 0;
+    const attrition = entry?.attrition ?? 0;
     const playerName = entry?.player?.name || 'Unknown';
-    gbgList.push({
+    localGbgList.push({
       name: playerName,
       total: wonNegotiations * 2 + wonBattles,
     });
-    perfList.push({
+    localPerfList.push({
       name: playerName,
       wonNegotiations,
       wonBattles,
       attrition,
     });
   });
+
+  perfList.length = 0;
+  perfList.push(...localPerfList);
+  gbgList.length = 0;
+  gbgList.push(...localGbgList);
 
   const opts = customShowOptions || globalThis.showOptions || showOptions;
   if (opts?.showBattleground) {
@@ -482,7 +485,7 @@ function handlePlayerLeaderboard(
             sBGtime('not set');
           }
 
-          perfList.forEach((entry) => {
+          localPerfList.forEach((entry) => {
             if (gMembers.find((id) => id.name === entry.name) == null) {
               gMembers.push({
                 name: entry.name,
@@ -492,8 +495,12 @@ function handlePlayerLeaderboard(
             }
           });
 
-          logger?.debug('Saving GBG performance:', gOrigin, perfList.length);
-          storage.set(gOrigin, perfList);
+          logger?.debug(
+            'Saving GBG performance:',
+            gOrigin,
+            localPerfList.length,
+          );
+          storage.set(gOrigin, localPerfList);
 
           if (typeof onPerformanceUpdated === 'function') {
             onPerformanceUpdated(perfList, gOrigin);
@@ -551,10 +558,9 @@ function handleBattlegroundState(msg, { state = {} } = {}) {
         msg.responseData.playerLeaderboardEntries
       : [];
     playerLeaderboardEntries.forEach((entry) => {
-      let wonNegotiations = 0;
-      let wonBattles = 0;
-      if (entry?.wonNegotiations) wonNegotiations = entry.wonNegotiations;
-      if (entry?.wonBattles) wonBattles = entry.wonBattles;
+      const wonNegotiations =
+        entry?.negotiationsWon ?? entry?.wonNegotiations ?? 0;
+      const wonBattles = entry?.battlesWon ?? entry?.wonBattles ?? 0;
       gbgList.push({
         name: entry?.player?.name || 'Unknown',
         total: wonNegotiations * 2 + wonBattles,

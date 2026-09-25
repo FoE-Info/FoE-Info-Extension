@@ -111,4 +111,30 @@ test('HAR ground truth: treasury donation history pagination', async (t) => {
     });
     assert.equal(service.getLogs().length, pages[0].responseData.logs.length);
   });
+
+  await t.test(
+    'handles out-of-order pagination arrival without data loss',
+    () => {
+      const pages = loadPages();
+      const service = new TreasuryService();
+
+      // Simulate offset 10 arriving BEFORE offset 0
+      service.getTreasuryLogs({
+        requestData: pages[1].requestData, // offset 10
+        responseData: pages[1].responseData,
+      });
+      assert.equal(service.getLogs().length, pages[1].responseData.logs.length);
+
+      // Offset 0 arrives out of order
+      service.getTreasuryLogs({
+        requestData: pages[0].requestData, // offset 0
+        responseData: pages[0].responseData,
+      });
+
+      // Both page 0 and page 1 should be preserved (no wipe)
+      const expected =
+        pages[0].responseData.logs.length + pages[1].responseData.logs.length;
+      assert.equal(service.getLogs().length, expected);
+    },
+  );
 });

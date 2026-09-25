@@ -84,6 +84,23 @@ try {
 let activeDeps = {};
 let firstRpcPacketIntercepted = false;
 
+let activeMessageListener = null;
+let activeBrowserRef = null;
+
+function unbind() {
+  if (
+    activeBrowserRef?.runtime?.onMessage?.removeListener &&
+    activeMessageListener
+  ) {
+    try {
+      activeBrowserRef.runtime.onMessage.removeListener(activeMessageListener);
+    } catch (e) {
+      logger?.debug('Error removing runtime onMessage listener', e);
+    }
+  }
+  activeMessageListener = null;
+  activeBrowserRef = null;
+}
 // --- Payload Deduplication ---
 const processedPayloadCache = new Map();
 const TTL_MS = 3000;
@@ -471,13 +488,15 @@ function handleRequestFinished(request, deps = {}) {
 }
 
 function initNetworkListeners(deps = {}) {
+  unbind();
   activeDeps = { ...activeDeps, ...deps };
   const mergedDeps = getDeps(deps);
   const browserRef = mergedDeps.browser;
+  activeBrowserRef = browserRef;
 
   if (browserRef?.runtime?.onMessage?.addListener) {
     try {
-      browserRef.runtime.onMessage.addListener((msg, sender) => {
+      activeMessageListener = (msg, sender) => {
         if (msg && msg.type === 'FOE_INFO_NET_DATA' && msg.url && msg.body) {
           if (
             sender &&
@@ -509,7 +528,8 @@ function initNetworkListeners(deps = {}) {
             activeDeps,
           );
         }
-      });
+      };
+      browserRef.runtime.onMessage.addListener(activeMessageListener);
     } catch (e) {
       logger?.debug('Error attaching runtime onMessage listener', e);
     }
@@ -536,6 +556,7 @@ function initNetworkListeners(deps = {}) {
     processContentDirect,
     safeProcessContent,
     clearDuplicatePayloadCache,
+    unbind,
     greatBuildingsService: mergedDeps.greatBuildingsService,
     startupService: mergedDeps.startupService,
   };
@@ -555,6 +576,7 @@ module.exports = {
   processContentDirect,
   safeProcessContent,
   initNetworkListeners,
+  unbind,
   clearDuplicatePayloadCache,
   processedPayloadCache,
   detectAndSyncWorldOrigin,

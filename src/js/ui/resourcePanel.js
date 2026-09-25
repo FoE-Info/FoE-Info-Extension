@@ -29,6 +29,25 @@ const helper = safeRequire(() => require('../fn/helper.js'));
 const panelResize = safeRequire(() => require('./panelResize.js'));
 let globals = safeRequire(() => require('../fn/globals.js'));
 
+let activeResizeBinding = null;
+let activeResizeObserver = null;
+
+function disconnectGoodsResize() {
+  if (
+    activeResizeBinding &&
+    typeof activeResizeBinding.disconnect === 'function'
+  ) {
+    activeResizeBinding.disconnect();
+    activeResizeBinding = null;
+  }
+  if (
+    activeResizeObserver &&
+    typeof activeResizeObserver.disconnect === 'function'
+  ) {
+    activeResizeObserver.disconnect();
+    activeResizeObserver = null;
+  }
+}
 const NON_GOODS = new Set(
   'money supplies medals strategy_points credits colonists life_support castle_points tavern_silver guild_power clan_power population happiness'.split(
     ' ',
@@ -127,10 +146,11 @@ function bindCollapseAndResize(goodsSize) {
     }
   }
 
+  disconnectGoodsResize();
   const goodsDiv = document.getElementById('goodsText');
   if (!goodsDiv) return;
   if (panelResize?.bindResizableCollapse) {
-    panelResize.bindResizableCollapse({
+    activeResizeBinding = panelResize.bindResizableCollapse({
       element: goodsDiv,
       initialSize: goodsSize,
       minSize: 80,
@@ -138,7 +158,7 @@ function bindCollapseAndResize(goodsSize) {
     });
   } else if (typeof ResizeObserver !== 'undefined' && globals?.setGoodsSize) {
     try {
-      new ResizeObserver((entries) => {
+      activeResizeObserver = new ResizeObserver((entries) => {
         for (const entry of entries) {
           const height = entry.contentRect?.height;
           const collapsing =
@@ -148,7 +168,8 @@ function bindCollapseAndResize(goodsSize) {
             globals.setGoodsSize(height);
           }
         }
-      }).observe(goodsDiv);
+      });
+      activeResizeObserver.observe(goodsDiv);
     } catch (err) {
       logger.warn('Failed to observe goodsDiv resize:', err);
     }
@@ -278,6 +299,7 @@ function setAvailableForgePoints(value) {
 }
 
 function clearGoodsPanel() {
+  disconnectGoodsResize();
   if (typeof document === 'undefined') return;
   const targetDiv = document.getElementById('goods');
   if (!targetDiv) return;
@@ -343,7 +365,7 @@ function bindResourcePanel(
   } = {},
 ) {
   if (!state || typeof state.subscribe !== 'function') return () => {};
-  return state.subscribe((snapshot, channel) => {
+  const unsubscribe = state.subscribe((snapshot, channel) => {
     if (channel === 'goods' || channel === 'all') {
       const payload = snapshot.getGoodsRender();
       if (!payload) return;
@@ -371,6 +393,10 @@ function bindResourcePanel(
       clearGoods();
     }
   });
+  return () => {
+    disconnectGoodsResize();
+    unsubscribe();
+  };
 }
 
 module.exports = {
@@ -382,5 +408,6 @@ module.exports = {
   clearGoodsPanel,
   goodsCopy,
   bindResourcePanel,
+  disconnectGoodsResize,
   default: renderGoodsPanel,
 };

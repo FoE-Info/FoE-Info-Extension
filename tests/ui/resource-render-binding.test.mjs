@@ -4,7 +4,7 @@ import statePkg from '../../src/js/state/CityDomainState.js';
 import bindingPkg from '../../src/js/ui/resourcePanel.js';
 
 const { ResourceState } = statePkg;
-const { bindResourcePanel } = bindingPkg;
+const { bindResourcePanel, disconnectGoodsResize } = bindingPkg;
 
 function createSeams() {
   const goodsCalls = [];
@@ -79,5 +79,12 @@ test('resourceRenderBinding - executes published channels', async (t) => {
     const off = bindResourcePanel(null, {});
     assert.equal(typeof off, 'function');
     assert.doesNotThrow(() => off());
+  });
+
+  await t.test('unmount callback invokes disconnectGoodsResize safely', () => {
+    const state = new ResourceState();
+    const off = bindResourcePanel(state, {});
+    assert.doesNotThrow(() => off());
+    assert.doesNotThrow(() => disconnectGoodsResize());
   });
 });

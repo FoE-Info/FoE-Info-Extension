@@ -47,7 +47,10 @@ function addPlayerResources(
     } else if (!NON_GOODS_KEYS.has(k) && !SPECIAL_GOODS.has(k)) {
       const goodsAmt = bnVal;
       result.goods = result.goods.plus(goodsAmt);
-      result.goodsMap[k] = (result.goodsMap[k] || 0) + goodsAmt.toNumber();
+      result.goodsMap[k] = (
+        result.goodsMap[k] ?
+          toBigNumber(result.goodsMap[k])
+        : new BigNumber(0)).plus(goodsAmt);
 
       let goodEra;
       const resDef = resourceDefMap?.get(k);
@@ -135,8 +138,10 @@ function applyGenericRewardToResult(
 
           result.goods = result.goods.plus(rAmt);
           const gKey = rId || 'random_good_of_age';
-          result.goodsMap[gKey] =
-            (result.goodsMap[gKey] || 0) + rAmt.toNumber();
+          result.goodsMap[gKey] = (
+            result.goodsMap[gKey] ?
+              toBigNumber(result.goodsMap[gKey])
+            : new BigNumber(0)).plus(rAmt);
           if (gEra && result.goodsByEra) {
             result.goodsByEra[gEra] = (
               result.goodsByEra[gEra] || new BigNumber(0)
@@ -187,7 +192,10 @@ function applyGenericRewardToResult(
       goodEra = nextEra;
     }
     const goodKey = rId || 'random_good_of_age';
-    result.goodsMap[goodKey] = (result.goodsMap[goodKey] || 0) + amt.toNumber();
+    result.goodsMap[goodKey] = (
+      result.goodsMap[goodKey] ?
+        toBigNumber(result.goodsMap[goodKey])
+      : new BigNumber(0)).plus(amt);
     if (goodEra && result.goodsByEra) {
       result.goodsByEra[goodEra] = (
         result.goodsByEra[goodEra] || new BigNumber(0)
