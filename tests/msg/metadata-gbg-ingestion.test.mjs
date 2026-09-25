@@ -5,7 +5,6 @@ import { metadataStore } from '../../src/js/state/MetadataStore.js';
 
 const {
   processMetadataEntry,
-  processMetadataData,
   onMetadataUpdated,
   VolcanoProvinceDefs,
   WaterfallProvinceDefs,

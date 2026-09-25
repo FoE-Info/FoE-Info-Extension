@@ -261,6 +261,7 @@ test('Per-World Storage Subsystem', async (t) => {
     assert.strictEqual(getSync('customTestKey'), 'foobar');
 
     const asyncVal = await getStorage('customTestKey');
+    assert.strictEqual(asyncVal, 'foobar');
     // Test removeStorage
     removeStorage('customTestKey');
     const removedVal = await getStorage('customTestKey');

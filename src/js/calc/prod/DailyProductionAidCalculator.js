@@ -14,21 +14,16 @@
  */
 
 const BigNumber = require('bignumber.js');
-const { toBigNumber } = require('../utils/bignumberUtils.js');
-const { createLogger } = require('../../utils/logger.js');
 const {
   isEntityMotivatable,
   isEntityAided,
   extractEntityProductionData,
 } = require('./entityProductionParser.js');
 const {
-  applyBoost,
   recordUnaided,
   finalizeUnaidedList,
   recalculateAidStatsBoosts,
 } = require('./aidStatsBoostCalculator.js');
-
-const logger = createLogger('DailyProductionAidCalc');
 
 function calculateDailyProductionAid({
   entities = [],

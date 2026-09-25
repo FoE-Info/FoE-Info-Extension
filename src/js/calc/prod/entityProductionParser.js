@@ -35,12 +35,7 @@ function extractEntityProductionData(
   entity,
   meta,
   targetEra,
-  {
-    forceAided = false,
-    helper = null,
-    ResourceDefs = [],
-    resourceDefMap = null,
-  } = {},
+  { forceAided = false, ResourceDefs = [], resourceDefMap = null } = {},
 ) {
   const isGB =
     entity?.type === 'greatbuilding' ||
