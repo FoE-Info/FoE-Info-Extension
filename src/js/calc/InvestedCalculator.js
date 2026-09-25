@@ -36,14 +36,25 @@ function getInvestmentKey(entry) {
  * @returns {boolean}
  */
 function isPositionSafe(investedFP, currentProgress, maxProgress) {
-  if (!maxProgress || maxProgress <= 0) return false;
-  const current = currentProgress || 0;
-  const remaining = Math.max(0, maxProgress - current);
-  const investedNum =
-    investedFP instanceof BigNumber ?
-      investedFP.toNumber()
-    : Number(investedFP) || 0;
-  return investedNum >= remaining;
+  const maxBn =
+    maxProgress instanceof BigNumber ? maxProgress : (
+      new BigNumber(maxProgress || 0)
+    );
+  if (!maxBn.isFinite() || maxBn.isLessThanOrEqualTo(0)) return false;
+
+  const currentBn =
+    currentProgress instanceof BigNumber ? currentProgress : (
+      new BigNumber(currentProgress || 0)
+    );
+  const remaining = BigNumber.max(0, maxBn.minus(currentBn));
+
+  const investedBn =
+    investedFP instanceof BigNumber ? investedFP : (
+      new BigNumber(investedFP || 0)
+    );
+  if (!investedBn.isFinite()) return false;
+
+  return investedBn.isGreaterThanOrEqualTo(remaining);
 }
 
 /**

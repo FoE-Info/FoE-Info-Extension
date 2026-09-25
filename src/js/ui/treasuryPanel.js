@@ -27,6 +27,26 @@ let defaultResourceDefs = null;
 let defaultTranslateContainer = null;
 let defaultPanelResize = null;
 
+let activeTreasuryResizeBinding = null;
+let activeTreasuryResizeObserver = null;
+
+function disconnectTreasuryResize() {
+  if (
+    activeTreasuryResizeBinding &&
+    typeof activeTreasuryResizeBinding.disconnect === 'function'
+  ) {
+    activeTreasuryResizeBinding.disconnect();
+    activeTreasuryResizeBinding = null;
+  }
+  if (
+    activeTreasuryResizeObserver &&
+    typeof activeTreasuryResizeObserver.disconnect === 'function'
+  ) {
+    activeTreasuryResizeObserver.disconnect();
+    activeTreasuryResizeObserver = null;
+  }
+}
+
 try {
   defaultElement = require('../fn/AddElement.js');
 } catch {}
@@ -164,6 +184,7 @@ function clearElement(el, resetClass = false) {
 }
 
 function clearForTreasury(containers = {}) {
+  disconnectTreasuryResize();
   clearElement(containers.cityinvested);
   clearElement(containers.output);
   clearElement(containers.overview);
@@ -257,7 +278,7 @@ function bindTreasuryEvents({
       col.fCollapseTreasury();
     });
   }
-
+  disconnectTreasuryResize();
   if (typeof bindResizableCollapse === 'function') {
     const collapseTarget =
       (typeof treasuryContainer?.querySelector === 'function' ?
@@ -267,12 +288,18 @@ function bindTreasuryEvents({
         doc.getElementById('treasuryText')
       : null);
     if (collapseTarget) {
-      bindResizableCollapse({
+      activeTreasuryResizeBinding = bindResizableCollapse({
+        element: collapseTarget,
         collapseTarget,
+        initialSize: treasuryHeight,
+        minSize: 80,
+        minHeight: 80,
+        onResize: (h) => {
+          setTreasuryHeight(h);
+        },
         setHeightFn: (h) => {
           setTreasuryHeight(h);
         },
-        minHeight: 80,
       });
     }
   } else if (typeof ResizeObs === 'function') {
@@ -284,9 +311,8 @@ function bindTreasuryEvents({
         doc.getElementById('treasuryText')
       : null);
     if (collapseTarget) {
-      let treasuryResizeObserver = null;
       try {
-        treasuryResizeObserver = new ResizeObs((entries) => {
+        activeTreasuryResizeObserver = new ResizeObs((entries) => {
           for (const entry of entries) {
             const height = Math.round(entry.contentRect.height);
             if (height >= 80) {
@@ -294,7 +320,7 @@ function bindTreasuryEvents({
             }
           }
         });
-        treasuryResizeObserver.observe(collapseTarget);
+        activeTreasuryResizeObserver.observe(collapseTarget);
       } catch {}
     }
   }
@@ -520,7 +546,7 @@ function bindTreasuryPanel(
   } = {},
 ) {
   if (!state || typeof state.subscribe !== 'function') return () => {};
-  return state.subscribe((snapshot, channel) => {
+  const unsubscribe = state.subscribe((snapshot, channel) => {
     if (channel === 'reserves' || channel === 'all') {
       const reserves = snapshot.getReserves();
       if (reserves) renderReserves(reserves);
@@ -531,8 +557,11 @@ function bindTreasuryPanel(
       });
     }
   });
+  return () => {
+    disconnectTreasuryResize();
+    unsubscribe();
+  };
 }
-
 const defaultExport = {
   renderTreasuryPanel,
   renderTreasuryLogPanel,
@@ -551,5 +580,6 @@ module.exports = {
   bindTreasuryEvents,
   getResourceAmount,
   buildTreasuryTableHtml,
+  disconnectTreasuryResize,
   default: defaultExport,
 };

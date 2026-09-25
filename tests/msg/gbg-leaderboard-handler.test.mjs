@@ -104,6 +104,25 @@ describe('GbgLeaderboardHandler Suite', () => {
       });
     });
 
+    it('normalizes alternative property names wonNegotiations and wonBattles in handlePlayerLeaderboard', () => {
+      const msg = {
+        responseData: [
+          {
+            player: { name: 'AltPlayer' },
+            wonNegotiations: 8,
+            wonBattles: 14,
+            attrition: 5,
+          },
+        ],
+      };
+
+      handlePlayerLeaderboard(msg);
+
+      assert.equal(GBGdata[0].total, 30); // 8*2 + 14
+      assert.equal(BattlegroundPerformance[0].wonNegotiations, 8);
+      assert.equal(BattlegroundPerformance[0].wonBattles, 14);
+    });
+
     it('falls back to "Unknown" when player name is missing', () => {
       const msg = {
         responseData: [{ negotiationsWon: 2, battlesWon: 3, attrition: 1 }],
@@ -244,6 +263,29 @@ describe('GbgLeaderboardHandler Suite', () => {
       } finally {
         guildBattlegroundState.setResult = originalSetResult;
       }
+    });
+
+    it('normalizes alternative property names negotiationsWon and battlesWon in handleBattlegroundState', () => {
+      const customGBGdata = [];
+      const msg = {
+        responseData: {
+          stateId: 'subscribed',
+          playerLeaderboardEntries: [
+            {
+              player: { name: 'StatePlayer' },
+              negotiationsWon: 6,
+              battlesWon: 12,
+            },
+          ],
+        },
+      };
+
+      handleBattlegroundState(msg, {
+        state: { GBGdata: customGBGdata },
+      });
+
+      assert.equal(customGBGdata.length, 1);
+      assert.equal(customGBGdata[0].total, 24); // 6*2 + 12
     });
   });
 

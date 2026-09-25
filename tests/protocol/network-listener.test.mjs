@@ -247,11 +247,15 @@ test('networkListener - safeProcessContent Handling', async (t) => {
 
 test('networkListener - initNetworkListeners and DevTools Bridge', () => {
   let messageListener = null;
+  let removedListener = null;
   const mockBrowser = {
     runtime: {
       onMessage: {
         addListener: (fn) => {
           messageListener = fn;
+        },
+        removeListener: (fn) => {
+          removedListener = fn;
         },
       },
     },
@@ -269,7 +273,7 @@ test('networkListener - initNetworkListeners and DevTools Bridge', () => {
   assert.equal(typeof messageListener, 'function');
   assert.equal(typeof listeners.handleRawNetworkEntry, 'function');
   assert.equal(typeof listeners.handleRequestFinished, 'function');
-
+  assert.equal(typeof listeners.unbind, 'function');
   // Test sender tabId filter: ignores mismatched tabId
   let dispatched = false;
   messageListener(
@@ -281,6 +285,10 @@ test('networkListener - initNetworkListeners and DevTools Bridge', () => {
     { tab: { id: 99 } }, // Different tabId than inspectedWindow (42)
   );
   assert.equal(dispatched, false);
+
+  // Verify unbind removes the listener
+  listeners.unbind();
+  assert.equal(removedListener, messageListener);
 });
 
 test('networkListener - handleRequestFinished Routing', async () => {

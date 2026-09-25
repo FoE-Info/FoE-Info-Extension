@@ -34,7 +34,6 @@ import {
 import { initIndexUiBindings } from './ui/indexUiBindings.js';
 import { initializeUIBindings } from './ui/renderBindings.js';
 import { initTheme } from './ui/themeManager.js';
-import { escapeHTML } from './utils/formatters.js';
 import { isDebugEnabled, onDebugToggle, toggleDebug } from './utils/logger.js';
 import {
   battlegroundDIV,
@@ -53,10 +52,17 @@ initializeUIBindings();
 
 if (typeof window !== 'undefined') {
   window.bootstrap = bootstrap;
-  installPanelBridge(window, {
+  const cleanupPanelBridge = installPanelBridge(window, {
     handleRawNetworkEntry,
     handleRequestFinished,
   });
+  window.addEventListener(
+    'unload',
+    () => {
+      cleanupPanelBridge();
+    },
+    { once: true },
+  );
   initEntityDefsLifecycle(window);
 }
 
@@ -187,14 +193,24 @@ initIndexUiBindings({
     gameVersion = v;
   },
   onGameVersionChange: (newVersion) => {
-    if (citystats) {
+    if (citystats && typeof document !== 'undefined') {
       const tool = browser?.runtime?.getManifest?.() || {};
-      const html = `<div><span data-i18n="gameversion">Game Version</span>: ${escapeHTML(newVersion)}<br>${escapeHTML(tool.name || '')}: ${escapeHTML(tool.version || '')}</div>`;
-      if (typeof citystats.insertAdjacentHTML === 'function') {
-        citystats.insertAdjacentHTML('beforeend', html);
-      } else {
-        citystats.innerHTML = `${citystats.innerHTML}${html}`;
-      }
+      const versionContainer = document.createElement('div');
+
+      const versionLabel = document.createElement('span');
+      versionLabel.setAttribute('data-i18n', 'gameversion');
+      versionLabel.textContent = 'Game Version';
+
+      versionContainer.appendChild(versionLabel);
+      versionContainer.appendChild(
+        document.createTextNode(`: ${newVersion || ''}`),
+      );
+      versionContainer.appendChild(document.createElement('br'));
+      versionContainer.appendChild(
+        document.createTextNode(`${tool.name || ''}: ${tool.version || ''}`),
+      );
+
+      citystats.appendChild(versionContainer);
     }
   },
 });
