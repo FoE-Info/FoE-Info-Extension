@@ -7,7 +7,6 @@ import test from 'node:test';
 import {
   BANNED_SLOP_WORDS,
   FILLER_ADVERBS,
-  NON_IMPERATIVE_WORDS,
   TEMPLATE_PHRASES,
   VALID_TYPES,
   validateCommitMessage,

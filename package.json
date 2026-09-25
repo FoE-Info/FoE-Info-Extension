@@ -21,26 +21,6 @@
     "clean": "rm -rf build",
     "dev": "webpack --config webpack.config.js --env target=dev --watch",
     "format": "prettier --write .",
-    "graph:foe-info:ast": "bash .agents/scripts/graphify.sh foe-info ast",
-    "graph:foe-info:export": "bash .agents/scripts/graphify.sh foe-info export",
-    "graph:foe-info:reindex": "bash .agents/scripts/graphify.sh foe-info reindex",
-    "graph:foe-info:update": "bash .agents/scripts/graphify.sh foe-info update",
-    "graph:foe-info:watch": "bash .agents/scripts/graphify.sh foe-info watch",
-    "graph:foe-info-original:ast": "bash .agents/scripts/graphify.sh foe-info-original ast",
-    "graph:foe-info-original:export": "bash .agents/scripts/graphify.sh foe-info-original export",
-    "graph:foe-info-original:reindex": "bash .agents/scripts/graphify.sh foe-info-original reindex",
-    "graph:foe-info-original:update": "bash .agents/scripts/graphify.sh foe-info-original update",
-    "graph:forge-hammer:ast": "bash .agents/scripts/graphify.sh forge-hammer ast",
-    "graph:forge-hammer:export": "bash .agents/scripts/graphify.sh forge-hammer export",
-    "graph:forge-hammer:reindex": "bash .agents/scripts/graphify.sh forge-hammer reindex",
-    "graph:forge-hammer:update": "bash .agents/scripts/graphify.sh forge-hammer update",
-    "graph:low-tool:ast": "bash .agents/scripts/graphify.sh low-tool ast",
-    "graph:low-tool:export": "bash .agents/scripts/graphify.sh low-tool export",
-    "graph:low-tool:reindex": "bash .agents/scripts/graphify.sh low-tool reindex",
-    "graph:low-tool:update": "bash .agents/scripts/graphify.sh low-tool update",
-    "graph:metadata:export": "bash .agents/scripts/graphify.sh metadata export",
-    "graph:metadata:reindex": "bash .agents/scripts/graphify.sh metadata reindex",
-    "graph:metadata:update": "bash .agents/scripts/graphify.sh metadata update",
     "i18n:check": "node scripts/audit-i18n.mjs",
     "i18n:fix": "node scripts/audit-i18n.mjs --fix",
     "lint": "eslint . && prettier --check .",
@@ -55,14 +35,11 @@
     "rpc:contract": "node scripts/rpc-contract.mjs",
     "rpc:contract:check": "node scripts/rpc-contract.mjs --check",
     "setup": "node scripts/setup.mjs",
-    "setup:full": "node scripts/setup.mjs --full",
     "test": "node --test --test-reporter=dot tests/**/*.test.mjs",
-    "test:agents": "node --test tests/agents/*.test.mjs",
     "test:verbose": "node --test tests/**/*.test.mjs",
     "test:watch": "node --test --watch tests/**/*.test.mjs",
     "typecheck": "tsc --noEmit",
-    "verify": "npm run check && npm run lint && npm run typecheck && npm run rpc:contract:check && npm run i18n:check && npm test && npm run build:dev",
-    "verify:full": "npm run verify && npm run graph:foe-info:ast"
+    "verify": "npm run check && npm run lint && npm run typecheck && npm run rpc:contract:check && npm run i18n:check && npm test && npm run build:dev"
   },
   "lint-staged": {
     "*.{js,mjs,cjs}": [
@@ -87,7 +64,6 @@
     "@types/webextension-polyfill": "^0.12.6",
     "acorn": "^8.18.0",
     "acorn-walk": "^8.3.5",
-    "chrome-devtools-mcp": "^1.9.0",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.5",
     "css-minimizer-webpack-plugin": "^8.0.0",
@@ -117,6 +93,5 @@
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,
     "core-js@3.50.0": true
-  },
-  "primaryGraph": "graphify-foe-info"
+  }
 }

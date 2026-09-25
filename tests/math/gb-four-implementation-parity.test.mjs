@@ -1,12 +1,8 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
-  calculateArcReward,
   calculateDonorOutcome,
   calculateOwnerSafeAdd,
-  calculateSafeSpots,
-  calculateSpotLock,
-  calculateSuggestedDonation,
 } from '../../src/js/calc/GreatBuildingCalculator.js';
 
 // Half-up rounding used by FH.Main.round and BigNumber.dp(0, ROUND_HALF_UP).

@@ -2,19 +2,17 @@
 # Pinned to the verified dev toolchain. engines.node requires >=24; the
 # @types/node devDependency tracks the 26.x line. Refresh with `mise lock`.
 node = "26.8.2"
-python = "3.14"
-uv = "latest"
 
 [env]
 NODE_ENV = "development"
 
 [env._]
-path = [ "./.venv/bin", "./.agents/scripts", "./node_modules/.bin", "./scripts" ]
+path = [ "./node_modules/.bin", "./scripts" ]
 file = [ ".env", ".env.local" ]
 
 [tasks.setup]
-description = "Install npm dependencies and the uv Graphify environment"
-run = "npm run setup:full"
+description = "Install npm dependencies"
+run = "npm run setup"
 
 [tasks.check]
 description = "Check project code formatting with Prettier"
@@ -48,10 +46,6 @@ run = "npm test"
 description = "Run the base verification gate (check + lint + typecheck + i18n + test + build)"
 run = "npm run verify"
 
-[tasks.verify-full]
-description = "Run the full verification gate including the Graphify AST refresh"
-run = "npm run verify:full"
-
 [tasks.lint]
 description = "Lint source with ESLint"
 run = "npm run lint"
@@ -63,14 +57,6 @@ run = "npm run typecheck"
 [tasks.i18n-check]
 description = "Check i18n key parity across locales"
 run = "npm run i18n:check"
-
-[tasks.graph-ast]
-description = "Fast AST graph refresh"
-run = "npm run graph:foe-info:ast"
-
-[tasks.graph-update]
-description = "Update AST knowledge graph plus export"
-run = "npm run graph:foe-info:update"
 
 [tasks.metadata-download]
 description = "Ingest offline metadata datasets"

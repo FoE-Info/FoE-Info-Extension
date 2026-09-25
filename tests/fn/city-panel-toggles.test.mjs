@@ -39,8 +39,7 @@ registerHooks({
 });
 
 const cityToggles = await import('../../src/js/fn/cityPanelToggles.js');
-const { collapseGoods, collapseStats, setCollapse } =
-  await import('../../src/js/fn/collapseState.js');
+const { setCollapse } = await import('../../src/js/fn/collapseState.js');
 
 test('cityPanelToggles unit test suite', async (t) => {
   await t.test(
@@ -73,7 +72,6 @@ test('cityPanelToggles unit test suite', async (t) => {
       setCollapse('collapseGoods', true);
       cityToggles.fCollapseGoods();
       // After toggle, should flip
-      const { collapseGoods: current } = cityToggles;
       // or from collapseState
       // Toggle again
       cityToggles.fCollapseGoods();

@@ -6,18 +6,11 @@
  */
 
 const {
-  getType,
   isFoeNetworkUrl,
   safeProcessContent,
 } = require('./networkContentReader.js');
 const { notifyGameVersionChange } = require('./gameVersionTracker.js');
 const { processContentDirect } = require('./networkPacketDispatcher.js');
-
-let logger = null;
-try {
-  const { createLogger } = require('../utils/logger.js');
-  logger = createLogger('NetworkDevtoolsHandler');
-} catch {}
 
 /**
  * Handles a finished DevTools HAR request object, inspects content headers,
@@ -28,20 +21,7 @@ try {
  */
 function handleRequestFinished(request, deps = {}) {
   if (!request) return;
-  const response = request.response || {};
-  const responseHeaders = response.headers || [];
   const requestHeaders = (request.request && request.request.headers) || [];
-
-  let contentType = '';
-  const contentHeader = responseHeaders.find(
-    (header) =>
-      header && header.name && header.name.toLowerCase() === 'content-type',
-  );
-
-  if (contentHeader) {
-    const getTypeFn = deps.getType || getType;
-    contentType = getTypeFn(contentHeader.value);
-  }
 
   const reqUrl =
     request.request && request.request.url ? request.request.url : '';

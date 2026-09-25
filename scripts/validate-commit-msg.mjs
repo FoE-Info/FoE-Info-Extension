@@ -301,7 +301,7 @@ if (isDirectCli()) {
       process.stderr.write(`  - ${err}\n`);
     }
     process.stderr.write(
-      '\nRefer to .agents/rules/unslop-commit.md for guidelines.\n',
+      '\nRefer to CONTRIBUTING.md#commit-messages for guidelines.\n',
     );
     process.exit(1);
   }

@@ -12,7 +12,7 @@ const { investedState } = require('../state/InvestedState.js');
 let City;
 try {
   ({ City } = require('./StartupService.js'));
-} catch (e) {
+} catch {
   City = {};
 }
 

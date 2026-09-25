@@ -1,3 +1,2 @@
 #!/bin/sh
 npx lint-staged
-node --test tests/agents/agent-config.test.mjs

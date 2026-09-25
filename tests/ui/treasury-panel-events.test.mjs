@@ -17,7 +17,6 @@ test('treasuryPanelEvents: bindTreasuryEvents attaches copy, collapse, icon list
 
   let copyTriggered = false;
   let collapseTriggered = false;
-  let iconTriggered = false;
   let resizableBound = false;
 
   const cpy = {

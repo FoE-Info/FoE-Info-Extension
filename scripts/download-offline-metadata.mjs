@@ -33,10 +33,6 @@ const CDP_PORT = process.env.CDP_PORT || '9222';
 const CDP_BASE = `http://127.0.0.1:${CDP_PORT}`;
 const CONCURRENCY = parseInt(process.env.CONCURRENCY || '16', 10);
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 async function fetchJson(url) {
   try {
     const res = await fetch(url);
@@ -324,14 +320,12 @@ async function main() {
 
   const uniqueTasks = [];
   for (const [url, aliases] of urlToEntries.entries()) {
-    let cleanName = '';
+    let cleanName = aliases[0];
     try {
       const u = new URL(url);
       const idParam = u.searchParams.get('id') || '';
-      cleanName = idParam.split('-')[0] || '';
-    } catch {
-      cleanName = '';
-    }
+      cleanName = idParam.split('-')[0] || cleanName;
+    } catch {}
 
     if (!cleanName) {
       cleanName = aliases[0];

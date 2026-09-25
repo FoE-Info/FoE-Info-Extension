@@ -4,22 +4,11 @@ Thanks for your interest in improving FoE-Info.
 
 ## Getting started
 
-2. Install dependencies. npm alone is enough to build the extension:
-   - `npm run setup` — Node dependencies only. Requires Node matching
-     `engines.node` in `package.json`.
-   - `npm run setup:full` — additionally installs the uv Python environment
-     (graphify-mcp) and the default MCP profile, needed for Graphify queries and
-     metadata work.
-   - `mise run setup` — runs `setup:full` with the toolchain pinned in
-     `.mise.toml`. mise is optional; the npm paths need no mise.
-
-   Both entrypoints run `scripts/setup.mjs`, so the installed project is the
-   same. mise only selects which Node/Python/uv binaries are on PATH; the Node
-   version requirement lives in `package.json` `engines` and is checked by the
-   script.
-
-3. Start a development build with a watch loop: `npm run dev`.
-4. Load `build/FoE-Info-DEV` as an unpacked extension in `chrome://extensions`.
+1. Install dependencies:
+   - `npm run setup` (or `npm install`) — installs Node dependencies. Requires Node matching `engines.node` in `package.json`.
+   - `mise run setup` — optional mise toolchain runner.
+2. Start a development build with a watch loop: `npm run dev`.
+3. Load `build/FoE-Info-DEV` as an unpacked extension in `chrome://extensions`.
 
 ## Before you commit
 
@@ -30,10 +19,6 @@ npm run verify
 This runs formatting, linting, type checking, the RPC contract check, i18n
 parity across all locales, the unit tests, and a development build. All of it
 must pass.
-
-Contributors using the Graphify knowledge graph should instead run
-`npm run verify:full` (or `mise run verify-full`), which adds the AST graph
-refresh. It requires `npm run setup:full` first.
 
 Guidelines:
 

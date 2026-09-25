@@ -23,7 +23,6 @@ try {
 const { SPECIAL_GOODS } = require('../goods/goodsClassification.js');
 const {
   createHarvestAccumulator,
-  accumulatePlayerGoods,
   parseCurrentProduct,
   parseProductionOption,
 } = require('./harvestAccumulator.js');

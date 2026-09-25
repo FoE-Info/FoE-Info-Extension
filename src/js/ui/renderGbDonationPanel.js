@@ -27,11 +27,6 @@ try {
   collapse = require('../fn/collapse.js');
 } catch {}
 
-let copy = {};
-try {
-  copy = require('../fn/copy.js');
-} catch {}
-
 let helper = {};
 try {
   helper = require('../fn/helper.js');
@@ -87,21 +82,15 @@ function renderGbDonationPanel(params = {}) {
     showOptions = {},
     donationDIV,
     donation2DIV,
-    Top = [0, 0, 0, 0, 0, 0],
-    GBrewards = [0, 0, 0, 0, 0],
     currentPercent = 190,
-    City = {},
     PlayerID = 0,
     PlayerName = '',
     MyInfo = {},
     donationSuffix = '',
     availablePackageForgePoints = 0,
-    onRerender,
     depHelper = helper,
     depElement = element,
     depCollapse = collapse,
-    depCopy = copy,
-    depStorage = storage,
     depTables = gbDonationTables,
   } = params;
 

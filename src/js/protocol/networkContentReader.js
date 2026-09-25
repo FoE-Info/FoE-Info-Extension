@@ -68,7 +68,7 @@ function safeProcessContent(request, processContent) {
               let p;
               try {
                 p = request.getContent();
-              } catch (e) {
+              } catch {
                 request.getContent((retryContent, retryEncoding) => {
                   if (retryContent) {
                     called = true;
@@ -101,7 +101,7 @@ function safeProcessContent(request, processContent) {
     let res;
     try {
       res = request.getContent();
-    } catch (err) {
+    } catch {
       res = request.getContent((content, encoding) => {
         safeProcess(content, encoding);
       });
