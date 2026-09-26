@@ -11,6 +11,7 @@ const {
   saveWorldSettings,
   resetWorldSettings,
   getGlobalSettings,
+  updateGlobalSettings,
   registerKnownWorld,
   setLastActiveWorld,
   memoryWorldCache,
@@ -29,6 +30,18 @@ function sanitizeKey(key) {
 
 function isWorldScopedKey(name) {
   return name === 'toolOptions' || name.startsWith('collapse');
+}
+
+/**
+ * Logs a world-settings persistence failure without swallowing the rejection:
+ * the returned promise still rejects, so awaiting callers can observe the
+ * failure (fire-and-forget callers avoid unhandled rejection crashes).
+ */
+function persistWorldSettings(promise) {
+  promise.catch((err) =>
+    console.error('world settings persist failed:', err?.message || err),
+  );
+  return promise;
 }
 
 function updateCache(obj) {
@@ -59,8 +72,9 @@ function setStorage(name, value) {
         hiddenInvestments: value,
       };
     }
-    saveWorldSettings(currentWorld, { caches: { hiddenInvestments: value } });
-    return;
+    return persistWorldSettings(
+      saveWorldSettings(currentWorld, { caches: { hiddenInvestments: value } }),
+    );
   }
   if (name === 'investSettings' || name === 'showOptions') {
     if (memoryWorldCache[currentWorld]) {
@@ -69,8 +83,9 @@ function setStorage(name, value) {
         ...value,
       };
     }
-    saveWorldSettings(currentWorld, { showOptions: value });
-    return;
+    return persistWorldSettings(
+      saveWorldSettings(currentWorld, { showOptions: value }),
+    );
   }
   if (name === 'toolOptions') {
     if (memoryWorldCache[currentWorld]) {
@@ -79,14 +94,16 @@ function setStorage(name, value) {
         ...value,
       };
     }
-    saveWorldSettings(currentWorld, { toolOptions: value });
+    const persistPromise = persistWorldSettings(
+      saveWorldSettings(currentWorld, { toolOptions: value }),
+    );
     const local = getStorageLocal();
     if (local) {
       local
         .remove(cleanKey)
         .catch((err) => console.warn('setStorage cleanup error:', err));
     }
-    return;
+    return persistPromise;
   }
   if (name.startsWith('collapse')) {
     setCollapse(name, value);
@@ -173,13 +190,16 @@ function setCollapse(name, value) {
       [cleanKey]: value,
     };
   }
-  saveWorldSettings(currentWorld, { collapses: { [cleanKey]: value } });
+  const persistPromise = persistWorldSettings(
+    saveWorldSettings(currentWorld, { collapses: { [cleanKey]: value } }),
+  );
   const local = getStorageLocal();
   if (local) {
     local
       .remove(cleanKey)
       .catch((err) => console.warn('setCollapse cleanup error:', err));
   }
+  return persistPromise;
 }
 
 function getCollapse(name) {
@@ -223,6 +243,7 @@ module.exports = {
   saveWorldSettings,
   resetWorldSettings,
   getGlobalSettings,
+  updateGlobalSettings,
   registerKnownWorld,
   setLastActiveWorld,
   set: setStorage,
