@@ -48,7 +48,10 @@ DevTools Panel Viewport (`src/chrome/panel.html`)
 
 ## Non-Negotiable Architectural Invariants
 
-- **File Size Ceiling**: Maximum 500 lines per module in `src/js/` (absolute dispatch ceiling 800 lines). Target: 100–300 lines.
+- **Cohesion Over Line Count**: A module holds one thing that changes for one reason. Length is a symptom, not the defect. Split when two parts change independently or on different schedules — for example when a user would name them as separate features, or when one part is arithmetic and the other is markup. Do **not** split sequential phases of a single operation; that only adds coupling.
+  - Target range is 100–300 lines per module in `src/js/`. Modules that exceed it are expected: `msg/StartupService.js` (1144) and `msg/GuildBattlegroundService.js` (1024) are single-domain modules whose phases share one state owner, and `protocol/networkListener.js` (590) is the intended result of the consolidation in `.omp/plans/CONSOLIDATE_FUNCTIONAL_COHESION_PLAN.md`, which deliberately reversed an earlier micro-file split.
+  - `npm run audit:refs -- --strict` lists modules over 500 lines. Treat that list as a prompt to check for a feature boundary, not as a violation to fix by splitting.
+  - For agents, the practical test: if you cannot summarize a file's job in one sentence, an agent will misread it. A 1100-line file with a clear spine (`initialize → resolve → boost → render → dispatch`) is navigable; a 300-line file with nine unrelated helpers is not.
 - **Zero Static Game Metadata**: Game metadata streams strictly from the live InnoGames CDN and RPC responses. No entity dumps or static game JSON inside `src/`.
 - **Passive Observation Only**: No botting, automation, active clicking, or request injection into the game client.
 - **BigNumber Precision**: Forge points, Great Building locks, treasury deposits, and boost calculations must preserve exact arithmetic without floating-point drift.
