@@ -9,6 +9,7 @@
 const metadataStorePkg = require('./MetadataStore.js');
 const metadataStore = metadataStorePkg.metadataStore || metadataStorePkg;
 const { getGreatBuildingName } = require('../calc/utils/gbNames.js');
+const BigNumber = require('bignumber.js');
 
 const gbRegistry = new Map();
 
@@ -16,7 +17,11 @@ const gbRegistry = new Map();
  * Calculates level cost using geometric progression from metadata definitions.
  * Formula:
  * - Level <= 10: strategy_points_for_upgrade[Level - 1]
- * - Level > 10: Math.ceil(Level10Cost * Math.pow(1.025, Level - 9))
+ * - Level > 10: ROUND_CEIL(Level10Cost * 1.025^(Level - 9)), evaluated in BigNumber
+ *   decimal arithmetic. This is a player-facing cost and the most
+ *   precision-sensitive quantity in the game; IEEE 754 doubles are not acceptable
+ *   here, so the geometric extrapolation and its rounding both go through
+ *   BigNumber with an explicit ROUND_CEIL.
  *
  * @param {string|Object} cityEntityId Building definition ID or entity object
  * @param {number} level Target level (1-indexed)
@@ -42,7 +47,10 @@ function calculateLevelCost(cityEntityId, level) {
   }
 
   const level10Cost = upgradeCosts[9] || upgradeCosts[upgradeCosts.length - 1];
-  return Math.ceil(level10Cost * Math.pow(1.025, targetLevel - 9));
+  return new BigNumber(level10Cost)
+    .times(new BigNumber(1.025).pow(targetLevel - 9))
+    .integerValue(BigNumber.ROUND_CEIL)
+    .toNumber();
 }
 
 /**

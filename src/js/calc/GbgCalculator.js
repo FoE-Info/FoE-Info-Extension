@@ -6,6 +6,7 @@
  */
 
 const MAX_ATTRITION_REDUCTION = 80;
+const { toBigNumber } = require('./utils/bignumberUtils.js');
 
 let logger = null;
 try {
@@ -137,17 +138,18 @@ function formatSectorName(rawName, mapName = '') {
 function formatCampsText(campsReady, campsNotReady, showCamps) {
   if (!showCamps) return '';
 
-  const ready = Number(campsReady) || 0;
-  const notReady = Number(campsNotReady) || 0;
+  const ready = toBigNumber(campsReady);
+  const notReady = toBigNumber(campsNotReady);
+  const capacity = toBigNumber(100);
 
-  if (ready > 0 && notReady <= 0) {
-    return `(${100 - ready}%)`;
+  if (ready.gt(0) && notReady.lte(0)) {
+    return `(${capacity.minus(ready).toString()}%)`;
   }
-  if (notReady > 0 && ready <= 0) {
-    return `(${100 - notReady}% UC)`;
+  if (notReady.gt(0) && ready.lte(0)) {
+    return `(${capacity.minus(notReady).toString()}% UC)`;
   }
-  if (ready > 0 && notReady > 0) {
-    return `(${100 - ready}% / ${100 - ready - notReady}% UC)`;
+  if (ready.gt(0) && notReady.gt(0)) {
+    return `(${capacity.minus(ready).toString()}% / ${capacity.minus(ready).minus(notReady).toString()}% UC)`;
   }
   return '(! SC)';
 }

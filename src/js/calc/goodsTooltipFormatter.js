@@ -6,7 +6,7 @@
  */
 
 const BigNumber = require('bignumber.js');
-
+const { toBigNumber } = require('./utils/bignumberUtils.js');
 let City = null;
 try {
   ({ City } = require('../state/CityDomainState.js'));
@@ -111,8 +111,8 @@ function buildClanGoodsData(
   tooltipStore = null,
 ) {
   const boost = boostValue || 0;
-  let totalClanGoods = 0;
-  let unboostedBase = 0;
+  let totalClanGoods = new BigNumber(0);
+  let unboostedBase = new BigNumber(0);
 
   if (clanBuildingsList.length > 0) {
     const groupedClan = {};
@@ -133,27 +133,27 @@ function buildClanGoodsData(
           entry.name.replace(entry.id, resolvedName)
         : resolvedName;
 
-      const baseAmount = entry.baseGoods ?? entry.goods ?? 0;
-      unboostedBase += baseAmount;
+      const baseAmount = toBigNumber(entry.baseGoods ?? entry.goods ?? 0);
+      unboostedBase = unboostedBase.plus(baseAmount);
 
       let effectiveGoods = baseAmount;
       if (entry.isBoostable && boost > 0) {
-        const extra = new BigNumber(baseAmount)
+        const extra = baseAmount
           .dividedBy(5)
           .multipliedBy(new BigNumber(boost).dividedBy(100))
           .integerValue(BigNumber.ROUND_HALF_UP)
-          .multipliedBy(5)
-          .toNumber();
-        effectiveGoods += extra;
+          .multipliedBy(5);
+        effectiveGoods = effectiveGoods.plus(extra);
       }
 
-      totalClanGoods += effectiveGoods;
+      totalClanGoods = totalClanGoods.plus(effectiveGoods);
 
       if (!groupedClan[name]) {
-        groupedClan[name] = { count: 0, totalGoods: 0 };
+        groupedClan[name] = { count: 0, totalGoods: new BigNumber(0) };
       }
       groupedClan[name].count++;
-      groupedClan[name].totalGoods += effectiveGoods;
+      groupedClan[name].totalGoods =
+        groupedClan[name].totalGoods.plus(effectiveGoods);
     });
 
     const groupedClanList = Object.keys(groupedClan).map((name) => ({
@@ -162,7 +162,7 @@ function buildClanGoodsData(
       totalGoods: groupedClan[name].totalGoods,
     }));
 
-    groupedClanList.sort((a, b) => b.totalGoods - a.totalGoods);
+    groupedClanList.sort((a, b) => b.totalGoods.comparedTo(a.totalGoods));
 
     let clanGoodsHtml = '';
     groupedClanList.forEach((item) => {
@@ -170,7 +170,7 @@ function buildClanGoodsData(
       clanGoodsHtml += `${item.totalGoods} <strong>${item.name}</strong>${countStr}<br>`;
     });
 
-    if (boost > 0 && totalClanGoods > unboostedBase) {
+    if (boost > 0 && totalClanGoods.gt(unboostedBase)) {
       clanGoodsHtml += `<br><strong>Base: ${unboostedBase} (+${boost}% Boost = ${totalClanGoods})</strong>`;
     }
 
@@ -179,7 +179,7 @@ function buildClanGoodsData(
     }
   }
 
-  return totalClanGoods;
+  return totalClanGoods.toNumber();
 }
 
 module.exports = { fGoodsText, fGoodsHTML, buildClanGoodsData };

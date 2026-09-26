@@ -28,6 +28,7 @@ const {
 const {
   calculateDailyProductionAid,
 } = require('./prod/DailyProductionAidCalculator.js');
+const { addResourceTotal, chanceAmount } = require('./utils/bignumberUtils.js');
 
 function buildResult(accum, timing, aidStats = null) {
   return {
@@ -128,7 +129,7 @@ function processCityMapEntities(mapEntities, options = {}) {
           const products = opt.products || opt.array || [];
           products.forEach((product) => {
             if (product.type === 'unit') {
-              City.TrazUnits = (City.TrazUnits || 0) + (product.amount || 0);
+              City.TrazUnits = addResourceTotal(City.TrazUnits, product.amount);
             } else if (product.type === 'genericReward') {
               const rId = product.reward?.id || '';
               const lookup =
@@ -149,7 +150,7 @@ function processCityMapEntities(mapEntities, options = {}) {
                   product.reward?.totalAmount ||
                   lookup?.amount ||
                   1;
-                City.TrazUnits = (City.TrazUnits || 0) + amount;
+                City.TrazUnits = addResourceTotal(City.TrazUnits, amount);
               }
             } else if (product.type === 'random') {
               const randProducts = product.products || [];
@@ -157,9 +158,10 @@ function processCityMapEntities(mapEntities, options = {}) {
                 const dropChance = rp.dropChance || 1;
                 const inner = rp.product || rp;
                 if (inner.type === 'unit') {
-                  City.TrazUnits =
-                    (City.TrazUnits || 0) +
-                    Math.round((inner.amount || 0) * dropChance);
+                  City.TrazUnits = addResourceTotal(
+                    City.TrazUnits,
+                    chanceAmount(inner.amount, dropChance),
+                  );
                 } else if (inner.type === 'genericReward') {
                   const rId = inner.reward?.id || '';
                   const lookup =
@@ -175,8 +177,10 @@ function processCityMapEntities(mapEntities, options = {}) {
                       inner.reward?.totalAmount ||
                       lookup?.amount ||
                       1;
-                    City.TrazUnits =
-                      (City.TrazUnits || 0) + Math.round(amount * dropChance);
+                    City.TrazUnits = addResourceTotal(
+                      City.TrazUnits,
+                      chanceAmount(amount, dropChance),
+                    );
                   }
                 }
               });

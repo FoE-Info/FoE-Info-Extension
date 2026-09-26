@@ -26,6 +26,10 @@ const {
   parseCurrentProduct,
   parseProductionOption,
 } = require('./harvestAccumulator.js');
+const {
+  addResourceTotal,
+  addExactTotal,
+} = require('../utils/bignumberUtils.js');
 
 /**
  * Evaluate harvest contributions for a single city map entity.
@@ -89,7 +93,7 @@ function evaluateEntityHarvest(mapID, index, options = {}) {
         (a) => a && a.__class__ === 'RandomUnitOfAgeWhenMotivatedAbility',
       );
       if (randomUnitAb && randomUnitAb.amount) {
-        City.TrazUnits = (City.TrazUnits || 0) + randomUnitAb.amount;
+        City.TrazUnits = addResourceTotal(City.TrazUnits, randomUnitAb.amount);
       }
 
       const treasuryAb = entity.abilities.find(
@@ -101,7 +105,7 @@ function evaluateEntityHarvest(mapID, index, options = {}) {
           treasuryAb.additionalResources[MyInfo?.era]?.resources;
         if (res && res.all_goods_of_age) {
           const goods = res.all_goods_of_age;
-          accum.clanGoods += goods;
+          accum.clanGoods = addExactTotal(accum.clanGoods, goods);
           accum.clanGoodsBuildings.push({
             id: cid,
             name: helper.fEntityNameTrim(cid),
