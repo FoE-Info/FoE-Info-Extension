@@ -53,7 +53,7 @@ function renderBonusSummary(bonusHTML, state = {}) {
       ${iconMarkup}
 			<strong><span data-i18n="bonus">Bonus</span>:</strong> ${bonusHTML}</p>
             ${closeMarkup}
-            <div id="bonusText" class="alert-light collapse"><p><strong>Legend:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
+            <div id="bonusText" class="alert-light collapse"><p><strong><span data-i18n="legend">Legend</span>:</strong><br>First <em>Strike</em> - Kraken<br><em>Spoils</em> of War - Himeji Castle<br><em>Dip</em>lomatic Gifts - Space Carrier<br><em>Aid</em> Goods - Truce Tower</p></div></div>`;
 
     const labelEl = document.getElementById('bonusTextLabel');
     if (labelEl) {

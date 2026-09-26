@@ -234,7 +234,7 @@ function postPlayerToSS(visitData) {
 
   alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
 		${element.close()}
-		<p id="alertText"><strong>Posting Guild Stats to SS ... </strong><br>${visitData[0].Name}</p></div>`;
+		<p id="alertText"><strong><span data-i18n="posting_guild_stats">Posting Guild Stats to SS</span> ... </strong><br>${visitData[0].Name}</p></div>`;
 
   let reqData = {
     sheet: 'Guild',
@@ -254,13 +254,13 @@ function postPlayerToSS(visitData) {
         const resultText = document.createTextNode(resObj.result || '');
         alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
 				${element.close()}
-				<p id="alertText"><strong>Guild Stats: </strong><br></p></div>`;
+				<p id="alertText"><strong><span data-i18n="guild_stats">Guild Stats:</span> </strong><br></p></div>`;
         const pTag = alerts.querySelector('#alertText');
         if (pTag) pTag.appendChild(resultText);
       } catch {
         alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
 				${element.close()}
-				<p id="alertText"><strong>Error: </strong><br></p></div>`;
+				<p id="alertText"><strong><span data-i18n="error">Error:</span> </strong><br></p></div>`;
         const pTag = alerts.querySelector('#alertText');
         if (pTag) pTag.appendChild(document.createTextNode(oReq.responseText));
       }

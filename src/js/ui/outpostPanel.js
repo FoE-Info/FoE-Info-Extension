@@ -97,15 +97,15 @@ function renderCulturalPanel(
 
   if (totalAdv > 0) {
     html += `<div class="mb-2 small px-2">`;
-    html += `Advancements: <strong>${unlockedAdv} of ${totalAdv} unlocked</strong>`;
+    html += `<span data-i18n="advancements">Advancements</span>: <strong>${unlockedAdv} of ${totalAdv} unlocked</strong>`;
     html += `</div>`;
   }
 
   const costKeys = Object.keys(remainingCosts);
   if (costKeys.length > 0) {
-    html += `<table class="table table-sm table-striped align-middle mb-0"><caption class="visually-hidden"><span>Remaining Costs</span></caption><thead><tr>`;
-    html += `<th scope="col" class="text-start">Resource</th>`;
-    html += `<th scope="col" class="text-end">Needed</th>`;
+    html += `<table class="table table-sm table-striped align-middle mb-0"><caption class="visually-hidden"><span data-i18n="remaining_costs">Remaining Costs</span></caption><thead><tr>`;
+    html += `<th scope="col" class="text-start"><span data-i18n="resource">Resource</span></th>`;
+    html += `<th scope="col" class="text-end"><span data-i18n="cost_needed">Needed</span></th>`;
     html += `</tr></thead><tbody>`;
     for (const key of costKeys) {
       const goodName = key;
