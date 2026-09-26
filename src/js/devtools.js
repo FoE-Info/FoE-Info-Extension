@@ -7,6 +7,10 @@ import {
   postRequestFinished,
   postToWindow,
 } from './protocol/devtoolsBridge.js';
+// Import from the LEAF intake-policy module, NOT protocol/networkListener.js:
+// the devtools page bundle must not statically include the message-dispatcher
+// dependency subgraph just to evaluate one URL predicate.
+import { evaluateRequestOrigin } from './utils/intakePolicy.js';
 import { createLogger, isDebugEnabled } from './utils/logger.js';
 
 const devtoolsLogger = createLogger('DevTools');
@@ -17,13 +21,17 @@ let pendingEntries = [];
 
 function isRelevantRequest(request) {
   if (!request || !request.request || !request.request.url) return false;
-  const url = request.request.url;
-  return (
-    url.includes('/game/json') ||
-    url.includes('metadata?id=') ||
-    url.includes('/metadata') ||
-    url.includes('/start/metadata')
-  );
+  const verdict = evaluateRequestOrigin(request.request.url);
+  if (!verdict.accepted) {
+    // §2.1: response bodies from unrelated/attacker-controlled inspected
+    // origins must never reach the dispatcher-side intake.
+    devtoolsLogger.debug('Dropping network entry from untrusted origin', {
+      url: request.request.url,
+      reason: verdict.reason || 'unknown',
+    });
+    return false;
+  }
+  return true;
 }
 
 function deliverEntry(entry) {

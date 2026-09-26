@@ -100,6 +100,8 @@ function unbind() {
   }
   activeMessageListener = null;
   activeBrowserRef = null;
+  // Session teardown invalidates any in-flight dispatches.
+  advanceDispatchGeneration();
 }
 // --- Payload Deduplication ---
 const processedPayloadCache = new Map();
@@ -161,21 +163,25 @@ function getType(type) {
   return type.replace(/.*(javascript|image|html|font|json|css|text).*/g, '$1');
 }
 
-/**
- * Checks whether the URL matches Forge of Empires RPC or metadata endpoints.
- *
- * @param {string} reqUrl
- * @returns {boolean}
- */
-function isFoeNetworkUrl(reqUrl) {
-  if (!reqUrl || typeof reqUrl !== 'string') return false;
-  return (
-    reqUrl.includes('/game/json') ||
-    reqUrl.includes('metadata?id=') ||
-    reqUrl.includes('/metadata') ||
-    reqUrl.includes('/start/metadata')
-  );
-}
+// --- Origin Validation (shared intake policy, §2.1) ---
+// The pure policy lives in the LEAF module src/js/utils/intakePolicy.js so
+// entry points that only need the URL predicate (src/js/devtools.js) do not
+// pull this dispatcher module's dependency subgraph. All symbols are
+// re-exported below to keep every existing consumer and test path unchanged.
+const {
+  GAME_API_PATH_PREFIXES,
+  FOE_GAME_HOST,
+  FOE_CDN_METADATA_HOSTS,
+  evaluateRequestOrigin,
+  isFoeNetworkUrl,
+  evaluateDispatchToken,
+  stampNextDispatchToken,
+  nextDispatchSequence,
+  currentDispatchGeneration,
+  advanceDispatchGeneration,
+  syncDispatchGeneration,
+  resetDispatchOrdering,
+} = require('../utils/intakePolicy.js');
 
 /**
  * Safely extracts body content from DevTools network request, supporting
@@ -336,7 +342,15 @@ function detectAndSyncWorldOrigin(reqUrl, deps = {}) {
     }
   }
 
-  return { accepted: true };
+  const originVerdict = evaluateRequestOrigin(reqUrl, deps);
+  if (!originVerdict.accepted) {
+    logger?.debug('Rejected network entry from unrelated inspected origin', {
+      reqUrl,
+      reason: originVerdict.reason,
+    });
+    return { accepted: false, reason: originVerdict.reason };
+  }
+  return { accepted: true, kind: originVerdict.kind };
 }
 
 // --- Dependency Resolution ---
@@ -380,11 +394,26 @@ async function processContentDirect(
   headers = [],
   request = null,
   deps = {},
+  token = null,
 ) {
   if (!body) return;
   const mergedDeps = getDeps(deps);
   const dispatcher = mergedDeps.messageDispatcher;
   const logRpc = mergedDeps.logRpcMessage;
+
+  // §4: verify the dispatch token is still current before any state-mutating
+  // commit; work admitted under a superseded world/session generation is dropped.
+  const verdict = evaluateDispatchToken(token, currentDispatchGeneration());
+  if (verdict.dropped) {
+    logger?.debug('Dropping stale dispatch token', {
+      reqUrl,
+      admittedGeneration: token.generation,
+      admittedSequence: token.sequence,
+      currentGeneration: currentDispatchGeneration(),
+      reason: verdict.reason,
+    });
+    return { dropped: true, stale: true, reason: verdict.reason };
+  }
 
   try {
     if (dispatcher && typeof dispatcher.dispatchRaw === 'function') {
@@ -441,6 +470,10 @@ function handleRawNetworkEntry(
     if (clientIdentHeader && clientIdentHeader.value) {
       notifyGameVersionChange(clientIdentHeader.value.substr(8, 5), mergedDeps);
     }
+    // §4: a world switch invalidates dispatches admitted under prior worlds.
+    if (worldCheck.detectedWorld) {
+      syncDispatchGeneration(worldCheck.detectedWorld);
+    }
     processContentDirect(
       reqUrl,
       body,
@@ -448,7 +481,13 @@ function handleRawNetworkEntry(
       headers || [],
       request,
       mergedDeps,
+      stampNextDispatchToken(currentDispatchGeneration()),
     );
+  } else {
+    logger?.debug('Rejected network entry at shared intake', {
+      reqUrl,
+      reason: evaluateRequestOrigin(reqUrl).reason,
+    });
   }
 }
 
@@ -481,6 +520,7 @@ function handleRequestFinished(request, deps = {}) {
         request.request ? request.request.headers : [],
         request,
         mergedDeps,
+        stampNextDispatchToken(currentDispatchGeneration()),
       );
     };
     safeProcessContent(request, processContent);
@@ -584,6 +624,13 @@ module.exports = {
   setGameVersion,
   getType,
   isFoeNetworkUrl,
+  evaluateRequestOrigin,
+  evaluateDispatchToken,
+  stampNextDispatchToken,
+  nextDispatchSequence,
+  syncDispatchGeneration,
+  advanceDispatchGeneration,
+  resetDispatchOrdering,
   greatBuildingsService: defaultGreatBuildingsService,
   startupService: defaultStartupService,
 };
