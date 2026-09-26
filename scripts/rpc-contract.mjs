@@ -183,6 +183,14 @@ function printReport(result) {
 }
 
 function main() {
+  if (!fs.existsSync(CAPTURED_FILE)) {
+    console.error(
+      `RPC contract auditor cannot run: fixture missing at ${CAPTURED_FILE}.\n` +
+        'The captured-RPC universe is the contract ground truth; without it ' +
+        'the gate would vacuously pass. Regenerate the fixture, then retry.',
+    );
+    process.exit(1);
+  }
   const captured = loadJson(CAPTURED_FILE, []);
   const config = loadJson(CONFIG_FILE, {});
   const registered = collectRegisteredKeys();
@@ -204,6 +212,22 @@ function main() {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// CLI gate. Use realpath comparison (same pattern as
+// validate-commit-msg.mjs) — a naive `import.meta.url === `file://${argv[1]}`
+// silently no-ops on percent-encoding, symlinks and Windows paths, turning the
+// auditor into an exit-0 gate that checked nothing.
+const isDirectCli = () => {
+  if (!process.argv[1]) return false;
+  try {
+    return (
+      fs.realpathSync(__filename) ===
+      fs.realpathSync(path.resolve(process.argv[1]))
+    );
+  } catch {
+    return false;
+  }
+};
+
+if (isDirectCli()) {
   main();
 }

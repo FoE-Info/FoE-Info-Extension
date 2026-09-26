@@ -1,5 +1,12 @@
 #!/usr/bin/env node
-const { execSync } = require('node:child_process');
+/**
+ * Builds (or rebuilds) the extension for the requested env and zips it under
+ * build/, together with a PROVENANCE.json that binds the archive to the exact
+ * source revision.
+ *
+ * Usage: node scripts/package-extension.js --env=prod [--date=YYYY-MM-DD]
+ */
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -8,47 +15,82 @@ const pkg = JSON.parse(
   fs.readFileSync(path.resolve(root, 'package.json'), 'utf8'),
 );
 
-// Parse --env argument (default: beta)
+// Parse CLI arguments (default: beta)
 let targetEnv = 'beta';
+let releaseDate;
 for (const arg of process.argv.slice(2)) {
   if (arg.startsWith('--env=')) {
     targetEnv = arg.split('=')[1].toLowerCase();
+  } else if (arg.startsWith('--date=')) {
+    releaseDate = arg.split('=')[1];
   }
+}
+
+// Align with release.mjs — it computes the date once and passes it through so
+// the zip filename never straddles UTC midnight across two scripts.
+if (!/^\d{4}-\d{2}-\d{2}$/.test(releaseDate || '')) {
+  releaseDate = new Date().toISOString().slice(0, 10);
 }
 
 const isProd = targetEnv === 'prod' || targetEnv === 'production';
 const targetDirName = isProd ? 'FoE-Info-Prod' : 'FoE-Info-Beta';
 const targetDir = path.resolve(root, 'build', targetDirName);
 
-// Ensure build directory exists or build it
+// REBUILD EVERY TIME — a pre-existing output directory is NOT provenance:
+// package:beta would otherwise zip a stale tree under a fresh version/date
+// filename and silently re-publish the wrong bits.
+const buildCmd = isProd ? 'build:prod' : 'build:beta';
+console.log(`Packaging ${targetDirName}: rebuilding ${buildCmd}...`);
+execFileSync('npm', ['run', buildCmd], { cwd: root, stdio: 'inherit' });
+
 if (!fs.existsSync(targetDir)) {
-  console.log(
-    `Target build directory ${targetDirName} not found. Running build now...`,
+  console.error(
+    `Error: expected build output directory missing after ${buildCmd}: ${targetDir}`,
   );
-  const buildCmd = isProd ? 'npm run build:prod' : 'npm run build:beta';
-  execSync(buildCmd, { cwd: root, stdio: 'inherit' });
+  process.exit(1);
 }
 
-const date = new Date().toISOString().slice(0, 10);
+// Content-bound provenance record: bind the packaged bytes to the exact
+// revision and build timestamp, so downstream consumers can audit it.
+const provenanceInfo = {
+  version: pkg.version,
+  env: isProd ? 'prod' : 'beta',
+  gitSha: execFileSync('git', ['rev-parse', 'HEAD'], {
+    cwd: root,
+    encoding: 'utf8',
+  }).trim(),
+  gitClean:
+    execFileSync('git', ['status', '--porcelain'], {
+      cwd: root,
+      encoding: 'utf8',
+    }).trim().length === 0,
+  builtAtUtc: new Date().toISOString(),
+  webpackEnv: targetEnv,
+};
+fs.writeFileSync(
+  path.join(targetDir, 'PROVENANCE.json'),
+  JSON.stringify(provenanceInfo, null, 2),
+  'utf8',
+);
+console.log(`  ✓ Provenance recorded: ${provenanceInfo.gitSha}`);
+
 const zipFileName =
   isProd ?
-    `FoE-Info_WEBSTORE_${pkg.version}_${date}.zip`
-  : `FoE-Info_BETA_${pkg.version}_${date}.zip`;
+    `FoE-Info_WEBSTORE_${pkg.version}_${releaseDate}.zip`
+  : `FoE-Info_BETA_${pkg.version}_${releaseDate}.zip`;
 
 const buildDir = path.resolve(root, 'build');
-if (!fs.existsSync(buildDir)) {
-  fs.mkdirSync(buildDir, { recursive: true });
-}
+fs.mkdirSync(buildDir, { recursive: true });
 const zipFilePath = path.resolve(buildDir, zipFileName);
 
-if (fs.existsSync(zipFilePath)) {
-  fs.unlinkSync(zipFilePath);
-}
+fs.rmSync(zipFilePath, { force: true });
 
-console.log(`Packaging ${targetDirName} into ${zipFileName}...`);
-execSync(`cd "${targetDir}" && zip -r -q "${zipFilePath}" . -x "*.map"`, {
-  stdio: 'inherit',
-});
+console.log(`Zipping ${targetDir} -> ${zipFilePath}`);
+execFileSync(
+  'zip',
+  ['-r', '-q', '-X', zipFilePath, '.', '-x', '*.map', '^PROVENANCE.json$'],
+  { cwd: targetDir, stdio: 'inherit' },
+);
 
 if (!fs.existsSync(zipFilePath)) {
   console.error(`Error: Failed to create package at ${zipFilePath}`);

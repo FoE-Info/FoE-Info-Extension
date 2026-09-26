@@ -13,6 +13,7 @@
   ],
   "type": "commonjs",
   "scripts": {
+    "audit:refs": "node scripts/audit-references.mjs",
     "build": "webpack --config webpack.config.js --env target=prod",
     "build:beta": "webpack --config webpack.config.js --env target=beta",
     "build:dev": "webpack --config webpack.config.js --env target=dev",
@@ -31,14 +32,15 @@
     "package:beta": "npm run verify && node scripts/package-extension.js --env=beta",
     "prepare": "husky",
     "release": "node scripts/release.mjs",
-    "release:prod": "npm run lint && npm run test && npm run build:prod && node scripts/package-extension.js --env=prod",
+    "release:prod": "npm run verify && npm run build:prod && node scripts/package-extension.js --env=prod",
     "rpc:contract": "node scripts/rpc-contract.mjs",
     "rpc:contract:check": "node scripts/rpc-contract.mjs --check",
     "setup": "node scripts/setup.mjs",
-    "test": "node --test --test-reporter=dot tests/**/*.test.mjs",
-    "test:verbose": "node --test tests/**/*.test.mjs",
-    "test:watch": "node --test --watch tests/**/*.test.mjs",
+    "test": "node scripts/run-tests.mjs",
+    "test:verbose": "node scripts/run-tests.mjs --test-reporter=spec",
+    "test:watch": "node scripts/run-tests.mjs --test-reporter=dot --watch",
     "typecheck": "tsc --noEmit",
+    "typecheck:calc": "tsc --noEmit -p tsconfig.calc.json",
     "verify": "npm run check && npm run lint && npm run typecheck && npm run rpc:contract:check && npm run i18n:check && npm test && npm run build:dev"
   },
   "lint-staged": {
