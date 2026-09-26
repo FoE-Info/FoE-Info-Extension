@@ -1,5 +1,6 @@
 const { createLogger } = require('../utils/logger.js');
 const { applyCardVisibility } = require('./cardVisibility.js');
+const { applyWorldConfig } = require('../state/storageWorldSettings.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 const {
   initNetworkListeners: initNetworkListenersDefault,
@@ -24,6 +25,61 @@ function resolveDep(config, key, loader, exportName) {
   if (!mod) return undefined;
   if (exportName) return mod[exportName] ?? mod.default?.[exportName];
   return mod.default ?? mod;
+}
+
+/**
+ * Creates a world-switch coordinator.
+ *
+ * A single switch increments a generation token, sets the world, loads the
+ * target world's COMPLETE saved configuration, applies it (showOptions,
+ * donation, webhooks, toolOptions, collapses), and resets session-scoped
+ * state. Async completion is guarded by the generation token: a slow load for
+ * world A can never apply after the user has already switched to world B.
+ *
+ * @param {Object} deps - storage handle plus the config appliers consumed by
+ *   applyWorldConfig (setOptions, setDonationPercent, ..., collapseOptions),
+ *   applyCardVisibility and an optional resetSessionState hook.
+ * @returns {{ switchToWorld: (worldId: string) => Promise<Object|null>,
+ *             getGeneration: () => number }}
+ */
+function createWorldSwitcher(deps = {}) {
+  let generation = 0;
+
+  async function switchToWorld(worldId) {
+    const gen = ++generation;
+    const storage = deps.storage;
+
+    if (typeof storage?.setWorld === 'function') {
+      storage.setWorld(worldId);
+    }
+
+    let worldData = null;
+    try {
+      worldData = await storage?.getWorldSettings?.(worldId);
+    } catch (e) {
+      logger.debug('world configuration load failed', e?.message);
+    }
+
+    if (gen !== generation) {
+      // A newer switch superseded this load — discard the stale configuration.
+      return null;
+    }
+
+    if (worldData && typeof worldData === 'object') {
+      applyWorldConfig(worldData, deps);
+    }
+    deps.applyCardVisibility?.();
+    if (typeof deps.resetSessionState === 'function') {
+      try {
+        deps.resetSessionState();
+      } catch (e) {
+        logger.debug('session reset failed', e?.message);
+      }
+    }
+    return worldData;
+  }
+
+  return { switchToWorld, getGeneration: () => generation };
 }
 
 function bindNetworkBridge(config = {}) {
@@ -58,6 +114,30 @@ function bindNetworkBridge(config = {}) {
       config.onGameVersionChange
     : () => {};
 
+  const applierDeps = {
+    storage,
+    setOptions,
+    applyCardVisibility,
+    setTargetsTopic: config.setTargetsTopic || state?.setTargetsTopic,
+    setTargetText: config.setTargetText || state?.setTargetText,
+    setUrl: config.setUrl || state?.setUrl,
+    setDonationPercent: config.setDonationPercent,
+    setCurrentPercent: config.setCurrentPercent,
+    setDonationSuffix: config.setDonationSuffix,
+    setToolOptions: resolveDep(
+      config,
+      'setToolOptions',
+      () => require('../fn/globals.js'),
+      'setToolOptions',
+    ),
+    collapseOptions: resolveDep(config, 'collapseOptions', () =>
+      require('../fn/collapse.js'),
+    ),
+    resetSessionState: config.resetSessionState,
+  };
+  const worldSwitcher = createWorldSwitcher(applierDeps);
+  const { switchToWorld } = worldSwitcher;
+
   try {
     if (browserObj?.devtools?.inspectedWindow?.eval) {
       browserObj.devtools.inspectedWindow.eval(
@@ -68,15 +148,10 @@ function bindNetworkBridge(config = {}) {
             if (match && match[1]) {
               const world = match[1].toLowerCase();
               setInspectedWorldId(world);
-              storage?.setWorld?.(world);
               setGameOrigin?.(`https://${hostname}`);
               storage?.registerKnownWorld?.(world);
-              storage?.getWorldSettings?.(world).then((worldSettings) => {
-                if (worldSettings && worldSettings.showOptions) {
-                  setOptions?.('showOptions', worldSettings.showOptions);
-                  applyCardVisibility();
-                }
-              });
+              // Applies the world's complete saved configuration.
+              switchToWorld(world);
             }
           }
         },
@@ -101,9 +176,12 @@ function bindNetworkBridge(config = {}) {
           ) {
             const world = match[1].toLowerCase();
             setInspectedWorldId(world);
-            storage.setWorld(world);
             setGameOrigin?.(`https://${match[1]}.forgeofempires.com`);
             storage.registerKnownWorld(world);
+            // Applies the target world's complete saved configuration
+            // (donation options, webhooks, toolOptions, collapses) instead of
+            // only setting the world id.
+            switchToWorld(world);
           }
         }
       });
@@ -119,6 +197,9 @@ function bindNetworkBridge(config = {}) {
     setGameOrigin,
     setOptions,
     applyCardVisibility,
+    // networkListener.js must call this (instead of its partial showOptions
+    // fallback) whenever it detects a world change during RPC traffic.
+    switchToWorld,
     messageDispatcher,
     logRpcMessage: config.logRpcMessage,
     browser: browserObj,
@@ -132,5 +213,6 @@ function bindNetworkBridge(config = {}) {
 
 module.exports = {
   bindNetworkBridge,
+  createWorldSwitcher,
 };
 module.exports.default = module.exports;
