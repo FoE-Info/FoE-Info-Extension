@@ -6,7 +6,6 @@ import { CityEntityDefs, Goods, ResourceNames, url } from '../vars/state.js';
 import { translateContainer as nativeTranslateContainer } from './i18n.js';
 
 export {
-  escapeHTML,
   formatEntityId,
   fRewardShortName,
   fRound,
@@ -14,6 +13,11 @@ export {
   fFormatNumber,
   fAgestring,
 } from '../utils/formatters.js';
+export {
+  escapeHTML,
+  escapeHTMLAttribute,
+  toDisplayString,
+} from '../utils/escape.js';
 
 export function fResourceShortName(name, lookup = null) {
   return formattersResourceShortName(name, lookup || ResourceNames);
@@ -99,14 +103,14 @@ export function getCityEntityDef(id) {
 
 export function fEntityNameTrim(name) {
   if (!name) return '';
-  var raw = String(name);
+  let raw = String(name);
   if (typeof name === 'object') {
     raw = name.value || name.id || name.identifier || String(name);
   }
 
   const def = getCityEntityDef(raw);
   if (def && def.name) {
-    var trimName = def.name;
+    let trimName = def.name;
     if (trimName.includes(' - Lv.'))
       return trimName.substring(0, trimName.indexOf(' - Lv.'));
     else if (trimName.includes('Lv. 2 - '))
