@@ -33,7 +33,22 @@ const {
   applyGlobalSettings,
   applyLegacyWorldFallbacks,
   applyDebugEnabled,
+  redactWorldData,
 } = require('./storageWorldSettings.js');
+
+let worldStorageModule = {};
+try {
+  worldStorageModule = require('../utils/worldStorage.js');
+} catch {}
+const parseWorldKey = worldStorageModule.parseWorldKey || (() => null);
+const WORLD_FIELDS = worldStorageModule.WORLD_FIELDS || [
+  'showOptions',
+  'donation',
+  'webhooks',
+  'toolOptions',
+  'caches',
+  'collapses',
+];
 
 const {
   hydrateLookupDefinitions,
@@ -66,16 +81,29 @@ function handleStorageChange(changes, namespace, deps = {}) {
   const storage = resolved.storage || defaultStorage;
   const currentWorld = storage?.getCurrentWorld?.();
 
+  // Collect world-scoped events first: per-field keys are authoritative, so
+  // a whole-object ('world:<id>') event is applied only when no per-field
+  // event for the same world is present in the same batch.
+  const worldEvents = new Map();
+
   for (const [key, storageChange] of Object.entries(changes)) {
     if (!storageChange) continue;
     const newValue = storageChange.newValue;
 
     if (key.startsWith('world:')) {
-      const changedWorld = key.slice(6);
-      if (changedWorld === currentWorld && newValue) {
-        applyWorldConfig(newValue, resolved);
+      const parsed = parseWorldKey(key);
+      if (!parsed) continue;
+      let entry = worldEvents.get(parsed.worldId);
+      if (!entry) {
+        entry = { fields: new Map(), blob: null };
+        worldEvents.set(parsed.worldId, entry);
       }
-    } else if (key === 'tool') {
+      if (parsed.field) entry.fields.set(parsed.field, newValue);
+      else entry.blob = newValue;
+      continue;
+    }
+
+    if (key === 'tool') {
       if (newValue?.language) {
         resolved.setLanguage?.(newValue.language);
         logger.debug('Language changed:', newValue.language);
@@ -101,6 +129,37 @@ function handleStorageChange(changes, namespace, deps = {}) {
       applyLegacyWorldFallbacks(key, newValue, resolved);
     }
   }
+
+  for (const [changedWorld, entry] of worldEvents) {
+    if (changedWorld !== currentWorld) continue;
+    if (entry.fields.size > 0) {
+      applyWorldConfig(Object.fromEntries(entry.fields), resolved);
+    } else if (entry.blob) {
+      applyWorldConfig(entry.blob, resolved);
+    }
+  }
+}
+
+/**
+ * Builds the current world's settings from a full storage snapshot: the
+ * whole-object key ('world:<id>') overlaid with the authoritative per-field
+ * keys ('world:<id>:<field>') when present.
+ */
+function buildWorldSnapshotData(result, currentWorld) {
+  if (!currentWorld) return null;
+  const blob = result['world:' + currentWorld];
+  const blobObject = blob && typeof blob === 'object' ? { ...blob } : null;
+  const base = blobObject || {};
+  let hasFieldData = false;
+  for (const field of WORLD_FIELDS) {
+    const value = result[`world:${currentWorld}:${field}`];
+    if (value !== undefined) {
+      base[field] = value;
+      hasFieldData = true;
+    }
+  }
+  if (!blobObject && !hasFieldData) return null;
+  return base;
 }
 
 /**
@@ -111,7 +170,7 @@ function handleStorageChange(changes, namespace, deps = {}) {
  */
 function handleReceiveStorage(result, deps = {}) {
   if (!result || typeof result !== 'object') return;
-  logger.debug('result', result);
+  logger.debug('result', redactWorldData(result));
 
   const resolved = resolveDeps(deps);
   const storage = resolved.storage || defaultStorage;
@@ -129,7 +188,7 @@ function handleReceiveStorage(result, deps = {}) {
   applyGlobalSettings(effectiveGlobal, resolved, resolved.browser);
 
   const currentWorld = storage?.getCurrentWorld?.();
-  const curWorldData = currentWorld ? result['world:' + currentWorld] : null;
+  const curWorldData = buildWorldSnapshotData(result, currentWorld);
 
   if (curWorldData) {
     applyWorldConfig(curWorldData, resolved);
@@ -148,6 +207,9 @@ function handleReceiveStorage(result, deps = {}) {
       // Handled definition lookup
     } else if (!curWorldData) {
       applyLegacyWorldFallbacks(key, value, resolved);
+    } else if (typeof value === 'object' && value !== null) {
+      // Redacted: world-shaped objects can carry webhook credentials.
+      logger.debug(key, redactWorldData(value));
     } else {
       logger.debug(key, value);
     }

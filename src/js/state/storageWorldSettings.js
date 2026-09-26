@@ -21,6 +21,37 @@ try {
 const logger = createLogger('StorageWorldSettings');
 
 /**
+ * Returns a log-safe projection of world data: credential-bearing webhook
+ * fields are replaced with presence booleans so diagnostic logs never contain
+ * webhook URLs. Handles both a world settings object and a storage snapshot
+ * containing `world:<id>` entries.
+ */
+function redactWorldData(worldData) {
+  if (!worldData || typeof worldData !== 'object') return worldData;
+  const projection =
+    Array.isArray(worldData) ? [...worldData] : { ...worldData };
+  if (projection.webhooks && typeof projection.webhooks === 'object') {
+    projection.webhooks = Object.fromEntries(
+      Object.entries(projection.webhooks).map(([key, value]) => [
+        key,
+        Boolean(value),
+      ]),
+    );
+  }
+  for (const [key, value] of Object.entries(projection)) {
+    if (
+      key.startsWith('world:') &&
+      value &&
+      typeof value === 'object' &&
+      !Array.isArray(value)
+    ) {
+      projection[key] = redactWorldData(value);
+    }
+  }
+  return projection;
+}
+
+/**
  * Applies world-scoped settings for the active world.
  *
  * @param {Object} worldData - Data for the active world from storage
@@ -29,7 +60,7 @@ const logger = createLogger('StorageWorldSettings');
 function applyWorldConfig(worldData, deps = {}) {
   if (!worldData || typeof worldData !== 'object') return;
 
-  logger.debug('Applying world configuration:', worldData);
+  logger.debug('Applying world configuration:', redactWorldData(worldData));
 
   if (worldData.showOptions) {
     deps.setOptions?.('showOptions', worldData.showOptions);
@@ -160,5 +191,6 @@ module.exports = {
   applyGlobalSettings,
   applyLegacyWorldFallbacks,
   applyDebugEnabled,
+  redactWorldData,
 };
 module.exports.default = module.exports;
