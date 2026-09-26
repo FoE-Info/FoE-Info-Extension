@@ -16,25 +16,10 @@ try {
   logger = null;
 }
 
-let escapeHTML = null;
-try {
-  const formatters = require('../utils/formatters.js');
-  if (typeof formatters.escapeHTML === 'function') {
-    escapeHTML = formatters.escapeHTML;
-  }
-} catch {
-  escapeHTML = null;
-}
+// Canonical escaping core; fail-closed - escaping is never optional here.
+const { escapeHTML } = require('../utils/escape.js');
 
-function safeEscape(value) {
-  if (typeof escapeHTML === 'function') return escapeHTML(value);
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
+const safeEscape = escapeHTML;
 
 /**
  * Appends a localized game/extension version status block to a container.
