@@ -73,11 +73,14 @@ test('Great Buildings Unified Panel & Registry Suite', async (t) => {
       const cost10 = calculateLevelCost(mockMeta, 10);
       assert.equal(cost10, 600);
 
-      // Level 11 cost: Math.ceil(600 * 1.025^(11-9)) = Math.ceil(600 * 1.025^2) = Math.ceil(630.375) = 631
+      // Level 11 cost: ROUND_CEIL(600 * 1.025^(11-9)) = ROUND_CEIL(630.375) = 631.
+      // The fractional part is 0.375, so this value also distinguishes ROUND_CEIL
+      // from ROUND_HALF_UP and ROUND_FLOOR (both would give 630) — the rounding
+      // mode is pinned, not just the number.
       const cost11 = calculateLevelCost(mockMeta, 11);
       assert.equal(cost11, 631);
 
-      // Level 12 cost: Math.ceil(600 * 1.025^3) = Math.ceil(646.13) = 647
+      // Level 12 cost: ROUND_CEIL(600 * 1.025^3) = ROUND_CEIL(646.134375) = 647
       const cost12 = calculateLevelCost(mockMeta, 12);
       assert.equal(cost12, 647);
     },

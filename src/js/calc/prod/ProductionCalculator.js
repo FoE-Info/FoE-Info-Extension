@@ -6,20 +6,15 @@
  */
 
 const BigNumber = require('bignumber.js');
-const { toBigNumber } = require('../utils/bignumberUtils.js');
+const {
+  toBigNumber,
+  boostedForgePoints,
+} = require('../utils/bignumberUtils.js');
+const UNIT_MULTIPLIER = new BigNumber(1);
 
 function addResource(res, k, v) {
   if (v == null) return;
-  const current = res[k] ?? 0;
-  const curVal =
-    typeof current?.toNumber === 'function' ? current.toNumber()
-    : typeof current === 'number' ? current
-    : Number(current) || 0;
-  const addVal =
-    typeof v?.toNumber === 'function' ? v.toNumber()
-    : typeof v === 'number' ? v
-    : Number(v) || 0;
-  res[k] = curVal + addVal;
+  res[k] = toBigNumber(res[k]).plus(toBigNumber(v)).toNumber();
 }
 
 function addGuildResources(res, guildRes) {
@@ -32,22 +27,13 @@ function addGuildResources(res, guildRes) {
   }
 }
 
-function applyGenericReward(reward, res, multiplier = 1) {
+function applyGenericReward(reward, res, multiplier = UNIT_MULTIPLIER) {
   if (!reward) return;
-  const mult =
-    typeof multiplier === 'function' ? multiplier : (
-      (v) => {
-        const val =
-          typeof v?.toNumber === 'function' ? v.toNumber()
-          : typeof v === 'number' ? v
-          : Number(v) || 0;
-        const m =
-          typeof multiplier?.toNumber === 'function' ? multiplier.toNumber()
-          : typeof multiplier === 'number' ? multiplier
-          : Number(multiplier) || 1;
-        return Math.round(val * m + Number.EPSILON);
-      }
-    );
+  const mult = (v) =>
+    toBigNumber(v)
+      .multipliedBy(multiplier)
+      .integerValue(BigNumber.ROUND_HALF_UP)
+      .toNumber();
   if (reward.type === 'unit') {
     addResource(res, 'units', mult(reward.amount || 1));
   } else if (reward.type === 'chest') {
@@ -177,7 +163,7 @@ function extractEntityProduction(
                 .toNumber();
             if (prod?.type === 'genericReward') {
               const reward = lookup[prod.reward?.id];
-              applyGenericReward(reward, res, rw);
+              applyGenericReward(reward, res, chanceBn);
             } else if (
               prod?.type === 'resources' &&
               prod.playerResources?.resources
@@ -284,13 +270,8 @@ function applyProductionBoosts({
     .multipliedBy(supplyMultiplier)
     .integerValue(BigNumber.ROUND_FLOOR);
 
-  const fpBoostAmount = baseBoostableFP
-    .multipliedBy(fpBoostPercent)
-    .dividedBy(100)
-    .integerValue(BigNumber.ROUND_HALF_UP);
-  const totalDailyFP = baseUnboostableFP
-    .plus(baseBoostableFP)
-    .plus(fpBoostAmount);
+  const { boostAmount: fpBoostAmount, total: totalDailyFP } =
+    boostedForgePoints(baseBoostableFP, baseUnboostableFP, fpBoostPercent);
 
   return {
     coins: {

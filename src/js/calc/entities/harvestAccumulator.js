@@ -7,6 +7,10 @@
  */
 
 const { SPECIAL_GOODS } = require('../goods/goodsClassification.js');
+const {
+  addResourceTotal,
+  addExactTotal,
+} = require('../utils/bignumberUtils.js');
 
 /**
  * Create a fresh mutable accumulator for a single city harvest batch.
@@ -48,9 +52,12 @@ function accumulatePlayerGoods({ resources, cid, accum, helper }) {
       !SPECIAL_GOODS.has(entry)
     ) {
       const entryGoods = resources[entry] || 0;
-      goods += entryGoods;
+      goods = addExactTotal(goods, entryGoods);
       if (entryGoods > 0) {
-        accum.goodsList[entry] = (accum.goodsList[entry] || 0) + entryGoods;
+        accum.goodsList[entry] = addExactTotal(
+          accum.goodsList[entry],
+          entryGoods,
+        );
       }
     }
   });
@@ -60,7 +67,7 @@ function accumulatePlayerGoods({ resources, cid, accum, helper }) {
       name: helper.fEntityNameTrim(cid),
       goods: goods,
     });
-    accum.totalGoods += goods;
+    accum.totalGoods = addExactTotal(accum.totalGoods, goods);
   }
 }
 
@@ -92,11 +99,11 @@ function parseCurrentProduct({
       if (entry !== 'clan_power') {
         const res = ResourceDefs.find((r) => r.id === entry);
         if (res) era = res.era;
-        goods += curProduct.guildProduct.resources[entry] || 0;
+        goods = addExactTotal(goods, curProduct.guildProduct.resources[entry]);
       }
     });
     if (goods > 0) {
-      accum.clanGoods += goods;
+      accum.clanGoods = addExactTotal(accum.clanGoods, goods);
       accum.clanGoodsBuildings.push({
         id: cid,
         era: era,
@@ -105,7 +112,10 @@ function parseCurrentProduct({
       });
     }
     if (curProduct.guildProduct.resources.clan_power) {
-      accum.clanPower += curProduct.guildProduct.resources.clan_power;
+      accum.clanPower = addExactTotal(
+        accum.clanPower,
+        curProduct.guildProduct.resources.clan_power,
+      );
     }
   }
 
@@ -125,19 +135,19 @@ function parseCurrentProduct({
       if (Array.isArray(curProduct.goods)) {
         for (let good = 0; good < curProduct.goods.length; good++) {
           const gItem = curProduct.goods[good];
-          goods += gItem.value || 0;
+          goods = addExactTotal(goods, gItem.value);
           if (!gbEra && gItem.good_id) {
             const resDef = ResourceDefs.find((r) => r.id === gItem.good_id);
             if (resDef?.era) gbEra = resDef.era;
           }
         }
       } else if (curProduct.goods?.value) {
-        goods += curProduct.goods.value;
+        goods = addExactTotal(goods, curProduct.goods.value);
       } else if (typeof curProduct.amount === 'number') {
-        goods += curProduct.amount;
+        goods = addExactTotal(goods, curProduct.amount);
       }
       if (goods > 0) {
-        accum.clanGoods += goods;
+        accum.clanGoods = addExactTotal(accum.clanGoods, goods);
         const eraName = gbEra || MyInfo.era;
         accum.clanGoodsBuildings.push({
           id: cid,
@@ -154,11 +164,12 @@ function parseCurrentProduct({
   // 3. Player resources from product
   if (curProduct.product?.resources) {
     const prodRes = curProduct.product.resources;
-    if (prodRes.premium) accum.diamonds += prodRes.premium;
+    if (prodRes.premium)
+      accum.diamonds = addExactTotal(accum.diamonds, prodRes.premium);
     if (prodRes.strategy_points) {
-      forgePoints += prodRes.strategy_points;
+      forgePoints = addResourceTotal(forgePoints, prodRes.strategy_points);
       if (forgePoints > 0) {
-        City.ForgePoints = (City.ForgePoints || 0) + forgePoints;
+        City.ForgePoints = addResourceTotal(City.ForgePoints, forgePoints);
         found = true;
         accum.fpBuildings.push({
           id: cid,
@@ -186,9 +197,9 @@ function parseCurrentProduct({
         }
       }
     }
-    if (prodRes.money) City.Coins = (City.Coins || 0) + prodRes.money;
+    if (prodRes.money) City.Coins = addResourceTotal(City.Coins, prodRes.money);
     if (prodRes.supplies)
-      City.Supplies = (City.Supplies || 0) + prodRes.supplies;
+      City.Supplies = addResourceTotal(City.Supplies, prodRes.supplies);
 
     accumulatePlayerGoods({
       resources: prodRes,
@@ -198,9 +209,10 @@ function parseCurrentProduct({
     });
   }
 
-  if (curProduct.clan_power) accum.clanPower += curProduct.clan_power;
+  if (curProduct.clan_power)
+    accum.clanPower = addExactTotal(accum.clanPower, curProduct.clan_power);
   if (curProduct.asset_name === 'penal_unit') {
-    City.TrazUnits = (City.TrazUnits || 0) + (curProduct.amount || 0);
+    City.TrazUnits = addResourceTotal(City.TrazUnits, curProduct.amount);
   }
 
   return { forgePoints, found };
@@ -229,11 +241,11 @@ function parseProductionOption({
     let goods = 0;
     Object.keys(prodOpt.guildProduct.resources).forEach((entry) => {
       if (entry !== 'clan_power') {
-        goods += prodOpt.guildProduct.resources[entry] || 0;
+        goods = addExactTotal(goods, prodOpt.guildProduct.resources[entry]);
       }
     });
     if (goods > 0) {
-      accum.clanGoods += goods;
+      accum.clanGoods = addExactTotal(accum.clanGoods, goods);
       accum.clanGoodsBuildings.push({
         id: cid,
         name: helper.fEntityNameTrim(cid),
@@ -241,7 +253,10 @@ function parseProductionOption({
       });
     }
     if (prodOpt.guildProduct.resources.clan_power) {
-      accum.clanPower += prodOpt.guildProduct.resources.clan_power;
+      accum.clanPower = addExactTotal(
+        accum.clanPower,
+        prodOpt.guildProduct.resources.clan_power,
+      );
     }
   }
 
@@ -250,15 +265,15 @@ function parseProductionOption({
       let goods = 0;
       if (Array.isArray(prodOpt.goods)) {
         for (let good = 0; good < prodOpt.goods.length; good++) {
-          goods += prodOpt.goods[good].value || 0;
+          goods = addExactTotal(goods, prodOpt.goods[good].value);
         }
       } else if (prodOpt.goods?.value) {
-        goods += prodOpt.goods.value;
+        goods = addExactTotal(goods, prodOpt.goods.value);
       } else if (typeof prodOpt.amount === 'number') {
-        goods += prodOpt.amount;
+        goods = addExactTotal(goods, prodOpt.amount);
       }
       if (goods > 0) {
-        accum.clanGoods += goods;
+        accum.clanGoods = addExactTotal(accum.clanGoods, goods);
         accum.clanGoodsBuildings.push({
           id: cid,
           name: helper.fEntityNameTrim(cid),
@@ -272,13 +287,18 @@ function parseProductionOption({
     prodOpt.products.forEach((product) => {
       if (product?.playerResources?.resources) {
         const resources = product.playerResources.resources;
-        if (resources.premium) accum.diamonds += resources.premium;
+        if (resources.premium)
+          accum.diamonds = addExactTotal(accum.diamonds, resources.premium);
         if (resources.strategy_points) {
-          forgePoints += resources.strategy_points;
+          forgePoints = addResourceTotal(
+            forgePoints,
+            resources.strategy_points,
+          );
         }
-        if (resources.money) City.Coins = (City.Coins || 0) + resources.money;
+        if (resources.money)
+          City.Coins = addResourceTotal(City.Coins, resources.money);
         if (resources.supplies)
-          City.Supplies = (City.Supplies || 0) + resources.supplies;
+          City.Supplies = addResourceTotal(City.Supplies, resources.supplies);
 
         accumulatePlayerGoods({
           resources,
@@ -298,12 +318,12 @@ function parseProductionOption({
         let isAllGoods = false;
         Object.keys(guildRes).forEach((entry) => {
           if (entry === 'clan_power') {
-            accum.clanPower += guildRes[entry] || 0;
+            accum.clanPower = addExactTotal(accum.clanPower, guildRes[entry]);
           } else if (typeof guildRes[entry] === 'number') {
             if (entry === 'all_goods_of_age') {
               isAllGoods = true;
             }
-            pClanGoods += guildRes[entry];
+            pClanGoods = addExactTotal(pClanGoods, guildRes[entry]);
             if (!gEra && entry !== 'all_goods_of_age') {
               const resDef = ResourceDefs.find((r) => r.id === entry);
               if (resDef?.era) gEra = resDef.era;
@@ -311,7 +331,7 @@ function parseProductionOption({
           }
         });
         if (pClanGoods > 0) {
-          accum.clanGoods += pClanGoods;
+          accum.clanGoods = addExactTotal(accum.clanGoods, pClanGoods);
           accum.clanGoodsBuildings.push({
             id: cid,
             era: gEra,
@@ -326,7 +346,7 @@ function parseProductionOption({
   }
 
   if (forgePoints > 0) {
-    City.ForgePoints = (City.ForgePoints || 0) + forgePoints;
+    City.ForgePoints = addResourceTotal(City.ForgePoints, forgePoints);
     found = true;
     accum.fpBuildings.push({
       id: cid,
@@ -354,9 +374,10 @@ function parseProductionOption({
     }
   }
 
-  if (prodOpt.clan_power) accum.clanPower += prodOpt.clan_power;
+  if (prodOpt.clan_power)
+    accum.clanPower = addExactTotal(accum.clanPower, prodOpt.clan_power);
   if (prodOpt.asset_name === 'penal_unit') {
-    City.TrazUnits = (City.TrazUnits || 0) + (prodOpt.amount || 0);
+    City.TrazUnits = addResourceTotal(City.TrazUnits, prodOpt.amount);
   }
 
   return { forgePoints, found };

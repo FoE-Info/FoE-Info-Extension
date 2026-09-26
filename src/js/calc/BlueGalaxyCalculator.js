@@ -29,7 +29,7 @@ function extractEntityFp(entity, metadataStore = null, targetEra = 'AllAge') {
   // 1. Direct inspection from active product in current_product
   const cpRes = entity.state?.current_product?.product?.resources;
   if (cpRes?.strategy_points) {
-    return Number(cpRes.strategy_points);
+    return toBigNumber(cpRes.strategy_points).toNumber();
   }
 
   // 2. Direct inspection from productionOption
@@ -41,7 +41,9 @@ function extractEntityFp(entity, metadataStore = null, targetEra = 'AllAge') {
       : prodOption.products.array || [];
     for (const p of list) {
       if (p.playerResources?.resources?.strategy_points) {
-        return Number(p.playerResources.resources.strategy_points);
+        return toBigNumber(
+          p.playerResources.resources.strategy_points,
+        ).toNumber();
       }
     }
   }
@@ -56,7 +58,7 @@ function extractEntityFp(entity, metadataStore = null, targetEra = 'AllAge') {
   if (meta) {
     const prod = extractEntityProduction(entity, meta, targetEra, true);
     if (prod?.strategy_points) {
-      return Number(prod.strategy_points);
+      return toBigNumber(prod.strategy_points).toNumber();
     }
   }
 

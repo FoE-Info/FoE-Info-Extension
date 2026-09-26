@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Incremental JS type-checking boundary: start on the pure math modules
+    // in src/js/calc/** (BigNumber math, no DOM/network side effects). The
+    // repo-wide tsconfig keeps checkJs off; once calc passes cleanly we can
+    // widen this include set one subdir at a time.
+    "checkJs": true
+  },
+  "include": ["src/js/calc/**/*"]
+}
