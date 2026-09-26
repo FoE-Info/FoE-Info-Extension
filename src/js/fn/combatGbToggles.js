@@ -47,6 +47,9 @@ export const fCollapseArmy = createToggle({
     const armyUnits2 = doc.getElementById('armyUnits2');
     const armyUnits3 = doc.getElementById('armyUnits3');
     if (armyUnits) {
+      // Copies product-emitted markup (armyPanel.js renders only numeric
+      // rogues/allUnits counts into #armyUnits2/#armyUnits3); no raw
+      // network- or player-derived strings pass through here.
       armyUnits.innerHTML =
         next && armyUnits2 && armyUnits3 ?
           armyUnits2.innerHTML + ' ' + armyUnits3.innerHTML
@@ -87,6 +90,9 @@ export const fCollapseInvested = createToggle({
     const availableFpEl = doc.getElementById('availableFPID');
     if (onHandEl) {
       if (next && availableFpEl) {
+        // Copies product-emitted markup (#availableFPID is a toLocaleString()
+        // of a numeric FP count rendered by investedPanel.js); no raw
+        // unescaped value flows through here.
         onHandEl.innerHTML = `<span data-i18n="available">Available FP</span>: ${availableFpEl.innerHTML}`;
       } else {
         onHandEl.innerHTML = '';

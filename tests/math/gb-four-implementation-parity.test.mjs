@@ -9,7 +9,7 @@ import {
 const r2 = (x) => Math.floor(x + 0.5);
 
 // ---------------------------------------------------------------------------
-// Oracle 1: FoE-Info-original v1  (and peer-repo — byte-identical math)
+// Oracle 1: FoE-Info-original v1
 //   Donation = round((total-current + occupant)/2)
 //   RewardFP = round(base * (1 + Arc/100))
 //   Profit   = RewardFP - Donation          (0 counts as profit/green)
@@ -30,8 +30,6 @@ function original(remaining, occupant, base, arc, percent) {
     verdict: profit >= 0 ? 'profit' : 'loss',
   };
 }
-// peer-repo: verified byte-identical getPlaceValues/getSafe across both copies.
-const peerTool = original;
 
 // ---------------------------------------------------------------------------
 // Oracle 2: Forge-Hammer donor table (calculator.js)
@@ -86,17 +84,15 @@ const captured = [
   { name: 'The Blue Galaxy P4', remaining: 620, occupant: 0, base: 80 },
 ];
 
-describe('4-way GB parity: FH vs ours vs FoE-Info-original vs peer-repo', () => {
+describe('GB parity: ours vs FoE-Info-original vs Forge-Hammer', () => {
   describe('captured payloads (lock >= deposit)', () => {
     for (const c of captured) {
-      it(`${c.name}: ours == original == peer-repo`, () => {
+      it(`${c.name}: ours == original`, () => {
         const a = ours(c.remaining, c.occupant, c.base, ARC, PCT);
         const v1 = original(c.remaining, c.occupant, c.base, ARC, PCT);
-        const low = peerTool(c.remaining, c.occupant, c.base, ARC, PCT);
 
         // Lock is identical across every implementation, including FH.
         assert.equal(a.lock, v1.lock);
-        assert.equal(a.lock, low.lock);
         assert.equal(
           a.lock,
           forgeHammerDonor(c.remaining, c.occupant, c.base).safeRankCost,
@@ -105,7 +101,6 @@ describe('4-way GB parity: FH vs ours vs FoE-Info-original vs peer-repo', () => 
         // Verdict basis: ours (gross - max(deposit,lock)) == v1 (gross - lock)
         // because lock >= deposit here.
         assert.equal(a.profit, v1.profit, 'our NET should equal v1 profit');
-        assert.equal(low.profit, v1.profit, 'peer-repo should equal v1');
 
         // Owner add: exact vs v1 (lock-deposit)*2 — equal on these (even) cases.
         assert.equal(a.ownerAdd, v1.ownerAdd, 'owner add should match v1 here');
