@@ -96,9 +96,12 @@ test('Unit Calculator Breakdown & Critical Hit Suite', async (t) => {
       { name: 'Alcatraz', amount: 80 },
     ]);
     assert.match(html, /80 <strong>Alcatraz<\/strong>/);
+    // The name must render inside its <strong> wrapper. Which numeric entity
+    // the escaper chooses for an apostrophe is not this test's concern — a raw
+    // `'` is harmless in HTML text content anyway — so accept any spelling.
     assert.match(
       html,
-      /4 <strong>Governor&#39;s Villa<\/strong>|4 <strong>Governor's Villa<\/strong>/,
+      /4 <strong>Governor(?:&#0*39;|&#x0*27;|')s Villa<\/strong>/,
     );
     // Alcatraz should appear before Governor's Villa due to descending sort
     const alcIdx = html.indexOf('Alcatraz');

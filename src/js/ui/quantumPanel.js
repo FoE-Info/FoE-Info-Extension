@@ -51,6 +51,12 @@ try {
   worldStorage = require('../utils/worldStorage.js');
 } catch {}
 
+// Mandatory import, not an optional one: utils/escape.js is a pure leaf module
+// with no imports, so it cannot fail to load. Member names and clan names below
+// are network-derived (GuildRaidsService.getMemberActivityOverview rows[].player.name)
+// and go straight into innerHTML, so they must be escaped at the render site.
+const { escapeHTML } = require('../utils/escape.js');
+
 const QI_CONTRIBUTIONS_BOUNDED_HEIGHT = 480;
 const QI_LEADERBOARD_BOUNDED_HEIGHT = 260;
 
@@ -139,7 +145,7 @@ function renderQuantumContributionsCard(members, lastSavedTimestamp) {
     ${closeBtn}
     <p id="qiContributionsTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#qiContributionsCollapse" aria-expanded="${!isCollapsed}" aria-controls="qiContributionsCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconHtml}
-      <strong><span data-i18n="qi_contributions">QI Contributions</span>: [${worldLabel}]</strong>
+      <strong><span data-i18n="qi_contributions">QI Contributions</span>: [${escapeHTML(worldLabel)}]</strong>
     </p>
     ${copyBtn}
     <div id="qiContributionsCollapse" class="alert-info overflow resize collapse ${isCollapsed ? '' : 'show'}">
@@ -177,7 +183,7 @@ function renderQuantumContributionsCard(members, lastSavedTimestamp) {
       const apFormatted = Number(m.actionPoints || 0).toLocaleString();
 
       cardHTML += `<tr>
-        <td class="text-start">${m.name}</td>
+        <td class="text-start">${escapeHTML(m.name)}</td>
         <td class="text-end">${progressFormatted}${
           m.progressDiff ?
             ` <span class="badge bg-danger ms-1">+${m.progressDiff.toLocaleString()}</span>`
@@ -317,8 +323,8 @@ function renderQuantumLeaderboardCard(rankings) {
     for (const r of rankings) {
       const pointsFormatted = Number(r.points || 0).toLocaleString();
       cardHTML += `<tr>
-        <td class="text-start">${r.clanName}</td>
-        <td class="text-center">${r.rank}</td>
+        <td class="text-start">${escapeHTML(r.clanName)}</td>
+        <td class="text-center">${escapeHTML(r.rank)}</td>
         <td class="text-end">${pointsFormatted}</td>
       </tr>`;
     }

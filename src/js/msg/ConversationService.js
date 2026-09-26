@@ -1,4 +1,9 @@
 /** Messages and teasers RPC service for player conversation threads. */
+
+// Canonical escaping core; fail-closed - the injected `helper` seam is only
+// a test hook, never the sole provider of escaping.
+const { escapeHTML } = require('../utils/escape.js');
+
 let dateUtils = {};
 try {
   dateUtils = require('../utils/date.js');
@@ -115,39 +120,13 @@ function renderTargetMessage(message) {
   }
 
   const rawText = message?.lastMessage?.text || message?.text || '';
-  const safeText = (
-    typeof helper?.escapeHTML === 'function' ?
-      helper.escapeHTML(rawText)
-    : String(rawText).replace(
-        /[&<>"']/g,
-        (m) =>
-          ({
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;',
-          })[m],
-      )).replace(/(?:\r\n|\r|\n)/g, '<br>');
+  const safeText = escapeHTML(rawText).replace(/(?:\r\n|\r|\n)/g, '<br>');
 
   const rawSender =
     message?.lastMessage?.sender?.name ||
     message?.sender?.name ||
     (typeof message?.sender === 'string' ? message.sender : '');
-  const safeSender =
-    typeof helper?.escapeHTML === 'function' ?
-      helper.escapeHTML(rawSender)
-    : String(rawSender).replace(
-        /[&<>"']/g,
-        (m) =>
-          ({
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;',
-          })[m],
-      );
+  const safeSender = escapeHTML(rawSender);
 
   const rawDate = message?.lastMessage?.date || message?.date;
   let formattedDate;
@@ -158,20 +137,7 @@ function renderTargetMessage(message) {
   } else {
     formattedDate = formatTimeSafe(Math.floor(Date.now() / 1000));
   }
-  const safeDate =
-    typeof helper?.escapeHTML === 'function' ?
-      helper.escapeHTML(formattedDate)
-    : String(formattedDate).replace(
-        /[&<>"']/g,
-        (m) =>
-          ({
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;',
-          })[m],
-      );
+  const safeDate = escapeHTML(formattedDate);
 
   const iconHTML =
     typeof element?.icon === 'function' ?
@@ -184,7 +150,7 @@ function renderTargetMessage(message) {
     targetsHTML +
     `<p id="targetLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#targetText" aria-expanded="${!collapse.collapseTarget}" aria-controls="targetText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
   ${iconHTML}
-            <strong>GBG Targets</strong> ${safeDate}</p><p id="targetText" class="collapse ${
+            <strong><span data-i18n="gbg_targets">GBG Targets</span></strong> ${safeDate}</p><p id="targetText" class="collapse ${
               collapse.collapseTarget ? '' : 'show'
             }">${safeText}<br><span class="text-muted">by ${safeSender}. alert @ ${alertTime}</span></p></div>`;
 
