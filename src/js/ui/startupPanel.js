@@ -12,6 +12,7 @@ const liveStats = require('./renderLiveCityStats.js');
 const buildingCollection = require('./renderBuildingCollectionTimes.js');
 const cityStatsTooltips = require('./cityStatsTooltips.js');
 const playerTooltip = require('./playerTooltip.js');
+const { escapeHTML: canonicalEscapeHTML } = require('../utils/escape.js');
 
 let logger = null;
 try {
@@ -21,24 +22,8 @@ try {
   logger = null;
 }
 
-let escapeHTML = null;
-try {
-  const formatters = require('../utils/formatters.js');
-  if (typeof formatters.escapeHTML === 'function') {
-    escapeHTML = formatters.escapeHTML;
-  }
-} catch {
-  escapeHTML = null;
-}
-
 function safeEscape(value) {
-  if (typeof escapeHTML === 'function') return escapeHTML(value);
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  return canonicalEscapeHTML(value);
 }
 
 // ============================================================================

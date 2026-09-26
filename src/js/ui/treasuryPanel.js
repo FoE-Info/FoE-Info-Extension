@@ -10,6 +10,7 @@
 
 const { createLogger } = require('../utils/logger.js');
 const { treasuryState } = require('../state/GuildDomainState.js');
+const { escapeHTML: canonicalEscapeHTML } = require('../utils/escape.js');
 
 let logger = null;
 try {
@@ -126,7 +127,7 @@ function buildTreasuryTableHtml({ resources, rssDefs = [], helper = {} }) {
         const safeName =
           typeof helper.escapeHTML === 'function' ?
             helper.escapeHTML(displayName)
-          : displayName;
+          : canonicalEscapeHTML(displayName);
         eraTreasuryText += `<tr><td class="text-start">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
       }
     });
@@ -137,7 +138,7 @@ function buildTreasuryTableHtml({ resources, rssDefs = [], helper = {} }) {
 
   const medals = getResourceAmount(resources, 'medals');
   if (medals > 0) {
-    tableRows += `<tr><td class="text-start">Medals</td><td class="text-end">${medals.toLocaleString()}</td></tr>`;
+    tableRows += `<tr><td class="text-start"><span data-i18n="medals">Medals</span></td><td class="text-end">${medals.toLocaleString()}</td></tr>`;
   }
 
   let otherTreasuryText = '';
@@ -156,7 +157,7 @@ function buildTreasuryTableHtml({ resources, rssDefs = [], helper = {} }) {
         const safeName =
           typeof helper.escapeHTML === 'function' ?
             helper.escapeHTML(displayName)
-          : displayName;
+          : canonicalEscapeHTML(displayName);
         otherTreasuryText += `<tr><td class="text-start">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
       }
     }
@@ -492,13 +493,15 @@ function renderTreasuryLogPanel(logs, totals = {}, context = {}) {
     const pName =
       helper?.escapeHTML ?
         helper.escapeHTML(entry.playerName || 'Unknown')
-      : entry.playerName || 'Unknown';
+      : canonicalEscapeHTML(entry.playerName || 'Unknown');
     const rName =
       helper?.escapeHTML ?
         helper.escapeHTML(entry.resource || '')
-      : entry.resource;
+      : canonicalEscapeHTML(entry.resource || '');
     const act =
-      helper?.escapeHTML ? helper.escapeHTML(entry.action || '') : entry.action;
+      helper?.escapeHTML ?
+        helper.escapeHTML(entry.action || '')
+      : canonicalEscapeHTML(entry.action || '');
     const isDonation =
       typeof entry.isDonation === 'function' ? entry.isDonation() : true;
     const amountClass = isDonation ? 'text-success' : 'text-danger';

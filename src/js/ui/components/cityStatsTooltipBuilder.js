@@ -21,16 +21,16 @@ try {
   const { createLogger } = require('../../utils/logger.js');
   logger = createLogger('TooltipBuilder');
 } catch {}
+const {
+  toBigNumber,
+  boostedForgePoints,
+} = require('../../calc/utils/bignumberUtils.js');
 
-function escapeHtml(str) {
-  if (typeof str !== 'string') return '';
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+// Canonical escaping core (see utils/escape.js). The local copy that used to
+// live here encoded `'` as `&#39;` where the core uses `&#039;`; both render
+// as an apostrophe, so this is consolidation rather than a behaviour change.
+const { escapeHTML } = require('../../utils/escape.js');
+const escapeHtml = escapeHTML;
 
 function buildFpTooltipHTML(fpBuildingsList, boost = 0, customHelper = helper) {
   if (
@@ -43,8 +43,13 @@ function buildFpTooltipHTML(fpBuildingsList, boost = 0, customHelper = helper) {
 
   const h = customHelper || helper;
   const groupedFp = {};
-  let baseBoostableFp = 0;
-  let baseUnboostableFp = 0;
+  // Forge-point accumulation and the boost factor stay in BigNumber (§11 MED):
+  // `Math.round(baseBoostableFp * numBoost / 100)` on native doubles is the
+  // arithmetic itself, not a display conversion, so it falls under the
+  // explicit-rounding invariant. Rounding happens once, at the render boundary
+  // below, after the arithmetic.
+  let baseBoostableFp = toBigNumber(0);
+  let baseUnboostableFp = toBigNumber(0);
 
   for (const entry of fpBuildingsList) {
     if (!entry) continue;
@@ -59,29 +64,35 @@ function buildFpTooltipHTML(fpBuildingsList, boost = 0, customHelper = helper) {
     if (!groupedFp[name]) {
       groupedFp[name] = { count: 0, totalFp: 0 };
     }
-    const fpAmount = Number(entry.fp) || 0;
+    const fpAmount = toBigNumber(entry.fp);
     groupedFp[name].count++;
-    groupedFp[name].totalFp += fpAmount;
+    groupedFp[name].totalFp = toBigNumber(groupedFp[name].totalFp).plus(
+      fpAmount,
+    );
 
     if (entry.isBoostable) {
-      baseBoostableFp += fpAmount;
+      baseBoostableFp = baseBoostableFp.plus(fpAmount);
     } else {
-      baseUnboostableFp += fpAmount;
+      baseUnboostableFp = baseUnboostableFp.plus(fpAmount);
     }
   }
 
-  const unboostedBaseTotal = baseBoostableFp + baseUnboostableFp;
-  let finalTotalFp = unboostedBaseTotal;
+  const unboostedBaseTotal = baseBoostableFp.plus(baseUnboostableFp);
   const numBoost = Number(boost) || 0;
-  if (numBoost > 0) {
-    const boostAmount = Math.round((baseBoostableFp * numBoost) / 100);
-    finalTotalFp = unboostedBaseTotal + boostAmount;
-  }
+  // Shared helper: base * percent / 100 rounded ROUND_HALF_UP, matching the
+  // BigNumber twin at StartupService.js:628-631. A zero percent yields a zero
+  // boost and the unboosted total, so this needs no special case.
+  const { total: finalTotalFp } = boostedForgePoints(
+    baseBoostableFp,
+    baseUnboostableFp,
+    numBoost,
+  );
 
   const groupedFpList = Object.keys(groupedFp).map((name) => ({
     name,
     count: groupedFp[name].count,
-    totalFp: groupedFp[name].totalFp,
+    // Display boundary: convert once, after the arithmetic, for sort and render.
+    totalFp: toBigNumber(groupedFp[name].totalFp).toNumber(),
   }));
 
   groupedFpList.sort((a, b) => b.totalFp - a.totalFp);
@@ -93,7 +104,7 @@ function buildFpTooltipHTML(fpBuildingsList, boost = 0, customHelper = helper) {
   }
 
   if (numBoost > 0) {
-    html += `<br><strong>Base: ${unboostedBaseTotal}FP (+${numBoost}% Boost = ${finalTotalFp}FP)</strong>`;
+    html += `<br><strong>Base: ${unboostedBaseTotal.toNumber()}FP (+${numBoost}% Boost = ${finalTotalFp.toNumber()}FP)</strong>`;
   }
 
   return html;
