@@ -5,20 +5,12 @@
  * Zero DOM dependencies; safe for both Node.js test environments and Webpack extension bundles.
  */
 
-/**
- * Escapes HTML characters in untrusted strings to prevent XSS.
- * @param {*} str - Raw string or value to sanitize.
- * @returns {string} Sanitized string.
- */
-function escapeHTML(str) {
-  if (str === null || str === undefined) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
+// Canonical escaping core (see utils/escape.js); re-exported below.
+const {
+  escapeHTML,
+  escapeHTMLAttribute,
+  toDisplayString,
+} = require('./escape.js');
 
 /**
  * Formats an entity ID from a string, number, or object representation.
@@ -291,6 +283,8 @@ function formatShieldCountdown(expireTime, nowMs = Date.now()) {
 
 module.exports = {
   escapeHTML,
+  escapeHTMLAttribute,
+  toDisplayString,
   formatEntityId,
   formatShieldCountdown,
   fResourceShortName,
