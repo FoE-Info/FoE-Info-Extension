@@ -41,12 +41,24 @@ __pycache__/
 # Graphify Outputs (git-ignored per workspace rules)
 graphify-out/
 
-# Agent Runtime, Workspace & Worktrees (Externalized)
+# Agent Runtime, Harness & Workspace State (per-developer, never shared)
 /.agent
 /.agents
 /.omp
+/.codex
 /conductor
 /AGENTS.md
+**/.claude/scheduled_tasks.lock
+**/.claude/scheduled_tasks.json
+**/.claude/routines/.state/
+**/.claude/worktrees/
+**/.claude/checkpoints/
+**/.claude/mailbox/
+**/.claude/agent-registry.json
+**/.claude/agent-memory-local
+**/.claude/first-run
+**/.claude/assistant-daemon-state.debug
+
 .worktrees/
 
 # CDP Heap Snapshots & Network Traces (browser-testing skill output)
@@ -60,5 +72,17 @@ docs/har/
 # Environment & Secrets
 .env
 .env.local
+.env.*
+!.env.example
+!.env.*.example
+!.env.template
 *.pem
 *.key
+
+# Local Python/Graphify Environment Declarations (per-developer)
+/pyproject.toml
+/uv.lock
+
+# Local Review Snapshots (do not hide unrelated project patch files)
+/patch.diff
+/full_patch.diff

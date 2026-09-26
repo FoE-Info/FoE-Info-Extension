@@ -1,15 +1,25 @@
-# Agent & Assistant Metadata
-.agents/
+# Graphify scope is independent of what is committed to Git.
+# Git ignore files are also read; reopen selected local project knowledge.
+!/.agents/
+/.agents/*
+!/.agents/scripts/
+!/.agents/rules/
+!/.agents/references/
+/.agents/references/*
+!/.agents/references/foe/
+
+# Generic agent instructions, harness state, and local plans
 .agent/
 .omp/
+.codex/
+.claude/
 AGENTS.md
-
-# Docs & Specs (prose, not source)
-docs/
 conductor/
 
-# Tests & Captured Fixtures (mirror src/, 45MB RPC payloads)
-tests/
+# Include test source and project docs; omit captured fixture payloads.
+/tests/fixtures/
+/docs/heap-snapshots/
+/docs/har/
 
 # Graphify Outputs (prevent self-indexing)
 graphify-out/
@@ -21,6 +31,7 @@ graphify-out/
 node_modules/
 package-lock.json
 uv.lock
+mise.lock
 .venv/
 .uv/
 __pycache__/
@@ -35,9 +46,9 @@ build/
 *.chunk.js
 *.tsbuildinfo
 
-# Hooks & Workflows (shell/yaml, not source)
-.husky/
-.github/
+# Local patch snapshots duplicate source and may describe obsolete code.
+/patch.diff
+/full_patch.diff
 
 # Editor Files
 .vscode/
