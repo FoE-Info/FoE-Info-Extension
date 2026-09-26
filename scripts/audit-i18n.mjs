@@ -103,7 +103,30 @@ function runAudit() {
   }
   console.log('--------------------------------------------------');
 
-  if (hasDisparity && !shouldFix) {
+  if (hasDisparity) {
+    if (shouldFix) {
+      // Fix mode backfilled missing keys, but extra (orphaned) keys may
+      // remain. Report the REAL remaining state; never claim success
+      // while a gate still fails.
+      const remaining = reports.filter(
+        (r) => r.missing.length > 0 || r.extra.length > 0,
+      );
+      console.log(
+        '\nNotice: Disparities remain after --fix (missing keys were backfilled,',
+        'but extra keys not present in en.json cannot be auto-fixed):',
+      );
+      for (const r of remaining) {
+        if (r.missing.length > 0) {
+          console.log(`   ${r.file} still missing: ${r.missing.length} keys`);
+        }
+        if (r.extra.length > 0) {
+          console.log(
+            `   ${r.file} has extra (orphaned) keys: ${r.extra.length}`,
+          );
+        }
+      }
+      process.exit(1);
+    }
     console.log(
       '\nNotice: Disparities found across translation dictionaries.\nRun `npm run i18n:fix` to automatically backfill missing keys.',
     );

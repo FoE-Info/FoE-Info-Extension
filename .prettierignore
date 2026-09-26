@@ -7,6 +7,9 @@ mise.lock
 src/js/fn/constants.js
 .agent/
 .agents/
+.codex/
+.omp/
+.venv/
 tests/fixtures/
 src/fonts/
 src/icons/
@@ -16,3 +19,4 @@ scripts/scratch-*.mjs
 docs/har/
 docs/heap-snapshots/
 .worktrees/
+worktrees/
