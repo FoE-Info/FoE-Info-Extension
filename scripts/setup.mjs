@@ -12,7 +12,6 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const WORKSPACE_ROOT = join(ROOT, '..');
 const FULL = process.argv.slice(2).includes('--full');
 
 function run(cmd, args, options = {}) {
@@ -31,8 +30,11 @@ function checkNodeEngine() {
   );
 }
 
-run('npm', ['ci']);
+// Fail fast on an unsupported Node BEFORE installing dependencies —
+// `npm ci` takes minutes and should never run just to be told the
+// environment is wrong.
 checkNodeEngine();
+run('npm', ['ci']);
 
 if (!FULL) {
   console.log('setup complete: npm dependencies verified');
@@ -41,5 +43,5 @@ if (!FULL) {
 }
 
 console.log('==> Synchronizing uv environment for Graphify...');
-execFileSync('uv', ['sync'], { cwd: WORKSPACE_ROOT, stdio: 'inherit' });
+execFileSync('uv', ['sync'], { cwd: ROOT, stdio: 'inherit' });
 console.log('setup complete: npm deps and uv Graphify environment verified');

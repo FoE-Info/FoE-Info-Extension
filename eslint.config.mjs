@@ -14,6 +14,12 @@ export default [
       'package-lock.json',
       '.vscode/**',
       '.idea/**',
+      // Git-excluded directories the linter must not traverse:
+      '.agents/**',
+      '.agent/**',
+      '.codex/**',
+      '.omp/**',
+      '.venv/**',
     ],
   },
   js.configs.recommended,

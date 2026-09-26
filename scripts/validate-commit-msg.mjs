@@ -157,6 +157,13 @@ export function validateCommitMessage(messageRaw) {
     return { valid: true, errors: [] };
   }
 
+  // Gracefully permit standard git autosquash / rebase command commits
+  // (fixup!/squash!/amend!). Blocking these breaks `git commit --fixup` and
+  // `git rebase --autosquash` workflows.
+  if (/^(fixup!|squash!|amend!)\s*/.test(subject)) {
+    return { valid: true, errors: [] };
+  }
+
   // 1. Subject line length check (<= 72 chars)
   if (subject.length > 72) {
     errors.push(`Subject line exceeds 72 characters (${subject.length} chars)`);

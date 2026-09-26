@@ -19,13 +19,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
+// METADATA_STORE_DIR overrides; otherwise store INSIDE the repo. The old
+// default silently wrote to `../metadata-store` — outside the repo boundary
+// and invisible to version control. An out-of-tree store is now opt-in only.
 const STORE_DIR =
-  process.env.METADATA_STORE_DIR ||
-  [
-    path.resolve(ROOT_DIR, '..', 'metadata-store'),
-    path.join(ROOT_DIR, 'metadata-store'),
-  ].find((p) => fs.existsSync(p)) ||
-  path.resolve(ROOT_DIR, '..', 'metadata-store');
+  process.env.METADATA_STORE_DIR || path.join(ROOT_DIR, 'metadata-store');
 const ENTITIES_DIR = path.join(STORE_DIR, 'entities');
 const MANIFEST_PATH = path.join(STORE_DIR, 'manifest.json');
 
@@ -248,6 +246,20 @@ async function main() {
       console.log(
         `[metadata-download] Downloaded & decoded ${Object.keys(translations).length} English translation keys -> metadata-store/translations_en.json`,
       );
+    } else {
+      // No else branch before: the pinned-hash CDN URL is not permanent and a
+      // silent miss would drop translations from the offline store,
+      // violating the dynamic-metadata principle. Fail loudly so the run
+      // refreshes or keeping a stale copy can be a conscious choice.
+      if (fs.existsSync(path.join(STORE_DIR, 'translations_en.json'))) {
+        console.warn(
+          '[metadata-download] translations_en.json: CDN fetch failed for the pinned lang URL; reusing the stale existing copy.',
+        );
+      } else {
+        throw new Error(
+          `client_lang download failed and no cached translations_en.json exists! Check: ${langUrl}`,
+        );
+      }
     }
   } catch (err) {
     console.warn(
@@ -350,23 +362,38 @@ async function main() {
   let cachedCount = 0;
   let failedCount = 0;
 
+  const failures = new Set();
   await runWorkerPool(uniqueTasks, CONCURRENCY, async (task) => {
-    if (fs.existsSync(task.filePath) && fs.statSync(task.filePath).size > 20) {
-      cachedCount++;
-      return;
+    // A cached entry is only trusted if it parses as valid JSON. The old
+    // `size > 20` heuristic permanently cached truncated bodies: a partially
+    // written file large enough to pass the threshold never re-downloaded.
+    if (fs.existsSync(task.filePath)) {
+      try {
+        JSON.parse(fs.readFileSync(task.filePath, 'utf8'));
+        cachedCount++;
+        return;
+      } catch {
+        console.warn(
+          `[metadata-download] Corrupt cached body, re-fetching: ${task.filename}`,
+        );
+        fs.rmSync(task.filePath, { force: true });
+      }
     }
 
     try {
       const res = await fetch(task.url);
       if (res.ok) {
-        const data = await res.json();
+        const raw = await res.text();
+        const data = JSON.parse(raw); // throws on truncated body
         fs.writeFileSync(task.filePath, JSON.stringify(data, null, 2), 'utf8');
         downloadedCount++;
       } else {
         failedCount++;
+        failures.add(`${task.filename} -> HTTP ${res.status}`);
       }
-    } catch {
+    } catch (err) {
       failedCount++;
+      failures.add(`${task.filename} -> ${err.message}`);
     }
   });
 
@@ -529,6 +556,21 @@ async function main() {
   console.log(
     `===============================================================\n`,
   );
+
+  if (failedCount > 0) {
+    console.error(`[metadata-download] FAILED REQUESTS (${failedCount}):`);
+    for (const detail of failures) console.error(`  - ${detail}`);
+    console.error(
+      `[metadata-download] Exiting non-zero because ${failedCount}/${uniqueTasks.length} metadata endpoints failed; the store is incomplete.`,
+    );
+    process.exit(1);
+  }
+  if (uniqueTasks.length > 0 && downloadedCount + cachedCount === 0) {
+    console.error(
+      '[metadata-download] No endpoint was downloaded or cached — refusing to exit 0 with an empty store.',
+    );
+    process.exit(1);
+  }
 }
 
 main().catch((err) => {
