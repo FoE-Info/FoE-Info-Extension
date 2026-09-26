@@ -51,7 +51,10 @@ test('gbDonationPlaceEvaluator Suite', async (t) => {
       });
 
       assert.equal(result.foundPlace, true);
-      assert.ok(result.olddonationHTML.includes('1st Place'));
+      assert.ok(
+        /1st\s+(?:<span data-i18n="place">)?Place/.test(result.olddonationHTML),
+        'header must read "1st Place" (Place now wrapped in a data-i18n span)',
+      );
       assert.ok(result.olddonationHTML.includes('Friendly'));
       assert.ok(result.olddonationHTML.includes('10FP'));
       assert.ok(result.newdonationHTML.includes('tab-safe'));

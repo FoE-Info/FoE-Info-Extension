@@ -327,13 +327,13 @@ describe('ConversationService Suite', () => {
     const container = global.document.getElementById('targetsGBG');
     assert.ok(container);
     // Should NOT render raw integer digits "1710000000" as the time
+    // The assertion is about the TIMESTAMP being human-readable, not about the
+    // label's markup — the label now carries a data-i18n span, so match across
+    // whatever tag structure sits between the label and the time.
     assert.doesNotMatch(
       container.innerHTML,
-      /<strong>GBG Targets<\/strong>\s*1710000000/,
+      /GBG Targets[\s\S]{0,60}?1710000000/,
     );
-    assert.match(
-      container.innerHTML,
-      /<strong>GBG Targets<\/strong>\s*\d{2}:\d{2}/,
-    );
+    assert.match(container.innerHTML, /GBG Targets[\s\S]{0,60}?\d{2}:\d{2}/);
   });
 });

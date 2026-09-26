@@ -160,7 +160,7 @@ function renderSocialListsPanel({
           <div class="d-flex flex-row justify-content-between align-items-center mb-0">
             <p id="friendsTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#friendsText" aria-expanded="${!depCollapse.collapseFriends}" aria-controls="friendsText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
               ${depElement?.icon ? depElement.icon('friendsicon', 'friendsText', depCollapse.collapseFriends) : ''}
-              <strong>Friends</strong>
+              <strong><span data-i18n="friends">Friends</span></strong>
             </p>
             <span id="friendsCopyID" role="button" tabindex="0" class="badge rounded-pill bg-success cursor-pointer me-1" style="display: ${
               depCollapse.collapseFriends ? 'none' : 'inline-block'

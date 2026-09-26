@@ -686,8 +686,8 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
       );
       assert.match(
         src,
-        /\$\{placeOrdinal\}\s+Place<br>/,
-        'Place header must be clean "${placeOrdinal} Place<br>"',
+        /\$\{placeOrdinal\}\s+(?:<span data-i18n="place">)?Place(?:<\/span>)?<br>/,
+        'Place header must be clean — ordinal, then the (translatable) Place label, then <br>',
       );
     },
   );

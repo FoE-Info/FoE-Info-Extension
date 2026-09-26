@@ -89,7 +89,7 @@ test('Player Tooltip & Ignore List UI Suite', async (t) => {
       setIgnoredPlayers({}, {});
       const emptyHtml = getUserTooltipHTML();
       assert.match(emptyHtml, /<p class="pop">/);
-      assert.match(emptyHtml, /<em>None<\/em>/);
+      assert.match(emptyHtml, /<em>(?:<span data-i18n="none">)?None/);
 
       // Populated lists
       updatePlayerNameCache(201, 'RivalAlpha');
@@ -97,11 +97,14 @@ test('Player Tooltip & Ignore List UI Suite', async (t) => {
       setIgnoredPlayers({ 0: 201 }, { 0: 202 });
 
       const populatedHtml = getUserTooltipHTML();
-      assert.match(populatedHtml, /<strong>Ignored By:<\/strong>/);
+      assert.match(populatedHtml, /<strong><span data-i18n="ignored_by">/);
       assert.match(populatedHtml, /RivalAlpha/);
-      assert.match(populatedHtml, /<strong>Ignoring:<\/strong>/);
+      assert.match(populatedHtml, /<strong><span data-i18n="ignoring">/);
       assert.match(populatedHtml, /RivalBeta/);
-      assert.doesNotMatch(populatedHtml, /<em>None<\/em>/);
+      assert.doesNotMatch(
+        populatedHtml,
+        /<em>(?:<span data-i18n="none">)?None/,
+      );
     },
   );
 
