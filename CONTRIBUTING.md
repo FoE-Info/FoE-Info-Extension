@@ -16,11 +16,33 @@ must pass.
 
 Guidelines:
 
-- Keep modules small (roughly 100-300 lines; 600 line hard cap).
+- Organize modules by cohesion: a module holds one thing that changes for one reason. Large files are a prompt to check for a feature boundary (see `ARCHITECTURE.md` "Cohesion Over Line Count"), not a violation to fix by splitting.
 - Never bundle static game data into `src/`; the runtime is driven by live
   InnoGames network payloads.
 - Use `bignumber.js` for Forge Point and reward math.
 - All user-visible strings must go through i18n (see `src/i18n/`).
+
+## External tool prerequisites
+
+Some developer workflows rely on tools that `npm install` does **not** provide.
+Install them separately if you need the matching workflows:
+
+| Tool                                   | Required by                                                           | Why                                                                                             |
+| :------------------------------------- | :-------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------- |
+| `zip`                                  | `npm run package` / `scripts/package-extension.js`                    | Builds the release ZIP artifacts.                                                               |
+| `gh`                                   | `npm run release` / `scripts/release.mjs`                             | Creates GitHub releases and uploads assets (requires `gh auth login` first).                    |
+| CDP-enabled Chrome on `127.0.0.1:9222` | `npm run metadata:download` / `scripts/download-offline-metadata.mjs` | Drives a Chrome instance over the DevTools protocol to ingest live InnoGames entity datasets.   |
+
+The core gate (`npm run verify`) needs none of these: only Node.js, npm, and a
+Chromium-based browser for manual panel testing.
+
+### Node.js baseline (recommended)
+
+Four sources currently disagree:
+
+- `package.json` `engines` — `>=24.0.0`
+- CI (`.github/workflows/ci.yml`) — Node 24.x
+- local `mise` config — 26.8.2
 
 ## Commit messages
 
