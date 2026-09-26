@@ -18,8 +18,15 @@ try {
   GreatBuildingCalculator = require('../calc/GreatBuildingCalculator.js');
 } catch {}
 
-const { calculateOwnerSafeAdd, calculateDonorOutcome } =
-  GreatBuildingCalculator;
+const { calculateOwnerSafeAdd } = GreatBuildingCalculator;
+
+let placeEvaluator = {};
+try {
+  placeEvaluator = require('../calc/gbDonationPlaceEvaluator.js');
+} catch {}
+
+const { fDonationSuggest, getSafe, getPlaceValues, evaluatePlaces } =
+  placeEvaluator;
 
 let element = {};
 try {
@@ -40,11 +47,13 @@ try {
   copy = require('../fn/copy.js');
 } catch {}
 
+const { escapeHTML } = require('../utils/escape.js');
+
 let helper = {};
 try {
   helper = require('../fn/helper.js');
 } catch {
-  helper = { fGBsname: (s) => s, escapeHTML: (s) => s };
+  helper = { fGBsname: (s) => s, escapeHTML };
 }
 
 let storage = {};
@@ -122,17 +131,6 @@ function fPercentBanded(percent) {
   return '';
 }
 
-function fDonationSuggest(reward, currentPercent = 190) {
-  const BN = BigNumber || (typeof global !== 'undefined' && global.BigNumber);
-  if (BN) {
-    return new BN(reward || 0)
-      .times(currentPercent)
-      .div(100)
-      .integerValue(BN.ROUND_HALF_UP);
-  }
-  return Math.round((Number(reward || 0) * Number(currentPercent)) / 100);
-}
-
 function getFriendlyDonation(donation, reward, percent, lock, band) {
   const isLoss =
     band !== undefined ?
@@ -144,48 +142,6 @@ function getFriendlyDonation(donation, reward, percent, lock, band) {
   return `<span class="${isLoss ? 'red' : 'green'}">${
     percent / 100
   }: ${donation}FP</span><br>`;
-}
-
-function getSafe(params = {}) {
-  const {
-    place = 1,
-    GBrewards = [0, 0, 0, 0, 0],
-    currentPercent = 190,
-    remaining = 0,
-    Top = [0, 0, 0, 0, 0, 0],
-    calculateSuggestedDonation = GreatBuildingCalculator.calculateSuggestedDonation,
-  } = params;
-
-  const safe = [];
-  const donateSuggest = [];
-  const index = place - 1;
-  let rem = remaining;
-
-  for (let i = index; i < 5; i++) {
-    const BN = BigNumber || (typeof global !== 'undefined' && global.BigNumber);
-    const suggested =
-      typeof calculateSuggestedDonation === 'function' ?
-        calculateSuggestedDonation(GBrewards[i] || 0, currentPercent)
-      : BN ?
-        new BN(GBrewards[i] || 0)
-          .multipliedBy(currentPercent)
-          .dividedBy(100)
-          .integerValue(BN.ROUND_HALF_UP)
-          .toNumber()
-      : Math.round((GBrewards[i] || 0) * (currentPercent / 100));
-
-    donateSuggest[i] = BN ? new BN(suggested) : suggested;
-
-    const numVal =
-      typeof donateSuggest[i]?.toNumber === 'function' ?
-        donateSuggest[i].toNumber()
-      : Number(donateSuggest[i] || 0);
-
-    rem -= numVal;
-    safe[i] = rem <= numVal - (Top[i + 1] || 0);
-  }
-
-  return { safe, donateSuggest };
 }
 
 function getDonations(params = {}) {
@@ -570,71 +526,19 @@ function gbTabEmpty(...args) {
   </div>`;
 }
 
-function getPlaceValues(
-  gbData,
-  place,
-  topInvestors = [],
-  rewards = [],
-  currentPercent = 190,
-  arcBonus = 90,
-) {
-  let p = place;
-  let data = gbData;
-  let top = topInvestors;
-  let rew = rewards;
-  let percent = currentPercent;
-  let arc = arcBonus;
+// ============================================================================
+// 3. PLACE EVALUATOR (HTML ASSEMBLY)
+//
+// The arithmetic lives in ../calc/gbDonationPlaceEvaluator.js. This section
+// only turns an evaluated place into markup and clipboard text.
+// ============================================================================
 
-  if (typeof gbData === 'number') {
-    p = gbData;
-    data = defaultGBselected;
-    top = [];
-    rew = [];
-    percent = currentPercent ?? 190;
-    arc = arcBonus ?? 90;
-  }
-
-  const index = Math.max(0, (p || 1) - 1);
-  const remaining = Math.max(0, (data?.total || 0) - (data?.current || 0));
-  const baseReward = rew[index] ?? 0;
-  const outcome = calculateDonorOutcome(
-    remaining,
-    top[index] ?? 0,
-    baseReward,
-    arc ?? 90,
-    percent,
-  );
-  const donation = new BigNumber(outcome.spotLock);
-  const rewardFP = new BigNumber(outcome.donorReward);
-  const donateCustom = new BigNumber(outcome.costs);
-  const committedCost = new BigNumber(outcome.donorRankCost);
-  const net = new BigNumber(outcome.net);
-  const profitStr = net.toString();
-  const profit = net.toNumber();
-  const spotPercent =
-    committedCost.isZero() ?
-      new BigNumber(0)
-    : net.multipliedBy(100).idiv(committedCost);
-
-  return {
-    remaining,
-    donation,
-    rewardFP,
-    committedCost,
-    net,
-    profit: profitStr,
-    profitNum: profit,
-    percent: spotPercent,
-    donateCustom,
-    outcome: outcome.outcome,
-    guaranteedProfit: outcome.guaranteedProfit,
-    band: outcome.band,
-  };
+function formatPlaceOrdinal(p) {
+  if (p === 1) return '1st';
+  if (p === 2) return '2nd';
+  if (p === 3) return '3rd';
+  return `${p}th`;
 }
-
-// ============================================================================
-// 3. PLACE EVALUATOR
-// ============================================================================
 
 function evaluateGbDonationPlaces(options = {}) {
   const {
@@ -654,152 +558,115 @@ function evaluateGbDonationPlaces(options = {}) {
     getFriendlyDonation: depGetFriendlyDonation = getFriendlyDonation,
     getDonations: depGetDonations = getDonations,
     ownerSafeAddFn = calculateOwnerSafeAdd,
-    BN = BigNumber || (typeof global !== 'undefined' && global.BigNumber),
+    evaluatePlaces: depEvaluatePlaces = evaluatePlaces,
   } = options;
 
   const tabSafe = depTables.gbTabSafe || gbTabSafe;
   const tabNotSafe = depTables.gbTabNotSafe || gbTabNotSafe;
   const tabEmpty = depTables.gbTabEmpty || gbTabEmpty;
 
-  let foundPlace = false;
-  let remaining;
-  let Donation = BN ? new BN(0) : 0;
-  let RewardFP = BN ? new BN(0) : 0;
-  let Profit = 0;
-  let Percent = BN ? new BN(0) : 0;
-  let donateCustom = BN ? new BN(0) : 0;
-  let safeArr;
-  let donateSuggestArr = [];
+  // Arithmetic is delegated; this function only assembles markup.
+  const place = depEvaluatePlaces({
+    GBselected,
+    Top,
+    GBrewards,
+    currentPercent,
+    arcBonus: City?.ArcBonus ?? 90,
+    calcPlaceValues,
+    isPlacePassableFn,
+    getSafe: depGetSafe,
+    ownerSafeAddFn,
+  });
+
+  const { foundPlace } = place;
+  const Donation = place.donation;
+  const RewardFP = place.rewardFP;
+  const Percent = place.percent;
+  const donateCustom = place.donateCustom;
+  const safeArr = place.safe;
+  const donateSuggestArr = place.donateSuggest;
 
   let olddonationHTML = '';
   let newdonationHTML = '';
   let copyText = '';
 
-  for (let p = 1; p <= 5; p++) {
-    remaining = Math.max(
-      0,
-      (GBselected.total || 0) - (GBselected.current || 0),
-    );
+  if (foundPlace) {
+    const p = place.place;
+    const outcome = place.outcome;
+    const netValue = place.netValue;
+    const outcomeClass = outcome === 'loss' ? 'invest-bad' : 'invest-good';
+    const placeOrdinal = formatPlaceOrdinal(p);
 
-    const vals = calcPlaceValues(
-      GBselected,
-      p,
-      Top,
-      GBrewards,
-      currentPercent,
-      City?.ArcBonus ?? 90,
-    );
-    remaining = vals.remaining ?? remaining;
-    Donation = vals.donation ?? Donation;
-    RewardFP = vals.rewardFP ?? RewardFP;
-    Profit = vals.profit ?? Profit;
-    Percent = vals.percent ?? Percent;
-    donateCustom = vals.donateCustom ?? donateCustom;
+    if (outcome === 'loss') {
+      olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} <span data-i18n="place">Place</span><br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="loss">Loss</span>: ${netValue}<br>`;
+      newdonationHTML += tabNotSafe(
+        p,
+        currentPercent,
+        Donation,
+        RewardFP,
+        donateCustom,
+        donateSuggestArr,
+        GBrewards,
+        GBselected.connected,
+        isGbLocked,
+        safeArr,
+      );
+    } else {
+      const outcomeLine =
+        outcome === 'safe' ?
+          `<span data-i18n="safe_net">Safe</span>: 0 <span data-i18n="net">NET</span>`
+        : `<span data-i18n="profit">Profit</span>: ${netValue} (${Percent}%)`;
+      olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} <span data-i18n="place">Place</span><br><span data-i18n="lock">Lock</span>: ${Donation}FP<br>${outcomeLine}<br>`;
+      newdonationHTML += tabSafe(
+        p,
+        currentPercent,
+        Donation,
+        RewardFP,
+        donateCustom,
+        donateSuggestArr,
+        GBrewards,
+        GBselected.connected,
+        isGbLocked,
+        safeArr,
+      );
+    }
 
-    const safeRes = depGetSafe({
-      place: p,
-      GBrewards,
-      currentPercent,
-      remaining,
-      Top,
-    });
-    safeArr = safeRes.safe || [];
-    donateSuggestArr = safeRes.donateSuggest || [];
-    const placeIdx = p - 1;
+    if (place.hasReward) {
+      olddonationHTML += depGetFriendlyDonation(
+        donateCustom,
+        RewardFP,
+        currentPercent,
+        Donation,
+        place.band,
+      );
+      olddonationHTML +=
+        p === 1 ?
+          `<span data-i18n="building_effect">BE</span>: ${RewardFP}FP</p>`
+        : `<span data-i18n="building_effect">BE</span>: ${RewardFP}FP<br></p>`;
 
-    const canBePassed = isPlacePassableFn(remaining, Top[placeIdx] || 0);
-
-    if (canBePassed) {
-      foundPlace = true;
-      const placeOrdinal =
-        p === 1 ? '1st'
-        : p === 2 ? '2nd'
-        : p === 3 ? '3rd'
-        : `${p}th`;
-
-      const outcome = vals.outcome || (Profit > 0 ? 'profit' : 'loss');
-      const netValue = Math.abs(vals.profitNum ?? 0);
-      const outcomeClass = outcome === 'loss' ? 'invest-bad' : 'invest-good';
-
-      if (outcome === 'loss') {
-        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br><span data-i18n="loss">Loss</span>: ${netValue}<br>`;
-        newdonationHTML += tabNotSafe(
-          p,
-          currentPercent,
-          Donation,
-          RewardFP,
-          donateCustom,
-          donateSuggestArr,
-          GBrewards,
-          GBselected.connected,
-          isGbLocked,
-          safeArr,
-        );
-      } else {
-        const outcomeLine =
-          outcome === 'safe' ?
-            `<span data-i18n="safe_net">Safe</span>: 0 NET`
-          : `<span data-i18n="profit">Profit</span>: ${netValue} (${Percent}%)`;
-        olddonationHTML += `<p class="${outcomeClass}">${placeOrdinal} Place<br><span data-i18n="lock">Lock</span>: ${Donation}FP<br>${outcomeLine}<br>`;
-        newdonationHTML += tabSafe(
-          p,
-          currentPercent,
-          Donation,
-          RewardFP,
-          donateCustom,
-          donateSuggestArr,
-          GBrewards,
-          GBselected.connected,
-          isGbLocked,
-          safeArr,
-        );
+      if (PlayerName === MyInfo.name && place.ownerAdd > 0) {
+        olddonationHTML += `<p class=""><span data-i18n="add">Add</span> ${place.ownerAdd}FP <span data-i18n="safe">to make safe for</span> ${
+          currentPercent ? currentPercent / 100 : '1.9'
+        }</p>`;
       }
-
-      if (GBrewards[placeIdx]) {
-        olddonationHTML += depGetFriendlyDonation(
-          donateCustom,
-          RewardFP,
-          currentPercent,
-          Donation,
-          vals.band,
-        );
-        olddonationHTML +=
-          p === 1 ? `BE: ${RewardFP}FP</p>` : `BE: ${RewardFP}FP<br></p>`;
-
-        const ownerAdd = ownerSafeAddFn(
-          remaining,
-          Top[placeIdx] || 0,
-          donateCustom,
-        );
-
-        if (PlayerName === MyInfo.name && ownerAdd > 0) {
-          olddonationHTML += `<p class=""><span data-i18n="add">Add</span> ${ownerAdd}FP <span data-i18n="safe">to make safe for</span> ${
-            currentPercent ? currentPercent / 100 : '1.9'
-          }</p>`;
-        }
+      copyText += depGetDonations({
+        place: p,
+        safe: safeArr,
+        donateSuggest: donateSuggestArr,
+        showOptions,
+      });
+    } else {
+      olddonationHTML += '</p>';
+      if (p === 1) {
         copyText += depGetDonations({
-          place: p,
+          place: 1,
           safe: safeArr,
           donateSuggest: donateSuggestArr,
           showOptions,
         });
-      } else {
-        olddonationHTML += '</p>';
-        if (p === 1) {
-          copyText += depGetDonations({
-            place: 1,
-            safe: safeArr,
-            donateSuggest: donateSuggestArr,
-            showOptions,
-          });
-        }
       }
-      break;
     }
-  }
-
-  if (!foundPlace) {
-    copyText = '';
+  } else {
     newdonationHTML += tabEmpty(
       '-',
       currentPercent,
@@ -837,7 +704,7 @@ function buildClassicDonationHeader(options = {}) {
     PlayerName,
     GBselected,
     PlayerID,
-    escapeFn = (s) => s,
+    escapeFn = escapeHTML,
     isGbLocked,
     checkInactive: checkInactiveFn = checkInactive,
   } = options;
@@ -995,7 +862,7 @@ function renderGbDonationPanel(params = {}) {
     availablePackageForgePoints,
   });
 
-  const escapeFn = depHelper?.escapeHTML || ((s) => String(s ?? ''));
+  const escapeFn = depHelper?.escapeHTML || escapeHTML;
   const gbShortNameFn = depHelper?.fGBsname || ((s) => String(s ?? ''));
   const formatNumberFn =
     depHelper?.fFormatNumber ||
@@ -1031,7 +898,7 @@ function renderGbDonationPanel(params = {}) {
   const copyBtn =
     depElement.copy ?
       depElement.copy('donationCopyID', 'secondary', 'right', isCollapsed)
-    : '<span id="donationCopyID" class="badge bg-secondary float-end">Copy</span>';
+    : '<span id="donationCopyID" class="badge bg-secondary float-end" data-i18n="copy">Copy</span>';
   const packageBadgeHtml =
     availablePackageForgePoints > 0 ?
       `<span class="badge bg-secondary ms-1">Packages: ${formatNumberFn(availablePackageForgePoints)} FP</span>`

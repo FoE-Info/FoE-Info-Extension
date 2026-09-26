@@ -11,6 +11,8 @@ let element = {};
 let collapse = {};
 let helper = {};
 
+const { escapeHTML } = require('../utils/escape.js');
+
 try {
   element = require('./AddElement.js');
 } catch {
@@ -66,7 +68,7 @@ function renderGuildPanel(clanData, deps = {}) {
   const escapeFn =
     typeof depHelper.escapeHTML === 'function' ?
       depHelper.escapeHTML
-    : (s) => String(s ?? '');
+    : escapeHTML;
   const eraFn =
     typeof depHelper.fGVGagesname === 'function' ?
       depHelper.fGVGagesname

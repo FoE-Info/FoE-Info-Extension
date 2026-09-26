@@ -31,6 +31,12 @@ try {
   defaultHelper = require('../fn/helper.js');
 } catch {}
 
+// Mandatory, not an optional dependency: utils/escape.js is a pure leaf module
+// with no imports, so it cannot fail to load. A try/catch here would let the
+// fallback become `null` and turn every render into a TypeError instead of a
+// fail-closed escape.
+const { escapeHTML } = require('../utils/escape.js');
+
 function renderBuildingCollectionTimes({
   buildingsReady = [],
   epocTime,
@@ -80,7 +86,7 @@ function renderBuildingCollectionTimes({
       const displayName =
         typeof helper?.escapeHTML === 'function' ?
           helper.escapeHTML(rawName)
-        : String(rawName ?? '');
+        : escapeHTML(rawName);
       buildingsHTML += `${displayName}: ${formatDateTime(entry.ready)}<br>`;
     }
   });

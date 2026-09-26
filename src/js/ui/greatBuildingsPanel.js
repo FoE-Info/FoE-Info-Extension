@@ -8,6 +8,7 @@
  * - Reactive store subscription (bindGreatBuildingsPanels)
  */
 
+const { escapeHTML } = require('../utils/escape.js');
 const { createLogger } = require('../utils/logger.js');
 const { greatBuildingsState } = require('../state/GreatBuildingDomainState.js');
 
@@ -248,7 +249,7 @@ function renderGbDonorsCard(params = {}) {
   const escapeFn =
     typeof depHelper?.escapeHTML === 'function' ?
       depHelper.escapeHTML
-    : (s) => String(s ?? '');
+    : escapeHTML;
   const ownerName = escapeFn(
     GBselected.player_name || params.PlayerName || params.playerName || '',
   );
@@ -411,10 +412,7 @@ function safeEscape(val) {
   if (typeof helper.escapeHTML === 'function') {
     return helper.escapeHTML(val);
   }
-  return String(val ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  return escapeHTML(val);
 }
 
 function renderGbInfoPanel(
