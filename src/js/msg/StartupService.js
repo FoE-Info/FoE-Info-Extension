@@ -6,7 +6,11 @@
  * and deferred metadata-gated rendering.
  */
 
-const BigNumber = require('bignumber.js');
+const {
+  addResourceTotal,
+  boostedForgePoints,
+  toBigNumber,
+} = require('../calc/utils/bignumberUtils.js');
 const { SPECIAL_GOODS } = require('../calc/goods/goodsClassification.js');
 const {
   buildClanGoodsData: buildClanGoodsDataImpl,
@@ -369,25 +373,32 @@ function aggregateCityStats({
         groupedFp[name] = { count: 0, totalFp: 0 };
       }
       groupedFp[name].count++;
-      groupedFp[name].totalFp += entry.fp;
+      groupedFp[name].totalFp = addResourceTotal(
+        groupedFp[name].totalFp,
+        entry.fp,
+      );
       if (entry.isBoostable) {
-        baseBoostableFp += entry.fp;
+        baseBoostableFp = addResourceTotal(baseBoostableFp, entry.fp);
       } else {
-        baseUnboostableFp += entry.fp;
+        baseUnboostableFp = addResourceTotal(baseUnboostableFp, entry.fp);
       }
     });
 
     City.baseBoostableFp = baseBoostableFp;
     City.baseUnboostableFp = baseUnboostableFp;
-    const unboostedBaseTotal = baseBoostableFp + baseUnboostableFp;
-    let finalTotalFp = unboostedBaseTotal;
-
-    if (City.fpProductionBoost > 0) {
-      const boostAmount = Math.round(
-        (baseBoostableFp * City.fpProductionBoost) / 100,
-      );
-      finalTotalFp = unboostedBaseTotal + boostAmount;
-    }
+    const unboostedBaseTotal = toBigNumber(baseBoostableFp)
+      .plus(baseUnboostableFp)
+      .toNumber();
+    // This is the last write on startup: only this pass has the freshly
+    // harvested fpBuildings, whereas the cached boost callback runs earlier.
+    const finalTotalFp =
+      City.fpProductionBoost > 0 ?
+        boostedForgePoints(
+          baseBoostableFp,
+          baseUnboostableFp,
+          City.fpProductionBoost,
+        ).total.toNumber()
+      : unboostedBaseTotal;
     City.ForgePoints = finalTotalFp;
 
     const groupedFpList = Object.keys(groupedFp).map((name) => ({
@@ -618,17 +629,15 @@ function handleBoostServiceAllBoosts({
   }
 
   if (City.fpProductionBoost) {
-    const boostable = new BigNumber(City.baseBoostableFp || 0);
-    const unboostable = new BigNumber(City.baseUnboostableFp || 0);
-    const totalBase = boostable.plus(unboostable);
+    const totalBase = toBigNumber(City.baseBoostableFp).plus(
+      toBigNumber(City.baseUnboostableFp),
+    );
     if (totalBase.isGreaterThan(0)) {
-      const boostMultiplier = new BigNumber(City.fpProductionBoost).dividedBy(
-        100,
-      );
-      const boostAmount = boostable
-        .multipliedBy(boostMultiplier)
-        .integerValue(BigNumber.ROUND_HALF_UP);
-      City.ForgePoints = totalBase.plus(boostAmount).toNumber();
+      City.ForgePoints = boostedForgePoints(
+        City.baseBoostableFp,
+        City.baseUnboostableFp,
+        City.fpProductionBoost,
+      ).total.toNumber();
     }
     const fpSpan =
       typeof document !== 'undefined' ? document.getElementById('fp') : null;

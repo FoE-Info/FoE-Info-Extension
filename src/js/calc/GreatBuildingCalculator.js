@@ -192,7 +192,7 @@ function calculateSafeSpots(
             typeof ranking.rank === 'number' &&
             ranking.rank >= 1,
         )
-        .map((ranking) => Number(ranking.forge_points) || 0)
+        .map((ranking) => new BigNumber(ranking.forge_points || 0).toNumber())
     : [...investedByPlace]).sort((a, b) => b - a);
 
   let bestProfit = -Infinity;
@@ -236,13 +236,21 @@ function calculateSafeSpots(
       rawOwnerAdd = remaining
         .plus(workingInvested)
         .minus(new BigNumber(donateCustom).multipliedBy(2));
-      const ceilOwnerAdd = rawOwnerAdd
-        .integerValue(BigNumber.ROUND_CEIL)
-        .toNumber();
-      lockFP = Math.max(0, ceilOwnerAdd);
+      const ceilOwnerAdd = rawOwnerAdd.integerValue(BigNumber.ROUND_CEIL);
+      lockFP = BigNumber.maximum(0, ceilOwnerAdd).toNumber();
       // Over-donation: the suggested payment exceeds the amount needed to lock,
       // so the excess shrinks the pool and can expose lower spots.
-      danger = ceilOwnerAdd < 0 ? Math.floor(-ceilOwnerAdd / 2) : 0;
+      // Half the shortfall, floored. This stays BigNumber because the value
+      // feeds further arithmetic here — a `.toNumber()` before the halving would
+      // be a non-display boundary conversion, the case the rule does not exempt.
+      danger =
+        ceilOwnerAdd.isLessThan(0) ?
+          ceilOwnerAdd
+            .negated()
+            .dividedBy(2)
+            .integerValue(BigNumber.ROUND_FLOOR)
+            .toNumber()
+        : 0;
       // The suggested payment alone would level the building.
       levelWarning = new BigNumber(donateCustom).isGreaterThanOrEqualTo(
         remainingBefore,
