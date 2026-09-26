@@ -13,6 +13,42 @@ function getLocale() {
 function setLocale(locale) {
   if (locale && typeof locale === 'string') {
     currentLocale = locale;
+    syncDocumentLanguage(locale);
+    // NOTE (locale switching completeness): setLocale does NOT re-render
+    // already-rendered panels. Static markup is re-translated because the
+    // callers invoke translateContainer(document.body) right after applying
+    // the locale (e.g. options.js initOptionsI18n, storageBootstrap.js),
+    // but panels rendered dynamically by services only pick up the new
+    // locale on their NEXT render cycle. A full re-render of live panels
+    // on locale change is out of scope here: it would require a render
+    // invalidation hook across every panel module (owned by other slices).
+  }
+}
+
+/**
+ * Syncs <html lang="..."> with the active locale so screen readers,
+ * :lang() CSS selectors and browser language detection match the
+ * rendered dictionary. Also localizes document.title when the active
+ * dictionary provides it.
+ *
+ * Safe to call in non-DOM environments (Node tests): it becomes a no-op.
+ * @param {string} locale locale code (e.g. 'en', 'de', 'gr')
+ */
+function syncDocumentLanguage(locale) {
+  const doc =
+    typeof document !== 'undefined' ? document
+    : typeof globalThis !== 'undefined' && globalThis.document ?
+      globalThis.document
+    : null;
+  if (!doc || !locale) return;
+  if (typeof doc.documentElement?.setAttribute === 'function') {
+    doc.documentElement.lang = locale;
+  }
+  const localizedTitle = (dictionaries[locale] || {})['PageTitle'];
+  if (localizedTitle && typeof doc !== 'undefined') {
+    try {
+      doc.title = localizedTitle;
+    } catch {}
   }
 }
 
@@ -117,6 +153,7 @@ function setupI18nBridge(
     loadTranslations,
     loadLocale,
     loadAll,
+    syncDocumentLanguage,
   };
 
   let jq = scope.jQuery || scope.$;
@@ -184,6 +221,7 @@ if (typeof window !== 'undefined') {
 module.exports = {
   getLocale,
   setLocale,
+  syncDocumentLanguage,
   loadTranslations,
   loadLocale,
   loadAll,

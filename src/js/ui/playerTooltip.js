@@ -178,7 +178,7 @@ function getUserTooltipHTML() {
     }
   });
   if (ignoredByCount > 0) {
-    html += `<strong>Ignored By:</strong><br>${ignoredByHtml}`;
+    html += `<strong><span data-i18n="ignored_by">Ignored By:</span></strong><br>${ignoredByHtml}`;
   }
 
   const ignoringList = extractor(currentIgnored?.ignoredPlayerIds);
@@ -192,11 +192,11 @@ function getUserTooltipHTML() {
     }
   });
   if (ignoringCount > 0) {
-    html += `<strong>Ignoring:</strong><br>${ignoringHtml}`;
+    html += `<strong><span data-i18n="ignoring">Ignoring:</span></strong><br>${ignoringHtml}`;
   }
 
   if (ignoredByCount === 0 && ignoringCount === 0) {
-    html += `<em>None</em>`;
+    html += `<em><span data-i18n="none">None</span></em>`;
   }
   html += `</p>`;
   return html;
