@@ -10,7 +10,7 @@ test('ExpeditionState - reactive publish/subscribe', async (t) => {
     const channels = [];
     state.subscribe((snapshot, channel) => channels.push(channel));
 
-    const entries = [{ id: 10, name: 'Lords of War' }];
+    const entries = [{ id: 10, name: 'Iron Legion' }];
     state.setInternationalEntries(entries);
 
     assert.deepEqual(channels, ['international']);

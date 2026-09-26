@@ -166,7 +166,7 @@ describe('GuildExpeditionService with Trial Levels', () => {
         ],
         participants: [
           { id: 20, name: 'Aussie Battler', worldName: 'Houndsmoor' },
-          { id: 10, name: 'Lords of War', worldName: 'Greifental' },
+          { id: 10, name: 'Iron Legion', worldName: 'Greifental' },
           { id: 30, name: 'Just4Fun', worldName: 'Mount Killmore' },
         ],
       },
@@ -176,7 +176,7 @@ describe('GuildExpeditionService with Trial Levels', () => {
 
     const html = donationDIV2.innerHTML;
     assert.ok(
-      html.includes('Lords of War'),
+      html.includes('Iron Legion'),
       'HTML should include 1st place guild',
     );
     assert.ok(
@@ -219,7 +219,7 @@ describe('GuildExpeditionService with Trial Levels', () => {
       responseData: {
         ranking: [{ participantId: 10, rank: 1, points: 116 }],
         participants: [
-          { id: 10, name: 'Lords of War', worldName: 'Greifental' },
+          { id: 10, name: 'Iron Legion', worldName: 'Greifental' },
         ],
       },
     });
@@ -268,7 +268,7 @@ describe('GuildExpeditionService with Trial Levels', () => {
       'Member Contributions subpanel should render with data-i18n="ge_member_contributions" and default title GE Leaderboard',
     );
     assert.ok(
-      html.includes('Lords of War') && html.includes('Picard359'),
+      html.includes('Iron Legion') && html.includes('Picard359'),
       'Both guild progress and player leaderboard should co-exist',
     );
 
@@ -365,7 +365,7 @@ describe('GuildExpeditionService with Trial Levels', () => {
       responseData: {
         ranking: [{ participantId: 10, rank: 1, points: 116 }],
         participants: [
-          { id: 10, name: 'Lords of War', worldName: 'Greifental' },
+          { id: 10, name: 'Iron Legion', worldName: 'Greifental' },
         ],
       },
     });
