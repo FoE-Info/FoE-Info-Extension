@@ -5,6 +5,7 @@ import {
   escapeHTMLAttribute,
   toDisplayString,
 } from '../../src/js/utils/escape.js';
+import { evaluateRequestOrigin } from '../../src/js/utils/intakePolicy.js';
 
 describe('escaping core (utils/escape.js)', () => {
   it('escapes every dangerous character & < > " \'', () => {
@@ -215,5 +216,90 @@ describe('renderers are fail-closed without an injected escaper', () => {
       target.innerHTML.includes(ESCAPED),
       'hostile member and clan names must be escaped',
     );
+  });
+
+  it('gbgPanel.buildLeaderboardHTML escapes clan names', async () => {
+    const { buildLeaderboardHTML } =
+      await import('../../src/js/ui/gbgPanel.js');
+    const html = buildLeaderboardHTML([
+      {
+        clan: { name: HOSTILE },
+        victoryPointsHourly: 10,
+        victoryPointsTotal: 100,
+      },
+    ]);
+    assert.ok(
+      !html.includes('<img'),
+      'raw markup reached the GBG leaderboard through the clan name',
+    );
+    assert.ok(html.includes(ESCAPED), 'hostile clan name must be escaped');
+  });
+
+  it('greatBuildingsPanel escapes donor names in the contributors list', async () => {
+    const mod = await import('../../src/js/ui/greatBuildingsPanel.js');
+    const greatbuilding = { innerHTML: '', querySelector: () => null };
+    mod.renderGbDonorsCard({
+      GBselected: { name: 'The Arc', level: 70, max_level: 70 },
+      rankings: [
+        {
+          rank: 1,
+          forge_points: 5000,
+          player: { name: HOSTILE, player_id: 7 },
+        },
+      ],
+      PlayerID: 99,
+      showOptions: { showGBDonors: true },
+      greatbuilding,
+      element: { close: () => '', copy: () => '', icon: () => '' },
+      collapse: { collapseGBDonors: false },
+      copy: { DonorCopy: () => {} },
+    });
+    assert.ok(
+      !greatbuilding.innerHTML.includes('<img'),
+      'raw markup reached the GB contributors list through the donor name',
+    );
+    assert.ok(
+      greatbuilding.innerHTML.includes(ESCAPED),
+      'hostile donor name must be escaped, not dropped',
+    );
+  });
+});
+
+// --- WebSocket intake origin ----------------------------------------------------
+// xhrInterceptor.js used to post `location.origin + '/game/json?source=ws'` for
+// EVERY socket, so the intake gate's host and path checks were tautological and
+// third-party WebSocket traffic was dispatched as trusted game RPC. The real
+// socket destination is now carried through, and evaluateRequestOrigin decides.
+describe('WebSocket intake is gated on the real socket destination', () => {
+  it('admits a wss game API socket on a trusted host', () => {
+    const res = evaluateRequestOrigin('wss://en1.forgeofempires.com/game/json');
+    assert.equal(res.accepted, true);
+    assert.equal(res.kind, 'game');
+  });
+
+  it('rejects a socket on an untrusted host even with a game API path', () => {
+    const res = evaluateRequestOrigin('wss://evil.example.com/game/json');
+    assert.equal(res.accepted, false);
+    assert.equal(res.reason, 'untrusted_host');
+  });
+
+  it('rejects a socket on a suffix-confused host', () => {
+    const res = evaluateRequestOrigin(
+      'wss://forgeofempires.com.evil.example/game/json',
+    );
+    assert.equal(res.accepted, false);
+    assert.equal(res.reason, 'untrusted_host');
+  });
+
+  it('rejects an insecure ws:// socket on a trusted host', () => {
+    const res = evaluateRequestOrigin('ws://en1.forgeofempires.com/game/json');
+    assert.equal(res.accepted, false);
+    assert.equal(res.reason, 'insecure_scheme');
+  });
+
+  it('rejects a trusted-host socket on an unrecognized path', () => {
+    const res = evaluateRequestOrigin('wss://en1.forgeofempires.com/analytics');
+    assert.equal(res.accepted, false);
+    assert.equal(res.reason, 'unrecognized_path');
   });
 });
