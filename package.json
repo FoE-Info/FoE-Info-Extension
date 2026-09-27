@@ -25,6 +25,7 @@
     "check": "prettier --check .",
     "clean": "rm -rf build",
     "dev": "webpack --config webpack.config.js --env target=dev --watch",
+    "fonts:subset": "node scripts/subset-icons-font.mjs",
     "format": "prettier --write .",
     "graph:ast": "bash .agents/scripts/graphify.sh foe-info ast",
     "graph:label": "bash .agents/scripts/graphify.sh foe-info label",
