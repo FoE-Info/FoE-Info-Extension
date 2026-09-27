@@ -47,14 +47,36 @@ test('analyzeContract honors ignoredCaptures (class or exact key)', () => {
   assert.deepEqual(byKey.unhandled, ['A.foo']);
 });
 
-test('analyzeContract honors allowedUnhandled for triaged captures', () => {
+test('analyzeContract honors deferred and neverHandle for triaged captures', () => {
   const result = analyzeContract({
-    captured: ['A.missing', 'B.missing'],
+    captured: ['A.missing', 'B.missing', 'C.action'],
     registered: {},
-    config: { allowedUnhandled: ['A.missing'] },
+    config: { deferred: ['A.missing'], neverHandle: ['C.action'] },
   });
-  assert.deepEqual(result.allowed, ['A.missing']);
+  // Both are tolerated as unhandled, but they are reported separately so a
+  // backlog entry and a passive-observation breach never look alike.
+  assert.deepEqual(result.allowed, ['A.missing', 'C.action']);
   assert.deepEqual(result.unhandled, ['B.missing']);
+  assert.deepEqual(result.neverHandleViolations, []);
+});
+
+test('analyzeContract flags a registered neverHandle RPC as a breach', () => {
+  const result = analyzeContract({
+    captured: ['C.action'],
+    registered: { 'C.action': 1 },
+    config: { neverHandle: ['C.action'] },
+  });
+  // The registration must be deleted, not tolerated: the extension would be
+  // acting on the player's behalf.
+  assert.deepEqual(result.neverHandleViolations, ['C.action']);
+  assert.deepEqual(result.unhandled, []);
+  // A deferred read may legitimately be registered later.
+  const ok = analyzeContract({
+    captured: ['A.read'],
+    registered: { 'A.read': 1 },
+    config: { deferred: ['A.read'] },
+  });
+  assert.deepEqual(ok.neverHandleViolations, []);
 });
 
 test('analyzeContract reports registered-but-uncaptured routes as stale', () => {
