@@ -122,3 +122,91 @@ test('StartupService.resetCityStartupState clears daily bonus accumulator', asyn
   });
   assert.equal(City.ForgePoints, 10);
 });
+
+test('BonusService - real captured double_collection sets Blue Galaxy charges', async () => {
+  const { getLimitedBonuses, resetDailyBonusAccumulator } =
+    await import('../../src/js/msg/BonusService.js');
+  const { blueGalaxyState } =
+    await import('../../src/js/state/CityDomainState.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.js');
+
+  showOptions.showBonus = true;
+  resetDailyBonusAccumulator();
+  blueGalaxyState.setCharges(0);
+
+  // The payload as captured from the live game. LimitedBonusFromEntity carries
+  // `value`; there is no `amount` field, so reading `amount` yielded undefined
+  // and setCharges coerced it to 0.
+  const captured = JSON.parse(
+    readFileSync(
+      resolvePath(
+        dirname(fileURLToPath(import.meta.url)),
+        '../fixtures/rpc/BonusService.getLimitedBonuses.json',
+      ),
+      'utf8',
+    ),
+  );
+
+  getLimitedBonuses({ responseData: captured });
+
+  assert.equal(blueGalaxyState.charges, 71);
+  assert.equal(blueGalaxyState.legacyShim?.amount, 71);
+});
+
+test('BonusService - sibling limited bonus types read value off LimitedBonusFromEntity', async () => {
+  const { getLimitedBonuses, resetDailyBonusAccumulator } =
+    await import('../../src/js/msg/BonusService.js');
+  const { bonusState } = await import('../../src/js/state/CityDomainState.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.js');
+
+  showOptions.showBonus = true;
+  resetDailyBonusAccumulator();
+
+  // Same class and field set as the one captured getLimitedBonuses entry
+  // ({id, value, type, isActive, entityId, factor, __class__}); these four types
+  // have no capture of their own, so the shape is taken from that sample.
+  const entry = (type, value) => ({
+    id: 76413,
+    value,
+    type,
+    isActive: true,
+    entityId: 34862,
+    factor: 2,
+    __class__: 'LimitedBonusFromEntity',
+  });
+
+  getLimitedBonuses({
+    responseData: [
+      entry('spoils_of_war', 12),
+      entry('diplomatic_gifts', 34),
+      entry('first_strike', 56),
+      entry('aid_goods', 78),
+    ],
+  });
+
+  assert.equal(bonusState.spoils, 12);
+  assert.equal(bonusState.diplomatic, 34);
+  assert.equal(bonusState.strike, 56);
+  assert.equal(bonusState.aid, 78);
+  assert.match(bonusState.bonusHTML, /id="spoilsID">12</);
+  assert.match(bonusState.bonusHTML, /id="diplomaticID">34</);
+  assert.match(bonusState.bonusHTML, /id="firststrikeID">56</);
+  assert.match(bonusState.bonusHTML, /id="aidID">78</);
+});
+
+test('BonusService - limited bonus entries carrying only amount are still read', async () => {
+  const { getLimitedBonuses, resetDailyBonusAccumulator } =
+    await import('../../src/js/msg/BonusService.js');
+  const { bonusState } = await import('../../src/js/state/CityDomainState.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.js');
+
+  showOptions.showBonus = true;
+  resetDailyBonusAccumulator();
+
+  getLimitedBonuses({
+    responseData: [{ type: 'aid_goods', amount: 9 }],
+  });
+
+  assert.equal(bonusState.aid, 9);
+  assert.match(bonusState.bonusHTML, /id="aidID">9</);
+});
