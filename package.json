@@ -13,6 +13,7 @@
   ],
   "type": "commonjs",
   "scripts": {
+    "audit:fork": "node .agents/scripts/fork-drift.mjs",
     "audit:refs": "node scripts/audit-references.mjs",
     "browser:attach": "node scripts/attach-devtools.mjs",
     "browser:check": "node scripts/check-browser-cdp.mjs",
