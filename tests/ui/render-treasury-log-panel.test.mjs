@@ -71,4 +71,36 @@ test('renderTreasuryLogPanel UI Module Suite', async (t) => {
       );
     });
   });
+
+  await t.test(
+    'collapse label is exposed as a keyboard-reachable button',
+    () => {
+      withDocument(() => {
+        const target = { innerHTML: '', style: { display: 'none' } };
+        renderTreasuryLogPanel([makeEntry()], makeTotals(), {
+          showTreasury: true,
+          targetEl: target,
+          collapse: { collapseTreasuryLog: true },
+        });
+
+        const label = target.innerHTML.match(
+          /<p id="treasuryLogTextLabel"[^>]*>/,
+        );
+        assert.ok(label, 'collapse label <p> is rendered');
+
+        const attrs = label[0];
+        // The document-level Enter/Space delegation in ui/AddElement.js only
+        // reaches elements that carry role="button", and it can only fire on a
+        // focused element — so without tabindex the control is mouse-only.
+        assert.match(attrs, /role="button"/);
+        assert.match(attrs, /tabindex="0"/);
+        assert.match(attrs, /aria-controls="treasuryLogText"/);
+        assert.match(attrs, /data-bs-target="#treasuryLogText"/);
+        // Collapsed by default in this fixture, so the panel starts hidden.
+        assert.match(attrs, /aria-expanded="false"/);
+        // href is meaningless on a <p>; the Bootstrap trigger is data-bs-target.
+        assert.doesNotMatch(attrs, /\shref=/);
+      });
+    },
+  );
 });

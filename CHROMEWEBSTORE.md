@@ -2,8 +2,8 @@
 
 _Single source of truth for Chrome Web Store listing metadata, permissions justifications, privacy disclosures, and store review compliance._
 
-**Last Updated:** 2026-09-04  
-**Extension Version:** `0.0.832`  
+**Last Updated:** 2026-09-27  
+**Extension Version:** `0.0.834`  
 **Manifest Version:** 3
 
 ---
@@ -99,7 +99,7 @@ Every permission declared in `src/chrome/manifest.json` serves a specific user-f
 
 ## 6. Version History
 
-### `v0.0.832` (Current)
+### `v0.0.834` (Current)
 
 - Manifest V3 architecture with dedicated DevTools panel (`panel.html`) and MAIN/ISOLATED world content script bridging.
 - Multi-locale translation support across 7 languages.

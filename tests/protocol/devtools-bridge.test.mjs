@@ -92,7 +92,9 @@ test('devtoolsBridge - structured panel channel', async (t) => {
   await t.test(
     'routes request-finished envelopes and ignores foreign sources',
     () => {
+      const parent = createMockWindow();
       const panel = createMockWindow();
+      panel.parent = parent;
       let finished = 0;
       installPanelBridge(panel, {
         handleRequestFinished: () => {
@@ -104,13 +106,22 @@ test('devtoolsBridge - structured panel channel', async (t) => {
         { source: 'other', type: MESSAGE_TYPES.REQUEST_FINISHED, payload: {} },
         null,
       );
+      // Right channel string, wrong window: must not be routed.
       panel.dispatch(
         {
           source: CHANNEL,
           type: MESSAGE_TYPES.REQUEST_FINISHED,
           payload: { request: {} },
         },
-        null,
+        createMockWindow(),
+      );
+      panel.dispatch(
+        {
+          source: CHANNEL,
+          type: MESSAGE_TYPES.REQUEST_FINISHED,
+          payload: { request: {} },
+        },
+        parent,
       );
 
       assert.equal(finished, 1);
@@ -156,6 +167,29 @@ test('devtoolsBridge - structured panel channel', async (t) => {
     });
     assert.equal(ready, 1);
   });
+
+  await t.test(
+    'host handler ignores READY when no panel window is known',
+    () => {
+      // The panel window is only learned from devtools.panels.onShown. Before
+      // that, an unknown window must not be adopted as the traffic sink.
+      let readySource = null;
+      const handler = createHostMessageHandler({
+        getPanelWindow: () => null,
+        onReady: (source) => {
+          readySource = source;
+        },
+      });
+
+      const impostor = createMockWindow();
+      handler({
+        data: { source: CHANNEL, type: MESSAGE_TYPES.READY },
+        source: impostor,
+      });
+
+      assert.equal(readySource, null);
+    },
+  );
 
   await t.test('postNetworkEntry sends a channel envelope', () => {
     const panel = createMockWindow();

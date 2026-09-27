@@ -77,6 +77,21 @@ const GB_SHORT_NAMES = new Map([
  * Canonical landmark identifier to Great Building name dictionary.
  * Single source of truth for GB naming (consolidated F12 debt).
  */
+/**
+ * PROVENANCE: this is an OFFLINE FALLBACK, not the live source of truth.
+ * `fGBname()` resolves canonical names from `CityEntityDefs` first and only
+ * reaches this map when that lookup misses, so the table cannot shadow a
+ * resolved name. It exists because landmark display names must render before
+ * (or without) the metadata store.
+ *
+ * Measured against `../metadata-store` on 2026-09-27: 48 of 51 ids resolve
+ * to exactly the strings below, 3 are absent from the store
+ * (`X_AllAge_Galata`, `X_SpaceAgeDiscovery_Landmark1/2`), and 1 differs
+ * (`X_LateMiddleAge_Landmark1` — the store says "Saint Basil's Cathedral").
+ * The store spelling wins whenever it resolves; this one is a deliberate
+ * in-product translation, not a stale copy. Update this map when a landmark
+ * is added, and re-verify against the ids in that file.
+ */
 const GB_NAME_MAP = {
   X_AllAge_EasterBonus4: 'Observatory',
   X_AllAge_Expedition: 'Temple of Relics',
