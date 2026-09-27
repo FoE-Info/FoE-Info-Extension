@@ -23,6 +23,12 @@ const element = safeRequire(() => require('../fn/AddElement.js'));
 const collapse = safeRequire(() => require('../fn/collapse.js'));
 const helper = safeRequire(() => require('../fn/helper.js'));
 
+// Parameterised strings need `t()` with arguments — `data-i18n` assigns
+// textContent with none, so a value containing $1/$2 would print them
+// literally. safeRequire keeps the panel renderable without the module.
+const i18n = safeRequire(() => require('../fn/i18n.js'));
+const tr = (key, ...args) => i18n?.t?.(key, ...args) ?? key;
+
 let showOptions = null;
 
 function getResolvedShowOptions() {
@@ -97,7 +103,7 @@ function renderCulturalPanel(
 
   if (totalAdv > 0) {
     html += `<div class="mb-2 small px-2">`;
-    html += `<span data-i18n="advancements">Advancements</span>: <strong>${unlockedAdv} of ${totalAdv} unlocked</strong>`;
+    html += `<span data-i18n="advancements">Advancements</span>: <strong>${tr('advancements_unlocked', unlockedAdv, totalAdv)}</strong>`;
     html += `</div>`;
   }
 

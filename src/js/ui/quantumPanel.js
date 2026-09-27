@@ -154,7 +154,7 @@ function renderQuantumContributionsCard(members, lastSavedTimestamp) {
           <input class="form-check-input" type="checkbox" id="showQIchanges" ${isChangesOnly ? 'checked' : ''}>
           <label class="form-check-label small" for="showQIchanges" data-i18n="show_changes_only">show changes only</label>
         </div>
-        ${timeFormatted ? `<span class="small text-muted">Last Saved: ${timeFormatted}</span>` : ''}
+        ${timeFormatted ? `<span class="small text-muted"><span data-i18n="last_saved">Last Saved</span>: ${timeFormatted}</span>` : ''}
       </div>
       <div id="qiContributionsTableWrapper" class="mt-1">
         <table id="qiContributionsTable" class="goods-table w-100">

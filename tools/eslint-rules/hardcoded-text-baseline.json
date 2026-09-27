@@ -1,0 +1,12 @@
+[
+  "src/js/ui/bonusPanel.js :: First Strike",
+  "src/js/ui/bonusPanel.js :: Himeji Castle Dip lomatic Gifts",
+  "src/js/ui/bonusPanel.js :: Kraken Spoils",
+  "src/js/ui/bonusPanel.js :: Space Carrier Aid Goods",
+  "src/js/ui/bonusPanel.js :: Truce Tower",
+  "src/js/ui/incidentsPanel.js :: Event Capitals",
+  "src/js/ui/incidentsPanel.js :: Rare Reward",
+  "src/js/ui/liveCityViewDataBuilder.js :: FoE",
+  "src/js/ui/templates/ownCityCard.js :: Arc",
+  "src/js/ui/templates/visitedCityCard.js :: Arc"
+]

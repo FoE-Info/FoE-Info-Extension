@@ -32,7 +32,22 @@ const {
 const { escapeHTML } = require('../../utils/escape.js');
 const escapeHtml = escapeHTML;
 
-function buildFpTooltipHTML(fpBuildingsList, boost = 0, customHelper = helper) {
+// The boost breakdown is a formula, not a label: word order differs per
+// locale, so it goes through t() with $1/$2/$3 rather than a data-i18n span
+// (which assigns textContent and would print the placeholders literally).
+let tr = (key) => key;
+try {
+  tr = require('../../fn/i18n.js').t;
+} catch {}
+
+function buildFpTooltipHTML(
+  fpBuildingsList,
+  boost = 0,
+  customHelper = helper,
+  // Injectable so tests can assert the rendered values without depending on
+  // whichever dictionary happens to be loaded.
+  tFn = tr,
+) {
   if (
     !fpBuildingsList ||
     !Array.isArray(fpBuildingsList) ||
@@ -104,7 +119,7 @@ function buildFpTooltipHTML(fpBuildingsList, boost = 0, customHelper = helper) {
   }
 
   if (numBoost > 0) {
-    html += `<br><strong>Base: ${unboostedBaseTotal.toNumber()}FP (+${numBoost}% Boost = ${finalTotalFp.toNumber()}FP)</strong>`;
+    html += `<br><strong>${tFn('fp_boost_breakdown', unboostedBaseTotal.toNumber(), numBoost, finalTotalFp.toNumber())}</strong>`;
   }
 
   return html;

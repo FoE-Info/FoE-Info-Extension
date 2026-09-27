@@ -38,6 +38,12 @@ function baseArgs(overrides = {}) {
     Goods: {},
     specialGoods: new Set(),
     fGoodsHTML: (age) => `<goods:${age}>`,
+    // The FP boost breakdown is localized; the test states the wording it
+    // expects rather than depending on whichever dictionary is loaded.
+    t: (key, ...a) =>
+      key === 'fp_boost_breakdown' ?
+        `Base: ${a[0]}FP (+${a[1]}% Boost = ${a[2]}FP)`
+      : key,
     ...overrides,
   };
 }
