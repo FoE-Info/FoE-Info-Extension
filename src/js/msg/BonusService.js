@@ -9,6 +9,18 @@ const logger = createLogger('BonusService');
 
 let lastDailyBonusFp = 0;
 
+/**
+ * Bonus amounts arrive as `value` on LimitedBonusFromEntity, the class the
+ * getLimitedBonuses array carries, and as `amount` on other bonus shapes. The
+ * only captured sample of that array is
+ * {value: 71, factor: 2, type: 'double_collection'} - no `amount` key at all,
+ * so reading `amount` alone yielded undefined. Prefer `value`, fall back to
+ * `amount` for payloads that only carry it.
+ */
+function bonusAmount(entry) {
+  return entry.value ?? entry.amount ?? 0;
+}
+
 export function resetDailyBonusAccumulator() {
   lastDailyBonusFp = 0;
 }
@@ -26,29 +38,27 @@ export function getLimitedBonuses(msg) {
 
     msg.responseData.forEach((entry) => {
       if (entry.type == 'spoils_of_war') {
-        Bonus.spoils = entry.amount;
-        if (entry.amount)
+        Bonus.spoils = bonusAmount(entry);
+        if (Bonus.spoils)
           bonusHTML += `Spoils <span id="spoilsID">${Bonus.spoils}</span> `;
       } else if (entry.type == 'diplomatic_gifts') {
-        Bonus.diplomatic = entry.amount;
-        if (entry.amount)
+        Bonus.diplomatic = bonusAmount(entry);
+        if (Bonus.diplomatic)
           bonusHTML += `Dip <span id="diplomaticID">${Bonus.diplomatic}</span> `;
       } else if (entry.type == 'first_strike') {
-        Bonus.strike = entry.amount;
-        if (entry.amount)
+        Bonus.strike = bonusAmount(entry);
+        if (Bonus.strike)
           bonusHTML += `Strike <span id="firststrikeID">${Bonus.strike}</span> `;
       } else if (entry.type == 'aid_goods') {
-        Bonus.aid = entry.amount;
-        if (entry.amount)
-          bonusHTML += `Aid <span id="aidID">${Bonus.aid}</span> `;
+        Bonus.aid = bonusAmount(entry);
+        if (Bonus.aid) bonusHTML += `Aid <span id="aidID">${Bonus.aid}</span> `;
       } else if (entry.type == 'double_collection') {
-        blueGalaxyState.setCharges(entry.amount);
+        blueGalaxyState.setCharges(bonusAmount(entry));
       } else if (
         entry.type == 'daily_strategypoint' ||
         entry.__class__ == 'DailyStrategyPointBonus'
       ) {
-        const fp = entry.value ?? entry.amount ?? 0;
-        currentPayloadDailyFp += fp;
+        currentPayloadDailyFp += bonusAmount(entry);
       }
     });
 
