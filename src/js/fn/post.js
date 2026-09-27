@@ -185,7 +185,6 @@ function postGBGtoSS() {
   let oReq = new XMLHttpRequest();
   oReq.open('POST', googleSheetAPI, true);
   oReq.setRequestHeader('Content-type', 'application/json');
-  oReq.setRequestHeader('Access-Control-Allow-Origin', '*');
   oReq.onreadystatechange = function () {
     if (oReq.readyState == XMLHttpRequest.DONE) {
       // alert(oReq.responseText);

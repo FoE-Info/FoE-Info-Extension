@@ -1,6 +1,20 @@
 import assert from 'node:assert/strict';
-import test from 'node:test';
+import test, { after } from 'node:test';
 import bridgePkg from '../../src/js/protocol/devtoolsBridge.js';
+
+// Both ends of the bridge are extension pages, so the module resolves its
+// targetOrigin from the extension runtime. Without this stub every send
+// fails closed — which is itself the behaviour asserted below.
+const EXTENSION_ORIGIN = 'chrome-extension://foeinfotestid';
+function stubExtensionRuntime(value) {
+  if (value === null) {
+    delete globalThis.chrome;
+    return;
+  }
+  globalThis.chrome = { runtime: { getURL: () => value } };
+}
+stubExtensionRuntime(`${EXTENSION_ORIGIN}/`);
+after(() => stubExtensionRuntime(null));
 
 const {
   CHANNEL,
@@ -8,7 +22,42 @@ const {
   createHostMessageHandler,
   installPanelBridge,
   postNetworkEntry,
+  postToWindow,
 } = bridgePkg;
+
+test('devtoolsBridge - extension origin', () => {
+  after(() => stubExtensionRuntime(`${EXTENSION_ORIGIN}/`));
+
+  test('sends to the extension origin, never to a wildcard', () => {
+    const parent = createMockWindow();
+    const panel = createMockWindow();
+    panel.parent = parent;
+    let targetOriginSeen;
+    parent.postMessage = (data, targetOrigin) => {
+      targetOriginSeen = targetOrigin;
+      parent.posted.push(data);
+    };
+
+    installPanelBridge(panel, {});
+
+    assert.equal(targetOriginSeen, EXTENSION_ORIGIN);
+    assert.notEqual(targetOriginSeen, '*');
+  });
+
+  test('fails closed when the extension origin cannot be resolved', () => {
+    const panel = createMockWindow();
+    panel.parent = createMockWindow();
+    stubExtensionRuntime(null);
+
+    assert.equal(postNetworkEntry(panel, { url: 'u' }), false);
+    assert.equal(panel.posted.length, 0);
+  });
+});
+
+test('devtoolsBridge - postToWindow returns false without a window', () => {
+  assert.equal(postToWindow(null, MESSAGE_TYPES.HOST_PING), false);
+  assert.equal(postToWindow({}, MESSAGE_TYPES.HOST_PING), false);
+});
 
 function createMockWindow() {
   const listeners = new Map();
