@@ -1,2 +1,6 @@
 #!/bin/sh
 npx lint-staged
+# lint-staged only sees files that were staged, and its globs never covered
+# *.ts, so a type error could reach a commit unseen. Typecheck the whole
+# project instead of the staged subset.
+npm run typecheck
