@@ -15,19 +15,42 @@ const MESSAGE_TYPES = {
   REQUEST_FINISHED: 'request-finished',
 };
 
+/**
+ * Resolve the one origin both ends of this channel live on.
+ *
+ * The DevTools page and the panel iframe are both extension pages, so
+ * `chrome.runtime.getURL('')` names the origin that is correct for every
+ * message on this channel. A `'*'` targetOrigin is not a safe default here:
+ * it hands intercepted game traffic to whatever origin the receiving window
+ * is on, which is exactly the unknown-window case the handshake refuses.
+ *
+ * @returns {string|null} the extension origin, or null when unavailable —
+ *   callers must fail closed rather than guess.
+ */
+function extensionOrigin() {
+  try {
+    const base = globalThis.chrome?.runtime?.getURL?.('');
+    if (typeof base === 'string' && base.startsWith('chrome-extension://')) {
+      return base.replace(/\/+$/, '');
+    }
+  } catch (err) {
+    logger.warn('could not resolve the extension origin', err);
+  }
+  return null;
+}
+
 function postToWindow(targetWindow, type, payload = {}) {
   if (!targetWindow || typeof targetWindow.postMessage !== 'function') {
     return false;
   }
+  const targetOrigin = extensionOrigin();
+  if (!targetOrigin) {
+    logger.warn('dropping bridge message: extension origin unresolved', {
+      type,
+    });
+    return false;
+  }
   try {
-    const targetOrigin =
-      (
-        typeof window !== 'undefined' &&
-        window.location?.origin &&
-        window.location.origin.startsWith('chrome-extension://')
-      ) ?
-        window.location.origin
-      : '*';
     targetWindow.postMessage({ source: CHANNEL, type, payload }, targetOrigin);
     return true;
   } catch (err) {
@@ -139,6 +162,7 @@ function installPanelBridge(targetWindow, handlers = {}) {
 module.exports = {
   CHANNEL,
   MESSAGE_TYPES,
+  extensionOrigin,
   postToWindow,
   postNetworkEntry,
   postRequestFinished,
