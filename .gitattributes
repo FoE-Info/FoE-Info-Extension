@@ -1,0 +1,15 @@
+# Graphify artifacts (tracked — see .gitignore).
+#
+# graph.json and graph.html are regenerated wholesale on every AST refresh, so a
+# line diff is 140k lines of noise that also makes `git status` and `git diff`
+# slow. Marking them -diff keeps git from attempting a textual diff at all.
+#
+# `merge=graphify` completes the union merge driver that `git config` already
+# registers (merge.graphify.driver). Without this line git never invokes it and
+# a two-branch refresh produces an unresolvable conflict in the JSON.
+graphify-out/graph.json -diff merge=graphify
+graphify-out/graph.html -diff
+
+# The knowledgebase is deliberately NOT marked -diff: memory/, reflections/ and
+# findings/decisions.jsonl are the durable record, and reviewing how a verdict
+# changed is the whole point of tracking them.
