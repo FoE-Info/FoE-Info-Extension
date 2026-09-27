@@ -103,7 +103,15 @@ describe('Blue Galaxy End-to-End Integration Suite', () => {
     assert.ok(galaxyDiv.innerHTML.includes('50FP'));
     assert.ok(galaxyDiv.innerHTML.includes('Phantom Tower'));
     assert.ok(galaxyDiv.innerHTML.includes('35FP'));
-    assert.ok(galaxyDiv.innerHTML.includes("Governor's Villa"));
+    // Building names are escaped before reaching innerHTML, so an apostrophe
+    // arrives entity-encoded. Assert on the decoded text: what this checks is
+    // that the building is listed, not how its name is encoded.
+    assert.ok(
+      galaxyDiv.innerHTML
+        .replace(/&#0?39;/g, "'")
+        .replace(/&amp;/g, '&')
+        .includes("Governor's Villa"),
+    );
     assert.ok(!galaxyDiv.innerHTML.includes('20FP')); // Capped at 2 charges
 
     // D. Building B is picked up

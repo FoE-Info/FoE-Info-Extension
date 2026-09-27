@@ -329,7 +329,7 @@ function renderBuildingCostCard({
 function buildLeaderboardHTML(leaderboard = []) {
   let leaderboardHTML = `<thead><tr><th scope="col" class="text-start">Guild</th><th scope="col" class="text-center">VP/hr</th><th scope="col" class="text-center">Total VP</th></tr></thead><tbody>`;
   (leaderboard || []).forEach((guild) => {
-    const name = guild?.clan?.name || '';
+    const name = escapeHTML(guild?.clan?.name || '');
     const vpHourly = Number(guild?.victoryPointsHourly || 0).toLocaleString();
     const vpTotal = Number(guild?.victoryPointsTotal || 0).toLocaleString();
     leaderboardHTML += `<tr><td class="text-start">${name}</td><td class="text-center tabular-nums">${vpHourly}</td><td class="text-center tabular-nums">${vpTotal}</td></tr>`;
@@ -589,7 +589,7 @@ function fshowBattleground() {
       attritionDiff
     ) {
       renderedRows++;
-      battlegroundHTML += `<tr><td class="text-start">${entry.name}</td><td class="text-center">${wonNegotiations}`;
+      battlegroundHTML += `<tr><td class="text-start">${escapeHTML(entry.name)}</td><td class="text-center">${wonNegotiations}`;
       if (negotiationsDiff)
         battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
       battlegroundHTML += `</td><td class="text-center">${wonBattles}`;

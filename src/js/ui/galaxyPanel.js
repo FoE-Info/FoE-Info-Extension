@@ -16,6 +16,7 @@ const {
 const element = require('./AddElement.js');
 const { backfillPendingNames } = require('../fn/liveNameResolver.js');
 const { formatTime } = require('../utils/date.js');
+const { escapeHTML } = require('../utils/escape.js');
 
 // ============================================================================
 // 1. BUILDING GROUPER & LIST MARKUP
@@ -75,9 +76,9 @@ function renderGalaxyBuildingList(groupedBuildings, isDebug = false, t = null) {
   let buildingsHtml = '<p class="mb-0">';
   for (const group of groupedBuildings) {
     if (isDebug) {
-      buildingsHtml += `${group.count}x ${group.fp}FP ${group.name} [${group.isReady ? 'READY' : group.timerStr}]<br>`;
+      buildingsHtml += `${group.count}x ${group.fp}FP ${escapeHTML(group.name)} [${group.isReady ? 'READY' : group.timerStr}]<br>`;
     } else {
-      buildingsHtml += `${group.count}x ${group.fp}FP ${group.name}<br>`;
+      buildingsHtml += `${group.count}x ${group.fp}FP ${escapeHTML(group.name)}<br>`;
     }
   }
   buildingsHtml += '</p>';
