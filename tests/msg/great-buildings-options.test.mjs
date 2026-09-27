@@ -301,10 +301,19 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
 
       assert.match(targetEl.innerHTML, /Himeji Castle/);
       assert.match(targetEl.innerHTML, /PlayerOne/);
-      assert.match(targetEl.innerHTML, /Level: 10 \/ 11/);
-      assert.match(targetEl.innerHTML, /Invested: 450 of 600 FP/);
-      assert.match(targetEl.innerHTML, /Total Remaining: 150 FP/);
-      assert.match(targetEl.innerHTML, /Ready:/);
+      assert.match(
+        targetEl.innerHTML,
+        /data-i18n="level">Level<\/span>: 10 \/ 11/,
+      );
+      assert.match(
+        targetEl.innerHTML,
+        /data-i18n="invested">Invested<\/span>: 450 of 600 FP/,
+      );
+      assert.match(
+        targetEl.innerHTML,
+        /data-i18n="total_remaining">Total Remaining<\/span>: 150 FP/,
+      );
+      assert.match(targetEl.innerHTML, /data-i18n="ready">Ready<\/span>:/);
       assert.doesNotMatch(targetEl.innerHTML, /gbInfoCopyID/);
       assert.match(targetEl.innerHTML, /gbinfoicon/);
       assert.match(targetEl.innerHTML, /pe-4 mb-0/);

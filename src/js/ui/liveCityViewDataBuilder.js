@@ -41,7 +41,7 @@ function buildLiveCityViewData({
     : typeof ctx.getScoreDBOrigin === 'function' ? ctx.getScoreDBOrigin()
     : '';
 
-  const userTitle = `Playing <strong>FoE</strong> since<br>${formatDate ? formatDate(myInfo?.createdAt) : ''}`;
+  const userTitle = `<span data-i18n="playing">Playing</span> <strong>FoE</strong> <span data-i18n="since">since</span><br>${formatDate ? formatDate(myInfo?.createdAt) : ''}`;
 
   const fpList = ctx.lastStartupContext?.fpBuildings || ctx.fpBuildings || [];
   const goodsList =

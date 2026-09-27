@@ -27,6 +27,12 @@ test('fresh startup FP base overwrites the early cached boost with exact half-up
     fpBuildings: [{ id: 'fp', fp: 25, isBoostable: true }],
     tooltipHTML,
     helper,
+    // The breakdown string is localized, so the test states the wording it
+    // expects instead of depending on whichever dictionary is loaded.
+    t: (key, ...args) =>
+      key === 'fp_boost_breakdown' ?
+        `Base: ${args[0]}FP (+${args[1]}% Boost = ${args[2]}FP)`
+      : key,
   });
   assert.equal(City.baseBoostableFp, 25);
   assert.equal(City.ForgePoints, 40); // 25 + round_half_up(25 * .58) = 40

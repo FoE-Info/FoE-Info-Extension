@@ -375,7 +375,9 @@ function gbTabSafe(...args) {
       new BN(cfg.rewardFP).minus(cfg.donation).toNumber()
     : Number(cfg.rewardFP || 0) - Number(cfg.donation || 0);
   const guaranteedNote =
-    cfg.donation <= cfg.donateCustom ? '<small>Guaranteed profit</small>' : '';
+    cfg.donation <= cfg.donateCustom ?
+      `<small><span data-i18n="guaranteed_profit">Guaranteed profit</span></small>`
+    : '';
 
   const isDonationCollapsed = !!collapse.collapseDonation;
   const closeBtn = typeof element.close === 'function' ? element.close() : '';
@@ -436,7 +438,9 @@ function gbTabNotSafe(...args) {
     : Number(cfg.rewardFP || 0) - Number(cfg.donation || 0);
   const alertClass = profitFp === 0 ? 'alert-warning' : 'alert-danger';
   const guaranteedNote =
-    cfg.donation <= cfg.donateCustom ? '<small>Guaranteed profit</small>' : '';
+    cfg.donation <= cfg.donateCustom ?
+      `<small><span data-i18n="guaranteed_profit">Guaranteed profit</span></small>`
+    : '';
 
   const isDonationCollapsed = !!collapse.collapseDonation;
   const closeBtn = typeof element.close === 'function' ? element.close() : '';
@@ -901,7 +905,7 @@ function renderGbDonationPanel(params = {}) {
     : '<span id="donationCopyID" class="badge bg-secondary float-end" data-i18n="copy">Copy</span>';
   const packageBadgeHtml =
     availablePackageForgePoints > 0 ?
-      `<span class="badge bg-secondary ms-1">Packages: ${formatNumberFn(availablePackageForgePoints)} FP</span>`
+      `<span class="badge bg-secondary ms-1"><span data-i18n="packages">Packages</span>: ${formatNumberFn(availablePackageForgePoints)} FP</span>`
     : '';
 
   const isGbLocked = Boolean(

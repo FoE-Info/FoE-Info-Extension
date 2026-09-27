@@ -64,11 +64,12 @@ function groupGalaxyBuildings(buildings, isDebug = false) {
  *
  * @param {Array<Object>} groupedBuildings - Grouped buildings from groupGalaxyBuildings.
  * @param {boolean} [isDebug=false] - Whether debug mode is active.
+ * @param {Function|null} [t=null] - Translation lookup, injected by the caller.
  * @returns {string} HTML markup string.
  */
-function renderGalaxyBuildingList(groupedBuildings, isDebug = false) {
+function renderGalaxyBuildingList(groupedBuildings, isDebug = false, t = null) {
   if (!Array.isArray(groupedBuildings) || groupedBuildings.length === 0) {
-    return '<p class="text-muted mb-0">No ready buildings with FP production</p>';
+    return `<p class="text-muted mb-0">${t?.('no_ready_buildings') ?? 'No ready buildings with FP production'}</p>`;
   }
 
   let buildingsHtml = '<p class="mb-0">';
@@ -199,7 +200,7 @@ function renderGalaxyPanel({
     isDebug,
   );
   const groupedBuildings = groupGalaxyBuildings(topBuildings, isDebug);
-  const buildingsHtml = renderGalaxyBuildingList(groupedBuildings, isDebug);
+  const buildingsHtml = renderGalaxyBuildingList(groupedBuildings, isDebug, t);
 
   const collapseClass = isCollapsed ? '' : 'show';
   const collapseIcon = isCollapsed ? '[+]' : '[-]';

@@ -397,7 +397,7 @@ function renderTargetGeneratorPanel(params = {}) {
     copyBtnHTML +
     `<p id="targetGenLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#targetGenCollapse" aria-expanded="${!depCollapse.collapseTargetGen}" aria-controls="targetGenCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">` +
     iconHTML +
-    `<strong>GBG Target Generator:</strong></p>`;
+    `<strong><span data-i18n="gbg_target_generator">GBG Target Generator</span>:</strong></p>`;
 
   const { textProvinceUnlocked, textProvinceLocked } =
     buildTargetGeneratorTargets({

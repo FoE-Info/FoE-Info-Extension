@@ -169,7 +169,7 @@ function buildBuildingCostsTableHTML({
 
     costsHTML += `<tr><th scope="col">${name0 + name1}${
       slots ? ' [' + slots + ']' : ''
-    }</th><th scope="col">Resource 1</th><th scope="col">Qty</th><th scope="col">Resource 2</th><th scope="col">Qty</th><th scope="col">Resource 3</th><th scope="col">Qty</th></tr>`;
+    }</th><th scope="col"><span data-i18n="resource">Resource</span> 1</th><th scope="col"><span data-i18n="qty">Qty</span></th><th scope="col"><span data-i18n="resource">Resource</span> 2</th><th scope="col"><span data-i18n="qty">Qty</span></th><th scope="col"><span data-i18n="resource">Resource</span> 3</th><th scope="col"><span data-i18n="qty">Qty</span></th></tr>`;
     costs.forEach((building) => {
       const bName =
         BuildingDefs && BuildingDefs[building.buildingId]?.name ?
@@ -225,7 +225,7 @@ function buildBuildingCostCardHTML({
     ${closeBtn}
     <p id="buildingCostTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#buildingCostText" aria-expanded="${!depCollapse?.collapseBuildingCost}" aria-controls="buildingCostText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconMarkup}
-    <strong>GBG Building Costs:</strong></p>` +
+    <strong><span data-i18n="gbg_building_costs">GBG Building Costs</span>:</strong></p>` +
     copyBtn +
     `<table style="height: ${height}px"  id="buildingCostText" class="overflow-y table collapse ${isShow}">` +
     `<caption class="visually-hidden"><span data-i18n="gbg_building_costs">GBG Building Costs</span></caption>` +
@@ -400,7 +400,7 @@ function buildBattlegroundResultCardHTML(responseData = {}, options = {}) {
         ${closeBtn}
         <p id="battlegroundResultTextLabel" class="cursor-pointer" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundTextCollapse" aria-expanded="${!isCollapsed}" aria-controls="battlegroundTextCollapse" style="cursor: pointer; user-select: none;">
       ${iconMarkup}
-        <strong>Battleground Result:</strong></p>` +
+        <strong><span data-i18n="battleground_result">Battleground Result</span>:</strong></p>` +
     copyBtn +
     `<div id="battlegroundTextCollapse" class="table-responsive resize-both collapse ${
       isCollapsed ? '' : 'show'
@@ -536,7 +536,7 @@ function fshowBattleground() {
   let battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">
 	<p id="battlegroundTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
 	${element.icon ? element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground) : ''}
-	<strong>Battlegrounds: [${bgWorldLabel}]</strong></p>${element.close ? element.close() : ''}`;
+	<strong><span data-i18n="battlegrounds">Battlegrounds</span>: [${bgWorldLabel}]</strong></p>${element.close ? element.close() : ''}`;
 
   if (url.sheetGuildURL && element.post)
     battlegroundHTML += element.post(
@@ -603,7 +603,7 @@ function fshowBattleground() {
   });
 
   if (isChangesOnly && renderedRows === 0) {
-    battlegroundHTML += `<tr><td colspan="4" class="text-center text-muted fst-italic py-2">No active changes since last save</td></tr>`;
+    battlegroundHTML += `<tr><td colspan="4" class="text-center text-muted fst-italic py-2"><span data-i18n="no_active_changes">No active changes since last save</span></td></tr>`;
   }
 
   const targetEl =
@@ -745,7 +745,7 @@ function renderGbgLeaderboardPanel(leaderboard, options = {}) {
       ${closeBtn}
       <p id="gbgLeaderboardTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#gbgLeaderboardCollapse" aria-expanded="${!isCollapsed}" aria-controls="gbgLeaderboardCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
         ${iconHtml}
-        <strong>GBG Leaderboard:</strong>
+        <strong><span data-i18n="gbg_leaderboard">GBG Leaderboard</span>:</strong>
       </p>
       ${copyBtn}
       <div id="gbgLeaderboardCollapse" class="alert-info overflow resize collapse ${isCollapsed ? '' : 'show'}">

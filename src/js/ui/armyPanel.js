@@ -78,9 +78,9 @@ function renderArmyPanel(params = {}) {
   armyHTML += closeBtn;
   armyHTML += `<p id="armyTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#armyText" aria-expanded="${!isCollapsed}" aria-controls="armyText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
   armyHTML += iconHtml;
-  armyHTML += `<strong>Army:</strong> <span id="armyUnits" class="ms-2">${
+  armyHTML += `<strong><span data-i18n="army_title">Army</span>:</strong> <span id="armyUnits" class="ms-2">${
     isCollapsed ?
-      `Rogues: ${rogues.toLocaleString()} Units: ${allUnits.toLocaleString()}`
+      `<span data-i18n="rogues">Rogues</span>: ${rogues.toLocaleString()} <span data-i18n="army_units">Units</span>: ${allUnits.toLocaleString()}`
     : ''
   }</span></p>`;
   armyHTML += `<div id="armyText" style="height: ${armySize}px" class="overflow-y resize collapse ${
@@ -90,7 +90,7 @@ function renderArmyPanel(params = {}) {
     diff !== 0 ?
       ` <span class="${diff > 0 ? 'green' : 'red'}">${diff > 0 ? '+' : ''}${diff}</span>`
     : '';
-  armyHTML += `<span id="armyUnits2">Rogues: ${rogues.toLocaleString()}</span>${diffHtml}<br><span id="armyUnits3">Units: ${allUnits.toLocaleString()}</span><br>`;
+  armyHTML += `<span id="armyUnits2"><span data-i18n="rogues">Rogues</span>: ${rogues.toLocaleString()}</span>${diffHtml}<br><span id="armyUnits3"><span data-i18n="army_units">Units</span>: ${allUnits.toLocaleString()}</span><br>`;
 
   const resolveAgeLevel = getAgeLevel || helper?.fLevelfromAge || (() => 0);
   const armyText = unitsPerEra

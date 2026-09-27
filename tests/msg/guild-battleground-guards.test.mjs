@@ -266,7 +266,7 @@ test('GuildBattlegroundService partial RPC payload guards', async (t) => {
         'Message text must remain intact',
       );
       assert.equal(
-        targetsGBG.innerHTML.includes('GBG Target Generator:'),
+        targetsGBG.innerHTML.includes('id="targetGenLabel"'),
         false,
         'Target generator must not overwrite thread message',
       );
@@ -285,7 +285,7 @@ test('GuildBattlegroundService partial RPC payload guards', async (t) => {
         'Must stay on chat target message after getBuildings',
       );
       assert.equal(
-        targetsGBG.innerHTML.includes('GBG Target Generator:'),
+        targetsGBG.innerHTML.includes('id="targetGenLabel"'),
         false,
         'Target generator must not overwrite thread message on getBuildings',
       );
@@ -299,7 +299,7 @@ test('GuildBattlegroundService partial RPC payload guards', async (t) => {
         'targetMessageActive must be reset to false when signal is set',
       );
       assert.ok(
-        targetsGBG.innerHTML.includes('GBG Target Generator:'),
+        targetsGBG.innerHTML.includes('id="targetGenLabel"'),
         'Must switch back to Target Generator when signal is placed',
       );
       assert.ok(
@@ -341,7 +341,7 @@ test('GuildBattlegroundService partial RPC payload guards', async (t) => {
       service.setSignal(null, [2, 'focus']);
 
       assert.ok(
-        targetsGBG.innerHTML.includes('GBG Target Generator:'),
+        targetsGBG.innerHTML.includes('id="targetGenLabel"'),
         'Must switch back to Target Generator when second signal is placed',
       );
       assert.ok(targetsGBG.innerHTML.includes('A1S'));
@@ -371,7 +371,7 @@ test('GuildBattlegroundService partial RPC payload guards', async (t) => {
       service.updateSignal(null, [2, 'ignore']);
 
       assert.ok(
-        targetsGBG.innerHTML.includes('GBG Target Generator:'),
+        targetsGBG.innerHTML.includes('id="targetGenLabel"'),
         'Must switch back to Target Generator when signal type changes to stop',
       );
       assert.ok(targetsGBG.innerHTML.includes('A1S'));
@@ -458,7 +458,7 @@ test('GuildBattlegroundService partial RPC payload guards', async (t) => {
         'targetMessageActive must be reset to false when entering battleground map',
       );
       assert.ok(
-        targetsGBG.innerHTML.includes('GBG Target Generator:'),
+        targetsGBG.innerHTML.includes('id="targetGenLabel"'),
         'Must switch back to Target Generator when re-entering map',
       );
 

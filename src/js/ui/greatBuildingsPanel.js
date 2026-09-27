@@ -287,10 +287,10 @@ function renderGbDonorsCard(params = {}) {
       </p>
       ${copyBtnHtml}
       <div id="donorText" class="collapse ${depCollapse?.collapseGBDonors ? '' : 'show'}">
-        ${ownerName ? `<div>Owner: ${ownerName}</div>` : ''}
-        <div>Building: ${gbName}</div>
-        <div>Level: ${gbLevel} / ${gbMaxLevel}</div>
-        <div>Invested: ${gbCurrent} of ${gbTotal} FP</div>
+        ${ownerName ? `<div><span data-i18n="owner">Owner</span>: ${ownerName}</div>` : ''}
+        <div><span data-i18n="building">Building</span>: ${gbName}</div>
+        <div><span data-i18n="level">Level</span>: ${gbLevel} / ${gbMaxLevel}</div>
+        <div><span data-i18n="invested">Invested</span>: ${gbCurrent} of ${gbTotal} FP</div>
         <div class="mt-2">`;
 
   let donorsHTML = '';
@@ -469,12 +469,12 @@ function renderGbInfoPanel(
 
   html += `<div id="gbInfoCollapse" class="collapse ${isCollapsed ? '' : 'show'}">`;
   if (playerName) {
-    html += `<div>Owner: ${safeEscape(playerName)}</div>`;
+    html += `<div><span data-i18n="owner">Owner</span>: ${safeEscape(playerName)}</div>`;
   }
-  html += `<div>Building: ${gbName}</div>`;
-  html += `<div>Level: ${level} / ${maxLevel}</div>`;
-  html += `<div>Invested: ${currentFp} of ${totalFp} FP</div>`;
-  html += `<div>Total Remaining: ${remainingFp} FP</div>`;
+  html += `<div><span data-i18n="building">Building</span>: ${gbName}</div>`;
+  html += `<div><span data-i18n="level">Level</span>: ${level} / ${maxLevel}</div>`;
+  html += `<div><span data-i18n="invested">Invested</span>: ${currentFp} of ${totalFp} FP</div>`;
+  html += `<div><span data-i18n="total_remaining">Total Remaining</span>: ${remainingFp} FP</div>`;
 
   if (typeof readyAt === 'number' && readyAt > 0 && !Number.isNaN(readyAt)) {
     const formattedReady =
@@ -482,7 +482,7 @@ function renderGbInfoPanel(
         dateUtils.formatDateTime(readyAt)
       : '';
     if (formattedReady) {
-      html += `<div>Ready: ${formattedReady}</div>`;
+      html += `<div><span data-i18n="ready">Ready</span>: ${formattedReady}</div>`;
     }
   }
 

@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import globals from 'globals';
+import noHardcodedText from './tools/eslint-rules/no-hardcoded-text.js';
 
 export default [
   {
@@ -18,6 +19,15 @@ export default [
     ],
   },
   js.configs.recommended,
+  {
+    files: [
+      'src/js/ui/**/*.js',
+      'src/js/msg/**/*.js',
+      'src/js/protocol/**/*.js',
+    ],
+    plugins: { i18nGuard: { rules: { 'no-hardcoded-text': noHardcodedText } } },
+    rules: { 'i18nGuard/no-hardcoded-text': 'error' },
+  },
   eslintConfigPrettier,
   {
     files: ['src/**/*.{js,mjs,cjs}'],
