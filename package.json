@@ -24,6 +24,7 @@
     "check": "prettier --check .",
     "clean": "rm -rf build",
     "dev": "webpack --config webpack.config.js --env target=dev --watch",
+    "fonts:subset": "node scripts/subset-icons-font.mjs",
     "format": "prettier --write .",
     "i18n:check": "node scripts/audit-i18n.mjs",
     "i18n:fix": "node scripts/audit-i18n.mjs --fix",
