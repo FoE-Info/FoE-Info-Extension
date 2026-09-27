@@ -1,6 +1,0 @@
-.mise.toml
-package.json
-scripts/attach-devtools.mjs
-scripts/check-browser-cdp.mjs
-scripts/lib/cdp.mjs
-scripts/record-live-rpc.mjs
