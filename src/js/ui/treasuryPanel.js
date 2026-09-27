@@ -471,7 +471,7 @@ function renderTreasuryLogPanel(logs, totals = {}, context = {}) {
   if (element?.close) html += element.close();
   if (element?.copy)
     html += element.copy('treasuryLogCopyID', 'info', 'right', isCollapsed);
-  html += `<p id="treasuryLogTextLabel" href="#treasuryLogText" data-bs-toggle="collapse" role="button">`;
+  html += `<p id="treasuryLogTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#treasuryLogText" aria-expanded="${!isCollapsed}" aria-controls="treasuryLogText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
   if (element?.icon)
     html += element.icon('treasuryLogicon', 'treasuryLogText', isCollapsed);
   html += `<strong><span data-i18n="treasury_logs">Treasury Logs</span>:</strong>`;

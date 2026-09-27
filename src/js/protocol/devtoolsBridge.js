@@ -55,20 +55,29 @@ function postRequestFinished(targetWindow, request) {
 /**
  * Host (DevTools page) side handshake. Returns a `message` event handler that
  * invokes `onReady(source)` once the panel announces itself.
+ *
+ * Fails CLOSED: the panel window is only ever learned from
+ * `browser.devtools.panels.onShown`, so a READY is trustworthy only when it
+ * comes from that exact window. Adopting an unknown sender would hand the
+ * intercepted game traffic to whichever window asked first. `onShown`
+ * re-pings on every show, so a dropped unsolicited READY is recovered.
  */
 function createHostMessageHandler({ getPanelWindow, onReady } = {}) {
   return (event) => {
     const data = event?.data;
     if (!data || data.source !== CHANNEL) return;
+    if (data.type !== MESSAGE_TYPES.READY) return;
     const panelWindow =
       typeof getPanelWindow === 'function' ? getPanelWindow() : null;
-    if (panelWindow && event.source && event.source !== panelWindow) {
+    if (!panelWindow || event.source !== panelWindow) {
+      logger.warn('ignoring READY from an unknown window', {
+        known: Boolean(panelWindow),
+        matches: Boolean(panelWindow) && event.source === panelWindow,
+      });
       return;
     }
-    if (data.type === MESSAGE_TYPES.READY) {
-      logger.debug('panel bridge ready');
-      if (typeof onReady === 'function') onReady(event.source);
-    }
+    logger.debug('panel bridge ready');
+    if (typeof onReady === 'function') onReady(event.source);
   };
 }
 
@@ -92,6 +101,15 @@ function installPanelBridge(targetWindow, handlers = {}) {
   const onMessage = (event) => {
     const data = event?.data;
     if (!data || data.source !== CHANNEL) return;
+    // The only legitimate sender is the DevTools page that embeds this panel
+    // iframe. `event.source` is set by the browser and cannot be spoofed by the
+    // sender, so this is the authenticated half of the relationship — a
+    // same-channel string from any other window is not evidence of anything.
+    const parent = targetWindow.parent;
+    if (parent && parent !== targetWindow && event.source !== parent) {
+      logger.warn('ignoring bridge message from a non-parent window');
+      return;
+    }
     const payload = data.payload || {};
     if (data.type === MESSAGE_TYPES.RAW_NETWORK_ENTRY) {
       if (typeof handlers.handleRawNetworkEntry === 'function') {

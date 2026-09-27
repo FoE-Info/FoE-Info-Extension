@@ -62,12 +62,13 @@ graphify-out/
 .worktrees/
 
 # CDP Heap Snapshots & Network Traces (browser-testing skill output)
+# The file globs cover any output directory, so no per-directory entries are
+# needed — `docs/heap-snapshots/` and `docs/har/` were left behind by 319cc65
+# and have not existed since.
 *.heapsnapshot
 *.heaptimeline
-docs/heap-snapshots/
 *.har
 *.har.gz
-docs/har/
 
 # Environment & Secrets
 .env

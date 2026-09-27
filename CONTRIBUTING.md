@@ -35,7 +35,7 @@ Install them separately if you need the matching workflows:
 
 | Tool                                   | Required by                                                           | Why                                                                                             |
 | :------------------------------------- | :-------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------- |
-| `zip`                                  | `npm run package` / `scripts/package-extension.js`                    | Builds the release ZIP artifacts.                                                               |
+| `zip`                                  | `npm run package:beta` / `scripts/package-extension.js`               | Builds the release ZIP artifacts.                                                               |
 | `gh`                                   | `npm run release` / `scripts/release.mjs`                             | Creates GitHub releases and uploads assets (requires `gh auth login` first).                    |
 | `uv`                                   | `npm run setup` / `scripts/setup.mjs`                                 | Optional Python/AI agent toolchain bootstrap (`uv sync`). Plain `npm install` does not need it. |
 | CDP-enabled Chrome on `127.0.0.1:9222` | `npm run metadata:download` / `scripts/download-offline-metadata.mjs` | Drives a Chrome instance over the DevTools protocol to ingest live InnoGames entity datasets.   |
@@ -45,20 +45,20 @@ Chromium-based browser for manual panel testing.
 
 ### Node.js baseline (recommended)
 
-Four sources currently disagree:
+The baseline is **Node 24.x (LTS)**, and the sources now agree on it:
 
-- `AGENTS.md` — "Node 20+"
+- `AGENTS.md` — "Node 24+"
 - `package.json` `engines` — `>=24.0.0`
 - CI (`.github/workflows/ci.yml`) — Node 24.x
 - local `mise` config — 26.8.2
 
-**Recommended documented baseline: Node 24.x (LTS).** It is what CI already
-tests, what `engines` enforces as a floor, and what the verification snapshot
-was produced against. Update `AGENTS.md` to say "Node 24+" and treat Node 26+
-as an allowed-but-untested minor. Do not widen CI to two majors as part of a
-docs change; that is an engine/CI task (`docs/TODO.md` §1, §3). Local
-`mise` pins newer than the baseline are fine for development, but reproducible
-verification is anchored to 24.x.
+24.x is what CI tests, what `engines` enforces as a floor, and what the
+verification snapshot was produced against. Node 26+ is an allowed-but-untested
+minor: local `mise` resolves to 26.8.2 and the suite passes there, but CI pins a
+single major. Do not widen CI to two majors as part of a docs change; that is an
+engine/CI task (`docs/TODO.md` §1, §3). A local `mise` pin newer than the
+baseline is fine for development, but reproducible verification is anchored to
+24.x.
 
 ## Commit messages
 
