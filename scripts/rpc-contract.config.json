@@ -23,27 +23,31 @@
     "TutorialService",
     "VisitAllService"
   ],
-  "allowedUnhandled": [
-    "BonusService.getBonuses",
-    "CityMapService.getNextId",
-    "ConversationService.markMessageRead",
+  "neverHandle": [
     "ConversationService.sendMessage",
     "GuildBattlegroundBuildingService.destroy",
     "GuildBattlegroundBuildingService.instantFinish",
     "GuildBattlegroundBuildingService.place",
-    "GuildRaidsMapService.getNodeExtendedInfo",
     "GuildRaidsMapService.setNodeTarget",
-    "GuildRaidsOutpostService.getOutpost",
     "InventoryService.updateItem",
+    "OtherPlayerService.updateActions"
+  ],
+  "deferred": [
+    "BonusService.getBonuses",
+    "CityMapService.getNextId",
+    "ConversationService.markMessageRead",
+    "GuildRaidsMapService.getNodeExtendedInfo",
+    "GuildRaidsOutpostService.getOutpost",
     "NoticeIndicatorService.getPlayerNoticeIndicators",
     "OtherPlayerService.getAwaitingFriendRequestCount",
     "OtherPlayerService.getCityProtections",
     "OtherPlayerService.getEventsPaginated",
     "OtherPlayerService.getOtherPlayerVO",
-    "OtherPlayerService.updateActions",
     "RankingService.newRank",
     "ResourceService.getPlayerAutoRefills",
     "TimerService.getTimers"
   ],
+  "_neverHandleComment": "Player actions. A passive extension must never register a handler for these: an extension that places, destroys or unlocks on the user's behalf is a bot, which SECURITY.md forbids outright. rpc-contract.mjs asserts nothing here is ever registered, so this is enforced rather than merely stated.",
+  "_deferredComment": "Reads with no current consumer. Unlike neverHandle this is a backlog, not a rule - each is only worth handling once a feature needs it. Adjudicated against the forge-hammer peer on 2026-09-27: getUnlockCosts (we compute unlock costs geometrically), getItemAmount (no inventory-listing feature), getPlayerAutoRefills and getGreatBuildingInventoryForGreatBuilding (no consumer) were all judged to have no counterpart here. Absence of a captured sample is NOT evidence a handler is unnecessary: 9 of the original 20 had no sample only because the user had not entered GBG/Quantum/Expeditions that session. Re-triage when a related feature is designed.",
   "knownDuplicates": []
 }
