@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import globals from 'globals';
 import noHardcodedText from './tools/eslint-rules/no-hardcoded-text.js';
+import noUnescapedHtmlInterpolation from './tools/eslint-rules/no-unescaped-html-interpolation.js';
 
 export default [
   {
@@ -27,6 +28,17 @@ export default [
     ],
     plugins: { i18nGuard: { rules: { 'no-hardcoded-text': noHardcodedText } } },
     rules: { 'i18nGuard/no-hardcoded-text': 'error' },
+  },
+  {
+    files: ['src/js/ui/**/*.js'],
+    plugins: {
+      encodingGuard: {
+        rules: {
+          'no-unescaped-html-interpolation': noUnescapedHtmlInterpolation,
+        },
+      },
+    },
+    rules: { 'encodingGuard/no-unescaped-html-interpolation': 'error' },
   },
   eslintConfigPrettier,
   {
