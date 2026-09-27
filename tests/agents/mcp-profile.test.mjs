@@ -32,9 +32,11 @@ function makeFixture(t) {
   const root = mkdtempSync(join(tmpdir(), 'mcp-profile-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   mkdirSync(join(root, '.agents'), { recursive: true });
+  // The omp host reads .omp/mcp.json; there is no second config file.
+  mkdirSync(join(root, '.omp'), { recursive: true });
   cpSync(REGISTRY, join(root, '.agents', 'mcp-registry.json'));
   writeFileSync(
-    join(root, '.agents', 'mcp_config.json'),
+    join(root, '.omp', 'mcp.json'),
     `${JSON.stringify({ mcpServers: { existing: { command: 'keep-me' } } }, null, 2)}\n`,
   );
   return root;
@@ -74,7 +76,7 @@ test(
 );
 
 test(
-  'MCP profiles - activation writes Antigravity mcp_config.json',
+  'MCP profiles - activation writes .omp/mcp.json',
   { skip: SKIP },
   async (t) => {
     const root = makeFixture(t);
@@ -83,15 +85,20 @@ test(
     });
     assert.equal(result.status, 0, result.stderr);
 
-    const antigravity = readJson(join(root, '.agents', 'mcp_config.json'));
-    assert.deepEqual(Object.keys(antigravity.mcpServers), [
+    const ompConfig = readJson(join(root, '.omp', 'mcp.json'));
+    assert.deepEqual(Object.keys(ompConfig.mcpServers), [
       'graphify-foe-info',
       'chrome-devtools',
     ]);
+    assert.equal(
+      ompConfig.mcpServers['graphify-foe-info'].type,
+      'stdio',
+      'every server must declare the omp stdio transport',
+    );
 
     const prettierConfig =
       (await resolveConfig(join(PROJECT_ROOT, 'package.json'))) ?? {};
-    const target = join(root, '.agents', 'mcp_config.json');
+    const target = join(root, '.omp', 'mcp.json');
     const generated = readFileSync(target, 'utf8');
     const formatted = await format(generated, {
       ...prettierConfig,
@@ -112,8 +119,8 @@ test(
     });
     assert.equal(result.status, 0, result.stderr);
 
-    const antigravity = readJson(join(root, '.agents', 'mcp_config.json'));
-    const environment = antigravity.mcpServers['graphify-foe-info'].env;
+    const ompConfig = readJson(join(root, '.omp', 'mcp.json'));
+    const environment = ompConfig.mcpServers['graphify-foe-info'].env;
     assert.equal(environment.OPENAI_BASE_URL, 'http://127.0.0.1:8080/v1');
     assert.equal(environment.GRAPHIFY_BACKEND, 'openai');
   },
@@ -124,15 +131,15 @@ test(
   { skip: SKIP },
   (t) => {
     const root = makeFixture(t);
-    const antigravityPath = join(root, '.agents', 'mcp_config.json');
-    const before = readFileSync(antigravityPath, 'utf8');
+    const ompPath = join(root, '.omp', 'mcp.json');
+    const before = readFileSync(ompPath, 'utf8');
     const result = spawnSync('node', [SCRIPT, 'missing', '--root', root], {
       encoding: 'utf8',
     });
 
     assert.notEqual(result.status, 0);
     assert.match(result.stderr, /Unknown MCP profile "missing"/);
-    assert.equal(readFileSync(antigravityPath, 'utf8'), before);
+    assert.equal(readFileSync(ompPath, 'utf8'), before);
   },
 );
 
@@ -144,7 +151,7 @@ test(
     const victim = join(root, 'victim.json');
     const before = '{"protected":true}\n';
     writeFileSync(victim, before);
-    symlinkSync(victim, join(root, '.agents', 'mcp_config.json.tmp'));
+    symlinkSync(victim, join(root, '.omp', 'mcp.json.tmp'));
 
     const result = spawnSync('node', [SCRIPT, 'browser', '--root', root], {
       encoding: 'utf8',
@@ -160,12 +167,12 @@ test(
   { skip: SKIP },
   (t) => {
     const root = makeFixture(t);
-    const antigravityPath = join(root, '.agents', 'mcp_config.json');
+    const ompPath = join(root, '.omp', 'mcp.json');
     const victim = join(root, 'external-config.json');
-    const victimBefore = readFileSync(antigravityPath, 'utf8');
+    const victimBefore = readFileSync(ompPath, 'utf8');
     writeFileSync(victim, victimBefore);
-    unlinkSync(antigravityPath);
-    symlinkSync(victim, antigravityPath);
+    unlinkSync(ompPath);
+    symlinkSync(victim, ompPath);
 
     const result = spawnSync('node', [SCRIPT, 'browser', '--root', root], {
       encoding: 'utf8',
@@ -174,5 +181,56 @@ test(
     assert.notEqual(result.status, 0);
     assert.match(result.stderr, /symlink/i);
     assert.equal(readFileSync(victim, 'utf8'), victimBefore);
+  },
+);
+
+test('MCP profiles - reports which hosts were written', { skip: SKIP }, (t) => {
+  const root = makeFixture(t);
+  const result = spawnSync('node', [SCRIPT, 'browser', '--root', root], {
+    encoding: 'utf8',
+  });
+  assert.equal(result.status, 0, result.stderr);
+  const report = JSON.parse(result.stdout);
+  assert.deepEqual(report.hosts, { written: ['omp'], skipped: [] });
+});
+
+test(
+  'MCP profiles - a missing host directory is a skip, not a failure',
+  { skip: SKIP },
+  (t) => {
+    const root = makeFixture(t);
+    // No .omp/ in this fixture: this developer is not using the omp harness.
+    rmSync(join(root, '.omp'), { recursive: true, force: true });
+    const result = spawnSync('node', [SCRIPT, 'browser', '--root', root], {
+      encoding: 'utf8',
+    });
+    // Every configured host is absent, so there is nothing to write and that
+    // IS a failure — the point is that it is reported as a host problem, not
+    // silently treated as success.
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /No host config written/);
+    assert.match(result.stderr, /omp/);
+  },
+);
+
+test(
+  'MCP profiles - an unsupported host slot fails loudly',
+  { skip: SKIP },
+  (t) => {
+    const root = makeFixture(t);
+    const registry = readJson(REGISTRY);
+    const server = registry.servers['graphify-foe-info'];
+    server.antigrvuity = server.omp;
+    delete server.omp;
+    writeFileSync(
+      join(root, '.agents', 'mcp-registry.json'),
+      `${JSON.stringify(registry, null, 2)}\n`,
+    );
+    const result = spawnSync('node', [SCRIPT, 'browser', '--root', root], {
+      encoding: 'utf8',
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /unsupported host slot "antigrvuity"/);
+    assert.match(result.stderr, /Supported: omp/);
   },
 );
