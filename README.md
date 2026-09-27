@@ -27,9 +27,22 @@ A passive Chrome Manifest V3 extension and real-time companion for [Forge of Emp
 
 ## Requirements
 
+### Always required
+
 - Node.js >= 24 LTS
 - npm >= 9
 - Chromium-based browser (Chrome, Edge, Brave, Opera, ...)
+
+### Required only by specific commands
+
+These tools are not bundled. Each one fails at the point of use, so install it
+before running the command that needs it.
+
+| Tool                                                        | Needed by                                                                                          |
+| :---------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| `zip`                                                       | `npm run package:beta`, `npm run release:prod`, `npm run release` (`scripts/package-extension.js`) |
+| [GitHub CLI](https://cli.github.com/) (`gh`), authenticated | `npm run release` (`scripts/release.mjs`)                                                          |
+| Chrome with remote debugging on `127.0.0.1:9222`            | `npm run metadata:download` — attaches to a live game session                                      |
 
 ## Building
 
@@ -83,6 +96,10 @@ npm run build:prod   # production bundle   -> build/FoE-Info-Prod
 | **i18n Parity Check**  | `npm run i18n:check`              | Verify key parity across all 7 supported locales                                |
 | **i18n Auto-Fix**      | `npm run i18n:fix`                | Synchronize missing translation keys                                            |
 | **Metadata Ingest**    | `npm run metadata:download`       | Ingest live InnoGames entity datasets                                           |
+| **Reference Audit**    | `npm run audit:refs`              | Check that every path, command and task named in the docs actually exists       |
+| **Package (beta)**     | `npm run package:beta`            | Verify, build and zip a beta Web Store archive                                  |
+| **Release (prod)**     | `npm run release:prod`            | Verify, build and zip a production Web Store archive                            |
+| **Publish release**    | `npm run release`                 | Full release: verify, package, create the GitHub release, then push the tag     |
 
 Verification order executed by `npm run verify`:
 
