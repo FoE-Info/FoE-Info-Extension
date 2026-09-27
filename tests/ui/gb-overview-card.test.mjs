@@ -172,11 +172,17 @@ test('gbOverviewCard UI Suite', async (t) => {
         copy: mockCopy,
       });
 
+      // Donor names pass through the escaper (mockHelper.escapeHTML marks its
+      // output), so the marker is optional here: what this test asserts is
+      // WHICH RANKS render, not how the name is encoded.
       for (let r = 1; r <= 10; r++) {
-        assert.match(res.donorsHTML, new RegExp(`${r}\\. Player_${r}`));
+        assert.match(
+          res.donorsHTML,
+          new RegExp(`${r}\\. (\\[ESCAPED\\])?Player_${r}`),
+        );
       }
-      assert.doesNotMatch(res.donorsHTML, /11\. Player_11/);
-      assert.doesNotMatch(res.donorsHTML, /12\. Player_12/);
+      assert.doesNotMatch(res.donorsHTML, /11\. (\[ESCAPED\])?Player_11/);
+      assert.doesNotMatch(res.donorsHTML, /12\. (\[ESCAPED\])?Player_12/);
 
       // PlayerID 211 (rank 11) should still trigger setPlayerName
       assert.equal(capturedName, 'Player_11');

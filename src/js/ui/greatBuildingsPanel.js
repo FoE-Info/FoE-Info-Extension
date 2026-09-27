@@ -319,7 +319,8 @@ function renderGbDonorsCard(params = {}) {
     if (rank > 0 && rank <= 10) {
       if (fp > 0 && place.player?.name) {
         validDonorsCount++;
-        donorsHTML += `<div>${rank}. ${place.player.name} (${fp} FP)</div>`;
+        const safeDonorName = escapeFn(place.player.name);
+        donorsHTML += `<div>${rank}. ${safeDonorName} (${fp} FP)</div>`;
         if (
           PlayerID != null &&
           place.player?.player_id != null &&
