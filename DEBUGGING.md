@@ -144,3 +144,33 @@ contract policy by `tests/protocol/rpc-scope.test.mjs`.
 ## 5. AI Pair-Debugging Workflow
 
 When diagnosing bug reports with an AI assistant:
+
+### Attaching to your running browser
+
+The assistant attaches to the browser you are **already using**, on your main
+profile, so extension storage (Forge-Hammer's IndexedDB, city caches) stays
+shared. It never launches a second browser.
+
+```bash
+npm run browser:check    # is Brave / Chrome attachable right now?
+npm run browser:attach   # dock DevTools on the game tab (--browser=chrome for Chrome)
+```
+
+`scripts/lib/cdp.mjs` owns the transport. Two things about it are worth
+knowing before changing anything, because both cost real debugging time:
+
+- **Brave and Chrome expose different servers.** Brave is started by
+  `--remote-debugging-port=9222` (in `~/.var/app/com.brave.Browser/config/brave-flags.conf`)
+  and serves both `/json/version` discovery and the WebSocket endpoint. Chrome
+  is started by the `chrome://inspect` toggle and serves the **WebSocket
+  endpoint only** — its `/json/*` routes all return 404. That 404 looks exactly
+  like "the server is not running", and it is not.
+- **Chromium 136+ ignores `--remote-debugging-port` on a default
+  user-data-dir.** That is why Chrome's port is chosen by the toggle (it is
+  persisted per profile, not random) and cannot be pinned, while Brave's can.
+  Adding the flag to Chrome also wedges its toggle at "starting…".
+
+Both browsers need `--remote-allow-origins` in their `*-flags.conf`, or the
+server answers 404 on discovery routes and 403 on the WebSocket upgrade. Flag
+files are read at browser start, and the toggle is per-instance, so **restart
+the browser after editing either one**.
