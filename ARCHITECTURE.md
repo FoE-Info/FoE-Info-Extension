@@ -1,17 +1,27 @@
 # FoE-Info Extension — Software Architecture
 
-FoE-Info is a Chrome Manifest V3 (MV3) extension for Forge of Empires. It operates purely via passive DevTools network observation, parsing live InnoGames JSON-RPC payloads into economic, combat, guild, and city state views without game mutation, injection, or botting.
+FoE-Info is a Chrome Manifest V3 (MV3) extension for Forge of Empires. It observes the game's live InnoGames JSON-RPC traffic and parses it into economic, combat, guild, and city state views, with no game mutation, request injection, or botting.
+
+Traffic reaches the pipeline over **two read-only intake paths**, both feeding the same dispatcher:
+
+1. **DevTools network listener** (`src/js/devtools.js`) — the documented primary path, consuming the inspected tab's network events.
+2. **MAIN-world content-script observer** (`src/js/protocol/xhrInterceptor.js` + `contentBridge.js`) — injected at `document_start` into `https://*.forgeofempires.com/game/*` in every build target. It wraps the page's `XMLHttpRequest`/`fetch`/`WebSocket` interfaces to observe traffic the DevTools listener may miss, and forwards envelopes through the ISOLATED-world bridge.
+
+Neither path issues a game request or injects a DOM node. [SECURITY.md](SECURITY.md) is the authoritative description of the boundary and of what each path does and does not authenticate.
 
 ## Core Data Pipeline
 
 ```text
 InnoGames CDN & Game Client (RPC)
        │ (JSON-RPC network requests & responses)
-       ▼
-DevTools Network Listener (`src/js/devtools.js`)
-       │
-       ▼
-Network Listener (`src/js/protocol/networkListener.js`)
+       ├──────────────► DevTools Network Listener (`src/js/devtools.js`)
+       │                        │
+       └─ (page network APIs) ──► MAIN-world XHR Interceptor
+                                    (`src/js/protocol/xhrInterceptor.js`)
+                                    │ → ISOLATED-world Content Bridge
+                                    │   (`src/js/protocol/contentBridge.js`)
+                                    ▼
+                         Network Listener (`src/js/protocol/networkListener.js`)
        │ (envelopes: requestData, responseData)
        ▼
 Message Dispatcher (`src/js/protocol/MessageDispatcher.js`)
@@ -52,6 +62,6 @@ DevTools Panel Viewport (`src/chrome/panel.html`)
   - `npm run audit:refs -- --strict` lists modules over 500 lines. Treat that list as a prompt to check for a feature boundary, not as a violation to fix by splitting.
 
 - **Zero Static Game Metadata**: Game metadata streams strictly from the live InnoGames CDN and RPC responses. No entity dumps or static game JSON inside `src/`.
-- **Passive Observation Only**: No botting, automation, active clicking, or request injection into the game client.
+- **Passive Observation Only**: No botting, automation, active clicking, or request injection into the game client. The MAIN-world interceptor observes the page's network interfaces; it never sends a request on the player's behalf.
 - **BigNumber Precision**: Forge points, Great Building locks, treasury deposits, and boost calculations must preserve exact arithmetic without floating-point drift.
 - **Strict Debuggability**: Every service, calculator, and renderer instantiates a scoped logger via `createLogger('ModuleName')`.

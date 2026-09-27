@@ -1,6 +1,6 @@
 # FoE-Info
 
-A passive Chrome Manifest V3 extension and real-time companion for [Forge of Empires](https://en.forgeofempires.com) players. FoE-Info reads the game's live network traffic through the DevTools dock and surfaces information the base game does not, without game mutation, injection, or botting.
+A passive Chrome Manifest V3 extension and real-time companion for [Forge of Empires](https://en.forgeofempires.com) players. FoE-Info reads the game's live network traffic and surfaces information the base game does not, without game mutation, botting, or automation. Traffic reaches the extension over two read-only intake paths — the DevTools dock, and a MAIN-world observer injected into the game page at `document_start` that wraps the page's own `XMLHttpRequest`/`fetch`/`WebSocket` interfaces (see [SECURITY.md](SECURITY.md) § Data Intake Paths for the exact boundary).
 
 - Great Building investment, suggested donations, and 1.9x snipe math
 - City production, collection times, and harvest yields
@@ -20,7 +20,7 @@ A passive Chrome Manifest V3 extension and real-time companion for [Forge of Emp
 
 ## Core Principles & Invariants
 
-- **Passive Observation Only**: Strictly zero network write-backs, botting, auto-clicking, or DOM injection into game frames. Operates purely through DevTools network interception.
+- **Passive Observation Only**: Strictly zero network write-backs, botting, auto-clicking, or request injection into the game client. Traffic is only read — through the DevTools dock, and through a MAIN-world observer that wraps the game page's network interfaces to see what the DevTools listener may miss. It injects no DOM nodes and issues no game requests of its own; the interception is an observation hook, not gameplay automation.
 - **Dynamic Metadata Streaming**: Game metadata streams dynamically from InnoGames CDNs and RPC responses. No hardcoded entity statistics or static game dumps in `src/`.
 - **BigNumber Precision**: Forge Points, Great Building locks, Arc bonuses, and military boosts use BigNumber precision arithmetic to prevent floating-point drift.
 - **Full Internationalization (i18n)**: All UI strings, tooltips, and labels support 7 locales (`en`, `de`, `fr`, `es`, `it`, `el`, `gr`) with 100% key parity.
