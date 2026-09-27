@@ -2,6 +2,18 @@
 if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
   window.__foe_info_xhr_patched = true;
 
+  const FOE_GAME_HOST = 'forgeofempires.com';
+  const FOE_CDN_METADATA_HOSTS = ['foeen.innogamescdn.com'];
+  const GAME_API_PATH_PREFIXES = ['/game/json'];
+
+  /**
+   * Suffix-match a hostname against a trusted base host (exact or subdomain).
+   * Mirrors utils/intakePolicy.js, which this MAIN-world script cannot import.
+   */
+  function trustedHostMatches(hostname, trustedHost) {
+    return hostname === trustedHost || hostname.endsWith(`.${trustedHost}`);
+  }
+
   function isFoeUrl(url) {
     if (!url || typeof url !== 'string') return false;
     return (
@@ -9,6 +21,35 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
       url.includes('metadata?id=') ||
       url.includes('/metadata') ||
       url.includes('/start/metadata')
+    );
+  }
+
+  /**
+   * Origin check for a WebSocket endpoint. Mirrors evaluateRequestOrigin() in
+   * utils/intakePolicy.js: wss scheme, trusted host, game API path. The socket's
+   * REAL url is checked here — dispatchWsText must never relabel a socket as
+   * the page origin, which would make this gate tautological.
+   */
+  function isFoeWebSocketUrl(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== 'string') return false;
+    let url;
+    try {
+      url = new URL(rawUrl, window.location.href);
+    } catch {
+      return false;
+    }
+    if (url.protocol !== 'wss:') return false;
+    const hostname = url.hostname.toLowerCase();
+    const isGameHost = trustedHostMatches(hostname, FOE_GAME_HOST);
+    const isCdnHost = FOE_CDN_METADATA_HOSTS.some((host) =>
+      trustedHostMatches(hostname, host),
+    );
+    if (!isGameHost && !isCdnHost) return false;
+    const path = url.pathname;
+    return (
+      GAME_API_PATH_PREFIXES.some(
+        (prefix) => path === prefix || path.startsWith(`${prefix}/`),
+      ) || path === '/metadata'
     );
   }
 
@@ -126,7 +167,7 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
     const OriginalWebSocket = window.WebSocket;
     const observedSockets = new WeakSet();
 
-    function dispatchWsText(rawData) {
+    function dispatchWsText(rawData, socketUrl) {
       if (
         typeof rawData === 'string' &&
         (rawData.startsWith('[') || rawData.startsWith('{'))
@@ -139,10 +180,13 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
         }
         const targetOrigin = window.location.origin;
         if (!targetOrigin || targetOrigin === 'null') return;
+        // The socket's real destination is the URL. Advertising
+        // location.origin + '/game/json' here asserted an origin the socket
+        // never proved, and the intake gate then accepted it unconditionally.
         window.postMessage(
           {
             type: 'FOE_INFO_XHR',
-            url: window.location.origin + '/game/json?source=ws',
+            url: socketUrl,
             body: rawData,
             postData: null,
           },
@@ -154,6 +198,16 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
     function attachWsListener(ws) {
       if (!ws || observedSockets.has(ws)) return;
       observedSockets.add(ws);
+      const socketUrl = typeof ws.url === 'string' ? ws.url : '';
+      if (!isFoeWebSocketUrl(socketUrl)) {
+        if (debugEnabled) {
+          console.debug(
+            '[FoE-Info:XHRInterceptor] Ignoring WebSocket to untrusted origin:',
+            socketUrl,
+          );
+        }
+        return;
+      }
       try {
         ws.addEventListener(
           'message',
@@ -173,12 +227,12 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
                 ) {
                   rawData
                     .text()
-                    .then(dispatchWsText)
+                    .then((text) => dispatchWsText(text, socketUrl))
                     .catch(() => {});
                   return;
                 }
               }
-              dispatchWsText(rawData);
+              dispatchWsText(rawData, socketUrl);
             } catch {}
           },
           { capture: false, passive: true },
