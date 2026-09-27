@@ -38,11 +38,11 @@ A passive Chrome Manifest V3 extension and real-time companion for [Forge of Emp
 These tools are not bundled. Each one fails at the point of use, so install it
 before running the command that needs it.
 
-| Tool                                                        | Needed by                                                                                          |
-| :---------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-| `zip`                                                       | `npm run package:beta`, `npm run release:prod`, `npm run release` (`scripts/package-extension.js`) |
-| [GitHub CLI](https://cli.github.com/) (`gh`), authenticated | `npm run release` (`scripts/release.mjs`)                                                          |
-| Chrome with remote debugging on `127.0.0.1:9222`            | `npm run metadata:download` — attaches to a live game session                                      |
+| Tool                                                        | Needed by                                                                                               |
+| :---------------------------------------------------------- | :------------------------------------------------------------------------------------------------------ |
+| `zip`                                                       | `npm run package:beta`, `npm run release:prod`, `npm run release` (`scripts/package-extension.js`)      |
+| [GitHub CLI](https://cli.github.com/) (`gh`), authenticated | `npm run release` (`scripts/release.mjs`)                                                               |
+| Chrome with remote debugging on `127.0.0.1:9222`            | `npm run metadata:download` — attaches to a live game session                                           |
 
 ## Building
 

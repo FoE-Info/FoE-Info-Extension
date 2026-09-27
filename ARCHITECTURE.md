@@ -5,7 +5,7 @@ FoE-Info is a Chrome Manifest V3 (MV3) extension for Forge of Empires. It observ
 Traffic reaches the pipeline over **two read-only intake paths**, both feeding the same dispatcher:
 
 1. **DevTools network listener** (`src/js/devtools.js`) — the documented primary path, consuming the inspected tab's network events.
-2. **MAIN-world content-script observer** (`src/js/protocol/xhrInterceptor.js` + `contentBridge.js`) — injected at `document_start` into `https://*.forgeofempires.com/game/*` in every build target. It wraps the page's `XMLHttpRequest`/`fetch`/`WebSocket` interfaces to observe traffic the DevTools listener may miss, and forwards envelopes through the ISOLATED-world bridge.
+2. **MAIN-world content-script observer** (`src/js/protocol/xhrInterceptor.js` + `src/js/protocol/contentBridge.js`) — injected at `document_start` into `https://*.forgeofempires.com/game/*` in every build target. It wraps the page's `XMLHttpRequest`/`fetch`/`WebSocket` interfaces to observe traffic the DevTools listener may miss, and forwards envelopes through the ISOLATED-world bridge.
 
 Neither path issues a game request or injects a DOM node. [SECURITY.md](SECURITY.md) is the authoritative description of the boundary and of what each path does and does not authenticate.
 
