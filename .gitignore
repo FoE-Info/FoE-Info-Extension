@@ -61,6 +61,9 @@ graphify-out/GRAPH_TREE.html
 graphify-out/*-callflow.html
 graphify-out/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]/
 graphify-out/reflections/*.bak*
+# Rebuild runtime state: rewritten or removed by the post-commit hook.
+graphify-out/.pending_changes
+graphify-out/.rebuild.lock
 graphify-out/findings/*.pre-provenance-backup
 
 # Agent Runtime, Harness & Workspace State (per-developer, never shared)
