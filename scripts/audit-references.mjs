@@ -118,6 +118,23 @@ const LAYER_ROOTS = [
   '.agents',
 ];
 
+// Sibling repositories in the domain. `docs/TODO.md` legitimately documents the
+// `peer-repo` fork and its `src/extras/` module, so those paths must be
+// verifiable too — otherwise the auditor reports correct cross-repo references
+// as unresolved. Only directories that actually exist are used, so a repo that
+// is absent locally cannot fail the check.
+// The repository root comes first so a token that already carries its own
+// prefix (`src/extras/index.js`) resolves without doubling that prefix; the
+// narrower roots let a bare fragment (`fn/extras.js`) resolve too.
+const SIBLING_ROOTS = [
+  '../peer-repo',
+  '../FoE-Info-Extension-original',
+  '../forge-hammer',
+  '../peer-repo/src/extras',
+  '../FoE-Info-Extension-original/src',
+  '../forge-hammer/src',
+].filter((r) => existsSync(join(ROOT, r)));
+
 function resolveCandidates(token, file) {
   const t = token.replace(/[.,;:)]+$/, '');
   if (/^(https?:|mailto:|data:|chrome-extension:|node:|about:)/i.test(t))
@@ -143,7 +160,8 @@ function resolveCandidates(token, file) {
   if (
     !isFilePath &&
     !existsSync(join(ROOT, head)) &&
-    LAYER_ROOTS.every((r) => !existsSync(join(ROOT, r, t)))
+    LAYER_ROOTS.every((r) => !existsSync(join(ROOT, r, t))) &&
+    SIBLING_ROOTS.every((r) => !existsSync(join(ROOT, r, t)))
   )
     return null;
   const dir = dirname(join(ROOT, file));
@@ -155,6 +173,7 @@ function resolveCandidates(token, file) {
       join(ROOT, 'src', raw),
       join(ROOT, '.agents', raw),
       ...LAYER_ROOTS.map((r) => join(ROOT, r, raw)),
+      ...SIBLING_ROOTS.map((r) => join(ROOT, r, raw)),
     ]),
   ];
 }
@@ -206,8 +225,14 @@ for (const file of DOC_SURFACES) {
 
 /* --------------------------------------------------------- B. commands */
 
-const pkg = JSON.parse(read('package.json'));
-const npmScripts = new Set(Object.keys(pkg.scripts || {}));
+// Guarded like every other read(): a missing or unparseable package.json must
+// not crash the audit, it must just mean no npm scripts to check against.
+let npmScripts = new Set();
+try {
+  npmScripts = new Set(
+    Object.keys(JSON.parse(read('package.json')).scripts || {}),
+  );
+} catch {}
 const miseToml = read('.mise.toml');
 const miseTasks = new Set(
   [...miseToml.matchAll(/^\[tasks\.([A-Za-z0-9_-]+)\]/gm)].map((m) => m[1]),
@@ -291,6 +316,24 @@ for (const f of [
 ])
   for (const m of read(f).matchAll(/\b([A-Z][A-Z0-9_]{3,})\b/g))
     envDefined.add(m[1]);
+
+// Env vars this repository ASSIGNS, scanned repo-wide across code files.
+// Assignment is the discriminator for "is this an env var at all", because it
+// is what makes a value something this project is responsible for providing.
+//   - `process.env.X = ...`      a write the project performs
+//   - `export X=` / `X=` in .sh  a value the project defines for its children
+// A token that is only READ (`process.env.X || fallback`) is an optional
+// user-supplied override, not repo config, and a token never assigned at all
+// is a code symbol that merely reads as UPPER_SNAKE. Both were previously
+// reported as undefined env vars; see the gate in the check below.
+const envAssigned = new Set();
+for (const f of files.filter((f) => /\.(m?js|cjs|sh)$/.test(f))) {
+  const src = read(f);
+  for (const m of src.matchAll(/process\.env\.([A-Z][A-Z0-9_]*)\s*=(?![=])/g))
+    envAssigned.add(m[1]);
+  for (const m of src.matchAll(/^\s*(?:export\s+)?([A-Z][A-Z0-9_]*)=/gm))
+    envAssigned.add(m[1]);
+}
 // Externally supplied values are not repo config and cannot be verified here.
 const EXTERNAL = /(API_KEY|TOKEN|SECRET|PASSWORD|URL|PORT|MODEL|KEY)$/;
 // Identifiers that are UPPER_SNAKE but are not env vars: BigNumber rounding
@@ -327,6 +370,14 @@ for (const file of DOC_SURFACES.filter((f) => f.endsWith('.md')))
           CODE_SYMBOLS.has(v)
         )
           continue;
+        // A bare UPPER_SNAKE token is only an env-var reference if this
+        // repository actually ASSIGNS it somewhere. Without that gate the
+        // check reported every code symbol that merely reads as UPPER_SNAKE
+        // (`RULES`, `VERSION_PATTERN`) plus every optional user override that
+        // is only ever read (`METADATA_STORE_DIR`) — which was the whole of the
+        // remaining signal in this class. Assignment-style references in prose
+        // (`` `FOO=1` ``) are still checked below and remain the real signal.
+        if (!envAssigned.has(v)) continue;
         add('undefined-env-var', file, i + 1, 'no definition found', v);
       }
       // Shell-style assignment: `FOE_INFO_DEBUG=1`, `export GRAPHIFY_X=`.
@@ -467,6 +518,8 @@ for (const file of DOC_SURFACES.filter((f) => f.endsWith('.md')))
         if (/^(src|scripts|tests)\//.test(frag)) continue;
         if (existsSync(join(ROOT, frag))) continue;
         if (LAYER_ROOTS.some((r) => existsSync(join(ROOT, r, frag)))) continue;
+        if (SIBLING_ROOTS.some((r) => existsSync(join(ROOT, r, frag))))
+          continue;
         // Suffix shorthand: `js/index.js` in prose can mean
         // `src/js/index.js` when the leading segment duplicates a known root.
         const stripped = frag.replace(/^[\w-]+\//, '');
@@ -483,29 +536,6 @@ for (const file of DOC_SURFACES.filter((f) => f.endsWith('.md')))
     });
 
 /* ---------------------------------------------------------------- report */
-
-const byKind = new Map();
-for (const f of findings) {
-  if (!byKind.has(f.kind)) byKind.set(f.kind, []);
-  byKind.get(f.kind).push(f);
-}
-
-// The line ceiling is a documented architectural target, not a broken
-// reference: ARCHITECTURE.md records the current overage explicitly, so it is
-// advisory and suppressed unless `--strict` is passed.
-const ADVISORY = new Set(['cohesion-review-prompt']);
-const reportable = findings.filter((f) => STRICT || !ADVISORY.has(f.kind));
-
-if (AS_JSON) {
-  console.log(
-    JSON.stringify(
-      { scanned: DOC_SURFACES.length, findings: reportable },
-      null,
-      2,
-    ),
-  );
-  process.exit(reportable.length ? 1 : 0);
-}
 
 // Paths a tool creates on demand. They are named in docs as destinations, so
 // their absence is not drift. Keep this list short and justified.
@@ -533,44 +563,86 @@ function isProposal(file) {
   return /^\.omp\/plans\//.test(file);
 }
 
-// A URL path on an external origin, e.g. the InnoGames `/game/json` endpoint.
+// A rooted path is a URL path unless it names a real filesystem location.
+// `/game/json` and `/api/alpha/decisions` are external endpoints on a remote
+// origin and cannot be resolved against the repo; `/var/home/...` is a local
+// absolute path, and if THAT stops existing it is genuine drift worth
+// reporting. The previous rule matched a fixed list of InnoGames prefixes and
+// let every other rooted token through, which is why an OpenRouter API path
+// surfaced as an unresolved reference.
+const FILESYSTEM_ROOTS =
+  /^\/(?:var|home|usr|etc|tmp|opt|srv|root|proc|dev|run|mnt|media|Users)(?:\/|$)/;
 function isUrlPath(token) {
-  return /^\/(game|metadata|start|content|js|forge-of-empires)\b/.test(token);
+  return token.startsWith('/') && !FILESYSTEM_ROOTS.test(token);
+}
+
+// The line ceiling is a documented architectural target, not a broken
+// reference: ARCHITECTURE.md records the current overage explicitly, so it is
+// advisory and suppressed unless `--strict` is passed.
+const ADVISORY = new Set(['cohesion-review-prompt']);
+
+/**
+ * One predicate, applied to BOTH the text report and `--json`.
+ *
+ * These filters used to live only in the print loop, so `--json` returned the
+ * raw finding list: a consumer parsing the JSON saw 37 unresolved paths that
+ * the human-readable output suppressed, and the two disagreed on the exit
+ * code as well. Dedupe by `file|token` also happens here so the JSON payload,
+ * the printed count and the exit status are derived from the same set.
+ */
+function isSuppressed(f) {
+  if (GENERATED.some((g) => f.token === g || f.token.startsWith(g)))
+    return true;
+  if (isProposal(f.file) && !read(f.file).includes('Status: open')) return true;
+  if (isUrlPath(f.token)) return true;
+  if (isHistoricalNote(read(f.file).split('\n')[f.line - 1] || '', f.token))
+    return true;
+  return ADVISORY.has(f.kind) && !STRICT;
+}
+
+const seenKeys = new Set();
+const reportable = findings.filter((f) => {
+  if (STRICT ? false : isSuppressed(f)) return false;
+  const key = `${f.file}|${f.token}`;
+  if (seenKeys.has(key)) return false;
+  seenKeys.add(key);
+  return true;
+});
+
+const byKind = new Map();
+for (const f of reportable) {
+  if (!byKind.has(f.kind)) byKind.set(f.kind, []);
+  byKind.get(f.kind).push(f);
+}
+
+if (AS_JSON) {
+  console.log(
+    JSON.stringify(
+      { scanned: DOC_SURFACES.length, findings: reportable },
+      null,
+      2,
+    ),
+  );
+  process.exit(reportable.length ? 1 : 0);
 }
 
 console.log(
   `\nScanned ${DOC_SURFACES.length} surfaces, ${files.length} text files.`,
 );
 if (!reportable.length) console.log('No reference-integrity findings.');
-const shown = new Set();
 for (const [kind, list] of byKind) {
-  let suppressedCeiling = false;
   console.log(`\n=== ${kind} (${list.length}) ===`);
   for (const f of list) {
-    const key = `${f.file}|${f.token}`;
-    if (shown.has(key)) continue;
-    if (GENERATED.some((g) => f.token === g || f.token.startsWith(g))) continue;
-    if (isProposal(f.file) && !read(f.file).includes('Status: open')) continue;
-    if (isUrlPath(f.token)) continue;
-    if (isHistoricalNote(read(f.file).split('\n')[f.line - 1] || '', f.token))
-      continue;
-    // The line ceiling is a documented architectural target, not a broken
-    // reference. ARCHITECTURE.md records the current overage explicitly, so
-    // reporting it on every run is noise. `--strict` surfaces it.
     if (kind === 'cohesion-review-prompt' && !STRICT) {
-      if (!suppressedCeiling) {
-        suppressedCeiling = true;
-        console.log(
-          `  (${list.length} modules over 500 lines: check for a feature boundary, not a split. See --strict)`,
-        );
-      }
-      continue;
+      console.log(
+        `  (${list.length} modules over 500 lines: check for a feature boundary, not a split. See --strict)`,
+      );
+      break;
     }
-    shown.add(key);
     console.log(`  ${f.file}:${f.line}  [${f.detail}]  ${f.token}`);
   }
 }
 console.log(
-  `\n--- ${shown.size} reportable findings across ${byKind.size} classes ---`,
+  `\n--- ${reportable.length} reportable findings across ${byKind.size} classes ---`,
 );
-process.exit(shown.size ? 1 : 0);
+process.exit(reportable.length ? 1 : 0);
