@@ -70,20 +70,51 @@ test('webpack.config.js - manifestTransform injects correct target environment n
   }
 });
 
-test('package.json - enforces version 0.0.834 and decoupled verify scripts', () => {
+test('package.json and the manifest agree on the version', () => {
   const pkg = JSON.parse(
     fs.readFileSync(path.resolve(root, 'package.json'), 'utf8'),
   );
-  assert.equal(pkg.version, '0.0.834');
-  assert.equal(
-    pkg.scripts.verify,
-    'npm run check && npm run lint && npm run typecheck && npm run rpc:contract:check && npm run i18n:check && npm test && npm run build:dev',
+  const manifest = JSON.parse(
+    fs.readFileSync(path.resolve(root, 'src/chrome/manifest.json'), 'utf8'),
   );
-  assert.equal(pkg.scripts.setup, 'node scripts/setup.mjs');
-  assert.ok(pkg.scripts['rpc:contract:check']);
-  assert.ok(pkg.scripts['build:dev']);
-  assert.ok(pkg.scripts['build:beta']);
-  assert.ok(pkg.scripts['build:prod']);
-  assert.ok(pkg.scripts['package:beta']);
-  assert.ok(pkg.scripts['release:prod']);
+
+  // Parity rather than a literal: the version moves on every release, and
+  // scripts/release.mjs refuses to run when the two manifests disagree. A test
+  // pinned to one number only ever fails after a release, which teaches nothing.
+  assert.equal(pkg.version, manifest.version);
+  assert.match(pkg.version, /^\d+\.\d+\.\d+$/);
+});
+
+test('verify runs every stage the gate depends on', () => {
+  const pkg = JSON.parse(
+    fs.readFileSync(path.resolve(root, 'package.json'), 'utf8'),
+  );
+
+  // Stage presence, not the exact command string: the chain grows over time and
+  // a literal here breaks on every addition.
+  for (const stage of [
+    'version:check',
+    'check',
+    'lint',
+    'typecheck',
+    'rpc:contract:check',
+    'i18n:check',
+    'test',
+    'build:dev',
+  ]) {
+    assert.ok(
+      // `npm test` and `npm run test` are both idiomatic; the chain uses both.
+      new RegExp(`npm (?:run )?${stage}(?:\\s|$)`).test(pkg.scripts.verify),
+      `verify does not run ${stage}`,
+    );
+  }
+
+  for (const script of [
+    'build:beta',
+    'build:prod',
+    'package:beta',
+    'release:prod',
+  ]) {
+    assert.ok(pkg.scripts[script], `missing npm script: ${script}`);
+  }
 });

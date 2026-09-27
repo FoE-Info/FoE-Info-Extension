@@ -35,6 +35,23 @@ if (!/^\d{4}-\d{2}-\d{2}$/.test(releaseDate || '')) {
 const isProd = targetEnv === 'prod' || targetEnv === 'production';
 const targetDirName = isProd ? 'FoE-Info-Prod' : 'FoE-Info-Beta';
 const targetDir = path.resolve(root, 'build', targetDirName);
+// Refuse to package a version that already shipped. The zip name and
+// PROVENANCE.json are both derived from pkg.version, so building here while
+// still on a released number produces an artifact indistinguishable from the
+// real one except by date — the failure that shipped 0.0.834 three times.
+try {
+  execFileSync('node', ['scripts/check-version.mjs'], {
+    cwd: root,
+    stdio: 'inherit',
+  });
+} catch {
+  console.error(
+    '\nRefusing to package: the version is already released, or commits have ' +
+      'landed since the last release without a bump.\nBump package.json and ' +
+      'src/chrome/manifest.json, then package again.',
+  );
+  process.exit(1);
+}
 
 // REBUILD EVERY TIME — a pre-existing output directory is NOT provenance:
 // package:beta would otherwise zip a stale tree under a fresh version/date
