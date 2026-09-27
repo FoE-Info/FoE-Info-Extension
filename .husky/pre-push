@@ -1,2 +1,5 @@
 #!/bin/sh
-npm test
+# The gate that must pass before code leaves the machine. `npm test` alone
+# skips format, lint and typecheck, so a push could carry code that
+# `npm run verify` — and CI — would reject.
+npm run verify
