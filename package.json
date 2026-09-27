@@ -45,7 +45,8 @@
     "test:watch": "node scripts/run-tests.mjs --test-reporter=dot --watch",
     "typecheck": "tsc --noEmit",
     "typecheck:calc": "tsc --noEmit -p tsconfig.calc.json",
-    "verify": "npm run check && npm run lint && npm run typecheck && npm run rpc:contract:check && npm run i18n:check && npm test && npm run build:dev"
+    "verify": "npm run version:check && npm run check && npm run lint && npm run typecheck && npm run rpc:contract:check && npm run i18n:check && npm test && npm run build:dev",
+    "version:check": "node scripts/check-version.mjs"
   },
   "lint-staged": {
     "*.{js,mjs,cjs}": [
