@@ -46,7 +46,13 @@ test('City Stats Dynamic Tooltip Builder Suite', async (t) => {
         { id: 'W_MultiAge_GR25G2', fp: 82, isBoostable: true },
       ];
 
-      const html = buildFpTooltipHTML(fpBuildings, 20, mockHelper);
+      // The breakdown is localized; the test states the wording it expects
+      // rather than depending on whichever dictionary is loaded.
+      const enT = (key, ...a) =>
+        key === 'fp_boost_breakdown' ?
+          `Base: ${a[0]}FP (+${a[1]}% Boost = ${a[2]}FP)`
+        : key;
+      const html = buildFpTooltipHTML(fpBuildings, 20, mockHelper, enT);
       assert.ok(
         html.includes('364FP <strong>Neo Solara Emporium</strong> (x2)'),
       );

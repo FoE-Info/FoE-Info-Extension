@@ -322,7 +322,7 @@ describe('gbgProvinceView Suite', () => {
       });
 
       const targetGenerator = doc.getElementById('targetsGBG');
-      assert.ok(targetGenerator.innerHTML.includes('GBG Target Generator:'));
+      assert.ok(targetGenerator.innerHTML.includes('id="targetGenLabel"'));
       assert.ok(targetGenerator.innerHTML.includes('A1S HOLD'));
 
       doc.getElementById('targetCopyID').click();
@@ -379,7 +379,7 @@ describe('gbgProvinceView Suite', () => {
         ResizeObserverClass: MockResizeObserver,
       });
 
-      assert.ok(costsDiv.innerHTML.includes('GBG Building Costs:'));
+      assert.ok(costsDiv.innerHTML.includes('id="buildingCostTextLabel"'));
       assert.ok(
         costsDiv.innerHTML.includes(
           '<caption class="visually-hidden"><span data-i18n="gbg_building_costs">GBG Building Costs</span></caption>',

@@ -166,7 +166,11 @@ test('renderGbDonationPanel UI Module Suite', async (t) => {
         availablePackageForgePoints: 1250,
       });
 
-      assert.ok(mockContainer.innerHTML.includes('Packages: 1,250 FP'));
+      assert.ok(
+        mockContainer.innerHTML.includes(
+          'data-i18n="packages">Packages</span>: 1,250 FP',
+        ),
+      );
     },
   );
 
@@ -181,7 +185,7 @@ test('renderGbDonationPanel UI Module Suite', async (t) => {
         availablePackageForgePoints: 0,
       });
 
-      assert.ok(!mockContainer.innerHTML.includes('Packages:'));
+      assert.ok(!mockContainer.innerHTML.includes('data-i18n="packages"'));
     },
   );
 });

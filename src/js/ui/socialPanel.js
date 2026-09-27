@@ -151,7 +151,7 @@ function renderSocialListsPanel({
 
   let friendsHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert"><p id="listTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#listsText" aria-expanded="${!depCollapse.collapseLists}" aria-controls="listsText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${depElement.icon('listsicon', 'listsText', depCollapse.collapseLists)}
-				<strong>Lists:</strong></p>
+				<strong><span data-i18n="lists">Lists</span>:</strong></p>
 				${depElement.close()}
 				<div id="listsText" class="collapse ${depCollapse.collapseLists ? '' : 'show'} resize-both">`;
 
@@ -178,7 +178,7 @@ function renderSocialListsPanel({
           <div class="d-flex flex-row justify-content-between align-items-center mb-0">
             <p id="guildTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildText" aria-expanded="${!depCollapse.collapseGuild}" aria-controls="guildText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
               ${depElement?.icon ? depElement.icon('guildicon', 'guildText', depCollapse.collapseGuild) : ''}
-              <strong>Guild</strong>
+              <strong><span data-i18n="guild">Guild</span></strong>
             </p>
             <span id="guildCopyID" role="button" tabindex="0" class="badge rounded-pill bg-success cursor-pointer me-1" style="display: ${
               depCollapse.collapseGuild ? 'none' : 'inline-block'
@@ -196,7 +196,7 @@ function renderSocialListsPanel({
           <div class="d-flex flex-row justify-content-between align-items-center mb-0">
             <p id="hoodTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#hoodText" aria-expanded="${!depCollapse.collapseHood}" aria-controls="hoodText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
               ${depElement?.icon ? depElement.icon('hoodicon', 'hoodText', depCollapse.collapseHood) : ''}
-              <strong>Hood</strong>
+              <strong><span data-i18n="hood">Hood</span></strong>
             </p>
             <span id="hoodCopyID" role="button" tabindex="0" class="badge rounded-pill bg-success cursor-pointer me-1" style="display: ${
               depCollapse.collapseHood ? 'none' : 'inline-block'

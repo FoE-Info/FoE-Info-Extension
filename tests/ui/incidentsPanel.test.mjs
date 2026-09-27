@@ -49,8 +49,8 @@ describe('incidentsPanel UI Suite', () => {
     it('builds tooltip body with legend and active incidents', () => {
       const html = buildIncidentTooltip('Pothole for 0:10:0<br>');
       assert.ok(html.includes('Pothole for 0:10:0<br>'));
-      assert.ok(html.includes('<strong>Legend:</strong>'));
-      assert.ok(!html.includes('Coming Soon:'));
+      assert.ok(html.includes('data-i18n="legend"'));
+      assert.ok(!html.includes('data-i18n="coming"'));
     });
 
     it('includes Coming Soon section when present', () => {
@@ -58,7 +58,7 @@ describe('incidentsPanel UI Suite', () => {
         'Pothole for 0:10:0<br>',
         'Shipwreck in 1:0:0<br>',
       );
-      assert.ok(html.includes('<strong>Coming Soon:</strong>'));
+      assert.ok(html.includes('data-i18n="coming"'));
       assert.ok(html.includes('Shipwreck in 1:0:0<br>'));
     });
   });

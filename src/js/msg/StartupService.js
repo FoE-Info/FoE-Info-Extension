@@ -356,8 +356,11 @@ function aggregateCityStats({
   Goods = {},
   specialGoods = new Set(),
   helper: helperInst,
-  tooltipHTML: tipHtml,
   fGoodsHTML: goodsHtmlFn = fGoodsHTML,
+  // Injectable so a test can assert the rendered values without depending on
+  // whichever locale the dictionary happens to hold.
+  tooltipHTML: tipHtml,
+  t: tFn = t,
 }) {
   if (fpBuildings.length > 0) {
     const groupedFp = {};
@@ -416,7 +419,7 @@ function aggregateCityStats({
     });
 
     if (City.fpProductionBoost > 0) {
-      tipHtml.fp += `<br><strong>Base: ${unboostedBaseTotal}FP (+${City.fpProductionBoost}% Boost = ${finalTotalFp}FP)</strong>`;
+      tipHtml.fp += `<br><strong data-fp-boost>${tFn('fp_boost_breakdown', unboostedBaseTotal, City.fpProductionBoost, finalTotalFp)}</strong>`;
     }
   }
 
@@ -643,8 +646,11 @@ function handleBoostServiceAllBoosts({
       typeof document !== 'undefined' ? document.getElementById('fp') : null;
     if (fpSpan) {
       fpSpan.innerHTML = `<span data-i18n="daily">Daily</span>: ${City.ForgePoints}FP`;
-      if (tooltipHTML?.fp && !tooltipHTML.fp.includes('Boost =')) {
-        tooltipHTML.fp += `<br><strong>Base: ${totalBase.toString()}FP (+${City.fpProductionBoost}% Boost = ${City.ForgePoints}FP)</strong>`;
+      // The marker attribute, not the English wording: the breakdown is
+      // localized, so a text search for "Boost =" would re-append it in every
+      // locale whose dictionary does not contain that literal.
+      if (tooltipHTML?.fp && !tooltipHTML.fp.includes('data-fp-boost')) {
+        tooltipHTML.fp += `<br><strong data-fp-boost>${t('fp_boost_breakdown', totalBase.toString(), City.fpProductionBoost, City.ForgePoints)}</strong>`;
         fpSpan.setAttribute('data-bs-content', tooltipHTML.fp);
         if (typeof updateActivePopoverContent === 'function') {
           updateActivePopoverContent(fpSpan, tooltipHTML.fp);

@@ -100,11 +100,13 @@ function fIncidentName(incidentName) {
 function buildIncidentTooltip(textCurrent, textComing = '') {
   let tooltipHTML = `<div><p>${textCurrent}</p>${
     textComing !== '' ?
-      '<p><strong>Coming Soon:</strong><br>' + textComing + '</p>'
+      `<p><strong><span data-i18n="coming">Coming Soon</span>:</strong><br>` +
+      textComing +
+      '</p>'
     : ''
   }`;
   tooltipHTML +=
-    '<p><strong>Legend:</strong><br>n/N - Nature<br>s/S - Shore<br>w/W - Water<br>r/R - Road<br> E - Event<br>Capitals = Uncommon/Rare Reward</p></div>';
+    '<p><strong><span data-i18n="legend">Legend</span>:</strong><br>n/N - Nature<br>s/S - Shore<br>w/W - Water<br>r/R - Road<br> E - Event<br>Capitals = Uncommon/Rare Reward</p></div>';
   return tooltipHTML;
 }
 
