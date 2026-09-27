@@ -89,8 +89,12 @@ export function collectRegisteredKeys() {
  * Pure contract analysis.
  *
  * - `ignoredCaptures` removes captured keys/classes from scope entirely.
- * - `allowedUnhandled` records in-domain captured RPCs that are knowingly
- *   not handled yet.
+ * - `neverHandle` records captured RPCs that must NEVER be registered: player
+ *   actions a passive extension has no business acting on. Registering one is
+ *   a contract violation, not a tolerated exception.
+ * - `deferred` records in-domain captured reads that are not handled yet. This
+ *   is a backlog, not a rule: each is only worth handling once a feature needs
+ *   it. Absence of a captured sample is not evidence a handler is unnecessary.
  * - `knownDuplicates` records duplicate registrations that are intentionally
  *   kept. It should stay empty: every RPC key maps to exactly one handler.
  *
@@ -108,7 +112,11 @@ export function analyzeContract({
   config = {},
 } = {}) {
   const ignoredCaptures = config.ignoredCaptures || [];
-  const allowedUnhandled = new Set(config.allowedUnhandled || []);
+  const neverHandle = new Set(config.neverHandle || []);
+  const allowedUnhandled = new Set([
+    ...(config.deferred || []),
+    ...neverHandle,
+  ]);
   const knownDuplicates = new Set(config.knownDuplicates || []);
 
   const registeredEntries =
@@ -150,12 +158,21 @@ export function analyzeContract({
     .map(([key, count]) => ({ key, count }))
     .sort((a, b) => a.key.localeCompare(b.key));
 
+  // A neverHandle RPC that got registered is a passive-observation breach, not
+  // a tolerance: the extension would be acting on the player's behalf. It is
+  // reported separately from `unhandled` because the fix is to DELETE the
+  // registration, not to add it to a list.
+  const neverHandleViolations = [...registeredKeys]
+    .filter((key) => neverHandle.has(key))
+    .sort();
+
   return {
     unhandled,
     ignored,
     allowed,
     stale,
     duplicates,
+    neverHandleViolations,
     capturedCount: capturedKeys.size,
     registeredCount: registeredKeys.size,
   };
