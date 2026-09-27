@@ -232,8 +232,11 @@ async function main() {
 
   // 2. Fetch and decode InnoGames official client translations
   try {
+    // Hash rotates whenever InnoGames rebuilds the client. 2026-09-27: the
+    // 5a1b13f4… pin 404'd; read live from the running session's resource
+    // timeline (performance.getEntriesByType) to get bb87cd73….
     const langUrl =
-      'https://foeen.innogamescdn.com/lang/en_US/client_lang-5a1b13f48f49b645df556a8e8d5cc0e4.mo';
+      'https://foeen.innogamescdn.com/lang/en_US/client_lang-bb87cd7367e5ca08411bcd3f18003f80.mo';
     const langRes = await fetch(langUrl);
     if (langRes.ok) {
       const buf = await langRes.arrayBuffer();
@@ -268,56 +271,98 @@ async function main() {
     );
   }
 
-  // 3. Extract dynamic RPC payloads in raw form if available
+  // 3. Dynamic RPC payloads.
+  //
+  // Two corpora exist and they have drifted apart. `raw_rpc_capture.json` is
+  // the 93 MB session capture; `extracts/rpc/` is the wider HAR-ingested set
+  // (104 methods vs 70 as of 2026-09-27). Reading only the former silently
+  // dropped 43 collected captures, including the whole GreatBuildingsService
+  // and GuildBattlegroundBuildingService sets. Merge both, raw capture first so
+  // it keeps precedence where they overlap.
   const rawCapturePath = path.join(STORE_DIR, 'raw_rpc_capture.json');
+  const extractsRpcDir = path.join(STORE_DIR, 'extracts', 'rpc');
   const rpcExports = {};
   const rpcDir = path.join(STORE_DIR, 'rpc');
   fs.mkdirSync(rpcDir, { recursive: true });
 
+  const rpcMap = new Map();
+  const setRpc = (k, responseData, source) => {
+    if (rpcMap.has(k)) return false;
+    rpcMap.set(k, { responseData, source });
+    return true;
+  };
+
   if (fs.existsSync(rawCapturePath)) {
     try {
       const rawCapture = JSON.parse(fs.readFileSync(rawCapturePath, 'utf8'));
-      const rpcMap = new Map();
       for (const entry of rawCapture) {
-        if (Array.isArray(entry.data)) {
-          for (const item of entry.data) {
-            if (item && item.requestClass && item.requestMethod) {
-              const k = `${item.requestClass}.${item.requestMethod}`;
-              if (!rpcMap.has(k))
-                rpcMap.set(k, { item, responseData: item.responseData });
-            }
+        if (!Array.isArray(entry.data)) continue;
+        for (const item of entry.data) {
+          if (item && item.requestClass && item.requestMethod) {
+            setRpc(
+              `${item.requestClass}.${item.requestMethod}`,
+              item.responseData,
+              'raw_capture',
+            );
           }
         }
       }
-
-      for (const [k, v] of rpcMap.entries()) {
-        const targetFile = path.join(rpcDir, `${k}.json`);
-        fs.writeFileSync(
-          targetFile,
-          JSON.stringify(v.responseData, null, 2),
-          'utf8',
-        );
-        const count =
-          Array.isArray(v.responseData) ? v.responseData.length
-          : v.responseData && typeof v.responseData === 'object' ?
-            Object.keys(v.responseData).length
-          : null;
-        rpcExports[k] = {
-          file: `rpc/${k}.json`,
-          type: Array.isArray(v.responseData) ? 'Array' : typeof v.responseData,
-          itemCount: count,
-        };
-      }
-      console.log(
-        `[metadata-download] Exported ${rpcMap.size} raw dynamic RPC responses -> metadata-store/rpc/`,
-      );
     } catch (e) {
       console.warn(
-        '[metadata-download] Note: dynamic RPC extraction skipped:',
+        '[metadata-download] Note: raw capture parse failed:',
         e.message,
       );
     }
   }
+
+  // `_action_request_samples` is a corpus bookkeeping entry, not an RPC.
+  const NON_RPC_KEYS = new Set(['_action_request_samples']);
+  let fromExtracts = 0;
+  if (fs.existsSync(extractsRpcDir)) {
+    for (const file of fs.readdirSync(extractsRpcDir)) {
+      if (!file.endsWith('.json')) continue;
+      const k = path.basename(file, '.json');
+      if (NON_RPC_KEYS.has(k) || !k.includes('.')) continue;
+      try {
+        if (
+          setRpc(
+            k,
+            JSON.parse(
+              fs.readFileSync(path.join(extractsRpcDir, file), 'utf8'),
+            ),
+            'extracts',
+          )
+        ) {
+          fromExtracts++;
+        }
+      } catch {
+        /* skip an unreadable sample rather than abort the whole export */
+      }
+    }
+  }
+
+  for (const [k, v] of rpcMap.entries()) {
+    fs.writeFileSync(
+      path.join(rpcDir, `${k}.json`),
+      JSON.stringify(v.responseData, null, 2),
+      'utf8',
+    );
+    const count =
+      Array.isArray(v.responseData) ? v.responseData.length
+      : v.responseData && typeof v.responseData === 'object' ?
+        Object.keys(v.responseData).length
+      : null;
+    rpcExports[k] = {
+      file: `rpc/${k}.json`,
+      type: Array.isArray(v.responseData) ? 'Array' : typeof v.responseData,
+      itemCount: count,
+      source: v.source,
+    };
+  }
+  console.log(
+    `[metadata-download] Exported ${rpcMap.size} RPC responses -> metadata-store/rpc/ ` +
+      `(${fromExtracts} of them only present in extracts/rpc/)`,
+  );
 
   // Deduplicate by URL
   const urlToEntries = new Map();
