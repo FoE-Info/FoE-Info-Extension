@@ -6,6 +6,18 @@
  * boosts. Contains zero DOM, network, or msg-layer references.
  */
 
+/**
+ * Military boost percentage per visual castle stage.
+ *
+ * PROVENANCE: game-defined quantities, not presentation choices. Unlike the
+ * GBG attrition table these are NOT verifiable against `../metadata-store` —
+ * the store carries no Castle System boost figures, and the stage number is
+ * parsed out of a `cityentity_id` (CastleSystem<N>), not an entity key. The
+ * "estimated" in the file header is therefore load-bearing: these are
+ * community-derived approximations of a game value, and a rebalance will
+ * desync them with no runtime signal. Treat any change here as a content
+ * update, not a refactor.
+ */
 const STAGE_BOOST_MAP = Object.freeze({
   0: 0,
   1: 4,

@@ -14,6 +14,20 @@ try {
   logger = createLogger('GBG');
 } catch {}
 
+/**
+ * Guild Battleground attrition reduction per building.
+ *
+ * PROVENANCE: these are GAME-DEFINED percentages, not presentation choices.
+ * The values are not present in the captured GBG RPC payload
+ * (`../metadata-store` has 0 hits for `attrition`/`placedBuildings` in
+ * `raw_rpc_capture.json`), so they cannot be read at runtime and must stay
+ * here. They ARE verifiable offline: `entities/battleground_buildings.json`
+ * states each one in prose ("Reduces Attrition Chance ... by 26%"), and all
+ * 42 records agree with this table exactly.
+ *
+ * If the game rebalances, this table drifts silently. To re-verify:
+ *   grep -o 'by [0-9]*%' ../metadata-store/entities/battleground_buildings.json
+ */
 function getAttritionReduction(buildingId) {
   if (!buildingId || typeof buildingId !== 'string') return 0;
 

@@ -131,9 +131,12 @@ test(
 
     assert.equal(result.status, 0, result.stderr);
     const calls = readFileSync(fixture.log, 'utf8');
+    // The context size comes from RAMALAMA_CTX_SIZE (32768 in
+    // inference-env.sh). It used to be hardcoded to 16384 here, so the
+    // exported variable never reached the container.
     assert.match(
       calls,
-      /ramalama serve -d --name graphify-model --port 8080 --ctx-size 16384/,
+      /ramalama serve -d --name graphify-model --port 8080 --ctx-size 32768/,
     );
     assert.match(calls, /ramalama stop --ignore graphify-model/);
   },
