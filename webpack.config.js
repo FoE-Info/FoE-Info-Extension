@@ -50,7 +50,6 @@ module.exports = (env = {}, argv = {}) => {
 
   const isProdMode = target === 'prod' || target === 'beta';
   const isDebugBuild = target === 'dev' || target === 'beta';
-  const forceFixtures = false;
 
   const config = {
     mode: isProdMode ? 'production' : 'development',
@@ -99,7 +98,6 @@ module.exports = (env = {}, argv = {}) => {
         WEBSTORE: isWebstore,
         BETA: isBeta,
         DEBUG_BUILD: isDebugBuild,
-        FORCE_FIXTURES: forceFixtures,
       }),
       new CopyPlugin({
         patterns: [
