@@ -51,10 +51,12 @@ function pathMatchesMetadataEndpoint(url) {
  * Pure, dependency-injectable origin evaluation for a network entry URL.
  * Accepts only `https:` requests to a `forgeofempires.com` (or subdomain)
  * host serving a recognised game API path, or to an explicitly allowlisted
- * InnoGames CDN metadata host. Everything else is rejected before dispatch.
+ * InnoGames CDN metadata host. `wss:` is the WebSocket transport of the same
+ * game API, so it is accepted on the same host and path terms. Everything
+ * else is rejected before dispatch.
  *
  * @param {string} rawUrl
- * @param {Object} [deps] - injectable: URL, gameHost, cdnHosts, gameApiPathPrefixes
+ * @param {Object} [deps] - injectable: URL, gameHost, cdnHosts, gameApiPathPrefixes, secureSchemes
  * @returns {{ accepted: boolean, reason?: string, kind?: 'game'|'cdn' }}
  */
 function evaluateRequestOrigin(rawUrl, deps = {}) {
@@ -72,7 +74,8 @@ function evaluateRequestOrigin(rawUrl, deps = {}) {
   } catch {
     return { accepted: false, reason: 'unparseable_url' };
   }
-  if (url.protocol !== 'https:') {
+  const secureSchemes = deps.secureSchemes || ['https:', 'wss:'];
+  if (!secureSchemes.includes(url.protocol)) {
     return { accepted: false, reason: 'insecure_scheme' };
   }
   const hostname = url.hostname.toLowerCase();
