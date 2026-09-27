@@ -5,37 +5,11 @@ import pkg from '../../src/js/protocol/networkListener.js';
 const {
   handleRawNetworkEntry,
   handleRequestFinished,
-  isDuplicatePayload,
   safeProcessContent,
   initNetworkListeners,
-  clearDuplicatePayloadCache,
   setGameVersion,
   getType,
 } = pkg;
-
-test('networkListener - Payload Deduplication Cache', async (t) => {
-  clearDuplicatePayloadCache();
-
-  await t.test('detects duplicate payloads within 3000ms window', () => {
-    const url = 'https://en1.forgeofempires.com/game/json';
-    const body = JSON.stringify([{ requestClass: 'CityProductionService' }]);
-
-    assert.equal(isDuplicatePayload(url, body), false);
-    assert.equal(isDuplicatePayload(url, body), true);
-
-    const diffBody = JSON.stringify([{ requestClass: 'OtherService' }]);
-    assert.equal(isDuplicatePayload(url, diffBody), false);
-
-    const diffUrl = 'https://en2.forgeofempires.com/game/json';
-    assert.equal(isDuplicatePayload(diffUrl, body), false);
-  });
-
-  await t.test('handles empty and null inputs safely', () => {
-    assert.equal(isDuplicatePayload('', 'test'), false);
-    assert.equal(isDuplicatePayload('https://url', null), false);
-    assert.equal(isDuplicatePayload(null, null), false);
-  });
-});
 
 test('networkListener - handleRawNetworkEntry Origin and World Detection', async (t) => {
   await t.test('detects world and updates origin and storage', async () => {
