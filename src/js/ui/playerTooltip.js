@@ -40,6 +40,9 @@ let updatePlayerNameCache = function (id, name, opts) {
     currentName: name,
     notFound: Boolean(opts?.notFound),
     previousNames: opts?.previousNames || [],
+    // Must match state/state.js:329-341, which already stamps `lastUpdated`.
+    // A negative entry without one reads as stale and is refetched.
+    lastUpdated: Date.now(),
   };
 };
 
@@ -54,6 +57,40 @@ try {
 } catch {}
 
 const pendingScoreDBFetches = new Set();
+
+// A "this player does not exist" answer is worth keeping; a failed request is
+// not. The old code persisted `notFound` from the network-error path and from
+// every non-OK status, so one offline moment or one 503 made the tooltip
+// suppress that player forever — and because the pending key was never
+// released, nothing ever retried it. Three separate corrections:
+const NEGATIVE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const TRANSIENT_RETRY_MS = 60 * 1000;
+/** @type {Map<string, number>} key -> earliest retry time after a transient failure */
+const scoreDBRetryAfter = new Map();
+
+function isStaleNegative(cached, now) {
+  if (!cached?.notFound) return false;
+  // No timestamp means a record written before this rule existed. Expiring it
+  // is the safe reading: the cost of one extra lookup is a request, the cost of
+  // trusting it is a permanently missing player.
+  if (typeof cached.lastUpdated !== 'number') return true;
+  return now - cached.lastUpdated >= NEGATIVE_CACHE_TTL_MS;
+}
+
+function isTransientStatus(status) {
+  return status === 408 || status === 429 || status >= 500;
+}
+
+/**
+ * Defer the next lookup for `key`. Nothing is written to the name cache, so the
+ * player renders as `#id` and a later render tries again once the backoff has
+ * elapsed.
+ */
+function scheduleRetry(key, status) {
+  // A 429 means back off harder than a plain network failure.
+  const delay = status === 429 ? TRANSIENT_RETRY_MS * 5 : TRANSIENT_RETRY_MS;
+  scoreDBRetryAfter.set(key, Date.now() + delay);
+}
 
 function getScoreDBOrigin(customOrigin) {
   const origin =
@@ -88,8 +125,9 @@ function formatPlayerLabel(id) {
     : playerNameCache) || {};
 
   const cached = cache[key];
+  const now = Date.now();
 
-  if (cached) {
+  if (cached && !isStaleNegative(cached, now)) {
     if (cached.notFound) {
       return null;
     }
@@ -100,6 +138,10 @@ function formatPlayerLabel(id) {
       }
       return cached.currentName;
     }
+  }
+
+  if ((scoreDBRetryAfter.get(key) ?? 0) > now) {
+    return `#${id}`;
   }
 
   if (!pendingScoreDBFetches.has(key)) {
@@ -113,6 +155,11 @@ function formatPlayerLabel(id) {
       })
         .then((res) => {
           if (!res.ok) {
+            if (isTransientStatus(res.status)) {
+              // Rate limited or the service is down: the player may well exist.
+              scheduleRetry(key, res.status);
+              return null;
+            }
             updatePlayerNameCache(id, null, { notFound: true });
             updateIgnoreListUI();
             return null;
@@ -130,6 +177,7 @@ function formatPlayerLabel(id) {
             ) {
               updatePlayerNameCache(id, null, { notFound: true });
             } else {
+              scoreDBRetryAfter.delete(key);
               updatePlayerNameCache(id, fetchedName);
             }
           } else {
@@ -138,9 +186,14 @@ function formatPlayerLabel(id) {
           updateIgnoreListUI();
         })
         .catch(() => {
-          updatePlayerNameCache(id, null, { notFound: true });
-          updateIgnoreListUI();
+          // Offline, DNS failure, abort: never a verdict about the player.
+          scheduleRetry(key, 0);
+        })
+        .finally(() => {
+          pendingScoreDBFetches.delete(key);
         });
+    } else {
+      pendingScoreDBFetches.delete(key);
     }
   }
 
@@ -269,6 +322,9 @@ module.exports = {
   getUserTooltipHTML,
   updateIgnoreListUI,
   normalizeIgnoreListData,
+  scoreDBRetryAfter,
+  NEGATIVE_CACHE_TTL_MS,
+  TRANSIENT_RETRY_MS,
   pendingScoreDBFetches,
   setGameOrigin,
   setIgnoredPlayers,

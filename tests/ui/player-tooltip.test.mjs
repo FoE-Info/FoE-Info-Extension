@@ -14,6 +14,110 @@ const {
   updatePlayerNameCache,
 } = tooltipPkg.default || tooltipPkg;
 
+const { scoreDBRetryAfter, NEGATIVE_CACHE_TTL_MS } = tooltipPkg;
+
+// Let queued fetch microtasks settle so the pending set reflects reality.
+const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+test('Player Tooltip - ScoreDB retry behavior', async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.beforeEach(() => {
+    pendingScoreDBFetches.clear();
+    scoreDBRetryAfter.clear();
+    for (const key of Object.keys(playerNameCache)) {
+      delete playerNameCache[key];
+    }
+  });
+  t.afterEach(() => {
+    globalThis.fetch = originalFetch;
+  });
+
+  await t.test(
+    'a rejected request is not persisted as "not found"',
+    async () => {
+      globalThis.fetch = async () => {
+        throw new TypeError('Failed to fetch');
+      };
+
+      assert.equal(formatPlayerLabel(501), '#501');
+      await settle();
+
+      assert.equal(
+        playerNameCache['501'],
+        undefined,
+        'a network failure is not evidence the player does not exist',
+      );
+      assert.equal(
+        pendingScoreDBFetches.has('501'),
+        false,
+        'the pending key is released so a later render can retry',
+      );
+    },
+  );
+
+  await t.test('a 503 is not persisted as "not found"', async () => {
+    globalThis.fetch = async () => ({ ok: false, status: 503 });
+
+    assert.equal(formatPlayerLabel(502), '#502');
+    await settle();
+
+    assert.equal(playerNameCache['502'], undefined);
+    assert.equal(scoreDBRetryAfter.has('502'), true);
+  });
+
+  await t.test('a 404 is a definitive "not found"', async () => {
+    globalThis.fetch = async () => ({ ok: false, status: 404 });
+
+    assert.equal(formatPlayerLabel(503), '#503');
+    await settle();
+
+    assert.equal(playerNameCache['503'].notFound, true);
+    assert.equal(scoreDBRetryAfter.has('503'), false);
+    assert.equal(formatPlayerLabel(503), null);
+  });
+
+  await t.test('a negative entry expires and is looked up again', async () => {
+    let calls = 0;
+    globalThis.fetch = async () => {
+      calls++;
+      return {
+        ok: true,
+        text: async () => '<title>RealName - Forge of Empires</title>',
+      };
+    };
+
+    // Fresh negative entry: no lookup, and the player stays suppressed.
+    updatePlayerNameCache(504, null, { notFound: true });
+    assert.equal(formatPlayerLabel(504), null);
+    assert.equal(calls, 0);
+
+    // Aged past the TTL: the verdict is re-checked instead of trusted forever.
+    playerNameCache['504'].lastUpdated = Date.now() - NEGATIVE_CACHE_TTL_MS;
+    assert.equal(formatPlayerLabel(504), '#504');
+    await settle();
+
+    assert.equal(calls, 1);
+    assert.equal(formatPlayerLabel(504), 'RealName');
+  });
+
+  await t.test('a backoff window suppresses a retry burst', async () => {
+    let calls = 0;
+    globalThis.fetch = async () => {
+      calls++;
+      throw new TypeError('Failed to fetch');
+    };
+
+    formatPlayerLabel(505);
+    await settle();
+    assert.equal(calls, 1);
+
+    formatPlayerLabel(505);
+    await settle();
+    assert.equal(calls, 1, 'still inside the backoff window');
+    assert.equal(pendingScoreDBFetches.has('505'), false);
+  });
+});
+
 test('Player Tooltip & Ignore List UI Suite', async (t) => {
   const originalFetch = globalThis.fetch;
   t.beforeEach(() => {
