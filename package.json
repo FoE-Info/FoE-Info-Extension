@@ -14,6 +14,9 @@
   "type": "commonjs",
   "scripts": {
     "audit:refs": "node scripts/audit-references.mjs",
+    "browser:attach": "node scripts/attach-devtools.mjs",
+    "browser:check": "node scripts/check-browser-cdp.mjs",
+    "browser:record": "node scripts/record-live-rpc.mjs",
     "build": "webpack --config webpack.config.js --env target=prod",
     "build:beta": "webpack --config webpack.config.js --env target=beta",
     "build:dev": "webpack --config webpack.config.js --env target=dev",
