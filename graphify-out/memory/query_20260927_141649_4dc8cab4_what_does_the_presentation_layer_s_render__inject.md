@@ -1,0 +1,17 @@
+---
+type: "query"
+date: "2026-09-27T14:16:49.016849+00:00"
+question: "What does the presentation layer's render->inject->translate path look like, and where are the encoding and i18n blind spots?"
+contributor: "graphify"
+outcome: "useful"
+---
+
+# Q: What does the presentation layer's render->inject->translate path look like, and where are the encoding and i18n blind spots?
+
+## Answer
+
+Canonical path (city-stats card as reference): dictionary load storageBootstrap.js:118-127 -> global bridge utils/i18n.js:145-155,217-219 -> container creation panelContainerFactory.js:43-321 (15 numbered divs) -> reactive binding renderBindings.js:33-84 (18 bindXxx) -> markup assembly renderCityStats.js:36 using components/statFormatters.js and templates/ownCityCard.js:28-183 or visitedCityCard.js:22-171 -> INJECTION renderCityStats.js:186 container.innerHTML = html -> event wiring :188-201 -> TRANSLATION renderCityStats.js:204-206 window.translateContainer(container) -> popovers PopoverManager.js:193,205,389 -> clipboard ClipboardFormatter.js. Translation is PER-PANEL, not global; the one renderer that skips it is incidentsPanel.js:197, which sets innerHTML and never calls translateContainer, so its data-i18n spans stay English until the next body-wide boot pass. SEMANTICS: t() (i18n.js:88-102) returns '' for a falsy key, else currentDict[key] ?? enDict[key] ?? key — a MISSING KEY RENDERS THE RAW KEY STRING to the user, which is why tests/i18n/key-integrity.test.mjs exists. translateContainer (:126-140) assigns el.textContent = t(key) with NO arguments and only queries the four attributes data-i18n/-title/-aria-label/-placeholder, so it DESTROYS child nodes and prints $1 literally; a label needing markup, placeholders, or spanning two elements is NOT bindable and must use t()/tr() at assembly time. The codebase's tr(key, fallback) idiom (statFormatters.js:32-37) detects the missing-key case BY IDENTITY and substitutes English, which silently defeats the key-integrity guarantee at those sites. VERIFIED ENCODING FINDINGS: greatBuildingsPanel.js:322 interpolates place.player.name (a PLAYER-CHOSEN GB donor name) raw into donorsHTML, injected at :354, and the same raw value also enters state via setPlayerName at :329,:340. gbgPanel.js:332-334 interpolates guild?.clan?.name raw into leaderboardHTML, injected at :744, while the SAME module already imports the canonical escaper at :26, builds a fail-closed escape at :368-371, and correctly escapes at :392 — internally inconsistent. Remaining fail-open escaper: socialPanel.js:68 (escape ? escape(entry.name) : entry.name), unreachable today because all three call sites omit escape, but the only such shape left in the tree. GUARD BLIND SPOTS: the ESLint rule bails unless the string is markup (no-hardcoded-text.js:71-73,110), so bare English literals and lookup-table strings are never inspected, wrapper-only template quasis reduce to '', single words are invisible, and ESCAPING IS NOT MODELLED AT ALL; the test matches only a quoted literal on the right of .textContent = (:139-153) and is deliberately scoped (:11-18). Live template-literal-then-innerHTML instances: RewardRenderer.js:58->:89, renderRewardsPanel.js:6-14->:21 (reachable via gbDonationPanel.js:70,991), gbgTargetGenerator.js:254-268->:290. gameVersionStatus.js:43-48 is the fail-closed control proving the pattern is fixable without restructuring.
+
+## Outcome
+
+- Signal: useful

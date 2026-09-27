@@ -38,8 +38,30 @@ temp/
 __pycache__/
 *.py[c]
 
-# Graphify Outputs (git-ignored per workspace rules)
-graphify-out/
+# Graphify — shared knowledge artifacts are tracked; local state is not.
+# Pattern follows Graphify-Labs/graphify discussion #426 (maintainer-confirmed):
+# graph.json, graph.html and GRAPH_REPORT.md are the artifacts teammates and AI
+# assistants query. manifest.json is mtime-based and invalid after a clone.
+# Tracked here as well, because they are the durable knowledge this repo builds:
+#   memory/      one file per saved exploration (question + verified answer)
+#   reflections/ LESSONS.md, deterministically generated from memory/ by `reflect`
+#   findings/    decisions.jsonl (the log) and decisions.md (its rendered roll-up)
+graphify-out/cache/
+graphify-out/manifest.json
+graphify-out/cost.json
+graphify-out/wiki/
+graphify-out/.graphify_*
+# Derived exports are regenerable and no longer produced by default (see
+# .agents/scripts/graphify.sh: exports are opt-in via --export). They are ignored
+# anyway so that running `export` once cannot stage tens of megabytes of
+# wiki/, obsidian/, svg or callflow HTML.
+graphify-out/obsidian/
+graphify-out/graph.svg
+graphify-out/GRAPH_TREE.html
+graphify-out/*-callflow.html
+graphify-out/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]/
+graphify-out/reflections/*.bak*
+graphify-out/findings/*.pre-provenance-backup
 
 # Agent Runtime, Harness & Workspace State (per-developer, never shared)
 /.agent

@@ -140,6 +140,10 @@ run = "bash .agents/scripts/graphify.sh foe-info update"
 description = "Full semantic reindex of FoE-Info knowledge graph"
 run = "bash .agents/scripts/graphify.sh foe-info reindex"
 
+[tasks.graph-label]
+description = "Relabel FoE-Info graph communities (starts the local model, no re-extract)"
+run = "bash .agents/scripts/graphify.sh foe-info label"
+
 [tasks.mcp-profile]
 description = "Switch active MCP profile (default, browser, research, full)"
 run = "node .agents/scripts/mcp-profile.mjs"

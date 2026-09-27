@@ -17,7 +17,7 @@ const PROJECT_ROOT = resolve(SCRIPT_DIR, '../..');
 const AGENTS_DIR = join(PROJECT_ROOT, '.agents');
 const MODEL_SCRIPT = join(AGENTS_DIR, 'scripts', 'graphify-model.sh');
 const ENV_SCRIPT = join(AGENTS_DIR, 'scripts', 'inference-env.sh');
-const CONFIG_FILE = join(AGENTS_DIR, 'mcp_config.json');
+const CONFIG_FILE = join(PROJECT_ROOT, '.omp', 'mcp.json');
 // `.agents/` is git-ignored, so these tests cannot run on a fresh clone.
 const SKIP =
   fs.existsSync(MODEL_SCRIPT) ? false : (
