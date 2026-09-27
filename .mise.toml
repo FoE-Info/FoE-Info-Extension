@@ -121,9 +121,9 @@ run = "npm run release"
 [tasks.release-prod]
 description = "Verify, build, and package production Web Store release"
 run = "npm run release:prod"
-[tasks.browser-control]
-description = "Run Chrome DevTools CDP browser controller"
-run = "node scripts/foe-browser-control.mjs"
+[tasks.browser-attach]
+description = "Attach Chrome DevTools CDP to a live FoE tab"
+run = "node scripts/attach-devtools.mjs"
 
 [tasks.graph]
 description = "Run Graphify automation across targets (foe-info, foe-info-original, forge-hammer, metadata)"
