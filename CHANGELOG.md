@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Separate roadmap direction from tracked tasks and acceptance criteria, move project guides into consistently named documentation, and retire superseded plans.
+- Compose service presentation callbacks explicitly, remove eager route registration and calculator state dependencies, and preserve legacy storage keys when migration writes fail.
+- Strengthen passive intake ordering, cache lifecycle, numerical precision, output handling and UI lifecycle coverage; replace heuristic security classifiers with focused behavior checks.
+- Gate verification on publishable reference integrity.
+- Retain verification console logs and JUnit test results on CI failure, with run, attempt, and commit identifiers in artifact names.
+- Correct documentation that had drifted from the code: Chrome Web Store permission and host-permission justifications, `SECURITY.md` host-permission and CSP scope, `docs/debugging.md` console tags, `debugEnabled` listeners and section numbering, `README.md` ESLint major and source tree.
+
 ## [0.0.834] - 2026-09-19
 
 Guild Battlegrounds target lifecycle preservation and signal sync, City Overview Critical Strike calculation, context-aware dynamic view filtering, modular architecture deconstruction, and passive OpenCLI browser telemetry integration.

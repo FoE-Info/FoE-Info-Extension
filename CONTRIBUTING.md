@@ -10,13 +10,14 @@ Thanks for your interest in improving FoE-Info.
 npm run verify
 ```
 
-This runs formatting, linting, type checking, the RPC contract check, i18n
-parity across all locales, the unit tests, and a development build. All of it
-must pass.
+This checks environment readiness, then runs version and reference-integrity checks, formatting, linting, type
+checking, architecture boundaries and historical debt, the RPC contract check, i18n parity across
+all locales, the unit tests and focused coverage thresholds, and development
+and production builds with the production asset budget. All of it must pass.
 
 Guidelines:
 
-- Organize modules by cohesion: a module holds one thing that changes for one reason. Large files are a prompt to check for a feature boundary (see `ARCHITECTURE.md` "Cohesion Over Line Count"), not a violation to fix by splitting.
+- Organize modules by cohesion: a module holds one thing that changes for one reason. Large files are a prompt to check for a feature boundary (see `docs/architecture.md` "Cohesion Over Line Count"), not a violation to fix by splitting.
 - Never bundle static game data into `src/`; the runtime is driven by live
   InnoGames network payloads.
 - Use `bignumber.js` for Forge Point and reward math.
@@ -33,24 +34,51 @@ Install them separately if you need the matching workflows:
 | `gh`                                   | `npm run release` / `scripts/release.mjs`                             | Creates GitHub releases and uploads assets (requires `gh auth login` first).                    |
 | CDP-enabled Chrome on `127.0.0.1:9222` | `npm run metadata:download` / `scripts/download-offline-metadata.mjs` | Drives a Chrome instance over the DevTools protocol to ingest live InnoGames entity datasets.   |
 
-The core gate (`npm run verify`) needs none of these: only Node.js, npm, and a
-Chromium-based browser for manual panel testing.
+The core gate (`npm run verify`) needs Node.js, npm, Git, installed dependencies
+and Bash for shared shell harness fixtures. A Chromium-based browser is needed
+separately for manual panel testing.
 
-### Node.js baseline (recommended)
+### Node.js baseline
 
-The baseline is **Node 24.x (LTS)**, and the sources now agree on it:
+The baseline is **Node 26.8.2**. The version sources are:
 
-- `package.json` `engines` — `>=24.0.0`
-- CI (`.github/workflows/ci.yml`) — Node 24.x
-- local `mise` config — 26.8.2
+- `package.json` `engines` — `>=26.8.2`
+- CI (`.github/workflows/ci.yml`) — `26.8.2`
+- `@types/node` — `^26.6.3` (Node 26 API declarations; package versions are
+  independent of runtime patch versions)
 
-24.x is what CI tests, what `engines` enforces as a floor, and what the
-verification snapshot was produced against. Node 26+ is an allowed-but-untested
-minor: local `mise` resolves to 26.8.2 and the suite passes there, but CI pins a
-single major. Do not widen CI to two majors as part of a docs change; that is an
-engine/CI task (`docs/TODO.md` §1, §3). A local `mise` pin newer than the
-baseline is fine for development, but reproducible verification is anchored to
-24.x.
+CI and local mise verification use the same exact runtime. The engine range
+sets the minimum supported version; setup checks the major, minor, and patch
+before installing dependencies. Update the engine floor, CI pin, mise pin and
+lockfile, and Node API declarations together when changing the baseline.
+
+## Git workflow
+
+`development` is linear. It is fast-forwarded, work arrives through
+short-lived branches, and no merge commit is authored on top of it. Three
+local git settings make a plain `git pull` behave that way:
+
+| Setting             | Effect                                                                 |
+| :------------------ | :--------------------------------------------------------------------- |
+| `pull.rebase`       | `git pull` replays local commits onto the upstream instead of merging. |
+| `rebase.autoStash`  | A dirty working tree survives a `git rebase` you run by hand.          |
+| `rebase.autosquash` | `git rebase -i` folds `fixup!` / `squash!` commits into their target.  |
+
+Apply them to a clone with:
+
+```bash
+npm run setup:git
+```
+
+`npm run setup` performs the same step, so a clone that followed
+[Getting started](#getting-started) already has them. All three are written
+with `--local`: they live in that clone's `.git/config` and no other
+contributor inherits them.
+
+`fixup!` and `squash!` subjects pass the `commit-msg` hook, which is what makes
+the autosquash row above usable. Git applies `rebase.autosquash` to
+`git rebase -i` only — the non-interactive rebase behind `git pull --rebase`
+leaves those commits alone.
 
 ## Commit messages
 
@@ -69,3 +97,8 @@ type(scope): imperative summary
 
 Open an issue at <https://github.com/FoE-Info/FoE-Info-Extension/issues>.
 For security issues, see [SECURITY.md](SECURITY.md).
+
+Mechanical layer checks and historical debt policy are documented in
+[repository contracts](docs/repository-contracts.md). Run `npm run contracts:diff` for
+a changed-file check and `npm run contracts:audit` for the full audit; the full
+audit is included in `npm run verify`.
