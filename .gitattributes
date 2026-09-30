@@ -10,6 +10,6 @@
 graphify-out/graph.json -diff merge=graphify
 graphify-out/graph.html -diff
 
-# The knowledgebase is deliberately NOT marked -diff: memory/, reflections/ and
-# findings/decisions.jsonl are the durable record, and reviewing how a verdict
-# changed is the whole point of tracking them.
+# Reports and portable label/manifest files retain normal text diffs.
+# Local memory, reflections, and findings are excluded by .gitignore;
+# reviewed durable knowledge belongs in the owning project documents.

@@ -1,0 +1,15 @@
+[project]
+name = "foe-info"
+version = "0.0.835"
+description = "Essential Info browser extension for Forge of Empires players"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    # Repo-local graphify install. `graphify.sh` runs `.venv/bin/graphify`,
+    # so the extras a clone needs belong here, not in a global tool install.
+    # The `svg` extra omits scipy even though `graphify export svg` imports
+    # it, so it is declared explicitly until graphify ships it.
+    "graphifyy[mcp,openai,watch,svg]>=0.9.61",
+    "pyyaml>=6.0.3",
+    "scipy",
+]

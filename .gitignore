@@ -3,112 +3,32 @@ node_modules/
 .venv/
 .uv/
 
+# Credentials and generated local runtime state; agent harness sources are shared
+.env
+.env.*
+.envrc
+/.codex/auth.json
+/.agents/.last_graph_query_stamp
+/.husky/.graphify-python
+
 # Build & Distribution Artifacts
 build/
 *.zip
 *.crx
-*.tar.gz
-*.tgz
-*.map
-*.tsbuildinfo
 
 # IDE & Editor Files
-.idea/
 .vscode/
-*.code-workspace
-.DS_Store
-Thumbs.db
-desktop.ini
-.directory
-*.swp
-*.swo
-*~
 
-# Logs & Temporary Files
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-tmp/
-temp/
-*.tmp
-*.tmp.*
-*.tmp-*
-__pycache__/
-*.py[c]
+# Shared Graphify products and portable incremental/label state only.
+# Everything else (caches, backups, exports, raw memory, findings, runtime
+# markers, and analysis/learning sidecars) stays local. See CONTRIBUTING.md.
+/graphify-out/*
+!/graphify-out/graph.json
+!/graphify-out/GRAPH_REPORT.md
+!/graphify-out/graph.html
+!/graphify-out/manifest.json
+!/graphify-out/.graphify_labels.json
+!/graphify-out/.graphify_labels.json.sig
 
-# Graphify — shared knowledge artifacts are tracked; local state is not.
-# Pattern follows Graphify-Labs/graphify discussion #426 (maintainer-confirmed):
-# graph.json, graph.html and GRAPH_REPORT.md are the artifacts teammates and AI
-# assistants query. manifest.json is mtime-based and invalid after a clone.
-# Tracked here as well, because they are the durable knowledge this repo builds:
-#   memory/      one file per saved exploration (question + verified answer)
-#   reflections/ LESSONS.md, deterministically generated from memory/ by `reflect`
-#   findings/    decisions.jsonl (the log) and decisions.md (its rendered roll-up)
-graphify-out/cache/
-graphify-out/manifest.json
-graphify-out/cost.json
-graphify-out/wiki/
-graphify-out/.graphify_*
-# Derived exports are regenerable and no longer produced by default (see
-# .agents/scripts/graphify.sh: exports are opt-in via --export). They are ignored
-# anyway so that running `export` once cannot stage tens of megabytes of
-# wiki/, obsidian/, svg or callflow HTML.
-graphify-out/obsidian/
-graphify-out/graph.svg
-graphify-out/GRAPH_TREE.html
-graphify-out/*-callflow.html
-graphify-out/20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]/
-graphify-out/reflections/*.bak*
-# Rebuild runtime state: rewritten or removed by the post-commit hook.
-graphify-out/.pending_changes
-graphify-out/.rebuild.lock
-graphify-out/findings/*.pre-provenance-backup
-
-# Agent Runtime, Harness & Workspace State (per-developer, never shared)
-/.agent
-/.agents
-/.omp
-/.codex
-/conductor
-/AGENTS.md
-**/.claude/scheduled_tasks.lock
-**/.claude/scheduled_tasks.json
-**/.claude/routines/.state/
-**/.claude/worktrees/
-**/.claude/checkpoints/
-**/.claude/mailbox/
-**/.claude/agent-registry.json
-**/.claude/agent-memory-local
-**/.claude/first-run
-**/.claude/assistant-daemon-state.debug
-
-.worktrees/
-
-# CDP Heap Snapshots & Network Traces (browser-testing skill output)
-# The file globs cover any output directory, so no per-directory entries are
-# needed — `docs/heap-snapshots/` and `docs/har/` were left behind by 319cc65
-# and have not existed since.
-*.heapsnapshot
-*.heaptimeline
-*.har
-*.har.gz
-
-# Environment & Secrets
-.env
-.env.local
-.env.*
-!.env.example
-!.env.*.example
-!.env.template
-*.pem
-*.key
-
-# Local Python/Graphify Environment Declarations (per-developer)
-/pyproject.toml
-/uv.lock
-
-# Local Review Snapshots (do not hide unrelated project patch files)
-/patch.diff
-/full_patch.diff
+# Generated Graphify query memory is local, never source.
+/graphify-out/memory/

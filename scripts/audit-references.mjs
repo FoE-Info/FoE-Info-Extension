@@ -8,8 +8,17 @@
  * modules, deleted files, retired CLI subcommands, and env vars that were never
  * defined.
  *
- * Usage: node scripts/audit-references.mjs [--json]
- * Exit:  0 = no unresolved references, 1 = findings present.
+ * Usage: node scripts/audit-references.mjs [--json] [--strict] [--scope=local|published]
+ * Exit:  0 = no unresolved references, 1 = findings present, 2 = bad argument
+ *         or published scope outside a git repository.
+ *
+ * Scope:
+ *   local     (default) - working tree, including shared agent surfaces and
+ *                         optional `.audit-siblings` roots.
+ *   published           - publishable files (tracked + untracked non-ignored),
+ *                         excluding git-ignored credentials and runtime state and siblings,
+ *                         so it runs on a clean checkout without staging
+ *                         in-progress additions.
  *
  * Scope note: token-based extraction over-reports. Prose that happens to contain
  * a slash, a UPPER_SNAKE identifier that is not an env var, or a slash-command
@@ -18,15 +27,32 @@
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { dirname, extname, join, resolve } from 'node:path';
+import { basename, dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const AS_JSON = process.argv.includes('--json');
-// `--strict` also reports advisory findings (the ARCHITECTURE.md line ceiling),
+// `--strict` also reports advisory findings (the docs/architecture.md line ceiling),
 // which are suppressed by default because they are a tracked target rather than
 // broken references.
 const STRICT = process.argv.includes('--strict');
+
+// Scope controls which surfaces the audit considers.
+//   local     = working tree, including shared agent surfaces and optional
+//               configured siblings. This is the default so `npm run audit:refs`
+//               also checks optional local references.
+//   published = tracked + nonignored additions, including AGENTS.md.
+//               Credentials/runtime state must be ignored and untracked; report
+//               publication-policy violations instead of silently hiding them.
+const SCOPE_ARG = process.argv.find((a) => a.startsWith('--scope='));
+const SCOPE = SCOPE_ARG ? SCOPE_ARG.split('=')[1] : 'local';
+if (!['local', 'published'].includes(SCOPE)) {
+  console.error(
+    `Unknown scope: ${SCOPE}. Use --scope=local or --scope=published.`,
+  );
+  process.exit(2);
+}
+const IS_PUBLISHED = SCOPE === 'published';
 
 const findings = [];
 const add = (kind, file, line, detail, token) =>
@@ -77,7 +103,102 @@ function walk(dir, out = []) {
   return out;
 }
 
-const files = walk(ROOT);
+// Published scope considers "publishable" files: tracked files plus untracked
+// files that are not ignored by standard gitignore rules. This lets the gate
+// pass on a clean checkout that includes in-progress user additions without
+// requiring them to be staged. Credentials and runtime state belong in .gitignore; an
+// accidentally publishable credential/runtime file is a policy finding below.
+function getPublishableFiles() {
+  try {
+    return execFileSync(
+      'git',
+      ['ls-files', '--cached', '--others', '--exclude-standard', '-z'],
+      {
+        encoding: 'utf8',
+        cwd: ROOT,
+        stdio: ['ignore', 'pipe', 'ignore'],
+      },
+    )
+      .split('\0')
+      .filter(Boolean);
+  } catch {
+    return null;
+  }
+}
+
+// Credential files and generated machine-specific state stay local. Agent
+// definitions, skills, rules, MCP configuration, tests, and plans are shared.
+const LOCAL_ONLY_FILES = new Set([
+  '.codex/auth.json',
+  '.agents/.last_graph_query_stamp',
+  '.husky/.graphify-python',
+]);
+const isLocalOnly = (f) => {
+  const name = basename(f);
+  return (
+    LOCAL_ONLY_FILES.has(f) ||
+    name === '.env' ||
+    name === '.envrc' ||
+    name.startsWith('.env.')
+  );
+};
+
+let files;
+let PUBLISHABLE_FILES = null;
+let PUBLISHABLE_DIRS = null;
+if (IS_PUBLISHED) {
+  const publishableRaw = getPublishableFiles();
+  if (!publishableRaw) {
+    console.error(
+      'Published scope requires a git repository, but none was found.',
+    );
+    process.exit(2);
+  }
+  for (const f of publishableRaw.filter(isLocalOnly)) {
+    add(
+      'publication-policy',
+      f,
+      1,
+      'local-only file is publishable; ignore it in .gitignore and remove it from the index if tracked',
+      f,
+    );
+  }
+  const publishable = publishableRaw.filter((f) => !isLocalOnly(f));
+  PUBLISHABLE_FILES = new Set(publishable);
+  PUBLISHABLE_DIRS = new Set();
+  for (const f of publishable) {
+    let dir = dirname(f);
+    while (dir && dir !== '.' && dir !== '/') {
+      PUBLISHABLE_DIRS.add(dir);
+      dir = dirname(dir);
+    }
+  }
+  files = publishable.filter((f) => TEXT_EXT.has(extname(f)));
+} else {
+  files = walk(ROOT);
+}
+
+// Published scope must not treat a locally-present git-ignored file, a credential/runtime
+// local-only file, or an out-of-tree path as a valid resolution target. A path
+// is valid only when it is publishable (tracked or untracked non-ignored) and
+// actually exists on disk.
+function isPublishedPath(absPath) {
+  if (!existsSync(absPath)) return false;
+  const rel =
+    absPath.startsWith(ROOT + '/') ? absPath.slice(ROOT.length + 1) : absPath;
+  if (rel.startsWith('../') || rel.startsWith('/')) return false;
+  const normalized = rel.replace(/^\.\//, '').replace(/\/+$/, '');
+  if (PUBLISHABLE_FILES.has(normalized)) return true;
+  if (PUBLISHABLE_DIRS.has(normalized)) return true;
+  return false;
+}
+
+// Scope-aware existence check for path resolution. Local scope trusts the
+// working tree; published scope trusts only publishable files and their
+// ancestor directories.
+function pathExists(absPath) {
+  return IS_PUBLISHED ? isPublishedPath(absPath) : existsSync(absPath);
+}
 
 const DOC_SURFACES = files.filter(
   (f) =>
@@ -118,22 +239,63 @@ const LAYER_ROOTS = [
   '.agents',
 ];
 
-// Sibling repositories in the domain. `docs/TODO.md` legitimately documents the
-// `peer-repo` fork and its `src/extras/` module, so those paths must be
-// verifiable too — otherwise the auditor reports correct cross-repo references
-// as unresolved. Only directories that actually exist are used, so a repo that
-// is absent locally cannot fail the check.
-// The repository root comes first so a token that already carries its own
-// prefix (`src/extras/index.js`) resolves without doubling that prefix; the
-// narrower roots let a bare fragment (`fn/extras.js`) resolve too.
-const SIBLING_ROOTS = [
-  '../peer-repo',
-  '../FoE-Info-Extension-original',
-  '../forge-hammer',
-  '../peer-repo/src/extras',
-  '../FoE-Info-Extension-original/src',
-  '../forge-hammer/src',
-].filter((r) => existsSync(join(ROOT, r)));
+// Sibling repositories in the domain. Local scope resolves against project
+// peers and any private roots listed in `.audit-siblings` so agent notes and
+// local docs can cite cross-repo paths. Published scope ignores every sibling
+// root: a clean checkout has no guarantee that siblings are present, and the
+// published surface must not depend on out-of-tree files.
+//
+// LOCAL_SIBLINGS_FILE adds roots that are yours rather than the project's —
+// a private fork, a worktree, anything beside this repository whose paths your
+// notes cite. A shared file must contain portable optional paths, not private
+// machine locations. The format is one path per line relative to the repository
+// root, with `#` comments. Published scope never relies on these optional roots.
+const LOCAL_SIBLINGS_FILE = '.audit-siblings';
+const SIBLING_ROOTS =
+  IS_PUBLISHED ?
+    []
+  : [
+      '../FoE-Info-Extension-original',
+      '../forge-hammer',
+      '../FoE-Info-Extension-original/src',
+      '../forge-hammer/src',
+      ...read(LOCAL_SIBLINGS_FILE)
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l && !l.startsWith('#')),
+    ].filter((r) => existsSync(join(ROOT, r)));
+
+// Top-level paths the repository deliberately excludes, minus the ones a
+// reader is expected to GENERATE. A token pointing into an excluded source
+// root is a reference a clone cannot resolve, so it must be reported rather
+// than dismissed by the `a.b/c` convention heuristic below. Without this,
+// de-tracking a directory makes every mention of it silently invisible: the
+// head stops being a real directory, so the token reads as a naming
+// convention and is skipped. That is how `docs/roadmap.md` citations survived in
+// tracked files after the backlog stopped being tracked.
+//
+// Build outputs are excluded from the set on purpose. `build/FoE-Info-DEV` is
+// named in README and CONTRIBUTING as the unpacked-extension directory a
+// contributor produces with `npm run dev`; it is absent from every clone by
+// design, so reporting it would be noise on a correct document.
+const GENERATED_ROOTS = new Set([
+  '.venv',
+  'build',
+  'coverage',
+  'dist',
+  'node_modules',
+  'out',
+]);
+const IGNORED_ROOTS = new Set(
+  read('.gitignore')
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(
+      (l) => l && !l.startsWith('#') && (l.startsWith('/') || l.includes('/')),
+    )
+    .map((l) => l.replace(/^\//, '').split('/')[0])
+    .filter((seg) => seg && !/[*?[\]!]/.test(seg) && !GENERATED_ROOTS.has(seg)),
+);
 
 function resolveCandidates(token, file) {
   const t = token.replace(/[.,;:)]+$/, '');
@@ -144,7 +306,7 @@ function resolveCandidates(token, file) {
   // A slash-command, an upstream CLI invocation, or a URL path.
   if (/^\/[\w-]+$/.test(t) || t.startsWith('/graphify')) return null;
   // A URL path such as `/game/json` or a bare regex literal.
-  if (/^\/[\w/.-]+\.(js|json|html)$/.test(t) && !existsSync(join(ROOT, t))) {
+  if (/^\/[\w/.-]+\.(js|json|html)$/.test(t) && !pathExists(join(ROOT, t))) {
     if (/^\/(game|metadata|start|content|js)/.test(t)) return null;
   }
   if (/^\/[\^$]/.test(t) || t.startsWith('/^')) return null;
@@ -156,12 +318,13 @@ function resolveCandidates(token, file) {
   // A `a.b/c` fragment where `a.b` is not a real directory is a doc convention
   // (e.g. `document/window`, `msg/StartupService.js`), not a broken path.
   const head = t.split('/')[0];
-  const isFilePath = head.includes('.') && existsSync(join(ROOT, head));
+  const isFilePath = head.includes('.') && pathExists(join(ROOT, head));
   if (
     !isFilePath &&
-    !existsSync(join(ROOT, head)) &&
-    LAYER_ROOTS.every((r) => !existsSync(join(ROOT, r, t))) &&
-    SIBLING_ROOTS.every((r) => !existsSync(join(ROOT, r, t)))
+    !IGNORED_ROOTS.has(head) &&
+    !pathExists(join(ROOT, head)) &&
+    LAYER_ROOTS.every((r) => !pathExists(join(ROOT, r, t))) &&
+    SIBLING_ROOTS.every((r) => !pathExists(join(ROOT, r, t)))
   )
     return null;
   const dir = dirname(join(ROOT, file));
@@ -204,7 +367,7 @@ for (const file of DOC_SURFACES) {
       if (!isPathLike(tok)) continue;
       const cands = resolveCandidates(tok, file);
       if (!cands) continue;
-      if (cands.some((c) => existsSync(c))) continue;
+      if (cands.some((c) => pathExists(c))) continue;
       add(
         'unresolved-path',
         file,
@@ -217,7 +380,7 @@ for (const file of DOC_SURFACES) {
     while ((m = MD_LINK.exec(line))) {
       const tok = m[1];
       if (/^(https?:|#|mailto:)/i.test(tok)) continue;
-      if (!existsSync(resolve(dirname(join(ROOT, file)), tok.split('#')[0])))
+      if (!pathExists(resolve(dirname(join(ROOT, file)), tok.split('#')[0])))
         add('broken-md-link', file, lineNo, 'markdown link', tok);
     }
   });
@@ -288,7 +451,7 @@ for (const file of DOC_SURFACES) {
           join(dirname(join(ROOT, file)), script),
           join(ROOT, '.agents', 'scripts', script.replace(/^.*\//, '')),
         ];
-        if (!cands.some((c) => existsSync(c)))
+        if (!cands.some((c) => pathExists(c)))
           add('missing-script', file, lineNo, 'invoked script', script);
       }
     });
@@ -298,20 +461,19 @@ for (const file of DOC_SURFACES) {
 
 const envDefined = new Set();
 for (const f of [
-  '.env',
-  '.env.local',
   '.mise.toml',
   'package.json',
-  'pyproject.toml',
   'eslint.config.mjs',
   'webpack.config.js',
+  'pyproject.toml',
+  ...(IS_PUBLISHED ? [] : ['.env', '.env.local']),
 ])
   for (const m of read(f).matchAll(/\b([A-Z][A-Z0-9_]{3,})\b/g))
     envDefined.add(m[1]);
 for (const f of [
-  '.agents/scripts/inference-env.sh',
-  '.agents/scripts/graphify-model.sh',
-  '.agents/scripts/graphify.sh',
+  'scripts/graphify/inference-env.sh',
+  'scripts/graphify/graphify-model.sh',
+  'scripts/graphify/graphify.sh',
   '.agents/scripts/serve-graph.mjs',
 ])
   for (const m of read(f).matchAll(/\b([A-Z][A-Z0-9_]{3,})\b/g))
@@ -425,10 +587,12 @@ for (const file of files.filter((f) => f.endsWith('.md')))
   read(file)
     .split('\n')
     .forEach((line, i) => {
+      // A snake_case identifier containing "node" or "graph" can be a code
+      // symbol or graph node ID. Only audit names explicitly presented in
+      // MCP/server context, rather than inferring tools from their spelling.
+      if (!/\b(?:MCP|graphify-foe-info)\b/i.test(line)) return;
       for (const m of line.matchAll(/`([a-z][a-z0-9]*_[a-z0-9_]+)`/g)) {
         const t = m[1];
-        if (!/(graph|node|neighbor|path|community|stats|impact)/.test(t))
-          continue;
         if (KNOWN_MCP_TOOLS.has(t)) continue;
         add(
           'unknown-mcp-tool',
@@ -468,10 +632,10 @@ if (GRAPHIFY_SUBCOMMANDS)
 
 /* ---------------------------------- E. documented ARCHITECTURE invariants */
 
-// ARCHITECTURE.md no longer defines a line ceiling: the rule is cohesion over
+// docs/architecture.md no longer defines a line ceiling: the rule is cohesion over
 // line count. This threshold is therefore a review prompt, not a violation --
 // it is reported as advisory and suppressed unless --strict is passed.
-const arch = read('ARCHITECTURE.md');
+const arch = read('docs/architecture.md');
 const max = 500;
 {
   for (const f of files.filter(
@@ -493,10 +657,10 @@ for (const m of arch.matchAll(/`([\w./-]+\.js)`/g)) {
     join(ROOT, m[1]),
     join(ROOT, 'src/js', m[1].replace(/^src\/js\//, '')),
   ];
-  if (!cands.some((c) => existsSync(c)))
+  if (!cands.some((c) => pathExists(c)))
     add(
       'architecture-path',
-      'ARCHITECTURE.md',
+      'docs/architecture.md',
       0,
       'documented pipeline path',
       m[1],
@@ -516,14 +680,14 @@ for (const file of DOC_SURFACES.filter((f) => f.endsWith('.md')))
       for (const m of line.matchAll(/`([\w-]+\/[\w./-]+\.js)`/g)) {
         const frag = m[1];
         if (/^(src|scripts|tests)\//.test(frag)) continue;
-        if (existsSync(join(ROOT, frag))) continue;
-        if (LAYER_ROOTS.some((r) => existsSync(join(ROOT, r, frag)))) continue;
-        if (SIBLING_ROOTS.some((r) => existsSync(join(ROOT, r, frag))))
+        if (pathExists(join(ROOT, frag))) continue;
+        if (LAYER_ROOTS.some((r) => pathExists(join(ROOT, r, frag)))) continue;
+        if (SIBLING_ROOTS.some((r) => pathExists(join(ROOT, r, frag))))
           continue;
         // Suffix shorthand: `js/index.js` in prose can mean
         // `src/js/index.js` when the leading segment duplicates a known root.
         const stripped = frag.replace(/^[\w-]+\//, '');
-        if (LAYER_ROOTS.some((r) => existsSync(join(ROOT, r, stripped))))
+        if (LAYER_ROOTS.some((r) => pathExists(join(ROOT, r, stripped))))
           continue;
         add(
           'unresolved-path-fragment',
@@ -540,9 +704,12 @@ for (const file of DOC_SURFACES.filter((f) => f.endsWith('.md')))
 // Paths a tool creates on demand. They are named in docs as destinations, so
 // their absence is not drift. Keep this list short and justified.
 const GENERATED = [
+  '.venv/', // uv sync creates the optional local Python environment
   'graphify-out/', // graphify writes its own artifacts and caches
   './raw', // graphify add <url> input directory
   'tests/a/b/c.test.mjs', // illustrative example path in review notes
+  'build/FoE-Info-DEV', // dev build output directory (README/CONTRIBUTING)
+  'build/FoE-Info-Prod/', // production build output directory
 ];
 
 // Prose that deliberately names a file that was deleted or renamed, to record
@@ -556,17 +723,10 @@ function isHistoricalNote(line, token) {
   );
 }
 
-// Files under `.omp/plans/` are dated proposals, not living documentation. A
-// path that no longer exists usually means the proposal was carried out, which
-// is the intended outcome rather than drift.
-function isProposal(file) {
-  return /^\.omp\/plans\//.test(file);
-}
-
 // A rooted path is a URL path unless it names a real filesystem location.
 // `/game/json` and `/api/alpha/decisions` are external endpoints on a remote
-// origin and cannot be resolved against the repo; `/var/home/...` is a local
-// absolute path, and if THAT stops existing it is genuine drift worth
+// origin and cannot be resolved against the repo; a local filesystem
+// path that stops existing is genuine drift worth
 // reporting. The previous rule matched a fixed list of InnoGames prefixes and
 // let every other rooted token through, which is why an OpenRouter API path
 // surfaced as an unresolved reference.
@@ -577,7 +737,7 @@ function isUrlPath(token) {
 }
 
 // The line ceiling is a documented architectural target, not a broken
-// reference: ARCHITECTURE.md records the current overage explicitly, so it is
+// reference: docs/architecture.md records the current overage explicitly, so it is
 // advisory and suppressed unless `--strict` is passed.
 const ADVISORY = new Set(['cohesion-review-prompt']);
 
@@ -591,9 +751,26 @@ const ADVISORY = new Set(['cohesion-review-prompt']);
  * the printed count and the exit status are derived from the same set.
  */
 function isSuppressed(f) {
+  // Proposal/history exemptions apply to reference drift, never publication.
+  if (f.kind === 'publication-policy') return false;
+  // Explicit illustrative lines in reusable guidance are not local contracts.
+  // Keep links and publication checks live; only literal path/command examples
+  // are exempt, and unmarked neighboring lines still undergo normal checks.
+  const line = read(f.file).split('\n')[f.line - 1] || '';
+  if (
+    f.file.endsWith('.md') &&
+    /<!--\s*audit-refs: illustrative\s*-->/.test(line) &&
+    [
+      'unresolved-path',
+      'unresolved-path-fragment',
+      'missing-npm-script',
+      'missing-mise-task',
+      'missing-script',
+    ].includes(f.kind)
+  )
+    return true;
   if (GENERATED.some((g) => f.token === g || f.token.startsWith(g)))
     return true;
-  if (isProposal(f.file) && !read(f.file).includes('Status: open')) return true;
   if (isUrlPath(f.token)) return true;
   if (isHistoricalNote(read(f.file).split('\n')[f.line - 1] || '', f.token))
     return true;
@@ -618,7 +795,7 @@ for (const f of reportable) {
 if (AS_JSON) {
   console.log(
     JSON.stringify(
-      { scanned: DOC_SURFACES.length, findings: reportable },
+      { scope: SCOPE, scanned: DOC_SURFACES.length, findings: reportable },
       null,
       2,
     ),
@@ -627,7 +804,7 @@ if (AS_JSON) {
 }
 
 console.log(
-  `\nScanned ${DOC_SURFACES.length} surfaces, ${files.length} text files.`,
+  `\n[${SCOPE}] Scanned ${DOC_SURFACES.length} surfaces, ${files.length} text files.`,
 );
 if (!reportable.length) console.log('No reference-integrity findings.');
 for (const [kind, list] of byKind) {

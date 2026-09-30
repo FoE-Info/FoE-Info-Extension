@@ -1,23 +1,20 @@
 [tools]
-# Pinned to the verified dev toolchain. engines.node requires >=24; the
-# @types/node devDependency tracks the 26.x line. Refresh with `mise lock`.
-# NOTE: the documented verification baseline is Node 24.x LTS (see
-# CONTRIBUTING.md "External tool prerequisites"); this local pin may be
-# newer. External workflow tools zip/gh/uv have their own prerequisites —
-# see the same CONTRIBUTING section.
 node = "26.8.2"
 python = "3.14.7"
 uv = "latest"
 
+[settings]
+python.uv_venv_auto = "source"
+
 [env]
 NODE_ENV = "development"
+GRAPHIFY_BACKEND = "openai"
 
 [env._]
 path = [ "./node_modules/.bin", "./scripts" ]
-file = [ ".env", ".env.local" ]
 
 [tasks.setup]
-description = "Install npm dependencies"
+description = "Verify the Node version, apply local rebase defaults, install npm dependencies"
 run = "npm run setup"
 
 [tasks.setup-full]
@@ -66,7 +63,7 @@ run = "npm run test:watch"
 description = "Run unit tests with verbose output"
 run = "npm run test:verbose"
 [tasks.verify]
-description = "Run the base verification gate (check + lint + typecheck + i18n + test + build)"
+description = "Run the base verification gate (version, reference audit, format, lint, typecheck, RPC contract, i18n, test, coverage, builds, bundle budget)"
 run = "npm run verify"
 
 [tasks.verify-full]
@@ -116,34 +113,34 @@ run = "npm run package:beta"
 
 [tasks.release]
 description = "Run extension release script"
-run = "npm run release"
+run = '''
+sh -c 'set -a; [ -f .env ] && . ./.env; [ -f .env.local ] && . ./.env.local; exec npm run release'
+'''
 
 [tasks.release-prod]
 description = "Verify, build, and package production Web Store release"
-run = "npm run release:prod"
+run = '''
+sh -c 'set -a; [ -f .env ] && . ./.env; [ -f .env.local ] && . ./.env.local; exec npm run release:prod'
+'''
 [tasks.browser-attach]
 description = "Attach Chrome DevTools CDP to a live FoE tab"
 run = "node scripts/attach-devtools.mjs"
 
 [tasks.graph]
-description = "Run Graphify automation across targets (foe-info, foe-info-original, forge-hammer, metadata)"
-run = "bash .agents/scripts/graphify.sh"
+description = "Run Graphify automation across targets (foe-info, foe-info-original, forge-hammer, metadata-store)"
+run = "bash scripts/graphify/graphify.sh"
 [tasks.graph-ast]
 description = "Update FoE-Info Graphify AST"
-run = "bash .agents/scripts/graphify.sh foe-info ast"
+run = "bash scripts/graphify/graphify.sh foe-info ast"
 
 [tasks.graph-update]
 description = "Incremental update of FoE-Info Graphify knowledge graph"
-run = "bash .agents/scripts/graphify.sh foe-info update"
+run = "bash scripts/graphify/graphify.sh foe-info update"
 
 [tasks.graph-reindex]
 description = "Full semantic reindex of FoE-Info knowledge graph"
-run = "bash .agents/scripts/graphify.sh foe-info reindex"
+run = "bash scripts/graphify/graphify.sh foe-info reindex"
 
 [tasks.graph-label]
 description = "Relabel FoE-Info graph communities (starts the local model, no re-extract)"
-run = "bash .agents/scripts/graphify.sh foe-info label"
-
-[tasks.mcp-profile]
-description = "Switch active MCP profile (default, browser, research, full)"
-run = "node .agents/scripts/mcp-profile.mjs"
+run = "bash scripts/graphify/graphify.sh foe-info label"

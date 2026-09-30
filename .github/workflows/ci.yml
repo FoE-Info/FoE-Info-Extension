@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HUSKY: '0'
+      CI_TEST_EVIDENCE_DIR: build/ci-evidence
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -26,11 +27,26 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 24.x
+          node-version: 26.8.2
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p "$CI_TEST_EVIDENCE_DIR"
+          npm ci 2>&1 | tee "$CI_TEST_EVIDENCE_DIR/install-console.log"
+        id: install
 
       - name: Run verification gate
-        run: npm run verify
+        run: npm run verify:evidence
+        id: verify
+
+      - name: Upload verification evidence
+        if: always() && (steps.install.outcome != 'skipped' || steps.verify.outcome != 'skipped')
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-evidence-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.sha }}
+          path: build/ci-evidence/
+          if-no-files-found: warn
+          retention-days: 14

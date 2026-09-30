@@ -5,10 +5,6 @@ mise.lock
 *.toml
 .idea
 src/js/fn/constants.js
-.agent/
-.agents/
-.codex/
-.omp/
 .venv/
 tests/fixtures/
 src/fonts/

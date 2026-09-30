@@ -5,19 +5,6 @@
 npm run verify
 _VERIFY_STATUS=$?
 
-# Fork drift: report, never block. `peer-repo` is a separate closed-source
-# repository that tracks this one, so every commit here can widen the gap it has
-# to re-sync. Blocking product work on a downstream fork's state would be
-# backwards — the fork is a consumer of this repo, not a gate on it — so this
-# surfaces the number at push time instead.
-#
-# Deliberately does not exit non-zero. audit:fork stays red until the fork is
-# brought up to date, and a hook that always fails gets muted and then ignored
-# for everything else too. Only the conditions are printed (`--brief`); the
-# full report is `npm run audit:fork`.
-node .agents/scripts/fork-drift.mjs --brief || true
-
-# Exit with verify's status, not the drift check's. Appending a `|| true`
-# command here would otherwise make the hook's exit code 0 unconditionally and
-# let a failing gate through — the drift report must not disarm the gate.
+# Exit with verify's own status. Nothing may follow that can turn a failing
+# gate into a passing push.
 exit "$_VERIFY_STATUS"

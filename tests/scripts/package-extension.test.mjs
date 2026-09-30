@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { validationStages } from '../../scripts/lib/validation-stages.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '../..');
@@ -90,23 +91,27 @@ test('verify runs every stage the gate depends on', () => {
     fs.readFileSync(path.resolve(root, 'package.json'), 'utf8'),
   );
 
-  // Stage presence, not the exact command string: the chain grows over time and
-  // a literal here breaks on every addition.
+  // Packaging must retain the complete shared gate even as entrypoints change.
+  assert.equal(pkg.scripts.verify, 'node scripts/verify.mjs');
+  const scripts = validationStages('full')
+    .filter((stage) => stage.selected && stage.command[0] === 'npm')
+    .map((stage) => stage.command[2]);
   for (const stage of [
     'version:check',
+    'audit:refs:published',
     'check',
     'lint',
     'typecheck',
+    'contracts:audit',
     'rpc:contract:check',
     'i18n:check',
     'test',
+    'test:coverage',
     'build:dev',
+    'check:bundle-budget',
   ]) {
-    assert.ok(
-      // `npm test` and `npm run test` are both idiomatic; the chain uses both.
-      new RegExp(`npm (?:run )?${stage}(?:\\s|$)`).test(pkg.scripts.verify),
-      `verify does not run ${stage}`,
-    );
+    assert.ok(scripts.includes(stage), `verify does not run ${stage}`);
+    assert.ok(pkg.scripts[stage], `missing gate script: ${stage}`);
   }
 
   for (const script of [

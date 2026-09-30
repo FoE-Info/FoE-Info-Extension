@@ -22,7 +22,10 @@ url = "https://nodejs.org/dist/v26.8.2/node-v26.8.2-win-x64.zip"
 [[tools.python]]
 version = "3.14.7"
 backend = "core:python"
-specifiers = ["3.14"]
+specifiers = [
+    "3.14",
+    "3.14.7",
+]
 
 [tools.python."platforms.linux-x64"]
 checksum = "sha256:3959f92825141e04adf44982d3a83ee57af0877e893b0796e04c1468749d9b04"
