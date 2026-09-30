@@ -2,7 +2,8 @@
 
 Status: implemented locally on 2026-09-30. Readiness, named profiles, stage JSON/
 JUnit reports and CI capture wiring are repository sources. Remote workflow runs,
-artifact uploads and branch-protection settings have not been verified.
+artifact uploads remain unverified; development rules were inspected and updated
+on 2026-09-30 to preserve direct maintainer pushes with linear history.
 [CONTRIBUTING.md](../CONTRIBUTING.md) continues to own delivery policy.
 
 ## Detected Mapping
@@ -172,9 +173,11 @@ full-run evidence measured 1,560,826 bytes (about 1.5 MB); revisit retention if
 run frequency or artifact volume grows.
 
 Preserve CodeQL and dependency review as separate checks. Dependency review
-currently rejects high-severity findings. Recommend requiring `Verify`, CodeQL,
-and dependency review where applicable in branch protection; repository settings
-were not inspected, so required-check enforcement is unverified. Do not add path
+currently rejects high-severity findings. Repository developers and organization members with write access push directly
+after local verification; external contributors use fork pull requests. The
+inspected active ruleset enforces linear history and blocks force pushes and
+deletions, without requiring pull requests or pre-push status checks. Verify and
+CodeQL run after direct pushes; dependency review runs on pull requests. Do not add path
 filters that can strand required checks or let configuration changes bypass them.
 
 Use one pinned Linux runtime for the minimum gate. A wider OS/runtime matrix is
@@ -219,8 +222,9 @@ can leave evidence marked running. Source mutation invalidates capture and adds
 a provenance failure to gate JUnit while preserving the raw gate exit in the
 manifest. No browser/game activity is part of the core gate.
 
-Branch protection remains an administrative recommendation; no remote settings,
-release, commit or push are changed by this implementation.
+Remote rules were inspected on 2026-09-30 and linear-history enforcement was
+added to the existing deletion/force-push protections. Direct maintainer pushes
+remain allowed. No release was created.
 
 ## Local Verification
 
