@@ -54,9 +54,18 @@ lockfile, and Node API declarations together when changing the baseline.
 
 ## Git workflow
 
-`development` is linear. It is fast-forwarded, work arrives through
-short-lived branches, and no merge commit is authored on top of it. Three
-local git settings make a plain `git pull` behave that way:
+`development` is linear. Repository developers and organization members with
+write access may rebase locally and push directly to `development`; a pull request
+is not required for their work. External contributors fork the repository and
+open pull requests targeting `development`. Merge those contributions with rebase
+or squash so the branch stays linear.
+
+The active GitHub ruleset blocks branch deletion, force pushes and merge commits.
+It does not require pull requests or status checks before direct pushes. Run the
+full local gate before pushing; CI Verify and CodeQL run after the push. Dependency
+review runs on pull requests. Organization membership currently inherits write
+access; membership must still confer repository write access to push.
+Three local git settings make a plain `git pull` use rebase:
 
 | Setting             | Effect                                                                 |
 | :------------------ | :--------------------------------------------------------------------- |
