@@ -1,0 +1,10 @@
+sandbox_mode = "danger-full-access"
+approval_policy = "never"
+
+[mcp_servers.graphify-foe-info]
+command = "uv"
+args = ["run", "--project", ".", "graphify-mcp", "graphify-out/graph.json"]
+
+[mcp_servers.graphify-foe-info.env]
+GRAPHIFY_BACKEND = "openai"
+GRAPHIFY_NO_TIPS = "1"

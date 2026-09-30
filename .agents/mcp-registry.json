@@ -1,0 +1,99 @@
+{
+  "profiles": {
+    "default": ["graphify-foe-info"],
+    "browser": ["graphify-foe-info", "chrome-devtools"],
+    "research": [
+      "graphify-foe-info",
+      "graphify-forge-hammer",
+      "graphify-foe-info-original",
+      "graphify-metadata-store",
+      "graphify-low-tool"
+    ],
+    "full": [
+      "chrome-devtools",
+      "graphify-foe-info",
+      "graphify-forge-hammer",
+      "graphify-foe-info-original",
+      "graphify-metadata-store",
+      "graphify-low-tool"
+    ]
+  },
+  "servers": {
+    "chrome-devtools": {
+      "omp": {
+        "command": "chrome-devtools-mcp",
+        "args": [
+          "--browserUrl=http://127.0.0.1:9222",
+          "--experimentalMemory",
+          "--experimentalVision",
+          "--categoryExperimentalWebmcp",
+          "--experimentalDevtools",
+          "--experimentalIncludeAllPages",
+          "--experimentalPageIdRouting",
+          "--allowUnrestrictedPaths",
+          "--no-usage-statistics"
+        ]
+      }
+    },
+    "graphify-foe-info": {
+      "omp": {
+        "command": "uv",
+        "args": [
+          "run",
+          "--project",
+          ".",
+          "graphify-mcp",
+          "graphify-out/graph.json"
+        ]
+      }
+    },
+    "graphify-forge-hammer": {
+      "omp": {
+        "command": "uv",
+        "args": [
+          "run",
+          "--project",
+          ".",
+          "graphify-mcp",
+          "${FORGE_HAMMER_ROOT}/graphify-out/graph.json"
+        ]
+      }
+    },
+    "graphify-foe-info-original": {
+      "omp": {
+        "command": "uv",
+        "args": [
+          "run",
+          "--project",
+          ".",
+          "graphify-mcp",
+          "${ORIGINAL_DIR}/graphify-out/graph.json"
+        ]
+      }
+    },
+    "graphify-metadata-store": {
+      "omp": {
+        "command": "uv",
+        "args": [
+          "run",
+          "--project",
+          ".",
+          "graphify-mcp",
+          "${METADATA_DIR}/graphify-out/graph.json"
+        ]
+      }
+    },
+    "graphify-low-tool": {
+      "omp": {
+        "command": "uv",
+        "args": [
+          "run",
+          "--project",
+          ".",
+          "graphify-mcp",
+          "${LOW_TOOL_ROOT}/graphify-out/graph.json"
+        ]
+      }
+    }
+  }
+}
