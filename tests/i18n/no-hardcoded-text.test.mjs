@@ -1,7 +1,8 @@
 /**
- * Guard against hardcoded user-visible English in the chrome entry HTMLs and
- * the ui/ panel layer: every visible text must go through a data-i18n*
- * attribute or (in JS) a t()/escape helper — or be explicitly allowlisted.
+ * Guard against hardcoded user-visible English in the chrome entry HTMLs,
+ * the ui/ panel layer, and fn/ helpers that produce markup: every visible
+ * text must go through a data-i18n* attribute or (in JS) a t()/escape
+ * helper — or be explicitly allowlisted.
  *
  * Chosen approach: static, offline analysis.
  * - HTML: text nodes in <body> whose enclosing element carries no data-i18n*

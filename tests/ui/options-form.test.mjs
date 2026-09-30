@@ -26,10 +26,10 @@ function setupMockDOM() {
   elements['targets'] = createMockElement({ value: 'targets_list' });
   elements['targetText'] = createMockElement({ value: 'Target #1' });
   elements['discordTargetURL'] = createMockElement({
-    value: 'https://discord.example/webhook',
+    value: 'https://discord.com/api/webhooks/123456/abcdef-token',
   });
   elements['sheetGuildURL'] = createMockElement({
-    value: 'https://sheets.example/guild',
+    value: 'https://script.google.com/macros/s/AKfycbw6QT/exec',
   });
   elements['minSize'] = createMockElement({ value: '45' });
   elements['language'] = createMockElement({ value: 'de' });
@@ -75,11 +75,11 @@ test('optionsForm - readWorldSettingsFromForm and readGlobalSettingsFromForm', (
   assert.strictEqual(worldSettings.donation.targetText, 'Target #1');
   assert.strictEqual(
     worldSettings.webhooks.discordTargetURL,
-    'https://discord.example/webhook',
+    'https://discord.com/api/webhooks/123456/abcdef-token',
   );
   assert.strictEqual(
     worldSettings.webhooks.sheetGuildURL,
-    'https://sheets.example/guild',
+    'https://script.google.com/macros/s/AKfycbw6QT/exec',
   );
   assert.strictEqual(worldSettings.toolOptions.minSize, 45);
 
@@ -179,4 +179,50 @@ test('optionsForm - populateForm binds settings to DOM', () => {
   assert.strictEqual(elements['targets'].value, 'Targets');
   populateForm({ donation: {} }, {});
   assert.strictEqual(elements['targets'].value, 'Targets');
+});
+
+test('optionsForm - invalid destination URLs are rejected at intake', () => {
+  const elements = setupMockDOM();
+
+  // Set invalid URLs
+  elements['discordTargetURL'] = createMockElement({
+    value: 'https://evil.example.com/not-a-webhook',
+  });
+  elements['sheetGuildURL'] = createMockElement({
+    value: 'http://script.google.com/malicious',
+  });
+
+  const worldSettings = readWorldSettingsFromForm();
+
+  // Invalid destinations are normalized to empty string at intake
+  assert.strictEqual(worldSettings.webhooks.discordTargetURL, '');
+  assert.strictEqual(worldSettings.webhooks.sheetGuildURL, '');
+});
+
+test('optionsForm - empty destination URLs are accepted at intake', () => {
+  const elements = setupMockDOM();
+
+  elements['discordTargetURL'] = createMockElement({ value: '' });
+  elements['sheetGuildURL'] = createMockElement({ value: '' });
+
+  const worldSettings = readWorldSettingsFromForm();
+
+  assert.strictEqual(worldSettings.webhooks.discordTargetURL, '');
+  assert.strictEqual(worldSettings.webhooks.sheetGuildURL, '');
+});
+
+test('optionsForm - http: scheme destinations are rejected at intake', () => {
+  const elements = setupMockDOM();
+
+  elements['discordTargetURL'] = createMockElement({
+    value: 'http://discord.com/api/webhooks/123456/abcdef',
+  });
+  elements['sheetGuildURL'] = createMockElement({
+    value: 'http://script.google.com/macros/s/AKfycbw/exec',
+  });
+
+  const worldSettings = readWorldSettingsFromForm();
+
+  assert.strictEqual(worldSettings.webhooks.discordTargetURL, '');
+  assert.strictEqual(worldSettings.webhooks.sheetGuildURL, '');
 });

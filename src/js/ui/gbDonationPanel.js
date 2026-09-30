@@ -348,7 +348,7 @@ function buildCardFooter(cfg, getDonationsFn = getDonations_new) {
         `#${myInfo.guildPosition} `
       : '';
     const copyId = place === 1 ? 'copyText' : `copyText_${place}`;
-    footer += `<div id='${copyId}'>${guildPos}${playerShortName || playerName} ${helper.fGBsname(gbData?.name)} ${txt}</div>`;
+    footer += `<div id='${copyId}'>${guildPos}${escapeHTML(playerShortName || playerName)} ${escapeHTML(helper.fGBsname(gbData?.name))} ${txt}</div>`;
   }
   footer += `<p>Remaining <strong>${(gbData?.total || 0) - (gbData?.current || 0)}</strong> FPs</p></div>`;
   return footer;
@@ -402,7 +402,7 @@ function gbTabSafe(...args) {
     </div>
     <div id="donationText" class="collapse ${isDonationCollapsed ? '' : 'show'}">
       <div class="card-body alert-success p-2">
-        <h6 class="card-title mb-0"> <span id="GBselected">${cfg.gbData?.name} [${cfg.gbData?.level}/${cfg.gbData?.max_level}] (${cfg.gbData?.current}/${cfg.gbData?.total} FPs)</span></h6>
+        <h6 class="card-title mb-0"> <span id="GBselected">${escapeHTML(cfg.gbData?.name)} [${cfg.gbData?.level}/${cfg.gbData?.max_level}] (${cfg.gbData?.current}/${cfg.gbData?.total} FPs)</span></h6>
         <table class="table mb-1">
         <caption class="visually-hidden"><span data-i18n="donation">GB Donation</span></caption>
         <thead><tr>
@@ -465,7 +465,7 @@ function gbTabNotSafe(...args) {
     </div>
     <div id="donationText" class="collapse ${isDonationCollapsed ? '' : 'show'}">
       <div class="card-body ${alertClass} p-2">
-        <h6 class="card-title mb-0"> <span id="GBselected">${cfg.gbData?.name} [${cfg.gbData?.level}/${cfg.gbData?.max_level}] (${cfg.gbData?.current}/${cfg.gbData?.total})</span></h6>
+        <h6 class="card-title mb-0"> <span id="GBselected">${escapeHTML(cfg.gbData?.name)} [${cfg.gbData?.level}/${cfg.gbData?.max_level}] (${cfg.gbData?.current}/${cfg.gbData?.total})</span></h6>
         <table class="table mb-1">
         <caption class="visually-hidden"><span data-i18n="donation">GB Donation</span></caption>
         <thead><tr>
@@ -501,7 +501,7 @@ function gbTabEmpty(...args) {
     <div class="card-header fw-bold d-flex align-items-center justify-content-between">
       <div id="donationTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#donationText" aria-expanded="${!isDonationCollapsed}" aria-controls="donationText" class="cursor-pointer user-select-none d-flex align-items-center gap-1 text-truncate" style="cursor: pointer; user-select: none;">
         ${iconHtml}
-        <span>GB Donation [${getPlayerLink(cfg.playerName, cfg.playerId)}]</span>
+        <span>GB Donation [${getPlayerLink(escapeHTML(cfg.playerName), cfg.playerId)}]</span>
       </div>
       <div class="flex-shrink-0">
         ${closeBtn}
@@ -509,7 +509,7 @@ function gbTabEmpty(...args) {
     </div>
     <div id="donationText" class="collapse ${isDonationCollapsed ? '' : 'show'}">
       <div class="card-body alert-danger p-2">
-        <h6 class="card-title mb-0"> <span id="GBselected">${cfg.gbData?.name} [${nextLevel}]</span></h6>
+        <h6 class="card-title mb-0"> <span id="GBselected">${escapeHTML(cfg.gbData?.name)} [${nextLevel}]</span></h6>
         <table class="table mb-1">
         <caption class="visually-hidden"><span data-i18n="donation">GB Donation</span></caption>
         <thead><tr>
@@ -721,7 +721,7 @@ function buildClassicDonationHeader(options = {}) {
   html += copyBtn;
   html += `<div id="donationText3" class="collapse ${
     isCollapsed ? '' : 'show'
-  }"><p>${getPlayerLinkFn(PlayerName || GBselected?.player_name, PlayerID || GBselected?.player)}<br>`;
+  }"><p>${getPlayerLinkFn(escapeHTML(PlayerName || GBselected?.player_name), PlayerID || GBselected?.player)}<br>`;
   html += `<span id="GBselected">${escapeFn(GBselected?.name)} ${(GBselected?.level || 0) + 1}</span></p>`;
 
   if (GBselected?.connected === false) {
@@ -888,7 +888,7 @@ function renderGbDonationPanel(params = {}) {
     ) ?
       `#${MyInfo.guildPosition} `
     : '';
-  const prefixCopyText = `<div id='copyText'>${guildPosPrefix}${playerShortName || PlayerName} ${gbShortNameFn(GBselected.name)} `;
+  const prefixCopyText = `<div id='copyText'>${guildPosPrefix}${escapeHTML(playerShortName || PlayerName)} ${escapeHTML(gbShortNameFn(GBselected.name))} `;
 
   const isCollapsed = Boolean(depCollapse.collapseDonation);
   const iconHtml =

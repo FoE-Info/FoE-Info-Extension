@@ -133,7 +133,18 @@ function bindNetworkBridge(config = {}) {
     collapseOptions: resolveDep(config, 'collapseOptions', () =>
       require('../fn/collapse.js'),
     ),
-    resetSessionState: config.resetSessionState,
+    // A Great Building cache holds per-world RPC-derived data, so a world
+    // change must not surface another world's building data. Default the
+    // session reset to the registry's reset (idempotent Map clear, generation
+    // token-guarded inside createWorldSwitcher so it cannot race an in-flight
+    // read). Callers keep the option to override with their own hook.
+    resetSessionState:
+      resolveDep(
+        config,
+        'resetSessionState',
+        () => require('../state/GreatBuildingRegistry.js'),
+        'reset',
+      ) ?? config.resetSessionState,
   };
   const worldSwitcher = createWorldSwitcher(applierDeps);
   const { switchToWorld } = worldSwitcher;

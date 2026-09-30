@@ -278,6 +278,17 @@ function hidePopoverForTrigger(triggerEl) {
  * @param {Document} [doc]
  */
 function hideActivePopover(doc) {
+  // Cancel any pending show/hide timers so an in-flight delay cannot
+  // re-open the popover after it has been explicitly closed.
+  if (showTimer) {
+    clearTimeout(showTimer);
+    showTimer = null;
+  }
+  if (hideTimer) {
+    clearTimeout(hideTimer);
+    hideTimer = null;
+  }
+
   const targetDoc = doc || (typeof document !== 'undefined' ? document : null);
   const popoverEl = targetDoc?.getElementById?.('foe-popover');
   if (popoverEl && typeof popoverEl.hidePopover === 'function') {

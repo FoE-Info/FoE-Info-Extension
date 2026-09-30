@@ -8,6 +8,7 @@
 
 const { createLogger } = require('../utils/logger.js');
 const { outpostState } = require('../state/CityDomainState.js');
+const { escapeHTML } = require('../utils/escape.js');
 
 const logger = createLogger('OutpostPanel');
 
@@ -93,7 +94,7 @@ function renderCulturalPanel(
     html += element.icon('culturalicon', 'culturalText', isCollapsed);
   html += `<strong><span data-i18n="cultural">Cultural Settlement</span>:</strong>`;
   if (activeSettlement) {
-    html += ` <span class="ms-1">${settlementName}</span>`;
+    html += ` <span class="ms-1">${escapeHTML(settlementName)}</span>`;
   }
   if (totalAdv > 0) {
     html += ` <span class="badge bg-info text-dark ms-1">${unlockedAdv}/${totalAdv} (${pct}%)</span>`;
@@ -116,7 +117,7 @@ function renderCulturalPanel(
     for (const key of costKeys) {
       const goodName = key;
       const count = remainingCosts[key] || 0;
-      html += `<tr><td class="text-start">${goodName}</td><td class="text-end font-monospace">${count}</td></tr>`;
+      html += `<tr><td class="text-start">${escapeHTML(goodName)}</td><td class="text-end font-monospace">${count}</td></tr>`;
     }
     html += `</tbody></table>`;
   }

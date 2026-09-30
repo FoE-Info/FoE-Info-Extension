@@ -83,10 +83,7 @@ function renderBuildingCollectionTimes({
           helper.fEntityNameTrim(entry.id || entry.name)) ||
         entry.name ||
         entry.id;
-      const displayName =
-        typeof helper?.escapeHTML === 'function' ?
-          helper.escapeHTML(rawName)
-        : escapeHTML(rawName);
+      const displayName = escapeHTML(rawName);
       buildingsHTML += `${displayName}: ${formatDateTime(entry.ready)}<br>`;
     }
   });

@@ -3,6 +3,7 @@
  *
  * Modular form helper for reading and populating Options page settings.
  */
+const { validateDestinationUrl } = require('../utils/destinationValidator.js');
 
 const CHECKBOX_CONFIG = [
   { id: 'bonus', key: 'showBonus' },
@@ -82,9 +83,21 @@ function readWorldSettingsFromForm() {
     targetText: document.getElementById('targetText')?.value ?? '',
   };
 
+  const rawDiscord =
+    document.getElementById('discordTargetURL')?.value?.trim() ?? '';
+  const rawSheet =
+    document.getElementById('sheetGuildURL')?.value?.trim() ?? '';
+
+  const discordResult = validateDestinationUrl(rawDiscord, {
+    serviceHint: 'discord',
+  });
+  const sheetResult = validateDestinationUrl(rawSheet, {
+    serviceHint: 'sheets',
+  });
+
   const webhooks = {
-    discordTargetURL: document.getElementById('discordTargetURL')?.value ?? '',
-    sheetGuildURL: document.getElementById('sheetGuildURL')?.value ?? '',
+    discordTargetURL: discordResult.valid ? rawDiscord : '',
+    sheetGuildURL: sheetResult.valid ? rawSheet : '',
   };
 
   const minSizeEl = document.getElementById('minSize');

@@ -10,7 +10,8 @@
  */
 
 const { createLogger } = require('../utils/logger.js');
-const { escapeHTML, formatShieldCountdown } = require('../utils/formatters.js');
+const { formatShieldCountdown } = require('../utils/formatters.js');
+const { escapeHTML } = require('../utils/escape.js');
 const {
   socialState,
   visitedCityState,
@@ -30,7 +31,6 @@ function safeRequire(loader) {
 const element = safeRequire(() => require('./AddElement.js'));
 const collapse = safeRequire(() => require('../fn/collapse.js'));
 const copy = safeRequire(() => require('../fn/copy.js'));
-const helper = safeRequire(() => require('../fn/helper.js'));
 
 let showOptionsPkg = null;
 try {
@@ -58,20 +58,19 @@ try {
 
 function getFriendsHTML(
   list,
-  { CityProtections = [], nowMs = Date.now(), escape = escapeHTML } = {},
+  { CityProtections = [], nowMs = Date.now() } = {},
 ) {
   let htmlFriends = '';
   if (!Array.isArray(list)) return htmlFriends;
 
   list.forEach((entry) => {
     let html = '';
-    const safeName = escape ? escape(entry.name) : entry.name;
     if (Object.hasOwn(entry, 'is_self') && entry.__class__ !== 'ClanMember') {
       // Self non-guild-member, skip
     } else if (entry.is_friend === false && entry.accepted === false) {
       // Pending friend request
     } else if (Object.hasOwn(entry, 'canSabotage')) {
-      html += `<tr><td>${safeName}</td><td>Plunder</td></tr>`;
+      html += `<tr><td>${escapeHTML(entry.name)}</td><td>Plunder</td></tr>`;
     } else if (Object.hasOwn(entry, 'is_neighbor')) {
       if (Array.isArray(CityProtections) && CityProtections.length) {
         let match = false;
@@ -79,20 +78,20 @@ function getFriendsHTML(
           if (city.playerId === entry.player_id && city.expireTime > 0) {
             match = true;
             const diffText = formatShieldCountdown(city.expireTime, nowMs);
-            html += `<tr><td>${safeName}</td><td><span data-i18n="shield">Shield</span>: ${diffText}</td></tr>`;
+            html += `<tr><td>${escapeHTML(entry.name)}</td><td><span data-i18n="shield">Shield</span>: ${diffText}</td></tr>`;
           }
         });
-        if (!match) html += `<tr><td>${safeName}</td></tr>`;
+        if (!match) html += `<tr><td>${escapeHTML(entry.name)}</td></tr>`;
       } else {
-        html += `<tr><td>${safeName}</td></tr>`;
+        html += `<tr><td>${escapeHTML(entry.name)}</td></tr>`;
       }
     } else if (!Object.hasOwn(entry, 'is_active')) {
-      html += `<tr><td>${safeName}</td><td>INACTIVE</td></tr>`;
+      html += `<tr><td>${escapeHTML(entry.name)}</td><td>INACTIVE</td></tr>`;
     } else if (
       Object.hasOwn(entry, 'is_friend') ||
       Object.hasOwn(entry, 'is_guild_member')
     ) {
-      html += `<tr><td>${safeName}</td></tr>`;
+      html += `<tr><td>${escapeHTML(entry.name)}</td></tr>`;
     }
     htmlFriends += html;
   });

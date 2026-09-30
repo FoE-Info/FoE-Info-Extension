@@ -11,6 +11,7 @@
 const { createLogger } = require('../utils/logger.js');
 const { resourceState } = require('../state/CityDomainState.js');
 const { SPECIAL_GOODS } = require('../calc/goods/goodsClassification.js');
+const { escapeHTML } = require('../utils/escape.js');
 
 const logger = createLogger('ResourcePanel');
 
@@ -66,8 +67,8 @@ const isSpecialGood = (good) =>
   (SPECIAL_GOODS.has(good.id) || good.type === 'special_resource') &&
   !NON_GOODS.has(good.id);
 
-const rowMarkup = (name, amount) =>
-  `<tr><td class="text-start">${name}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
+const rowMarkup = (escapedName, amount) =>
+  `<tr><td class="text-start">${escapedName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
 
 // ============================================================================
 // 1. GOODS TABLE BUILDER & HELPER
@@ -96,11 +97,14 @@ function buildGoodsRows(
             typeof helper.fGVGagesname === 'function' ?
               helper.fGVGagesname(good.era)
             : good.era;
-          eraGoodsText += rowMarkup(good.name, currentResources[good.id]);
+          eraGoodsText += rowMarkup(
+            escapeHTML(good.name),
+            currentResources[good.id],
+          );
         }
       });
       if (eraGoodsText) {
-        standardGoodsText += `<tr><td colspan="2" class="goods-era-header">${currentEraName}</td></tr>${eraGoodsText}`;
+        standardGoodsText += `<tr><td colspan="2" class="goods-era-header">${escapeHTML(currentEraName)}</td></tr>${eraGoodsText}`;
       }
     }
 
@@ -112,7 +116,10 @@ function buildGoodsRows(
           currentResources[good.id] > 0 &&
           isSpecialGood(good)
         ) {
-          specialGoodsRows += rowMarkup(good.name, currentResources[good.id]);
+          specialGoodsRows += rowMarkup(
+            escapeHTML(good.name),
+            currentResources[good.id],
+          );
         }
       });
     }
@@ -120,8 +127,9 @@ function buildGoodsRows(
     Object.entries(currentResources).forEach(([goodId, qty]) => {
       if (NON_GOODS.has(goodId) || !qty || qty <= 0) return;
       const name = resourceNames[goodId] || goodId;
-      if (SPECIAL_GOODS.has(goodId)) specialGoodsRows += rowMarkup(name, qty);
-      else standardGoodsText += rowMarkup(name, qty);
+      if (SPECIAL_GOODS.has(goodId))
+        specialGoodsRows += rowMarkup(escapeHTML(name), qty);
+      else standardGoodsText += rowMarkup(escapeHTML(name), qty);
     });
   }
 
