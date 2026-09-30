@@ -72,7 +72,9 @@ The [readiness script](../scripts/doctor.mjs) uses Node built-ins and works befo
 Check the engine floor from package.json, npm availability/version, lockfile
 presence, required dependency resolution, and Git/index availability for published
 reference checks. Report missing prerequisites with a remedy. Keep `setup` separate.
-Bash is needed by shared shell harness fixtures. Graphify/Python readiness belongs
+Bash is needed by shared shell harness fixtures; uvx is required by the full
+gate for font-subsetting tests. CI installs uv and selects Python before running
+the gate. FontTools/Python may be downloaded by uvx on a cold run. Graphify readiness belongs
 in an explicitly requested optional probe. Browser, zip and authenticated GitHub
 CLI probes likewise belong to their workflows, not the core gate.
 
@@ -214,7 +216,7 @@ npm run verify:evidence -- --profile full
 The doctor exits nonzero for missing required prerequisites. Optional probe failures are
 recorded as skipped with a remedy. Docs readiness checks formatting dependencies;
 static/full readiness checks all declared packages, and full additionally checks
-Bash. Type-only packages are checked through their package manifests.
+Bash and uvx. Type-only packages are checked through their package manifests.
 
 Graceful SIGINT/SIGTERM cancellation forwards the signal to the active process
 group on POSIX, records cancellation and blocks subsequent stages. Forced kills

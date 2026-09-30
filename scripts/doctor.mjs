@@ -140,12 +140,18 @@ export function readiness({
     },
     'Run npm ci (or npm run setup).',
   );
-  if (profile === 'full')
+  if (profile === 'full') {
     check(
       'bash',
       () => command('bash', ['--version']).split('\n')[0],
       'Install Bash for shared shell harness fixtures.',
     );
+    check(
+      'uvx',
+      () => command('uvx', ['--version']),
+      'Install uv (which provides uvx) for the font-subsetting tests; see CONTRIBUTING.md.',
+    );
+  }
   for (const probe of new Set(probes)) {
     const commands = {
       browser: [process.execPath, ['scripts/check-browser-cdp.mjs']],

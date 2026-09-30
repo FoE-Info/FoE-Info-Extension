@@ -61,6 +61,7 @@ test('readiness works with built-ins and does not mutate the fixture', (t) => {
     ['git', 'rev-parse', '--show-toplevel'],
     ['git', 'ls-files', '--cached'],
     ['bash', '--version'],
+    ['uvx', '--version'],
   ]);
   assert.equal(readFileSync(join(root, 'package.json'), 'utf8'), before);
 });
@@ -95,6 +96,40 @@ test('missing prerequisites name remedies and unavailable optional probes are re
   });
   assert.equal(optional.status, 'passed');
   assert.equal(optional.cases.at(-1).status, 'skipped');
+});
+
+test('missing uvx fails full readiness without burdening docs or static profiles', (t) => {
+  for (const profile of ['docs', 'static', 'full']) {
+    const root = fixture(t);
+    for (const name of [
+      'prettier',
+      '@ianvs/prettier-plugin-sort-imports',
+      'prettier-plugin-packagejson',
+    ]) {
+      const directory = join(root, 'node_modules', name);
+      mkdirSync(directory, { recursive: true });
+      writeFileSync(join(directory, 'index.js'), 'module.exports = {};');
+    }
+    const calls = [];
+    const report = readiness({
+      root,
+      profile,
+      nodeVersion: '26.8.2',
+      run: (name) => {
+        calls.push(name);
+        return name === 'uvx' ?
+            { error: new Error('uvx missing') }
+          : readyCommand(name);
+      },
+    });
+    assert.equal(report.status, profile === 'full' ? 'failed' : 'passed');
+    assert.equal(calls.includes('uvx'), profile === 'full');
+    if (profile === 'full') {
+      const prerequisite = report.cases.find((item) => item.id === 'uvx');
+      assert.equal(prerequisite.reason, 'prerequisite-unavailable');
+      assert.match(prerequisite.remedy, /Install uv/);
+    }
+  }
 });
 
 test('version floors compare all components and invalid profiles fail closed', () => {

@@ -52,12 +52,12 @@ Keep credentials in external environment configuration or ignored local environm
 These tools are not bundled. Each one fails at the point of use, so install it
 before running the command that needs it.
 
-| Tool                                                        | Needed by                                                                                               |
-| :---------------------------------------------------------- | :------------------------------------------------------------------------------------------------------ |
-| `zip`                                                       | `npm run package:beta`, `npm run release:prod`, `npm run release` (`scripts/package-extension.js`)      |
-| [GitHub CLI](https://cli.github.com/) (`gh`), authenticated | `npm run release` (`scripts/release.mjs`)                                                               |
-| [`uv`](https://docs.astral.sh/uv/)                          | `mise run setup-full` — the optional Graphify Python environment (`npm run setup` is the npm-only path) |
-| Chrome with remote debugging on `127.0.0.1:9222`            | `npm run metadata:download` — attaches to a live game session                                           |
+| Tool                                                        | Needed by                                                                                                                                            |
+| :---------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `zip`                                                       | `npm run package:beta`, `npm run release:prod`, `npm run release` (`scripts/package-extension.js`)                                                   |
+| [GitHub CLI](https://cli.github.com/) (`gh`), authenticated | `npm run release` (`scripts/release.mjs`)                                                                                                            |
+| [`uv`](https://docs.astral.sh/uv/)                          | `npm test`, `npm run verify`, `npm run fonts:subset` (font-subsetting tests use `uvx`); `mise run setup-full` adds the optional Graphify environment |
+| Chrome with remote debugging on `127.0.0.1:9222`            | `npm run metadata:download` — attaches to a live game session                                                                                        |
 
 ## Building
 

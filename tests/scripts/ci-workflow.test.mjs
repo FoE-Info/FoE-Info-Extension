@@ -47,6 +47,16 @@ test('CI runs the full capture gate and uploads its evidence directory', () => {
   assert.ok(upload.with['retention-days'] > 0);
 });
 
+test('CI installs font-subsetting prerequisites before the full gate', () => {
+  const setup = job.steps.find((step) =>
+    step.uses?.startsWith('astral-sh/setup-uv@'),
+  );
+  assert.ok(setup, 'the font-subsetting regression requires uvx');
+  assert.ok(job.steps.indexOf(setup) < job.steps.indexOf(verify));
+  assert.ok(!setup.if, 'prerequisite setup must not be conditional');
+  assert.ok(!setup['continue-on-error'], 'prerequisite failures must fail CI');
+});
+
 test('CI upload survives success, installation failure and early gate failure', () => {
   assert.equal(typeof upload.if, 'string');
   const expression = upload.if.trim().replace(/^\$\{\{\s*|\s*\}\}$/g, '');
