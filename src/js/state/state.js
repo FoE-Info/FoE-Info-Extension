@@ -6,6 +6,7 @@ import {
 } from '../utils/logger.js';
 import * as storage from '../utils/storage.js';
 import { metadataStore } from './MetadataStore.js';
+import nameCacheOps from './playerNameCacheOps.js';
 
 // Shared application state and definitions
 export var debugEnabled = isDebugEnabled();
@@ -326,36 +327,49 @@ export function setGameOrigin(origin) {
   if (origin) GameOrigin = origin;
 }
 
-export function updatePlayerNameCache(id, name, options = {}) {
-  if (!id) return;
-  const key = String(id);
-  const existing = playerNameCache[key];
+// --- Player name cache: debounce + bounded persistence ---
 
-  if (options && options.notFound) {
-    playerNameCache[key] = {
-      notFound: true,
-      lastUpdated: Date.now(),
-    };
-    storage.set('playerNameCache', playerNameCache);
-    return;
-  }
+const NAME_CACHE_FLUSH_DELAY_MS = 500;
+let _nameCacheFlushTimer = null;
 
-  if (!name) return;
+function scheduleNameCacheFlush() {
+  clearTimeout(_nameCacheFlushTimer);
+  _nameCacheFlushTimer = setTimeout(
+    flushPlayerNameCache,
+    NAME_CACHE_FLUSH_DELAY_MS,
+  );
+}
 
-  if (!existing || existing.notFound) {
-    playerNameCache[key] = {
-      currentName: name,
-      previousNames: [],
-      lastUpdated: Date.now(),
-    };
-  } else if (existing.currentName !== name) {
-    if (!existing.previousNames.includes(existing.currentName)) {
-      existing.previousNames.push(existing.currentName);
-    }
-    existing.currentName = name;
-    existing.lastUpdated = Date.now();
-  }
+/**
+ * Immediately persist the player-name cache to storage.
+ * Called on debounce settle, page unload, and world switch.
+ */
+export function flushPlayerNameCache() {
+  clearTimeout(_nameCacheFlushTimer);
+  _nameCacheFlushTimer = null;
   storage.set('playerNameCache', playerNameCache);
+}
+
+// Ensure pending writes are flushed before the page unloads.
+if (typeof window !== 'undefined' && window.addEventListener) {
+  try {
+    window.addEventListener('beforeunload', flushPlayerNameCache);
+  } catch {
+    /* test environments */
+  }
+}
+
+export function updatePlayerNameCache(id, name, options = {}) {
+  const dirty = nameCacheOps.updateEntry(playerNameCache, id, name, options);
+  if (!dirty) return;
+
+  // Evict expired notFound entries opportunistically (amortised)
+  nameCacheOps.evictExpired(playerNameCache, Date.now());
+
+  // Enforce cache cap (LRU eviction of oldest entries)
+  nameCacheOps.evictToCap(playerNameCache);
+
+  scheduleNameCacheFlush();
 }
 
 export function toggleDebug() {
@@ -367,7 +381,7 @@ export function toggleDebug() {
 
 export function removeDebug() {
   if (typeof document !== 'undefined') {
-    var logo = document.getElementById('logo');
+    let logo = document.getElementById('logo');
     if (logo) logo.removeEventListener('click', toggleDebug);
   }
 }

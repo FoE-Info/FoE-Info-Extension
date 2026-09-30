@@ -328,6 +328,45 @@ function getDeps(overrideDeps = {}) {
   };
 }
 
+// §4: cross-batch dispatch ordering.
+//
+// A body at or above the dispatcher's yieldParseThresholdBytes (50 KiB by
+// default) yields the event loop before it is parsed
+// (rawDispatchPipeline.js), so a later small response can finish parsing and
+// commit first, overwriting state the earlier packet carried. Sequencing is
+// therefore a property of ADMISSION, not of parsing: every admitted dispatch is
+// chained here in the order it was admitted, and the next link does not start
+// until the previous one has settled.
+//
+// Tradeoff, stated rather than hidden: one large parse now delays the small
+// packets behind it. That is a latency cost, bounded by a single parse, and it
+// buys commits that cannot overtake one another.
+//
+// A sequence-keyed reorder buffer was tried and reverted. A buffer needs
+// gap handling (a sequence that never arrives
+// stalls it) and a generation bump is not a reliable rescue, because
+// rawDispatchPipeline returns early for empty_input, decode_error, duplicate
+// and json_parse_error. A chain has no gaps: every link settles.
+let dispatchOrderChain = Promise.resolve();
+
+/**
+ * Runs `task` after every previously enqueued dispatch has settled.
+ *
+ * The chain itself must never reject, or one failed link would poison every
+ * dispatch behind it. Errors are handed back to the caller through the
+ * returned promise; the chain absorbs them.
+ *
+ * @param {() => Promise<*>} task
+ * @returns {Promise<*>} the value `task` resolved to
+ */
+function enqueueOrderedDispatch(task) {
+  const result = dispatchOrderChain.then(task, task);
+  dispatchOrderChain = result.then(
+    () => undefined,
+    () => undefined,
+  );
+  return result;
+}
 // --- Direct Content Dispatching ---
 
 /**
@@ -371,25 +410,44 @@ async function processContentDirect(
 
   try {
     if (dispatcher && typeof dispatcher.dispatchRaw === 'function') {
-      const res = await dispatcher.dispatchRaw(
-        reqUrl,
-        body,
-        encoding,
-        headers,
-        request,
-      );
-      if (res && res.batchResult && Array.isArray(res.batchResult.results)) {
-        if (typeof logRpc === 'function') {
-          for (const item of res.batchResult.results) {
+      const res = await enqueueOrderedDispatch(async () => {
+        // Re-check the generation at execution time, not only at admission: a
+        // world switch while this dispatch sat in the chain must drop it
+        // rather than commit another world's state.
+        const atRun = evaluateDispatchToken(token, currentDispatchGeneration());
+        if (atRun.dropped) {
+          logger?.debug('Dropping stale dispatch token at execution', {
+            reqUrl,
+            admittedGeneration: token?.generation,
+            admittedSequence: token?.sequence,
+            currentGeneration: currentDispatchGeneration(),
+            reason: atRun.reason,
+          });
+          return { dropped: true, stale: true, reason: atRun.reason };
+        }
+        const dispatched = await dispatcher.dispatchRaw(
+          reqUrl,
+          body,
+          encoding,
+          headers,
+          request,
+        );
+        if (
+          dispatched &&
+          dispatched.batchResult &&
+          Array.isArray(dispatched.batchResult.results) &&
+          typeof logRpc === 'function'
+        ) {
+          for (const item of dispatched.batchResult.results) {
             logRpc(item.message, !item.result?.unhandled && item.success);
           }
         }
-      }
+        return dispatched;
+      });
       return res;
     }
   } catch (err) {
     logger?.error('Error in processContentDirect dispatch:', err);
-    console.error('Error in processContentDirect dispatch:', err);
   }
 }
 

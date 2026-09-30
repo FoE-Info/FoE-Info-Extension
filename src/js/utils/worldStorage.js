@@ -25,6 +25,16 @@ const {
   LEGACY_FLAT_KEYS,
 } = require('./storageMigration.js');
 
+let logger = null;
+try {
+  const { createLogger } = require('./logger.js');
+  logger = createLogger('WorldStorage');
+} catch {
+  // Diagnostics are best-effort: storage correctness must not depend on the
+  // logger being constructible.
+  logger = null;
+}
+
 let currentWorldId = 'en7';
 const memoryWorldCache = Object.create(null);
 let memoryGlobalCache = null;
@@ -124,7 +134,7 @@ function setWorld(worldId) {
       ...globals,
       lastActiveWorld: currentWorldId,
     })).catch((err) => {
-      console.error('setWorld persist failed:', err?.message || err);
+      logger?.error('setWorld persist failed:', err?.message || err);
     });
   }
 }
@@ -175,7 +185,7 @@ function setupStorageListener() {
             try {
               cb(memoryWorldCache[wid], wid);
             } catch (e) {
-              console.error(e);
+              logger?.error(e);
             }
           });
         }
@@ -331,7 +341,7 @@ async function getWorldSettings(worldId = currentWorldId) {
   const fresh = createFreshWorldSettings();
   if (local) {
     await local.set(buildWorldWritePayload(wid, fresh)).catch((err) => {
-      console.error('world seed persist failed:', err?.message || err);
+      logger?.error('world seed persist failed:', err?.message || err);
     });
   }
   memoryWorldCache[wid] = fresh;
@@ -445,7 +455,12 @@ async function getGlobalSettings() {
     }
   }
   const fresh = createFreshGlobalSettings();
-  if (local) await local.set({ 'global:settings': fresh }).catch(() => {});
+  if (local) {
+    // Rejection propagates, matching saveWorldSettings above. Swallowing it
+    // let a caller report success for globals that vanish on the next cold
+    // start, so a seed write that did not land must not look like one that did.
+    await local.set({ 'global:settings': fresh });
+  }
   memoryGlobalCache = fresh;
   return fresh;
 }

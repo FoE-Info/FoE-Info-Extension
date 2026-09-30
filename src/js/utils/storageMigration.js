@@ -56,12 +56,10 @@ async function migrateLegacyStorage(all, local) {
   globalSettings.knownWorlds = ['en7'];
   globalSettings.lastActiveWorld = 'en7';
 
-  await local
-    .set({
-      'global:settings': globalSettings,
-      'world:en7': migratedWorld,
-    })
-    .catch(() => {});
+  await local.set({
+    'global:settings': globalSettings,
+    'world:en7': migratedWorld,
+  });
 
   await cleanLegacyFlatKeys(local);
 
@@ -86,7 +84,11 @@ const LEGACY_FLAT_KEYS = [
 
 async function cleanLegacyFlatKeys(local) {
   if (!local || typeof local.remove !== 'function') return;
-  await local.remove(LEGACY_FLAT_KEYS).catch(() => {});
+  await local.remove(LEGACY_FLAT_KEYS).catch((error) => {
+    require('./logger.js')
+      .createLogger('StorageMigration')
+      .warn('Legacy storage cleanup failed', error);
+  });
 }
 
 module.exports = {

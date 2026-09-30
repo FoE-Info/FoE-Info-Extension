@@ -89,8 +89,22 @@ if (typeof window !== 'undefined' && !window.__foe_info_bridge_active) {
             body: event.data.body,
             postData,
           })
-          .catch(() => {});
-      } catch {}
+          .catch((err) => {
+            if (debugEnabled) {
+              logger.debug(
+                'Runtime message failed (context may be invalid):',
+                err && err.message ? err.message : err,
+              );
+            }
+          });
+      } catch (err) {
+        if (debugEnabled) {
+          logger.debug(
+            'Runtime sendMessage threw:',
+            err && err.message ? err.message : err,
+          );
+        }
+      }
     }
   });
 }

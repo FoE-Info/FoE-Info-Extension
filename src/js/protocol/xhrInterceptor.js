@@ -120,8 +120,13 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
             targetOrigin,
           );
         }
-      } catch {
-        // Ignore serialization or transmission errors
+      } catch (err) {
+        if (debugEnabled) {
+          console.debug(
+            '[FoE-Info:XHRInterceptor] XHR load dispatch failed:',
+            err && err.message ? err.message : err,
+          );
+        }
       }
     });
     return send.apply(this, arguments);
@@ -154,10 +159,22 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
                 targetOrigin,
               );
             })
-            .catch(() => {});
+            .catch((err) => {
+              if (debugEnabled) {
+                console.debug(
+                  '[FoE-Info:XHRInterceptor] Fetch body read failed:',
+                  err && err.message ? err.message : err,
+                );
+              }
+            });
         }
-      } catch {
-        // Ignore fetch interception errors
+      } catch (err) {
+        if (debugEnabled) {
+          console.debug(
+            '[FoE-Info:XHRInterceptor] Fetch interception failed:',
+            err && err.message ? err.message : err,
+          );
+        }
       }
       return response;
     };
@@ -228,16 +245,37 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
                   rawData
                     .text()
                     .then((text) => dispatchWsText(text, socketUrl))
-                    .catch(() => {});
+                    .catch((err) => {
+                      if (debugEnabled) {
+                        console.debug(
+                          '[FoE-Info:XHRInterceptor] WS Blob decode failed:',
+                          err && err.message ? err.message : err,
+                        );
+                      }
+                    });
                   return;
                 }
               }
               dispatchWsText(rawData, socketUrl);
-            } catch {}
+            } catch (err) {
+              if (debugEnabled) {
+                console.debug(
+                  '[FoE-Info:XHRInterceptor] WS message dispatch failed:',
+                  err && err.message ? err.message : err,
+                );
+              }
+            }
           },
           { capture: false, passive: true },
         );
-      } catch {}
+      } catch (err) {
+        if (debugEnabled) {
+          console.debug(
+            '[FoE-Info:XHRInterceptor] WS listener attach failed:',
+            err && err.message ? err.message : err,
+          );
+        }
+      }
     }
 
     const origSend = OriginalWebSocket.prototype.send;
