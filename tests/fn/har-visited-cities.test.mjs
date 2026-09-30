@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { MetadataStore } from '../../src/js/state/MetadataStore.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const VISITS_DIR = path.resolve(__dirname, '../fixtures/visits');
@@ -48,7 +49,7 @@ test('HAR ground truth: 13 visited player cities', async (t) => {
   await t.test(
     'calculator parses every city deterministically without throwing',
     () => {
-      const calc = new VisitedCityStatsCalculator();
+      const calc = new VisitedCityStatsCalculator(new MetadataStore());
       for (const { file, data } of fixtures) {
         const input = {
           entities: data.city_map.entities,

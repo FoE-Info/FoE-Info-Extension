@@ -73,4 +73,3 @@ module.exports = {
   isEntityMotivatable,
   isEntityAided,
 };
-module.exports.default = module.exports;

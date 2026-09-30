@@ -33,28 +33,59 @@ const ERAS = [
 
 const ERA_INDEX_MAP = new Map(ERAS.map((era, idx) => [era, idx]));
 
+/**
+ * Returns the zero-based index for an era name, or -1 if unknown.
+ *
+ * @param {string} era InnoGames era key (e.g. 'BronzeAge').
+ * @returns {number} Era index or -1.
+ */
 function getEraIndex(era) {
   if (!era) return -1;
   return ERA_INDEX_MAP.get(era) ?? -1;
 }
 
+/**
+ * Returns the era name at a given index, or null if out of range.
+ *
+ * @param {number} idx Zero-based era index.
+ * @returns {string|null} Era name or null.
+ */
 function getEraByIndex(idx) {
   if (idx < 0 || idx >= ERAS.length) return null;
   return ERAS[idx];
 }
 
+/**
+ * Returns the era immediately before the given one, or null.
+ *
+ * @param {string} era InnoGames era key.
+ * @returns {string|null} Previous era or null.
+ */
 function getPreviousEra(era) {
   const idx = getEraIndex(era);
   if (idx <= 1) return null; // BronzeAge is index 1, StoneAge is 0
   return ERAS[idx - 1];
 }
 
+/**
+ * Returns the era immediately after the given one, or null.
+ *
+ * @param {string} era InnoGames era key.
+ * @returns {string|null} Next era or null.
+ */
 function getNextEra(era) {
   const idx = getEraIndex(era);
   if (idx < 0 || idx >= ERAS.length - 1) return null;
   return ERAS[idx + 1];
 }
 
+/**
+ * Resolves the era of a city map entity from its ID prefix or level.
+ *
+ * @param {{ cityentity_id?: string, level?: number }} entity City map entity.
+ * @param {string} [playerEra='StellarAgeDiscovery'] Fallback era.
+ * @returns {string} Resolved era key.
+ */
 function getBuildingEra(entity, playerEra = 'StellarAgeDiscovery') {
   if (!entity || !entity.cityentity_id) return playerEra;
   const parts = String(entity.cityentity_id).split('_');
@@ -68,6 +99,12 @@ function getBuildingEra(entity, playerEra = 'StellarAgeDiscovery') {
   return playerEra;
 }
 
+/**
+ * Strips known prefixes from a cityentity_id to extract the base name.
+ *
+ * @param {string} id Raw cityentity_id.
+ * @returns {string} Cleaned entity base ID.
+ */
 function cleanBaseEntityId(id) {
   if (!id) return '';
   return String(id)
@@ -76,6 +113,7 @@ function cleanBaseEntityId(id) {
     .replace(/^(MultiAge_|AllAge_)/, '');
 }
 
+/** @type {Record<string, string>} */
 const ERA_ACRONYMS = {
   StoneAge: 'Stone',
   BronzeAge: 'BA',
@@ -134,6 +172,12 @@ const ERA_ORDER = [
   'AA',
 ];
 
+/**
+ * Returns the short acronym for an era key (e.g. 'BronzeAge' → 'BA').
+ *
+ * @param {string} era InnoGames era key.
+ * @returns {string} Era acronym or uppercased fallback.
+ */
 function getEraAcronym(era) {
   if (!era) return '';
   return ERA_ACRONYMS[era] || String(era).toUpperCase();
@@ -151,4 +195,3 @@ module.exports = {
   getBuildingEra,
   cleanBaseEntityId,
 };
-module.exports.default = module.exports;

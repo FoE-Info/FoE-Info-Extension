@@ -58,4 +58,3 @@ module.exports = {
   isSpecialGood,
   isNonGoodKey,
 };
-module.exports.default = module.exports;

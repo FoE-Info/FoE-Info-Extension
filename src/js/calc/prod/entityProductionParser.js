@@ -194,4 +194,3 @@ module.exports = {
   addPlayerResources,
   addGuildResources,
 };
-module.exports.default = module.exports;

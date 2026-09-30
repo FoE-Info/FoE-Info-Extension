@@ -216,4 +216,3 @@ module.exports = {
   getTopReadyGalaxyBuildings,
   updateCandidateState,
 };
-module.exports.default = module.exports;

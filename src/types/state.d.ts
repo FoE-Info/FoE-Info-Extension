@@ -20,6 +20,17 @@ export interface GameEntityDefinition {
   [key: string]: unknown;
 }
 
+/** Raw incident payload retained by `setHiddenRewards` for panel rendering. */
+export interface HiddenRewardPayload {
+  hiddenRewardId: number;
+  type: string;
+  startTime: number;
+  expireTime: number;
+  position?: { context?: string; __class__?: string } | null;
+  rarity?: string;
+  [key: string]: unknown;
+}
+
 export interface MetadataStoreSubscriberEvent {
   type: 'ready' | 'update' | string;
   [key: string]: unknown;
@@ -40,7 +51,7 @@ export interface MetadataStore {
   upgradeKits: Map<string, unknown>;
   selectionKits: Map<string, unknown>;
   allies: Map<string, unknown>;
-  lookupUrls: Map<string, unknown>;
+  lookupUrls: Map<string, string>;
   volcanoProvinces: unknown[];
   waterfallProvinces: unknown[];
   buildingDefs: unknown[];
@@ -77,6 +88,8 @@ export interface MetadataStore {
   registerSelectionKit(kit: unknown): void;
   registerAlly(ally: unknown): void;
   getAlly(id: string): unknown;
+  registerLookupUrl(id: string, url: string): void;
+  getLookupUrl(id: string): string | null;
 
   getUpgradesForEntity(entityId: string): unknown[];
   getKitsForEntity(entityId: string): unknown[];
@@ -176,7 +189,7 @@ export interface CityState {
   donationPercent: number;
   donationSuffix: string;
   metadataLoaded: boolean;
-  hiddenRewards: unknown[];
+  hiddenRewards: HiddenRewardPayload[];
   GBGdata: unknown[];
   BattlegroundPerformance: unknown[];
   BGtime: string;

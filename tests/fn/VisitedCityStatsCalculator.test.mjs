@@ -11,6 +11,10 @@ const FIXTURES_DIR = path.resolve(__dirname, '../fixtures/visits');
 test('VisitedCityStatsCalculator Suite', async (t) => {
   const { VisitedCityStatsCalculator, visitedCityStatsCalculator } =
     await import('../../src/js/fn/VisitedCityStatsCalculator.js');
+  // One shared empty store for cases asserting shape/idempotence rather than
+  // entity metadata. Tests that register entities build their own store. The
+  // calculator now requires an injected store instead of capturing state/.
+  const emptyStore = new MetadataStore();
 
   await t.test('instantiation and exports', () => {
     assert.ok(VisitedCityStatsCalculator);
@@ -46,7 +50,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
       const entities = fixture.payload.city_map.entities;
       const playerEra = fixture.payload.other_player.era;
 
-      const calc = new VisitedCityStatsCalculator();
+      const calc = new VisitedCityStatsCalculator(emptyStore);
       const run1 = calc.calculateVisitedCityStats({ entities, playerEra });
       const run2 = calc.calculateVisitedCityStats({ entities, playerEra });
 
@@ -84,7 +88,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
       }
 
       const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
-      const calc = new VisitedCityStatsCalculator();
+      const calc = new VisitedCityStatsCalculator(emptyStore);
 
       const results = [];
       // Visit first 5 players
@@ -134,7 +138,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
       if (!fs.existsSync(fixturePath)) return;
 
       const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
-      const calc = new VisitedCityStatsCalculator();
+      const calc = new VisitedCityStatsCalculator(emptyStore);
       const stats = calc.calculateVisitedCityStats({
         entities: fixture.payload.city_map.entities,
         playerEra: fixture.payload.other_player.era,
@@ -171,7 +175,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
   );
 
   await t.test('resolves Castle System visual stage combat boost', () => {
-    const calc = new VisitedCityStatsCalculator();
+    const calc = new VisitedCityStatsCalculator(emptyStore);
     const statsStage4 = calc.calculateVisitedCityStats({
       entities: [{ id: 1, cityentity_id: 'V_AllAge_CastleSystem4' }],
     });
@@ -193,7 +197,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
     'accepts an injected castle boost resolver without importing msg layer',
     () => {
       const calls = [];
-      const calc = new VisitedCityStatsCalculator();
+      const calc = new VisitedCityStatsCalculator(emptyStore);
       const stats = calc.calculateVisitedCityStats({
         entities: [{ id: 1, cityentity_id: 'V_AllAge_CastleSystem4' }],
         castleBoostResolver: (entity) => {
@@ -210,7 +214,7 @@ test('VisitedCityStatsCalculator Suite', async (t) => {
       assert.equal(stats.military.red.base.att.toNumber(), 100);
 
       const ctorCalls = [];
-      const ctorCalc = new VisitedCityStatsCalculator(undefined, (entity) => {
+      const ctorCalc = new VisitedCityStatsCalculator(emptyStore, (entity) => {
         ctorCalls.push(entity.cityentity_id);
         return {
           attackerAtt: 22,

@@ -79,6 +79,12 @@ const ERA_ABBREVIATIONS = new Map([
   ['AllAge', 'AA'],
 ]);
 
+/**
+ * Returns the numeric level for an era key, or -1 if unknown.
+ *
+ * @param {string} age InnoGames era key (e.g. 'BronzeAge').
+ * @returns {number} Level number or -1.
+ */
 function fLevelfromAge(age) {
   const level = AGE_TO_LEVEL.get(age);
   if (typeof level === 'number') return level;
@@ -86,6 +92,12 @@ function fLevelfromAge(age) {
   return -1;
 }
 
+/**
+ * Returns the era key for a numeric level, or -1 if unknown.
+ *
+ * @param {number|string} level Era level (1–23).
+ * @returns {string|-1} Era key or -1.
+ */
 function fAgefromLevel(level) {
   // Legacy helper used loose equality (`level == 1`), which coerced numeric
   // strings. Preserve that behavior for backward compatibility.
@@ -95,6 +107,12 @@ function fAgefromLevel(level) {
   return -1;
 }
 
+/**
+ * Returns the short abbreviation for an era key (e.g. 'BronzeAge' → 'BA').
+ *
+ * @param {string} age InnoGames era key.
+ * @returns {string} Era abbreviation or the original key if unknown.
+ */
 function fEraAbbreviation(age) {
   return ERA_ABBREVIATIONS.get(age) ?? age;
 }
@@ -108,4 +126,3 @@ module.exports = {
   fGVGagesname,
   fEraAbbreviation,
 };
-module.exports.default = module.exports;

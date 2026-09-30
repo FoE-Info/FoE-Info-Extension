@@ -175,4 +175,3 @@ module.exports = {
   evaluateEntityHarvest,
   SPECIAL_GOODS,
 };
-module.exports.default = module.exports;

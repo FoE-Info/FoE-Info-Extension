@@ -256,4 +256,3 @@ module.exports = {
   getPlaceValues,
   evaluatePlaces,
 };
-module.exports.default = module.exports;

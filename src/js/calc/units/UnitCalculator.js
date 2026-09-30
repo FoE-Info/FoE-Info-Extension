@@ -139,4 +139,3 @@ module.exports = {
   extractSpecialBonuses,
   computeChateauGoods,
 };
-module.exports.default = module.exports;

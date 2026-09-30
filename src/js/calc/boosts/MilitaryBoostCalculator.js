@@ -289,4 +289,3 @@ module.exports = {
   extractEntityBoosts,
   formatMilitaryBoosts,
 };
-module.exports.default = module.exports;

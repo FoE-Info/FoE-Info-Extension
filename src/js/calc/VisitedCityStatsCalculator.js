@@ -7,7 +7,6 @@
  */
 
 const BigNumber = require('bignumber.js');
-const metadataStorePkg = require('../state/MetadataStore.js');
 const {
   getPreviousEra,
   getNextEra,
@@ -45,10 +44,12 @@ const {
   computeChateauGoods,
 } = require('./units/UnitCalculator.js');
 
-const defaultMetadataStore = metadataStorePkg.metadataStore;
-
 class VisitedCityStatsCalculator {
-  constructor(store = defaultMetadataStore, castleBoostResolver = null) {
+  // `store` is required and has no default. It used to fall back to a module
+  // capture of `../state/MetadataStore.js`, which inverted the dependency
+  // direction and made the module-level singleton below silently carry live
+  // state. Callers inject it; see tests/calc/goods-boost-injection.test.mjs.
+  constructor(store, castleBoostResolver = null) {
     this.metadataStore = store;
     this.castleBoostResolver = castleBoostResolver || getCastleBoostsForEntity;
   }
@@ -59,7 +60,15 @@ class VisitedCityStatsCalculator {
     metadataStore = this.metadataStore,
     castleBoostResolver = this.castleBoostResolver,
   } = {}) {
-    const store = metadataStore || defaultMetadataStore;
+    // Loud, not silent: without a store the entity classification below yields
+    // quietly wrong totals (GB classification, chain-link filtering, Arc
+    // bonus). An empty entity list needs no store, so that case still passes.
+    if (entities.length > 0 && !metadataStore) {
+      throw new Error(
+        'VisitedCityStatsCalculator: metadataStore is required when entities are supplied',
+      );
+    }
+    const store = metadataStore ?? null;
     const resolveCastleBoosts = castleBoostResolver || getCastleBoostsForEntity;
     const prevEra = getPreviousEra(playerEra);
     const nextEra = getNextEra(playerEra);
@@ -247,14 +256,8 @@ class VisitedCityStatsCalculator {
   }
 }
 
-const visitedCityStatsCalculator = new VisitedCityStatsCalculator();
-
-module.exports = {
-  VisitedCityStatsCalculator,
-  visitedCityStatsCalculator,
-  calculateVisitedCityStats:
-    visitedCityStatsCalculator.calculateVisitedCityStats.bind(
-      visitedCityStatsCalculator,
-    ),
-};
-module.exports.default = visitedCityStatsCalculator;
+// No module-level singleton: building one here would mean capturing
+// `../state/MetadataStore.js` at load time, which is exactly the calc -> state
+// edge this module no longer has. The composition point in
+// fn/VisitedCityStatsCalculator.js builds it with an injected store.
+module.exports = { VisitedCityStatsCalculator };
