@@ -129,6 +129,7 @@ function getPublishableFiles() {
 // Credential files and generated machine-specific state stay local. Agent
 // definitions, skills, rules, MCP configuration, tests, and plans are shared.
 const LOCAL_ONLY_FILES = new Set([
+  '.audit-siblings',
   '.codex/auth.json',
   '.agents/.last_graph_query_stamp',
   '.husky/.graphify-python',
@@ -247,9 +248,9 @@ const LAYER_ROOTS = [
 //
 // LOCAL_SIBLINGS_FILE adds roots that are yours rather than the project's —
 // a private fork, a worktree, anything beside this repository whose paths your
-// notes cite. A shared file must contain portable optional paths, not private
-// machine locations. The format is one path per line relative to the repository
-// root, with `#` comments. Published scope never relies on these optional roots.
+// notes cite. This machine-specific registry is ignored and must not be tracked.
+// The format is one path per line relative to the repository root, with `#`
+// comments. Published scope never relies on these optional roots.
 const LOCAL_SIBLINGS_FILE = '.audit-siblings';
 const SIBLING_ROOTS =
   IS_PUBLISHED ?

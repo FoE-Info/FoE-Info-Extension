@@ -443,7 +443,6 @@ test('publication policy: shared agent configuration, plans, and backlog are acc
     'docs/feature-design.md': 'Shared design.\n',
     'conductor/notes.md': 'Shared guidance.\n',
     'docs/roadmap.md': 'Shared backlog.\n',
-    '.audit-siblings': '# Optional sibling configuration.\n',
   };
   for (const tracked of [['README.md'], Object.keys(files)]) {
     const published = runAudit(
@@ -478,6 +477,7 @@ test('publication policy: shared agent references are checked before and after s
 
 test('publication policy: accidentally publishable credentials and runtime state are findings', () => {
   const privateFiles = {
+    '.audit-siblings': '../private-fixture-peer\n',
     '.env': 'DUMMY_KEY=fixture\n',
     '.env.local': 'DUMMY_KEY=fixture\n',
     '.envrc': 'private\n',
@@ -501,6 +501,7 @@ test('publication policy: accidentally publishable credentials and runtime state
         .sort(),
       Object.keys(privateFiles).sort(),
     );
+    assert.ok(!JSON.stringify(published).includes('private-fixture-peer'));
     assert.ok(!JSON.stringify(published).includes('DUMMY_KEY=fixture'));
     assert.ok(!JSON.stringify(published).includes('fixture-value'));
   }
@@ -521,6 +522,7 @@ test('publication policy: ignore rules retain shared harness sources and exclude
     '.codex/auth.json': '{"token":"fixture-value"}\n',
     '.agents/.last_graph_query_stamp': 'timestamp\n',
     '.husky/.graphify-python': 'private\n',
+    '.audit-siblings': '../private-fixture-peer\n',
   };
   const published = runAudit(
     files,

@@ -10,6 +10,40 @@ node_modules/
 /.codex/auth.json
 /.agents/.last_graph_query_stamp
 /.husky/.graphify-python
+/.audit-siblings
+*.pem
+*.key
+
+# Local browser captures, worktrees and runtime files
+*.har
+*.har.gz
+*.heapsnapshot
+*.heaptimeline
+.worktrees/
+worktrees/
+/.agent
+**/.claude/scheduled_tasks.lock
+**/.claude/scheduled_tasks.json
+**/.claude/routines/.state/
+**/.claude/worktrees/
+**/.claude/checkpoints/
+**/.claude/mailbox/
+**/.claude/agent-registry.json
+**/.claude/agent-memory-local
+**/.claude/first-run
+**/.claude/assistant-daemon-state.debug
+
+# Logs and temporary files
+*.log
+*.tmp
+*.tmp.*
+*.tmp-*
+tmp/
+temp/
+__pycache__/
+*.py[c]
+/patch.diff
+/full_patch.diff
 
 # Build & Distribution Artifacts
 build/
@@ -18,6 +52,15 @@ build/
 
 # IDE & Editor Files
 .vscode/
+.idea/
+*.code-workspace
+.DS_Store
+Thumbs.db
+desktop.ini
+.directory
+*.swp
+*.swo
+*~
 
 # Shared Graphify products and portable incremental/label state only.
 # Everything else (caches, backups, exports, raw memory, findings, runtime
