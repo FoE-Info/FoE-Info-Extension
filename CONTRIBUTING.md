@@ -28,14 +28,16 @@ Guidelines:
 Some developer workflows rely on tools that `npm install` does **not** provide.
 Install them separately if you need the matching workflows:
 
-| Tool                                   | Required by                                                           | Why                                                                                             |
-| :------------------------------------- | :-------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------- |
-| `zip`                                  | `npm run package:beta` / `scripts/package-extension.js`               | Builds the release ZIP artifacts.                                                               |
-| `gh`                                   | `npm run release` / `scripts/release.mjs`                             | Creates GitHub releases and uploads assets (requires `gh auth login` first).                    |
-| CDP-enabled Chrome on `127.0.0.1:9222` | `npm run metadata:download` / `scripts/download-offline-metadata.mjs` | Drives a Chrome instance over the DevTools protocol to ingest live InnoGames entity datasets.   |
+| Tool                                   | Required by                                                                            | Why                                                                                                                         |
+| :------------------------------------- | :------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| `zip`                                  | `npm run package:beta` / `scripts/package-extension.js`                                | Builds the release ZIP artifacts.                                                                                           |
+| `gh`                                   | `npm run release` / `scripts/release.mjs`                                              | Creates GitHub releases and uploads assets (requires `gh auth login` first).                                                |
+| CDP-enabled Chrome on `127.0.0.1:9222` | `npm run metadata:download` / `scripts/download-offline-metadata.mjs`                  | Drives a Chrome instance over the DevTools protocol to ingest live InnoGames entity datasets.                               |
 
 The core gate (`npm run verify`) needs Node.js, npm, Git, installed dependencies
-and Bash for shared shell harness fixtures. A Chromium-based browser is needed
+and Bash for shared shell harness fixtures, plus uv/uvx for font-subsetting tests.
+`uvx` obtains Python and FontTools on its first run when not cached; install uv
+through mise or the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/). A Chromium-based browser is needed
 separately for manual panel testing.
 
 ### Node.js baseline
