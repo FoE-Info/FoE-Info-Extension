@@ -12,7 +12,26 @@ try {
   logger = createLogger('MetadataResolver');
 } catch {}
 
-const fetchedMetadataUrls = new Set();
+/**
+ * Session-scoped URL dedup for metadata fetches.  Bounded LRU: once the cap is
+ * reached the oldest successful fetch is evicted, so re-resolving it simply
+ * becomes a network read again (never a fabricated value).
+ */
+const METADATA_URL_CACHE_LIMIT = 256;
+const fetchedMetadataUrls = new Map();
+
+function markMetadataUrlFetched(url) {
+  if (fetchedMetadataUrls.has(url)) {
+    // Reinsert so recently used entries keep winning the eviction race.
+    fetchedMetadataUrls.delete(url);
+  } else if (fetchedMetadataUrls.size >= METADATA_URL_CACHE_LIMIT) {
+    // Evict the oldest successful fetch to keep the cache bounded.
+    const oldest = fetchedMetadataUrls.keys().next().value;
+    if (oldest !== undefined) fetchedMetadataUrls.delete(oldest);
+  }
+  fetchedMetadataUrls.set(url, true);
+}
+
 const pendingMetadataUrls = new Map();
 const PERSISTENT_METADATA_KEY = 'metadata:cityEntities';
 const PERSISTENT_METADATA_VERSION = 1;
@@ -54,6 +73,21 @@ async function persistMetadataBatch(entries) {
   if (!storage?.set || !entries || Object.keys(entries).length === 0) return;
   const cache = await loadPersistentMetadata();
   Object.assign(cache, entries);
+
+  // Prune expired entries in place before persisting.  We deliberately keep
+  // PERSISTENT_METADATA_VERSION untouched: a version bump would invalidate the
+  // whole cache for every user on their next persist, while this pruning only
+  // drops entries that are already stale and rejected by getCachedMetadata.
+  const now = Date.now();
+  for (const id of Object.keys(cache)) {
+    const entry = cache[id];
+    if (
+      !entry?.fetchedAt ||
+      now - entry.fetchedAt > PERSISTENT_METADATA_MAX_AGE
+    )
+      delete cache[id];
+  }
+
   try {
     await storage.set({
       [PERSISTENT_METADATA_KEY]: {
@@ -100,7 +134,7 @@ function shareDownload(url, download) {
   if (pendingMetadataUrls.has(url)) return pendingMetadataUrls.get(url);
   const pending = download()
     .then((loaded) => {
-      if (loaded) fetchedMetadataUrls.add(url);
+      if (loaded) markMetadataUrlFetched(url);
       return loaded;
     })
     .finally(() => pendingMetadataUrls.delete(url));
@@ -330,10 +364,12 @@ function processCityEntity(msg, id, name, CityEntityDefs) {
 
 module.exports = {
   fetchedMetadataUrls,
+  METADATA_URL_CACHE_LIMIT,
   getEntityId,
   getCandidateEntityLookupKeys,
   processCityEntity,
   resolveMissingCityEntities,
   resolveMissingUnitTypes,
   persistBuildingEntityLookupDebounced,
+  persistMetadataBatch,
 };

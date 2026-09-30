@@ -51,6 +51,13 @@ test('networkListener - handleRawNetworkEntry Origin and World Detection', async
       },
     );
 
+    // Dispatch is chained in admission order (§4), so `dispatchRaw` runs on a
+    // later microtask than the call above. No production caller awaits this
+    // path — devtoolsBridge.js and handleRequestFinished are fire-and-forget —
+    // so the deferral is invisible to them; the test has to yield before it
+    // can observe the call.
+    await new Promise((resolve) => setImmediate(resolve));
+
     assert.equal(recordedOrigin, 'https://us12.forgeofempires.com');
     assert.equal(setWorldVal, 'us12');
     assert.equal(registeredWorld, 'us12');
