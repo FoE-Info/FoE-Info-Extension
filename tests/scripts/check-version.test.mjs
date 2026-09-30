@@ -47,6 +47,8 @@ function fixture({ version, tagVersion, extraCommits = 0, orphanTag = false }) {
   git(dir, 'init', '-q', '-b', 'main');
   git(dir, 'config', 'user.email', 't@example.com');
   git(dir, 'config', 'user.name', 'T');
+  git(dir, 'config', 'commit.gpgsign', 'false');
+  git(dir, 'config', 'tag.gpgSign', 'false');
 
   writePkg(version);
   commit('state at the version under test');
