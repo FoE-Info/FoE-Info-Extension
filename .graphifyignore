@@ -1,90 +1,25 @@
-# Graphify scope is independent of what is committed to Git.
-# Git ignore files are also read; reopen selected local project knowledge.
+# Graph scope includes extension source and selected canonical project guidance.
+# Git publication policy is separate and lives in .gitignore.
+/*
+!/src/
+!/README.md
+!/SECURITY.md
+!/CONTRIBUTING.md
+!/AGENTS.md
+!/docs/
+/docs/*
+!/docs/architecture.md
+!/docs/debugging.md
+!/docs/repository-contracts.md
+!/docs/validation-harness.md
 !/.agents/
 /.agents/*
-!/.agents/scripts/
 !/.agents/rules/
-!/.agents/references/
-/.agents/references/*
-!/.agents/references/foe/
 
-# Generic agent instructions, harness state, and local plans
-.agent/
-.omp/
-.codex/
-.claude/
-AGENTS.md
-conductor/
-
-# Include test source and project docs; omit captured fixture payloads.
-/tests/fixtures/
-/docs/heap-snapshots/
-/docs/har/
-
-# Graphify Outputs (prevent self-indexing)
-graphify-out/
-
-# Git Worktrees (prevent duplicate tree indexing)
-.worktrees/
-
-# Dependencies & Lockfiles
-node_modules/
-package-lock.json
-uv.lock
-mise.lock
-.venv/
-.uv/
-__pycache__/
-*.py[c]
-
-# Build Outputs (webpack emits into build/)
-build/
-*.map
-*.min.js
-*.min.css
-*.bundle.js
-*.chunk.js
-*.tsbuildinfo
-
-# Local patch snapshots duplicate source and may describe obsolete code.
-/patch.diff
-/full_patch.diff
-
-# Editor Files
-.vscode/
-.idea/
-*.code-workspace
-.DS_Store
-Thumbs.db
-desktop.ini
-.directory
-*.swp
-*.swo
-*~
-
-# Logs & Temp
-*.log
-tmp/
-temp/
-*.tmp
-*.tmp.*
-*.tmp-*
-
-# Archives & Extension Packages
-*.zip
-*.crx
-*.tar.gz
-*.tgz
-
-# Environment, Secrets & CDP Dumps
-.env
-.env.*
-*.pem
-*.key
-*.heapsnapshot
-*.heaptimeline
-*.har
-*.har.gz
+# Colocated source documentation is outside the selected canonical doc set.
+/src/**/*.md
+/src/**/*.mdx
+/src/**/*.rst
 
 # Media & Binary Assets (avoids vision/parser overhead)
 *.png
@@ -100,4 +35,9 @@ temp/
 *.mp3
 *.wav
 *.ogg
-.npmrc
+
+# Generated query memories must never become source graph nodes.
+/graphify-out/
+
+# Generated Graphify query memory is local, never source.
+/graphify-out/memory/
