@@ -2,6 +2,17 @@
 
 This document describes the debug mode of the FoE-Info extension, the header icon toggle mechanism, console log filtering tags, and workflows for user support and automated AI diagnostics.
 
+Graphify paths are structural evidence. Check the relationship context and source
+before interpreting them as runtime execution: `indirect_call` edges with
+`context: collection` can represent function references in exports or returned
+objects, while callback arguments require separate wiring verification. The local
+graph is undirected, and legacy re-export shims can produce external placeholders
+for implementations that exist elsewhere. Dependencies loaded through assignment
+inside `try` blocks may be absent; see [architecture](architecture.md).
+An isolated node therefore does not establish that code is unused. Check current
+source fingerprints before reusing saved findings, and keep browser observations
+separate from declaration, neighborhood, and fixture evidence.
+
 ---
 
 ## 1. Operating Modes Overview
@@ -51,22 +62,22 @@ The debug mode is controlled by clicking the logo icon in the top-left of the De
 
 To isolate logs from specific subsystems, type any of these tags into the DevTools panel console filter box:
 
-| Tag Filter                                        | Monitored Subsystem         | Diagnostic Information Emitted                                                                                 |
-| :------------------------------------------------ | :-------------------------- | :------------------------------------------------------------------------------------------------------------- |
-| `[FoE-Info]`                                      | **All Logs**                | Captures all logs across the extension.                                                                        |
-| `[FoE-Info:RPC]`                                  | **Network JSON-RPC**        | Handled & unhandled RPCs (`[HANDLED]`, `[UNHANDLED]`), class/method, request IDs, decoded response payloads.   |
-| `[FoE-Info:Dispatcher]`                           | **RPC Routing**             | Packet routing to registered services, class fallbacks, and unhandled detections.                              |
-| `[FoE-Info:CityStatsCalc]`                        | **City Value Computations** | Entity counts, player era, raw boost tallies, FP/coin/supply totals, and daily goods calculations.             |
-| `[FoE-Info:GBCalc]`                               | **Great Buildings Math**    | Spot lock calculations, owner safe add requirements, and 1.9x Arc reward half-up rounding.                     |
-| `[FoE-Info:InvestedCalc]`                         | **Investments & Sniping**   | Contribution counts, Arc multipliers, locked safe spots, hidden GB filtering, and net profit/loss math.        |
-| `[FoE-Info:GBG]`                                  | **Guild Battlegrounds**     | Province building attrition reductions, camp counts ready/in-construction, and final attrition chances.        |
-| `[FoE-Info:BlueGalaxy]`                           | **Blue Galaxy Helper**      | Candidate building extractions, charges remaining, and production readiness ranking.                           |
-| `[FoE-Info:Boost]`                                | **Military Boost Matrix**   | Red attacking & Blue defending boost aggregations across Base, GBG, GE, and QI.                                |
-| `[FoE-Info:MetadataStore]`                        | **Game Entity Cache**       | Batch entity ingestion counts, cache misses (missing metadata), and store resets (routine cache hits omitted). |
-| `[FoE-Info:MetadataResolver]`                     | **Metadata Downloads**      | Missing entity downloads, completion, and retry failures.                                                      |
-| `[FoE-Info:StartupService]` with `TIMING:P5g/P6g` | **Startup Rendering**       | The orchestrator uses its caller's logger for metadata completion, fallback timing, and recomputation.         |
-| `[FoE-Info:CityStatsRender]`                      | **City Statistics UI**      | Runtime rendering of city statistics.                                                                          |
-| `[FoE-Info:PanelDispatcher]`                      | **UI Re-renders & Races**   | Monotonically increasing render cycle sequences (`seq`) and timestamps for detecting race conditions.          |
+| Tag Filter                                              | Monitored Subsystem         | Diagnostic Information Emitted                                                                                 |
+| :------------------------------------------------------ | :-------------------------- | :------------------------------------------------------------------------------------------------------------- |
+| `[FoE-Info]`                                            | **All Logs**                | Captures all logs across the extension.                                                                        |
+| `[FoE-Info:RPC]`                                        | **Network JSON-RPC**        | Handled & unhandled RPCs (`[HANDLED]`, `[UNHANDLED]`), class/method, request IDs, decoded response payloads.   |
+| `[FoE-Info:RpcRouter]`                                  | **RPC Routing**             | Packet routing to registered services, class fallbacks, and unhandled detections.                              |
+| `[FoE-Info:CityStatsCalc]`                              | **City Value Computations** | Entity counts, player era, raw boost tallies, FP/coin/supply totals, and daily goods calculations.             |
+| `[FoE-Info:GBCalc]`                                     | **Great Buildings Math**    | Spot lock calculations, owner safe add requirements, and 1.9x Arc reward half-up rounding.                     |
+| `[FoE-Info:InvestedCalc]`                               | **Investments & Sniping**   | Contribution counts, Arc multipliers, locked safe spots, hidden GB filtering, and net profit/loss math.        |
+| `[FoE-Info:GBG]`                                        | **Guild Battlegrounds**     | Province building attrition reductions, camp counts ready/in-construction, and final attrition chances.        |
+| `[FoE-Info:BlueGalaxy]`                                 | **Blue Galaxy Helper**      | Candidate building extractions, charges remaining, and production readiness ranking.                           |
+| `[FoE-Info:Boost]`                                      | **Military Boost Matrix**   | Red attacking & Blue defending boost aggregations across Base, GBG, GE, and QI.                                |
+| `[FoE-Info:MetadataStore]`                              | **Game Entity Cache**       | Batch entity ingestion counts, cache misses (missing metadata), and store resets (routine cache hits omitted). |
+| `[FoE-Info:MetadataResolver]`                           | **Metadata Downloads**      | Missing entity downloads, completion, and retry failures.                                                      |
+| `[FoE-Info:StartupService]` with `TIMING:P5`/`P6`/`P6s` | **Startup Rendering**       | The orchestrator uses its caller's logger for metadata completion, fallback timing, and recomputation.         |
+| `[FoE-Info:CityStatsRender]`                            | **City Statistics UI**      | Runtime rendering of city statistics.                                                                          |
+| `[FoE-Info:PanelDispatcher]`                            | **UI Re-renders & Races**   | Monotonically increasing render cycle sequences (`seq`) and timestamps for detecting race conditions.          |
 
 | `[FoE-Info:DevTools]` | **DevTools Network Bridge** | Request interception, streaming buffer queue, and panel forwarding. |
 | `[FoE-Info:ContentBridge]` | **Isolated Content Bridge** | Forwarding XHR/fetch events from page DOM to extension background/panel. |
@@ -81,7 +92,7 @@ tutorial, research, recruitment, etc. — see `IGNORED_RPC_CLASSES` in
 `src/js/protocol/rpcRouter.js`) are **hidden by default** from both the
 `[FoE-Info:RPC]` console groups and the `window.foeRpcLog` buffer, so the debug
 console stays focused on in-domain traffic. In-domain unhandled RPCs (the
-`allowedUnhandled` keys in `scripts/rpc-contract.config.json`) remain visible as
+`neverHandle` and `deferred` keys in `scripts/rpc-contract.config.json`) remain visible as
 red `[UNHANDLED]` entries so they stay candidates for handling.
 
 Bring the hidden entries back at runtime when you need to inspect them:
@@ -135,13 +146,13 @@ contract policy by `tests/protocol/rpc-scope.test.mjs`.
 ### Cross-Context Synchronization
 
 - Changes to `'debugEnabled'` in storage are caught by `chrome.storage.onChanged` listeners in:
-  - The DevTools panel (`logger.js`, `containerBinding.js`, `state.js`, `index.js`).
-  - The content script bridge (`contentBridge.js`), which posts `FOE_INFO_DEBUG_SYNC` to the MAIN page world for `xhrInterceptor.js`.
-  - The DevTools background bridge (`devtools.js`).
+  - The DevTools panel (`utils/logger.js` applies the flag; `state/storageListener.js` routes the key).
+  - The content script bridge (`protocol/contentBridge.js`), which posts `FOE_INFO_DEBUG_SYNC` to the MAIN page world for `xhrInterceptor.js`.
+- Other `storage.onChanged` subscriptions are key-specific and are not debug toggles: `utils/worldStorage.js` watches `global:settings` and per-world keys, and `protocol/rpcRouter.js` watches `showIgnoredRpc`.
 
 ---
 
-## 5. AI Pair-Debugging Workflow
+## 6. AI Pair-Debugging Workflow
 
 When diagnosing bug reports with an AI assistant:
 
@@ -157,8 +168,8 @@ When diagnosing bug reports with an AI assistant:
 ### Attaching to your running browser
 
 The assistant attaches to the browser you are **already using**, on your main
-profile, so extension storage (Forge-Hammer's IndexedDB, city caches) stays
-shared. It never launches a second browser.
+profile, so extension storage (`chrome.storage.local`, world settings, and city
+caches) stays shared. It never launches a second browser.
 
 ```bash
 npm run browser:check    # is Brave / Chrome attachable right now?
@@ -185,5 +196,74 @@ files are read at browser start, and the toggle is per-instance, so **restart
 the browser after editing either one**.
 
 Game tabs are observed read-only: network payloads and console output are
-read, but nothing is clicked, typed, or navigated. See
-`.agents/rules/browser-environment-hygiene.md`.
+read, but nothing is clicked, typed, or navigated. Attaching a debugger is
+diagnostics; leaving the tab alone is the boundary — no automated input, no
+focus stealing, no game tab interaction.
+
+---
+
+## 7. Local Verification Evidence
+
+Use the optional capture command when you want a retained log of verification:
+
+```bash
+npm run verify:evidence
+```
+
+It executes the same stage registry as `npm run verify`, streams output to the terminal, and
+writes `build/verify-evidence/verify-console.log` and `manifest.json`. The manifest
+records a fresh run ID, start/finish timestamps, command, Node version, Git revision
+and dirty state when available, exact child exit code or signal, and SHA-256 source
+identities before and after verification. `sourceChanged` flags changes during the
+run. A directory exported without `.git` records null Git fields and still produces
+a source digest. The digest includes pending source files, uses sorted paths and
+bytes, and excludes dependencies, builds, generated Graphify output, credentials,
+and local runtime state. Git checkouts enumerate tracked and nonignored pending
+files; exports enumerate regular files. Symlinks are not followed. Compare digests
+only for the same exported file selection. Each invocation replaces the manifest,
+so an interrupted run remains marked `running` rather than inheriting a prior pass.
+
+The same directory contains `stages.json` with stable check IDs, argv, status,
+timing, exit code/signal, and per-stage log paths. `gates.junit.xml` contains
+one case per validation stage; it is separate from the individual test cases in
+`junit.xml`. Failed stages block later checks with a reason. Lightweight profiles
+mark excluded stages `skipped` with reason `not-selected`.
+
+If the gate reaches tests, the existing test runner also writes `junit.xml` in that directory.
+The command returns the gate's exit status, including failures before tests.
+If sources change during capture, it returns failure even when the gate itself
+exits zero; the manifest preserves that gate exit code and records `source-changed`.
+Plain `npm run verify` remains the required gate and works without capture.
+
+Each capture run replaces its console/stage logs and removes previous JUnit reports
+before starting. If an early stage such as formatting fails, the evidence
+contains the console log and manifest. A passing report from an older run therefore
+cannot be mistaken for evidence from the failed run. If tests fail, their
+console diagnostics and JUnit failure report are both retained.
+
+To choose another evidence directory, set `CI_TEST_EVIDENCE_DIR` when invoking
+the command. The name is shared with the existing test runner; GitHub Actions
+is not required. Treat each directory as the latest run and copy it elsewhere
+before another capture run if you need history. `npm run clean` removes evidence
+under the build tree along with other build output.
+
+The regression fixtures in `tests/scripts/verify-with-evidence.test.mjs` exercise
+an early failure, success followed by early failure, and a test failure without
+adding deliberate failures to the real project.
+
+### GitHub Actions is a separate consumer
+
+The repository's CI workflow runs verification on pushes and pull requests to
+`development`. Building locally does not trigger it. The working-tree workflow
+uses the capture wrapper, retains installation logs, and uploads success/failure
+evidence under an artifact named
+`verify-evidence-<run_id>-<run_attempt>-<sha>`. Those changes take effect remotely
+only after publication; a local workflow definition is not proof of an uploaded
+artifact. Check actual run steps and artifacts with the GitHub CLI when needed.
+
+## 8. Runtime Evidence Design
+
+See the [runtime evidence contract](runtime-evidence.md) for local run and
+request identity, proposed causal traces, sanitized artifact bundles, passive
+collection flow and failure attribution. Browser collection extensions remain
+a design; the existing verification capture is available now.

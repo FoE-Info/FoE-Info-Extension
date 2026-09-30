@@ -2,8 +2,8 @@
 
 _Single source of truth for Chrome Web Store listing metadata, permissions justifications, privacy disclosures, and store review compliance._
 
-**Last Updated:** 2026-09-27  
-**Extension Version:** `0.0.834`  
+**Last Updated:** 2026-09-29  
+**Extension Version:** `0.0.834` — the latest published release (tag `v0.0.834`). Update this line in the same change that publishes a version; between releases the working-tree `package.json` / `manifest.json` version is intentionally ahead of it.
 **Manifest Version:** 3
 
 ---
@@ -59,21 +59,19 @@ Every permission declared in `src/chrome/manifest.json` serves a specific user-f
 | `storage`          | High         | Required to store user configuration preferences, panel toggle visibility, custom donation percentages (e.g. 1.9x), and user-configured Discord webhook URLs locally on the player's device.                            |
 | `unlimitedStorage` | Low          | Forge of Empires generates extensive daily guild battle logs, player contribution records, and game entity metadata caches. Unlimited local storage prevents data eviction and avoids truncating historical statistics. |
 | `clipboardWrite`   | Medium       | Allows players to click a single button to copy Great Building reward positions (e.g., Arc snipe spot callouts) or Guild Battleground target coordinates directly to their clipboard for pasting into game chat.        |
-| `webRequest`       | High         | Required to inspect InnoGames JSON-RPC network responses (`/game/json` and `/metadata`) to extract dynamic game entity statistics and real-time player data while the game is running.                                  |
 
 ---
 
 ## 3. Host Permissions Justification
 
-| Match Pattern                           | Justification                                                                                                                                                                 |
-| :-------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `https://*.forgeofempires.com/game/*`   | The core host permission. Required to inject the network bridge and inspect live game RPC traffic on official InnoGames game servers during active play.                      |
-| `https://*.innogamescdn.com/*`          | Required to fetch and display official Forge of Empires building sprites, era icons, goods graphics, and avatar assets within the extension DevTools panel.                   |
-| `https://discord.com/api/webhooks/*`    | Enables players to optionally transmit guild battleground target coordinates directly to their guild's designated Discord channels. Only triggered by explicit player action. |
-| `https://discordapp.com/api/webhooks/*` | Legacy Discord webhook endpoint pattern; maintained for backward compatibility with guild Discord setups.                                                                     |
-| `https://*.scoredb.io/*`                | Used for optional external lookups of historical player rankings and guild performance statistics.                                                                            |
-| `https://*.google.com/*`                | Used for optional user export of guild statistics directly into player-managed Google Sheets.                                                                                 |
-| `https://*.googleusercontent.com/`      | Used to authenticate and display user avatar assets associated with Google Sheet export integrations.                                                                         |
+| Match Pattern                           | Justification                                                                                                                                                                                     |
+| :-------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `https://*.forgeofempires.com/game/*`   | The core host permission. Required to inject the network bridge and inspect live game RPC traffic on official InnoGames game servers during active play.                                          |
+| `https://*.innogamescdn.com/*`          | Required to fetch and display official Forge of Empires building sprites, era icons, goods graphics, and avatar assets within the extension DevTools panel.                                       |
+| `https://discord.com/api/webhooks/*`    | Enables players to optionally transmit guild battleground target coordinates directly to their guild's designated Discord channels. Only triggered by explicit player action.                     |
+| `https://discordapp.com/api/webhooks/*` | Legacy Discord webhook endpoint pattern; maintained for backward compatibility with guild Discord setups.                                                                                         |
+| `https://*.scoredb.io/*`                | Used for optional external lookups of historical player rankings and guild performance statistics.                                                                                                |
+| `https://script.google.com/macros/s/*`  | Narrowest grant that can execute a player-owned Google Sheets web app. Used only when the player configures a Sheets export URL and clicks export; no Google sign-in or Drive scope is requested. |
 
 ---
 
@@ -84,7 +82,7 @@ Every permission declared in `src/chrome/manifest.json` serves a specific user-f
 - **No Sale of Data**: Player data, usernames, guild information, and webhook URLs are never sold, transferred, or shared with third parties.
 - **Local Storage Isolation**: All game payloads, cached entity stats, and player settings are stored exclusively in `chrome.storage.local` on the user's local machine.
 - **Outbound Network Traffic**:
-  - The extension only communicates with InnoGames servers (game data and CDN assets), the optional Discord webhook endpoints explicitly configured by the user, and user-configured Google Sheets.
+  - The extension only communicates with InnoGames game and CDN servers, the optional ScoreDB endpoint for player-ranking lookups, the Discord webhook endpoints explicitly configured by the user, and the Google Apps Script endpoint behind a user-configured Sheets URL. There is no telemetry, analytics, or advertising destination.
 
 ---
 

@@ -49,14 +49,11 @@ content scripts into `https://*.forgeofempires.com/game/*` pages:
 - `contentBridge.js` runs in the **ISOLATED** world at `document_start` and
   forwards the intercepted envelopes to the extension.
 
-This means the extension's data capture is **not** limited to DevTools-driven
-sessions. Any loaded game tab with the extension enabled feeds both channels.
-README and ARCHITECTURE currently describe the product as DevTools-only with
-"no injection"; that wording is inconsistent with the shipped build, which
-loads a MAIN-world interceptor. No extension-generated gameplay actions were
-found in reviewed paths — observation hooks alone are not botting — but the
-transport boundary is wider than the docs claim, and this document is the
-authoritative description.
+Both channels feed the same dispatcher, so a loaded game tab with the
+extension enabled updates state whether or not DevTools is open. `README.md`
+and `docs/architecture.md` describe the same two read-only paths; this document is
+the authoritative description of what each path observes and authenticates,
+and of the privilege scope below.
 
 ## Page-Spoofable Messages
 
@@ -74,8 +71,10 @@ and forwarded into FoE-Info's pipeline. There is no signature and no nonce.
 Treat all payloads arriving over this channel as **untrusted page-controlled
 input**, exactly like network-derived data. Fields sourced from either intake
 path (player names, guild names, message text) must be escaped or assigned via
-`textContent` before being placed into panel markup; see `docs/TODO.md` §2.1
-for the current known escaping gaps.
+`textContent` before being placed into panel markup.
+
+GBG target notifications escape conversation message text and sender names with
+the shared `escapeHTML` helper before inserting the renderer template.
 
 This spoofing surface is inherent to the MAIN-world design, not authenticated
 game-server provenance.
@@ -97,8 +96,7 @@ All external posting requires explicit user configuration and, where
 applicable, a user click. Destinations are user-controlled; the extension does
 not publish game data anywhere the user has not configured. Reviewers and
 security analysts should treat these endpoints as credentials-scoped outbound
-channels (see §0 of `docs/TODO.md`) and validate them at intake before any
-hardening work.
+channels, and validate them at intake before any hardening work.
 
 FoE-Info performs **no telemetry** of its own: it has no analytics, no crash
 reporting, and no update pings beyond normal extension update mechanics.
@@ -112,8 +110,7 @@ reporting, and no update pings beyond normal extension update mechanics.
 - **Game-derived caches**: player-name caches, Great Building registry
   entries, ScoreDB lookup results, and metadata responses are persisted in
   `chrome.storage.local` to survive restarts. Some of these caches are
-  currently unbounded or weakly bounded — see `docs/TODO.md` §4 for the
-  bounded-retention items.
+  currently unbounded or weakly bounded — they carry no retention policy.
 - The extension does not sync data to any server run by the project. The only
   outbound writes are the user-configured external destinations above.
 
@@ -122,30 +119,35 @@ Remove, or clearing site/extension data) removes all persisted state.
 
 ## Permissions & CSP Rationale
 
-- **Host permissions / content-script matches**: limited to
-  `https://*.forgeofempires.com/game/*` — the minimum needed to observe game
-  traffic on real game pages. There is **no `<all_urls>` grant**. Some CDN
-  metadata endpoints are loaded by the panel via network fetch rather than
-  host permissions.
-- **DevTools permission**: creates the FoE-Info panel page inside DevTools.
-- **Content scripts**: the two scripts described above (MAIN-world
-  interceptor + ISOLATED-world bridge). Their presence is the implementation
-  of traffic observation, not a game-write capability.
-- **Content Security Policy**: `script-src 'self'; object-src 'none';
-base-uri 'none'`. No `unsafe-inline`, no `unsafe-eval`, no remote code
-  loading. This materially constrains the impact of any markup-spoofing
-  finding: injected HTML can distort the panel UI, but script execution inside
-  the extension context is blocked by CSP.
-- The extension stores OAuth-free plain settings only. `chrome.storage` is
-  scoped to the extension; no cookies, no browsing history access.
+- **Host permissions / content-script matches**: the content-script matches are
+  limited to `https://*.forgeofempires.com/game/*` — the minimum needed to
+  observe game traffic on real game pages, and the only page the MAIN-world
+  observer is injected into. The extension also requests read access to the
+  surfaces it actually calls: `https://*.innogamescdn.com/*` (entity and asset
+  metadata), `https://*.scoredb.io/*` (optional ranking lookups),
+  `https://discord.com/api/webhooks/*` and `https://discordapp.com/api/webhooks/*`
+  (player-configured guild export), and `https://script.google.com/macros/s/*`
+  (player-configured Sheets export). There is **no `<all_urls>` grant** and no
+  write permission for any game endpoint.
+- **Content Security Policy** (`extension_pages` in the manifest):
+  `script-src 'self'; object-src 'none'; base-uri 'none'`, plus a `connect-src`
+  limited to the same origins listed above and `img-src 'self'
+https://*.innogamescdn.com data:`. No `unsafe-inline`, no `unsafe-eval`, no
+  remote code loading. This materially constrains the impact of any
+  markup-spoofing finding: injected HTML can distort the panel UI, but script
+  execution inside the extension context is blocked by CSP.
+- **Permissions**: `storage`, `unlimitedStorage`, and `clipboardWrite` only.
+  Settings are OAuth-free plain values in `chrome.storage`; no cookies, no
+  browsing history access, and no `webRequest` or `debugger` grant.
+- **DevTools panel**: enabled by the manifest's `devtools_page` declaration,
+  which is a page declaration rather than a permission. It is what creates the
+  FoE-Info panel inside DevTools.
 
 ## Product Boundary
 
 - FoE-Info **reads** the game's own traffic; it does not modify game requests,
   submit actions, click, or automate gameplay in reviewed paths.
 - It **does** inject a MAIN-world interceptor into game pages in current
-  builds; documentation elsewhere that says "no injection" is being corrected
-  (see `docs/TODO.md` §0 and §2.4). The accurate statement is: _no
-  extension-generated game actions_, with passive observation hooks on game
-  pages.
+  builds. The accurate statement is: _no extension-generated game actions_,
+  with passive observation hooks on game pages.
 - External publication is opt-in per the External Publication section.
