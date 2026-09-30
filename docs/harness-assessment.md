@@ -1,8 +1,8 @@
 # Repo Harness Assessment
 
-Assessed 2026-09-30 against the working tree, including pending staged,
-unstaged and untracked sources. This report distinguishes implemented capability
-from published capability and observed remote or browser results.
+Assessed 2026-09-30 against a clean working tree before this report update.
+The mapped harness sources are Git-tracked. This report distinguishes local
+implementation and verification from observed remote or browser results.
 
 ## Detected Mapping
 
@@ -51,7 +51,7 @@ release packaging. They supplement the owning documents.
 ## Current State
 
 Overall maturity is **established in the working tree, with broad mechanical
-validation and gate evidence; publication and remote operation remain unverified**.
+validation and gate evidence; remote artifact uploads remain unverified**.
 This is a qualitative assessment rather than a numeric score.
 
 - **Agent entrypoint:** compact navigation and explicit supplemental precedence;
@@ -92,23 +92,30 @@ tracing as current capability.
 
 ## Gaps
 
-1. **CI wiring lacks a focused regression check.** Inspected harness tests exercise
-   the wrapper and registry but do not assert the workflow's wrapper command,
-   evidence directory or upload conditions. Those can drift while wrapper tests pass.
-2. **Publication and remote proof remain pending.** Many shared harness files are
-   untracked or have mixed staged/unstaged changes. A local/export result does not
-   establish the eventual commit, CI upload behavior or branch-protection settings.
-3. **Live runtime proof is task-dependent.** Browser diagnostics and passive RPC
+1. **Remote artifact proof remains pending.** The latest inspected remote CI run
+   (`36357028506`, attempt 1, source `f343e254a4b7373022a3f7fe930b701090e90e0b`)
+   passed using the older workflow without capture or upload steps; it has no
+   artifacts. The local capture workflow must be published before its uploads
+   can be verified.
+2. **Live runtime proof is task-dependent.** Browser diagnostics and passive RPC
    recording exist, but causal collection is proposed and no live panel result
    was verified here. Method counts alone cannot establish rendering success.
 
 ## Current follow-through
 
 [Roadmap](roadmap.md) owns outcome sequencing; [tasks](tasks.md) tracks execution. Workflow-contract regression
-coverage remains open, followed by actual remote artifact inspection when
+coverage is complete under [T402](tasks.md#t402-ci-capture-workflow-regression),
+followed by actual remote artifact inspection when
 publication is authorized. Browser collection is deferred until a concrete
 runtime investigation supplies expected behavior. Do not create a second task
 queue from this assessment.
+
+## Recommended Minimum Slice
+
+- **First:** when publication is authorized, inspect a real CI artifact and record
+  its run/attempt, source identity and reports in the delivery record.
+- **Then:** activate [T403](tasks.md#t403-passive-browser-acceptance) only for a
+  bounded panel behavior and an available existing browser session.
 
 ## Do Not Build Yet
 
@@ -123,11 +130,18 @@ This reassessment consulted the local graph and inspected current owners, regist
 workflow, hooks and specialist/configuration surfaces. Direct source owns the
 conclusions because the graph excludes some tooling and pending additions.
 
-The focused readiness/registry, evidence-wrapper, boundary-contract, specialist
-frontmatter and MCP-profile suites passed: **39 tests, no failures or skips**.
-After reconciliation, `npm run verify:docs` passed readiness, version,
-published references and repository-wide formatting; `npm run audit:refs` also
-passed with no findings. The two specialist/skill frontmatter tests passed again
-after the supplemental edits. No new full
-verification, isolated export, remote CI, branch-protection inspection or browser
-session is claimed. Full `npm run verify` remains required before a commit.
+The focused harness suites passed: **39 tests, no failures or skips**. T402 added
+four workflow-contract tests, all passing; isolated mutations for capture bypass,
+wrong upload directory, success-only uploads and missing stderr capture failed
+as expected. Full `npm run verify:evidence` passed: **1,982 tests, no failures or
+skips**, focused coverage, development build and production bundle budgets.
+Run ID: `cfd5a383-8eec-45c1-9458-236d53c938af`; source digest remained unchanged.
+Local artifacts are under `build/verify-evidence`. That run precedes these final
+completion notes; `npm run verify:docs` and `npm run audit:refs` cover the notes
+separately. Remote inspection found the active development ruleset blocks deletion and force
+pushes; linear-history enforcement was added and read back successfully. It has
+no mandatory pull request or pre-push status-check rule. Organization members
+currently inherit write access. The latest remote CI run passed without an upload
+step or artifacts; it does not verify local capture wiring. No isolated export
+or browser session is claimed. Full `npm run verify` remains required before a commit of a
+later source snapshot.

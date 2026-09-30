@@ -225,16 +225,33 @@ provenance local; do not reindex its contents as repository source.
 
 ### T402: CI capture workflow regression
 
-**Status:** open. **Roadmap:** R4.
+**Status:** complete (2026-09-30). **Roadmap:** R4.
 
 **Dependencies:** None; reproduce the discrepancy before selecting a remedy.
 
 **Scope:** Add a workflow-contract regression for verification capture, evidence directory,
 installation logs, and success/early-failure uploads. Avoid pinning incidental
 YAML formatting or action versions. Inspect real uploads when publication is
-authorized; remote CI and branch protection remain unverified.
+authorized; remote capture uploads remain unverified. Development rules were
+inspected and linear-history enforcement added on 2026-09-30; direct maintainer
+pushes remain allowed.
 
 **Acceptance:** Regression checks validate capture command, evidence path, installation logs and upload conditions; remote artifact claims require actual published run evidence.
+
+**Evidence:** [Workflow regression](../tests/scripts/ci-workflow.test.mjs) parses YAML,
+checks capture/upload wiring and outcome conditions, and executes installation
+with mocked npm success/failure. Four focused tests passed. Isolated workflow
+mutations for capture bypass, wrong upload directory, success-only uploads and
+missing stderr capture each failed as expected. Full `npm run verify:evidence`
+passed with 1,982 tests, no failures or skips, coverage thresholds, development
+build and production bundle budgets. Run ID:
+`cfd5a383-8eec-45c1-9458-236d53c938af`; source digest remained unchanged.
+Local evidence: `build/verify-evidence`. This run precedes the final completion
+notes; documentation checks cover those notes separately. Remote inspection
+found the latest CI run (`36357028506`) passed with the older workflow and no
+artifacts. The active development ruleset now enforces linear history and blocks
+force pushes/deletion without mandatory PRs or pre-push checks. Remote capture
+uploads still require publication and an actual run.
 
 ### T403: Passive browser acceptance
 
