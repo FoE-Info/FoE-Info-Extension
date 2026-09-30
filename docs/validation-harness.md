@@ -1,8 +1,8 @@
 # Validation Harness Design
 
 Status: implemented locally on 2026-09-30. Readiness, named profiles, stage JSON/
-JUnit reports and CI capture wiring are repository sources. Remote workflow runs,
-artifact uploads remain unverified; development rules were inspected and updated
+JUnit reports and CI capture wiring are repository sources. Remote success and
+test-failure artifacts were downloaded and inspected; development rules were updated
 on 2026-09-30 to preserve direct maintainer pushes with linear history.
 [CONTRIBUTING.md](../CONTRIBUTING.md) continues to own delivery policy.
 
@@ -165,7 +165,8 @@ full gate as contributors. CI wiring replaces the bespoke verification tee pipel
 with the capture wrapper, retaining `CI_TEST_EVIDENCE_DIR` at
 `build/ci-evidence`. The workflow uploads that directory after verification on both success
 and failure, using the existing run/attempt/SHA artifact naming. Upload failure
-must not conceal a failed validation exit. The wiring is implemented locally; an uploaded artifact requires a remote run.
+must not conceal a failed validation exit. Success and test-failure uploads have been observed and downloaded; see the
+remote verification evidence below.
 
 Stage reports are included in the same artifact. The installation step captures
 `install-console.log` separately so an `npm ci` failure is visible even though
@@ -237,3 +238,25 @@ ESLint retained 194 existing warnings, and production webpack retained 11 warnin
 That run preceded the final documentation/retention update; it is evidence for its
 recorded source snapshot. Reports are retained locally under `build/verify-evidence`.
 The failure-path fixtures also passed. No remote CI or live-browser result is claimed.
+
+## Remote Verification Evidence
+
+The first published [capture run 36764131911](https://github.com/FoE-Info/FoE-Info-Extension/actions/runs/36764131911)
+failed in tests because uvx was missing from the runner. Its upload step succeeded;
+the downloaded artifact preserved installation/console logs, stage reports and
+both JUnit files. The evidence identified the missing prerequisite without losing
+the failing gate status. CI now installs uv 0.12.13 through the pinned setup-uv
+v10.2.0 action and selects Python 3.14.7, matching the locally verified toolchain.
+Full readiness checks uvx; docs/static readiness does not require it.
+
+[Success run 36765043577](https://github.com/FoE-Info/FoE-Info-Extension/actions/runs/36765043577), attempt 1,
+verified source `299dd2e1704ffc4619cd60ad4968626aba05c0d9`: all 13 stages passed,
+including 1,984 tests (1,983 passed, zero failures, one optional sibling-corpus
+skip), coverage, development build and production budgets. The downloaded
+artifact contained the installation log, console log, all stage logs/JSON and
+parseable gate/test JUnit. Manifest run ID:
+`4847a05d-0175-47cb-be10-33b23c370942`; source digest stayed unchanged:
+`8eb288c6f7ef1ad97327af0b431377652ad4db961aa2a92b3298d56a5f11fff2`.
+This evidence identifies that published snapshot before the final record update.
+The active branch rules and empty bypass list were read back after publication.
+Artifact retention remains 14 days; no live-browser validation is claimed.

@@ -51,7 +51,7 @@ release packaging. They supplement the owning documents.
 ## Current State
 
 Overall maturity is **established in the working tree, with broad mechanical
-validation and gate evidence; remote artifact uploads remain unverified**.
+validation and gate evidence; remote success/failure uploads verified**.
 This is a qualitative assessment rather than a numeric score.
 
 - **Agent entrypoint:** compact navigation and explicit supplemental precedence;
@@ -69,7 +69,8 @@ This is a qualitative assessment rather than a numeric score.
   console and per-stage evidence, handles early failure and rejects source mutation.
   CI preserves installation logs and configures uploads after success or failure,
   named by run/attempt/SHA with 14-day retention. The earlier CI-capture recommendation
-  is implemented, not an outstanding gap. Upload behavior was not observed remotely.
+  is implemented, not an outstanding gap. Success and test-failure uploads were
+  downloaded and inspected against their source SHAs.
 - **Delivery/ledger:** completion notes require accepted behavior, actual checks,
   evidence identity and limitations, coupled to tracked status in the same change.
   Small maintenance work needs no new task, plan or standalone ledger.
@@ -92,12 +93,7 @@ tracing as current capability.
 
 ## Gaps
 
-1. **Remote artifact proof remains pending.** The latest inspected remote CI run
-   (`36357028506`, attempt 1, source `f343e254a4b7373022a3f7fe930b701090e90e0b`)
-   passed using the older workflow without capture or upload steps; it has no
-   artifacts. The local capture workflow must be published before its uploads
-   can be verified.
-2. **Live runtime proof is task-dependent.** Browser diagnostics and passive RPC
+1. **Live runtime proof is task-dependent.** Browser diagnostics and passive RPC
    recording exist, but causal collection is proposed and no live panel result
    was verified here. Method counts alone cannot establish rendering success.
 
@@ -105,16 +101,13 @@ tracing as current capability.
 
 [Roadmap](roadmap.md) owns outcome sequencing; [tasks](tasks.md) tracks execution. Workflow-contract regression
 coverage is complete under [T402](tasks.md#t402-ci-capture-workflow-regression),
-followed by actual remote artifact inspection when
-publication is authorized. Browser collection is deferred until a concrete
+and remote success/failure artifacts have been inspected. Browser collection is deferred until a concrete
 runtime investigation supplies expected behavior. Do not create a second task
 queue from this assessment.
 
 ## Recommended Minimum Slice
 
-- **First:** when publication is authorized, inspect a real CI artifact and record
-  its run/attempt, source identity and reports in the delivery record.
-- **Then:** activate [T403](tasks.md#t403-passive-browser-acceptance) only for a
+- **First:** activate [T403](tasks.md#t403-passive-browser-acceptance) only for a
   bounded panel behavior and an available existing browser session.
 
 ## Do Not Build Yet
@@ -141,7 +134,24 @@ completion notes; `npm run verify:docs` and `npm run audit:refs` cover the notes
 separately. Remote inspection found the active development ruleset blocks deletion and force
 pushes; linear-history enforcement was added and read back successfully. It has
 no mandatory pull request or pre-push status-check rule. Organization members
-currently inherit write access. The latest remote CI run passed without an upload
-step or artifacts; it does not verify local capture wiring. No isolated export
-or browser session is claimed. Full `npm run verify` remains required before a commit of a
-later source snapshot.
+currently inherit write access. The authorized history replacement used an explicit
+lease against the reviewed remote tip and a temporary user-only bypass; the active
+rules and empty bypass list were restored and read back immediately. Only the local
+sibling registry was removed from four unpublished historical trees; commit messages,
+authorship, order and all other tree contents were retained. The registry remains local.
+
+The isolated export passed with freshly installed dependencies. Published
+[CI failure run 36764131911](https://github.com/FoE-Info/FoE-Info-Extension/actions/runs/36764131911), attempt 1,
+retained its artifact after the missing-uvx test failure. The prerequisite fix
+added uv/Python setup and full-profile readiness checks. Published
+[CI success run 36765043577](https://github.com/FoE-Info/FoE-Info-Extension/actions/runs/36765043577), attempt 1,
+passed all 13 stages: 1,984 tests, 1,983 passed, zero failures and one skip for
+an unavailable optional sibling metadata corpus. Coverage, builds and budgets passed.
+Both artifacts were downloaded; installation/console logs, stage JSON/logs,
+gate/test JUnit, source SHA and unchanged source digests were checked.
+Success source: `299dd2e1704ffc4619cd60ad4968626aba05c0d9`.
+Manifest run ID: `4847a05d-0175-47cb-be10-33b23c370942`.
+Source digest: `8eb288c6f7ef1ad97327af0b431377652ad4db961aa2a92b3298d56a5f11fff2`.
+These results identify the published snapshot before this evidence-note update;
+no browser session is claimed. Full `npm run verify` remains required before
+committing later source changes.

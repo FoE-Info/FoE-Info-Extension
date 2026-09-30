@@ -232,7 +232,8 @@ provenance local; do not reindex its contents as repository source.
 **Scope:** Add a workflow-contract regression for verification capture, evidence directory,
 installation logs, and success/early-failure uploads. Avoid pinning incidental
 YAML formatting or action versions. Inspect real uploads when publication is
-authorized; remote capture uploads remain unverified. Development rules were
+authorized; remote success and test-failure uploads were inspected on
+2026-09-30. Development rules were
 inspected and linear-history enforcement added on 2026-09-30; direct maintainer
 pushes remain allowed.
 
@@ -247,11 +248,21 @@ passed with 1,982 tests, no failures or skips, coverage thresholds, development
 build and production bundle budgets. Run ID:
 `cfd5a383-8eec-45c1-9458-236d53c938af`; source digest remained unchanged.
 Local evidence: `build/verify-evidence`. This run precedes the final completion
-notes; documentation checks cover those notes separately. Remote inspection
-found the latest CI run (`36357028506`) passed with the older workflow and no
-artifacts. The active development ruleset now enforces linear history and blocks
-force pushes/deletion without mandatory PRs or pre-push checks. Remote capture
-uploads still require publication and an actual run.
+notes; documentation checks cover those notes separately. The active development
+ruleset enforces linear history and blocks force pushes/deletion without mandatory
+PRs or pre-push checks. The authorized history replacement used a reviewed-tip
+lease and a temporary user-only bypass, removed immediately after publication.
+
+Remote evidence: [test-failure run 36764131911](https://github.com/FoE-Info/FoE-Info-Extension/actions/runs/36764131911)
+retained its upload despite missing uvx. CI setup and full readiness were corrected;
+13 focused workflow/readiness cases and the full local gate passed. Then
+[success run 36765043577](https://github.com/FoE-Info/FoE-Info-Extension/actions/runs/36765043577), attempt 1,
+passed all 13 stages with 1,984 tests (1,983 passed, one optional metadata-corpus
+skip), focused coverage, builds and budgets. Downloaded artifacts from both runs
+contained installation/console logs, stage JSON/logs and gate/test JUnit; source
+identities and failure/success results were verified. Success source:
+`299dd2e1704ffc4619cd60ad4968626aba05c0d9`; manifest run ID:
+`4847a05d-0175-47cb-be10-33b23c370942`. No live-browser result is claimed.
 
 ### T403: Passive browser acceptance
 
