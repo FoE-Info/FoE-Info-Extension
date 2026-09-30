@@ -99,7 +99,8 @@
     "typescript-eslint": "^8.70.1",
     "webpack": "^5.111.1",
     "webpack-cli": "^7.2.3",
-    "webpack-merge": "^6.0.1"
+    "webpack-merge": "^6.0.1",
+    "yaml": "^2.9.1"
   },
   "engines": {
     "node": ">=26.8.2",
