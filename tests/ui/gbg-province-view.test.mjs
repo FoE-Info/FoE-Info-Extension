@@ -191,7 +191,7 @@ describe('gbgProvinceView Suite', () => {
         helper: { checkGBG: () => true },
         url: { discordTargetURL: 'https://discord.test/webhook' },
         post_webstore: {
-          postTargetList: () => {
+          postTargetGenToDiscord: () => {
             autoPostCount++;
           },
         },

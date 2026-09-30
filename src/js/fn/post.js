@@ -4,25 +4,14 @@
 // import $ from "jquery";
 // import 'bootstrap';
 // import Discord  from 'discord.js';
-let Alert;
-try {
-  const bs = require('bootstrap');
-  Alert = bs.Alert;
-} catch {}
-let alerts = null;
 let EpocTime = 0;
 let GameOrigin = '';
 let GBGdata = [];
 let MyInfo = { name: '' };
 let url = {};
-let element = null;
-try {
-  element = require('./AddElement.js');
-} catch {}
 if (typeof __webpack_require__ !== 'undefined') {
   try {
     const state = require('../vars/state.js');
-    alerts = state.alerts;
     EpocTime = state.EpocTime;
     GameOrigin = state.GameOrigin;
     GBGdata = state.GBGdata;
@@ -35,6 +24,21 @@ try {
   const { createLogger } = require('../utils/logger.js');
   logger = createLogger('Post');
 } catch {}
+
+const {
+  validateDestinationUrl: _validateDestination,
+} = require('../utils/destinationValidator.js');
+
+/**
+ * Returns the URL if it passes destination validation, or null if rejected.
+ * Empty strings are allowed (feature not configured).
+ */
+function _validatedUrl(rawUrl, serviceHint) {
+  const result = _validateDestination(rawUrl, { serviceHint });
+  if (result.valid) return rawUrl || null;
+  logger?.warn(`Destination rejected (${serviceHint}): ${result.reason}`);
+  return null;
+}
 
 // Example POST method implementation:
 async function postData(targetUrl = '', data = {}) {
@@ -59,9 +63,9 @@ async function postData(targetUrl = '', data = {}) {
 }
 
 function postToDiscord(text) {
-  let webHookUrl = url?.discordTargetURL;
+  let webHookUrl = _validatedUrl(url?.discordTargetURL, 'discord');
   if (!webHookUrl) {
-    logger?.debug('Discord Webhook URL is not configured in options.');
+    logger?.debug('Discord Webhook URL is not configured or invalid.');
     return;
   }
 
@@ -80,7 +84,8 @@ function postToDiscord(text) {
   oReq.open('POST', webHookUrl, true);
   oReq.setRequestHeader('Content-type', 'application/json');
   oReq.onreadystatechange = function () {
-    logger?.debug('Discord post status:', oReq.readyState, oReq.responseText);
+    if (oReq.readyState === 4)
+      logger?.debug('Discord post completed:', oReq.status);
   };
   oReq.send(JSON.stringify(params));
 }
@@ -102,18 +107,6 @@ function sanitizeDiscordText(html) {
     .join('\n');
 }
 
-function postTargetList(unlocked, locked) {
-  const parts = [];
-  const cleanUnlocked = sanitizeDiscordText(unlocked);
-  const cleanLocked = sanitizeDiscordText(locked);
-  if (cleanUnlocked) parts.push(cleanUnlocked);
-  if (cleanLocked) parts.push(cleanLocked);
-  const text = parts.join('\n');
-  if (text) {
-    postToDiscord(text);
-  }
-}
-
 function postTargetsToDiscord() {
   const targetTextEl =
     typeof document !== 'undefined' ?
@@ -121,9 +114,9 @@ function postTargetsToDiscord() {
     : null;
   if (!targetTextEl) return;
 
-  const webHookUrl = url?.discordTargetURL;
+  const webHookUrl = _validatedUrl(url?.discordTargetURL, 'discord');
   if (!webHookUrl) {
-    logger?.debug('Discord Webhook URL is not configured in options.');
+    logger?.debug('Discord Webhook URL is not configured or invalid.');
     return;
   }
 
@@ -157,9 +150,9 @@ function postTargetGenToDiscord() {
     : null;
   if (!targetGenTextEl) return;
 
-  const webHookUrl = url?.discordTargetURL;
+  const webHookUrl = _validatedUrl(url?.discordTargetURL, 'discord');
   if (!webHookUrl) {
-    logger?.debug('Discord Webhook URL is not configured in options.');
+    logger?.debug('Discord Webhook URL is not configured or invalid.');
     return;
   }
 
@@ -174,7 +167,11 @@ function postTargetGenToDiscord() {
 
 function postGBGtoSS() {
   // console.debug(data[0]);
-  let googleSheetAPI = url.sheetGuildURL;
+  let googleSheetAPI = _validatedUrl(url.sheetGuildURL, 'sheets');
+  if (!googleSheetAPI) {
+    logger?.warn('Google Sheet URL is not configured or invalid.');
+    return;
+  }
 
   let reqData = {
     sheet: 'GBG',
@@ -196,86 +193,6 @@ function postGBGtoSS() {
   // console.debug(reqData,JSON.stringify(reqData));
 }
 
-function postAlerttoDsicord() {
-  let copytext = document.getElementById('alertText').textContent;
-  postToDiscord(copytext);
-}
-
-function logToDiscord(text) {
-  let webHookUrl = url.discordLogURL || url.discordTargetURL;
-  if (!webHookUrl) {
-    console.warn('Discord Log Webhook URL is not configured.');
-    return;
-  }
-
-  let selection = window.getSelection();
-  selection.removeAllRanges();
-
-  let oReq = new XMLHttpRequest();
-  let params = {
-    username: MyInfo.name,
-    avatar_url: '',
-    content: text,
-  };
-  // console.debug(params);
-  //register method called after data has been sent method is executed
-  // oReq.addEventListener("load", reqListener);
-  oReq.open('POST', webHookUrl, true);
-  // oReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  oReq.setRequestHeader('Content-type', 'application/json');
-  // oReq.send(JSON.stringify(myJSONStr));
-  oReq.send(JSON.stringify(params));
-}
-
-function postPlayerToSS(visitData) {
-  // console.debug(visitData);
-  let googleSheetAPI = url.sheetGuildURL;
-
-  alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
-		${element.close()}
-		<p id="alertText"><strong><span data-i18n="posting_guild_stats">Posting Guild Stats to SS</span> ... </strong><br>${visitData[0].Name}</p></div>`;
-
-  let reqData = {
-    sheet: 'Guild',
-    playerData: visitData,
-    user: MyInfo.name,
-  };
-
-  let oReq = new XMLHttpRequest();
-  oReq.open('POST', googleSheetAPI, true);
-  oReq.setRequestHeader('Content-type', 'application/json');
-  oReq.onreadystatechange = function () {
-    if (oReq.readyState == XMLHttpRequest.DONE) {
-      // alert(oReq.responseText);
-      console.debug(oReq.responseText);
-      try {
-        const resObj = JSON.parse(oReq.responseText);
-        const resultText = document.createTextNode(resObj.result || '');
-        alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
-				${element.close()}
-				<p id="alertText"><strong><span data-i18n="guild_stats">Guild Stats:</span> </strong><br></p></div>`;
-        const pTag = alerts.querySelector('#alertText');
-        if (pTag) pTag.appendChild(resultText);
-      } catch {
-        alerts.innerHTML = `<div class="alert alert-danger alert-dismissible show " role="alert">
-				${element.close()}
-				<p id="alertText"><strong><span data-i18n="error">Error:</span> </strong><br></p></div>`;
-        const pTag = alerts.querySelector('#alertText');
-        if (pTag) pTag.appendChild(document.createTextNode(oReq.responseText));
-      }
-      setTimeout(function () {
-        const alert = Alert.getOrCreateInstance(`#alertText`);
-        alert.close();
-        alert.dispose();
-        alerts.innerHTML = '';
-      }, 60000);
-    }
-  };
-  oReq.send(JSON.stringify(reqData));
-  // oReq.send(reqData.toString);
-  console.debug(reqData, JSON.stringify(reqData));
-}
-
 function setPostContext(context = {}) {
   if (context.url !== undefined) url = context.url;
   if (context.MyInfo !== undefined) MyInfo = context.MyInfo;
@@ -285,13 +202,9 @@ module.exports = {
   postData,
   postToDiscord,
   sanitizeDiscordText,
-  postTargetList,
   postTargetsToDiscord,
   postTargetGenToDiscord,
   postGBGtoSS,
-  postAlerttoDsicord,
-  logToDiscord,
-  postPlayerToSS,
   setPostContext,
 };
 module.exports.default = module.exports;

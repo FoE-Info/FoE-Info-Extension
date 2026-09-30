@@ -74,6 +74,8 @@
   "gbg_leaderboard": "Classement GBG",
   "gbg_target_generator": "Générateur de cibles GBG",
   "gbg_targets": "Cibles GBG",
+  "alert_at": "alerte à",
+  "by": "par",
   "ge": "EdG",
   "ge-attackers": "GE Attackers",
   "ge-defenders": "GE Defenders",
@@ -85,7 +87,7 @@
   "guaranteed_profit": "Bénéfice garanti",
   "guild": "Guilde",
   "guild_overview": "Aperçu de la guilde",
-  "guild_stats": "Stats de guilde :",
+
   "guild_total": "Total de guilde",
   "guildgoods": "Ressources Guilde",
   "guildpower": "Puissance Guilde",
@@ -226,7 +228,7 @@
   "plunder": "PLUNDER",
   "points": "Points",
   "post": "Publier",
-  "posting_guild_stats": "Envoi des stats de guilde vers SS",
+
   "profit": "Profit",
   "progress": "Progress",
   "qi-attackers": "QI Attackers",

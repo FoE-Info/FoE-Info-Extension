@@ -73,6 +73,8 @@
   "gbg_leaderboard": "Πίνακας GBG",
   "gbg_target_generator": "Παραγωγός στόχων GBG",
   "gbg_targets": "Στόχοι GBG",
+  "alert_at": "Ειδοποίηση στις",
+  "by": "από",
   "ge": "GE",
   "ge-attackers": "GE Attackers",
   "ge-defenders": "GE Defenders",
@@ -84,7 +86,7 @@
   "guaranteed_profit": "Εγγυημένο κέρδος",
   "guild": "Συντεχνία",
   "guild_overview": "Επισκόπηση συντεχνίας",
-  "guild_stats": "Στατιστικά γιλντ:",
+
   "guild_total": "Σύνολο συντεχνίας",
   "guildgoods": "Αγαθά Συντεχνίας",
   "guildpower": "Ισχύς Συντεχνίας",
@@ -225,7 +227,7 @@
   "plunder": "PLUNDER",
   "points": "Points",
   "post": "ταχυδρομώ",
-  "posting_guild_stats": "Αποστολή στατιστικών γιλντ στο SS",
+
   "profit": "Profit",
   "progress": "Progress",
   "qi-attackers": "QI Attackers",

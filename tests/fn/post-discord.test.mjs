@@ -4,7 +4,6 @@ import postPkg from '../../src/js/fn/post.js';
 
 const {
   postTargetGenToDiscord,
-  postTargetList,
   postTargetsToDiscord,
   sanitizeDiscordText,
   setPostContext,
@@ -16,7 +15,10 @@ describe('Discord Post & Target Sanitization Suite', () => {
   beforeEach(() => {
     capturedPayloads = [];
     setPostContext({
-      url: { discordTargetURL: 'https://discord.test/webhook/123' },
+      url: {
+        discordTargetURL:
+          'https://discord.com/api/webhooks/123456789012345678/test-token',
+      },
       MyInfo: { name: 'Commander' },
     });
 
@@ -130,25 +132,6 @@ describe('Discord Post & Target Sanitization Suite', () => {
       assert.equal(sanitizeDiscordText(''), '');
       assert.equal(sanitizeDiscordText(null), '');
       assert.equal(sanitizeDiscordText(undefined), '');
-    });
-  });
-
-  describe('postTargetList', () => {
-    it('sanitizes <br> tags before posting to Discord webhook', () => {
-      const unlocked = 'D4A HOLD (20%) @ 08:06<br>D3A HOLD (20%) @ 08:06';
-      const locked = 'D3B HOLD (20%) @ 08:14<br>D4B HOLD (20%) @ 09:00';
-
-      postTargetList(unlocked, locked);
-
-      assert.equal(capturedPayloads.length, 1);
-      const payload = capturedPayloads[0];
-      assert.equal(payload.username, 'Commander');
-      assert.ok(!payload.content.includes('<br>'));
-      assert.ok(!payload.content.includes('<br/>'));
-      assert.equal(
-        payload.content,
-        'D4A HOLD (20%) @ 08:06\nD3A HOLD (20%) @ 08:06\nD3B HOLD (20%) @ 08:14\nD4B HOLD (20%) @ 09:00',
-      );
     });
   });
 

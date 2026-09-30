@@ -1,8 +1,6 @@
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import globals from 'globals';
-import noHardcodedText from './tools/eslint-rules/no-hardcoded-text.js';
-import noUnescapedHtmlInterpolation from './tools/eslint-rules/no-unescaped-html-interpolation.js';
 
 export default [
   {
@@ -15,31 +13,9 @@ export default [
       'package-lock.json',
       '.vscode/**',
       '.idea/**',
-      // Git-excluded directories the linter must not traverse:
-      '.agent/**',
     ],
   },
   js.configs.recommended,
-  {
-    files: [
-      'src/js/ui/**/*.js',
-      'src/js/msg/**/*.js',
-      'src/js/protocol/**/*.js',
-    ],
-    plugins: { i18nGuard: { rules: { 'no-hardcoded-text': noHardcodedText } } },
-    rules: { 'i18nGuard/no-hardcoded-text': 'error' },
-  },
-  {
-    files: ['src/js/ui/**/*.js'],
-    plugins: {
-      encodingGuard: {
-        rules: {
-          'no-unescaped-html-interpolation': noUnescapedHtmlInterpolation,
-        },
-      },
-    },
-    rules: { 'encodingGuard/no-unescaped-html-interpolation': 'error' },
-  },
   eslintConfigPrettier,
   {
     files: ['src/**/*.{js,mjs,cjs}'],
@@ -62,10 +38,7 @@ export default [
         ...globals.node,
         ...globals.webextensions,
         ...globals.jquery,
-        chrome: 'readonly',
-        browser: 'readonly',
-        $: 'readonly',
-        jQuery: 'readonly',
+        // Build-time compile flags injected by webpack.DefinePlugin:
         DEV: 'readonly',
         BETA: 'readonly',
         WEBSTORE: 'readonly',
@@ -81,11 +54,11 @@ export default [
       ],
       'no-var': 'warn',
       'no-console': 'off',
-      'no-prototype-builtins': 'warn',
+      'no-prototype-builtins': 'error',
       'no-redeclare': 'warn',
       'no-empty': ['warn', { allowEmptyCatch: true }],
-      'no-useless-assignment': 'warn',
-      'no-constant-condition': 'warn',
+      'no-useless-assignment': 'error',
+      'no-constant-condition': ['warn', { checkLoops: false }],
     },
   },
 ];

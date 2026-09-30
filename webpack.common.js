@@ -83,6 +83,7 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
+        { from: './src/chrome/langBootstrap.js', to: 'langBootstrap.js' },
         { from: './src/i18n', to: 'i18n' },
         { from: './src/icons/common', to: 'icons' },
         { from: './src/icons/foe-info', to: 'icons' },

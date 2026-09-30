@@ -23,6 +23,11 @@ try {
   ({ setCurrentView } = require('./cardVisibility.js'));
 } catch {}
 
+let hideActivePopover = null;
+try {
+  ({ hideActivePopover } = require('./components/PopoverManager.js'));
+} catch {}
+
 const { renderTreasuryPanel, clearForTreasury } = require('./treasuryPanel.js');
 
 let renderSequence = 0;
@@ -61,6 +66,13 @@ function clearStartup(containers = {}, resetState = {}) {
     seq,
     timestamp: Date.now(),
   });
+  // Close any active popover before clearing containers so the trigger
+  // reference is not left dangling on a detached DOM node.
+  if (typeof hideActivePopover === 'function') {
+    try {
+      hideActivePopover();
+    } catch {}
+  }
   clearElement(containers.cityinvested);
   clearElement(containers.output);
   clearElement(containers.overview);

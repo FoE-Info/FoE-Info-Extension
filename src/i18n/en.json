@@ -74,6 +74,8 @@
   "gbg_leaderboard": "GBG Leaderboard",
   "gbg_target_generator": "GBG Target Generator",
   "gbg_targets": "GBG Targets",
+  "alert_at": "alert at",
+  "by": "by",
   "ge": "GE",
   "ge-attackers": "GE Attackers",
   "ge-defenders": "GE Defenders",
@@ -85,7 +87,7 @@
   "guaranteed_profit": "Guaranteed profit",
   "guild": "Guild",
   "guild_overview": "Guild Overview",
-  "guild_stats": "Guild Stats:",
+
   "guild_total": "Guild Total",
   "guildgoods": "Guild Goods",
   "guildpower": "Guild Power",
@@ -226,7 +228,7 @@
   "plunder": "PLUNDER",
   "points": "Points",
   "post": "Post",
-  "posting_guild_stats": "Posting Guild Stats to SS",
+
   "profit": "Profit",
   "progress": "Progress",
   "qi-attackers": "QI Attackers",

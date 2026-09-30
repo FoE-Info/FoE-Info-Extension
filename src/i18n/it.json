@@ -74,6 +74,8 @@
   "gbg_leaderboard": "Classifica GBG",
   "gbg_target_generator": "Generatore di obiettivi GBG",
   "gbg_targets": "Obiettivi GBG",
+  "alert_at": "avviso alle",
+  "by": "di",
   "ge": "GE",
   "ge-attackers": "GE Attacco",
   "ge-defenders": "GE Difesa",
@@ -85,7 +87,7 @@
   "guaranteed_profit": "Utile garantito",
   "guild": "Guilda",
   "guild_overview": "Panoramica gilda",
-  "guild_stats": "Statistiche gilda:",
+
   "guild_total": "Totale gilda",
   "guildgoods": "Beni Gilda",
   "guildpower": "Potere Gilda",
@@ -226,7 +228,7 @@
   "plunder": "SACCHEGGIO",
   "points": "Points",
   "post": "Post",
-  "posting_guild_stats": "Invio statistiche gilda a SS",
+
   "profit": "Profitto",
   "progress": "Progress",
   "qi-attackers": "QI Attackers",

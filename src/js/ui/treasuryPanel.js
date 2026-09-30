@@ -124,15 +124,12 @@ function buildTreasuryTableHtml({ resources, rssDefs = [], helper = {} }) {
           currentEraName = rssDef.era;
         }
         const displayName = rssDef.name || rssDef.id;
-        const safeName =
-          typeof helper.escapeHTML === 'function' ?
-            helper.escapeHTML(displayName)
-          : canonicalEscapeHTML(displayName);
+        const safeName = canonicalEscapeHTML(displayName);
         eraTreasuryText += `<tr><td class="text-start">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
       }
     });
     if (eraTreasuryText) {
-      tableRows += `<tr><td colspan="2" class="goods-era-header">${currentEraName}</td></tr>${eraTreasuryText}`;
+      tableRows += `<tr><td colspan="2" class="goods-era-header">${canonicalEscapeHTML(currentEraName)}</td></tr>${eraTreasuryText}`;
     }
   }
 
@@ -154,10 +151,7 @@ function buildTreasuryTableHtml({ resources, rssDefs = [], helper = {} }) {
           (typeof helper.fResourceShortName === 'function' ?
             helper.fResourceShortName(resId)
           : null) || resId;
-        const safeName =
-          typeof helper.escapeHTML === 'function' ?
-            helper.escapeHTML(displayName)
-          : canonicalEscapeHTML(displayName);
+        const safeName = canonicalEscapeHTML(displayName);
         otherTreasuryText += `<tr><td class="text-start">${safeName}</td><td class="text-end">${amount.toLocaleString()}</td></tr>`;
       }
     }
@@ -490,14 +484,8 @@ function renderTreasuryLogPanel(logs, totals = {}, context = {}) {
   html += `</tr></thead><tbody>`;
 
   for (const entry of list.slice(0, 50)) {
-    const pName =
-      helper?.escapeHTML ?
-        helper.escapeHTML(entry.playerName || 'Unknown')
-      : canonicalEscapeHTML(entry.playerName || 'Unknown');
-    const rName =
-      helper?.escapeHTML ?
-        helper.escapeHTML(entry.resource || '')
-      : canonicalEscapeHTML(entry.resource || '');
+    const pName = canonicalEscapeHTML(entry.playerName || 'Unknown');
+    const rName = canonicalEscapeHTML(entry.resource || '');
     const act =
       helper?.escapeHTML ?
         helper.escapeHTML(entry.action || '')

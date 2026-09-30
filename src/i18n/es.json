@@ -74,6 +74,8 @@
   "gbg_leaderboard": "Clasificación GBG",
   "gbg_target_generator": "Generador de objetivos GBG",
   "gbg_targets": "Objetivos GBG",
+  "alert_at": "aviso a las",
+  "by": "por",
   "ge": "EdG",
   "ge-attackers": "GE Attackers",
   "ge-defenders": "GE Defenders",
@@ -85,7 +87,7 @@
   "guaranteed_profit": "Beneficio garantizado",
   "guild": "Gremio",
   "guild_overview": "Resumen del gremio",
-  "guild_stats": "Estadísticas del gremio:",
+
   "guild_total": "Total del gremio",
   "guildgoods": "Bienes del gremio",
   "guildpower": "Poder del Gremio",
@@ -226,7 +228,7 @@
   "plunder": "PLUNDER",
   "points": "Points",
   "post": "Anunciar",
-  "posting_guild_stats": "Enviando estadísticas del gremio a SS",
+
   "profit": "Profit",
   "progress": "Progress",
   "qi-attackers": "QI Attackers",

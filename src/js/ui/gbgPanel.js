@@ -11,18 +11,6 @@
  * ./gbgTargetGenerator.js. This module re-exports it for existing consumers.
  */
 
-let createLogger = () => ({
-  debug: () => {},
-  info: () => {},
-  warn: () => {},
-  error: () => {},
-});
-try {
-  ({ createLogger } = require('../utils/logger.js'));
-} catch {}
-
-const logger = createLogger('GbgPanel');
-
 const { escapeHTML } = require('../utils/escape.js');
 
 let collapse = {};
@@ -175,7 +163,7 @@ function buildBuildingCostsTableHTML({
         BuildingDefs && BuildingDefs[building.buildingId]?.name ?
           BuildingDefs[building.buildingId].name
         : building.buildingId;
-      costsHTML += `<tr><td>${bName}</td>`;
+      costsHTML += `<tr><td>${escapeHTML(bName)}</td>`;
       const resources = building.costs?.resources || {};
       Object.keys(resources).forEach((resource) => {
         const resLabel =
