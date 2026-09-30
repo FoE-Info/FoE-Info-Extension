@@ -100,12 +100,8 @@ let friends = [];
 let guildMembers = [];
 let hoodlist = [];
 
-function otherPlayerService(msg) {
-  const visitContainer =
-    typeof document !== 'undefined' ? document.getElementById('visit') : null;
-  if (visitContainer) {
-    visitContainer.innerHTML = '';
-  }
+function otherPlayerService(msg, clearVisitDisplay = () => {}) {
+  clearVisitDisplay();
 
   const payload = msg?.responseData || msg || {};
   const player = payload.other_player || payload.player || {};
@@ -305,7 +301,8 @@ function register(dispatcher, options = {}) {
   if (!dispatcher || typeof dispatcher.register !== 'function') return this;
 
   const targetOtherPlayerService =
-    options.otherPlayerService || otherPlayerService;
+    options.otherPlayerService ||
+    ((msg) => otherPlayerService(msg, options.clearVisitDisplay));
   const targetUpdateActions =
     options.otherPlayerServiceUpdateActions || otherPlayerServiceUpdateActions;
   const targetSetCurrentView = options.setCurrentView || setCurrentView;
@@ -364,17 +361,7 @@ function register(dispatcher, options = {}) {
 
   const guildHandler = (msg) => {
     const data = msg?.responseData || msg;
-    if (typeof document !== 'undefined' && document.getElementById) {
-      const guildOverviewEl = document.getElementById('guildOverview');
-      if (guildOverviewEl) {
-        if (guildOverviewEl.classList?.contains('d-none')) {
-          guildOverviewEl.classList.remove('d-none');
-        }
-        if (guildOverviewEl.style) {
-          guildOverviewEl.style.display = '';
-        }
-      }
-    }
+    options.showGuildOverview?.();
     if (typeof targetRenderGuildPanel === 'function' && data) {
       targetRenderGuildPanel(data);
     }

@@ -8,13 +8,24 @@
 
 const { calculateSafeSpots } = require('../calc/GreatBuildingCalculator.js');
 const { gbDonationState } = require('../state/GreatBuildingDomainState.js');
+const serviceDom = {
+  findCityRewardsContainer: () => null,
+};
+
+function configurePresentation(callbacks = {}) {
+  for (const key of Object.keys(serviceDom)) {
+    if (typeof callbacks[key] === 'function') serviceDom[key] = callbacks[key];
+  }
+}
 
 let showOptions = {};
 if (typeof __webpack_require__ !== 'undefined') {
   try {
     const showOpt = require('../vars/showOptions.js');
     showOptions = showOpt.showOptions || showOpt;
-  } catch {}
+  } catch {
+    // showOptions not available in all build configurations; defaults apply.
+  }
 }
 
 function extractRankingData(msg, context) {
@@ -29,7 +40,9 @@ function extractRankingData(msg, context) {
     if (typeof post === 'string') {
       try {
         post = JSON.parse(post);
-      } catch {}
+      } catch {
+        // Malformed post data; falls through to the array check below.
+      }
     }
     if (Array.isArray(post)) return post;
     if (Array.isArray(post?.requestData)) return post.requestData;
@@ -239,16 +252,17 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
   }
 
   let container = cityrewards;
-  if (!container && typeof document !== 'undefined') {
-    container =
-      document.getElementById('cityrewards') ||
-      document.getElementById('rewards');
+  if (!container) {
+    container = serviceDom.findCityRewardsContainer();
   }
   if (!container && typeof __webpack_require__ !== 'undefined') {
     try {
       const statePkg = require('../state/state.js');
       container = statePkg.cityrewards;
-    } catch {}
+    } catch {
+      // state.js unavailable in some build configurations; falls through
+      // to the 'no_container' return path below.
+    }
   }
 
   const data = msg?.responseData || msg;
@@ -342,7 +356,9 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
           statePkg.rewardsGeneric[formattedName] =
             (statePkg.rewardsGeneric[formattedName] || 0) + amount;
         }
-      } catch {}
+      } catch {
+        // state.js unavailable; reward still published via gbDonationState.
+      }
     }
 
     gbDonationState.setReward({
@@ -373,16 +389,17 @@ function register(dispatcher, options = {}) {
 
   dispatcher.register('BlueprintService', 'newReward', (msg) => {
     let container = options.cityrewards || null;
-    if (!container && typeof document !== 'undefined') {
-      container =
-        document.getElementById('cityrewards') ||
-        document.getElementById('rewards');
+    if (!container) {
+      container = serviceDom.findCityRewardsContainer();
     }
     if (!container && typeof __webpack_require__ !== 'undefined') {
       try {
         const statePkg = require('../state/state.js');
         container = statePkg.cityrewards;
-      } catch {}
+      } catch {
+        // state.js unavailable in some build configurations; falls through
+        // to the 'no_container' return path in rewardHandler.
+      }
     }
     return rewardHandler(msg, targetOptions, container);
   });
@@ -408,3 +425,5 @@ module.exports = {
   GbDonationService: gbDonationService,
 };
 module.exports.default = module.exports;
+
+module.exports.configurePresentation = configurePresentation;

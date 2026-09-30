@@ -1,50 +1,14 @@
 /** Messages and teasers RPC service for player conversation threads. */
 
-// Canonical escaping core; fail-closed - the injected `helper` seam is only
-// a test hook, never the sole provider of escaping.
-const { escapeHTML } = require('../utils/escape.js');
-
-let dateUtils = {};
-try {
-  dateUtils = require('../utils/date.js');
-} catch {}
-
-function formatTimeSafe(value) {
-  return typeof dateUtils?.formatTime === 'function' ?
-      dateUtils.formatTime(value)
-    : '';
-}
-let element = { close: () => '', post: () => '', icon: () => '' };
-try {
-  element = require('../ui/AddElement.js');
-} catch {
-  try {
-    element = require('../fn/AddElement.js');
-  } catch {}
-}
-let collapse = {};
-try {
-  collapse = require('../fn/collapse.js');
-} catch {}
-let helper = {};
-try {
-  helper = require('../fn/helper.js');
-} catch {}
-let post_webstore = {};
-try {
-  post_webstore = require('../fn/post.js');
-} catch {}
 let extractRateFromTitle = () => 0;
 try {
   const rp = require('../fn/rateParser.js');
   extractRateFromTitle = rp.extractRateFromTitle;
 } catch {}
-let targets = null;
 let targetsTopic = 'Targets';
 if (typeof __webpack_require__ !== 'undefined') {
   try {
     const state = require('../vars/state.js');
-    targets = state.targets;
     targetsTopic = state.targetsTopic;
   } catch {}
 }
@@ -86,101 +50,26 @@ try {
   ({ guildBattlegroundState } = require('../state/GuildDomainState.js'));
 } catch {}
 
-let targetsTimer = null;
 let lastTargetsConversationId = null;
+
+// DOM rendering delegated entirely to ui/renderGbgTargets.js (§5 layer purity).
+// This service has ZERO DOM access — all rendering, timers, and DOM cleanup
+// live in the UI module. State callbacks are injected via onDismiss.
+let renderGbgTargets = null;
+function configurePresentation(callbacks = {}) {
+  if (typeof callbacks.renderTargetMessage === 'function')
+    renderGbgTargets = callbacks.renderTargetMessage;
+}
 
 function renderTargetMessage(message) {
   if (!message) return;
-  guildBattlegroundState?.setTargetMessageActive?.(true);
-  const targetsGBG =
-    document.getElementById('targetsGBG') ||
-    (() => {
-      const el = document.createElement('div');
-      el.id = 'targetsGBG';
-      targets?.appendChild?.(el);
-      return el;
-    })();
-
-  const timerId = Math.random().toString(36).substr(2, 5);
-  let targetsHTML = `<div id="alert-${timerId}" class="alert alert-info alert-dismissible show" role="alert">`;
-  if (typeof element?.close === 'function') {
-    targetsHTML += element.close();
-  }
-
-  const canPost =
-    (typeof helper?.checkGBG === 'function' && helper.checkGBG()) ||
-    Boolean(helper?.MyGuildPermissions & 64);
-  if (canPost && typeof element?.post === 'function') {
-    targetsHTML += element.post(
-      'targetPostID',
-      'primary',
-      'right',
-      collapse.collapseTarget,
+  // Delegate all DOM + timer lifecycle to the UI module.
+  // The onDismiss callback handles state cleanup (non-DOM).
+  if (typeof renderGbgTargets === 'function') {
+    renderGbgTargets(message, guildBattlegroundState, () =>
+      guildBattlegroundState?.setTargetMessageActive?.(false),
     );
   }
-
-  const rawText = message?.lastMessage?.text || message?.text || '';
-  const safeText = escapeHTML(rawText).replace(/(?:\r\n|\r|\n)/g, '<br>');
-
-  const rawSender =
-    message?.lastMessage?.sender?.name ||
-    message?.sender?.name ||
-    (typeof message?.sender === 'string' ? message.sender : '');
-  const safeSender = escapeHTML(rawSender);
-
-  const rawDate = message?.lastMessage?.date || message?.date;
-  let formattedDate;
-  if (typeof rawDate === 'number') {
-    formattedDate = formatTimeSafe(rawDate);
-  } else if (rawDate) {
-    formattedDate = String(rawDate);
-  } else {
-    formattedDate = formatTimeSafe(Math.floor(Date.now() / 1000));
-  }
-  const safeDate = escapeHTML(formattedDate);
-
-  const iconHTML =
-    typeof element?.icon === 'function' ?
-      element.icon('targeticon', 'targetText', collapse.collapseTarget)
-    : '';
-
-  const alertTime = formatTimeSafe(Math.floor(Date.now() / 1000));
-
-  targetsGBG.innerHTML =
-    targetsHTML +
-    `<p id="targetLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#targetText" aria-expanded="${!collapse.collapseTarget}" aria-controls="targetText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
-  ${iconHTML}
-            <strong><span data-i18n="gbg_targets">GBG Targets</span></strong> ${safeDate}</p><p id="targetText" class="collapse ${
-              collapse.collapseTarget ? '' : 'show'
-            }">${safeText}<br><span class="text-muted">by ${safeSender}. alert @ ${alertTime}</span></p></div>`;
-
-  if (targetsTimer) clearTimeout(targetsTimer);
-  targetsTimer = setTimeout(function () {
-    if (targetsGBG) targetsGBG.innerHTML = '';
-    targetsTimer = null;
-    guildBattlegroundState?.setTargetMessageActive?.(false);
-  }, 600000);
-  if (targetsTimer && typeof targetsTimer.unref === 'function') {
-    targetsTimer.unref();
-  }
-
-  document
-    .getElementById('targetLabel')
-    ?.addEventListener('click', collapse.fCollapseTarget);
-  if (canPost) {
-    document
-      .getElementById('targetPostID')
-      ?.addEventListener('click', post_webstore.postTargetsToDiscord);
-  }
-
-  const alertEl = document.getElementById(`alert-${timerId}`);
-  const handleAlertClose = () => {
-    guildBattlegroundState?.setTargetMessageActive?.(false);
-  };
-  alertEl?.addEventListener?.('closed.bs.alert', handleAlertClose);
-  alertEl
-    ?.querySelector?.('.btn-close')
-    ?.addEventListener?.('click', handleAlertClose);
 }
 
 function getLatestMessage(msgs) {
@@ -337,3 +226,5 @@ module.exports = {
   register,
 };
 module.exports.default = module.exports;
+
+module.exports.configurePresentation = configurePresentation;

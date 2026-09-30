@@ -84,11 +84,6 @@ function registerAllServices(dispatcher = messageDispatcher, options = {}) {
   return dispatcher;
 }
 
-// Central registration owner; repeated bootstrap calls reuse this registration.
-if (messageDispatcher && typeof messageDispatcher.register === 'function') {
-  registerAllServices(messageDispatcher);
-}
-
 module.exports = {
   registerAllServices,
   messageDispatcher,

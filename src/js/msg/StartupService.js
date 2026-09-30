@@ -44,19 +44,6 @@ try {
   ({ formatLiveName } = require('../fn/liveNameResolver.js'));
 } catch {}
 
-let Popover = null;
-try {
-  const bootstrap = require('bootstrap');
-  Popover = bootstrap.Popover;
-} catch {}
-
-let updateActivePopoverContent = null;
-try {
-  ({
-    updateActivePopoverContent,
-  } = require('../ui/components/PopoverManager.js'));
-} catch {}
-
 let recalculateAidStatsBoosts = null;
 try {
   ({
@@ -88,6 +75,20 @@ const { metadataStore } = require('../state/MetadataStore.js');
 const { startupRenderState } = require('../state/StartupRenderState.js');
 const { formatDateTime } = require('../utils/date.js');
 const { createLogger, isDebugEnabled } = require('../utils/logger.js');
+const serviceDom = {
+  getCitystatsEl: () => null,
+  updateFpDisplay: () => undefined,
+  updateClanGoodsDisplay: () => undefined,
+  wireStartupFinishRender: () => undefined,
+  refreshFpPopover: () => undefined,
+  applyStartupLocale: () => undefined,
+};
+
+function configurePresentation(callbacks = {}) {
+  for (const key of Object.keys(serviceDom)) {
+    if (typeof callbacks[key] === 'function') serviceDom[key] = callbacks[key];
+  }
+}
 
 let showOptions = {};
 try {
@@ -229,17 +230,7 @@ function resetCityStartupState(City, options = {}) {
 
   const lang =
     options.language !== undefined ? options.language : stateObj?.language;
-  if (
-    lang &&
-    lang !== 'auto' &&
-    typeof $ !== 'undefined' &&
-    typeof $.i18n === 'function'
-  ) {
-    $.i18n({
-      locale: lang,
-    });
-    log.debug?.(lang, $.i18n().locale, $.i18n.debug);
-  }
+  if (lang && lang !== 'auto') serviceDom.applyStartupLocale(lang);
 
   const isDev =
     options.DEV !== undefined ? options.DEV
@@ -329,20 +320,7 @@ function fEntityName(entity, helperObj) {
 }
 
 function ensureCitystatsContainer() {
-  let el =
-    typeof document !== 'undefined' ?
-      document.getElementById('citystats')
-    : null;
-  if (!el && typeof document !== 'undefined') {
-    el = document.createElement('div');
-    const root =
-      document.getElementById('content') ||
-      document.body ||
-      document.documentElement;
-    if (root) root.insertBefore(el, root.childNodes[0] || null);
-    el.id = 'citystats';
-  }
-  return el;
+  return serviceDom.getCitystatsEl();
 }
 
 /**
@@ -642,26 +620,19 @@ function handleBoostServiceAllBoosts({
         City.fpProductionBoost,
       ).total.toNumber();
     }
-    const fpSpan =
-      typeof document !== 'undefined' ? document.getElementById('fp') : null;
-    if (fpSpan) {
-      fpSpan.innerHTML = `<span data-i18n="daily">Daily</span>: ${City.ForgePoints}FP`;
-      // The marker attribute, not the English wording: the breakdown is
-      // localized, so a text search for "Boost =" would re-append it in every
-      // locale whose dictionary does not contain that literal.
-      if (tooltipHTML?.fp && !tooltipHTML.fp.includes('data-fp-boost')) {
-        tooltipHTML.fp += `<br><strong data-fp-boost>${t('fp_boost_breakdown', totalBase.toString(), City.fpProductionBoost, City.ForgePoints)}</strong>`;
-        fpSpan.setAttribute('data-bs-content', tooltipHTML.fp);
-        if (typeof updateActivePopoverContent === 'function') {
-          updateActivePopoverContent(fpSpan, tooltipHTML.fp);
-        }
-        const popover =
-          Popover?.getInstance ? Popover.getInstance(fpSpan) : null;
-        if (popover) {
-          popover.setContent({ '.popover-body': tooltipHTML.fp });
-        }
-      }
+    // DOM writes delegated to serviceDomBridge; data mutation stays here
+    const boostAlreadyAdded =
+      tooltipHTML?.fp && tooltipHTML.fp.includes('data-fp-boost');
+    if (tooltipHTML?.fp && !boostAlreadyAdded) {
+      tooltipHTML.fp += `<br><strong data-fp-boost>${t('fp_boost_breakdown', totalBase.toString(), City.fpProductionBoost, City.ForgePoints)}</strong>`;
     }
+    serviceDom.updateFpDisplay({
+      forgePoints: City.ForgePoints,
+      fpTooltipHTML: tooltipHTML?.fp,
+      boostAlreadyAdded,
+      t,
+    });
+    serviceDom.refreshFpPopover(tooltipHTML?.fp);
   }
 
   if (
@@ -674,14 +645,11 @@ function handleBoostServiceAllBoosts({
       if (!lastStartupContext.tooltipHTML) lastStartupContext.tooltipHTML = {};
       lastStartupContext.tooltipHTML.clanGoods = tooltipHTML?.clanGoods;
     }
-    const clanSpan =
-      typeof document !== 'undefined' ?
-        document.getElementById('clanGoods')
-      : null;
-    if (clanSpan) {
-      clanSpan.innerHTML = `<span data-i18n="guildgoods">Guild Goods</span>: ${boostedClanGoods}`;
-      clanSpan.setAttribute('data-bs-content', tooltipHTML?.clanGoods);
-    }
+    // DOM write delegated to serviceDomBridge; data mutation stays here
+    serviceDom.updateClanGoodsDisplay({
+      clanGoods: boostedClanGoods,
+      tooltipHTML: tooltipHTML?.clanGoods,
+    });
   }
 
   const currentBoosts = {
@@ -976,16 +944,11 @@ function startupService(msg, dependencies = {}) {
 
   const finishRender = () => {
     renderLiveCityStats();
-    if (!collapse.collapseStats) {
-      if (typeof document !== 'undefined') {
-        document
-          .getElementById('citystatsCopyID')
-          ?.addEventListener('click', copy.fCityStatsCopy);
-      }
-    }
-    if (typeof document !== 'undefined' && document.body) {
-      translateContainer(document.body);
-    }
+    serviceDom.wireStartupFinishRender({
+      copy,
+      collapseStats: collapse.collapseStats,
+      translateContainer,
+    });
   };
 
   scheduleStartupRender({
@@ -1012,7 +975,11 @@ function startupService(msg, dependencies = {}) {
 
 function buildClanGoodsData() {
   return buildClanGoodsDataImpl(
-    clanGoodsBuildings,
+    clanGoodsBuildings.map((entry) => ({
+      ...entry,
+      displayName:
+        helper.fEntityNameTrim?.(entry.id || entry.name) || entry.name,
+    })),
     City.guildGoodsProductionBoost,
     tooltipHTML,
   );
@@ -1157,3 +1124,5 @@ module.exports = {
   },
 };
 module.exports.default = module.exports;
+
+module.exports.configurePresentation = configurePresentation;
