@@ -24,9 +24,10 @@ const defaultGbRegistry = require('../state/GreatBuildingRegistry.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 
 let setCurrentView = () => {};
-try {
-  ({ setCurrentView } = require('../ui/cardVisibility.js'));
-} catch {}
+function configurePresentation(callbacks = {}) {
+  if (typeof callbacks.setCurrentView === 'function')
+    setCurrentView = callbacks.setCurrentView;
+}
 
 let guildBattlegroundState = null;
 try {
@@ -293,3 +294,5 @@ module.exports = {
     cityMapService.register(dispatcher, options),
 };
 module.exports.default = cityMapService;
+
+module.exports.configurePresentation = configurePresentation;

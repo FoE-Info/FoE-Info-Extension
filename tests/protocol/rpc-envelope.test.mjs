@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { messageDispatcher } from '../../src/js/protocol/MessageDispatcher.js';
-import '../../src/js/msg/registerServices.js';
 import { cityMapService } from '../../src/js/msg/CityMapService.js';
+import registryPkg from '../../src/js/msg/registerServices.js';
 import { registerLegacyBridge } from '../../src/js/protocol/legacyBridge.js';
+import { messageDispatcher } from '../../src/js/protocol/MessageDispatcher.js';
 
 test('RPC Envelope Routing - end-to-end multi-service batch dispatch', async () => {
   let legacyStartupCalled = false;
@@ -13,6 +13,7 @@ test('RPC Envelope Routing - end-to-end multi-service batch dispatch', async () 
       return { success: true };
     },
   });
+  registryPkg.registerAllServices(messageDispatcher);
   registerLegacyBridge(messageDispatcher);
 
   const envelope = [

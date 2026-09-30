@@ -29,6 +29,8 @@ function createMockDOM() {
       style: {},
       setAttribute: () => {},
       getAttribute: () => null,
+      querySelector: () => null,
+      querySelectorAll: () => [],
       addEventListener: () => {},
       removeEventListener: () => {},
       appendChild(child) {

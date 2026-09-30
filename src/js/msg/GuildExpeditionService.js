@@ -14,9 +14,10 @@ try {
 } catch {}
 
 let setCurrentView = () => {};
-try {
-  ({ setCurrentView } = require('../ui/cardVisibility.js'));
-} catch {}
+function configurePresentation(callbacks = {}) {
+  if (typeof callbacks.setCurrentView === 'function')
+    setCurrentView = callbacks.setCurrentView;
+}
 
 const {
   extractTrialLevel,
@@ -119,3 +120,5 @@ module.exports = {
   register,
 };
 module.exports.default = guildExpeditionService;
+
+module.exports.configurePresentation = configurePresentation;

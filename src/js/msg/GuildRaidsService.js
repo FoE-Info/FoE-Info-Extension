@@ -13,9 +13,10 @@ try {
 } catch {}
 
 let setCurrentView = () => {};
-try {
-  ({ setCurrentView } = require('../ui/cardVisibility.js'));
-} catch {}
+function configurePresentation(callbacks = {}) {
+  if (typeof callbacks.setCurrentView === 'function')
+    setCurrentView = callbacks.setCurrentView;
+}
 
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 const { quantumState } = require('../state/GuildDomainState.js');
@@ -275,3 +276,5 @@ module.exports = {
   guildRaidsService,
 };
 module.exports.default = module.exports;
+
+module.exports.configurePresentation = configurePresentation;

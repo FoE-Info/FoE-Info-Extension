@@ -9,6 +9,15 @@
 
 const BigNumber = require('bignumber.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
+const serviceDom = {
+  updateAvailableFpDisplay: () => undefined,
+};
+
+function configurePresentation(callbacks = {}) {
+  for (const key of Object.keys(serviceDom)) {
+    if (typeof callbacks[key] === 'function') serviceDom[key] = callbacks[key];
+  }
+}
 
 class InventoryItem {
   constructor(raw = {}) {
@@ -188,10 +197,7 @@ class InventoryService {
     }
 
     if (typeof document !== 'undefined') {
-      const availableEl = document.getElementById('availableFPID');
-      if (availableEl) {
-        availableEl.textContent = fpSum.toString();
-      }
+      serviceDom.updateAvailableFpDisplay(fpSum.toString());
     }
 
     return {
@@ -277,3 +283,5 @@ module.exports = {
   getGreatBuildings: inventoryService.getGreatBuildings,
 };
 module.exports.default = inventoryService;
+
+module.exports.configurePresentation = configurePresentation;

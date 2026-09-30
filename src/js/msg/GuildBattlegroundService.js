@@ -35,6 +35,15 @@ try {
 
 const { guildBattlegroundState } = require('../state/GuildDomainState.js');
 const { metadataStore } = require('../state/MetadataStore.js');
+const serviceDom = {
+  clearBattlegroundDisplay: () => undefined,
+};
+
+function configurePresentation(callbacks = {}) {
+  for (const key of Object.keys(serviceDom)) {
+    if (typeof callbacks[key] === 'function') serviceDom[key] = callbacks[key];
+  }
+}
 
 let showOptions = {};
 try {
@@ -229,7 +238,13 @@ function resolveSignalData(msg, payload, context, requestMethod) {
           ) {
             data = match.requestData;
           }
-        } catch {}
+        } catch {
+          // Best-effort parse of intercepted RPC post data; malformed
+          // payloads fall through to the next resolution strategy.
+          logger?.debug?.('resolveSignalData: postText parse failed', {
+            requestMethod,
+          });
+        }
       }
     }
   }
@@ -380,7 +395,11 @@ function extractSignalData(msg, context) {
       if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
         return match.requestData;
       }
-    } catch {}
+    } catch {
+      // Best-effort parse of intercepted GBG signal post data; malformed
+      // payloads fall through to the next resolution strategy.
+      logger?.debug?.('extractSignalData: postText parse failed');
+    }
   }
 
   if (Array.isArray(msg?.responseData) && msg.responseData.length > 0) {
@@ -763,12 +782,7 @@ function clearBattleground() {
   GuildMembers.length = 0;
   map = {};
   signals = [];
-  if (typeof document !== 'undefined' && document.getElementById) {
-    const costsEl = document.getElementById('costs');
-    if (costsEl) costsEl.innerHTML = '';
-    const targetsGbgEl = document.getElementById('targetsGBG');
-    if (targetsGbgEl) targetsGbgEl.innerHTML = '';
-  }
+  serviceDom.clearBattlegroundDisplay();
 }
 
 function getSignals() {
@@ -1022,3 +1036,5 @@ module.exports = {
   GuildBattlegroundService: guildBattlegroundService,
 };
 module.exports.default = guildBattlegroundService;
+
+module.exports.configurePresentation = configurePresentation;

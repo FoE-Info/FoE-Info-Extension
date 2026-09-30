@@ -78,6 +78,7 @@ const { conversationService } =
   await import('../../src/js/msg/ConversationService.js');
 const { bindGuildBattlegroundPanels } =
   await import('../../src/js/ui/gbgPanel.js');
+await import('../helpers/service-presentation.mjs');
 bindGuildBattlegroundPanels();
 
 showOptions.showBattleground = false;

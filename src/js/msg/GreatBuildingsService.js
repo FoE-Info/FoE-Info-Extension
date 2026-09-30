@@ -13,6 +13,16 @@ const {
 const GbDonationService = require('./GbDonationService.js');
 const { getContributions } = require('./InvestedService.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
+const serviceDom = {
+  findCityRewardsContainer: () => null,
+};
+
+function configurePresentation(callbacks = {}) {
+  if (callbacks.element) element = callbacks.element;
+  for (const key of Object.keys(serviceDom)) {
+    if (typeof callbacks[key] === 'function') serviceDom[key] = callbacks[key];
+  }
+}
 
 let element = {};
 let collapse = {};
@@ -58,10 +68,6 @@ if (typeof __webpack_require__ !== 'undefined') {
     const startup = require('./StartupService.js');
     City = startup.City || {};
     state = require('../vars/state.js');
-  } catch {}
-} else {
-  try {
-    element = require('../ui/AddElement.js');
   } catch {}
 }
 
@@ -219,12 +225,7 @@ function syncRankingPayload(
 }
 
 function handleNewReward(msg) {
-  const container =
-    state?.cityrewards ||
-    (typeof document !== 'undefined' ?
-      document.getElementById('cityrewards') ||
-      document.getElementById('rewards')
-    : null);
+  const container = state?.cityrewards || serviceDom.findCityRewardsContainer();
   return GbDonationService.handleNewReward(msg, showOptions, container);
 }
 
@@ -545,3 +546,5 @@ exports.greatBuildingsService = defaultGreatBuildingsService;
 exports.GreatBuildingsService = defaultGreatBuildingsService;
 exports.default = defaultGreatBuildingsService;
 module.exports = exports;
+
+module.exports.configurePresentation = configurePresentation;

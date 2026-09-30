@@ -329,7 +329,11 @@ function extractSignalData(msg, payload, context) {
       if (Array.isArray(match?.requestData) && match.requestData.length > 0) {
         return match.requestData;
       }
-    } catch {}
+    } catch {
+      // Best-effort parse of intercepted GBG signal post data; malformed
+      // payloads fall through to the next resolution strategy.
+      logger?.debug?.('resolveSignalData: postText parse failed');
+    }
   }
 
   if (Array.isArray(msg?.responseData) && msg.responseData.length > 0) {
