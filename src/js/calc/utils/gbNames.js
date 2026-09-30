@@ -11,4 +11,3 @@ module.exports = {
   GB_NAME_MAP,
   getGreatBuildingName,
 };
-module.exports.default = module.exports;

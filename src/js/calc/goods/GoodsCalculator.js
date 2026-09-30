@@ -182,4 +182,3 @@ module.exports = {
   processEntityGoods,
   finalizeGoods,
 };
-module.exports.default = module.exports;

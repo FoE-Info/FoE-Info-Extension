@@ -7,7 +7,6 @@
  */
 
 const BigNumber = require('bignumber.js');
-const metadataStorePkg = require('../state/MetadataStore.js');
 const {
   getPreviousEra,
   getNextEra,
@@ -39,8 +38,6 @@ const {
   computeChateauGoods,
 } = require('./units/UnitCalculator.js');
 
-const defaultMetadataStore = metadataStorePkg.metadataStore;
-
 let logger = null;
 try {
   const { createLogger } = require('../utils/logger.js');
@@ -48,7 +45,9 @@ try {
 } catch {}
 
 class CityStatsCalculator {
-  constructor(store = defaultMetadataStore) {
+  // `store` is required and has no default; see VisitedCityStatsCalculator for
+  // why the module-level capture of `../state/MetadataStore.js` was removed.
+  constructor(store) {
     this.metadataStore = store;
   }
 
@@ -62,7 +61,14 @@ class CityStatsCalculator {
       entityCount: entities?.length,
       playerEra,
     });
-    const store = metadataStore || defaultMetadataStore;
+    // Loud, not silent: a missing store makes the entity classification below
+    // produce quietly wrong totals. An empty entity list needs no store.
+    if (entities.length > 0 && !metadataStore) {
+      throw new Error(
+        'CityStatsCalculator: metadataStore is required when entities are supplied',
+      );
+    }
+    const store = metadataStore ?? null;
     const prevEra = getPreviousEra(playerEra);
     const nextEra = getNextEra(playerEra);
 
@@ -206,12 +212,7 @@ class CityStatsCalculator {
   }
 }
 
-const cityStatsCalculator = new CityStatsCalculator();
-
-module.exports = {
-  CityStatsCalculator,
-  cityStatsCalculator,
-  calculateCityStats:
-    cityStatsCalculator.calculateCityStats.bind(cityStatsCalculator),
-};
-module.exports.default = cityStatsCalculator;
+// No module-level singleton. It had no production consumer in src/ (only tests
+// construct the class with an explicit store), and building one here would
+// require capturing `../state/MetadataStore.js` at load time.
+module.exports = { CityStatsCalculator };

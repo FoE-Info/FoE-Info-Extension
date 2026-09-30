@@ -14,7 +14,7 @@ const UNIT_MULTIPLIER = new BigNumber(1);
 
 function addResource(res, k, v) {
   if (v == null) return;
-  res[k] = toBigNumber(res[k]).plus(toBigNumber(v)).toNumber();
+  res[k] = toBigNumber(res[k]).plus(toBigNumber(v));
 }
 
 function addGuildResources(res, guildRes) {
@@ -247,7 +247,13 @@ function extractEntityProduction(
     }
   }
 
-  return res;
+  // Convert BigNumber accumulators to Number at the API boundary so callers
+  // receive the same plain-object shape the legacy code always returned.
+  const out = {};
+  for (const [k, v] of Object.entries(res)) {
+    out[k] = v instanceof BigNumber ? v.toNumber() : v;
+  }
+  return out;
 }
 
 function applyProductionBoosts({
@@ -298,4 +304,3 @@ module.exports = {
   extractEntityProduction,
   applyProductionBoosts,
 };
-module.exports.default = module.exports;

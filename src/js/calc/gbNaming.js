@@ -5,11 +5,6 @@
  * Decoupled from helper.js and StartupService.js.
  */
 
-let metadataStore = null;
-try {
-  metadataStore = require('../state/MetadataStore.js').metadataStore;
-} catch {}
-
 let stateModule = {};
 if (typeof __webpack_require__ !== 'undefined') {
   try {
@@ -197,7 +192,12 @@ function fGBname(
   );
 
   const defs = customCityEntityDefs || stateModule.CityEntityDefs || {};
-  const store = customMetadataStore || metadataStore;
+  // The store is used only for `reportEntityLookup`, which writes to
+  // MetadataStore's `_reportedEntityMisses` — a write-only Set with no reader
+  // in src/ (entityResolver.js:111). fn/helper.js exercises the same path. So a
+  // caller that wants the debug bookkeeping passes `customMetadataStore`;
+  // without it both report sites are skipped by their `store &&` guard.
+  const store = customMetadataStore || null;
 
   const candidates = [
     GB_name,
@@ -301,8 +301,3 @@ module.exports = {
   GB_NAME_MAP,
   getGreatBuildingName,
 };
-module.exports.default = module.exports;
-module.exports.fGBsname = fGBsname;
-module.exports.fGBname = fGBname;
-module.exports.fCFname = fCFname;
-module.exports.fArcname = fArcname;

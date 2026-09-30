@@ -109,4 +109,3 @@ function extractEntityBoosts(
 module.exports = {
   extractEntityBoosts,
 };
-module.exports.default = extractEntityBoosts;

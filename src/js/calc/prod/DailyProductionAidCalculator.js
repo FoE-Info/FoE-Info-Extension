@@ -310,4 +310,3 @@ module.exports = {
   calculateDailyProductionAid,
   recalculateAidStatsBoosts,
 };
-module.exports.default = module.exports;

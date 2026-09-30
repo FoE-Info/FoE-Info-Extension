@@ -194,4 +194,3 @@ module.exports = {
   formatCampsText,
   formatTargetToken,
 };
-module.exports.default = module.exports;

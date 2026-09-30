@@ -329,4 +329,3 @@ module.exports = {
   processCityMapEntities,
   SPECIAL_GOODS,
 };
-module.exports.default = module.exports;

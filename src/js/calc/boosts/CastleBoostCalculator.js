@@ -36,9 +36,9 @@ const STAGE_BOOST_MAP = Object.freeze({
  * @returns {{ attackerAtt: number, attackerDef: number, defenderAtt: number, defenderDef: number }|null}
  */
 function getCastleBoostsForStage(stage) {
-  const s = parseInt(stage, 10);
+  const s = parseInt(String(stage), 10);
   if (!(s in STAGE_BOOST_MAP)) return null;
-  const boost = STAGE_BOOST_MAP[s];
+  const boost = /** @type {Record<number, number>} */ (STAGE_BOOST_MAP)[s];
   return {
     attackerAtt: boost,
     attackerDef: boost,
@@ -50,7 +50,7 @@ function getCastleBoostsForStage(stage) {
 /**
  * Resolve Castle System boosts for a city map entity.
  *
- * @param {Object} entity City map entity.
+ * @param {{ cityentity_id?: string }} entity City map entity.
  * @returns {{ attackerAtt: number, attackerDef: number, defenderAtt: number, defenderDef: number }|null}
  */
 function getCastleBoostsForEntity(entity) {
@@ -64,4 +64,3 @@ module.exports = {
   getCastleBoostsForStage,
   getCastleBoostsForEntity,
 };
-module.exports.default = module.exports;

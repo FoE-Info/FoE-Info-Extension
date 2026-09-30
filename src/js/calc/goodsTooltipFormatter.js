@@ -7,20 +7,8 @@
 
 const BigNumber = require('bignumber.js');
 const { toBigNumber } = require('./utils/bignumberUtils.js');
-let City = null;
-try {
-  ({ City } = require('../state/CityDomainState.js'));
-} catch {}
 
-let Goods = null;
-try {
-  Goods = require('../vars/state.js')?.Goods;
-} catch {}
-
-let helper = null;
-try {
-  helper = require('../fn/helper.js');
-} catch {}
+const { fGVGagesname } = require('./eraMapping.js');
 
 let i18nModule = null;
 try {
@@ -32,7 +20,16 @@ function tr(key, fallback) {
   return value && value !== key ? value : fallback;
 }
 
-function fGoodsText(age, goods, boostValue = City?.goodsProductionBoost || 0) {
+/**
+ * `boostValue` is required on every goods entry point. It previously defaulted
+ * to `City?.goodsProductionBoost` through a `../state/` import, which inverted
+ * the dependency direction; callers now pass it.
+ *
+ * Omitting it yields `undefined`, which the `boostValue > 0` guard treats as
+ * "no boost" — a missing argument is a silent no-boost, not a crash. The
+ * pinning test is tests/calc/goods-boost-injection.test.mjs.
+ */
+function fGoodsText(age, goods, boostValue) {
   if (!goods) return '';
   const eraMap = {
     ba: 'BronzeAge',
@@ -75,12 +72,7 @@ function fGoodsText(age, goods, boostValue = City?.goodsProductionBoost || 0) {
   return text;
 }
 
-function fGoodsHTML(
-  age,
-  goods,
-  currentGoods = Goods,
-  boostValue = City?.goodsProductionBoost || 0,
-) {
+function fGoodsHTML(age, goods, currentGoods, boostValue) {
   const content = fGoodsText(age, goods, boostValue);
   const plainTitle =
     content ?
@@ -107,7 +99,7 @@ function fGoodsHTML(
 
 function buildClanGoodsData(
   clanBuildingsList = [],
-  boostValue = City?.guildGoodsProductionBoost || 0,
+  boostValue,
   tooltipStore = null,
 ) {
   const boost = boostValue || 0;
@@ -118,15 +110,10 @@ function buildClanGoodsData(
     const groupedClan = {};
     clanBuildingsList.forEach((entry) => {
       const resolvedName =
-        (helper?.fEntityNameTrim &&
-          helper.fEntityNameTrim(entry.id || entry.name)) ||
+        entry.displayName ||
         entry.name ||
         tr('unknown_building', 'Unknown Building');
-      const eraSuffix =
-        entry.era ?
-          ' ' +
-          (helper?.fGVGagesname ? helper.fGVGagesname(entry.era) : entry.era)
-        : '';
+      const eraSuffix = entry.era ? ' ' + fGVGagesname(entry.era) : '';
       const name =
         entry.era ? `${resolvedName}${eraSuffix}`
         : entry.name && entry.id && entry.name.length > entry.id.length ?
@@ -183,4 +170,3 @@ function buildClanGoodsData(
 }
 
 module.exports = { fGoodsText, fGoodsHTML, buildClanGoodsData };
-module.exports.default = module.exports;

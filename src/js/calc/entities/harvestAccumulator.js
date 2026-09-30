@@ -389,4 +389,3 @@ module.exports = {
   parseCurrentProduct,
   parseProductionOption,
 };
-module.exports.default = module.exports;

@@ -24,8 +24,15 @@ function toBigNumber(val) {
   }
 }
 
-// Resource and unit totals exposed on City remain Numbers; round only at that
-// boundary, after BigNumber has performed the arithmetic.
+/**
+ * Adds two values and rounds to the nearest integer (ROUND_HALF_UP).
+ * Used for resource and unit totals exposed on City — round only at
+ * the Number API boundary, after BigNumber has performed the arithmetic.
+ *
+ * @param {number|string|BigNumber|null|undefined} current Running total.
+ * @param {number|string|BigNumber|null|undefined} amount Value to add.
+ * @returns {number} Rounded integer sum.
+ */
 function addResourceTotal(current, amount) {
   return toBigNumber(current)
     .plus(toBigNumber(amount))
@@ -33,12 +40,25 @@ function addResourceTotal(current, amount) {
     .toNumber();
 }
 
-// Totals not constrained to whole units (e.g. per-resource intermediate
-// amounts) retain fractional precision until their Number API boundary.
+/**
+ * Adds two values without rounding — for per-resource intermediate
+ * amounts that retain fractional precision until their Number API boundary.
+ *
+ * @param {number|string|BigNumber|null|undefined} current Running total.
+ * @param {number|string|BigNumber|null|undefined} amount Value to add.
+ * @returns {number} Exact sum as a Number.
+ */
 function addExactTotal(current, amount) {
   return toBigNumber(current).plus(toBigNumber(amount)).toNumber();
 }
 
+/**
+ * Multiplies an amount by a probability and rounds to nearest integer.
+ *
+ * @param {number|string|BigNumber|null|undefined} amount Base quantity.
+ * @param {number|string|BigNumber|null|undefined} chance Probability factor (0–1 or 0–100).
+ * @returns {number} Rounded product.
+ */
 function chanceAmount(amount, chance) {
   return toBigNumber(amount)
     .multipliedBy(toBigNumber(chance))
@@ -46,6 +66,14 @@ function chanceAmount(amount, chance) {
     .toNumber();
 }
 
+/**
+ * Computes boosted forge points: base FP + unboostable FP + percentage boost.
+ *
+ * @param {number|string|BigNumber|null|undefined} boostable Forge points eligible for boost.
+ * @param {number|string|BigNumber|null|undefined} unboostable Forge points excluded from boost.
+ * @param {number|string|BigNumber|null|undefined} percent Boost percentage (e.g. 90 for 1.9x).
+ * @returns {{ boostAmount: BigNumber, total: BigNumber }} Boost breakdown.
+ */
 function boostedForgePoints(boostable, unboostable, percent) {
   const base = toBigNumber(boostable);
   const boostAmount = base
@@ -66,4 +94,3 @@ module.exports = {
   chanceAmount,
   boostedForgePoints,
 };
-module.exports.default = module.exports;
