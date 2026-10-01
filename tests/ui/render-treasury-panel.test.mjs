@@ -110,7 +110,7 @@ test('renderTreasuryPanel: renders card, binds listeners, and calls translateCon
   renderTreasuryPanel({ wood: 100 }, deps);
 
   assert.equal(mockContainer.style.display, '');
-  assert.ok(mockContainer.innerHTML.includes('Guild Treasury:'));
+  assert.ok(mockContainer.innerHTML.includes('Treasury Stock:'));
   assert.ok(mockContainer.innerHTML.includes('height: 250px'));
   assert.equal(translatedElement, mockContainer);
 

@@ -9,8 +9,12 @@
  */
 
 const { createLogger } = require('../utils/logger.js');
+const {
+  renderTreasuryContributionsPanel,
+} = require('./treasuryContributionsPanel.js');
 const { treasuryState } = require('../state/GuildDomainState.js');
 const { escapeHTML: canonicalEscapeHTML } = require('../utils/escape.js');
+const { applyCardVisibility, getCurrentView } = require('./cardVisibility.js');
 
 let logger = null;
 try {
@@ -30,6 +34,7 @@ let defaultPanelResize = null;
 
 let activeTreasuryResizeBinding = null;
 let activeTreasuryResizeObserver = null;
+let activeTreasuryLogResizeBinding = null;
 
 function disconnectTreasuryResize() {
   if (
@@ -49,22 +54,22 @@ function disconnectTreasuryResize() {
 }
 
 try {
-  defaultElement = require('../fn/AddElement.js');
+  defaultElement = require('../fn/AddElement.mjs');
 } catch {}
 try {
-  defaultCollapse = require('../fn/collapse.js');
+  defaultCollapse = require('../fn/collapse.mjs');
 } catch {}
 try {
-  defaultCopy = require('../fn/copy.js');
+  defaultCopy = require('../fn/copy.mjs');
 } catch {}
 try {
-  defaultHelper = require('../fn/helper.js');
+  defaultHelper = require('../fn/helper.mjs');
 } catch {}
 try {
-  defaultShowOptions = require('../vars/showOptions.js');
+  defaultShowOptions = require('../vars/showOptions.mjs');
 } catch {}
 try {
-  defaultToolOptions = require('../fn/globals.js').toolOptions;
+  defaultToolOptions = require('../fn/globals.mjs').toolOptions;
 } catch {}
 try {
   ({ setTreasurySize: defaultSetTreasurySize } = require('./panelResize.js'));
@@ -337,7 +342,7 @@ function renderTreasuryPanel(resources, deps = {}) {
     deps.treasury ||
     containers.treasury ||
     (doc && typeof doc.getElementById === 'function' ?
-      doc.getElementById('treasury')
+      doc.getElementById('treasuryReserves') || doc.getElementById('treasury')
     : null);
   if (!treasuryContainer) return;
 
@@ -386,11 +391,11 @@ function renderTreasuryPanel(resources, deps = {}) {
   let treasuryHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="status" aria-live="polite">
 	${closeHtml}<p id="treasuryTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#treasuryText" aria-expanded="${!isCollapsed}" aria-controls="treasuryText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
   treasuryHTML += iconHtml;
-  treasuryHTML += `<strong><span data-i18n="treasury">Guild Treasury:</span></strong></p>`;
+  treasuryHTML += `<strong><span data-i18n="treasury_stock">Treasury Stock:</span></strong></p>`;
   treasuryHTML += copyHtml;
   treasuryHTML += `<div id="treasuryText" style="height: ${treasuryHeight}px" class="overflow-y resize collapse ${
     isCollapsed ? '' : 'show'
-  }"><table id="treasurytable" class="goods-table w-100"><caption class="visually-hidden"><span data-i18n="treasury">Guild Treasury</span></caption><thead><tr><th scope="col" class="text-start"><span data-i18n="type">Type</span></th><th scope="col" class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
+  }"><table id="treasurytable" class="goods-table w-100"><caption class="visually-hidden"><span data-i18n="treasury_stock">Treasury Stock</span></caption><thead><tr><th scope="col" class="text-start"><span data-i18n="type">Type</span></th><th scope="col" class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
 
   if (typeof deps.initTreasury === 'function') {
     deps.initTreasury(resources);
@@ -425,6 +430,7 @@ function renderTreasuryPanel(resources, deps = {}) {
   } else {
     translate(treasuryContainer);
   }
+  if (getCurrentView()) applyCardVisibility();
 }
 
 // ============================================================================
@@ -438,7 +444,11 @@ function renderTreasuryLogPanel(logs, totals = {}, context = {}) {
     totalMedalsSpent,
     totalLogCount,
   } = totals;
-  const { showTreasury = true, targetEl = null } = context;
+  const {
+    showTreasury = true,
+    showLogs = defaultShowOptions?.showLogs !== false,
+    targetEl = null,
+  } = context;
 
   const element = context.element || defaultElement;
   const collapse = context.collapse || defaultCollapse;
@@ -450,33 +460,38 @@ function renderTreasuryLogPanel(logs, totals = {}, context = {}) {
 
   const list = Array.isArray(logs) ? logs : [];
 
-  if (showTreasury === false) {
+  if (showTreasury === false || showLogs === false) {
     target.innerHTML = '';
     target.style.display = 'none';
     return;
   }
   target.style.display = '';
 
+  const previousViewport = target.querySelector?.('#treasuryLogViewport');
+  const previousHeight = Number.parseFloat(previousViewport?.style.height);
+  const viewportHeight = previousHeight >= 80 ? previousHeight : 200;
+  activeTreasuryLogResizeBinding?.disconnect?.();
+  activeTreasuryLogResizeBinding = null;
   const isCollapsed =
     collapse?.collapseTreasuryLog !== undefined ?
       !!collapse.collapseTreasuryLog
-    : true;
-  let html = `<div class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">`;
+    : false;
+  let html = `<div class="alert alert-success alert-dismissible show collapsed" role="status" aria-live="polite">`;
   if (element?.close) html += element.close();
   if (element?.copy)
-    html += element.copy('treasuryLogCopyID', 'info', 'right', isCollapsed);
+    html += element.copy('treasuryLogCopyID', 'success', 'right', isCollapsed);
   html += `<p id="treasuryLogTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#treasuryLogText" aria-expanded="${!isCollapsed}" aria-controls="treasuryLogText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
   if (element?.icon)
     html += element.icon('treasuryLogicon', 'treasuryLogText', isCollapsed);
   html += `<strong><span data-i18n="treasury_logs">Treasury Logs</span>:</strong>`;
-  html += ` <span class="ms-1 small">(${list.length}/${totalLogCount ?? list.length} <span data-i18n="entries">Entries</span>)</span></p>`;
-  html += `<div id="treasuryLogText" class="overflow-y resize collapse ${isCollapsed ? '' : 'show'}">`;
+  html += ` <span class="d-block small">(${list.length}/${totalLogCount ?? list.length} <span data-i18n="entries">Entries</span>)</span></p>`;
+  html += `<div id="treasuryLogText" class="collapse ${isCollapsed ? '' : 'show'}"><div style="overflow: hidden; min-height: 0"><div id="treasuryLogViewport" class="overflow-y resize show" style="height: ${viewportHeight}px">`;
   html += `<div class="mb-2 small px-2">`;
   html += `<span data-i18n="goods_donated">Goods Donated</span>: <strong>${totalGoodsDonated?.toNumber ? totalGoodsDonated.toNumber().toLocaleString() : (totalGoodsDonated || 0).toLocaleString()}</strong> | `;
   html += `<span data-i18n="medals_donated">Medals Donated</span>: <strong>${totalMedalsDonated?.toNumber ? totalMedalsDonated.toNumber().toLocaleString() : (totalMedalsDonated || 0).toLocaleString()}</strong> | `;
   html += `<span data-i18n="medals_spent">Medals Spent</span>: <strong>${totalMedalsSpent?.toNumber ? totalMedalsSpent.toNumber().toLocaleString() : (totalMedalsSpent || 0).toLocaleString()}</strong>`;
   html += `</div>`;
-  html += `<table class="table table-sm table-striped align-middle mb-0"><caption class="visually-hidden"><span data-i18n="treasury">Guild Treasury</span></caption><thead><tr>`;
+  html += `<table class="goods-table treasury-history-table align-middle mb-0"><caption class="visually-hidden"><span data-i18n="treasury">Guild Treasury</span></caption><thead><tr>`;
   html += `<th scope="col" class="text-start"><span data-i18n="player">Player</span></th>`;
   html += `<th scope="col" class="text-start"><span data-i18n="action">Action</span></th>`;
   html += `<th scope="col" class="text-start"><span data-i18n="resource">Resource</span></th>`;
@@ -485,7 +500,12 @@ function renderTreasuryLogPanel(logs, totals = {}, context = {}) {
 
   for (const entry of list.slice(0, 50)) {
     const pName = canonicalEscapeHTML(entry.playerName || 'Unknown');
-    const rName = canonicalEscapeHTML(entry.resource || '');
+    const resourceDefs = context.resourceDefs || defaultResourceDefs || [];
+    const rName = canonicalEscapeHTML(
+      resourceDefs.find((def) => def.id === entry.resource)?.name ||
+        entry.resource ||
+        '',
+    );
     const act =
       helper?.escapeHTML ?
         helper.escapeHTML(entry.action || '')
@@ -496,8 +516,8 @@ function renderTreasuryLogPanel(logs, totals = {}, context = {}) {
     const amountSign = isDonation ? '+' : '-';
     const amountStr =
       entry.amount?.toNumber ?
-        entry.amount.toNumber().toLocaleString()
-      : Number(entry.amount || 0).toLocaleString();
+        entry.amount.abs().toNumber().toLocaleString()
+      : Math.abs(Number(entry.amount || 0)).toLocaleString();
 
     html += `<tr>`;
     html += `<td class="text-start">${pName}</td>`;
@@ -507,13 +527,27 @@ function renderTreasuryLogPanel(logs, totals = {}, context = {}) {
     html += `</tr>`;
   }
 
-  html += `</tbody></table></div></div>`;
+  html += `</tbody></table></div></div></div></div>`;
   target.innerHTML = html;
 
   if (collapse?.fCollapseTreasuryLog) {
     const labelEl = document.getElementById('treasuryLogTextLabel');
-    if (labelEl)
-      labelEl.addEventListener('click', collapse.fCollapseTreasuryLog);
+    if (labelEl) {
+      labelEl.addEventListener('click', (event) => {
+        if (event.target?.closest?.('#treasuryLogicon')) return;
+        collapse.fCollapseTreasuryLog();
+      });
+    }
+    const iconEl = document.getElementById('treasuryLogicon');
+    iconEl?.addEventListener('click', collapse.fCollapseTreasuryLog);
+  }
+  const viewport = document.getElementById('treasuryLogViewport');
+  if (viewport && defaultPanelResize?.bindResizableCollapse) {
+    activeTreasuryLogResizeBinding = defaultPanelResize.bindResizableCollapse({
+      element: viewport,
+      initialSize: viewportHeight,
+      minSize: 80,
+    });
   }
   if (helper?.translateContainer) {
     helper.translateContainer(target);
@@ -523,6 +557,7 @@ function renderTreasuryLogPanel(logs, totals = {}, context = {}) {
     displayedCount: Math.min(list.length, 50),
     totalLogCount,
   });
+  if (getCurrentView()) applyCardVisibility();
 }
 
 // ============================================================================
@@ -534,6 +569,7 @@ function bindTreasuryPanel(
   {
     renderReserves = renderTreasuryPanel,
     renderLogs = renderTreasuryLogPanel,
+    renderContributions = renderTreasuryContributionsPanel,
   } = {},
 ) {
   if (!state || typeof state.subscribe !== 'function') return () => {};
@@ -542,7 +578,16 @@ function bindTreasuryPanel(
       const reserves = snapshot.getReserves();
       if (reserves) renderReserves(reserves);
     }
-    if (channel === 'logs' || channel === 'all') {
+    if (
+      channel === 'logs' ||
+      channel === 'all' ||
+      (channel === 'reserves' && snapshot.getLogs().length > 0)
+    ) {
+      renderContributions(snapshot.getContributions?.() || new Map(), {
+        showTreasury: snapshot.getShowTreasury(),
+        logs: snapshot.getLogs(),
+        reserves: snapshot.getReserves(),
+      });
       renderLogs(snapshot.getLogs(), snapshot.getTotals(), {
         showTreasury: snapshot.getShowTreasury(),
       });
@@ -550,6 +595,8 @@ function bindTreasuryPanel(
   });
   return () => {
     disconnectTreasuryResize();
+    activeTreasuryLogResizeBinding?.disconnect?.();
+    activeTreasuryLogResizeBinding = null;
     unsubscribe();
   };
 }

@@ -18,7 +18,7 @@ const MAX_TREASURY_LOGS = 2000;
 
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    const showOptMod = require('../vars/showOptions.js');
+    const showOptMod = require('../vars/showOptions.mjs');
     if (showOptMod?.showOptions) showOptions = showOptMod.showOptions;
   } catch {}
 }
@@ -56,6 +56,7 @@ class TreasuryService {
     this.reserves = new Map();
     this.logs = [];
     this.logsByIndex = new Map();
+    this.headSignature = null;
     this.totalLogCount = 0;
     this.totalMedalsDonated = new BigNumber(0);
     this.totalMedalsSpent = new BigNumber(0);
@@ -69,7 +70,7 @@ class TreasuryService {
     this.getTreasury = this.getTreasury.bind(this);
   }
 
-  register(dispatcher = messageDispatcher) {
+  register(dispatcher = messageDispatcher, options = {}) {
     if (dispatcher && typeof dispatcher.register === 'function') {
       dispatcher.register('ClanService', 'getTreasury', this.getTreasury);
       dispatcher.register(
@@ -77,7 +78,10 @@ class TreasuryService {
         'getTreasuryLogs',
         this.getTreasuryLogs,
       );
-      dispatcher.register('ClanService', 'getTreasuryBag', this.getTreasuryBag);
+      dispatcher.register('ClanService', 'getTreasuryBag', (msg) => {
+        options.onTreasuryOpened?.();
+        return this.getTreasuryBag(msg);
+      });
       dispatcher.register(
         'ResourceService',
         'getTreasuryBag',
@@ -88,6 +92,7 @@ class TreasuryService {
   }
 
   getTreasury(msg) {
+    treasuryState.opened = true;
     const data = msg?.responseData || {};
     const resources = data.resources || data;
 
@@ -139,47 +144,40 @@ class TreasuryService {
   }
 
   getTreasuryLogs(msg) {
+    treasuryState.opened = true;
     const rawLogs =
       Array.isArray(msg?.responseData?.logs) ? msg.responseData.logs
       : Array.isArray(msg?.responseData) ? msg.responseData
       : [];
 
-    // Real ClanService.getTreasuryLogs requestData is [clanId, offset, bagType].
+    // Real ClanService.getTreasuryLogs requestData is [pageSize, offset, bagType].
     const offset =
       Array.isArray(msg?.requestData) && msg.requestData.length > 1 ?
         Number(msg.requestData[1]) || 0
       : Number(msg?.offset) || 0;
 
-    const hasHigherOffsets = [...this.logsByIndex.keys()].some((k) => k >= 10);
-    const hasOffsetZero = this.logsByIndex.has(0);
-
     const isStaleRequestId =
       msg?.requestId != null &&
       this.lastRequestId != null &&
       msg.requestId < this.lastRequestId;
-
     const isNewGeneration =
-      msg?.generationId != null ?
-        msg.generationId !== this.currentGeneration
-      : false;
-
-    if (msg?.generationId != null) {
-      this.currentGeneration = msg.generationId;
-    }
-
-    if (msg?.requestId != null) {
+      msg?.generationId != null && msg.generationId !== this.currentGeneration;
+    const firstRaw = rawLogs[0];
+    const headSignature = firstRaw ? JSON.stringify(firstRaw) : null;
+    const changedHead =
+      offset === 0 &&
+      this.headSignature != null &&
+      headSignature !== this.headSignature;
+    const changedCount =
+      offset === 0 &&
+      this.totalLogCount > 0 &&
+      Number(msg?.responseData?.count) !== this.totalLogCount;
+    if (!isStaleRequestId && (isNewGeneration || changedHead || changedCount))
+      this.logsByIndex.clear();
+    if (offset === 0 && !isStaleRequestId) this.headSignature = headSignature;
+    if (msg?.generationId != null) this.currentGeneration = msg.generationId;
+    if (msg?.requestId != null)
       this.lastRequestId = Math.max(this.lastRequestId || 0, msg.requestId);
-    }
-
-    // A fresh offset-0 request starts a new scan if:
-    // - Explicit new generation requested, OR
-    // - Not stale by requestId and not an out-of-order arrival (higher offsets already present without offset 0)
-    if (offset === 0) {
-      const isOutOfOrderArrival = hasHigherOffsets && !hasOffsetZero;
-      if (isNewGeneration || (!isStaleRequestId && !isOutOfOrderArrival)) {
-        this.logsByIndex.clear();
-      }
-    }
     rawLogs.forEach((raw, index) => {
       this.logsByIndex.set(offset + index, new TreasuryLogEntry(raw));
     });
@@ -201,7 +199,10 @@ class TreasuryService {
         totalMedalsSpent: this.totalMedalsSpent,
         totalLogCount: this.totalLogCount,
       },
-      { showTreasury: showOptions?.showTreasury !== false },
+      {
+        showTreasury: showOptions?.showTreasury !== false,
+        contributions: new Map(this.playerDonations),
+      },
     );
 
     return {
@@ -257,6 +258,7 @@ class TreasuryService {
 
   resetLogs(generationId = null) {
     this.logsByIndex.clear();
+    this.headSignature = null;
     this.logs = [];
     this.totalLogCount = 0;
     if (generationId != null) {

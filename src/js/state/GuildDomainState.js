@@ -22,6 +22,7 @@ class GuildBattlegroundState {
     this.province = null;
     this.performance = null;
     this.targetMessageActive = false;
+    this.targetCopied = false;
     this.subscribers = new Set();
     this.logger = log;
   }
@@ -53,6 +54,7 @@ class GuildBattlegroundState {
   }
 
   setTargets(payload) {
+    if (payload?.signalChanged) this.targetCopied = false;
     this.targets = payload || null;
     this.notify('targets');
   }
@@ -67,6 +69,14 @@ class GuildBattlegroundState {
 
   getTargets() {
     return this.targets;
+  }
+
+  setTargetCopied(copied) {
+    this.targetCopied = Boolean(copied);
+  }
+
+  isTargetCopied() {
+    return this.targetCopied;
   }
 
   setResult(payload) {
@@ -226,9 +236,11 @@ class QuantumState {
 class TreasuryState {
   constructor({ logger: log = logger } = {}) {
     this.reserves = null;
+    this.contributions = new Map();
     this.logs = [];
     this.totals = null;
     this.showTreasury = true;
+    this.opened = false;
     this.subscribers = new Set();
     this.logger = log;
   }
@@ -267,10 +279,15 @@ class TreasuryState {
   setLogs(logs, totals, options = {}) {
     this.logs = Array.isArray(logs) ? logs : [];
     this.totals = totals || null;
+    this.contributions = options.contributions || new Map();
     if (options.showTreasury !== undefined) {
       this.showTreasury = options.showTreasury !== false;
     }
     this.notify('logs');
+  }
+
+  getContributions() {
+    return this.contributions;
   }
 
   getReserves() {

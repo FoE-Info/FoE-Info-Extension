@@ -96,21 +96,35 @@ test('HAR ground truth: treasury donation history pagination', async (t) => {
     },
   );
 
-  await t.test('resets accumulation when page offset 0 is re-requested', () => {
-    const pages = loadPages();
-    const service = new TreasuryService();
-    for (const page of pages) {
+  await t.test(
+    'preserves accumulation and totals when existing pages are revisited',
+    () => {
+      const pages = loadPages();
+      const service = new TreasuryService();
+      for (const page of pages) {
+        service.getTreasuryLogs({
+          requestData: page.requestData,
+          responseData: page.responseData,
+        });
+      }
+      const before = service.getTotalGoodsDonated().toString();
+      for (const page of pages.slice().reverse())
+        service.getTreasuryLogs({
+          requestData: page.requestData,
+          responseData: page.responseData,
+        });
+      assert.equal(service.getLogs().length, 100);
+      assert.equal(service.getTotalGoodsDonated().toString(), before);
       service.getTreasuryLogs({
-        requestData: page.requestData,
-        responseData: page.responseData,
+        requestData: pages[0].requestData,
+        responseData: {
+          ...pages[0].responseData,
+          count: pages[0].responseData.count + 1,
+        },
       });
-    }
-    service.getTreasuryLogs({
-      requestData: pages[0].requestData,
-      responseData: pages[0].responseData,
-    });
-    assert.equal(service.getLogs().length, pages[0].responseData.logs.length);
-  });
+      assert.equal(service.getLogs().length, 10);
+    },
+  );
 
   await t.test(
     'handles out-of-order pagination arrival without data loss',
