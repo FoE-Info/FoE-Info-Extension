@@ -1,3 +1,5 @@
+const { htmlToText } = require('../utils/html.mjs');
+const { escapeHTMLAttribute } = require('../utils/escape.js');
 /**
  * goodsTooltipFormatter.js
  *
@@ -74,15 +76,8 @@ function fGoodsText(age, goods, boostValue) {
 
 function fGoodsHTML(age, goods, currentGoods, boostValue) {
   const content = fGoodsText(age, goods, boostValue);
-  const plainTitle =
-    content ?
-      content
-        .replace(/<br\s*\/?>/gi, '\n')
-        .replace(/<[^>]+>/g, '')
-        .trim()
-    : '';
-  const escapedContent =
-    content ? content.replace(/'/g, '&#39;').replace(/"/g, '&quot;') : '';
+  const plainTitle = escapeHTMLAttribute(htmlToText(content).trim());
+  const escapedContent = escapeHTMLAttribute(content);
   const boost = boostValue || 0;
   const rawAmount = (currentGoods && currentGoods[age]) || 0;
   const displayAmount =
@@ -94,7 +89,7 @@ function fGoodsHTML(age, goods, currentGoods, boostValue) {
         .integerValue(BigNumber.ROUND_HALF_UP)
         .toNumber()
     : rawAmount;
-  return `<span id="${age}" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" data-bs-title="${escapedContent}" title="${plainTitle}">${age.toUpperCase()}:${displayAmount}</span> `;
+  return `<span id="${escapeHTMLAttribute(age)}" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" data-bs-title="${escapedContent}" title="${plainTitle}">${escapeHTMLAttribute(age.toUpperCase())}:${escapeHTMLAttribute(displayAmount)}</span> `;
 }
 
 function buildClanGoodsData(
