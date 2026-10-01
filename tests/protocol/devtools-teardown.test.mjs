@@ -11,7 +11,7 @@ test('DevTools Teardown & Entity Flush Invariants', async (t) => {
     'utf8',
   );
   const devtoolsSource = fs.readFileSync(
-    path.join(ROOT_DIR, 'src/js/devtools.js'),
+    path.join(ROOT_DIR, 'src/js/devtools.mjs'),
     'utf8',
   );
 
@@ -82,7 +82,7 @@ test('DevTools Teardown & Entity Flush Invariants', async (t) => {
   );
 
   await t.test(
-    'src/js/devtools.js unlinks panelWindow on panel.onHidden and unload',
+    'src/js/devtools.mjs unlinks panelWindow on panel.onHidden and unload',
     () => {
       assert.match(
         devtoolsSource,

@@ -1,377 +1,297 @@
 #!/usr/bin/env node
 
 /**
- * Attaches the browser's DevTools to the Forge of Empires tab so the
- * extension can be exercised during development: reloads the unpacked
- * extension, opens its panel, and points the existing tab at a world URL.
- *
- * This is development scaffolding you drive yourself. The extension itself is
- * passive (see SECURITY.md) and makes no writes to the game; this script only
- * arranges tabs and DevTools.
+ * Attach FoE-Info to DevTools before opening the requested game world.
+ * Uses an existing tab in the user's running Brave profile: en0 first, DevTools
+ * and FoE-Info confirmation second, then en7/en16. No tabs are created or closed.
  */
-import {
-  activateTarget,
-  BROWSERS,
-  closeTarget,
-  createTarget,
-  listTargets,
-} from './lib/cdp.mjs';
+import { execFileSync } from 'node:child_process';
+import { activateTarget, BROWSERS, listTargets, send } from './lib/cdp.mjs';
 
-// Which browser to drive. Chrome's toggle-started server serves no /json
-// routes, so the endpoint work is delegated to lib/cdp.mjs; see that file for
-// why the two browsers differ. Override with --browser=chrome or BROWSER=chrome.
-let BROWSER = process.env.BROWSER || 'brave';
-if (!BROWSERS[BROWSER]) {
-  console.error(
-    `[attach-devtools] unknown browser '${BROWSER}' (have: ${Object.keys(BROWSERS).join(', ')})`,
-  );
-  process.exit(1);
-}
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const BROWSER = 'brave';
 
-function sendCdp(wsUrl, method, params = {}, timeoutMs = 8000) {
-  return new Promise((resolve, reject) => {
-    const ws = new globalThis.WebSocket(wsUrl);
-    const id = 1;
-    const timer = setTimeout(() => {
-      try {
-        ws.close();
-      } catch {}
-      reject(new Error(`CDP '${method}' timed out after ${timeoutMs}ms`));
-    }, timeoutMs);
-
-    ws.onopen = () => ws.send(JSON.stringify({ id, method, params }));
-    ws.onmessage = (e) => {
-      try {
-        const data = JSON.parse(e.data.toString());
-        if (data.id === id) {
-          clearTimeout(timer);
-          ws.close();
-          if (data.error) reject(new Error(data.error.message));
-          else resolve(data.result);
-        }
-      } catch (err) {
-        clearTimeout(timer);
-        ws.close();
-        reject(err);
-      }
-    };
-    ws.onerror = (err) => {
-      clearTimeout(timer);
-      reject(err);
-    };
-  });
-}
-
-async function fetchTargets() {
-  return listTargets(BROWSER);
-}
-
-async function closeNonFoeDevTools(targets) {
-  const dtTargets = targets.filter(
-    (t) => t.url && t.url.startsWith('devtools://'),
-  );
-  for (const dt of dtTargets) {
-    const title = (dt.title || '').toLowerCase();
-    if (title && !title.includes('forgeofempires') && !title.includes('foe')) {
-      try {
-        await closeTarget(BROWSER, dt.id);
-        console.log(`[attach-devtools] Closed non-FoE DevTools: ${dt.title}`);
-      } catch {}
+function parseArgs(args) {
+  const options = { world: 'en7', tabId: null, reloadExtension: false };
+  for (const arg of args) {
+    if (arg === '--help' || arg === '-h') options.help = true;
+    else if (arg === '--reload-extension') options.reloadExtension = true;
+    else {
+      const world = arg.match(/^--world=(.+)$/);
+      const tabId = arg.match(/^--tab-id=(.+)$/);
+      if (world) options.world = world[1].trim().toLowerCase();
+      else if (tabId) options.tabId = tabId[1].trim();
+      else throw new Error(`unknown option: ${arg}`);
     }
+  }
+  if (!['en7', 'en16'].includes(options.world)) {
+    throw new Error(
+      `unsupported world '${options.world}' (choose en7 or en16)`,
+    );
+  }
+  return options;
+}
+
+function isFoEPageUrl(raw) {
+  try {
+    const url = new URL(raw);
+    return (
+      ['http:', 'https:'].includes(url.protocol) &&
+      (url.hostname === 'forgeofempires.com' ||
+        url.hostname.endsWith('.forgeofempires.com'))
+    );
+  } catch {
+    return false;
   }
 }
 
-async function reloadExtension(targets) {
-  const extTab = targets.find(
-    (t) => t.url && t.url.includes('chrome://extensions'),
-  );
-  if (extTab) {
+function worldOf(raw) {
+  try {
+    return new URL(raw).hostname.split('.')[0].toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+async function waitForTarget(targetId, predicate, timeoutMs = 15000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const target = (await listTargets(BROWSER)).find(
+      (entry) => entry.id === targetId && predicate(entry),
+    );
+    if (target) return target;
+    await sleep(200);
+  }
+  return null;
+}
+
+async function waitForDocument(target, timeoutMs = 30000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
     try {
-      const res = await sendCdp(
-        extTab.webSocketDebuggerUrl,
+      const response = await send(
+        target.webSocketDebuggerUrl,
+        'Runtime.evaluate',
+        { expression: 'document.readyState', returnByValue: true },
+      );
+      if (response?.result?.value === 'complete') return true;
+    } catch {
+      // Navigation can briefly disconnect the target while its document swaps.
+    }
+    await sleep(300);
+  }
+  return false;
+}
+
+async function navigate(target, url) {
+  await send(target.webSocketDebuggerUrl, 'Page.navigate', { url });
+  const loadedTarget = await waitForTarget(
+    target.id,
+    (entry) => entry.type === 'page' && worldOf(entry.url) === worldOf(url),
+  );
+  if (!loadedTarget || !(await waitForDocument(loadedTarget))) {
+    throw new Error(`page did not finish loading: ${url}`);
+  }
+  return loadedTarget;
+}
+
+async function maybeReloadExtension() {
+  const targets = await listTargets(BROWSER);
+  const panelTargets = targets.filter(
+    (target) => target.type === 'iframe' && target.url?.includes('/panel.html'),
+  );
+  for (const panel of panelTargets) {
+    try {
+      const response = await send(
+        panel.webSocketDebuggerUrl,
         'Runtime.evaluate',
         {
           expression: `(() => {
-          const manager = document.querySelector('extensions-manager');
-          const itemList = manager?.shadowRoot?.querySelector('extensions-item-list');
-          const items = itemList?.shadowRoot?.querySelectorAll('extensions-item') || [];
-          for (const item of items) {
-            const name = item.shadowRoot.querySelector('#name')?.textContent?.trim();
-            if (name === 'FoE-Info-DEV' || name?.includes('FoE-Info')) {
-              const reloadBtn = item.shadowRoot.querySelector('#dev-reload-button');
-              if (reloadBtn) {
-                reloadBtn.click();
-                return true;
-              }
-            }
-          }
-          return false;
-        })()`,
+            if (typeof chrome === 'undefined' || !chrome.runtime?.reload) return false;
+            setTimeout(() => chrome.runtime.reload(), 0);
+            return true;
+          })()`,
           returnByValue: true,
         },
       );
-      if (res?.result?.value) {
-        console.log(
-          '[attach-devtools] Extension reloaded via chrome://extensions.',
-        );
-        return true;
+      if (response?.result?.value === true) {
+        console.log('Extension reload requested on en0.');
+        for (let attempt = 0; attempt < 75; attempt++) {
+          const current = await listTargets(BROWSER);
+          if (
+            current.some(
+              (target) =>
+                target.type === 'iframe' && target.url?.includes('/panel.html'),
+            )
+          ) {
+            return;
+          }
+          await sleep(200);
+        }
+        throw new Error('FoE-Info panel did not return after extension reload');
       }
-    } catch {}
+    } catch (error) {
+      if (error.message?.includes('did not return')) throw error;
+    }
   }
-
-  const panel = targets.find((t) => t.url && t.url.includes('panel.html'));
-  if (panel) {
-    try {
-      await sendCdp(panel.webSocketDebuggerUrl, 'Runtime.evaluate', {
-        expression:
-          'if (typeof chrome !== "undefined" && chrome.runtime?.reload) chrome.runtime.reload();',
-      });
-      console.log(
-        '[attach-devtools] Extension reloaded via chrome.runtime.reload().',
-      );
-      return true;
-    } catch {}
-  }
-
-  return false;
+  throw new Error('could not request extension reload from the en0 panel');
 }
 
-function findFoeDevTools(targets) {
+function findDevToolsTarget(targets, pageUrl) {
+  const host = new URL(pageUrl).host.toLowerCase();
   return targets.find(
-    (t) =>
-      t.url &&
-      t.url.startsWith('devtools://') &&
-      (!t.title ||
-        t.title.toLowerCase().includes('forgeofempires') ||
-        t.title.toLowerCase().includes('foe')),
+    (target) =>
+      target.url?.startsWith('devtools://') &&
+      (target.title?.toLowerCase().includes(host) ||
+        target.url.toLowerCase().includes(host)),
   );
 }
 
-async function ensureDevToolsOnFoeTab(gameTab) {
-  const isFoeTab =
-    gameTab &&
-    /^https?:\/\/(?:[a-z]{2}[0-9]*|zz[0-9]*)\.forgeofempires\.com/i.test(
-      gameTab.url || '',
-    );
-  if (!isFoeTab) {
-    console.warn(
-      `[attach-devtools] Target tab is not a FoE website (${gameTab?.url}). DevTools will NOT be opened.`,
-    );
-    return false;
-  }
+function pressF12() {
+  const env = {
+    ...process.env,
+    // The installed system service uses ydotoold's default socket path.
+    YDOTOOL_SOCKET: process.env.YDOTOOL_SOCKET || '/tmp/.ydotool_socket',
+  };
+  execFileSync('ydotool', ['key', '88:1', '88:0'], {
+    stdio: 'ignore',
+    timeout: 1500,
+    env,
+  });
+}
 
-  // Ensure game tab is focused before triggering F12
-  try {
-    await activateTarget(BROWSER, gameTab.id);
-    await sleep(250);
-  } catch {}
+async function showFoEInfoPanel(devtoolsTarget) {
+  const response = await send(
+    devtoolsTarget.webSocketDebuggerUrl,
+    'Runtime.evaluate',
+    {
+      expression: `(async () => {
+        try {
+          const UI = await import('devtools://devtools/bundled/ui/legacy/legacy.js');
+          const manager = UI.ViewManager.ViewManager.instance();
+          const key = Array.from(manager?.views?.keys?.() || [])
+            .find((viewId) => viewId.toLowerCase().includes('foe-info'));
+          if (!key) return null;
+          await manager.showView(key);
+          return key;
+        } catch {
+          return null;
+        }
+      })()`,
+      awaitPromise: true,
+      returnByValue: true,
+    },
+  );
+  return response?.result?.value ?? null;
+}
 
-  let targets = await fetchTargets();
-  let dt = findFoeDevTools(targets);
+function printHelp() {
+  console.log(`Usage: npm run browser:attach -- [--world=en7|en16] [--tab-id=ID] [--reload-extension]
 
-  if (!dt) {
-    console.log('[attach-devtools] Launching DevTools on FoE tab...');
-    try {
-      const { execSync } = await import('node:child_process');
-      execSync('ydotool key 88:1 88:0', { stdio: 'ignore', timeout: 1000 });
-    } catch (err) {
-      console.warn(
-        '[attach-devtools] ydotool F12 invocation failed:',
-        err.message,
-      );
-    }
-
-    for (let attempt = 0; attempt < 25; attempt++) {
-      await sleep(200);
-      targets = await fetchTargets();
-      dt = findFoeDevTools(targets);
-      if (dt) break;
-    }
-  }
-
-  if (dt) {
-    try {
-      const res = await sendCdp(dt.webSocketDebuggerUrl, 'Runtime.evaluate', {
-        expression: `(async () => {
-          try {
-            const UI = await import('devtools://devtools/bundled/ui/legacy/legacy.js');
-            const vm = UI.ViewManager.ViewManager.instance();
-            if (!vm || !vm.views) return false;
-            const key = Array.from(vm.views.keys()).find((k) => k.includes('FoE-Info'));
-            if (key) {
-              await vm.showView(key);
-              return true;
-            }
-          } catch {}
-          return false;
-        })()`,
-        awaitPromise: true,
-        returnByValue: true,
-      });
-      if (res?.result?.value) {
-        console.log('[attach-devtools] FoE-Info panel focused in DevTools.');
-      }
-    } catch {}
-    return true;
-  }
-
-  console.warn('[attach-devtools] Could not attach DevTools to FoE tab.');
-  return false;
+Uses Brave's existing default profile and an existing FoE tab. The selected
+tab is routed through en0, DevTools opens, FoE-Info must be confirmed in
+DevTools, and only then is that same tab routed to en7 or en16. No new tabs or
+browser profiles are created; no tabs are closed. --reload-extension is optional.`);
 }
 
 async function main() {
-  const args = process.argv.slice(2);
-  let world = 'en7';
-  for (const arg of args) {
-    const browserArg = arg.match(/^--browser=(.+)$/);
-    if (browserArg) {
-      BROWSER = browserArg[1].trim().toLowerCase();
-      if (!BROWSERS[BROWSER]) {
-        console.error(
-          `[attach-devtools] unknown browser '${BROWSER}' (have: ${Object.keys(BROWSERS).join(', ')})`,
-        );
-        process.exit(1);
-      }
-      continue;
-    }
-    const clean = arg.replace(/^--world=/, '');
-    if (/^[a-z]+[0-9]+$/i.test(clean)) {
-      world = clean.toLowerCase();
-      break;
-    }
-  }
+  const options = parseArgs(process.argv.slice(2));
+  if (options.help) return printHelp();
 
-  console.log(`[attach-devtools] Browser: ${BROWSER}`);
-
-  const targetUrl = `https://${world}.forgeofempires.com/game/index?ref=master-page-login`;
-  console.log(`[attach-devtools] Target world: ${world} (${targetUrl})`);
-
-  let targets = await fetchTargets();
-
-  // 1. Immediately close any DevTools attached to non-FoE tabs
-  await closeNonFoeDevTools(targets);
-
-  // 2. Resolve existing FoE tabs — deduplicate, never create new tabs on reload
-  targets = await fetchTargets();
-  const foeTabs = targets.filter(
-    (t) => t.type === 'page' && t.url && t.url.includes('forgeofempires.com'),
+  console.log(`Browser: ${BROWSERS[BROWSER].label} (existing default profile)`);
+  const initialTargets = await listTargets(BROWSER);
+  const gameTabs = initialTargets.filter(
+    (target) => target.type === 'page' && isFoEPageUrl(target.url),
   );
+  const gameTab =
+    options.tabId ? gameTabs.find((target) => target.id === options.tabId)
+    : gameTabs.length === 1 ? gameTabs[0]
+    : null;
 
-  let primaryGameTab = foeTabs[0];
-  if (foeTabs.length > 1) {
-    console.log(
-      `[attach-devtools] Found ${foeTabs.length} FoE tabs. Deduplicating to single tab...`,
+  if (!gameTab) {
+    const available = gameTabs
+      .map((target) => `${target.id} ${target.url}`)
+      .join('\n  ');
+    throw new Error(
+      gameTabs.length > 1 ?
+        `multiple FoE tabs found; choose one with --tab-id=ID:\n  ${available}`
+      : options.tabId ? `FoE tab '${options.tabId}' was not found`
+      : 'no existing FoE tab found; this workflow never creates a tab',
     );
-    for (let i = 1; i < foeTabs.length; i++) {
-      try {
-        await closeTarget(BROWSER, foeTabs[i].id);
-      } catch {}
-    }
-  } else if (!primaryGameTab) {
-    // Only open en0 if zero FoE tabs exist
-    const blankTab = targets.find(
-      (t) =>
-        t.type === 'page' &&
-        (t.url === 'about:blank' || t.url.includes('chrome://newtab')),
-    );
-    if (blankTab) {
-      console.log('[attach-devtools] Reusing blank tab for en0...');
-      primaryGameTab = blankTab;
-      await sendCdp(primaryGameTab.webSocketDebuggerUrl, 'Page.navigate', {
-        url: 'https://en0.forgeofempires.com/',
-      });
-      await sleep(1000);
-    } else {
-      console.log(
-        '[attach-devtools] No existing FoE tab found. Opening initial en0 tab...',
-      );
-      const { targetId } = await createTarget(
-        BROWSER,
-        'https://en0.forgeofempires.com/',
-      );
-      primaryGameTab = {
-        id: targetId,
-        targetId,
-        type: 'page',
-        url: 'https://en0.forgeofempires.com/',
-      };
-      await sleep(1000);
-    }
   }
 
-  // 3. Reload the extension
-  targets = await fetchTargets();
-  await reloadExtension(targets);
-  await sleep(300);
+  console.log(`Reusing FoE tab ${gameTab.id}.`);
+  const en0Url = 'https://en0.forgeofempires.com/';
+  const en0Tab =
+    worldOf(gameTab.url) === 'en0' ? gameTab : await navigate(gameTab, en0Url);
+  if (!(await waitForDocument(en0Tab))) {
+    throw new Error('en0 did not finish loading; game tab left on en0');
+  }
+  console.log('Existing tab is on en0.');
 
-  // 4. If DevTools is already open for FoE tab, reload it to pick up fresh extension assets
-  targets = await fetchTargets();
-  const dtTarget = findFoeDevTools(targets);
-  if (dtTarget) {
+  if (options.reloadExtension) await maybeReloadExtension();
+
+  let targets = await listTargets(BROWSER);
+  let devtoolsTarget = findDevToolsTarget(targets, en0Tab.url);
+  if (!devtoolsTarget) {
+    await activateTarget(BROWSER, en0Tab.id);
+    await sleep(250);
     try {
-      await sendCdp(dtTarget.webSocketDebuggerUrl, 'Page.reload');
-      await sleep(300);
-    } catch {}
-  }
-
-  // 5. Ensure DevTools is open and FoE-Info panel is focused on the FoE tab
-  await ensureDevToolsOnFoeTab(primaryGameTab);
-
-  // 6. Wait until FoE-Info panel.html is confirmed mounted and listening
-  console.log(
-    '[attach-devtools] Waiting for FoE-Info-Extension panel to attach...',
-  );
-  let panelMounted = false;
-  for (let i = 0; i < 25; i++) {
-    const current = await fetchTargets();
-    if (current.some((t) => t.url && t.url.includes('panel.html'))) {
-      panelMounted = true;
-      console.log(
-        '[attach-devtools] FoE-Info-Extension panel confirmed attached.',
+      pressF12();
+    } catch (error) {
+      throw new Error(
+        `could not open DevTools on en0 (${error.message}); game tab left on en0`,
+        { cause: error },
       );
+    }
+    const deadline = Date.now() + 10000;
+    while (Date.now() < deadline) {
+      targets = await listTargets(BROWSER);
+      devtoolsTarget = findDevToolsTarget(targets, en0Tab.url);
+      if (devtoolsTarget) break;
+      await sleep(200);
+    }
+  }
+  if (!devtoolsTarget) {
+    throw new Error('DevTools did not attach to en0; game tab left on en0');
+  }
+  console.log('DevTools attached to en0.');
+
+  let viewId = await showFoEInfoPanel(devtoolsTarget);
+  if (!viewId) {
+    throw new Error(
+      'FoE-Info DevTools panel was not available; game tab left on en0',
+    );
+  }
+  console.log(`FoE-Info DevTools panel opened: ${viewId}`);
+
+  let panelReady = false;
+  for (let attempt = 0; attempt < 50; attempt++) {
+    targets = await listTargets(BROWSER);
+    if (targets.some((target) => target.url?.includes('/panel.html'))) {
+      panelReady = true;
       break;
     }
     await sleep(200);
   }
-  if (!panelMounted) {
-    console.warn(
-      '[attach-devtools] Warning: panel.html not detected after 5s. Proceeding with game navigation.',
+  if (!panelReady) {
+    throw new Error(
+      'FoE-Info panel did not finish attaching; game tab left on en0',
     );
   }
+  console.log('FoE-Info panel attachment confirmed.');
 
-  // 7. ONLY AFTER FoE-Info-Extension is attached, navigate or reload on the EXISTING game tab
+  const destination = `https://${options.world}.forgeofempires.com/game/index?ref=master-page-login`;
   console.log(
-    `[attach-devtools] Reusing existing game tab (${primaryGameTab.id})...`,
+    `Opening ${options.world} in the same tab after panel confirmation.`,
   );
-  if (
-    primaryGameTab.url &&
-    primaryGameTab.url.includes(`${world}.forgeofempires.com`)
-  ) {
-    console.log(
-      `[attach-devtools] Already on target world ${world}. Reloading existing tab in-place...`,
-    );
-    await sendCdp(primaryGameTab.webSocketDebuggerUrl, 'Page.reload');
-  } else {
-    console.log(
-      `[attach-devtools] Navigating existing game tab to ${targetUrl}...`,
-    );
-    await sendCdp(primaryGameTab.webSocketDebuggerUrl, 'Page.navigate', {
-      url: targetUrl,
-    });
-  }
-
-  // 8. Re-activate the game tab so it stays the user's active view
-  try {
-    await activateTarget(BROWSER, primaryGameTab.id);
-  } catch {}
-
-  console.log(
-    '[attach-devtools] Done. FoE-Info attached, DevTools docked, game loading on existing tab.',
-  );
+  await send(en0Tab.webSocketDebuggerUrl, 'Page.navigate', {
+    url: destination,
+  });
+  console.log(`Navigation requested: ${destination}`);
 }
 
-main().catch((err) => {
-  console.error('[attach-devtools] Error:', err.message);
-  process.exit(1);
+main().catch((error) => {
+  console.error(`[browser:attach] ${error.message}`);
+  process.exitCode = 1;
 });

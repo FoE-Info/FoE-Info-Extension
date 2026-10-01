@@ -4,10 +4,10 @@ import test from 'node:test';
 import vm from 'node:vm';
 import logger from '../../src/js/utils/logger.js';
 
-const source = readFileSync('src/js/protocol/contentBridge.js', 'utf8').replace(
-  /^import .*;\n/gm,
-  '',
-);
+const source = readFileSync(
+  'src/js/protocol/contentBridge.mjs',
+  'utf8',
+).replace(/^import .*;\n/gm, '');
 
 for (const enabled of [false, true]) {
   test(`content bridge initialization obeys persisted debug=${enabled}`, async (t) => {

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * Passive network recorder for the running Forge of Empires tab.
+ * Passive traffic recorder for the running Forge of Empires tab.
  *
- * Observes only. `Network.enable` is a read-only CDP domain: this script never
- * clicks, types, or navigates, and it only reports what the GAME sends. It
- * writes nothing to disk.
+ * Observes only. CDP Network, Runtime and Log enablement is read-only: this
+ * script never clicks, types, navigates, reloads, or writes into a page. It
+ * streams observed events to stdout and writes nothing to disk.
  *
  * ## Why this exists
  *
@@ -24,8 +24,14 @@
  *
  *   node scripts/record-live-rpc.mjs [brave|chrome] [seconds] [--urls]
  *
- * Start it, then click around in the game. It prints every distinct
- * `requestClass.requestMethod` it saw, with call counts.
+ * Start it before the operator's already-planned activity. It streams game
+ * page request/response metadata, XHR/fetch bodies, WebSocket lifecycle and
+ * frame payloads, console output and runtime errors as JSON Lines. It also
+ * observes FoE-Info extension contexts (including the panel and service worker)
+ * when those targets are exposed by the browser.
+ * It never initiates a game action and keeps no action history or cross-run
+ * deduplication. Each invocation captures events from when it is armed. CDP
+ * cannot recover traffic from before that time.
  *
  * Game tabs are observed read-only; see docs/browser-debugging.md.
  */
@@ -73,6 +79,7 @@ export async function record({
   browser = 'brave',
   seconds = 30,
   printUrls = false,
+  onEvent = () => {},
 } = {}) {
   const endpoint = await resolveEndpoint(browser);
   const nextId = { n: 1 };
@@ -80,6 +87,9 @@ export async function record({
   const handlers = [];
   const seen = new Map();
   const urls = new Set();
+  const eventCounts = new Map();
+  const sessions = new Map();
+  const requests = new Map();
 
   const ws = new WebSocket(endpoint);
   ws.onmessage = (e) => {
@@ -101,11 +111,14 @@ export async function record({
       const id = nextId.n++;
       const msg = { id, method, params };
       if (sessionId) msg.sessionId = sessionId;
-      waiters.set(id, (m) =>
-        m.error ? reject(new Error(m.error.message)) : resolve(m.result),
-      );
+      let timeout;
+      waiters.set(id, (m) => {
+        clearTimeout(timeout);
+        if (m.error) reject(new Error(m.error.message));
+        else resolve(m.result);
+      });
       ws.send(JSON.stringify(msg));
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         if (waiters.has(id)) {
           waiters.delete(id);
           reject(new Error(`${method} timed out`));
@@ -127,40 +140,233 @@ export async function record({
     );
   }
 
-  const { sessionId } = await cdp('Target.attachToTarget', {
-    targetId: game.targetId,
-    flatten: true,
-  });
+  const panelTargets = targetInfos.filter(
+    (t) =>
+      t.targetId !== game.targetId &&
+      /chrome-extension:\/\/[^/]+\/.*panel\.html/.test(t.url || ''),
+  );
+  const extensionId = panelTargets[0]?.url.match(
+    /^chrome-extension:\/\/([^/]+)\//,
+  )?.[1];
+  const extensionTargets =
+    extensionId ?
+      targetInfos.filter(
+        (t) =>
+          t.targetId !== game.targetId &&
+          (t.url || '').startsWith(`chrome-extension://${extensionId}/`),
+      )
+    : panelTargets;
+  const targets = [
+    { target: game, kind: 'game' },
+    ...extensionTargets.map((target) => ({
+      target,
+      kind:
+        /\/panel\.html(?:[?#]|$)/.test(target.url) ? 'foe-info-panel' : (
+          'foe-info-context'
+        ),
+    })),
+  ];
 
-  handlers.push((m) => {
-    if (m.method !== 'Network.requestWillBeSent') return;
-    const { request } = m.params;
-    const u = request.url || '';
-    if (/start\/metadata|foeen\.innogamescdn|client_lang/.test(u))
-      urls.add(u.slice(0, 96));
-    if (!/\/game\/json/.test(u) || !request.postData) return;
-    try {
-      const d = JSON.parse(request.postData);
-      for (const item of Array.isArray(d) ? d
-      : d.data ? d.data
-      : [d]) {
-        if (!item?.requestClass) continue;
-        const k = `${item.requestClass}.${item.requestMethod}`;
-        seen.set(k, (seen.get(k) || 0) + 1);
+  const emit = (targetId, method, params, extra = {}) => {
+    const target = targets.find((item) => item.target.targetId === targetId);
+    eventCounts.set(method, (eventCounts.get(method) || 0) + 1);
+    onEvent({
+      observedAt: new Date().toISOString(),
+      target: target?.kind || 'unknown',
+      targetUrl: target?.target.url,
+      method,
+      params,
+      ...extra,
+    });
+  };
+
+  handlers.push((message) => {
+    const sessionId = message.sessionId;
+    const targetId = sessions.get(sessionId);
+    if (!targetId) return;
+    const { method, params } = message;
+    if (
+      ![
+        'Network.requestWillBeSent',
+        'Network.responseReceived',
+        'Network.loadingFinished',
+        'Network.loadingFailed',
+        'Network.webSocketCreated',
+        'Network.webSocketWillSendHandshakeRequest',
+        'Network.webSocketHandshakeResponseReceived',
+        'Network.webSocketFrameSent',
+        'Network.webSocketFrameReceived',
+        'Network.webSocketClosed',
+        'Runtime.consoleAPICalled',
+        'Runtime.exceptionThrown',
+        'Log.entryAdded',
+      ].includes(method)
+    )
+      return;
+
+    if (method === 'Network.requestWillBeSent') {
+      const { request, requestId, type } = params;
+      requests.set(`${sessionId}:${requestId}`, {
+        url: request.url,
+        type,
+        request,
+      });
+      if (
+        /start\/metadata|foeen\.innogamescdn|client_lang/.test(
+          request.url || '',
+        )
+      )
+        urls.add(request.url.slice(0, 160));
+      if (/\/game\/json/.test(request.url || '') && request.postData) {
+        try {
+          const data = JSON.parse(request.postData);
+          for (const item of Array.isArray(data) ? data
+          : data.data ? data.data
+          : [data]) {
+            if (!item?.requestClass) continue;
+            const key = `${item.requestClass}.${item.requestMethod}`;
+            seen.set(key, (seen.get(key) || 0) + 1);
+          }
+        } catch {
+          /* Preserve the original body in the emitted event. */
+        }
       }
-    } catch {
-      /* body was not JSON */
+      if (request.hasPostData && request.postData === undefined) {
+        cdp('Network.getRequestPostData', { requestId }, sessionId)
+          .then((body) =>
+            emit(targetId, 'Network.requestBody', {
+              requestId,
+              url: request.url,
+              ...body,
+            }),
+          )
+          .catch((error) =>
+            emit(targetId, 'Network.requestBodyUnavailable', {
+              requestId,
+              url: request.url,
+              reason: error.message,
+            }),
+          );
+      }
     }
+
+    if (method === 'Network.responseReceived') {
+      const request = requests.get(`${sessionId}:${params.requestId}`);
+      if (request) request.type = params.type;
+    }
+
+    emit(targetId, method, params);
+
+    if (method === 'Network.loadingFinished') {
+      const key = `${sessionId}:${params.requestId}`;
+      const request = requests.get(key);
+      requests.delete(key);
+      if (
+        request &&
+        ['XHR', 'Fetch', 'Document'].includes(request.type) &&
+        !request.url.startsWith('chrome-extension://')
+      ) {
+        cdp(
+          'Network.getResponseBody',
+          { requestId: params.requestId },
+          sessionId,
+        )
+          .then((body) =>
+            emit(targetId, 'Network.responseBody', {
+              requestId: params.requestId,
+              url: request.url,
+              ...body,
+            }),
+          )
+          .catch((error) =>
+            emit(targetId, 'Network.responseBodyUnavailable', {
+              requestId: params.requestId,
+              url: request.url,
+              reason: error.message,
+            }),
+          );
+      }
+    }
+
+    if (method === 'Network.loadingFailed')
+      requests.delete(`${sessionId}:${params.requestId}`);
+    if (method === 'Network.webSocketClosed')
+      requests.delete(`${sessionId}:${params.requestId}`);
   });
 
-  await cdp('Network.enable', {}, sessionId);
-  await new Promise((r) => setTimeout(r, seconds * 1000));
+  const armedTargets = [];
+  for (const { target, kind } of targets) {
+    let sessionId;
+    try {
+      ({ sessionId } = await cdp('Target.attachToTarget', {
+        targetId: target.targetId,
+        flatten: true,
+      }));
+    } catch (error) {
+      if (kind === 'game') throw error;
+      onEvent({
+        observedAt: new Date().toISOString(),
+        method: 'Recorder.targetUnavailable',
+        target: kind,
+        targetUrl: target.url,
+        reason: error.message,
+      });
+      continue;
+    }
+    sessions.set(sessionId, target.targetId);
+    const enabled = [];
+    const domains = [
+      [
+        'Network',
+        {
+          maxTotalBufferSize: 100_000_000,
+          maxResourceBufferSize: 20_000_000,
+          maxPostDataSize: 20_000_000,
+        },
+      ],
+      ['Runtime', {}],
+      ['Log', {}],
+    ];
+    for (const [domain, params] of domains) {
+      try {
+        await cdp(`${domain}.enable`, params, sessionId);
+        enabled.push(domain);
+      } catch (error) {
+        if (kind === 'game') throw error;
+        onEvent({
+          observedAt: new Date().toISOString(),
+          method: 'Recorder.domainUnavailable',
+          target: kind,
+          targetUrl: target.url,
+          domain,
+          reason: error.message,
+        });
+      }
+    }
+    armedTargets.push({ kind, url: target.url, domains: enabled });
+  }
+
+  onEvent({
+    observedAt: new Date().toISOString(),
+    method: 'Recorder.ready',
+    targets: armedTargets,
+    seconds,
+  });
+
+  await new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 
   const methods = [...seen.entries()]
     .map(([rpc, n]) => ({ rpc, n }))
     .sort((a, b) => b.n - a.n);
   ws.close();
-  return { url: game.url, methods, urls: [...urls], printed: printUrls };
+  return {
+    url: game.url,
+    methods,
+    urls: printUrls ? [...urls] : [],
+    printed: printUrls,
+    targets: targets.map(({ target, kind }) => ({ kind, url: target.url })),
+    eventCounts: Object.fromEntries(eventCounts),
+  };
 }
 
 async function main() {
@@ -169,16 +375,13 @@ async function main() {
     args.find((a) => !a.startsWith('--') && !/^\d+$/.test(a)) || 'brave';
   const seconds = Number(args.find((a) => /^\d+$/.test(a)) || 30);
   const printUrls = args.includes('--urls');
-  const result = await record({ browser, seconds, printUrls });
-  console.log(
-    `\n=== ${result.methods.length} distinct RPC methods on ${result.url.slice(0, 60)} ===`,
-  );
-  for (const { rpc, n } of result.methods)
-    console.log(`  ${String(n).padStart(3)}x  ${rpc}`);
-  if (printUrls) {
-    console.log(`\n=== ${result.urls.length} matching URLs ===`);
-    for (const u of result.urls.slice(0, 40)) console.log(`  ${u}`);
-  }
+  const result = await record({
+    browser,
+    seconds,
+    printUrls,
+    onEvent: (event) => console.log(JSON.stringify(event)),
+  });
+  console.log(JSON.stringify({ summary: result }));
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
