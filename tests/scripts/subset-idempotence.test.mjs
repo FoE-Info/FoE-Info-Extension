@@ -26,7 +26,7 @@ function jsFiles(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) out.push(...jsFiles(full));
-    else if (entry.name.endsWith('.js')) out.push(full);
+    else if (/\.(?:js|mjs|cjs)$/.test(entry.name)) out.push(full);
   }
   return out;
 }
@@ -118,7 +118,6 @@ test('manifest source field points to the full upstream font', () => {
 test('running the subset script twice produces byte-identical output', async () => {
   // Record state before the first run.
   const srcHashBefore = sha256(FONT_SRC);
-  const subsetHashBefore = sha256(FONT);
 
   // First run.
   execFileSync('node', ['scripts/subset-icons-font.mjs'], {

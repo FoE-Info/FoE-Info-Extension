@@ -37,7 +37,7 @@ function jsFiles(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) out.push(...jsFiles(full));
-    else if (entry.name.endsWith('.js')) out.push(full);
+    else if (/\.(?:js|mjs|cjs)$/.test(entry.name)) out.push(full);
   }
   return out;
 }
@@ -88,7 +88,7 @@ const tmp = path.join(FONT_DIR, '.subset-candidate.woff2');
 
 uvx([
   '--from',
-  'fonttools[woff]',
+  'fonttools[woff]==4.66.1',
   'pyftsubset',
   FONT_SRC,
   `--text=${names.join(',')}`,
@@ -104,7 +104,7 @@ uvx([
 // ligature (rlig), not by cmap, so this is the only check that proves the glyph
 // survived — a file-size comparison would not.
 const verifier = path.join(ROOT, 'scripts', 'lib', 'verify-icon-font.py');
-uvx(['--from', 'fonttools[woff]', 'python', verifier, tmp, ...names]);
+uvx(['--from', 'fonttools[woff]==4.66.1', 'python', verifier, tmp, ...names]);
 
 fs.renameSync(tmp, FONT);
 fs.writeFileSync(
