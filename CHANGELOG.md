@@ -5,9 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.0.835] - 2026-10-01
 
 ### Changed
+
+- Share panel height preferences across worlds, preserve explicit resize choices during content updates, and use consistent resize grips and lighter Copy button styling.
+- Copy Army totals and era groups as chat-friendly plain text; add Copy to GB Info and show Donation support snippets only when eligible positions exist.
+- Keep City Overview available in every context, restrict incidents to Own City, and restore city context when observed Contributions, Inventory, Market, or main-city announcements arrive.
+- Display Great Building bonuses from owned server snapshots, distinguish remaining uses from bonus strength, and retain Blue Galaxy charges in its dedicated panel.
+- Route routine console diagnostics through the debug setting while retaining warnings and errors in standard mode.
+- Reject lint warnings in the verification gate and distinguish default-argument callers by AST bindings instead of shared method names.
 
 - Separate roadmap direction from tracked tasks and acceptance criteria, move project guides into consistently named documentation, and retire superseded plans.
 - Compose service presentation callbacks explicitly, remove eager route registration and calculator state dependencies, and preserve legacy storage keys when migration writes fail.
@@ -15,6 +22,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Gate verification on publishable reference integrity.
 - Retain verification console logs and JUnit test results on CI failure, with run, attempt, and commit identifiers in artifact names.
 - Correct documentation that had drifted from the code: Chrome Web Store permission and host-permission justifications, `SECURITY.md` host-permission and CSP scope, `docs/debugging.md` console tags, `debugEnabled` listeners and section numbering, `README.md` ESLint major and source tree.
+
+### Fixed
+
+- Refresh Great Building progress from complete live rankings before evaluating donations, skip locked reward positions, and preserve owner investment when the viewer is a ranked donor.
+
+- Sanitize rich panel and popover markup, escape tooltip attributes and city-era text, parse clipboard text without chained entity decoding, and prevent reward keys from altering bucket prototypes.
+- Match developer attachment URLs by parsed host and escape complete release-version regular expressions.
+- Return player names from structured cache entries while preserving legacy string entries.
+
+- Preserve Rewards panel height during new income and normalize reward quantities, blueprint names, and fragment names.
+- Track recurring quest rewards once per completed cycle; retain separate totals for explicit reward sources, including PvP Arena, Great Building payouts, Antiques Dealer purchases and completed sales.
+- Identify Himeji Castle and Space Carrier rewards by their producer rather than the current combat scene; use supplied goods-bundle totals and actual GB payout quantities.
+- Synchronize FP Status with absolute inventory updates and authoritative available-package responses; remove the redundant Packages badge from GB Donation.
 
 ## [0.0.834] - 2026-09-19
 
