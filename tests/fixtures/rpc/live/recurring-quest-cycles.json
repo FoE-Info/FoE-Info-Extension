@@ -1,0 +1,1757 @@
+[
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 32,
+    "responseData": [
+      {
+        "id": 700014,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 33,
+    "responseData": [
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700021,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 38,
+    "responseData": [
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "good",
+            "subType": "dark_energy_battery",
+            "amount": 5,
+            "id": "resource#dark_energy_battery#5",
+            "name": "5 Dark Energy Batteries",
+            "description": "5 of a random good from your age!",
+            "iconAssetName": "dark_energy_battery",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700021,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "good",
+            "subType": "deep_space_data",
+            "amount": 5,
+            "id": "resource#deep_space_data#5",
+            "name": "5 Deep Space Data",
+            "description": "5 of a random good from your age!",
+            "iconAssetName": "deep_space_data",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 40,
+    "responseData": [
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "good",
+            "subType": "dark_energy_battery",
+            "amount": 5,
+            "id": "resource#dark_energy_battery#5",
+            "name": "5 Dark Energy Batteries",
+            "description": "5 of a random good from your age!",
+            "iconAssetName": "dark_energy_battery",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700021,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "good",
+            "subType": "deep_space_data",
+            "amount": 5,
+            "id": "resource#deep_space_data#5",
+            "name": "5 Deep Space Data",
+            "description": "5 of a random good from your age!",
+            "iconAssetName": "deep_space_data",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 41,
+    "responseData": [
+      {
+        "id": 700021,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "good",
+            "subType": "deep_space_data",
+            "amount": 5,
+            "id": "resource#deep_space_data#5",
+            "name": "5 Deep Space Data",
+            "description": "5 of a random good from your age!",
+            "iconAssetName": "deep_space_data",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700013,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 42,
+    "responseData": [
+      {
+        "id": 700013,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700010,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 43,
+    "responseData": [
+      {
+        "id": 700010,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700020,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 44,
+    "responseData": [
+      {
+        "id": 700020,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700022,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 45,
+    "responseData": [
+      {
+        "id": 700022,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700017,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 46,
+    "responseData": [
+      {
+        "id": 700017,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700012,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 47,
+    "responseData": [
+      {
+        "id": 700012,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700017,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "resource",
+            "subType": "money",
+            "amount": 177300,
+            "id": "resource_era#money#100#2.42",
+            "name": "177,300 Coins",
+            "description": "Coins are a main resource in the game.",
+            "iconAssetName": "small_coins",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 49,
+    "responseData": [
+      {
+        "id": 700012,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700009,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 51,
+    "responseData": [
+      {
+        "id": 700009,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700008,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 52,
+    "responseData": [
+      {
+        "id": 700008,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700015,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 53,
+    "responseData": [
+      {
+        "id": 700015,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700011,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 54,
+    "responseData": [
+      {
+        "id": 700011,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700018,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 55,
+    "responseData": [
+      {
+        "id": 700018,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700019,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 56,
+    "responseData": [
+      {
+        "id": 700019,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700014,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 57,
+    "responseData": [
+      {
+        "id": 700014,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 58,
+    "responseData": [
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700021,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 63,
+    "responseData": [
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "good",
+            "subType": "silver_crystals",
+            "amount": 5,
+            "id": "resource#silver_crystals#5",
+            "name": "5 Silver Crystals",
+            "description": "5 of a random good from your age!",
+            "iconAssetName": "silver_crystals",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700021,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "resource",
+            "subType": "money",
+            "amount": 560400,
+            "id": "resource_era#money#300#2.437",
+            "name": "560,400 Coins",
+            "description": "Coins are a main resource in the game.",
+            "iconAssetName": "small_coins",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 65,
+    "responseData": [
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "good",
+            "subType": "silver_crystals",
+            "amount": 5,
+            "id": "resource#silver_crystals#5",
+            "name": "5 Silver Crystals",
+            "description": "5 of a random good from your age!",
+            "iconAssetName": "silver_crystals",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700021,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "resource",
+            "subType": "money",
+            "amount": 560400,
+            "id": "resource_era#money#300#2.437",
+            "name": "560,400 Coins",
+            "description": "Coins are a main resource in the game.",
+            "iconAssetName": "small_coins",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 67,
+    "responseData": [
+      {
+        "id": 700021,
+        "type": "generic",
+        "state": "collectReward",
+        "genericRewards": [
+          {
+            "type": "resource",
+            "subType": "money",
+            "amount": 560400,
+            "id": "resource_era#money#300#2.437",
+            "name": "560,400 Coins",
+            "description": "Coins are a main resource in the game.",
+            "iconAssetName": "small_coins",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700013,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 68,
+    "responseData": [
+      {
+        "id": 700013,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700010,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 69,
+    "responseData": [
+      {
+        "id": 700010,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700020,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 70,
+    "responseData": [
+      {
+        "id": 700020,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700022,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 72,
+    "responseData": [
+      {
+        "id": 700012,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700017,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 73,
+    "responseData": [
+      {
+        "id": 700012,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700008,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 74,
+    "responseData": [
+      {
+        "id": 700008,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700009,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 75,
+    "responseData": [
+      {
+        "id": 700009,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700015,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 76,
+    "responseData": [
+      {
+        "id": 700015,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700011,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 78,
+    "responseData": [
+      {
+        "id": 700018,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700014,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 79,
+    "responseData": [
+      {
+        "id": 700018,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700019,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 80,
+    "responseData": [
+      {
+        "id": 700019,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "__class__": "ServerResponse",
+    "requestClass": "QuestService",
+    "requestMethod": "getUpdates",
+    "requestId": 81,
+    "responseData": [
+      {
+        "id": 700016,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      },
+      {
+        "id": 700021,
+        "type": "generic",
+        "state": "accepted",
+        "genericRewards": [
+          {
+            "type": "",
+            "subType": "",
+            "id": "",
+            "name": "Random Reward",
+            "description": "",
+            "iconAssetName": "reward_random",
+            "flags": [
+              "random",
+              "boosted"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -56,7 +56,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 613314,
+  "id": 700001,
   "windowTitle": "Whisking Away Autumn Blues - (Event Quest)",
   "title": "Whisking Away Autumn Blues",
   "type": "SeasonSpecial_fall_event_2026_rushA",
@@ -65,7 +65,7 @@
    "name": "Ms. Appleton",
    "__class__": "QuestGiver"
   },
-  "priority": 613314,
+  "priority": 700001,
   "state": "accepted",
   "successConditions": [
    {
@@ -145,7 +145,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 613331,
+  "id": 700002,
   "windowTitle": "Dash of Autumn - (Event Quest)",
   "title": "Dash of Autumn",
   "type": "SeasonSpecial_fall_event_2026_rushB",
@@ -154,7 +154,7 @@
    "name": "Ms. Appleton",
    "__class__": "QuestGiver"
   },
-  "priority": 613331,
+  "priority": 700002,
   "state": "accepted",
   "successConditions": [
    {
@@ -231,7 +231,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 613372,
+  "id": 700005,
   "windowTitle": "Counter 3 - (Event Quest)",
   "title": "Counter 3",
   "type": "SeasonSpecial_fall_event_2026_counter",
@@ -240,7 +240,7 @@
    "name": "Ms. Appleton",
    "__class__": "QuestGiver"
   },
-  "priority": 613372,
+  "priority": 700005,
   "state": "accepted",
   "successConditions": [
    {
@@ -291,7 +291,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 613373,
+  "id": 700006,
   "windowTitle": "Counter 4 - (Event Quest)",
   "title": "Counter 4",
   "type": "SeasonSpecial_fall_event_2026_counter",
@@ -300,7 +300,7 @@
    "name": "Ms. Appleton",
    "__class__": "QuestGiver"
   },
-  "priority": 613373,
+  "priority": 700006,
   "state": "accepted",
   "successConditions": [
    {
@@ -351,7 +351,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 613374,
+  "id": 700007,
   "windowTitle": "Counter 5 - (Event Quest)",
   "title": "Counter 5",
   "type": "SeasonSpecial_fall_event_2026_counter",
@@ -360,7 +360,7 @@
    "name": "Ms. Appleton",
    "__class__": "QuestGiver"
   },
-  "priority": 613374,
+  "priority": 700007,
   "state": "accepted",
   "successConditions": [
    {
@@ -426,7 +426,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 933184,
+  "id": 700012,
   "windowTitle": "Task Type: Challenge - (Recurring Quest)",
   "title": "Task Type: Challenge",
   "type": "generic",
@@ -435,7 +435,7 @@
    "name": "Eve",
    "__class__": "QuestGiver"
   },
-  "priority": 933184,
+  "priority": 700012,
   "state": "accepted",
   "successConditions": [
    {
@@ -498,7 +498,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 933186,
+  "id": 700014,
   "windowTitle": "Task Type: Challenge - (Recurring Quest)",
   "title": "Task Type: Challenge",
   "type": "generic",
@@ -507,7 +507,7 @@
    "name": "Eve",
    "__class__": "QuestGiver"
   },
-  "priority": 933186,
+  "priority": 700014,
   "state": "accepted",
   "successConditions": [
    {
@@ -588,7 +588,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 3000001,
+  "id": 700023,
   "windowTitle": "Earn Rewards - (Special Quest)",
   "title": "Earn Rewards",
   "type": "videoAds",
@@ -597,7 +597,7 @@
    "name": "Mirela",
    "__class__": "QuestGiver"
   },
-  "priority": 3000001,
+  "priority": 700023,
   "state": "accepted",
   "successConditions": [
    {
@@ -644,7 +644,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 5007402,
+  "id": 700024,
   "windowTitle": "Hunt the Elusive Mythical Creature - (Event Quest)",
   "title": "Hunt the Elusive Mythical Creature",
   "type": "MiniChallenge_fall_event_challenge_1_2026_daily",
@@ -653,7 +653,7 @@
    "name": "Baron Alaric Ironsoul",
    "__class__": "QuestGiver"
   },
-  "priority": 5007402,
+  "priority": 700024,
   "state": "accepted",
   "successConditions": [
    {
@@ -713,7 +713,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 5007430,
+  "id": 700025,
   "windowTitle": "Counter 1 - (Event Quest)",
   "title": "Counter 1",
   "type": "MiniChallenge_fall_event_challenge_1_2026_counter",
@@ -722,7 +722,7 @@
    "name": "Baron Alaric Ironsoul",
    "__class__": "QuestGiver"
   },
-  "priority": 5007430,
+  "priority": 700025,
   "state": "accepted",
   "successConditions": [
    {
@@ -773,7 +773,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 5007431,
+  "id": 700026,
   "windowTitle": "Counter 2 - (Event Quest)",
   "title": "Counter 2",
   "type": "MiniChallenge_fall_event_challenge_1_2026_counter",
@@ -782,7 +782,7 @@
    "name": "Baron Alaric Ironsoul",
    "__class__": "QuestGiver"
   },
-  "priority": 5007431,
+  "priority": 700026,
   "state": "accepted",
   "successConditions": [
    {
@@ -833,7 +833,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 5007432,
+  "id": 700027,
   "windowTitle": "Counter 3 - (Event Quest)",
   "title": "Counter 3",
   "type": "MiniChallenge_fall_event_challenge_1_2026_counter",
@@ -842,7 +842,7 @@
    "name": "Baron Alaric Ironsoul",
    "__class__": "QuestGiver"
   },
-  "priority": 5007432,
+  "priority": 700027,
   "state": "accepted",
   "successConditions": [
    {
@@ -893,7 +893,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 6010000,
+  "id": 700028,
   "windowTitle": "Pay Forge Points 1 - (Special Quest)",
   "title": "Pay Forge Points 1",
   "type": "ReplayableSeason_Allies_Pay_a",
@@ -902,7 +902,7 @@
    "name": "Bert",
    "__class__": "QuestGiver"
   },
-  "priority": 6010000,
+  "priority": 700028,
   "state": "accepted",
   "successConditions": [
    {
@@ -962,7 +962,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 6020000,
+  "id": 700029,
   "windowTitle": "Pay Medals 1 - (Special Quest)",
   "title": "Pay Medals 1",
   "type": "ReplayableSeason_Allies_Pay_b",
@@ -971,7 +971,7 @@
    "name": "Bert",
    "__class__": "QuestGiver"
   },
-  "priority": 6020000,
+  "priority": 700029,
   "state": "accepted",
   "successConditions": [
    {
@@ -1031,7 +1031,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 6030000,
+  "id": 700030,
   "windowTitle": "Negotiations 1 - (Special Quest)",
   "title": "Negotiations 1",
   "type": "ReplayableSeason_Allies_Negotiation_a",
@@ -1040,7 +1040,7 @@
    "name": "Bert",
    "__class__": "QuestGiver"
   },
-  "priority": 6030000,
+  "priority": 700030,
   "state": "accepted",
   "successConditions": [
    {
@@ -1089,7 +1089,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 6900008,
+  "id": 700031,
   "windowTitle": "Milestone 9 - (Special Quest)",
   "title": "Milestone 9",
   "type": "ReplayableSeason_Allies_Milestone",
@@ -1098,7 +1098,7 @@
    "name": "Bert",
    "__class__": "QuestGiver"
   },
-  "priority": 6900008,
+  "priority": 700031,
   "state": "accepted",
   "successConditions": [
    {
@@ -1185,7 +1185,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 613371,
+  "id": 700004,
   "windowTitle": "Counter 2 - (Event Quest)",
   "title": "Counter 2",
   "type": "SeasonSpecial_fall_event_2026_counter",
@@ -1194,7 +1194,7 @@
    "name": "Ms. Appleton",
    "__class__": "QuestGiver"
   },
-  "priority": 613371,
+  "priority": 700004,
   "state": "closed",
   "successConditions": [
    {
@@ -1247,7 +1247,7 @@
   "__class__": "Quest"
  },
  {
-  "id": 613370,
+  "id": 700003,
   "windowTitle": "Counter 1 - (Event Quest)",
   "title": "Counter 1",
   "type": "SeasonSpecial_fall_event_2026_counter",
@@ -1256,7 +1256,7 @@
    "name": "Ms. Appleton",
    "__class__": "QuestGiver"
   },
-  "priority": 613370,
+  "priority": 700003,
   "state": "closed",
   "successConditions": [
    {

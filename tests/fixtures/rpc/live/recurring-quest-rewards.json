@@ -1,0 +1,52 @@
+{
+  "__class__": "ServerResponse",
+  "requestClass": "QuestService",
+  "requestMethod": "getUpdates",
+  "requestId": 38,
+  "responseData": [
+    {
+      "id": 700016,
+      "type": "generic",
+      "state": "collectReward",
+      "genericRewards": [
+        {
+          "type": "good",
+          "subType": "dark_energy_battery",
+          "amount": 5,
+          "id": "resource#dark_energy_battery#5",
+          "name": "5 Dark Energy Batteries",
+          "description": "5 of a random good from your age!",
+          "iconAssetName": "dark_energy_battery",
+          "flags": [
+            "random",
+            "boosted"
+          ],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ]
+    },
+    {
+      "id": 700021,
+      "type": "generic",
+      "state": "collectReward",
+      "genericRewards": [
+        {
+          "type": "good",
+          "subType": "deep_space_data",
+          "amount": 5,
+          "id": "resource#deep_space_data#5",
+          "name": "5 Deep Space Data",
+          "description": "5 of a random good from your age!",
+          "iconAssetName": "deep_space_data",
+          "flags": [
+            "random",
+            "boosted"
+          ],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ]
+    }
+  ]
+}
