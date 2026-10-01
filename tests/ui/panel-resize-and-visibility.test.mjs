@@ -130,7 +130,7 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
         'utf8',
       );
       const globalsSrc = fs.readFileSync(
-        path.resolve('src/js/fn/globals.js'),
+        path.resolve('src/js/fn/globals.mjs'),
         'utf8',
       );
       const customScss = fs.readFileSync(
@@ -184,7 +184,7 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
     'Army panel defaults to 185px height and respects toolOptions.armySize',
     async () => {
       const globalsSrc = fs.readFileSync(
-        path.resolve('src/js/fn/globals.js'),
+        path.resolve('src/js/fn/globals.mjs'),
         'utf8',
       );
       assert.match(
@@ -229,6 +229,25 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
       const listeners = {};
       const mockArmyText = {
         id: 'armyText',
+        ownerDocument: {
+          createElement: () => {
+            const events = {};
+            return {
+              setAttribute() {},
+              addEventListener(type, fn) {
+                events[type] = fn;
+              },
+              removeEventListener() {},
+              remove() {},
+              trigger(type, event) {
+                events[type]?.(event);
+              },
+            };
+          },
+        },
+        after(handle) {
+          this.resizeHandle = handle;
+        },
         style: { height: '', maxHeight: '' },
         classList: {
           _classes: new Set(['show']),
@@ -242,6 +261,7 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
             this._classes.delete(c);
           },
         },
+        removeEventListener() {},
         addEventListener(event, fn) {
           if (!listeners[event]) listeners[event] = [];
           listeners[event].push(fn);
@@ -306,6 +326,16 @@ test('Panel Resize & Visibility Defaults Suite', async (t) => {
         // 3. User resizing triggers setArmySize
         assert.ok(resizeCallback, 'ResizeObserver callback must be registered');
         resizeCallback([{ contentRect: { height: 350 } }]);
+        assert.equal(
+          savedHeight,
+          null,
+          'Layout changes must not save a height',
+        );
+        for (let i = 0; i < 4; i++)
+          mockArmyText.resizeHandle.trigger('keydown', {
+            key: 'ArrowDown',
+            preventDefault() {},
+          });
         assert.equal(
           savedHeight,
           350,

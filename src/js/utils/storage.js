@@ -29,7 +29,7 @@ function sanitizeKey(key) {
 }
 
 function isWorldScopedKey(name) {
-  return name === 'toolOptions' || name.startsWith('collapse');
+  return name.startsWith('collapse');
 }
 
 /**
@@ -60,7 +60,7 @@ function updateCache(obj) {
 }
 
 function setStorage(name, value) {
-  const cleanKey = sanitizeKey(name);
+  const cleanKey = sanitizeKey(name === 'toolOptions' ? 'panelSizes' : name);
   if (!cleanKey) return;
   storageCache[cleanKey] = value;
 
@@ -87,24 +87,6 @@ function setStorage(name, value) {
       saveWorldSettings(currentWorld, { showOptions: value }),
     );
   }
-  if (name === 'toolOptions') {
-    if (memoryWorldCache[currentWorld]) {
-      memoryWorldCache[currentWorld].toolOptions = {
-        ...memoryWorldCache[currentWorld].toolOptions,
-        ...value,
-      };
-    }
-    const persistPromise = persistWorldSettings(
-      saveWorldSettings(currentWorld, { toolOptions: value }),
-    );
-    const local = getStorageLocal();
-    if (local) {
-      local
-        .remove(cleanKey)
-        .catch((err) => console.warn('setStorage cleanup error:', err));
-    }
-    return persistPromise;
-  }
   if (name.startsWith('collapse')) {
     setCollapse(name, value);
     return;
@@ -119,7 +101,7 @@ function setStorage(name, value) {
 }
 
 function getStorage(name, callback) {
-  const cleanKey = sanitizeKey(name);
+  const cleanKey = sanitizeKey(name === 'toolOptions' ? 'panelSizes' : name);
   if (!cleanKey) {
     if (typeof callback === 'function') callback(null, null);
     return Promise.resolve(null);
@@ -132,7 +114,6 @@ function getStorage(name, callback) {
     if (name === 'hiddenInvestments') val = settings.caches?.hiddenInvestments;
     else if (name === 'investSettings' || name === 'showOptions')
       val = settings.showOptions;
-    else if (name === 'toolOptions') val = settings.toolOptions;
     else if (name.startsWith('collapse')) val = settings.collapses?.[name];
     else if (name === 'donation') val = settings.donation;
     else if (name === 'url') val = settings.webhooks;
@@ -161,7 +142,7 @@ function getStorage(name, callback) {
 }
 
 function getSync(name) {
-  const cleanKey = sanitizeKey(name);
+  const cleanKey = sanitizeKey(name === 'toolOptions' ? 'panelSizes' : name);
   if (!cleanKey) return null;
   const worldScoped = isWorldScopedKey(name);
   const settings = memoryWorldCache[getCurrentWorld()];
@@ -172,16 +153,16 @@ function getSync(name) {
       return settings.showOptions || {};
     if (name === 'donation') return settings.donation || {};
     if (name === 'url') return settings.webhooks || {};
-    if (name === 'toolOptions') return settings.toolOptions || {};
     if (name.startsWith('collapse')) return settings.collapses?.[name] ?? null;
-    if (settings[name] !== undefined) return settings[name];
+    if (name !== 'toolOptions' && settings[name] !== undefined)
+      return settings[name];
   }
   if (worldScoped) return null;
   return storageCache[cleanKey] !== undefined ? storageCache[cleanKey] : null;
 }
 
 function setCollapse(name, value) {
-  const cleanKey = sanitizeKey(name);
+  const cleanKey = sanitizeKey(name === 'toolOptions' ? 'panelSizes' : name);
   if (!cleanKey || !cleanKey.startsWith('collapse')) return;
   const currentWorld = getCurrentWorld();
   if (memoryWorldCache[currentWorld]) {
@@ -203,14 +184,14 @@ function setCollapse(name, value) {
 }
 
 function getCollapse(name) {
-  const cleanKey = sanitizeKey(name);
+  const cleanKey = sanitizeKey(name === 'toolOptions' ? 'panelSizes' : name);
   if (!cleanKey || !cleanKey.startsWith('collapse')) return null;
   const settings = memoryWorldCache[getCurrentWorld()];
   return settings?.collapses?.[cleanKey] ?? null;
 }
 
 function removeStorage(name) {
-  const cleanKey = sanitizeKey(name);
+  const cleanKey = sanitizeKey(name === 'toolOptions' ? 'panelSizes' : name);
   if (!cleanKey) return;
   delete storageCache[cleanKey];
   const local = getStorageLocal();

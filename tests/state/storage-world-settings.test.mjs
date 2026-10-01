@@ -52,7 +52,6 @@ test('applyWorldConfig handles safe defaults and applies full world configuratio
     ['setTargetsTopic', 't1'],
     ['setTargetText', 'target msg'],
     ['setUrl', { default: 'https://webhook.site' }],
-    ['setToolOptions', { compact: true }],
     ['collapseOptions', 'collapse1', true],
     ['collapseOptions', 'collapse2', false],
   ]);
@@ -108,7 +107,7 @@ test('applyLegacyWorldFallbacks handles known keys and rejects unknown keys', ()
     true,
   );
   assert.strictEqual(
-    applyLegacyWorldFallbacks('toolOptions', { opt: 2 }, deps),
+    applyLegacyWorldFallbacks('panelSizes', { opt: 2 }, deps),
     true,
   );
   assert.strictEqual(
@@ -144,4 +143,22 @@ test('applyLegacyWorldFallbacks handles known keys and rejects unknown keys', ()
 test('applyDebugEnabled executes without throwing', () => {
   assert.doesNotThrow(() => applyDebugEnabled(true));
   assert.doesNotThrow(() => applyDebugEnabled(false));
+});
+
+test('treasury sections ignore stored collapse preferences so each session starts expanded', () => {
+  const calls = [];
+  applyWorldConfig(
+    {
+      collapses: {
+        collapseTreasury: true,
+        collapseTreasuryLog: true,
+        collapseTreasuryContributions: true,
+        collapseCity: true,
+      },
+    },
+    {
+      collapseOptions: (key, value) => calls.push([key, value]),
+    },
+  );
+  assert.deepEqual(calls, [['collapseCity', true]]);
 });

@@ -225,6 +225,8 @@ function setupPanelContainers(
 
   // 15. #treasury (Guild Treasury Logs)
   const treasury = mountOrAdopt('treasury', sharedContainers.treasury);
+  mountOrAdopt('treasuryReserves', null, '', false, treasury);
+  mountOrAdopt('treasuryContributions', null, '', false, treasury);
   const treasuryLog = mountOrAdopt(
     'treasuryLog',
     sharedContainers.treasuryLog,

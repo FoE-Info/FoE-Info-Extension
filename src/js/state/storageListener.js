@@ -103,7 +103,9 @@ function handleStorageChange(changes, namespace, deps = {}) {
       continue;
     }
 
-    if (key === 'tool') {
+    if (key === 'panelSizes') {
+      resolved.setToolOptions?.(newValue);
+    } else if (key === 'tool') {
       if (newValue?.language) {
         resolved.setLanguage?.(newValue.language);
         logger.debug('Language changed:', newValue.language);
@@ -176,9 +178,8 @@ function handleReceiveStorage(result, deps = {}) {
   const storage = resolved.storage || defaultStorage;
   storage?.updateCache?.(result);
 
-  if (typeof result.debugEnabled === 'boolean') {
-    applyDebugEnabled(result.debugEnabled);
-  }
+  // Logger initialization owns startup debug state. This settings snapshot
+  // can arrive late and must not restore a previous panel session's mode.
 
   const globalSettings = result['global:settings'];
   const effectiveGlobal = {
@@ -198,7 +199,9 @@ function handleReceiveStorage(result, deps = {}) {
   for (const [key, value] of Object.entries(result)) {
     if (key === 'CityEntityDefs' || key === 'metadata:cityEntities') continue;
 
-    if (key === 'tool') {
+    if (key === 'panelSizes') {
+      resolved.setToolOptions?.(value);
+    } else if (key === 'tool') {
       if (value?.language && value.language !== 'auto') {
         resolved.setLanguage?.(value.language);
         logger.debug('Initial language:', value.language);

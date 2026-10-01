@@ -6,6 +6,25 @@ describe('PanelResize bindResizableCollapse Suite', () => {
   function createMockElement(initialClasses = ['show']) {
     const listeners = {};
     return {
+      ownerDocument: {
+        createElement: () => {
+          const events = {};
+          return {
+            setAttribute() {},
+            addEventListener(type, fn) {
+              events[type] = fn;
+            },
+            removeEventListener() {},
+            remove() {},
+            trigger(type, event) {
+              events[type]?.(event);
+            },
+          };
+        },
+      },
+      after(handle) {
+        this.resizeHandle = handle;
+      },
       style: { height: '', maxHeight: '' },
       classList: {
         _classes: new Set(initialClasses),
@@ -19,6 +38,7 @@ describe('PanelResize bindResizableCollapse Suite', () => {
           this._classes.delete(c);
         },
       },
+      removeEventListener() {},
       addEventListener(event, fn) {
         if (!listeners[event]) listeners[event] = [];
         listeners[event].push(fn);
@@ -124,6 +144,16 @@ describe('PanelResize bindResizableCollapse Suite', () => {
 
     // User drags handle to 320px
     observerCb([{ contentRect: { height: 320 } }]);
+    assert.equal(
+      savedHeight,
+      null,
+      'Layout changes must not persist a custom height',
+    );
+    controller.setCurrentSize(310);
+    el.resizeHandle.trigger('keydown', {
+      key: 'ArrowDown',
+      preventDefault() {},
+    });
     assert.equal(savedHeight, 320, 'onResize must receive user resized height');
     assert.equal(
       controller.getCurrentSize(),
@@ -170,7 +200,11 @@ describe('PanelResize bindResizableCollapse Suite', () => {
     await new Promise((resolve) => setTimeout(resolve, 80));
 
     // Another user drag to 400px
-    observerCb([{ contentRect: { height: 400 } }]);
+    controller.setCurrentSize(390);
+    el.resizeHandle.trigger('keydown', {
+      key: 'ArrowDown',
+      preventDefault() {},
+    });
     assert.equal(savedHeight, 400, 'Subsequent resize to 400px must persist');
     assert.equal(controller.getCurrentSize(), 400);
 

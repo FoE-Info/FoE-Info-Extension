@@ -76,7 +76,6 @@ test('handleStorageChange applies world-scoped options for current world', () =>
     ['setTargetsTopic', 'p1'],
     ['setTargetText', 'p1 target'],
     ['setUrl', { discord: 'https://discord.test' }],
-    ['setToolOptions', { minSize: 100 }],
     ['collapseOptions', 'collapseGBInfo', true],
   ]);
 });
@@ -119,7 +118,7 @@ test('handleStorageChange handles legacy global settings', () => {
     tool: { newValue: { language: 'fr' } },
     targets: { newValue: 'target_abc' },
     targetText: { newValue: 'text_xyz' },
-    toolOptions: { newValue: { autoCollect: true } },
+    panelSizes: { newValue: { autoCollect: true } },
     donationPercent: { newValue: 195 },
     donationSuffix: { newValue: 'fp' },
     url: { newValue: 'https://hook.url' },
@@ -199,7 +198,7 @@ test('handleReceiveStorage applies legacy fallbacks when curWorldData is absent'
     showOptions: { showBonus: true },
     targets: 'legacy_targets',
     targetText: 'legacy_text',
-    toolOptions: { minSize: 80 },
+    panelSizes: { minSize: 80 },
     donationPercent: 192,
     donationSuffix: 'arc',
     url: 'https://legacy.url',
@@ -536,4 +535,16 @@ test('handleStorageChange and handleReceiveStorage synchronize theme preference'
     },
   });
   assert.strictEqual(themeManager.getTheme(), 'auto');
+});
+
+test('initial settings hydration cannot restore debug mode or override an explicit toggle', async () => {
+  const logger = await import('../../src/js/utils/logger.js');
+  const deps = { storage: { updateCache() {}, getCurrentWorld: () => null } };
+  logger.setDebugEnabled(false, { persist: false });
+  handleReceiveStorage({ debugEnabled: true }, deps);
+  assert.equal(logger.isDebugEnabled(), false);
+  logger.setDebugEnabled(true, { persist: false });
+  handleReceiveStorage({ debugEnabled: false }, deps);
+  assert.equal(logger.isDebugEnabled(), true);
+  logger.setDebugEnabled(false, { persist: false });
 });

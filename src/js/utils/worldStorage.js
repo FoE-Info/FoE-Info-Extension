@@ -119,6 +119,21 @@ function buildWorldWritePayload(worldId, settings) {
   return payload;
 }
 
+function readWorldSnapshot(result, worldId) {
+  if (!result) return null;
+  const blob = result[getWorldKey(worldId)];
+  const stored = blob && typeof blob === 'object' ? { ...blob } : {};
+  let hasStoredData = Boolean(blob && typeof blob === 'object');
+  for (const field of WORLD_FIELDS) {
+    const value = result[getWorldFieldKey(worldId, field)];
+    if (value !== undefined) {
+      stored[field] = value;
+      hasStoredData = true;
+    }
+  }
+  return hasStoredData ? stored : null;
+}
+
 function setWorld(worldId) {
   if (!isPlayableWorld(worldId)) return;
   currentWorldId = sanitizeWorldId(worldId);
@@ -178,6 +193,16 @@ function setupStorageListener() {
             });
           }
         } else {
+          // A derived blob may be stale when another context writes a field.
+          // Preserve cached unrelated fields when this batch supplies field keys.
+          if (
+            memoryWorldCache[wid] &&
+            Object.keys(changes).some((candidate) => {
+              const parsedCandidate = parseWorldKey(candidate);
+              return parsedCandidate?.worldId === wid && parsedCandidate.field;
+            })
+          )
+            continue;
           memoryWorldCache[wid] = mergeWithWorldDefaults(change.newValue);
         }
         if (wid === currentWorldId) {
@@ -315,24 +340,8 @@ async function getWorldSettings(worldId = currentWorldId) {
   ];
   const res = local ? await local.get(keys).catch(() => null) : null;
 
-  const stored = {};
-  let hasStoredData = false;
-  if (res) {
-    const blob = res[legacyKey];
-    if (blob && typeof blob === 'object') {
-      Object.assign(stored, blob);
-      hasStoredData = true;
-    }
-    for (const field of WORLD_FIELDS) {
-      const fieldValue = res[getWorldFieldKey(wid, field)];
-      if (fieldValue !== undefined) {
-        stored[field] = fieldValue;
-        hasStoredData = true;
-      }
-    }
-  }
-
-  if (hasStoredData) {
+  const stored = readWorldSnapshot(res, wid);
+  if (stored) {
     const merged = mergeWithWorldDefaults(stored);
     memoryWorldCache[wid] = merged;
     return merged;
@@ -349,6 +358,8 @@ async function getWorldSettings(worldId = currentWorldId) {
   return fresh;
 }
 
+const worldSaveQueues = new Map();
+
 /**
  * Saves a partial world settings update.
  *
@@ -360,7 +371,21 @@ async function getWorldSettings(worldId = currentWorldId) {
  *
  * Write failures are propagated to the caller — they are never swallowed.
  */
-async function saveWorldSettings(worldId, partialSettings = {}) {
+function saveWorldSettings(worldId, partialSettings = {}) {
+  const wid = sanitizeWorldId(worldId);
+  const previous = worldSaveQueues.get(wid) || Promise.resolve();
+  const pending = previous
+    .catch(() => {})
+    .then(() => persistWorldSettings(wid, partialSettings));
+  worldSaveQueues.set(wid, pending);
+  const clear = () => {
+    if (worldSaveQueues.get(wid) === pending) worldSaveQueues.delete(wid);
+  };
+  pending.then(clear, clear);
+  return pending;
+}
+
+async function persistWorldSettings(worldId, partialSettings) {
   setupStorageListener();
   const wid = sanitizeWorldId(worldId);
   const partial =
@@ -368,31 +393,48 @@ async function saveWorldSettings(worldId, partialSettings = {}) {
       partialSettings
     : {};
 
+  const local = getStorageLocal();
+  const keys = [
+    getWorldKey(wid),
+    ...WORLD_FIELDS.map((field) => getWorldFieldKey(wid, field)),
+  ];
+  // Reloads start with an empty cache; other contexts can also make a warm
+  // cache stale. Read the authoritative fields before merging a partial save.
+  // A failed read rejects instead of overwriting saved settings with defaults.
+  const stored = local ? readWorldSnapshot(await local.get(keys), wid) : null;
+  const current = mergeWithWorldDefaults({
+    ...memoryWorldCache[wid],
+    ...stored,
+  });
+
   const changedFields = {};
   for (const field of WORLD_FIELDS) {
     if (partial[field] === undefined) continue;
-    const base = mergeWithWorldDefaults(memoryWorldCache[wid])[field];
+    const base = current[field];
     changedFields[field] = { ...base, ...partial[field] };
   }
 
   if (Object.keys(changedFields).length === 0) {
-    return mergeWithWorldDefaults(memoryWorldCache[wid]);
+    return current;
   }
 
   // Per-field in-memory update: mutate the shared cached object instead of
   // replacing it, so a concurrent save of a different field is preserved.
-  const cached = memoryWorldCache[wid] || mergeWithWorldDefaults(undefined);
+  const cached = memoryWorldCache[wid] || current;
+  Object.assign(cached, current);
   for (const [field, value] of Object.entries(changedFields)) {
     cached[field] = value;
   }
   memoryWorldCache[wid] = cached;
 
   const updated = mergeWithWorldDefaults(cached);
-  const local = getStorageLocal();
   if (local) {
     // Rejection propagates to the caller (Change 3: observable persistence
     // failures — never claim success for a write that did not land).
-    await local.set(buildWorldWritePayload(wid, updated));
+    const payload = { [getWorldKey(wid)]: updated };
+    for (const [field, value] of Object.entries(changedFields))
+      payload[getWorldFieldKey(wid, field)] = value;
+    await local.set(payload);
   }
   await registerKnownWorld(wid);
   return updated;

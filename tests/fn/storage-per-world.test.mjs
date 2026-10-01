@@ -377,54 +377,37 @@ test('F26: collapse state is persisted per-world, not as flat global keys', asyn
   });
 });
 
-test('F27: toolOptions no longer races via flat global keys', async (t) => {
-  let mock;
-
-  t.beforeEach(() => {
-    mock = createMockBrowserStorage();
-    globalThis.browser = mock;
-    _clearMemoryCacheForTesting();
-  });
-
-  t.afterEach(() => {
-    delete globalThis.browser;
-    _clearMemoryCacheForTesting();
-  });
-
-  await t.test('toolOptions writes are world-scoped only', async () => {
+test('panel sizes are shared across worlds while old world-specific sizes are ignored', async () => {
+  const mock = createMockBrowserStorage();
+  globalThis.browser = mock;
+  _clearMemoryCacheForTesting();
+  try {
     setWorld('en7');
     await getWorldSettings('en7');
-    setStorage('toolOptions', { armySize: 300 });
+    setStorage('toolOptions', { armySize: 300, rewardSize: 220 });
     await flush();
-
-    assert.strictEqual(mock.store['toolOptions'], undefined);
-    assert.strictEqual(getSync('toolOptions').armySize, 300);
-    assert.strictEqual((await getStorage('toolOptions')).armySize, 300);
-
-    setWorld('de1');
-    await getWorldSettings('de1');
-    setStorage('toolOptions', { armySize: 120 });
+    assert.deepEqual(mock.store.panelSizes, { armySize: 300, rewardSize: 220 });
+    setWorld('en16');
+    await getWorldSettings('en16');
+    assert.deepEqual(getSync('toolOptions'), {
+      armySize: 300,
+      rewardSize: 220,
+    });
+    assert.deepEqual(await getStorage('toolOptions'), {
+      armySize: 300,
+      rewardSize: 220,
+    });
+    setStorage('toolOptions', { armySize: 250, rewardSize: 220 });
     await flush();
-
-    assert.strictEqual(getSync('toolOptions').armySize, 120);
-
     setWorld('en7');
-    assert.strictEqual(getSync('toolOptions').armySize, 300);
-  });
-
-  await t.test(
-    'stale flat toolOptions cannot override world settings',
-    async () => {
-      setWorld('en7');
-      await getWorldSettings('en7');
-      setStorage('toolOptions', { armySize: 300 });
-      await flush();
-
-      // Simulate a stale flat value left behind by older extension versions.
-      mock.store['toolOptions'] = { armySize: 999 };
-
-      assert.strictEqual(getSync('toolOptions').armySize, 300);
-      assert.strictEqual((await getStorage('toolOptions')).armySize, 300);
-    },
-  );
+    assert.equal(getSync('toolOptions').armySize, 250);
+    delete mock.store.panelSizes;
+    _clearMemoryCacheForTesting();
+    setWorld('en7');
+    await saveWorldSettings('en7', { toolOptions: { armySize: 362 } });
+    assert.equal(await getStorage('toolOptions'), null);
+  } finally {
+    delete globalThis.browser;
+    _clearMemoryCacheForTesting();
+  }
 });

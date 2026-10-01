@@ -17,6 +17,7 @@ test('FACTORY_WORLD_SETTINGS and FACTORY_GLOBAL_SETTINGS are deeply frozen', () 
   assert.ok(Object.isFrozen(FACTORY_WORLD_SETTINGS.toolOptions));
   assert.strictEqual(FACTORY_WORLD_SETTINGS.toolOptions.minSize, 50);
   assert.strictEqual(FACTORY_WORLD_SETTINGS.toolOptions.armySize, 185);
+  assert.strictEqual(FACTORY_WORLD_SETTINGS.toolOptions.rewardSizeMode, 'auto');
   assert.ok(Object.isFrozen(FACTORY_WORLD_SETTINGS.caches));
   assert.ok(Object.isFrozen(FACTORY_WORLD_SETTINGS.caches.hiddenInvestments));
 
@@ -69,6 +70,7 @@ test('all showOptions keys are present with correct boolean defaults', () => {
     showInternationalExpedition: true,
     showExpedition: true,
     showTreasury: true,
+    showGBGTreasury: false,
     showVisit: true,
     showSettlement: true,
     showArmy: true,
@@ -82,6 +84,7 @@ test('all showOptions keys are present with correct boolean defaults', () => {
     showGErewards: true,
     showRewards: true,
     showGalaxy: true,
+    debugGalaxy: false,
     showLogs: true,
     showContributions: true,
     showGuildPosition: false,

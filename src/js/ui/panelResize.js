@@ -15,6 +15,7 @@
 
 const { createLogger } = require('../utils/logger.js');
 const logger = createLogger('PanelResize');
+const { bindPanelResizeHandle } = require('./panelResizeHandle.js');
 
 function bindResizableCollapse({
   element,
@@ -99,11 +100,9 @@ function bindResizableCollapse({
           if (typeof height === 'number' && height >= minSize) {
             const rounded = Math.round(height);
             if (Math.abs(rounded - currentSize) >= 2) {
-              currentSize = rounded;
-              logger.debug('User resized panel', { newSize: currentSize });
-              if (typeof onResize === 'function') {
-                onResize(currentSize);
-              }
+              // Layout/content changes are not user resizing. Only the shared
+              // drag/keyboard handle below persists a chosen height.
+              element.style.height = `${currentSize}px`;
             }
           }
         }
@@ -113,6 +112,18 @@ function bindResizableCollapse({
       logger.warn('Failed to observe element resize', err);
     }
   }
+
+  const handleBinding = bindPanelResizeHandle(element, {
+    minSize,
+    getSize: () => currentSize,
+    setSize: (height) => {
+      const size = Math.round(height);
+      if (size === currentSize) return;
+      currentSize = size;
+      element.style.height = `${size}px`;
+      onResize?.(size);
+    },
+  });
 
   return {
     resizeObserver,
@@ -126,6 +137,7 @@ function bindResizableCollapse({
       }
     },
     disconnect: () => {
+      handleBinding?.disconnect();
       if (resizeObserver && typeof resizeObserver.disconnect === 'function') {
         resizeObserver.disconnect();
       }

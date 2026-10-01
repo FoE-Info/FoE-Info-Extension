@@ -79,14 +79,20 @@ function applyWorldConfig(worldData, deps = {}) {
     deps.setUrl?.(worldData.webhooks);
   }
 
-  if (worldData.toolOptions) {
-    deps.setToolOptions?.(worldData.toolOptions);
-  }
-
   if (worldData.collapses && typeof worldData.collapses === 'object') {
     for (const [collapseKey, collapseValue] of Object.entries(
       worldData.collapses,
     )) {
+      // Treasury sections start expanded in each panel session; user toggles
+      // remain in memory while traffic updates their contents.
+      if (
+        [
+          'collapseTreasury',
+          'collapseTreasuryLog',
+          'collapseTreasuryContributions',
+        ].includes(collapseKey)
+      )
+        continue;
       deps.collapseOptions?.(collapseKey, collapseValue);
     }
   }
@@ -156,7 +162,7 @@ function applyLegacyWorldFallbacks(key, value, deps = {}) {
     case 'targetText':
       deps.setTargetText?.(value);
       return true;
-    case 'toolOptions':
+    case 'panelSizes':
       deps.setToolOptions?.(value);
       return true;
     case 'donationPercent':
