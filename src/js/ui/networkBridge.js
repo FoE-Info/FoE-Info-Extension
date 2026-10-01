@@ -32,7 +32,7 @@ function resolveDep(config, key, loader, exportName) {
  *
  * A single switch increments a generation token, sets the world, loads the
  * target world's COMPLETE saved configuration, applies it (showOptions,
- * donation, webhooks, toolOptions, collapses), and resets session-scoped
+ * donation, webhooks, collapses), and resets session-scoped
  * state. Async completion is guarded by the generation token: a slow load for
  * world A can never apply after the user has already switched to world B.
  *
@@ -87,10 +87,10 @@ function bindNetworkBridge(config = {}) {
   const storage = resolveDep(config, 'storage', () =>
     require('../fn/storage.js'),
   );
-  const state = resolveDep(config, 'state', () => require('../vars/state.js'));
+  const state = resolveDep(config, 'state', () => require('../vars/state.mjs'));
   const setGameOrigin = state?.setGameOrigin || config.setGameOrigin;
   const setOptions = resolveDep(config, 'setOptions', () =>
-    require('../vars/showOptions.js'),
+    require('../vars/showOptions.mjs'),
   );
 
   const getInspectedWorldId =
@@ -127,11 +127,11 @@ function bindNetworkBridge(config = {}) {
     setToolOptions: resolveDep(
       config,
       'setToolOptions',
-      () => require('../fn/globals.js'),
+      () => require('../fn/globals.mjs'),
       'setToolOptions',
     ),
     collapseOptions: resolveDep(config, 'collapseOptions', () =>
-      require('../fn/collapse.js'),
+      require('../fn/collapse.mjs'),
     ),
     // A Great Building cache holds per-world RPC-derived data, so a world
     // change must not surface another world's building data. Default the
@@ -190,7 +190,7 @@ function bindNetworkBridge(config = {}) {
             setGameOrigin?.(`https://${match[1]}.forgeofempires.com`);
             storage.registerKnownWorld(world);
             // Applies the target world's complete saved configuration
-            // (donation options, webhooks, toolOptions, collapses) instead of
+            // (donation options, webhooks, collapses) instead of
             // only setting the world id.
             switchToWorld(world);
           }

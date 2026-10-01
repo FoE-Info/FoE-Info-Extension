@@ -44,7 +44,7 @@ function fCollapseIcon(id, _href, collapse) {
 }
 
 function fAddCollapseIcon(id, _href, collapse) {
-  return `<span class="header-icon collapse-toggle fw-bold font-monospace" id="${id}" role="button" tabindex="-1" aria-hidden="true" aria-expanded="${!collapse}" aria-controls="${_href}" data-bs-target="#${_href}" data-bs-toggle="collapse">${collapse ? '[+]' : '[-]'}</span>`;
+  return `<span class="header-icon collapse-toggle fw-bold font-monospace" id="${id}" role="button" tabindex="-1" aria-expanded="${!collapse}" aria-controls="${_href}" data-bs-target="#${_href}" data-bs-toggle="collapse">${collapse ? '[+]' : '[-]'}</span>`;
 }
 
 function fCopyButton(id, colour, pos, collapse) {

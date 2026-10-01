@@ -100,7 +100,7 @@ function createEl(tag = 'div', id = '') {
     remove() {
       el.parentNode?.removeChild?.(el);
     },
-    matches: (sel) => false,
+    matches: () => false,
     contains(child) {
       if (child === el) return true;
       return (
@@ -218,7 +218,7 @@ function restoreTimers() {
 }
 
 function fireAllPending() {
-  for (const [id, t] of fakeTimers) {
+  for (const t of fakeTimers.values()) {
     if (!t.cleared && !t.fired) {
       t.fired = true;
       t.fn();

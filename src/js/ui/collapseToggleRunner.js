@@ -44,7 +44,7 @@ function getElement() {
     return require('./AddElement.js');
   } catch {
     try {
-      return require('../fn/AddElement.js');
+      return require('../fn/AddElement.mjs');
     } catch {
       return null;
     }

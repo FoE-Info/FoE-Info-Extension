@@ -1,44 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { registerHooks } from 'node:module';
-import { dirname, resolve as resolvePath } from 'node:path';
 import test from 'node:test';
-import { fileURLToPath, pathToFileURL } from 'node:url';
 
-function isEsmSource(source) {
-  return /^\s*(?:import|export)\s/m.test(source);
-}
-
-registerHooks({
-  resolve(specifier, context, nextResolve) {
-    try {
-      return nextResolve(specifier, context);
-    } catch (err) {
-      if (specifier.startsWith('.') && context.parentURL) {
-        const parentDir = dirname(fileURLToPath(context.parentURL));
-        for (const candidate of ['', '.js', '.mjs', '/index.js']) {
-          const resolved = resolvePath(parentDir, specifier + candidate);
-          try {
-            readFileSync(resolved);
-            return { url: pathToFileURL(resolved).href, shortCircuit: true };
-          } catch {}
-        }
-      }
-      throw err;
-    }
-  },
-  load(url, context, nextLoad) {
-    if (url.endsWith('.js') && url.includes('/src/js/')) {
-      const source = readFileSync(fileURLToPath(url), 'utf8');
-      if (isEsmSource(source)) {
-        return { format: 'module', source, shortCircuit: true };
-      }
-    }
-    return nextLoad(url, context);
-  },
-});
-
-const collapse = await import('../../src/js/fn/collapse.js');
+const collapse = await import('../../src/js/fn/collapse.mjs');
 const setCollapse = collapse.default;
 
 test('collapse.js Characterization Suite', async (t) => {
@@ -59,8 +22,8 @@ test('collapse.js Characterization Suite', async (t) => {
     assert.equal(collapse.collapseBattleground, false);
     assert.equal(collapse.collapseBuildingCost, true);
     assert.equal(collapse.collapseExpedition, false);
-    assert.equal(collapse.collapseTreasury, true);
-    assert.equal(collapse.collapseTreasuryLog, true);
+    assert.equal(collapse.collapseTreasury, false);
+    assert.equal(collapse.collapseTreasuryLog, false);
     assert.equal(collapse.collapseGalaxy, false);
     assert.equal(collapse.collapseTarget, false);
     assert.equal(collapse.collapseTargetGen, false);
@@ -145,12 +108,14 @@ test('collapse.js Characterization Suite', async (t) => {
     const armyUnits = { innerHTML: '' };
     const armyUnits2 = { innerHTML: '<span>Unit A</span>' };
     const armyUnits3 = { innerHTML: '<span>Unit B</span>' };
+    const armyCopy = { style: { display: 'block' } };
 
     globalThis.document = {
       getElementById: (id) => {
         if (id === 'armyUnits') return armyUnits;
         if (id === 'armyUnits2') return armyUnits2;
         if (id === 'armyUnits3') return armyUnits3;
+        if (id === 'armyCopyID') return armyCopy;
         return null;
       },
       querySelectorAll: () => [],
@@ -160,13 +125,15 @@ test('collapse.js Characterization Suite', async (t) => {
       setCollapse('collapseArmy', false);
       collapse.fCollapseArmy();
       assert.equal(collapse.collapseArmy, true);
+      assert.equal(armyCopy.style.display, 'none');
       assert.equal(
         armyUnits.innerHTML,
-        '<span>Unit A</span> <span>Unit B</span>',
+        '<span class="army-total"><span>Unit B</span></span> <span class="army-total"><span>Unit A</span></span>',
       );
 
       collapse.fCollapseArmy();
       assert.equal(collapse.collapseArmy, false);
+      assert.equal(armyCopy.style.display, 'block');
       assert.equal(armyUnits.innerHTML, '');
     } finally {
       globalThis.document = prevDoc;

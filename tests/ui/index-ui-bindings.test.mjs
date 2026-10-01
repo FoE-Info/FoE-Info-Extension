@@ -295,7 +295,7 @@ describe('indexUiBindings initIndexUiBindings', () => {
 
   test('index.js wires initIndexUiBindings and stays within the size cap', () => {
     const indexSource = fs.readFileSync(
-      path.join(ROOT_DIR, 'src/js/index.js'),
+      path.join(ROOT_DIR, 'src/js/index.mjs'),
       'utf8',
     );
 
@@ -313,7 +313,7 @@ describe('indexUiBindings initIndexUiBindings', () => {
     const lineCount = indexSource.split('\n').length;
     assert.ok(
       lineCount <= 600,
-      `src/js/index.js must stay <= 600 lines (was ${lineCount})`,
+      `src/js/index.mjs must stay <= 600 lines (was ${lineCount})`,
     );
   });
 
@@ -323,7 +323,7 @@ describe('indexUiBindings initIndexUiBindings', () => {
       'utf8',
     );
     const indexSource = fs.readFileSync(
-      path.join(ROOT_DIR, 'src/js/index.js'),
+      path.join(ROOT_DIR, 'src/js/index.mjs'),
       'utf8',
     );
 

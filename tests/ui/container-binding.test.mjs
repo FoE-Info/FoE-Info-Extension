@@ -127,10 +127,10 @@ test('Container Binding & DOM Lifecycle Suite', async (t) => {
   const { doc, createElement } = createMockDOM();
 
   await t.test(
-    'src/js/state/state.js assigns id="targets" and id="donation2" on DOM creation',
+    'src/js/state/state.mjs assigns id="targets" and id="donation2" on DOM creation',
     () => {
       const stateSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/state/state.js'),
+        path.join(ROOT_DIR, 'src/js/state/state.mjs'),
         'utf8',
       );
 
@@ -146,65 +146,65 @@ test('Container Binding & DOM Lifecycle Suite', async (t) => {
       );
       assert.match(
         stateSource,
-        /export\s+var\s+battlegroundDIV\s*=/,
+        /export\s+(?:let|const|var)\s+battlegroundDIV\s*=/,
         'state.js must export battlegroundDIV container',
       );
       assert.match(
         stateSource,
-        /export\s+var\s+gbgLeaderboardDIV\s*=/,
+        /export\s+(?:let|const|var)\s+gbgLeaderboardDIV\s*=/,
         'state.js must export gbgLeaderboardDIV container',
       );
     },
   );
 
   await t.test(
-    'src/js/index.js does not shadow donation2DIV, targets, donationDIV, or output and binds shared state containers',
+    'src/js/index.mjs does not shadow donation2DIV, targets, donationDIV, or output and binds shared state containers',
     () => {
       const indexSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/index.js'),
+        path.join(ROOT_DIR, 'src/js/index.mjs'),
         'utf8',
       );
 
       assert.doesNotMatch(
         indexSource,
-        /export\s+var\s+donation2DIV\s*=\s*document\.createElement/,
-        'src/js/index.js must not shadow donation2DIV with a local document.createElement declaration',
+        /export\s+(?:let|const|var)\s+donation2DIV\s*=\s*document\.createElement/,
+        'src/js/index.mjs must not shadow donation2DIV with a local document.createElement declaration',
       );
       assert.doesNotMatch(
         indexSource,
-        /export\s+var\s+targets\s*=\s*document\.createElement/,
-        'src/js/index.js must not shadow targets with a local document.createElement declaration',
+        /export\s+(?:let|const|var)\s+targets\s*=\s*document\.createElement/,
+        'src/js/index.mjs must not shadow targets with a local document.createElement declaration',
       );
       assert.doesNotMatch(
         indexSource,
-        /export\s+var\s+donationDIV\s*=\s*document\.createElement/,
-        'src/js/index.js must not shadow donationDIV with a local document.createElement declaration',
+        /export\s+(?:let|const|var)\s+donationDIV\s*=\s*document\.createElement/,
+        'src/js/index.mjs must not shadow donationDIV with a local document.createElement declaration',
       );
       assert.doesNotMatch(
         indexSource,
-        /export\s+var\s+output\s*=\s*document\.createElement/,
-        'src/js/index.js must not shadow output with a local document.createElement declaration',
+        /export\s+(?:let|const|var)\s+output\s*=\s*document\.createElement/,
+        'src/js/index.mjs must not shadow output with a local document.createElement declaration',
       );
 
       assert.match(
         indexSource,
         /donation2DIV/,
-        'src/js/index.js must import donation2DIV from state',
+        'src/js/index.mjs must import donation2DIV from state',
       );
       assert.match(
         indexSource,
         /targets/,
-        'src/js/index.js must import targets from state',
+        'src/js/index.mjs must import targets from state',
       );
       assert.match(
         indexSource,
         /battlegroundDIV/,
-        'src/js/index.js must import battlegroundDIV from state',
+        'src/js/index.mjs must import battlegroundDIV from state',
       );
       assert.match(
         indexSource,
         /gbgLeaderboardDIV/,
-        'src/js/index.js must import gbgLeaderboardDIV from state',
+        'src/js/index.mjs must import gbgLeaderboardDIV from state',
       );
     },
   );

@@ -1,3 +1,4 @@
+const { sanitizeHTML } = require('../utils/html.mjs');
 /**
  * serviceDomBridge.js
  *
@@ -253,7 +254,7 @@ function renderGbgTargetMessage({
     }
   }
 
-  targetsGBG.innerHTML = html;
+  targetsGBG.innerHTML = sanitizeHTML(html);
   translateDynamicMarkup(targetsGBG);
 
   const timerId = Math.random().toString(36).substr(2, 5);

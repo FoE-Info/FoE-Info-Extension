@@ -1,3 +1,4 @@
+const { sanitizeHTML } = require('../../utils/html.mjs');
 /**
  * PopoverManager.js
  *
@@ -190,7 +191,7 @@ function showPopoverForTrigger(triggerEl) {
         triggerEl.getAttribute('data-html') === 'true' ||
         /<[a-z][\s\S]*>/i.test(title);
       if (isHtml) {
-        popoverEl.innerHTML = title;
+        popoverEl.innerHTML = sanitizeHTML(title);
       } else {
         popoverEl.textContent = title;
       }
@@ -202,7 +203,7 @@ function showPopoverForTrigger(triggerEl) {
         html += `<h3 class="popover-header">${title}</h3>`;
       }
       html += `<div class="popover-body">${content}</div>`;
-      popoverEl.innerHTML = html;
+      popoverEl.innerHTML = sanitizeHTML(html);
     }
 
     const win =
@@ -397,7 +398,7 @@ function updateActivePopoverContent(triggerEl, newContent) {
   if (popoverEl) {
     const body = popoverEl.querySelector('.popover-body');
     if (body && newContent) {
-      body.innerHTML = newContent;
+      body.innerHTML = sanitizeHTML(newContent);
     }
   }
 }

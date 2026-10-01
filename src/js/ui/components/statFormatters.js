@@ -1,3 +1,5 @@
+const { htmlToText } = require('../../utils/html.mjs');
+const { escapeHTMLAttribute } = require('../../utils/escape.js');
 /**
  * statFormatters.js
  *
@@ -232,11 +234,8 @@ function formatGoodsHTML(
             tooltips[acronym] ||
             tooltips[age] ||
             `<strong>${escapeHtml(acronym)}:</strong> ${displayAmt}`;
-          const plain = rawTip
-            .replace(/<br\s*\/?>/gi, '\n')
-            .replace(/<[^>]+>/g, '')
-            .trim();
-          const escaped = rawTip.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+          const plain = escapeHTMLAttribute(htmlToText(rawTip).trim());
+          const escaped = escapeHTMLAttribute(rawTip);
           return `<span id="${prefix}-${age}" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" data-bs-title="${escaped}" title="${plain}">${acronym}:${displayAmt}</span>`;
         })
         .join(' ');

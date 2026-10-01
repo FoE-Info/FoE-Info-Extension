@@ -184,7 +184,7 @@ test('renderTreasuryPanel renders table and goods rows when showTreasury is true
     },
   );
 
-  assert.ok(containers.treasury.innerHTML.includes('Guild Treasury:'));
+  assert.ok(containers.treasury.innerHTML.includes('Treasury Stock:'));
   assert.ok(containers.treasury.innerHTML.includes('height: 320px'));
   assert.ok(containers.treasury.innerHTML.includes('Iron Age'));
   assert.ok(containers.treasury.innerHTML.includes('Stone'));
@@ -198,7 +198,10 @@ test('renderTreasuryPanel renders table and goods rows when showTreasury is true
   assert.ok(listeners['treasuryicon']?.click);
 });
 
-test('renderTreasuryPanel renders Map<string, BigNumber> with descending era sort and no resource counter', async () => {
+test('renderTreasuryPanel renders Map<string, BigNumber> with descending era sort and no resource counter', async (t) => {
+  const previousView = getCurrentView();
+  t.after(() => setCurrentView(previousView));
+  setCurrentView(null);
   const BigNumber = (await import('bignumber.js')).default;
   const mockTreasuryDiv = {
     id: 'treasury',
@@ -247,7 +250,7 @@ test('renderTreasuryPanel renders Map<string, BigNumber> with descending era sor
     assert.equal(mockTreasuryDiv.style.display, '');
 
     // 2. No resource counter in header
-    assert.match(mockTreasuryDiv.innerHTML, /Guild Treasury:/);
+    assert.match(mockTreasuryDiv.innerHTML, /Treasury Stock:/);
     assert.doesNotMatch(mockTreasuryDiv.innerHTML, /\(\d+\s+Resources?\)/i);
 
     // 3. Era headers exist with .goods-era-header class

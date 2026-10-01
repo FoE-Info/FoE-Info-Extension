@@ -8,7 +8,7 @@
 
 let defaultResourceDefs = null;
 try {
-  const stateModule = require('../state/state.js');
+  const stateModule = require('../state/state.mjs');
   defaultResourceDefs = stateModule.ResourceDefs;
 } catch {}
 

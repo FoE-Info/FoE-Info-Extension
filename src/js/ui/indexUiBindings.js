@@ -56,12 +56,12 @@ function resolveDep(config, key, loader, exportName) {
 }
 
 function buildStorageDeps(config = {}) {
-  const state = resolveDep(config, 'state', () => require('../vars/state.js'));
+  const state = resolveDep(config, 'state', () => require('../vars/state.mjs'));
 
   return {
     storage: resolveDep(config, 'storage', () => require('../fn/storage.js')),
     setOptions: resolveDep(config, 'setOptions', () =>
-      require('../vars/showOptions.js'),
+      require('../vars/showOptions.mjs'),
     ),
     applyCardVisibility,
     setTargetsTopic: (val) => state?.setTargetsTopic?.(val),
@@ -71,12 +71,12 @@ function buildStorageDeps(config = {}) {
     setToolOptions: resolveDep(
       config,
       'setToolOptions',
-      () => require('../fn/globals.js'),
+      () => require('../fn/globals.mjs'),
       'setToolOptions',
     ),
     setResourceDefs: config.setResourceDefs,
     collapseOptions: resolveDep(config, 'collapseOptions', () =>
-      require('../fn/collapse.js'),
+      require('../fn/collapse.mjs'),
     ),
     processMetadataData: config.processMetadataData,
     resolveMissingCityEntitiesFromMap: config.resolveMissingCityEntitiesFromMap,
@@ -97,6 +97,7 @@ function buildStorageDeps(config = {}) {
     MilitaryDefs: state?.MilitaryDefs,
     MetaIds: state?.MetaIds,
     playerNameCache: state?.playerNameCache,
+    deletedPlayerIds: state?.deletedPlayerIds,
     browser: config.browser,
   };
 }

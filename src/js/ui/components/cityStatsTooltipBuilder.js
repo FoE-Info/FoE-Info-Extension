@@ -13,7 +13,7 @@
 
 let helper = null;
 try {
-  helper = require('../../fn/helper.js');
+  helper = require('../../fn/helper.mjs');
 } catch {}
 
 let logger = null;

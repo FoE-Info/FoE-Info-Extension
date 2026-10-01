@@ -15,8 +15,8 @@ test('panelDispatcher reads ResourceDefs from state, not msg services', () => {
     );
     assert.match(
       source,
-      /\.\.\/state\/state\.js/,
-      `${file} must read ResourceDefs from state/state.js`,
+      /\.\.\/state\/state\.mjs/,
+      `${file} must read ResourceDefs from state/state.mjs`,
     );
   }
 });
