@@ -12,6 +12,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { before, describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { DomUtils, parseDocument } from 'htmlparser2';
 
 const ROOT = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -35,41 +36,18 @@ const HTML_FILES = [
  */
 function extractHeadings(html) {
   const headings = [];
-  const lines = html.split('\n');
-  let inComment = false;
-  let inScript = false;
-  let inStyle = false;
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    if (line.includes('<!--')) inComment = true;
-    if (line.includes('-->')) {
-      inComment = false;
-      continue;
+  function visit(node) {
+    if (['script', 'style', 'svg', 'template'].includes(node.name)) return;
+    if (/^h[1-6]$/.test(node.name || '')) {
+      headings.push({
+        level: Number(node.name[1]),
+        text: DomUtils.textContent(node).trim(),
+        line: html.slice(0, node.startIndex).split('\n').length,
+      });
     }
-    if (inComment) continue;
-
-    if (/<script[\s>]/i.test(line)) inScript = true;
-    if (/<\/script>/i.test(line)) {
-      inScript = false;
-      continue;
-    }
-    if (/<style[\s>]/i.test(line)) inStyle = true;
-    if (/<\/style>/i.test(line)) {
-      inStyle = false;
-      continue;
-    }
-    if (inScript || inStyle) continue;
-
-    const match = line.match(/<h([1-6])\b/i);
-    if (match) {
-      const level = parseInt(match[1], 10);
-      const textMatch = line.match(/<h[1-6][^>]*>([\s\S]*?)<\/h[1-6]>/i);
-      const text = textMatch ? textMatch[1].trim().replace(/<[^>]+>/g, '') : '';
-      headings.push({ level, text, line: i + 1 });
-    }
+    for (const child of node.children || []) visit(child);
   }
+  visit(parseDocument(html, { withStartIndices: true }));
   return headings;
 }
 

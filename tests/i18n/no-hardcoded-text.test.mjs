@@ -22,6 +22,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { parseDocument } from 'htmlparser2';
 
 const ROOT = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -77,48 +78,24 @@ const JS_TEXTCONTENT_ALLOWLIST = new Set([
 
 const hasLetters = (s) => /[A-Za-z]/.test(s);
 
-const decodeEntities = (s) =>
-  s
-    .replace(/&gt;/g, '>')
-    .replace(/&lt;/g, '<')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+const collapse = (s) => s.replace(/\s+/g, ' ').trim();
 
-const collapse = (s) => decodeEntities(s.replace(/\s+/g, ' ')).trim();
-
-function stripBlocks(html) {
-  return html
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/<script[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[\s\S]*?<\/style>/gi, '')
-    .replace(/<svg[\s\S]*?<\/svg>/gi, '');
-}
-
-/** Returns [text, ancestorAttrsList] pairs: text nodes with their enclosing elements' attribute strings. */
+/** Parse text and ancestor attributes; scripts/styles/SVG are not visible prose. */
 function extractTextNodes(html) {
   const out = [];
-  const stack = []; // attribute strings of open start tags
-  const tokenRe = /<[^>]*>/g;
-  let last = 0;
-  let match;
-  while ((match = tokenRe.exec(html)) !== null) {
-    const text = html.slice(last, match.index);
-    if (hasLetters(text) && !text.includes('<%=')) {
-      out.push([text, [...stack]]);
+  function visit(node, ancestors) {
+    if (['script', 'style', 'svg', 'template'].includes(node.name)) return;
+    if (
+      node.type === 'text' &&
+      hasLetters(node.data) &&
+      !node.data.includes('<%=')
+    ) {
+      out.push([node.data, ancestors]);
     }
-    const tag = match[0];
-    if (/^<\//.test(tag)) {
-      stack.pop();
-    } else if (!/\/>$/.test(tag) && /^<[a-zA-Z]/.test(tag)) {
-      stack.push(tag);
-    }
-    last = tokenRe.lastIndex;
+    const next = node.attribs ? [...ancestors, node.attribs] : ancestors;
+    for (const child of node.children || []) visit(child, next);
   }
-  const trailing = html.slice(last);
-  if (hasLetters(trailing) && !trailing.includes('<%=')) {
-    out.push([trailing, [...stack]]);
-  }
+  visit(parseDocument(html), []);
   return out;
 }
 
@@ -126,8 +103,8 @@ function findHtmlViolations(file, html) {
   const allow = HTML_ALLOWLIST[file] || [];
   const body = html.slice(html.search(/<body[\s>]/i));
   const violations = [];
-  for (const [text, ancestors] of extractTextNodes(stripBlocks(body))) {
-    const wrapped = ancestors.some((tag) => /data-i18n/i.test(tag));
+  for (const [text, ancestors] of extractTextNodes(body)) {
+    const wrapped = ancestors.some((tag) => Object.hasOwn(tag, 'data-i18n'));
     if (wrapped) continue;
     const normalized = collapse(text);
     if (allow.some((a) => normalized.includes(a))) continue;
@@ -169,7 +146,7 @@ describe('no hardcoded user-visible text in ui/ textContent assignments', () => 
   it('every literal textContent assignment goes through i18n or the allowlist', () => {
     const files = fs
       .readdirSync(UI_DIR, { recursive: true })
-      .filter((f) => f.endsWith('.js'))
+      .filter((f) => /\.(?:js|mjs|cjs)$/.test(f))
       .map((f) => path.join(UI_DIR, f));
     const violations = [];
     for (const file of files) {
