@@ -59,10 +59,10 @@ function fResourceShortName(name, lookup = null) {
   const dict =
     lookup ||
     (typeof globalThis !== 'undefined' ? globalThis.ResourceNames : null);
-  if (dict && dict[name]) {
+  if (dict && Object.hasOwn(dict, name) && dict[name]) {
     return dict[name];
   }
-  if (KNOWN_RESOURCE_ALIASES[name]) {
+  if (Object.hasOwn(KNOWN_RESOURCE_ALIASES, name)) {
     return KNOWN_RESOURCE_ALIASES[name];
   }
   return name;

@@ -30,7 +30,7 @@ try {
 
 let defaultHelper = null;
 try {
-  defaultHelper = require('../fn/helper.js');
+  defaultHelper = require('../fn/helper.mjs');
 } catch {}
 
 let saveTimer = null;

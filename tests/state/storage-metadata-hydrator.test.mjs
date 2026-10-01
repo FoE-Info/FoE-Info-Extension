@@ -34,6 +34,7 @@ test('hydrateLookupDefinitions populates lookup maps and notifies stores', () =>
     MilitaryDefs: militaryDefs,
     MetaIds: metaIds,
     playerNameCache: playerNames,
+    deletedPlayerIds: {},
   };
 
   assert.strictEqual(
@@ -88,6 +89,16 @@ test('hydrateLookupDefinitions populates lookup maps and notifies stores', () =>
     true,
   );
   assert.deepStrictEqual(playerNames['99'], 'Player');
+
+  assert.strictEqual(
+    hydrateLookupDefinitions(
+      'deletedPlayerIds',
+      { 100: 1_700_000_000_000 },
+      deps,
+    ),
+    true,
+  );
+  assert.deepStrictEqual(deps.deletedPlayerIds, { 100: 1_700_000_000_000 });
 });
 
 test('hydrateCityEntitiesFromSnapshot safely handles empty or non-entity results', () => {

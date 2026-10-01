@@ -28,7 +28,7 @@ const NOT_FOUND_TTL_MS = 30 * 60 * 1000; // 30 minutes
  * @param {Object} cache  The playerNameCache map (mutated in place).
  * @param {number|string} id      Player ID.
  * @param {string|null}   name    Current name, or null for notFound.
- * @param {Object}        [opts]  { notFound: boolean }.
+ * @param {Object}        [opts]  Negative result or persisted ScoreDB retry state.
  * @param {number}        [now]   Injected timestamp for determinism.
  * @returns {boolean} true when the entry was mutated (dirty).
  */
@@ -39,14 +39,28 @@ function updateEntry(cache, id, name, opts, now) {
   const ts = typeof now === 'number' ? now : Date.now();
 
   if (opts && opts.notFound) {
-    cache[key] = { notFound: true, lastUpdated: ts };
+    cache[key] = {
+      notFound: true,
+      ...(opts.permanent ? { permanent: true } : {}),
+      lastUpdated: ts,
+    };
     logger.debug('Updated not-found player-name cache entry');
+    return true;
+  }
+
+  if (typeof opts?.scoreDBFailureCount === 'number') {
+    cache[key] = {
+      scoreDBFailureCount: opts.scoreDBFailureCount,
+      scoreDBRetryAfter: opts.scoreDBRetryAfter,
+      lastUpdated: ts,
+    };
+    logger.debug('Updated ScoreDB profile retry state');
     return true;
   }
 
   if (!name) return false;
 
-  if (!existing || existing.notFound) {
+  if (!existing || existing.notFound || !existing.currentName) {
     cache[key] = {
       currentName: name,
       previousNames: [],
@@ -84,7 +98,12 @@ function evictExpired(cache, now) {
   let evicted = 0;
   for (const k of Object.keys(cache)) {
     const e = cache[k];
-    if (e && e.notFound && now - (e.lastUpdated || 0) > NOT_FOUND_TTL_MS) {
+    if (
+      e &&
+      e.notFound &&
+      !e.permanent &&
+      now - (e.lastUpdated || 0) > NOT_FOUND_TTL_MS
+    ) {
       delete cache[k];
       evicted++;
     }

@@ -8,7 +8,7 @@
 let stateModule = {};
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    stateModule = require('../vars/state.js');
+    stateModule = require('../vars/state.mjs');
   } catch {}
 }
 

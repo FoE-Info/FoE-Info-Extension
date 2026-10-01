@@ -59,6 +59,38 @@ test('updateEntry', async (t) => {
     assert.deepEqual(cache['200'], { notFound: true, lastUpdated: 2000 });
   });
 
+  await t.test('keeps permanent notFound entries distinct', () => {
+    const cache = {};
+    assert.equal(
+      updateEntry(cache, 201, null, { notFound: true, permanent: true }, 2500),
+      true,
+    );
+    assert.deepEqual(cache['201'], {
+      notFound: true,
+      permanent: true,
+      lastUpdated: 2500,
+    });
+  });
+
+  await t.test('persists ScoreDB retry count and deadline', () => {
+    const cache = {};
+    assert.equal(
+      updateEntry(
+        cache,
+        202,
+        null,
+        { scoreDBFailureCount: 2, scoreDBRetryAfter: 4000 },
+        3000,
+      ),
+      true,
+    );
+    assert.deepEqual(cache['202'], {
+      scoreDBFailureCount: 2,
+      scoreDBRetryAfter: 4000,
+      lastUpdated: 3000,
+    });
+  });
+
   await t.test('returns false when name is unchanged', () => {
     const cache = {
       100: { currentName: 'Alice', previousNames: [], lastUpdated: 1000 },
@@ -149,6 +181,18 @@ test('evictExpired', async (t) => {
       1: { currentName: 'Bob', previousNames: [], lastUpdated: now },
     };
     assert.equal(evictExpired(cache, now), 0);
+  });
+
+  await t.test('preserves permanent notFound entries', () => {
+    const cache = {
+      4: {
+        notFound: true,
+        permanent: true,
+        lastUpdated: now - NOT_FOUND_TTL_MS * 10,
+      },
+    };
+    assert.equal(evictExpired(cache, now), 0);
+    assert.ok(cache['4']);
   });
 
   await t.test('handles empty cache', () => {

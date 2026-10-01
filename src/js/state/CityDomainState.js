@@ -88,6 +88,7 @@ function resetCityState(target = City) {
 class BonusState {
   constructor({ logger: log = logger } = {}) {
     this.bonusHTML = '';
+    this.limitedBonuses = [];
     this.aid = 0;
     this.spoils = 0;
     this.diplomatic = 0;
@@ -122,6 +123,7 @@ class BonusState {
 
   setSummary({
     bonusHTML = '',
+    limitedBonuses = [],
     aid = 0,
     spoils = 0,
     diplomatic = 0,
@@ -129,6 +131,7 @@ class BonusState {
     dailyForgePoints = null,
   } = {}) {
     this.bonusHTML = bonusHTML || '';
+    this.limitedBonuses = Array.isArray(limitedBonuses) ? limitedBonuses : [];
     this.aid = Number(aid) || 0;
     this.spoils = Number(spoils) || 0;
     this.diplomatic = Number(diplomatic) || 0;
@@ -136,6 +139,10 @@ class BonusState {
     this.dailyForgePoints =
       dailyForgePoints != null ? Number(dailyForgePoints) : null;
     this.notify('bonus');
+  }
+
+  getLimitedBonuses() {
+    return this.limitedBonuses;
   }
 
   getBonusHTML() {

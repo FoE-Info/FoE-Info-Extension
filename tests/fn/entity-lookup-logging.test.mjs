@@ -9,7 +9,7 @@ import logger from '../../src/js/utils/logger.js';
 function setup(t, defs, metadata = null) {
   const store = new MetadataStore();
   const source = fs.readFileSync(
-    new URL('../../src/js/fn/helper.js', import.meta.url),
+    new URL('../../src/js/fn/helper.mjs', import.meta.url),
     'utf8',
   );
   // Execute the actual contiguous lookup functions, excluding unrelated browser UI imports.

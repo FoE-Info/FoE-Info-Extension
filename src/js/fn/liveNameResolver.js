@@ -10,7 +10,7 @@ try {
 
 let helper = null;
 try {
-  helper = require('./helper.js');
+  helper = require('./helper.mjs');
 } catch {}
 
 function resolveLiveName(id) {

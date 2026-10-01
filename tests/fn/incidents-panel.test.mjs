@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '../../');
 
 test('Incidents Panel - Popover removal and collapsible panel preservation', async (t) => {
-  const helperPath = path.join(ROOT_DIR, 'src/js/fn/helper.js');
+  const helperPath = path.join(ROOT_DIR, 'src/js/fn/helper.mjs');
   const helperSource = fs.readFileSync(helperPath, 'utf8');
   const incidentsPanelPath = path.join(ROOT_DIR, 'src/js/ui/incidentsPanel.js');
   const incidentsPanelSource = fs.readFileSync(incidentsPanelPath, 'utf8');

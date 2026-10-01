@@ -10,10 +10,7 @@
 let debugEnabled = false;
 const subscribers = new Set();
 
-// Only auto-enable debug in real debug builds (webpack-defined), never in
-// Node/test runs where a mock window may trigger initDebugState.
-const DEBUG_DEFAULT_ON =
-  typeof DEBUG_BUILD !== 'undefined' && DEBUG_BUILD === true;
+let debugRevision = 0;
 
 function getBrowserStorage() {
   if (typeof chrome !== 'undefined' && chrome?.storage?.local) {
@@ -60,6 +57,7 @@ function setDebugEnabled(val, { persist = true } = {}) {
   const next = Boolean(val);
   if (debugEnabled === next) return debugEnabled;
   debugEnabled = next;
+  debugRevision++;
 
   if (persist) {
     const storage = getBrowserStorage();
@@ -119,6 +117,10 @@ function createLogger(moduleName = '') {
 
 async function initDebugState() {
   const storage = getBrowserStorage();
+  const revision = debugRevision;
+  const isPanelStartup =
+    typeof window !== 'undefined' &&
+    window.location?.pathname === '/panel.html';
   if (storage?.get) {
     try {
       const res = await storage.get('debugEnabled');
@@ -126,9 +128,16 @@ async function initDebugState() {
         res && typeof res.debugEnabled === 'boolean' ?
           res.debugEnabled
         : undefined;
-      // Persisted user choice wins; otherwise default on for beta/dev only.
-      const initial = stored !== undefined ? stored : DEBUG_DEFAULT_ON;
-      setDebugEnabled(initial, { persist: false });
+      // Every new panel session starts in standard mode. Other contexts read
+      // the shared session value so an explicit icon toggle reaches them.
+      if (revision === debugRevision) {
+        setDebugEnabled(isPanelStartup ? false : stored === true, {
+          persist: false,
+        });
+        if (isPanelStartup && stored !== false && storage.set) {
+          await storage.set({ debugEnabled: false });
+        }
+      }
     } catch {}
   }
 
@@ -157,6 +166,7 @@ if (typeof window !== 'undefined' || typeof self !== 'undefined') {
 
 function _resetForTesting() {
   debugEnabled = false;
+  debugRevision = 0;
   subscribers.clear();
 }
 

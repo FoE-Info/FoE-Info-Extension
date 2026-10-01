@@ -84,6 +84,12 @@ function hydrateLookupDefinitions(key, value, deps = {}, metadataStore = null) {
       }
       return true;
 
+    case 'deletedPlayerIds':
+      if (deps.deletedPlayerIds) {
+        Object.assign(deps.deletedPlayerIds, value);
+      }
+      return true;
+
     default:
       return false;
   }

@@ -3,7 +3,7 @@
  * or utils/storage.js; only utils/logger.js).
  *
  * Owns the pure network-intake policy so entry points that only need the URL
- * predicate (e.g. src/js/devtools.js) do not pull the dispatcher dependency
+ * predicate (e.g. src/js/devtools.mjs) do not pull the dispatcher dependency
  * subgraph. src/js/protocol/networkListener.js re-exports these symbols so
  * existing consumer and test import paths keep working unchanged.
  */

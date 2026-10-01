@@ -107,3 +107,89 @@ test('global settings', async (t) => {
     },
   );
 });
+
+test('partial world saves preserve webhooks after a context reload', async (t) => {
+  const storage = createStorage();
+  const webhook = 'https://discord.com/api/webhooks/fixture/saved';
+  storage.store['world:en7:webhooks'] = { discordTargetURL: webhook };
+  install(storage);
+  t.after(uninstall);
+  const payloads = [];
+  const originalSet = storage.local.set;
+  storage.local.set = (payload) => {
+    payloads.push(payload);
+    return originalSet(payload);
+  };
+
+  await worldStorage.saveWorldSettings('en7', {
+    showOptions: { showBattlegroundChanges: true },
+  });
+  assert.equal(storage.store['world:en7:webhooks'].discordTargetURL, webhook);
+  assert.equal(storage.store['world:en7'].webhooks.discordTargetURL, webhook);
+  const worldWrite = payloads.find((payload) => payload['world:en7']);
+  assert.equal(Object.hasOwn(worldWrite, 'world:en7:webhooks'), false);
+  _clearMemoryCacheForTesting();
+  assert.equal(
+    (await worldStorage.getWorldSettings('en7')).webhooks.discordTargetURL,
+    webhook,
+  );
+});
+
+test("a stale context cannot overwrite another context's webhook during a partial save", async (t) => {
+  const storage = createStorage();
+  install(storage);
+  t.after(uninstall);
+  await worldStorage.getWorldSettings('en7');
+  storage.store['world:en7:webhooks'] = {
+    discordTargetURL: 'https://discord.com/api/webhooks/fixture/newer',
+  };
+  await worldStorage.saveWorldSettings('en7', {
+    collapses: { collapseBattleground: false },
+  });
+  assert.equal(
+    storage.store['world:en7:webhooks'].discordTargetURL,
+    'https://discord.com/api/webhooks/fixture/newer',
+  );
+  assert.equal(
+    storage.store['world:en7'].webhooks.discordTargetURL,
+    'https://discord.com/api/webhooks/fixture/newer',
+  );
+});
+
+test('a failed world-settings read prevents a destructive partial save', async (t) => {
+  const storage = createStorage();
+  install(storage);
+  t.after(uninstall);
+  storage.local.get = async () => {
+    throw new Error('fixture read failure');
+  };
+  await assert.rejects(
+    worldStorage.saveWorldSettings('en7', {
+      showOptions: { showStats: false },
+    }),
+    /fixture read failure/,
+  );
+  assert.equal(Object.keys(storage.store).length, 0);
+});
+
+test('overlapping partial saves preserve both fields in storage and the warm cache', async (t) => {
+  const storage = createStorage();
+  install(storage);
+  t.after(uninstall);
+  await worldStorage.getWorldSettings('en7');
+  await Promise.all([
+    worldStorage.saveWorldSettings('en7', {
+      showOptions: { showStats: false },
+    }),
+    worldStorage.saveWorldSettings('en7', {
+      collapses: { collapseBattleground: false },
+    }),
+  ]);
+  const warm = await worldStorage.getWorldSettings('en7');
+  assert.equal(warm.showOptions.showStats, false);
+  assert.equal(warm.collapses.collapseBattleground, false);
+  _clearMemoryCacheForTesting();
+  const cold = await worldStorage.getWorldSettings('en7');
+  assert.equal(cold.showOptions.showStats, false);
+  assert.equal(cold.collapses.collapseBattleground, false);
+});
