@@ -278,29 +278,32 @@ test('networkListener re-exports the leaf policy symbols (same identity)', () =>
 
 test('devtools.js imports intake policy from the leaf module, never from networkListener.js', () => {
   // Regression guard: a static import of protocol/networkListener.js back
-  // into src/js/devtools.js silently re-inflates the devtools page bundle
+  // into src/js/devtools.mjs silently re-inflates the devtools page bundle
   // with the whole message-dispatcher subgraph. Fails on ANY static import
   // or require of networkListener in the devtools entry point.
   const root = path.resolve(
     path.dirname(fileURLToPath(import.meta.url)),
     '../..',
   );
-  const source = fs.readFileSync(path.join(root, 'src/js/devtools.js'), 'utf8');
+  const source = fs.readFileSync(
+    path.join(root, 'src/js/devtools.mjs'),
+    'utf8',
+  );
   assert.equal(
     /from\s+['"].*protocol\/networkListener(\.js)?['"]/.test(source),
     false,
-    'src/js/devtools.js must not import from protocol/networkListener.js ' +
+    'src/js/devtools.mjs must not import from protocol/networkListener.js ' +
       '(devtools bundle bloat: pulls the dispatcher graph)',
   );
   assert.equal(
     /require\(.*protocol\/networkListener/.test(source),
     false,
-    'src/js/devtools.js must not require protocol/networkListener.js',
+    'src/js/devtools.mjs must not require protocol/networkListener.js',
   );
   assert.match(
     source,
     /from\s+['"].*utils\/intakePolicy(\.js)?['"]/,
-    'src/js/devtools.js must import evaluateRequestOrigin from the leaf module',
+    'src/js/devtools.mjs must import evaluateRequestOrigin from the leaf module',
   );
 });
 

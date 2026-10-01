@@ -1,3 +1,4 @@
+const { htmlToText } = require('../utils/html.mjs');
 // FoE-Info API - demo SS
 // https://script.google.com/macros/s/AKfycbw6QTefSBnuMF40Q8MpLcmCV8aB9dPNJnJzyjFBiZvBJaIlcE24JLkj/exec
 
@@ -11,7 +12,7 @@ let MyInfo = { name: '' };
 let url = {};
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    const state = require('../vars/state.js');
+    const state = require('../vars/state.mjs');
     EpocTime = state.EpocTime;
     GameOrigin = state.GameOrigin;
     GBGdata = state.GBGdata;
@@ -92,15 +93,7 @@ function postToDiscord(text) {
 
 function sanitizeDiscordText(html) {
   if (!html || typeof html !== 'string') return '';
-  return html
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
+  return htmlToText(html)
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
@@ -185,7 +178,7 @@ function postGBGtoSS() {
   oReq.onreadystatechange = function () {
     if (oReq.readyState == XMLHttpRequest.DONE) {
       // alert(oReq.responseText);
-      console.debug(GameOrigin, oReq.responseText);
+      logger?.debug(GameOrigin, oReq.responseText);
     }
   };
   oReq.send(JSON.stringify(reqData));

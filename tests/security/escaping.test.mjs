@@ -37,7 +37,7 @@ describe('escaping core (utils/escape.js)', () => {
     assert.equal(escapeHTML(-1.5), '-1.5');
     assert.equal(escapeHTML({ a: 1 }), '[object Object]');
     assert.equal(escapeHTML([1, 2]), '1,2');
-    assert.equal(escapeHTMLAttribute(10 < 20 ? '<' : '>'), '&lt;');
+    assert.equal(escapeHTMLAttribute('<'), '&lt;');
     assert.equal(toDisplayString(42), '42');
     assert.equal(toDisplayString({ a: 1 }), '[object Object]');
   });

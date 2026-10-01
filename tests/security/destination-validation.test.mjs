@@ -255,9 +255,10 @@ describe('destinationValidator — validateDestinationUrl (combined)', () => {
 describe('destinationValidator — policy invariants', () => {
   test('supported Discord hosts match manifest host_permissions', () => {
     // Manifest: https://discordapp.com/api/webhooks/*, https://discord.com/api/webhooks/*
-    assert.ok(DISCORD_WEBHOOK_HOSTS.includes('discord.com'));
-    assert.ok(DISCORD_WEBHOOK_HOSTS.includes('discordapp.com'));
-    assert.strictEqual(DISCORD_WEBHOOK_HOSTS.length, 2);
+    assert.deepEqual([...DISCORD_WEBHOOK_HOSTS].sort(), [
+      'discord.com',
+      'discordapp.com',
+    ]);
   });
 
   test('supported Sheets host matches manifest host_permissions', () => {
