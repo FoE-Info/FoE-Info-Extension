@@ -158,7 +158,7 @@ const changelogPath = resolve(ROOT, 'CHANGELOG.md');
 if (existsSync(changelogPath)) {
   const changelog = readFileSync(changelogPath, 'utf8');
   // Escape the dot so semver dots don't span unintended characters.
-  const versionPattern = version.replace(/\./g, '\\.');
+  const versionPattern = RegExp.escape(version);
   const sectionMatch = changelog.match(
     new RegExp(`## \\[${versionPattern}\\][^\n]*\n([\\s\\S]*?)(?=\\n## \\[|$)`),
   );

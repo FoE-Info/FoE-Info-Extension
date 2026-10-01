@@ -28,8 +28,14 @@ const git = (cwd, ...args) =>
  * even though the release tag exists. A describe-based check passes silently
  * there, which is the bug this fixture pins.
  */
+const tempDirs = [];
+test.after(() => {
+  for (const dir of tempDirs) fs.rmSync(dir, { recursive: true, force: true });
+});
+
 function fixture({ version, tagVersion, extraCommits = 0, orphanTag = false }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'version-check-'));
+  tempDirs.push(dir);
   const writePkg = (v) =>
     fs.writeFileSync(
       path.join(dir, 'package.json'),
