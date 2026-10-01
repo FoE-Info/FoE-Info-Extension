@@ -15,7 +15,7 @@ const rewardCategoriesSrc = readFileSync(
   'utf8',
 );
 const rewardRendererSrc = readFileSync(
-  fileURLToPath(new URL('../../src/js/ui/RewardRenderer.js', import.meta.url)),
+  fileURLToPath(new URL('../../src/js/ui/RewardRenderer.mjs', import.meta.url)),
   'utf8',
 );
 const cityProductionSrc = readFileSync(
@@ -33,6 +33,13 @@ test('Reward routing — single-source category map', async (t) => {
   await t.test('maps only the explicit sources to their categories', () => {
     assert.deepEqual(SOURCE_BUCKETS, {
       greatBuilding: 'rewardsGeneric',
+      battleground: 'rewardsGeneric',
+      expedition: 'rewardsGeneric',
+      pvpArena: 'rewardsGeneric',
+      antiquesShop: 'rewardsGeneric',
+      antiquesSales: 'rewardsGeneric',
+      himejiCastle: 'rewardsGeneric',
+      spaceCarrier: 'rewardsGeneric',
       quest: 'rewardsCity',
       cityProductionArmy: 'rewardsArmy',
       cityProductionCity: 'rewardsCity',
@@ -42,6 +49,7 @@ test('Reward routing — single-source category map', async (t) => {
   await t.test('resolves known sources and rejects unknown ones', () => {
     assert.equal(resolveBucketKey('greatBuilding'), 'rewardsGeneric');
     assert.equal(resolveBucketKey('quest'), 'rewardsCity');
+    assert.equal(resolveBucketKey('expedition'), 'rewardsGeneric');
     assert.equal(resolveBucketKey('cityProductionArmy'), 'rewardsArmy');
     assert.equal(resolveBucketKey('cityProductionCity'), 'rewardsCity');
     assert.equal(resolveBucketKey('guildExpedition'), null);
@@ -275,4 +283,120 @@ test('CityProductionService publishes rewards to the shared RewardState', () => 
   assert.doesNotMatch(cityProductionSrc, /showReward\(/);
   assert.doesNotMatch(cityProductionSrc, /rewardsArmy\[/);
   assert.doesNotMatch(cityProductionSrc, /rewardsCity\[/);
+});
+
+test('recurring quests count each cycle but never duplicate its completed update', () => {
+  const entries = [];
+  const service = new QuestService({
+    rewardState: { setReward: (entry) => entries.push(entry) },
+  });
+  const random = { type: '', name: 'Random Reward', flags: ['random'] };
+  const good = {
+    type: 'good',
+    subType: 'dark_energy_battery',
+    amount: 5,
+    name: '5 Dark Energy Batteries',
+  };
+  const update = (state, rewards) =>
+    service.getUpdates({
+      responseData: [
+        { id: 1, type: 'generic', state, genericRewards: rewards },
+      ],
+    });
+  update('accepted', [random]);
+  update('collectReward', [good]);
+  update('collectReward', [good]);
+  assert.equal(entries.length, 1);
+  update('accepted', [random]);
+  const fp = {
+    type: 'resource',
+    subType: 'strategy_points',
+    amount: 10,
+    name: '10 Forge Points',
+  };
+  update('collectReward', [fp]);
+  update('collectReward', [fp]);
+  assert.equal(entries.length, 2);
+  assert.deepEqual(
+    entries.map((entry) => entry.payload),
+    [good, fp],
+  );
+  assert.deepEqual(
+    entries.map((x) => x.source),
+    ['quest', 'quest'],
+  );
+});
+test('empty or unresolved completion rewards do not block a later resolved payout', () => {
+  const entries = [];
+  const service = new QuestService({
+    rewardState: { setReward: (entry) => entries.push(entry) },
+  });
+  for (const genericRewards of [
+    [],
+    [{ type: '', name: 'Random Reward' }],
+    [{ type: 'resource', subType: 'supplies', amount: 500 }],
+  ])
+    service.getUpdates({
+      responseData: [{ id: 1, state: 'collectReward', genericRewards }],
+    });
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].payload.subType, 'supplies');
+});
+
+test('captured EN7 recurring goods rewards publish once per completed cycle', () => {
+  const packet = JSON.parse(
+    readFileSync(
+      new URL(
+        '../fixtures/rpc/live/recurring-quest-rewards.json',
+        import.meta.url,
+      ),
+      'utf8',
+    ),
+  );
+  const calls = [];
+  const service = new QuestService({
+    rewardState: { setReward: (entry) => calls.push(entry) },
+  });
+  service.getUpdates(packet);
+  service.getUpdates(packet);
+  assert.equal(calls.length, 2);
+  assert.deepEqual(
+    calls.map((entry) => [
+      entry.source,
+      entry.payload.subType,
+      entry.payload.amount,
+    ]),
+    [
+      ['quest', 'dark_energy_battery', 5],
+      ['quest', 'deep_space_data', 5],
+    ],
+  );
+});
+
+test('captured repeated quest IDs award different loot on successive cycles', () => {
+  const sequence = JSON.parse(
+    readFileSync(
+      new URL(
+        '../fixtures/rpc/live/recurring-quest-cycles.json',
+        import.meta.url,
+      ),
+      'utf8',
+    ),
+  );
+  const entries = [];
+  const service = new QuestService({
+    suppressStartupQuests: true,
+    rewardState: { setReward: (entry) => entries.push(entry) },
+  });
+  for (const packet of sequence) service.getUpdates(packet);
+  assert.deepEqual(
+    entries.map((entry) => [entry.payload.name, entry.payload.amount]),
+    [
+      ['5 Dark Energy Batteries', 5],
+      ['5 Deep Space Data', 5],
+      ['177,300 Coins', 177300],
+      ['5 Silver Crystals', 5],
+      ['560,400 Coins', 560400],
+    ],
+  );
 });

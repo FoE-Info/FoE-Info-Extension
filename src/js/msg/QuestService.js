@@ -13,6 +13,7 @@ const { rewardState } = require('../state/RewardState.js');
 const COMPLETED_QUEST_STATES = new Set([
   'fulfilled',
   'collect',
+  'collectReward',
   'closed',
   'completed',
 ]);
@@ -31,7 +32,11 @@ class Quest {
   }
 
   isFulfilled() {
-    return this.state === 'fulfilled' || this.state === 'collect';
+    return (
+      this.state === 'fulfilled' ||
+      this.state === 'collect' ||
+      this.state === 'collectReward'
+    );
   }
 
   isActive() {
@@ -85,7 +90,7 @@ class QuestService {
     if (typeof this.showRewards === 'boolean') return this.showRewards;
     if (typeof __webpack_require__ !== 'undefined') {
       try {
-        const options = require('../state/showOptions.js');
+        const options = require('../state/showOptions.mjs');
         const value = options?.showOptions?.showRewards ?? options?.showRewards;
         if (typeof value === 'boolean') return value;
       } catch {
@@ -103,9 +108,18 @@ class QuestService {
 
     for (const quest of this.quests.values()) {
       if (!quest.isCompleted() || this.rewardedQuestIds.has(quest.id)) continue;
+      const rewards = quest
+        .getRewards()
+        .filter(
+          (reward) =>
+            reward &&
+            typeof reward === 'object' &&
+            typeof reward.type === 'string' &&
+            reward.type.length > 0,
+        );
+      if (!rewards.length) continue;
       this.rewardedQuestIds.add(quest.id);
-      for (const reward of quest.getRewards()) {
-        if (!reward || typeof reward !== 'object') continue;
+      for (const reward of rewards) {
         this.rewardState.setReward({ source: 'quest', payload: reward });
       }
     }
@@ -124,6 +138,9 @@ class QuestService {
     for (const q of rawList) {
       const quest = new Quest(q);
       this.quests.set(quest.id, quest);
+      // A recurring quest ID can represent many cycles. An active cycle resets
+      // the prior completion marker; duplicate completed updates keep it.
+      if (!quest.isCompleted()) this.rewardedQuestIds.delete(quest.id);
       if (isInitialBatch && quest.isCompleted()) {
         this.rewardedQuestIds.add(quest.id);
       }

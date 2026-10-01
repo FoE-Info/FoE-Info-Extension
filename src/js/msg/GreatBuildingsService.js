@@ -7,6 +7,7 @@ try {
 
 const { calculateArcReward } = require('../calc/GreatBuildingCalculator.js');
 const GreatBuildingRegistry = require('../state/GreatBuildingRegistry.js');
+const { inventoryService } = require('./InventoryService.js');
 const {
   greatBuildingsState: defaultGreatBuildingsState,
 } = require('../state/GreatBuildingDomainState.js');
@@ -15,6 +16,7 @@ const { getContributions } = require('./InvestedService.js');
 const { messageDispatcher } = require('../protocol/MessageDispatcher.js');
 const serviceDom = {
   findCityRewardsContainer: () => null,
+  setCurrentView: () => {},
 };
 
 function configurePresentation(callbacks = {}) {
@@ -59,15 +61,15 @@ let state = defaultState;
 
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    element = require('../fn/AddElement.js');
-    collapse = require('../fn/collapse.js');
-    copy = require('../fn/copy.js');
-    helper = require('../fn/helper.js');
-    const showOpt = require('../vars/showOptions.js');
+    element = require('../fn/AddElement.mjs');
+    collapse = require('../fn/collapse.mjs');
+    copy = require('../fn/copy.mjs');
+    helper = require('../fn/helper.mjs');
+    const showOpt = require('../vars/showOptions.mjs');
     showOptions = showOpt.showOptions || showOpt;
     const startup = require('./StartupService.js');
     City = startup.City || {};
-    state = require('../vars/state.js');
+    state = require('../vars/state.mjs');
   } catch {}
 }
 
@@ -212,6 +214,11 @@ function syncRankingPayload(
     }
   }
 
+  // Live response fields take precedence over the registry's city snapshot.
+  if (msg?.responseData && !Array.isArray(msg.responseData)) {
+    GbDonationService.syncGbSelected(target, msg.responseData);
+  }
+
   if (
     (!target.total || target.total === 0) &&
     target.cityentity_id &&
@@ -232,7 +239,11 @@ function handleNewReward(msg) {
 function getAvailablePackageForgePoints(msg) {
   const data = msg?.responseData ?? msg;
   const raw = Array.isArray(data) ? data[0] : data;
-  availablePackageForgePoints = Number(raw) || 0;
+  if (typeof raw !== 'number' && typeof raw !== 'string')
+    return availablePackageForgePoints;
+  availablePackageForgePoints = inventoryService
+    .setTotalForgePoints(raw)
+    .toNumber();
   return availablePackageForgePoints;
 }
 
@@ -249,7 +260,7 @@ function fCheckOutput() {
 function setCurrentPercent(percent) {
   if (percent) currentPercent = percent;
   else currentPercent = state?.donationPercent || 190;
-  console.debug(percent);
+  logger?.debug('Donation percentage requested:', percent);
 }
 
 function extractRankingData(msg, context) {
@@ -350,16 +361,9 @@ function createGreatBuildingsService({
       GbDonationService.extractRankingLevel(msg, data, context);
     localSyncRankingPayload(msg, rankingParams, extractedLevel);
 
-    if (
-      (!GBselected.current || GBselected.current === 0) &&
-      Array.isArray(rankings)
-    ) {
-      const investedSum = (rankings || []).reduce(
-        (sum, r) => sum + (Number(r?.forge_points) || 0),
-        0,
-      );
-      if (investedSum > 0) GBselected.current = investedSum;
-    }
+    // A construction ranking can change while the city/registry snapshot is
+    // still old. Reconcile it before publishing any of the three GB cards.
+    GbDonationService.updateContributionProgress(GBselected, rankings);
 
     if (!GBselected.max_level || GBselected.max_level === 0) {
       GBselected.max_level = (GBselected.level || 0) + 1;
@@ -483,6 +487,12 @@ function createGreatBuildingsService({
     );
 
     dispatcher.register('GreatBuildingsService', 'getContributions', (msg) => {
+      if (
+        Array.isArray(msg?.responseData) ||
+        Array.isArray(msg?.responseData?.contributions)
+      ) {
+        serviceDom.setCurrentView('OWN_CITY');
+      }
       return (customGetContributions || getContributions)(msg);
     });
 

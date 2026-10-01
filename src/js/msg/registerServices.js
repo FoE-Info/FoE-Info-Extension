@@ -16,6 +16,7 @@ const { outpostService } = require('./OutpostService.js');
 const { autoAidService } = require('./AutoAidService.js');
 const { friendsTavernService } = require('./FriendsTavernService.js');
 const { treasuryService } = require('./TreasuryService.js');
+const { rewardService } = require('./RewardService.js');
 const { questService } = require('./QuestService.js');
 const { itemExchangeService } = require('./ItemExchangeService.js');
 const { timeService } = require('./TimeService.js');
@@ -54,6 +55,7 @@ function registerAllServices(dispatcher = messageDispatcher, options = {}) {
   if (friendsTavernService?.register)
     friendsTavernService.register(dispatcher, options);
   if (treasuryService?.register) treasuryService.register(dispatcher, options);
+  if (rewardService?.register) rewardService.register(dispatcher, options);
   if (questService?.register) questService.register(dispatcher, options);
   if (itemExchangeService?.register)
     itemExchangeService.register(dispatcher, options);

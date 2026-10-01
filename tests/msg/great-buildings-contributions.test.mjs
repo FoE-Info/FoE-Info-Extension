@@ -227,3 +227,28 @@ test('Great Buildings Contributions Protocol & Calculation Suite', async (t) => 
     },
   );
 });
+
+test('opening contributions resets stale expedition visibility before rendering', async () => {
+  const module = await import('../../src/js/msg/GreatBuildingsService.js');
+  const views = [];
+  module.configurePresentation({ setCurrentView: (view) => views.push(view) });
+  try {
+    const dispatcher = new MessageDispatcher();
+    greatBuildingsService.register(dispatcher, {
+      getContributions: () => {
+        assert.deepEqual(views, ['OWN_CITY']);
+        return {};
+      },
+    });
+    await dispatcher.dispatchBatch([
+      {
+        requestClass: 'GreatBuildingsService',
+        requestMethod: 'getContributions',
+        responseData: [],
+      },
+    ]);
+    assert.deepEqual(views, ['OWN_CITY']);
+  } finally {
+    module.configurePresentation({ setCurrentView: () => {} });
+  }
+});

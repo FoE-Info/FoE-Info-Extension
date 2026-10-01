@@ -7,6 +7,9 @@
  */
 
 const { calculateSafeSpots } = require('../calc/GreatBuildingCalculator.js');
+const BigNumber = require('bignumber.js');
+const { rewardState } = require('../state/RewardState.js');
+const { parseGreatBuildingReward } = require('./gbRewardPayloads.js');
 const { gbDonationState } = require('../state/GreatBuildingDomainState.js');
 const serviceDom = {
   findCityRewardsContainer: () => null,
@@ -21,7 +24,7 @@ function configurePresentation(callbacks = {}) {
 let showOptions = {};
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    const showOpt = require('../vars/showOptions.js');
+    const showOpt = require('../vars/showOptions.mjs');
     showOptions = showOpt.showOptions || showOpt;
   } catch {
     // showOptions not available in all build configurations; defaults apply.
@@ -210,29 +213,23 @@ function updateContributionProgress(
   if (!gbSelected || typeof gbSelected !== 'object') return 0;
 
   if (Array.isArray(rankings) && rankings.length > 0) {
-    const rankingsSum = rankings.reduce(
-      (sum, r) => sum + (Number(r?.forge_points) || 0),
-      0,
-    );
+    const rankingsSum = rankings
+      .reduce((sum, r) => sum.plus(r?.forge_points || 0), new BigNumber(0))
+      .integerValue(BigNumber.ROUND_FLOOR)
+      .toNumber();
 
-    const isOwnerBuilding =
-      (viewerPlayerId &&
-        (gbSelected.player === viewerPlayerId ||
-          gbSelected.player_id === viewerPlayerId)) ||
-      (rankingParams?.playerId &&
-        (gbSelected.player === rankingParams.playerId ||
-          gbSelected.player_id === rankingParams.playerId));
-
-    const hasSelfRow = rankings.some(
+    // The owner's unranked row makes this a complete progress snapshot.
+    // A ranked viewer row is only a donor and does not include owner FP.
+    const ownerId = gbSelected.player || gbSelected.player_id;
+    const hasOwnerRow = rankings.some(
       (r) =>
-        r?.player?.is_self === true ||
-        (viewerPlayerId && r?.player?.player_id === viewerPlayerId),
+        !(r?.rank > 0) &&
+        ((ownerId && r?.player?.player_id === ownerId) ||
+          (r?.player?.is_self === true &&
+            (!viewerPlayerId || viewerPlayerId === ownerId))),
     );
 
-    if (
-      rankingsSum > 0 &&
-      (isOwnerBuilding || hasSelfRow || rankingsSum > (gbSelected.current || 0))
-    ) {
+    if (rankingsSum > 0 && (hasOwnerRow || !gbSelected.current)) {
       gbSelected.current = rankingsSum;
     } else if (rankingParams?.contribution) {
       gbSelected.current =
@@ -251,13 +248,28 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
     return { success: false, reason: 'option_disabled' };
   }
 
+  const payout = msg?.responseData || msg;
+  if (
+    payout?.__class__ === 'GreatBuildingReward' ||
+    (payout?.strategy_point_amount !== undefined && payout?.blueprints)
+  ) {
+    const rewards = parseGreatBuildingReward(payout);
+    for (const payload of rewards) {
+      (deps.rewardState || rewardState).setReward({
+        source: 'greatBuilding',
+        payload,
+      });
+    }
+    return { success: true, rewardCount: rewards.length };
+  }
+
   let container = cityrewards;
   if (!container) {
     container = serviceDom.findCityRewardsContainer();
   }
   if (!container && typeof __webpack_require__ !== 'undefined') {
     try {
-      const statePkg = require('../state/state.js');
+      const statePkg = require('../state/state.mjs');
       container = statePkg.cityrewards;
     } catch {
       // state.js unavailable in some build configurations; falls through
@@ -351,7 +363,7 @@ function handleNewReward(msg, showOptions = {}, cityrewards = null, deps = {}) {
         (deps.state.rewardsGeneric[formattedName] || 0) + amount;
     } else if (typeof __webpack_require__ !== 'undefined') {
       try {
-        const statePkg = require('../state/state.js');
+        const statePkg = require('../state/state.mjs');
         if (statePkg && statePkg.rewardsGeneric) {
           statePkg.rewardsGeneric[formattedName] =
             (statePkg.rewardsGeneric[formattedName] || 0) + amount;
@@ -394,7 +406,7 @@ function register(dispatcher, options = {}) {
     }
     if (!container && typeof __webpack_require__ !== 'undefined') {
       try {
-        const statePkg = require('../state/state.js');
+        const statePkg = require('../state/state.mjs');
         container = statePkg.cityrewards;
       } catch {
         // state.js unavailable in some build configurations; falls through
