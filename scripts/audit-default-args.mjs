@@ -41,7 +41,7 @@
  *
  * It is blind to several real cases, and a clean result is not a proof of
  * safety:
- *   - Call sites reached through indirection the grep cannot follow: a function
+ *   - Call sites reached through indirection the local binding resolver cannot follow: a function
  *     passed as a value and invoked by another name.
  *   - Callers whose argument list is assembled at runtime or spread
  *     (`fn(...args)`), where the count cannot be read statically.
@@ -49,12 +49,19 @@
  *     which this does not resolve.
  *   - Changes to a default in a file the diff did not touch, for instance when
  *     a shared constant a default references is edited elsewhere.
+ * AST matching excludes declarations and unrelated imported/local receivers.
+ * Same-file calls, constructors, aliases and multiline arguments are included.
+ * Unknown receivers, spread arguments and unsupported syntax remain unresolved.
  * Those are stated so a future reader does not over-trust a passing run.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  defaultArgumentCalls,
+  defaultSignatures,
+} from './lib/default-argument-calls.mjs';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const AS_JSON = process.argv.includes('--json');
@@ -66,34 +73,6 @@ const BASE = (() => {
 })();
 
 const SCAN_EXT = /\.(js|mjs|cjs|ts|jsx|tsx)$/;
-/** Keywords whose `(` is never a function declaration we care about. */
-const NOT_A_DECL = new Set([
-  'if',
-  'for',
-  'while',
-  'switch',
-  'catch',
-  'return',
-  'typeof',
-  'await',
-  'new',
-  'delete',
-  'void',
-  'in',
-  'of',
-  'do',
-  'else',
-  'try',
-  'finally',
-  'case',
-  'throw',
-  'yield',
-  'super',
-  'this',
-]);
-const IDENT = /[A-Za-z_$][\w$]*/y;
-const IDENT_CHAR = /[A-Za-z0-9_$]/;
-
 const git = (args, { allowFail = false } = {}) => {
   try {
     return execFileSync('git', args, {
@@ -106,170 +85,6 @@ const git = (args, { allowFail = false } = {}) => {
     throw e;
   }
 };
-
-// --- Lexing helpers ---------------------------------------------------------
-
-/** Given the index of an opening bracket, return the index of its match, or -1. */
-function matchBracket(src, open) {
-  const pairs = { '(': ')', '[': ']', '{': '}' };
-  const close = pairs[src[open]];
-  if (!close) return -1;
-  let depth = 0;
-  for (let i = open; i < src.length; i++) {
-    const c = src[i];
-    if (c === '"' || c === "'" || c === '`') {
-      i = skipString(src, i);
-      if (i === -1) return -1;
-      continue;
-    }
-    if (c === '/' && src[i + 1] === '/') {
-      const nl = src.indexOf('\n', i);
-      i = nl === -1 ? src.length : nl;
-      continue;
-    }
-    if (c === '/' && src[i + 1] === '*') {
-      const e = src.indexOf('*/', i + 2);
-      if (e === -1) return -1;
-      i = e + 1;
-      continue;
-    }
-    if (c === src[open]) depth++;
-    else if (c === close) {
-      depth--;
-      if (depth === 0) return i;
-    }
-  }
-  return -1;
-}
-
-/** Index of the closing quote of the string starting at `i`, or -1. */
-function skipString(src, i) {
-  const quote = src[i];
-  let j = i + 1;
-  while (j < src.length) {
-    if (src[j] === '\\') {
-      j += 2;
-      continue;
-    }
-    if (src[j] === quote) return j;
-    if (quote !== '`' && src[j] === '\n') return -1; // unterminated
-    j++;
-  }
-  return -1;
-}
-
-/** Split a parameter/argument list on top-level commas. */
-function splitTopLevel(body) {
-  const parts = [];
-  let depth = 0;
-  let start = 0;
-  for (let i = 0; i < body.length; i++) {
-    const c = body[i];
-    if (c === '"' || c === "'" || c === '`') {
-      const e = skipString(body, i);
-      if (e !== -1) {
-        i = e;
-        continue;
-      }
-    }
-    if (c === '(' || c === '[' || c === '{') depth++;
-    else if (c === ')' || c === ']' || c === '}') depth--;
-    else if (c === ',' && depth === 0) {
-      parts.push(body.slice(start, i));
-      start = i + 1;
-    }
-  }
-  parts.push(body.slice(start));
-  return parts.map((p) => p.trim()).filter((p) => p.length > 0);
-}
-
-// --- Signature extraction ---------------------------------------------------
-
-/**
- * Map of function name -> { params: [{ text, hasDefault }], line }
- * Only declarations are collected: a `(` whose matching `)` is followed by
- * `{`, `=>`, or `async`. A call site is followed by something else, which is
- * what keeps every invocation in the file from being read as a declaration.
- */
-function signaturesIn(src) {
-  const found = new Map();
-  for (let i = 0; i < src.length; i++) {
-    if (src[i] !== '(') continue;
-
-    // Walk back over whitespace to the name.
-    let j = i - 1;
-    while (j >= 0 && /\s/.test(src[j])) j--;
-    if (j < 0 || !IDENT_CHAR.test(src[j])) continue;
-
-    // Read the identifier that ENDS at j. A sticky regex with lastIndex set to
-    // j matches forward from j, which yields the final character of the name
-    // rather than the name itself: `function fDemoAlpha(a, …)` was recorded as
-    // a function called `a`, so every call-site grep silently missed and the
-    // script reported a clean tree on a deliberately broken one.
-    const idMatch = src.slice(0, j + 1).match(/[A-Za-z_$][\w$]*$/);
-    if (!idMatch) continue;
-    const name = idMatch[0];
-    const nameStart = idMatch.index;
-
-    let before = nameStart - 1;
-    while (before >= 0 && /\s/.test(src[before])) before--;
-    let isFunctionKw = false;
-    if (before >= 7 && src.slice(before - 7, before + 1) === 'function') {
-      isFunctionKw = true;
-      before -= 8;
-      while (before >= 0 && /\s/.test(src[before])) before--;
-    }
-
-    if (NOT_A_DECL.has(name) && !isFunctionKw) continue;
-    if (name === 'function') continue;
-
-    const close = matchBracket(src, i);
-    if (close === -1) continue;
-
-    // Declaration test: what follows the parameter list decides.
-    let after = close + 1;
-    while (after < src.length && /\s/.test(src[after])) after++;
-    const follows = src.slice(after, after + 6);
-    const isArrow = follows.startsWith('=>');
-    const isBlock = src[after] === '{';
-    if (!isArrow && !isBlock) continue;
-    if (name === 'async' && !isArrow) continue;
-
-    const params = splitTopLevel(src.slice(i + 1, close)).map((p) => {
-      const [head, defaultExpr] = topLevelDefaultSplit(p);
-      return { text: p, name: head.trim(), defaultExpr: defaultExpr ?? null };
-    });
-
-    if (!found.has(name) || !isFunctionKw)
-      found.set(name, { params, line: lineOf(src, i) });
-  }
-  return found;
-}
-
-/** Split a parameter at its top-level `=` default marker. */
-function topLevelDefaultSplit(param) {
-  let depth = 0;
-  for (let i = 0; i < param.length; i++) {
-    const c = param[i];
-    if (c === '"' || c === "'" || c === '`') {
-      const e = skipString(param, i);
-      if (e !== -1) {
-        i = e;
-        continue;
-      }
-    }
-    if (c === '(' || c === '[' || c === '{') depth++;
-    else if (c === ')' || c === ']' || c === '}') depth--;
-    else if (c === '=' && depth === 0) {
-      if (param[i + 1] === '=' || param[i - 1] === '=' || param[i + 1] === '>')
-        continue;
-      return [param.slice(0, i), param.slice(i + 1)];
-    }
-  }
-  return [param, null];
-}
-
-const lineOf = (src, idx) => src.slice(0, idx).split('\n').length;
 
 // --- 1. Which files changed? -----------------------------------------------
 
@@ -320,13 +135,16 @@ for (const file of changedFiles) {
   const before = readAt(file, ref);
   if (before === null) continue;
   const afterPath = join(ROOT, file);
-  const after = existsSync(afterPath) ? readFileSync(afterPath, 'utf8') : '';
+  const after =
+    STAGED ? (readAt(file, '') ?? '')
+    : existsSync(afterPath) ? readFileSync(afterPath, 'utf8')
+    : '';
 
-  const beforeSigs = signaturesIn(before);
-  const afterSigs = signaturesIn(after);
+  const beforeSigs = defaultSignatures(before);
+  const afterSigs = defaultSignatures(after);
 
-  for (const [name, bSig] of beforeSigs) {
-    const aSig = afterSigs.get(name);
+  for (const [key, bSig] of beforeSigs) {
+    const aSig = afterSigs.get(key);
     if (!aSig) continue; // removed entirely — that is audit:callsites' job
     const width = Math.max(bSig.params.length, aSig.params.length);
     for (let i = 0; i < width; i++) {
@@ -337,7 +155,8 @@ for (const file of changedFiles) {
       if (bDefault === aDefault) continue;
       changedDefaults.push({
         file,
-        name,
+        name: bSig.name,
+        owner: bSig.owner,
         paramIndex: i,
         param: a?.text ?? b?.text ?? '?',
         before: bDefault,
@@ -355,40 +174,31 @@ for (const file of changedFiles) {
 const findings = [];
 let unresolved = 0;
 
+const callerFiles = git([
+  'ls-files',
+  '--cached',
+  '--others',
+  '--exclude-standard',
+])
+  .split('\n')
+  .filter((file) => SCAN_EXT.test(file) && existsSync(join(ROOT, file)));
 for (const change of changedDefaults) {
-  const hits = git(['grep', '-n', '-w', '-e', change.name], { allowFail: true })
-    .split('\n')
-    .filter(Boolean);
   const sites = [];
-  for (const hit of hits) {
-    const m = hit.match(/^(.+?):(\d+):(.*)$/);
-    if (!m) continue;
-    const [, file, lineNo, text] = m;
-    if (!SCAN_EXT.test(file)) continue;
-    if (file === change.file) continue; // the definition site itself
-    const open = text.indexOf(`${change.name}(`);
-    if (open === -1) continue; // not a call, just a mention
-    const paren = text.indexOf('(', open);
-    if (paren === -1) continue;
-    const close = matchBracket(text, paren);
-    if (close === -1) {
-      unresolved++;
-      continue;
-    } // spans lines; do not guess
-    if (/\.\s*$/.test(text.slice(0, open))) continue; // method call on this fn is still a call; keep
-    const args = splitTopLevel(text.slice(paren + 1, close));
-    // Spread or computed length: the count is not readable statically.
-    if (args.some((a) => a.includes('...') || /^\[.*\]$/.test(a))) {
-      unresolved++;
-      continue;
+  for (const file of callerFiles) {
+    const source =
+      STAGED ? readAt(file, '') : readFileSync(join(ROOT, file), 'utf8');
+    if (!source || !source.includes(change.name)) continue;
+    try {
+      const result = defaultArgumentCalls(source, join(ROOT, file), {
+        ...change,
+        file: join(ROOT, change.file),
+      });
+      unresolved += result.unresolved;
+      sites.push(...result.sites.map((site) => ({ ...site, file })));
+    } catch (error) {
+      if (!(error instanceof SyntaxError)) throw error;
+      unresolved++; // Unsupported syntax is an explicit audit boundary.
     }
-    if (args.length > change.paramIndex) continue; // caller supplies the argument
-    sites.push({
-      file,
-      line: Number(lineNo),
-      argsPassed: args.length,
-      code: text.trim().slice(0, 120),
-    });
   }
   if (sites.length) findings.push({ change, sites });
 }
@@ -439,7 +249,7 @@ if (AS_JSON) {
   }
   if (unresolved)
     console.log(
-      `\n  ${unresolved} call site(s) could not be read statically (multiline or spread) and were not checked.`,
+      `\n  ${unresolved} call site(s) could not be resolved statically (receiver, spread or unsupported syntax) and were not checked.`,
     );
   console.log(
     findings.length ?
