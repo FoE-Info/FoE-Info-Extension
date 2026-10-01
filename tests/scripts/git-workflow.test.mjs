@@ -23,10 +23,7 @@ const { applyGitWorkflow, WORKFLOW_SETTINGS } = await import(SCRIPT);
 let env = null;
 function gitEnv() {
   if (env === null) {
-    const blank = path.join(
-      fs.mkdtempSync(path.join(os.tmpdir(), 'git-workflow-cfg-')),
-      'gitconfig',
-    );
+    const blank = path.join(temp('git-workflow-cfg-'), 'gitconfig');
     fs.writeFileSync(blank, '');
     env = { ...process.env, GIT_CONFIG_GLOBAL: blank };
   }
