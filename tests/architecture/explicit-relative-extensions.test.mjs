@@ -5,7 +5,7 @@ import test from 'node:test';
 
 const ROOT = path.resolve(import.meta.dirname, '../../src/js');
 const REL_IMPORT = /(?:require\(|from\s+)['"]\s*(\.\.?\/[^'"]+)['"]/g;
-const VALID_EXT = /\.(js|ts|json|mjs|scss|css)$/;
+const VALID_EXT = /\.(js|ts|json|mjs|cjs|scss|css)$/;
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -23,7 +23,7 @@ test('internal relative imports use explicit extensions', async () => {
   let scanned = 0;
   let matched = 0;
   for (const file of await walk(ROOT)) {
-    if (!file.endsWith('.js') && !file.endsWith('.ts')) continue;
+    if (!/\.(?:js|mjs|cjs|ts)$/.test(file)) continue;
     scanned += 1;
     const source = await readFile(file, 'utf8');
     for (const match of source.matchAll(REL_IMPORT)) {

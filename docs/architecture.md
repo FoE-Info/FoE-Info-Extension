@@ -4,22 +4,22 @@ FoE-Info is a Chrome Manifest V3 (MV3) extension for Forge of Empires. It observ
 
 Traffic reaches the pipeline over **two read-only intake paths**, both feeding the same dispatcher:
 
-1. **DevTools network listener** (`src/js/devtools.js`) — the documented primary path, consuming the inspected tab's network events.
-2. **MAIN-world content-script observer** (`src/js/protocol/xhrInterceptor.js` + `src/js/protocol/contentBridge.js`) — injected at `document_start` into `https://*.forgeofempires.com/game/*` in every build target. It wraps the page's `XMLHttpRequest`/`fetch`/`WebSocket` interfaces to observe traffic the DevTools listener may miss, and forwards envelopes through the ISOLATED-world bridge.
+1. **DevTools network listener** (`src/js/devtools.mjs`) — the documented primary path, consuming the inspected tab's network events.
+2. **MAIN-world content-script observer** (`src/js/protocol/xhrInterceptor.js` + `src/js/protocol/contentBridge.mjs`) — injected at `document_start` into `https://*.forgeofempires.com/game/*` in every build target. It wraps the page's `XMLHttpRequest`/`fetch`/`WebSocket` interfaces to observe traffic the DevTools listener may miss, and forwards envelopes through the ISOLATED-world bridge.
 
-Neither path issues a game request or injects a DOM node. [SECURITY.md](../SECURITY.md) is the authoritative description of the boundary and of what each path does and does not authenticate.
+Neither path issues a game request or injects a DOM node. The [security architecture](security-architecture.md) describes what each path observes and authenticates.
 
 ## Core Data Pipeline
 
 ```text
 InnoGames CDN & Game Client (RPC)
        │ (JSON-RPC network requests & responses)
-       ├──────────────► DevTools Network Listener (`src/js/devtools.js`)
+       ├──────────────► DevTools Network Listener (`src/js/devtools.mjs`)
        │                        │
        └─ (page network APIs) ──► MAIN-world XHR Interceptor
                                     (`src/js/protocol/xhrInterceptor.js`)
                                     │ → ISOLATED-world Content Bridge
-                                    │   (`src/js/protocol/contentBridge.js`)
+                                    │   (`src/js/protocol/contentBridge.mjs`)
                                     ▼
                          Network Listener (`src/js/protocol/networkListener.js`)
        │ (envelopes: requestData, responseData)
@@ -103,13 +103,6 @@ subscription is installed against the module's singleton store; the
 does not install a separate subscription for them. Store reset clears subscribers,
 so callers must account for subscription lifecycle when resetting the store.
 
-Graph queries help locate this flow, but callback dependencies and dependencies
-loaded by assignment inside `try` blocks can be absent from the graph. Verify
-those connections in source before drawing dependency-direction conclusions.
-The startup render barrier and metadata recovery tests cover stale completion,
-pending timeouts, and resolution failure; they do not establish live-browser
-behavior.
-
 ## Architectural Layers
 
 | Layer            | Path               | Responsibility                                                   | Invariants                                                              |
@@ -126,9 +119,7 @@ behavior.
 
 ## Non-Negotiable Architectural Invariants
 
-- **Cohesion Over Line Count**: A module holds one thing that changes for one reason. Length is a symptom, not the defect. Split when two parts change independently or on different schedules — for example when a user would name them as separate features, or when one part is arithmetic and the other is markup. Do **not** split sequential phases of a single operation; that only adds coupling.
-  - Target range is 100–300 lines per module in `src/js/`. Modules that exceed it are expected: `msg/StartupService.js` and `msg/GuildBattlegroundService.js` are single-domain modules whose phases share one state owner, and `protocol/networkListener.js` is the intended result of consolidating that file's phases, which deliberately reversed an earlier micro-file split. Read current sizes from the audit below rather than from numbers copied here.
-  - `npm run audit:refs -- --strict` lists modules over 500 lines. Treat that list as a prompt to check for a feature boundary, not as a violation to fix by splitting.
+Module cohesion is a development boundary; the decision procedure and historical debt policy live in [repository contracts](repository-contracts.md).
 
 - **Zero Static Game Metadata**: Game metadata streams strictly from the live InnoGames CDN and RPC responses. No entity dumps or static game JSON inside `src/`.
 - **Passive Observation Only**: No botting, automation, active clicking, or request injection into the game client. The MAIN-world interceptor observes the page's network interfaces; it never sends a request on the player's behalf.
@@ -137,15 +128,36 @@ behavior.
 
 ## Module Loading Policy
 
+## Module Loading Policy
+
 `package.json` sets `"type": "commonjs"`: native Node loads `.js` files as CommonJS and `.mjs` files as ESM. The extension is not loaded by native Node; webpack bundles six browser entry points in `webpack.common.js` and accepts both `import`/`export` and `require()`/`module.exports` in its module graph. UI and bridge entries use ESM syntax, while the standalone MAIN-world interceptor is a plain script. Many files within `src/js/` still use CommonJS, especially `calc/`. Neither syntax implies that a file is independently runnable in Node: browser globals, stylesheets, and transitive imports may require webpack.
 
-For native Node tests, use `require()` for CJS-compatible `.js` modules; `.mjs` tests may import them and use the CJS namespace/default interop that Node actually exposes. Do not assume webpack's synthetic named-import behavior matches native Node, and do not `require()` an ESM-syntax `.js` entry under the current package type. Root webpack configs are `.js` CommonJS; scripts and tests include both `.js` CommonJS and `.mjs` ESM. Keep the explicit `.js` suffix in relative source imports.
+Runtime JavaScript module behavior is summarized here. Native Node test conventions and migration procedures belong to [contribution guidance](../CONTRIBUTING.md#source-modules-and-tests).
 
-`webpack.common.js` resolves `.ts`, `.js`, `.mjs`, and `.json`, disables the `fs` browser fallback, and provides `browser` via `webextension-polyfill`. **Decision: retain the working hybrid**, rather than migrate `calc/` for syntax uniformity. Retention keeps today's native Node test imports and webpack consumers intact; incremental ESM migration would remove the dual syntax but require changing `.js` loading under Node or moving files to `.mjs`, plus updating every CJS consumer and webpack import. Any later conversion must verify both the bundled entry and native Node test consumers of each converted module. Mixed syntax by itself is not a contract failure.
+Panel sizes are shared extension presentation preferences under `panelSizes`.
+The compatibility `toolOptions` accessor reads/writes that shared key; legacy
+world-specific size values are not applied. Without shared customization, every
+world uses the same per-panel defaults. Game data, option toggles, donations and
+collapse state retain their world scope. Only explicit resize-handle interactions
+persist panel heights; content and collapse layout changes must not change size
+preferences.
 
-The passing `npm run typecheck` gate checks declarations plus four runtime calculator leaves with `checkJs: true`: `src/js/calc/utils/bignumberUtils.js`, `src/js/calc/utils/eraUtils.js`, `src/js/calc/goods/goodsClassification.js`, and `src/js/calc/boosts/CastleBoostCalculator.js`. The broader `npm run typecheck:calc` migration audit checks all of `calc/` and still reports errors; extend the passing slice only after resolving the new files' diagnostics, not by loosening `strict` or silencing them with `any`.
+RewardService publishes received income through shared reward state, retaining
+explicit producer sources independently of the current view. Collection payloads
+feed income; purchase costs, auction bids, historical Event History entries and
+cumulative inventory counts do not. Quest completion deduplication resets when a
+quest returns to an active cycle, allowing recurring rewards to accumulate while
+suppressing repeated completion snapshots. Great Building payouts use the supplied
+final FP amount without applying Arc a second time.
 
-Mechanical layer checks and historical debt policy are documented in
-[repository contracts](repository-contracts.md). Run `npm run contracts:diff` for
-a changed-file check and `npm run contracts:audit` for the full audit; the full
-audit is included in `npm run verify`.
+InventoryService owns the available inventory-package FP total. Absolute
+`updateItem` stock notifications and authoritative Great Building package totals
+update that shared BigNumber state so FP Status and donation calculations use the
+same balance.
+
+Great Buildings construction/ranking responses reconcile complete rankings,
+including the owner’s unranked FP, before publishing donors, information and
+suggested donations. Explicit response progress overrides cached city metadata.
+A ranked viewer’s self row alone does not establish complete owner progress.
+Donation evaluation skips an occupied position when its investment is at least
+the remaining level cost: a new donor cannot surpass it before the level closes.
