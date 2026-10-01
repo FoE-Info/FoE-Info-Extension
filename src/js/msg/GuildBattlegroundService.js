@@ -47,24 +47,21 @@ function configurePresentation(callbacks = {}) {
 
 let showOptions = {};
 try {
-  const showOpt = require('../vars/showOptions.js');
+  const showOpt = require('../vars/showOptions.mjs');
   showOptions = showOpt.showOptions || showOpt;
 } catch {}
 
 let defaultState = {};
 try {
-  defaultState = require('../vars/state.js');
+  defaultState = require('../vars/state.mjs');
 } catch {}
 
 const BattlegroundPerformance = defaultState.BattlegroundPerformance || [];
 const BuildingDefs =
   metadataStore?.buildingDefs || defaultState.BuildingDefs || {};
-const donationDIV = defaultState.donationDIV || null;
 const EpocTime = defaultState.EpocTime || 0;
 const GameOrigin = defaultState.GameOrigin || '';
-const GBGdata = defaultState.GBGdata || {};
 const GuildMembers = defaultState.GuildMembers || [];
-const setBGtime = defaultState.setBGtime || (() => {});
 const targetText =
   typeof defaultState.targetText === 'string' ? defaultState.targetText : '';
 const VolcanoProvinceDefs =
@@ -496,6 +493,8 @@ function handlePlayerLeaderboard(
           if (items && items[gOrigin] && Array.isArray(items[gOrigin])) {
             gMembers.length = 0;
             gMembers.push(...items[gOrigin]);
+          } else {
+            gMembers.length = 0;
           }
           storage.set(gOrigin + 'BGtime', eTime);
           if (items && items[gOrigin + 'BGtime']) {
@@ -507,9 +506,7 @@ function handlePlayerLeaderboard(
           localPerfList.forEach((entry) => {
             if (gMembers.find((id) => id.name === entry.name) == null) {
               gMembers.push({
-                name: entry.name,
-                wonNegotiations: 0,
-                wonBattles: 0,
+                ...entry,
               });
             }
           });
@@ -605,15 +602,7 @@ let currentParticipantId = 0;
 
 function getPlayerLeaderboard(msg) {
   handlePlayerLeaderboard(msg, {
-    state: {
-      BattlegroundPerformance,
-      GBGdata,
-      GuildMembers,
-      GameOrigin,
-      EpocTime,
-      setBGtime,
-      donationDIV,
-    },
+    state: defaultState,
     showOptions,
     onPerformanceUpdated: (performance, gameOrigin) => {
       guildBattlegroundState.setPerformance({
@@ -629,13 +618,7 @@ function getLeaderboard(msg) {
 }
 
 function getState(msg) {
-  handleBattlegroundState(msg, {
-    state: {
-      GameOrigin,
-      BattlegroundPerformance,
-      GBGdata,
-    },
-  });
+  handleBattlegroundState(msg, { state: defaultState });
 }
 
 function getBattleground(msg) {
@@ -668,8 +651,11 @@ function getBattleground(msg) {
 }
 
 function getBuildings(msg) {
-  const provinceId = msg?.responseData?.provinceId || 0;
-  const prov = Array.isArray(map) ? map.find((p) => p.id === provinceId) : null;
+  const provinceId = msg?.responseData?.provinceId ?? msg?.requestData?.[0];
+  const prov =
+    Array.isArray(map) ?
+      map.find((p) => String(p.id) === String(provinceId))
+    : null;
   if (prov) {
     prov.placedBuildings = msg.responseData.placedBuildings;
     prov.availableBuildings = msg.responseData.availableBuildings;

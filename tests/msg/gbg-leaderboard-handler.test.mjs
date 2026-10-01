@@ -1,9 +1,6 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { registerHooks } from 'node:module';
-import { dirname, resolve as resolvePath } from 'node:path';
 import { beforeEach, describe, it } from 'node:test';
-import { fileURLToPath, pathToFileURL } from 'node:url';
 
 function dataModule(source) {
   return 'data:text/javascript,' + encodeURIComponent(source);
@@ -18,49 +15,24 @@ const MODULE_STUBS = {
   ),
 };
 
-function isEsmSource(source) {
-  return /^\s*(?:import|export)\s/m.test(source);
-}
-
 registerHooks({
   resolve(specifier, context, nextResolve) {
     if (MODULE_STUBS[specifier]) {
       return { url: MODULE_STUBS[specifier], shortCircuit: true };
     }
-    try {
-      return nextResolve(specifier, context);
-    } catch (err) {
-      if (specifier.startsWith('.') && context.parentURL) {
-        const parentDir = dirname(fileURLToPath(context.parentURL));
-        for (const candidate of ['', '.js', '.mjs', '/index.js']) {
-          const resolved = resolvePath(parentDir, specifier + candidate);
-          try {
-            readFileSync(resolved);
-            return { url: pathToFileURL(resolved).href, shortCircuit: true };
-          } catch {}
-        }
-      }
-      throw err;
-    }
-  },
-  load(url, context, nextLoad) {
-    if (url.endsWith('.js') && url.includes('/src/js/')) {
-      const source = readFileSync(fileURLToPath(url), 'utf8');
-      if (isEsmSource(source)) {
-        return { format: 'module', source, shortCircuit: true };
-      }
-    }
-    return nextLoad(url, context);
+    return nextResolve(specifier, context);
   },
 });
-
 const { handleBattlegroundState, handleLeaderboard, handlePlayerLeaderboard } =
   await import('../../src/js/msg/GuildBattlegroundService.js');
 const { guildBattlegroundState } =
   await import('../../src/js/state/GuildDomainState.js');
-const { showOptions } = await import('../../src/js/state/showOptions.js');
+const { showOptions } = await import('../../src/js/state/showOptions.mjs');
+const stateNamespace = await import('../../src/js/state/state.mjs');
+const { getPlayerLeaderboard, getBattleground, getBuildings } =
+  await import('../../src/js/msg/GuildBattlegroundService.js');
 const { BattlegroundPerformance, GBGdata, GuildMembers } =
-  await import('../../src/js/state/state.js');
+  await import('../../src/js/state/state.mjs');
 
 describe('GbgLeaderboardHandler Suite', () => {
   beforeEach(() => {
@@ -70,7 +42,89 @@ describe('GbgLeaderboardHandler Suite', () => {
     showOptions.showBattleground = false;
   });
 
+  it('building costs use the captured request province when the response omits its ID, including zero', () => {
+    const previousSetting = showOptions.buildingCosts;
+    showOptions.buildingCosts = true;
+    try {
+      getBattleground({
+        responseData: {
+          map: { id: 'volcano_fixture', provinces: [{ id: 0 }, { id: 16 }] },
+        },
+      });
+      const availableBuildings = [
+        { buildingId: 'camp', costs: { resources: { stone: 25 } } },
+      ];
+      getBuildings({
+        requestData: [0],
+        responseData: { availableBuildings, placedBuildings: [] },
+      });
+      const province = guildBattlegroundState
+        .getProvince()
+        .map.find((p) => p.id === 0);
+      assert.deepEqual(province.availableBuildings, availableBuildings);
+      assert.deepEqual(province.placedBuildings, []);
+      assert.equal(
+        guildBattlegroundState.getProvince().map.find((p) => p.id === 16)
+          .availableBuildings,
+        undefined,
+      );
+    } finally {
+      showOptions.buildingCosts = previousSetting;
+    }
+  });
+
   describe('handlePlayerLeaderboard', () => {
+    it('reads the current world and time after module initialization and retains the previous snapshot', async () => {
+      const saved = new Map();
+      const getCalls = [];
+      const originalBrowser = globalThis.browser;
+      globalThis.browser = {
+        storage: {
+          local: {
+            get: async (keys) => {
+              getCalls.push(keys);
+              return Object.fromEntries(
+                keys.map((key) => [key, saved.get(key)]),
+              );
+            },
+            set: async (items) => {
+              for (const [key, value] of Object.entries(items))
+                saved.set(key, structuredClone(value));
+            },
+          },
+        },
+      };
+      const origin = 'https://en19.forgeofempires.com';
+      const previousOrigin = stateNamespace.GameOrigin;
+      const previousTime = stateNamespace.EpocTime;
+      try {
+        stateNamespace.setGameOrigin(origin);
+        stateNamespace.setEpocTime(1700000500);
+        showOptions.showBattleground = true;
+        const packet = (battlesWon) => ({
+          responseData: [
+            { player: { name: 'Fighter' }, battlesWon, attrition: 3 },
+          ],
+        });
+        getPlayerLeaderboard(packet(10));
+        await new Promise((resolve) => setImmediate(resolve));
+        assert.deepEqual(getCalls[0], [origin, origin + 'BGtime']);
+        assert.equal(GuildMembers[0].wonBattles, 10);
+        assert.equal(saved.get(origin + 'BGtime'), 1700000500);
+        getPlayerLeaderboard(packet(13));
+        await new Promise((resolve) => setImmediate(resolve));
+        assert.equal(GuildMembers[0].wonBattles, 10);
+        assert.equal(BattlegroundPerformance[0].wonBattles, 13);
+        assert.equal(saved.get(origin)[0].wonBattles, 13);
+        assert.equal(saved.has(''), false);
+      } finally {
+        globalThis.browser = originalBrowser;
+        stateNamespace.setGameOrigin(previousOrigin || 'en7');
+        stateNamespace.setEpocTime(previousTime);
+        showOptions.showBattleground = false;
+      }
+    });
+
     it('populates GBGdata and BattlegroundPerformance correctly', () => {
       const msg = {
         responseData: [

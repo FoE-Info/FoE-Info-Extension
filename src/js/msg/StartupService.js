@@ -20,19 +20,19 @@ const { processCityMapEntities } = require('../calc/CityMapEntityProcessor.js');
 
 let element = {};
 try {
-  element = require('../fn/AddElement.js');
+  element = require('../fn/AddElement.mjs');
 } catch {}
 let collapse = {};
 try {
-  collapse = require('../fn/collapse.js');
+  collapse = require('../fn/collapse.mjs');
 } catch {}
 let copy = {};
 try {
-  copy = require('../fn/copy.js');
+  copy = require('../fn/copy.mjs');
 } catch {}
 let helper = {};
 try {
-  helper = require('../fn/helper.js');
+  helper = require('../fn/helper.mjs');
 } catch {}
 let t = (k, f) => f || k;
 let translateContainer = () => {};
@@ -92,11 +92,11 @@ function configurePresentation(callbacks = {}) {
 
 let showOptions = {};
 try {
-  ({ showOptions } = require('../vars/showOptions.js'));
+  ({ showOptions } = require('../vars/showOptions.mjs'));
 } catch {}
 let state = {};
 try {
-  state = require('../vars/state.js');
+  state = require('../vars/state.mjs');
 } catch {}
 
 const { clearArmyUnits } = require('./ArmyUnitManagementService.js');
@@ -106,8 +106,12 @@ const { ResourceDefs } = require('./ResourceService.js');
 const { emissaryService } = require('./EmissaryService.js');
 
 let resetDailyBonusAccumulator = () => {};
+let updateOwnCityBonuses = () => {};
 try {
-  ({ resetDailyBonusAccumulator } = require('./BonusService.js'));
+  ({
+    resetDailyBonusAccumulator,
+    updateOwnCityBonuses,
+  } = require('./BonusService.mjs'));
 } catch {}
 const logger = createLogger('StartupService');
 
@@ -265,6 +269,7 @@ function updateCombatTotals(targetCity = City) {
 function initializeStartupSession(msg, options = {}) {
   const user = initStartupUser(msg, options);
   if (!user) return null;
+  require('./ResourceService.js').resetGoodsPanelSession();
   resetCityStartupState(options.City, options);
   return user;
 }
@@ -477,6 +482,9 @@ function coordinateStartupEntities({
   const metadataStoreObj = metadataStoreParam || metadataStore;
   const unknownBonusTypes = new Map();
 
+  updateOwnCityBonuses(msg?.responseData?.city_map?.entities, myInfo?.id, {
+    replace: true,
+  });
   const entityResult = processCityMapEntities(
     msg?.responseData?.city_map?.entities,
     {

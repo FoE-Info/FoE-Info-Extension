@@ -37,13 +37,13 @@ try {
 
 let showOptions = {};
 try {
-  const showOpt = require('../vars/showOptions.js');
+  const showOpt = require('../vars/showOptions.mjs');
   showOptions = showOpt.showOptions || showOpt;
 } catch {}
 
 let MilitaryDefs = {};
 try {
-  const statePkg = require('../vars/state.js');
+  const statePkg = require('../vars/state.mjs');
   MilitaryDefs = statePkg.MilitaryDefs || {};
 } catch {}
 

@@ -1,44 +1,10 @@
 import assert from 'node:assert/strict';
 import fs, { readFileSync } from 'node:fs';
-import { registerHooks } from 'node:module';
 import { dirname, resolve as resolvePath } from 'node:path';
 import test from 'node:test';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
-function isEsmSource(source) {
-  return /^\s*(?:import|export)\s/m.test(source);
-}
-
-registerHooks({
-  resolve(specifier, context, nextResolve) {
-    try {
-      return nextResolve(specifier, context);
-    } catch (err) {
-      if (specifier.startsWith('.') && context.parentURL) {
-        const parentDir = dirname(fileURLToPath(context.parentURL));
-        for (const candidate of ['', '.js', '.mjs', '/index.js']) {
-          const resolved = resolvePath(parentDir, specifier + candidate);
-          try {
-            readFileSync(resolved);
-            return { url: pathToFileURL(resolved).href, shortCircuit: true };
-          } catch {}
-        }
-      }
-      throw err;
-    }
-  },
-  load(url, context, nextLoad) {
-    if (url.endsWith('.js') && url.includes('/src/js/')) {
-      const source = readFileSync(fileURLToPath(url), 'utf8');
-      if (isEsmSource(source)) {
-        return { format: 'module', source, shortCircuit: true };
-      }
-    }
-    return nextLoad(url, context);
-  },
-});
-
-const SERVICE_PATH = 'src/js/msg/BonusService.js';
+const SERVICE_PATH = 'src/js/msg/BonusService.mjs';
 
 test('BonusService publishes to BonusState without importing ui/', () => {
   const source = fs.readFileSync(SERVICE_PATH, 'utf8');
@@ -67,9 +33,9 @@ test('BonusService publishes to BonusState without importing ui/', () => {
 
 test('BonusService - getLimitedBonuses does not infinitely accumulate City.ForgePoints', async () => {
   const { getLimitedBonuses, resetDailyBonusAccumulator } =
-    await import('../../src/js/msg/BonusService.js');
+    await import('../../src/js/msg/BonusService.mjs');
   const { City } = await import('../../src/js/state/CityDomainState.js');
-  const { showOptions } = await import('../../src/js/vars/showOptions.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.mjs');
 
   showOptions.showBonus = true;
   resetDailyBonusAccumulator();
@@ -96,11 +62,11 @@ test('BonusService - getLimitedBonuses does not infinitely accumulate City.Forge
 
 test('StartupService.resetCityStartupState clears daily bonus accumulator', async () => {
   const { getLimitedBonuses, resetDailyBonusAccumulator } =
-    await import('../../src/js/msg/BonusService.js');
+    await import('../../src/js/msg/BonusService.mjs');
   const { City } = await import('../../src/js/state/CityDomainState.js');
   const { resetCityStartupState } =
     await import('../../src/js/msg/StartupService.js');
-  const { showOptions } = await import('../../src/js/vars/showOptions.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.mjs');
 
   showOptions.showBonus = true;
   resetDailyBonusAccumulator();
@@ -123,12 +89,12 @@ test('StartupService.resetCityStartupState clears daily bonus accumulator', asyn
   assert.equal(City.ForgePoints, 10);
 });
 
-test('BonusService - real captured double_collection sets Blue Galaxy charges', async () => {
+test('BonusService - double_collection percentage does not become Blue Galaxy charges', async () => {
   const { getLimitedBonuses, resetDailyBonusAccumulator } =
-    await import('../../src/js/msg/BonusService.js');
+    await import('../../src/js/msg/BonusService.mjs');
   const { blueGalaxyState } =
     await import('../../src/js/state/CityDomainState.js');
-  const { showOptions } = await import('../../src/js/vars/showOptions.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.mjs');
 
   showOptions.showBonus = true;
   resetDailyBonusAccumulator();
@@ -149,15 +115,25 @@ test('BonusService - real captured double_collection sets Blue Galaxy charges', 
 
   getLimitedBonuses({ responseData: captured });
 
-  assert.equal(blueGalaxyState.charges, 71);
-  assert.equal(blueGalaxyState.legacyShim?.amount, 71);
+  assert.equal(blueGalaxyState.charges, 0);
+  assert.equal(blueGalaxyState.legacyShim?.amount, 0);
+  getLimitedBonuses({
+    responseData: [
+      { type: 'double_collection', value: 71, amount: 15, isActive: true },
+    ],
+  });
+  assert.equal(blueGalaxyState.charges, 15);
+  getLimitedBonuses({
+    responseData: [{ type: 'double_collection', value: 71, amount: 0 }],
+  });
+  assert.equal(blueGalaxyState.charges, 0);
 });
 
-test('BonusService - sibling limited bonus types read value off LimitedBonusFromEntity', async () => {
+test('BonusService - limited bonuses use remaining amount instead of strength', async () => {
   const { getLimitedBonuses, resetDailyBonusAccumulator } =
-    await import('../../src/js/msg/BonusService.js');
+    await import('../../src/js/msg/BonusService.mjs');
   const { bonusState } = await import('../../src/js/state/CityDomainState.js');
-  const { showOptions } = await import('../../src/js/vars/showOptions.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.mjs');
 
   showOptions.showBonus = true;
   resetDailyBonusAccumulator();
@@ -165,9 +141,10 @@ test('BonusService - sibling limited bonus types read value off LimitedBonusFrom
   // Same class and field set as the one captured getLimitedBonuses entry
   // ({id, value, type, isActive, entityId, factor, __class__}); these four types
   // have no capture of their own, so the shape is taken from that sample.
-  const entry = (type, value) => ({
+  const entry = (type, amount) => ({
     id: 76413,
-    value,
+    value: 47,
+    amount,
     type,
     isActive: true,
     entityId: 34862,
@@ -196,9 +173,9 @@ test('BonusService - sibling limited bonus types read value off LimitedBonusFrom
 
 test('BonusService - limited bonus entries carrying only amount are still read', async () => {
   const { getLimitedBonuses, resetDailyBonusAccumulator } =
-    await import('../../src/js/msg/BonusService.js');
+    await import('../../src/js/msg/BonusService.mjs');
   const { bonusState } = await import('../../src/js/state/CityDomainState.js');
-  const { showOptions } = await import('../../src/js/vars/showOptions.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.mjs');
 
   showOptions.showBonus = true;
   resetDailyBonusAccumulator();
@@ -209,4 +186,120 @@ test('BonusService - limited bonus entries carrying only amount are still read',
 
   assert.equal(bonusState.aid, 9);
   assert.match(bonusState.bonusHTML, /id="aidID">9</);
+});
+
+test('limited bonus snapshot preserves unknown counts and clears stale bonuses', async () => {
+  const { getLimitedBonuses } =
+    await import('../../src/js/msg/BonusService.mjs');
+  const { bonusState } = await import('../../src/js/state/CityDomainState.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.mjs');
+  showOptions.showBonus = true;
+  getLimitedBonuses({
+    responseData: [
+      { type: 'spoils_of_war', value: 47 },
+      { type: 'missile_launch', value: 50, amount: 3 },
+      { type: 'first_strike', value: 60, amount: 10, isActive: false },
+    ],
+  });
+  assert.equal(bonusState.getSpoils(), 0);
+  assert.deepEqual(
+    bonusState.getLimitedBonuses().map((x) => x.remaining),
+    [null, 3, 0],
+  );
+  getLimitedBonuses({ responseData: [] });
+  assert.equal(bonusState.getLimitedBonuses().length, 0);
+  assert.equal(bonusState.getStrike(), 0);
+});
+
+test('own city bonuses include passive rewards and ignore visited players', async () => {
+  const { updateOwnCityBonuses, resetDailyBonusAccumulator } =
+    await import('../../src/js/msg/BonusService.mjs');
+  const { bonusState } = await import('../../src/js/state/CityDomainState.js');
+  resetDailyBonusAccumulator();
+  updateOwnCityBonuses(
+    [
+      {
+        id: 1,
+        player_id: 7,
+        type: 'greatbuilding',
+        bonuses: [{ type: 'spoils_of_war', amount: 9, value: 47 }],
+      },
+      {
+        id: 2,
+        player_id: 7,
+        type: 'greatbuilding',
+        bonuses: [{ type: 'helping_hands', amount: -1, value: 10 }],
+      },
+      {
+        id: 3,
+        player_id: 7,
+        type: 'greatbuilding',
+        bonuses: [{ type: 'mysterious_shards', amount: 19, value: 5 }],
+      },
+      {
+        id: 4,
+        player_id: 8,
+        type: 'greatbuilding',
+        bonuses: [{ type: 'first_strike', amount: 10, value: 60 }],
+      },
+    ],
+    7,
+    { replace: true },
+  );
+  assert.deepEqual(
+    bonusState.getLimitedBonuses().map((x) => [x.type, x.kind, x.remaining]),
+    [
+      ['spoils_of_war', 'limited', 9],
+      ['helping_hands', 'passive', null],
+      ['mysterious_shards', 'passive', 19],
+    ],
+  );
+  updateOwnCityBonuses(
+    [
+      {
+        id: 1,
+        player_id: 7,
+        type: 'greatbuilding',
+        bonuses: [{ type: 'spoils_of_war', amount: 8, value: 47 }],
+      },
+    ],
+    7,
+  );
+  assert.equal(bonusState.getLimitedBonuses()[0].remaining, 8);
+  assert.equal(bonusState.getLimitedBonuses().length, 3);
+  updateOwnCityBonuses([], 7, { replace: true });
+  assert.equal(bonusState.getLimitedBonuses().length, 0);
+});
+
+test('Blue Galaxy charges stay in the dedicated panel without a duplicate general bonus', async () => {
+  const {
+    getLimitedBonuses,
+    updateOwnCityBonuses,
+    resetDailyBonusAccumulator,
+  } = await import('../../src/js/msg/BonusService.mjs');
+  const { bonusState, blueGalaxyState } =
+    await import('../../src/js/state/CityDomainState.js');
+  const { showOptions } = await import('../../src/js/vars/showOptions.mjs');
+  showOptions.showBonus = true;
+  resetDailyBonusAccumulator();
+  getLimitedBonuses({
+    responseData: [
+      { type: 'double_collection', amount: 15, value: 71, isActive: true },
+    ],
+  });
+  assert.equal(blueGalaxyState.charges, 15);
+  assert.equal(bonusState.getLimitedBonuses().length, 0);
+  updateOwnCityBonuses(
+    [
+      {
+        id: 1,
+        player_id: 7,
+        type: 'greatbuilding',
+        bonuses: [{ type: 'double_collection', amount: 15, value: 71 }],
+      },
+    ],
+    7,
+    { replace: true },
+  );
+  assert.equal(bonusState.getLimitedBonuses().length, 0);
 });

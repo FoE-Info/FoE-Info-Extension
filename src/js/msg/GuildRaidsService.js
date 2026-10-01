@@ -138,7 +138,7 @@ class GuildRaidsService {
     } else {
       try {
         const storage = require('../fn/storage.js');
-        const defaultState = require('../vars/state.js');
+        const defaultState = require('../vars/state.mjs');
         const key = (defaultState?.GameOrigin || 'default') + '_qiPerformance';
         savedList = storage.get(key) || [];
       } catch {}
@@ -200,7 +200,7 @@ class GuildRaidsService {
     } else {
       try {
         const storage = require('../fn/storage.js');
-        const defaultState = require('../vars/state.js');
+        const defaultState = require('../vars/state.mjs');
         const key = (defaultState?.GameOrigin || 'default') + '_qiPerformance';
         const timeKey = (defaultState?.GameOrigin || 'default') + '_qiTime';
         storage.set(key, snapshot);

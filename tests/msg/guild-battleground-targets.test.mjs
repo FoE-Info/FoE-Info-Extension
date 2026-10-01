@@ -452,7 +452,7 @@ test('GuildBattleground Target Generation and Timing Suite', async (t) => {
     'custom targetText and targetsTopic state setter synchronization',
     () => {
       const stateSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/state/state.js'),
+        path.join(ROOT_DIR, 'src/js/state/state.mjs'),
         'utf8',
       );
       assert.match(
@@ -467,15 +467,15 @@ test('GuildBattleground Target Generation and Timing Suite', async (t) => {
       );
 
       const indexSource = fs.readFileSync(
-        path.join(ROOT_DIR, 'src/js/index.js'),
+        path.join(ROOT_DIR, 'src/js/index.mjs'),
         'utf8',
       );
       assert.ok(
-        !indexSource.includes("export var targetText = '';"),
+        !/export\s+(?:let|const|var)\s+targetText\s*=/.test(indexSource),
         'index.js must not shadow targetText declaration',
       );
       assert.ok(
-        !indexSource.includes("export var targetsTopic = 'targets';"),
+        !/export\s+(?:let|const|var)\s+targetsTopic\s*=/.test(indexSource),
         'index.js must not shadow targetsTopic declaration',
       );
       const bindingsSource = fs.readFileSync(

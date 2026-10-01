@@ -20,7 +20,7 @@ try {
 
 let defaultState = {};
 try {
-  defaultState = require('../vars/state.js');
+  defaultState = require('../vars/state.mjs');
 } catch {
   // Defensive fallback for environments where state.js is not loaded or during Node testing
 }

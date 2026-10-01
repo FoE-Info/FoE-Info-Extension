@@ -45,6 +45,19 @@ test('GuildBattlegroundState - reactive publish/subscribe', async (t) => {
     assert.equal(state.getProvince(), null);
   });
 
+  await t.test(
+    'copied targets persist through timer updates and reset on marker changes or map entry',
+    () => {
+      const state = new GuildBattlegroundState();
+      assert.equal(state.isTargetCopied(), false);
+      state.setTargetCopied(true);
+      state.setTargets({ signalChanged: false });
+      assert.equal(state.isTargetCopied(), true);
+      state.setTargets({ signalChanged: true });
+      assert.equal(state.isTargetCopied(), false);
+    },
+  );
+
   await t.test('isolates and logs a throwing subscriber', () => {
     const errors = [];
     const state = new GuildBattlegroundState({

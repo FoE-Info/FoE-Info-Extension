@@ -22,3 +22,6 @@ for (const service of [
 ]) {
   service.configurePresentation(callbacks);
 }
+
+// Webpack supplies the development flag in browser builds.
+globalThis.DEV = true;

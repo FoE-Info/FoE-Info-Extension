@@ -87,7 +87,7 @@ test('Guild Menu RPC Ingestion Suite', async (t) => {
     async () => {
       const service = new TreasuryService();
       const dispatcher = new MessageDispatcher();
-      service.register(dispatcher);
+      service.register(dispatcher, {});
 
       // Dispatch ClanService.getTreasuryBag from captured HAR
       await dispatcher.dispatchBatch([

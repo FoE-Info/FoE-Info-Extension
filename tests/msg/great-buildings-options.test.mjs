@@ -1,9 +1,8 @@
 import assert from 'node:assert/strict';
-import fs, { readFileSync } from 'node:fs';
+import fs from 'node:fs';
 import { registerHooks } from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
-import { fileURLToPath } from 'node:url';
 
 const dataModule = (source) =>
   'data:text/javascript,' + encodeURIComponent(source);
@@ -32,15 +31,6 @@ registerHooks({
       };
     }
     return nextResolve(specifier, context);
-  },
-  load(url, context, nextLoad) {
-    if (url.endsWith('.js') && url.includes('/src/js/')) {
-      const source = readFileSync(fileURLToPath(url), 'utf8');
-      if (/^\s*(?:import|export)\s/m.test(source)) {
-        return { format: 'module', source, shortCircuit: true };
-      }
-    }
-    return nextLoad(url, context);
   },
 });
 
@@ -314,7 +304,7 @@ test('Great Buildings Options & Donation Helper Suite', async (t) => {
         /data-i18n="total_remaining">Total Remaining<\/span>: 150 FP/,
       );
       assert.match(targetEl.innerHTML, /data-i18n="ready">Ready<\/span>:/);
-      assert.doesNotMatch(targetEl.innerHTML, /gbInfoCopyID/);
+      assert.match(targetEl.innerHTML, /gbInfoCopyID/);
       assert.match(targetEl.innerHTML, /gbinfoicon/);
       assert.match(targetEl.innerHTML, /pe-4 mb-0/);
       assert.match(targetEl.innerHTML, /cursor-pointer/);

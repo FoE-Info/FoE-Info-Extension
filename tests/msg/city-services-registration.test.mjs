@@ -69,6 +69,7 @@ test('CityMapService & City Services Registration Suite', async (t) => {
         ['CityMapService', 'getCityMap'],
         ['CityMapService', 'updateEntity'],
         ['CityMapService', 'reset'],
+        ['AnnouncementsService', 'fetchAllAnnouncements'],
         ['StartupService', 'getData'],
         ['StartupService', 'getOverview'],
         ['BonusService', 'getLimitedBonuses'],
@@ -99,6 +100,45 @@ test('CityMapService & City Services Registration Suite', async (t) => {
       });
       assert.equal(getCurrentView(), 'OWN_CITY');
       assert.equal(r3.gridId, 'city');
+    },
+  );
+
+  await t.test(
+    'main-city announcements restore visibility after cached GBG exit',
+    () => {
+      const previousDocument = globalThis.document;
+      const elements = new Map(
+        ['gbgTargetGenerator', 'battlegrounds', 'gbgLeaderboard', 'costs'].map(
+          (id) => [id, { style: {} }],
+        ),
+      );
+      globalThis.document = {
+        getElementById: (id) => elements.get(id) || null,
+      };
+      const handlers = new Map();
+      const dispatcher = {
+        register: (cls, method, handler) =>
+          handlers.set(`${cls}.${method}`, handler),
+      };
+      try {
+        new CityMapService().register(dispatcher);
+        setCurrentView('GBG');
+        const handler = handlers.get(
+          'AnnouncementsService.fetchAllAnnouncements',
+        );
+        assert.deepEqual(handler({}), { success: false });
+        assert.equal(getCurrentView(), 'GBG');
+        assert.deepEqual(handler({ responseData: { announcements: [] } }), {
+          success: true,
+        });
+        assert.equal(getCurrentView(), 'OWN_CITY');
+        for (const element of elements.values()) {
+          assert.equal(element.style.display, 'none');
+        }
+      } finally {
+        globalThis.document = previousDocument;
+        setCurrentView(null);
+      }
     },
   );
 

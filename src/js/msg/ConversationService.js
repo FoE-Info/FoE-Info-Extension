@@ -8,7 +8,7 @@ try {
 let targetsTopic = 'Targets';
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    const state = require('../vars/state.js');
+    const state = require('../vars/state.mjs');
     targetsTopic = state.targetsTopic;
   } catch {}
 }
@@ -20,7 +20,7 @@ function setTargetsTopic(topic) {
 function getTargetsTopic() {
   if (typeof __webpack_require__ !== 'undefined') {
     try {
-      const state = require('../vars/state.js');
+      const state = require('../vars/state.mjs');
       if (state?.targetsTopic && state.targetsTopic.trim()) {
         return state.targetsTopic.trim();
       }

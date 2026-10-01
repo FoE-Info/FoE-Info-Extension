@@ -1,9 +1,6 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { createRequire, registerHooks } from 'node:module';
-import { dirname, resolve as resolvePath } from 'node:path';
 import test from 'node:test';
-import { fileURLToPath, pathToFileURL } from 'node:url';
 
 function dataModule(source) {
   return 'data:text/javascript,' + encodeURIComponent(source);
@@ -18,47 +15,19 @@ const MODULE_STUBS = {
   ),
 };
 
-function isEsmSource(source) {
-  return /^\s*(?:import|export)\s/m.test(source);
-}
-
 registerHooks({
   resolve(specifier, context, nextResolve) {
     if (MODULE_STUBS[specifier]) {
       return { url: MODULE_STUBS[specifier], shortCircuit: true };
     }
-    try {
-      return nextResolve(specifier, context);
-    } catch (err) {
-      if (specifier.startsWith('.') && context.parentURL) {
-        const parentDir = dirname(fileURLToPath(context.parentURL));
-        for (const candidate of ['', '.js', '.mjs', '/index.js']) {
-          const resolved = resolvePath(parentDir, specifier + candidate);
-          try {
-            readFileSync(resolved);
-            return { url: pathToFileURL(resolved).href, shortCircuit: true };
-          } catch {}
-        }
-      }
-      throw err;
-    }
-  },
-  load(url, context, nextLoad) {
-    if (url.endsWith('.js') && url.includes('/src/js/')) {
-      const source = readFileSync(fileURLToPath(url), 'utf8');
-      if (isEsmSource(source)) {
-        return { format: 'module', source, shortCircuit: true };
-      }
-    }
-    return nextLoad(url, context);
+    return nextResolve(specifier, context);
   },
 });
-
 const require = createRequire(import.meta.url);
 
 test('Player score resolution and persistence', async (t) => {
   const storage = require('../../src/js/utils/storage.js');
-  const { MyInfo, setMyScore } = await import('../../src/js/state/state.js');
+  const { MyInfo, setMyScore } = await import('../../src/js/state/state.mjs');
   const {
     otherPlayerServiceUpdateActions,
   } = require('../../src/js/msg/OtherPlayerService.js');

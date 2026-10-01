@@ -28,10 +28,10 @@ try {
 } catch {}
 
 try {
-  globals = require('../fn/globals.js');
+  globals = require('../fn/globals.mjs');
 } catch {}
 try {
-  helper = require('../fn/helper.js');
+  helper = require('../fn/helper.mjs');
 } catch {}
 try {
   visitedStatsPkg = require('../fn/VisitedCityStatsCalculator.js');
@@ -61,7 +61,7 @@ let renderGuildPanel = () => {};
 
 let showOptions = {};
 try {
-  showOptions = require('../vars/showOptions.js').showOptions || {};
+  showOptions = require('../vars/showOptions.mjs').showOptions || {};
 } catch {}
 
 let setPlayerName = () => {};
@@ -72,7 +72,7 @@ let PlayerID = 0;
 let gbSelected = null;
 
 try {
-  const state = require('../vars/state.js');
+  const state = require('../vars/state.mjs');
   if (state) {
     if (state.setPlayerName) setPlayerName = state.setPlayerName;
     if (state.updatePlayerNameCache)
@@ -242,7 +242,7 @@ function otherPlayerServiceUpdateActions(msg) {
             if (id && !globals.MyInfo.id) globals.MyInfo.id = id;
           }
           try {
-            const { setMyScore } = require('../state/state.js');
+            const { setMyScore } = require('../state/state.mjs');
             if (typeof setMyScore === 'function') setMyScore(scoreNum);
           } catch (err) {
             logger.warn('setMyScore failed', err);

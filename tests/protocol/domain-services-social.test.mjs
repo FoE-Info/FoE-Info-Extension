@@ -75,7 +75,7 @@ test('Domain Services Protocol & Parsing - Social & Economy Suite', async (t) =>
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
-      service.register(dispatcher);
+      service.register(dispatcher, {});
       const dispatchRes = await dispatcher.dispatchBatch([msg]);
       assert.equal(dispatchRes.succeeded, 1);
     },
@@ -122,7 +122,7 @@ test('Domain Services Protocol & Parsing - Social & Economy Suite', async (t) =>
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
-      service.register(dispatcher);
+      service.register(dispatcher, {});
       const dispatchRes = await dispatcher.dispatchBatch([statesMsg, countMsg]);
       assert.equal(dispatchRes.succeeded, 2);
     },
@@ -212,7 +212,7 @@ test('Domain Services Protocol & Parsing - Social & Economy Suite', async (t) =>
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
-      service.register(dispatcher);
+      service.register(dispatcher, {});
       const dispatchRes = await dispatcher.dispatchBatch([
         bagMsg,
         logsMsg,
@@ -278,7 +278,7 @@ test('Domain Services Protocol & Parsing - Social & Economy Suite', async (t) =>
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
-      service.register(dispatcher);
+      service.register(dispatcher, {});
       const dispatchRes = await dispatcher.dispatchBatch([
         updatesMsg,
         periodsMsg,
@@ -322,7 +322,7 @@ test('Domain Services Protocol & Parsing - Social & Economy Suite', async (t) =>
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
-      service.register(dispatcher);
+      service.register(dispatcher, {});
       const dispatchRes = await dispatcher.dispatchBatch([msg]);
       assert.equal(dispatchRes.succeeded, 1);
     },
@@ -389,7 +389,7 @@ test('Domain Services Protocol & Parsing - Social & Economy Suite', async (t) =>
 
       // Dispatcher integration
       const dispatcher = new MessageDispatcher();
-      service.register(dispatcher);
+      service.register(dispatcher, {});
       const dispatchRes = await dispatcher.dispatchBatch([updateMsg, getMsg]);
       assert.equal(dispatchRes.succeeded, 2);
     },

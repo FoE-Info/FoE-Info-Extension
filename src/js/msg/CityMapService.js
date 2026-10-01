@@ -36,7 +36,7 @@ try {
 
 let defaultState = {};
 try {
-  defaultState = require('../vars/state.js');
+  defaultState = require('../vars/state.mjs');
 } catch {}
 
 function extractGridId(msg) {
@@ -98,6 +98,11 @@ class CityMapService {
         options.GreatBuildingRegistry ||
         defaultGbRegistry;
       registerCityEntities(msg.responseData, myId, myName, registry);
+      require('./BonusService.mjs').updateOwnCityBonuses(
+        msg.responseData,
+        myId,
+        { replace: true },
+      );
     }
     return { success: true };
   }
@@ -115,6 +120,16 @@ class CityMapService {
     return { success: true, gridId };
   }
 
+  handleMainCityAnnouncements(msg) {
+    if (!Array.isArray(msg?.responseData?.announcements))
+      return { success: false };
+    // The main-city HUD requests announcements when its cached scene resumes.
+    // That return does not necessarily request a fresh city map.
+    setCurrentView('OWN_CITY');
+    guildBattlegroundState?.setTargetMessageActive?.(false);
+    return { success: true };
+  }
+
   handleUpdateEntity(msg, options = {}) {
     const list =
       Array.isArray(msg?.responseData) ? msg.responseData
@@ -125,6 +140,7 @@ class CityMapService {
     const registry =
       options.gbRegistry || options.GreatBuildingRegistry || defaultGbRegistry;
     registerCityEntities(list, myId, myName, registry);
+    require('./BonusService.mjs').updateOwnCityBonuses(list, myId);
 
     const target =
       options.GBselected || options.gbSelected || defaultState?.GBselected;
@@ -171,6 +187,7 @@ class CityMapService {
     const registry =
       options.gbRegistry || options.GreatBuildingRegistry || defaultGbRegistry;
     registerCityEntities(list, myId, myName, registry);
+    require('./BonusService.mjs').updateOwnCityBonuses(list, myId);
 
     const target =
       options.GBselected || options.gbSelected || defaultState?.GBselected;
@@ -204,6 +221,12 @@ class CityMapService {
 
     dispatcher.register('CityMapService', 'reset', (msg) =>
       this.handleReset(msg, options),
+    );
+
+    dispatcher.register(
+      'AnnouncementsService',
+      'fetchAllAnnouncements',
+      (msg) => this.handleMainCityAnnouncements(msg),
     );
 
     const targetStartupService =
@@ -267,7 +290,7 @@ class CityMapService {
         options.getLimitedBonuses ||
         (() => {
           try {
-            const bonusMod = require('./BonusService.js');
+            const bonusMod = require('./BonusService.mjs');
             return bonusMod.getLimitedBonuses;
           } catch {
             return null;

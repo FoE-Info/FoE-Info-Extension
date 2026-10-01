@@ -42,7 +42,7 @@ try {
 } catch {}
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    defaultState = require('../vars/state.js');
+    defaultState = require('../vars/state.mjs');
   } catch {}
 }
 
