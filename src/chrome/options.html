@@ -121,12 +121,12 @@
           </div>
           <div class="card bg-light">
             <h2 class="card-header fs-6">
-              <span data-i18n="opt_current_bonus">Current Bonus / Boosts</span>
+              <span data-i18n="opt_current_bonus">Great Building Bonuses</span>
             </h2>
             <div class="card-body">
               <label for="bonus">
                 <span data-i18n="opt_show_current_bonus"
-                  >Show Current Bonus/Boosts</span
+                  >Show Great Building Bonuses</span
                 >
                 <input type="checkbox" id="bonus" name="bonus" />
               </label>
@@ -174,6 +174,12 @@
                   >Show Blue Galaxy Helper</span
                 >
                 <input type="checkbox" id="showGalaxy" name="showGalaxy" />
+              </label>
+              <label for="debugGalaxy">
+                <span data-i18n="opt_debug_galaxy"
+                  >Force Blue Galaxy preview in debug mode</span
+                >
+                <input type="checkbox" id="debugGalaxy" name="debugGalaxy" />
               </label>
             </div>
           </div>
@@ -295,6 +301,12 @@
                   id="buildingCosts"
                   name="buildingCosts"
                 />
+              </label>
+              <label for="GBGTreasury">
+                <span data-i18n="opt_show_gbg_treasury"
+                  >Show Guild Treasury in GBG</span
+                >
+                <input type="checkbox" id="GBGTreasury" name="GBGTreasury" />
               </label>
               <label for="GBGrewards">
                 <span data-i18n="opt_show_rewards">Show Rewards</span>
