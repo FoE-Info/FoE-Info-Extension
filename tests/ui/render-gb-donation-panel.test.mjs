@@ -156,7 +156,7 @@ test('renderGbDonationPanel UI Module Suite', async (t) => {
   );
 
   await t.test(
-    'displays package balance badge when availablePackageForgePoints > 0',
+    'keeps package inventory balance out of the donation card',
     () => {
       const mockContainer = { innerHTML: '', style: { display: 'none' } };
       renderGbDonationPanel({
@@ -166,11 +166,7 @@ test('renderGbDonationPanel UI Module Suite', async (t) => {
         availablePackageForgePoints: 1250,
       });
 
-      assert.ok(
-        mockContainer.innerHTML.includes(
-          'data-i18n="packages">Packages</span>: 1,250 FP',
-        ),
-      );
+      assert.ok(!mockContainer.innerHTML.includes('data-i18n="packages"'));
     },
   );
 
@@ -188,4 +184,52 @@ test('renderGbDonationPanel UI Module Suite', async (t) => {
       assert.ok(!mockContainer.innerHTML.includes('data-i18n="packages"'));
     },
   );
+});
+
+test('support request line exists only when its spot list contains eligible positions', async () => {
+  const panelPkg = await import('../../src/js/ui/gbDonationPanel.js');
+  const { renderGbDonationPanel } = panelPkg.default || panelPkg;
+  for (const { hideUnsafe, safe, shown } of [
+    { hideUnsafe: true, safe: false, shown: false },
+    { hideUnsafe: false, safe: false, shown: true },
+    { hideUnsafe: true, safe: true, shown: true },
+  ]) {
+    const container = { innerHTML: '', style: {} };
+    const result = renderGbDonationPanel({
+      GBselected: {
+        name: 'The Arc',
+        level: 10,
+        total: 1000,
+        current: 100,
+        connected: true,
+      },
+      PlayerName: 'Overlord Negan',
+      MyInfo: { name: 'Overlord Negan' },
+      showOptions: { showDonation: true, hideUnsafe },
+      donation2DIV: container,
+      donationSuffix: ' 1.9',
+      GBrewards: [100, 50, 20, 10, 5],
+      evaluatePlaces: () => ({
+        foundPlace: true,
+        place: 1,
+        outcome: safe ? 'safe' : 'loss',
+        donation: new BigNumber(200),
+        rewardFP: new BigNumber(100),
+        percent: 0,
+        donateCustom: new BigNumber(190),
+        safe: [safe, false, false, false, false],
+        donateSuggest: [190, 95, 38, 19, 9].map((x) => new BigNumber(x)),
+        netValue: 0,
+        hasReward: true,
+        band: safe ? 'green' : 'red',
+        ownerAdd: 0,
+      }),
+    });
+    assert.equal(container.innerHTML.includes("id='copyText'"), shown);
+    assert.equal(!!result.copyText, shown);
+    if (shown) {
+      assert.match(result.copyText, /P1\(190\)/);
+      assert.match(result.copyText, /1\.9<\/div>$/);
+    } else assert.doesNotMatch(container.innerHTML, /Overlord Arc|1\.9<\/div>/);
+  }
 });
