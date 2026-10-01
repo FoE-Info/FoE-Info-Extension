@@ -4,12 +4,12 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: './src/js/index.js',
+    app: './src/js/index.mjs',
     options: './src/js/options.js',
-    devtools: './src/js/devtools.js',
-    popup: './src/js/popup.js',
+    devtools: './src/js/devtools.mjs',
+    popup: './src/js/popup.mjs',
     xhrInterceptor: './src/js/protocol/xhrInterceptor.js',
-    contentBridge: './src/js/protocol/contentBridge.js',
+    contentBridge: './src/js/protocol/contentBridge.mjs',
   },
   output: {
     clean: true,
@@ -97,7 +97,7 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.mjs', '.json'],
+    extensions: ['.ts', '.js', '.mjs', '.cjs', '.json'],
     fallback: {
       fs: false,
     },

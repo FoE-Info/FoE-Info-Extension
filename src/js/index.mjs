@@ -2,7 +2,7 @@
 import * as bootstrap from 'bootstrap';
 import browser from 'webextension-polyfill';
 import '../css/main.scss';
-import { rewardObserve, showReward } from './fn/RewardRenderer.js';
+import { rewardObserve, showReward } from './fn/RewardRenderer.mjs';
 import { setCurrentPercent } from './msg/GreatBuildingsService.js';
 import {
   processMetadataData,
@@ -15,7 +15,7 @@ import {
   startupService,
 } from './msg/StartupService.js';
 import { installPanelBridge } from './protocol/devtoolsBridge.js';
-import { setupIndexBridge } from './protocol/indexBridgeSetup.js';
+import { setupIndexBridge } from './protocol/indexBridgeSetup.mjs';
 import { messageDispatcher } from './protocol/MessageDispatcher.js';
 import {
   handleRawNetworkEntry,
@@ -26,12 +26,13 @@ import {
   initEntityDefsLifecycle,
   resolveMissingCityEntitiesFromMap,
   setLastStartupMsg,
-} from './state/indexEntityDefs.js';
+} from './state/indexEntityDefs.mjs';
 import {
   setupPanelContainers,
   setupPanelHeader,
 } from './ui/containerBinding.js';
 import { initIndexUiBindings } from './ui/indexUiBindings.js';
+import { installPanelResizeHandles } from './ui/panelResizeRegistry.js';
 import { initializeUIBindings } from './ui/renderBindings.js';
 import { initTheme } from './ui/themeManager.js';
 import { isDebugEnabled, onDebugToggle, toggleDebug } from './utils/logger.js';
@@ -46,7 +47,7 @@ import {
   greatbuilding,
   output,
   targets,
-} from './vars/state.js';
+} from './vars/state.mjs';
 
 initializeUIBindings();
 
@@ -66,15 +67,17 @@ if (typeof window !== 'undefined') {
   initEntityDefsLifecycle(window);
 }
 
-export var debugEnabled = isDebugEnabled();
+export let debugEnabled = isDebugEnabled();
 onDebugToggle((enabled) => {
   debugEnabled = enabled;
 });
-export var darkMode = browser?.devtools?.panels?.themeName;
-export var title = setupPanelHeader({ darkMode, onToggleDebug: toggleDebug });
-export var content = document.createElement('main');
+export let darkMode = browser?.devtools?.panels?.themeName;
+export let title = setupPanelHeader({ darkMode, onToggleDebug: toggleDebug });
+export let content = document.createElement('main');
 document.body.appendChild(content);
 content.id = 'content';
+const cleanupPanelResizeHandles = installPanelResizeHandles(content);
+window.addEventListener('unload', cleanupPanelResizeHandles, { once: true });
 if (darkMode === 'dark') content.className = 'text-light bg-dark';
 
 if (typeof document !== 'undefined') {
@@ -138,8 +141,8 @@ export {
   logRpcMessage,
   rpcLog,
 };
-export * from './vars/state.js';
-export * from './state/indexEntityDefs.js';
+export * from './vars/state.mjs';
+export * from './state/indexEntityDefs.mjs';
 export { processMetadataEntry, processMetadataData };
 export { renderTreasuryPanel as processTreasuryData } from './ui/panelDispatcher.js';
 
@@ -147,7 +150,7 @@ let lastStartupMsg = null;
 let pendingStartupMsg = null;
 let inspectedWorldId = null;
 let gameVersion = 0;
-export var language =
+export let language =
   (typeof window !== 'undefined' &&
     (window.navigator?.userLanguage || window.navigator?.language)) ||
   'en';

@@ -119,6 +119,7 @@ module.exports = (env = {}, argv = {}) => {
           terserOptions: {
             ecma: 2020,
             compress: {
+              passes: 2,
               drop_console: false,
               pure_funcs: [],
             },
