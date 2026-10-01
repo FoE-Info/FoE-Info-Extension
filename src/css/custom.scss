@@ -57,6 +57,32 @@ p,
 
 .foe-panel-body {
   line-height: 1.4;
+  padding-right: 10px;
+}
+
+.foe-resize-handle {
+  display: block;
+  width: 100%;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 32px;
+    margin: auto;
+    border-top: 3px double currentColor;
+  }
+
+  &[hidden] {
+    display: none;
+  }
 }
 
 .tabular-nums {
@@ -117,6 +143,7 @@ p,
   }
 
   &:not(.show) {
+    height: 0 !important;
     display: grid !important; // override Bootstrap's display: none so grid-template-rows transitions
     visibility: hidden;
     overflow: hidden !important;
@@ -312,7 +339,7 @@ p,
 
 .foe-copy-btn:hover,
 .foe-copy-btn:focus-visible {
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: $yellow-900;
   text-decoration: none;
 }
 
@@ -517,7 +544,143 @@ svg {
 }
 
 .alert-dismissible .btn-close {
-  padding: 0.6rem 0.6rem;
+  top: 6px;
+  right: 6px;
+  width: 14px;
+  height: 14px;
+  padding: 3px;
+}
+
+#content {
+  padding-right: 4px;
+}
+
+.alert p[id$='Label'],
+.foe-original-card > .d-flex:first-child {
+  font-size: 13px;
+  line-height: 20px;
+  min-height: 24px;
+}
+
+.alert > p[id$='Label'] {
+  padding-right: 28px;
+}
+.alert:has(> .right-button) > p[id$='Label'] {
+  padding-right: 76px;
+}
+
+#armyTextLabel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 8px;
+
+  .army-heading,
+  .army-total {
+    white-space: nowrap;
+  }
+
+  #armyUnits {
+    display: contents;
+  }
+}
+.alert p[id$='Label'] .header-icon,
+.foe-original-card .header-icon {
+  font-size: 13px;
+  line-height: 20px;
+  margin-right: 4px;
+}
+
+.alert > .right-button {
+  position: absolute;
+  top: 6px;
+  right: 32px;
+  margin: 0;
+}
+
+.alert:not(:has(> .btn-close)) > .right-button {
+  right: 8px;
+}
+.alert > .right-button,
+.foe-copy-btn {
+  font-size: 9.75px;
+  line-height: 1;
+  padding: 0.35em 0.65em;
+}
+
+.alert [data-i18n='copy'],
+.foe-copy-btn {
+  font-size: 9.75px;
+  line-height: 1;
+  font-weight: 700;
+  padding: 0.35em 0.65em;
+  border: 0;
+  border-radius: 50rem;
+}
+
+.foe-copy-btn {
+  border: 0;
+  color: #fff;
+  background-color: $yellow-800;
+}
+
+// Match Guild Overview: title and controls participate in the same header row.
+.guild-overview-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+
+  > p {
+    min-width: 0;
+  }
+
+  .header-icon {
+    flex-shrink: 0;
+  }
+
+  .right-button,
+  .btn-close {
+    position: static;
+    margin: 0;
+    flex-shrink: 0;
+  }
+}
+
+.alert:has(> p[id$='Label']) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  column-gap: 6px;
+
+  > * {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  > p[id$='Label'] {
+    grid-column: 1;
+    grid-row: 1;
+    padding-right: 0;
+    align-self: center;
+  }
+
+  > .right-button {
+    grid-column: 2;
+    grid-row: 1;
+    position: static;
+    margin: 0;
+    align-self: center;
+    font-size: 9.75px;
+    line-height: 1;
+    padding: 0.35em 0.65em;
+  }
+
+  > .btn-close {
+    grid-column: 3;
+    grid-row: 1;
+    position: static;
+    align-self: center;
+  }
 }
 
 hr {
@@ -660,15 +823,30 @@ hr {
 }
 
 .resize {
-  resize: vertical;
+  resize: none;
   overflow: auto;
 }
 
 .resize-both {
-  resize: both;
+  resize: none;
   overflow: auto;
   min-width: 200px;
   max-width: 100%;
+}
+
+.foe-resizable-body {
+  overflow: hidden !important;
+
+  &:not(.collapse) {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  > .foe-panel-scroll {
+    min-height: 0;
+    min-width: 0;
+    overflow: auto;
+  }
 }
 
 .popover {
@@ -771,6 +949,7 @@ hr {
   color: #e9ecef;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   max-width: min(320px, calc(100vw - 16px));
+  width: min(280px, calc(100vw - 16px));
   max-height: min(24em, calc(100vh - 24px));
   overflow-y: auto;
   overflow-x: hidden;
@@ -782,7 +961,7 @@ hr {
   position: fixed;
   position-anchor: --active-popover-trigger;
   top: anchor(bottom);
-  left: anchor(start);
+  left: clamp(8px, anchor(start), max(8px, calc(100vw - 288px)));
   position-area: bottom span-all;
   position-try-fallbacks:
     flip-block,
@@ -873,6 +1052,21 @@ hr {
         color: #e9ecef;
       }
     }
+  }
+}
+
+#foe-popover .foe-ignore-list a,
+.popover .foe-ignore-list a {
+  display: block;
+  padding: 2px 0;
+  color: #e9ecef;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    text-decoration: none;
   }
 }
 
@@ -1115,4 +1309,137 @@ hr {
 }
 .material-icons-outlined.md-light.md-inactive {
   color: rgba(255, 255, 255, 0.3);
+}
+
+// Treasury tables inherit their card colors rather than Bootstrap's white cells.
+.treasury-history-table {
+  width: max-content;
+  min-width: 100%;
+  th,
+  td,
+  th.text-start,
+  td.text-start {
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+  color: inherit;
+  --bs-table-bg: transparent;
+  --bs-table-color: inherit;
+  --bs-table-accent-bg: transparent;
+
+  th,
+  td {
+    background: transparent;
+    color: inherit;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+}
+
+.treasury-contributions-scroll {
+  overflow: auto;
+  max-height: 320px;
+
+  table {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+  }
+}
+
+.treasury-members-table {
+  table-layout: fixed;
+  thead th {
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+}
+
+// GE tables keep complete columns available through their own scroll viewport.
+#buildingCostText {
+  &:not(.show) {
+    height: 0 !important;
+  }
+
+  table {
+    min-width: max-content;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+    word-break: normal;
+  }
+}
+
+#geChampionshipText,
+#geContributionText {
+  padding-right: 10px;
+  scrollbar-gutter: stable;
+
+  > div {
+    overflow: auto !important;
+  }
+
+  table {
+    min-width: 320px;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+    word-break: normal;
+  }
+}
+
+// Controls retain fixed dimensions when the title wraps at narrow widths.
+.alert [data-i18n='copy'],
+.foe-copy-btn {
+  box-sizing: border-box;
+  min-width: 36px;
+  height: 17px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.alert-dismissible .btn-close {
+  box-sizing: content-box;
+  min-width: 14px;
+  min-height: 14px;
+  flex-shrink: 0;
+}
+
+.bg-purple {
+  background-color: #6f42c1;
+}
+.foe-visited-city .foe-copy-btn {
+  background-color: #6c757d;
+}
+.foe-visited-city .foe-copy-btn:hover,
+.foe-visited-city .foe-copy-btn:focus-visible {
+  background-color: #565e64;
+}
+
+// Use a light tint of each panel's text color for every Copy control.
+.alert [data-i18n='copy'],
+.alert .foe-copy-btn {
+  color: inherit !important;
+  background-color: color-mix(
+    in srgb,
+    currentColor 15%,
+    transparent
+  ) !important;
+
+  &:hover,
+  &:focus-visible {
+    background-color: color-mix(
+      in srgb,
+      currentColor 25%,
+      transparent
+    ) !important;
+  }
 }
