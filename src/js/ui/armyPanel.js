@@ -8,6 +8,10 @@
 
 const { createLogger } = require('../utils/logger.js');
 const { armyState } = require('../state/ArmyState.js');
+const { escapeHTML } = require('../utils/escape.js');
+const { fEraAbbreviation } = require('../calc/eraMapping.js');
+const { copyPlainText } = require('../utils/copy.js');
+const { formatArmyCopy } = require('./armyCopy.js');
 
 const logger = createLogger('ArmyPanel');
 
@@ -20,8 +24,8 @@ const safeRequire = (loader) => {
 };
 
 const element = safeRequire(() => require('./AddElement.js'));
-const collapse = safeRequire(() => require('../fn/collapse.js'));
-const helper = safeRequire(() => require('../fn/helper.js'));
+const collapse = safeRequire(() => require('../fn/collapse.mjs'));
+const helper = safeRequire(() => require('../fn/helper.mjs'));
 const panelResize = safeRequire(() => require('./panelResize.js'));
 
 let armyResizeBinding = null;
@@ -76,29 +80,50 @@ function renderArmyPanel(params = {}) {
 
   let armyHTML = `<div class="alert alert-success alert-dismissible show collapsed" role="alert">`;
   armyHTML += closeBtn;
+  armyHTML += `<button type="button" id="armyCopyID" class="badge rounded-pill bg-success right-button" style="display: ${isCollapsed ? 'none' : 'block'}" data-i18n="copy">Copy</button>`;
   armyHTML += `<p id="armyTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#armyText" aria-expanded="${!isCollapsed}" aria-controls="armyText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">`;
-  armyHTML += iconHtml;
-  armyHTML += `<strong><span data-i18n="army_title">Army</span>:</strong> <span id="armyUnits" class="ms-2">${
+  armyHTML += `<span class="army-heading">${iconHtml}<strong><span data-i18n="army_title">Army</span>:</strong></span> <span id="armyUnits">${
     isCollapsed ?
-      `<span data-i18n="rogues">Rogues</span>: ${rogues.toLocaleString()} <span data-i18n="army_units">Units</span>: ${allUnits.toLocaleString()}`
+      `<span class="army-total"><span data-i18n="army_units">Units</span>: ${allUnits.toLocaleString()}</span> <span class="army-total"><span data-i18n="rogues">Rogues</span>: ${rogues.toLocaleString()}</span>`
     : ''
   }</span></p>`;
   armyHTML += `<div id="armyText" style="height: ${armySize}px" class="overflow-y resize collapse ${
     isCollapsed ? '' : 'show'
-  }"><p class="">`;
+  }"><div class="overflow-y">`;
   const diffHtml =
     diff !== 0 ?
       ` <span class="${diff > 0 ? 'green' : 'red'}">${diff > 0 ? '+' : ''}${diff}</span>`
     : '';
-  armyHTML += `<span id="armyUnits2"><span data-i18n="rogues">Rogues</span>: ${rogues.toLocaleString()}</span>${diffHtml}<br><span id="armyUnits3"><span data-i18n="army_units">Units</span>: ${allUnits.toLocaleString()}</span><br>`;
+  armyHTML += `<div class="mb-2"><strong data-i18n="total">Total</strong><br><span id="armyUnits3"><span data-i18n="army_units">Units</span>: ${allUnits.toLocaleString()}</span><br><span id="armyUnits2"><span data-i18n="rogues">Rogues</span>: ${rogues.toLocaleString()}</span>${diffHtml}</div>`;
 
   const resolveAgeLevel = getAgeLevel || helper?.fLevelfromAge || (() => 0);
-  const armyText = unitsPerEra
-    .sort((a, b) => resolveAgeLevel(b.era) - resolveAgeLevel(a.era))
-    .map((item) => item.text)
-    .join('<br>');
+  const sortedUnits = [...unitsPerEra].sort(
+    (a, b) => resolveAgeLevel(b.era) - resolveAgeLevel(a.era),
+  );
+  armyHTML += `<table class="goods-table w-100"><thead><tr><th scope="col" class="text-start"><span data-i18n="type">Type</span></th><th scope="col" class="text-end"><span data-i18n="amount">Amount</span></th></tr></thead><tbody>`;
+  let previousEra = null;
+  for (const item of sortedUnits) {
+    if (item.era !== previousEra) {
+      armyHTML += `<tr class="goods-era-header"><th colspan="2" scope="rowgroup">${escapeHTML(fEraAbbreviation(item.era))}</th></tr>`;
+      previousEra = item.era;
+    }
+    if (item.name == null || item.amount == null) {
+      armyHTML += `<tr><td colspan="2">${item.text || ''}</td></tr>`;
+      continue;
+    }
+    const change = Number(item.change) || 0;
+    const changeHtml =
+      change ?
+        ` <span class="${change > 0 ? 'green' : 'red'}">${change > 0 ? '+' : ''}${change.toLocaleString()}</span>`
+      : '';
+    armyHTML += `<tr><td class="text-start">${escapeHTML(item.name)}</td><td class="text-end">${Number(item.amount).toLocaleString()}${changeHtml}</td></tr>`;
+  }
+  targetDiv.innerHTML = armyHTML + `</tbody></table></div></div></div>`;
 
-  targetDiv.innerHTML = armyHTML + armyText + `</p></div></div>`;
+  document.getElementById('armyCopyID')?.addEventListener('click', () => {
+    const body = document.getElementById('armyText');
+    if (body) copyPlainText(formatArmyCopy(body));
+  });
 
   const labelEl = document.getElementById('armyTextLabel');
   if (labelEl && collapse && typeof collapse.fCollapseArmy === 'function') {
@@ -170,7 +195,7 @@ function renderArmyPanel(params = {}) {
   }
 
   if (armyDiv && helper && typeof helper.translateContainer === 'function') {
-    helper.translateContainer(armyDiv);
+    helper.translateContainer(targetDiv);
   }
 
   logger.debug('army panel rendered', {

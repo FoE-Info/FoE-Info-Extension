@@ -6,21 +6,21 @@ let defaultState = { armyDIV: null, MilitaryDefs: [] };
 
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    globals = require('../fn/globals.js');
+    globals = require('../fn/globals.mjs');
   } catch {}
   try {
-    helper = require('../fn/helper.js');
+    helper = require('../fn/helper.mjs');
   } catch {}
   try {
-    const showOpt = require('../vars/showOptions.js');
+    const showOpt = require('../vars/showOptions.mjs');
     showOptions = showOpt.showOptions || showOpt;
   } catch {}
   try {
-    defaultState = require('../vars/state.js');
+    defaultState = require('../vars/state.mjs');
   } catch {}
 } else {
   try {
-    globals = require('../fn/globals.js');
+    globals = require('../fn/globals.mjs');
   } catch {}
 }
 
@@ -196,6 +196,9 @@ function armyUnitManagementService(msg, deps = {}) {
           ArmyUnits[unitTypeId] = units;
           unitsPerEra.push({
             era: eraId,
+            name: unitName,
+            amount: units,
+            change: units - ArmyUnits[unitTypeId],
             text: `${eraText}: ${unitName} ${units}`,
           });
         } else {
@@ -205,6 +208,9 @@ function armyUnitManagementService(msg, deps = {}) {
           }
           unitsPerEra.push({
             era: eraId,
+            name: unitName,
+            amount: units,
+            change: units - ArmyUnits[unitTypeId],
             text: `${eraText}: ${unitName} ${units} ${diffHtml}`.trimEnd(),
           });
         }
@@ -218,8 +224,8 @@ function armyUnitManagementService(msg, deps = {}) {
     const diff = rogues - (ArmyUnits['rogue'] ?? 0);
     const depsGlobals = deps.globals || globals;
     const rawArmySize =
-      depsGlobals?.toolOptions?.armySize ??
       deps.toolOptions?.armySize ??
+      depsGlobals?.toolOptions?.armySize ??
       globals?.toolOptions?.armySize;
     const armySize =
       typeof rawArmySize === 'number' && rawArmySize >= 50 ? rawArmySize : 185;

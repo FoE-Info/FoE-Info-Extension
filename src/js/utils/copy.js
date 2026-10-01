@@ -1,7 +1,8 @@
+const { htmlToText } = require('./html.mjs');
 /** Clipboard copy helper with a shared live-region status announcement. */
 let debug = null;
 try {
-  debug = require('../state/state.js').debug;
+  debug = require('../state/state.mjs').debug;
 } catch {}
 
 let i18n = null;
@@ -80,14 +81,14 @@ function fGBInfoCopy() {
 }
 
 function DonationCopy() {
-  var copytext =
+  let copytext =
     typeof document !== 'undefined' ?
       document.getElementById('copyText')
     : null;
   if (!copytext) return;
-  var selection = window.getSelection();
+  let selection = window.getSelection();
   selection.removeAllRanges();
-  var range = document.createRange();
+  let range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
   execCopyCommand();
@@ -95,16 +96,16 @@ function DonationCopy() {
 
 function fCityStatsCopy() {
   if (typeof document === 'undefined') return;
-  var labelEl = document.getElementById('citystatsLabel');
-  var textEl = document.getElementById('citystatsText');
+  let labelEl = document.getElementById('citystatsLabel');
+  let textEl = document.getElementById('citystatsText');
   if (!labelEl && !textEl) return;
-  var cityStatsHTML =
+  let cityStatsHTML =
     (labelEl ? labelEl.innerHTML + '<br>' : '') +
     (textEl ? textEl.innerHTML : '');
   if (!debug) return;
-  var selection = window.getSelection();
+  let selection = window.getSelection();
   selection.removeAllRanges();
-  var range = document.createRange();
+  let range = document.createRange();
   debug.innerHTML = cityStatsHTML;
   range.selectNode(debug);
   selection.addRange(range);
@@ -113,42 +114,42 @@ function fCityStatsCopy() {
 }
 
 function fFriendsCopy() {
-  var copytext =
+  let copytext =
     typeof document !== 'undefined' ?
       document.getElementById('friendsText2')
     : null;
   if (!copytext) return;
-  var selection = window.getSelection();
+  let selection = window.getSelection();
   selection.removeAllRanges();
-  var range = document.createRange();
+  let range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
   execCopyCommand();
 }
 
 function fGuildCopy() {
-  var copytext =
+  let copytext =
     typeof document !== 'undefined' ?
       document.getElementById('guildText2')
     : null;
   if (!copytext) return;
-  var selection = window.getSelection();
+  let selection = window.getSelection();
   selection.removeAllRanges();
-  var range = document.createRange();
+  let range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
   execCopyCommand();
 }
 
 function fHoodCopy() {
-  var copytext =
+  let copytext =
     typeof document !== 'undefined' ?
       document.getElementById('hoodText2')
     : null;
   if (!copytext) return;
-  var selection = window.getSelection();
+  let selection = window.getSelection();
   selection.removeAllRanges();
-  var range = document.createRange();
+  let range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
   execCopyCommand();
@@ -161,15 +162,15 @@ function BattlegroundCopy() {
 
 function ExpeditionCopy(targetId = 'geContributionText') {
   if (typeof document === 'undefined') return;
-  var copytext =
+  let copytext =
     (targetId ? document.getElementById(targetId) : null) ||
     document.getElementById('geContributionText') ||
     document.getElementById('geChampionshipText') ||
     document.getElementById('expeditionText');
   if (!copytext) return;
-  var selection = window.getSelection();
+  let selection = window.getSelection();
   selection.removeAllRanges();
-  var range = document.createRange();
+  let range = document.createRange();
   range.selectNode(copytext);
   selection.addRange(range);
   execCopyCommand();
@@ -228,19 +229,19 @@ async function copyToClipboard(element) {
   if (!el) return;
   let html = el.innerHTML;
   addToClipboard(element, html);
-  html = html
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/tr>/gi, '\n')
-    .replace(/<\/p>/gi, '\n')
-    .replace(/<[^>]+>/g, '');
+  html = htmlToText(html, { table: true });
 
+  return copyPlainText(html);
+}
+
+async function copyPlainText(text) {
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      await navigator.clipboard.writeText(html);
+      await navigator.clipboard.writeText(text);
     } else {
       const temp = document.createElement('textarea');
       document.body.appendChild(temp);
-      temp.value = html;
+      temp.value = text;
       temp.select();
       document.execCommand('copy');
       temp.remove();
@@ -253,11 +254,11 @@ async function copyToClipboard(element) {
 }
 
 function addToClipboard(element, html) {
-  var clipboard = document.getElementById('clipboard');
+  let clipboard = document.getElementById('clipboard');
 
   if (clipboard == null) {
     clipboard = document.createElement('div');
-    var content = document.getElementById('content');
+    let content = document.getElementById('content');
     content.appendChild(clipboard);
   }
 
@@ -279,6 +280,8 @@ function copyNode(node) {
 }
 
 module.exports = {
+  copyToClipboard,
+  copyPlainText,
   fClipboardCopy,
   DonorCopy,
   DonorCopy2,

@@ -120,3 +120,41 @@ test('Copy Utilities Null-Safety Suite', async (t) => {
     },
   );
 });
+
+test('exported clipboard helper writes both contribution tables with cell separators', async () => {
+  const previousDocument = globalThis.document;
+  const previousNavigator = Object.getOwnPropertyDescriptor(
+    globalThis,
+    'navigator',
+  );
+  let copied;
+  try {
+    globalThis.document = {
+      querySelector: () => ({
+        innerHTML:
+          '<table><tr><th>Player</th><th>Goods</th></tr><tr><td>A</td><td>12</td></tr></table><table><tr><th>Resource</th><th>Balance</th></tr><tr><td>X</td><td>34</td></tr></table>',
+      }),
+      getElementById: () => ({ insertAdjacentHTML() {} }),
+    };
+    Object.defineProperty(globalThis, 'navigator', {
+      configurable: true,
+      value: {
+        clipboard: {
+          async writeText(value) {
+            copied = value;
+          },
+        },
+      },
+    });
+    await copyPkg.copyToClipboard('#treasuryContributionsText');
+    assert.equal(
+      copied,
+      'Player\tGoods\t\nA\t12\t\nResource\tBalance\t\nX\t34\t\n',
+    );
+  } finally {
+    globalThis.document = previousDocument;
+    if (previousNavigator)
+      Object.defineProperty(globalThis, 'navigator', previousNavigator);
+    else delete globalThis.navigator;
+  }
+});

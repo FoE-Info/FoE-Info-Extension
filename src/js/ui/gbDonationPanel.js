@@ -37,21 +37,21 @@ try {
 
 let collapse = {};
 try {
-  collapse = require('../fn/collapse.js');
+  collapse = require('../fn/collapse.mjs');
 } catch {
   collapse = { collapseDonation: false };
 }
 
 let copy = {};
 try {
-  copy = require('../fn/copy.js');
+  copy = require('../fn/copy.mjs');
 } catch {}
 
 const { escapeHTML } = require('../utils/escape.js');
 
 let helper = {};
 try {
-  helper = require('../fn/helper.js');
+  helper = require('../fn/helper.mjs');
 } catch {
   helper = { fGBsname: (s) => s, escapeHTML };
 }
@@ -72,13 +72,13 @@ const { renderGenericReward } = require('./renderRewardsPanel.js');
 let renderUnifiedReward = null;
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    ({ showReward: renderUnifiedReward } = require('./RewardRenderer.js'));
+    ({ showReward: renderUnifiedReward } = require('./RewardRenderer.mjs'));
   } catch {}
 }
 
 let showOptionsModule;
 try {
-  showOptionsModule = require('../vars/showOptions.js');
+  showOptionsModule = require('../vars/showOptions.mjs');
 } catch {
   showOptionsModule = { showOptions: {} };
 }
@@ -86,7 +86,7 @@ const defaultOptions = showOptionsModule.showOptions || {};
 
 let stateModule;
 try {
-  stateModule = require('../vars/state.js');
+  stateModule = require('../vars/state.mjs');
 } catch {
   stateModule = {};
 }
@@ -180,7 +180,7 @@ function getDonations_new(place, safe = [], donateSuggest = []) {
 function getPlayerLink(playerName, playerId, gameOrigin) {
   let stateMod = null;
   try {
-    stateMod = require('../vars/state.js');
+    stateMod = require('../vars/state.mjs');
   } catch {}
   const name =
     playerName ||
@@ -703,7 +703,6 @@ function buildClassicDonationHeader(options = {}) {
     iconHtml,
     closeBtn,
     copyBtn,
-    packageBadgeHtml,
     getPlayerLink: getPlayerLinkFn = getPlayerLink,
     PlayerName,
     GBselected,
@@ -717,7 +716,7 @@ function buildClassicDonationHeader(options = {}) {
             ${closeBtn}
             <p id="freeTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#donationText3" aria-expanded="${!isCollapsed}" aria-controls="donationText3" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
       ${iconHtml}
-            <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong>${packageBadgeHtml}</p>`;
+            <strong><span data-i18n="gb">GB</span> <span data-i18n="donation">Donation</span>:</strong></p>`;
   html += copyBtn;
   html += `<div id="donationText3" class="collapse ${
     isCollapsed ? '' : 'show'
@@ -868,13 +867,6 @@ function renderGbDonationPanel(params = {}) {
 
   const escapeFn = depHelper?.escapeHTML || escapeHTML;
   const gbShortNameFn = depHelper?.fGBsname || ((s) => String(s ?? ''));
-  const formatNumberFn =
-    depHelper?.fFormatNumber ||
-    ((n) =>
-      Number.isFinite(Number(n)) ?
-        Number(n).toLocaleString('en-US')
-      : String(n));
-
   const playerShortName =
     PlayerName && PlayerName.length > 5 && PlayerName.indexOf(' ') > 0 ?
       PlayerName.substr(0, PlayerName.indexOf(' '))
@@ -903,11 +895,6 @@ function renderGbDonationPanel(params = {}) {
     depElement.copy ?
       depElement.copy('donationCopyID', 'secondary', 'right', isCollapsed)
     : '<span id="donationCopyID" class="badge bg-secondary float-end" data-i18n="copy">Copy</span>';
-  const packageBadgeHtml =
-    availablePackageForgePoints > 0 ?
-      `<span class="badge bg-secondary ms-1"><span data-i18n="packages">Packages</span>: ${formatNumberFn(availablePackageForgePoints)} FP</span>`
-    : '';
-
   const isGbLocked = Boolean(
     GBselected.max_level > 0 && GBselected.level >= GBselected.max_level,
   );
@@ -917,7 +904,6 @@ function renderGbDonationPanel(params = {}) {
     iconHtml,
     closeBtn,
     copyBtn,
-    packageBadgeHtml,
     getPlayerLink,
     PlayerName,
     GBselected,
@@ -955,7 +941,10 @@ function renderGbDonationPanel(params = {}) {
   });
 
   const { foundPlace } = placeResult;
-  const copyText = foundPlace ? prefixCopyText + placeResult.copyText : '';
+  const copyText =
+    foundPlace && placeResult.copyText ?
+      prefixCopyText + placeResult.copyText + (donationSuffix || '') + '</div>'
+    : '';
   const olddonationHTML = headerOldDonationHTML + placeResult.olddonationHTML;
   const newdonationHTML = placeResult.newdonationHTML;
 
@@ -964,7 +953,7 @@ function renderGbDonationPanel(params = {}) {
       donation2DIV.innerHTML =
         useNewDonationPanel ?
           `${newdonationHTML}</div>`
-        : `${olddonationHTML}${copyText}${donationSuffix || ''}</div>`;
+        : `${olddonationHTML}${copyText}</div></div>`;
 
       const eventResult = attachGbDonationPanelEvents({
         ...params,

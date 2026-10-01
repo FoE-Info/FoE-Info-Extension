@@ -7,6 +7,28 @@ const { GreatBuildingsState } = statePkg;
 const { bindGreatBuildingsPanels } = bindingPkg;
 
 test('greatBuildingsRenderBinding - renders the published payloads', async (t) => {
+  await t.test(
+    'default binding renders the donation calculation without an injected renderer',
+    () => {
+      const state = new GreatBuildingsState();
+      const donation2DIV = { innerHTML: '', style: {} };
+      const off = bindGreatBuildingsPanels(state, { repairOutput: () => {} });
+      state.setDonation({
+        donation2DIV,
+        GBselected: { name: 'The Arc', level: 80, current: 100, total: 1000 },
+        GBrewards: [100, 50, 25, 10, 0],
+        Top: [0, 0, 0, 0, 0, 0],
+        PlayerID: 1,
+        PlayerName: 'GB Owner',
+        MyInfo: { id: 2, name: 'Investor' },
+        showOptions: { showDonation: true, hideUnsafe: false },
+      });
+      off();
+      assert.ok(donation2DIV.innerHTML.length > 0);
+      assert.match(donation2DIV.innerHTML, /The Arc/);
+      assert.equal(donation2DIV.style.display, '');
+    },
+  );
   await t.test('forwards the donors payload to renderDonors', () => {
     const state = new GreatBuildingsState();
     const calls = [];

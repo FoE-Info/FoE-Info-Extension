@@ -76,7 +76,6 @@ test('gbDonationFormatters Helper Suite', async (t) => {
         iconHtml: '<i>-</i>',
         closeBtn: '<btn>x</btn>',
         copyBtn: '<btn>copy</btn>',
-        packageBadgeHtml: '<span>Packages</span>',
         getPlayerLink: (n) => `<a href="#">${n}</a>`,
         PlayerName: 'LordVader',
         GBselected: { name: 'Death Star', level: 10, connected: false },

@@ -11,19 +11,19 @@
 const { calculateInvestments } = require('../calc/InvestedCalculator.js');
 let element = {};
 try {
-  element = require('./AddElement.js');
+  element = require('../fn/AddElement.mjs');
 } catch {}
 let collapse = {};
 try {
-  collapse = require('../fn/collapse.js');
+  collapse = require('../fn/collapse.mjs');
 } catch {}
 let copy = {};
 try {
-  copy = require('../fn/copy.js');
+  copy = require('../fn/copy.mjs');
 } catch {}
 let helper = {};
 try {
-  helper = require('../fn/helper.js');
+  helper = require('../fn/helper.mjs');
 } catch {}
 let storage = {};
 try {
@@ -31,12 +31,13 @@ try {
 } catch {}
 let showOptions = {};
 try {
-  showOptions = require('../state/showOptions.js').showOptions || {};
+  showOptions = require('../state/showOptions.mjs').showOptions || {};
 } catch {}
 let state = {};
 try {
-  state = require('../state/state.js');
+  state = require('../state/state.mjs');
 } catch {}
+const { applyCardVisibility, getCurrentView } = require('./cardVisibility.js');
 const { investedState } = require('../state/GreatBuildingDomainState.js');
 
 const cityinvested = state.cityinvested;
@@ -152,6 +153,8 @@ function renderInvestedPanel(rawContributions, arcBonusPercent) {
   html += `</div></div>`;
 
   targetEl.innerHTML = html;
+  targetEl.style.display = '';
+  if (getCurrentView()) applyCardVisibility();
 
   // Bind event listeners
   const copyBtn = document.getElementById('investedCopyID');

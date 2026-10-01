@@ -8,9 +8,11 @@
  * - Reactive store subscription (bindGreatBuildingsPanels)
  */
 
+const { copyPlainText } = require('../utils/copy.js');
 const { escapeHTML } = require('../utils/escape.js');
 const { createLogger } = require('../utils/logger.js');
 const { greatBuildingsState } = require('../state/GreatBuildingDomainState.js');
+const { renderGbDonationPanel } = require('./gbDonationPanel.js');
 
 const logger = createLogger('GreatBuildingsPanel');
 
@@ -19,23 +21,23 @@ try {
   element = require('./AddElement.js');
 } catch {
   try {
-    element = require('../fn/AddElement.js');
+    element = require('../fn/AddElement.mjs');
   } catch {}
 }
 
 let collapse = {};
 try {
-  collapse = require('../fn/collapse.js');
+  collapse = require('../fn/collapse.mjs');
 } catch {}
 
 let copy = {};
 try {
-  copy = require('../fn/copy.js');
+  copy = require('../fn/copy.mjs');
 } catch {}
 
 let helper = {};
 try {
-  helper = require('../fn/helper.js');
+  helper = require('../fn/helper.mjs');
 } catch {}
 
 let dateUtils = {};
@@ -55,7 +57,7 @@ try {
 
 let defaultShowOptions = {};
 try {
-  const showOptModule = require('../state/showOptions.js');
+  const showOptModule = require('../state/showOptions.mjs');
   defaultShowOptions = showOptModule.showOptions || showOptModule || {};
 } catch {
   defaultShowOptions = {};
@@ -464,6 +466,7 @@ function renderGbInfoPanel(
 
   let html = `<div class="alert alert-purple alert-dismissible show" role="status" aria-live="polite">`;
   html += closeBtnHtml;
+  html += `<button type="button" id="gbInfoCopyID" class="badge rounded-pill bg-purple right-button" style="display: ${isCollapsed ? 'none' : 'block'}" data-i18n="copy">Copy</button>`;
   html += `<p id="gbInfoTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#gbInfoCollapse" aria-expanded="${!isCollapsed}" aria-controls="gbInfoCollapse" class="pe-4 mb-0 cursor-pointer user-select-none" style="cursor: pointer; user-select: none;">`;
   html += iconHtml;
   html += ` <strong><span data-i18n="gb">GB</span> <span data-i18n="info">Info</span>:</strong></p>`;
@@ -490,6 +493,10 @@ function renderGbInfoPanel(
   html += `</div></div>`;
 
   targetEl.innerHTML = html;
+  targetEl.querySelector?.('#gbInfoCopyID')?.addEventListener('click', () => {
+    const body = targetEl.querySelector('#gbInfoCollapse');
+    if (body) copyPlainText(body.innerText || body.textContent);
+  });
 
   const labelEl =
     targetEl.querySelector ? targetEl.querySelector('#gbInfoTextLabel')
@@ -521,7 +528,7 @@ function bindGreatBuildingsPanels(
   {
     renderDonors = renderGbDonorsCard,
     renderInfo = renderGbInfoPanel,
-    renderDonation = null,
+    renderDonation = renderGbDonationPanel,
     repairOutput = repairGbOutput,
   } = {},
 ) {
