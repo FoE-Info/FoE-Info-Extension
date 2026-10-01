@@ -130,7 +130,7 @@ function installPanelBridge(targetWindow, handlers = {}) {
     // same-channel string from any other window is not evidence of anything.
     const parent = targetWindow.parent;
     if (parent && parent !== targetWindow && event.source !== parent) {
-      logger.warn('ignoring bridge message from a non-parent window');
+      logger.debug('ignoring bridge message from a non-parent window');
       return;
     }
     const payload = data.payload || {};

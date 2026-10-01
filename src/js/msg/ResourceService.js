@@ -21,11 +21,11 @@ if (typeof __webpack_require__ !== 'undefined') {
     storage = require('../fn/storage.js');
   } catch {}
   try {
-    const showOpt = require('../vars/showOptions.js');
+    const showOpt = require('../vars/showOptions.mjs');
     showOptions = showOpt.showOptions || showOpt;
   } catch {}
   try {
-    defaultState = require('../vars/state.js');
+    defaultState = require('../vars/state.mjs');
   } catch {}
 }
 
@@ -38,10 +38,15 @@ const ResourceNames = defaultState?.ResourceNames || {};
 let Resources = {};
 let availableFP = 0;
 let lastGoodsPayload = null;
-// Goods Inventory panel is unlocked by default when showGoods is enabled,
-// while respecting manual dismissal ([X]). Opening Market or Inventory restores it.
-let goodsPanelUnlocked = true;
+// Login resources are cached; an observed Inventory/Market opening reveals them.
+let goodsPanelUnlocked = false;
 let goodsPanelDismissed = false;
+let setCurrentView = () => {};
+
+function configurePresentation(callbacks = {}) {
+  if (typeof callbacks.setCurrentView === 'function')
+    setCurrentView = callbacks.setCurrentView;
+}
 
 function getResourceDefinitions(msg) {
   if (msg && msg.responseData) {
@@ -168,7 +173,15 @@ function lockGoodsPanel() {
   return false;
 }
 
+function resetGoodsPanelSession() {
+  setCurrentView('OWN_CITY');
+  goodsPanelUnlocked = false;
+  goodsPanelDismissed = false;
+  resourceState.requestClearGoods();
+}
+
 function onMarketOpened() {
+  setCurrentView('OWN_CITY');
   unlockGoodsPanel();
   const currentGoods = exportsObj.goods || Resources;
   if (!currentGoods || Object.keys(currentGoods).length === 0) {
@@ -243,6 +256,8 @@ function setShowOptions(opts) {
 }
 
 const exportsObj = {
+  configurePresentation,
+  resetGoodsPanelSession,
   ResourceDefs,
   ResourceNames,
   getResourceDefinitions,

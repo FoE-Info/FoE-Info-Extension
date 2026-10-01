@@ -10,6 +10,7 @@ const {
   setGameVersion,
   notifyGameVersionChange,
 } = require('./gameVersionTracker.js');
+const { isInventoryAsset } = require('../utils/inventorySignal.js');
 
 let logger = null;
 try {
@@ -38,12 +39,12 @@ try {
 
 let defaultState;
 try {
-  defaultState = require('../vars/state.js');
+  defaultState = require('../vars/state.mjs');
 } catch {}
 
 let defaultShowOptions;
 try {
-  defaultShowOptions = require('../vars/showOptions.js');
+  defaultShowOptions = require('../vars/showOptions.mjs');
 } catch {}
 
 let defaultCardVisibility;
@@ -119,13 +120,10 @@ function getType(type) {
 
 // --- Origin Validation (shared intake policy, §2.1) ---
 // The pure policy lives in the LEAF module src/js/utils/intakePolicy.js so
-// entry points that only need the URL predicate (src/js/devtools.js) do not
+// entry points that only need the URL predicate (src/js/devtools.mjs) do not
 // pull this dispatcher module's dependency subgraph. All symbols are
 // re-exported below to keep every existing consumer and test path unchanged.
 const {
-  GAME_API_PATH_PREFIXES,
-  FOE_GAME_HOST,
-  FOE_CDN_METADATA_HOSTS,
   evaluateRequestOrigin,
   isFoeNetworkUrl,
   evaluateDispatchToken,
@@ -464,6 +462,14 @@ function handleRawNetworkEntry(
   if (!reqUrl) return;
   const mergedDeps = getDeps(deps);
 
+  if (isInventoryAsset(reqUrl)) {
+    (
+      mergedDeps.onInventoryOpened ||
+      require('../msg/ResourceService.js').onMarketOpened
+    )();
+    return;
+  }
+
   const worldCheck = detectAndSyncWorldOrigin(reqUrl, mergedDeps);
   if (!worldCheck.accepted) {
     return;
@@ -549,7 +555,12 @@ function initNetworkListeners(deps = {}) {
   if (browserRef?.runtime?.onMessage?.addListener) {
     try {
       activeMessageListener = (msg, sender) => {
-        if (msg && msg.type === 'FOE_INFO_NET_DATA' && msg.url && msg.body) {
+        if (
+          msg &&
+          msg.type === 'FOE_INFO_NET_DATA' &&
+          msg.url &&
+          (msg.body || isInventoryAsset(msg.url))
+        ) {
           if (
             sender &&
             sender.tab &&

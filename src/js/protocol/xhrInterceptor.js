@@ -99,8 +99,12 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
     this.addEventListener('load', function () {
       try {
         const url = this._foeUrl || this.responseURL;
-        if (isFoeUrl(url)) {
-          if (debugEnabled) {
+        const inventory =
+          /^https:\/\/foeen\.innogamescdn\.com\/assets\/shared\/gui\/shop_inventory\//.test(
+            url,
+          );
+        if (inventory || isFoeUrl(url)) {
+          if (debugEnabled && !inventory) {
             console.debug(
               '[FoE-Info:XHRInterceptor] Intercepted XHR payload:',
               url,
@@ -114,8 +118,8 @@ if (typeof window !== 'undefined' && !window.__foe_info_xhr_patched) {
             {
               type: 'FOE_INFO_XHR',
               url: url,
-              body: this.responseText,
-              postData: this._foeBody,
+              body: inventory ? '' : this.responseText,
+              postData: inventory ? null : this._foeBody,
             },
             targetOrigin,
           );

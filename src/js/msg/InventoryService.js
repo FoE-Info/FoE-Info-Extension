@@ -147,6 +147,7 @@ class InventoryService {
     this.state = deps.state || null;
 
     this.getItems = this.getItems.bind(this);
+    this.updateItem = this.updateItem.bind(this);
     this.getGreatBuildings = this.getGreatBuildings.bind(this);
     this.setState = this.setState.bind(this);
   }
@@ -159,6 +160,7 @@ class InventoryService {
   register(dispatcher = messageDispatcher) {
     if (dispatcher && typeof dispatcher.register === 'function') {
       dispatcher.register('InventoryService', 'getItems', this.getItems);
+      dispatcher.register('InventoryService', 'updateItem', this.updateItem);
       dispatcher.register(
         'InventoryService',
         'getGreatBuildings',
@@ -180,11 +182,78 @@ class InventoryService {
     for (const item of this.items) {
       fpSum = fpSum.plus(item.getForgePointsValue());
     }
+    this.setTotalForgePoints(fpSum);
+
+    return {
+      success: true,
+      total: this.items.length,
+      totalForgePoints: this.totalForgePoints,
+      items: this.items,
+    };
+  }
+
+  updateItem(msg) {
+    const update = msg?.responseData;
+    if (
+      !update ||
+      typeof update !== 'object' ||
+      update.id == null ||
+      update.amount == null
+    )
+      return { success: false };
+    if (typeof update.amount !== 'number' && typeof update.amount !== 'string')
+      return { success: false };
+    let amount;
+    try {
+      amount = new BigNumber(update.amount);
+    } catch {
+      return { success: false };
+    }
+    if (!amount.isFinite() || amount.isNegative() || !amount.isInteger())
+      return { success: false };
+    const index = this.items.findIndex(
+      (item) => String(item.id) === String(update.id),
+    );
+    if (index < 0) return { success: false };
+    const previous = this.items[index];
+    const item = new InventoryItem({
+      ...previous.raw,
+      inStock: amount.toNumber(),
+    });
+    this.items[index] = item;
+    if (
+      !previous.getForgePointsValue().isZero() ||
+      !item.getForgePointsValue().isZero()
+    ) {
+      this.setTotalForgePoints(
+        this.items.reduce(
+          (sum, entry) => sum.plus(entry.getForgePointsValue()),
+          new BigNumber(0),
+        ),
+      );
+    }
+    return { success: true };
+  }
+
+  setTotalForgePoints(value) {
+    if (
+      !BigNumber.isBigNumber(value) &&
+      !['number', 'string', 'bigint'].includes(typeof value)
+    )
+      return this.totalForgePoints;
+    let fpSum;
+    try {
+      fpSum = new BigNumber(value);
+    } catch {
+      return this.totalForgePoints;
+    }
+    if (!fpSum.isFinite() || fpSum.isNegative() || !fpSum.isInteger())
+      return this.totalForgePoints;
     this.totalForgePoints = fpSum;
     this.lastUpdated = Date.now();
 
     try {
-      const state = this.state || require('../vars/state.js');
+      const state = this.state || require('../vars/state.mjs');
       if (state) {
         if (typeof state.setAvailablePacksFP === 'function') {
           state.setAvailablePacksFP(fpSum.toNumber());
@@ -200,12 +269,7 @@ class InventoryService {
       serviceDom.updateAvailableFpDisplay(fpSum.toString());
     }
 
-    return {
-      success: true,
-      total: this.items.length,
-      totalForgePoints: this.totalForgePoints,
-      items: this.items,
-    };
+    return this.totalForgePoints;
   }
 
   getGreatBuildings(msg) {

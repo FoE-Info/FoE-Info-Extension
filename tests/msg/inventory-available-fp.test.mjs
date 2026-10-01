@@ -102,7 +102,7 @@ test('InventoryService Available FP Dynamic Ingestion Suite', async (t) => {
     '3. state.js and state.d.ts export setAvailablePacksFP mutator',
     () => {
       const stateFile = fs.readFileSync(
-        path.resolve('src/js/state/state.js'),
+        path.resolve('src/js/state/state.mjs'),
         'utf8',
       );
       assert.match(
@@ -207,4 +207,47 @@ test('InventoryService Available FP Dynamic Ingestion Suite', async (t) => {
       assert.equal(plainState.availablePacksFP, 10);
     },
   );
+});
+
+test('inventory update notifications and authoritative GB package totals share one balance', async () => {
+  const { InventoryService } = inventoryPkg;
+  const state = { availablePacksFP: 0 };
+  const inv = new InventoryService({ state });
+  inv.getItems({
+    responseData: [
+      {
+        id: 1,
+        name: '10 Forge Points',
+        inStock: 100,
+        item: { __class__: 'ForgePointPackagePayload', value: 10 },
+      },
+    ],
+  });
+  assert.equal(state.availablePacksFP, 1000);
+  inv.updateItem({
+    responseData: { id: 1, amount: 92, __class__: 'InventoryItemUpdate' },
+  });
+  assert.equal(state.availablePacksFP, 920);
+  inv.updateItem({
+    responseData: { id: 1, amount: 92, __class__: 'InventoryItemUpdate' },
+  });
+  assert.equal(
+    state.availablePacksFP,
+    920,
+    'repeated absolute stock notification is not another deduction',
+  );
+  inv.updateItem({ responseData: { id: 1, amount: 0 } });
+  assert.equal(state.availablePacksFP, 0);
+  const gb = await import('../../src/js/msg/GreatBuildingsService.js');
+  const shared = { availablePacksFP: 206170 };
+  inventoryService.setState(shared);
+  inventoryService.setTotalForgePoints(206170);
+  assert.equal(
+    gb.getAvailablePackageForgePoints({ responseData: 206090 }),
+    206090,
+  );
+  assert.equal(shared.availablePacksFP, 206090);
+  assert.equal(inventoryService.getTotalForgePoints().toString(), '206090');
+  gb.getAvailablePackageForgePoints({ responseData: null });
+  assert.equal(shared.availablePacksFP, 206090);
 });

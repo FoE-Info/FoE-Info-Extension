@@ -2,6 +2,10 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import resourcePkg from '../../src/js/msg/ResourceService.js';
 import dispatcherPkg from '../../src/js/protocol/MessageDispatcher.js';
+import {
+  getCurrentView,
+  setCurrentView,
+} from '../../src/js/ui/cardVisibility.js';
 import { bindResourcePanel } from '../../src/js/ui/resourcePanel.js';
 import loggerPkg from '../../src/js/utils/logger.js';
 
@@ -52,6 +56,10 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
   };
 
   const goodsDiv = global.document.getElementById('goods');
+  resourcePkg.configurePresentation({ setCurrentView });
+  t.after(() =>
+    resourcePkg.configurePresentation({ setCurrentView: () => {} }),
+  );
   bindResourcePanel();
 
   const openMarket = async (method = 'getTradeList') => {
@@ -98,8 +106,8 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       assert.ok(resourcePkg.lastGoodsPayload);
       assert.equal(resourcePkg.availableFP, 12);
 
-      // Unlocked by default when showGoods is enabled, but here showGoods is false
-      assert.equal(resourcePkg.isGoodsPanelUnlocked(), true);
+      // Login never unlocks the panel.
+      assert.equal(resourcePkg.isGoodsPanelUnlocked(), false);
 
       // Verify DOM not rendered on login because showGoods is false
       assert.equal(goodsDiv.style.display, 'none');
@@ -107,7 +115,7 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
   );
 
   await t.test(
-    '2. When showGoods is enabled, hydrated resources render #goods; Market/Inventory triggers also refresh',
+    '2. Enabled goods remain hidden at login until a Market trigger',
     async () => {
       resourcePkg.setShowOptions({ showGoods: true });
       goodsDiv.innerHTML = '';
@@ -124,8 +132,8 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       };
       resourcePkg.getPlayerResources(loginPayload);
 
-      assert.equal(goodsDiv.style.display, '');
-      assert.ok(goodsDiv.innerHTML.includes('goodstable'));
+      assert.equal(goodsDiv.style.display, 'none');
+      assert.equal(goodsDiv.innerHTML, '');
 
       // Opening the market or inventory also triggers/refreshes it
       const res = await openMarket();
@@ -163,16 +171,18 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
   await t.test(
     '5. Reopening the market after dismissal unlocks and renders again',
     async () => {
+      setCurrentView('GBG');
       const res = await openMarket('getOpenOffers');
       assert.equal(res.succeeded, 1);
       assert.equal(resourcePkg.isGoodsPanelUnlocked(), true);
+      assert.equal(getCurrentView(), 'OWN_CITY');
       assert.equal(goodsDiv.style.display, '');
       assert.ok(goodsDiv.innerHTML.includes('goodstable'));
     },
   );
 
   await t.test(
-    '6. Debug mode bypasses the unlock guard so locked harvests still render',
+    '6. Debug mode respects the unlock guard for locked harvests',
     () => {
       resourcePkg.lockGoodsPanel();
       goodsDiv.innerHTML = '';
@@ -182,8 +192,8 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       setDebugEnabled(true);
       try {
         harvest({ wine: 111, stone: 222 });
-        assert.equal(goodsDiv.style.display, '');
-        assert.ok(goodsDiv.innerHTML.includes('goodstable'));
+        assert.equal(goodsDiv.style.display, 'none');
+        assert.equal(goodsDiv.innerHTML, '');
       } finally {
         setDebugEnabled(false);
       }
@@ -193,7 +203,7 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
   );
 
   await t.test(
-    '7. goodsSize defaults to 200px if stored value is collapsed/corrupted (< 80px)',
+    '7. goodsSize defaults to 290px if stored value is collapsed/corrupted (< 80px)',
     () => {
       // Simulate stored size corrupted by collapse (e.g. 35px)
       resourcePkg.setGlobals({
@@ -202,7 +212,7 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       });
 
       resourcePkg.renderGoodsPanel(undefined, true);
-      assert.ok(goodsDiv.innerHTML.includes('height: 200px'));
+      assert.ok(goodsDiv.innerHTML.includes('height: 290px'));
 
       // Valid custom size >= 80px is respected
       resourcePkg.setGlobals({
@@ -228,4 +238,24 @@ test('ResourceService Market & Trade Interaction Suite', async (t) => {
       'Special goods must include data-i18n="special_goods"',
     );
   });
+
+  await t.test(
+    'fight resource updates keep goods hidden in GBG and allow them again in Main City',
+    () => {
+      const previousView = getCurrentView();
+      try {
+        resourcePkg.setShowOptions({ showGoods: true });
+        resourcePkg.unlockGoodsPanel();
+        setCurrentView('GBG');
+        harvest({ wine: 80, stone: 90 });
+        assert.ok(goodsDiv.innerHTML.includes('goodstable'));
+        assert.equal(goodsDiv.style.display, 'none');
+        setCurrentView('OWN_CITY');
+        harvest({ wine: 85, stone: 95 });
+        assert.equal(goodsDiv.style.display, '');
+      } finally {
+        setCurrentView(previousView);
+      }
+    },
+  );
 });

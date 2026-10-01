@@ -98,8 +98,7 @@ function buildSandbox() {
 
 test('xhrInterceptor - operational catches log at debug level', async (t) => {
   await t.test('XHR load dispatch failure is logged in debug mode', () => {
-    const { ctx, fakeWindow, postedMessages, consoleCalls, messageListeners } =
-      buildSandbox();
+    const { ctx, fakeWindow, consoleCalls, messageListeners } = buildSandbox();
 
     vm.runInNewContext(interceptorSource, ctx, { timeout: 5000 });
 
@@ -140,7 +139,7 @@ test('xhrInterceptor - operational catches log at debug level', async (t) => {
   });
 
   await t.test('XHR load dispatch failure is silent when debug is off', () => {
-    const { ctx, fakeWindow, consoleCalls, messageListeners } = buildSandbox();
+    const { ctx, fakeWindow, consoleCalls } = buildSandbox();
 
     vm.runInNewContext(interceptorSource, ctx, { timeout: 5000 });
 
@@ -415,7 +414,7 @@ test('xhrInterceptor - WebSocket dispatch correlation', async (t) => {
 // matching the pattern from content-bridge-logging.test.mjs.
 
 const bridgeSource = readFileSync(
-  'src/js/protocol/contentBridge.js',
+  'src/js/protocol/contentBridge.mjs',
   'utf8',
 ).replace(/^import .*;\n/gm, '');
 
@@ -564,4 +563,69 @@ test('contentBridge - sendMessage failures log in debug mode', async (t) => {
       assert.equal(fwdLogs.length, 0, 'no debug log when debug is off');
     },
   );
+});
+
+test('Inventory URL hint traverses MAIN XHR, isolated bridge, and panel intake without reading response data', async () => {
+  const { initNetworkListeners, unbind } =
+    await import('../../src/js/protocol/networkListener.js');
+  const { ctx, fakeWindow, messageListeners } = buildSandbox();
+  let runtimeListener;
+  let opened = 0;
+  const browser = {
+    devtools: { inspectedWindow: { tabId: 1 } },
+    runtime: {
+      onMessage: {
+        addListener(fn) {
+          runtimeListener = fn;
+        },
+        removeListener() {},
+      },
+      async sendMessage(msg) {
+        runtimeListener(msg, { tab: { id: 1 } });
+      },
+    },
+  };
+  initNetworkListeners({ browser, onInventoryOpened: () => opened++ });
+  try {
+    fakeWindow.postMessage = (data) => {
+      for (const listener of messageListeners)
+        listener({
+          source: fakeWindow,
+          origin: fakeWindow.location.origin,
+          data,
+        });
+    };
+    vm.runInNewContext(interceptorSource, ctx);
+    const bridgeSource = readFileSync(
+      'src/js/protocol/contentBridge.mjs',
+      'utf8',
+    ).replace(/^import .*;\n/gm, '');
+    vm.runInNewContext(bridgeSource, {
+      ...ctx,
+      browser,
+      createLogger: () => ({ info() {}, debug() {} }),
+      setDebugEnabled() {},
+    });
+    const xhr = new ctx.XMLHttpRequest();
+    Object.defineProperty(xhr, 'responseText', {
+      get() {
+        throw Error('Inventory response body must not be read');
+      },
+    });
+    xhr.open(
+      'GET',
+      'https://foeen.innogamescdn.com/assets/shared/gui/shop_inventory/shop_inventory_0-822fc9d8d.json',
+    );
+    xhr.send();
+    for (const listener of xhr._loadListeners) listener.call(xhr);
+    assert.equal(opened, 1);
+    xhr.open(
+      'GET',
+      'https://attacker.test/assets/shared/gui/shop_inventory/shop_inventory_0-822fc9d8d.json',
+    );
+    for (const listener of xhr._loadListeners) listener.call(xhr);
+    assert.equal(opened, 1);
+  } finally {
+    unbind();
+  }
 });
