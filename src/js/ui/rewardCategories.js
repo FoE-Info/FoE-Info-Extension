@@ -9,6 +9,13 @@
 
 const SOURCE_BUCKETS = {
   greatBuilding: 'rewardsGeneric',
+  battleground: 'rewardsGeneric',
+  expedition: 'rewardsGeneric',
+  pvpArena: 'rewardsGeneric',
+  antiquesShop: 'rewardsGeneric',
+  antiquesSales: 'rewardsGeneric',
+  himejiCastle: 'rewardsGeneric',
+  spaceCarrier: 'rewardsGeneric',
   quest: 'rewardsCity',
   cityProductionArmy: 'rewardsArmy',
   cityProductionCity: 'rewardsCity',
@@ -27,7 +34,13 @@ function addToBucket(buckets, source, name, qty = 1) {
   const bucket = buckets[key];
   const amount = Number(qty);
   const delta = Number.isFinite(amount) ? amount : 1;
-  bucket[name] = (Number(bucket[name]) || 0) + delta;
+  const previous = Object.hasOwn(bucket, name) ? Number(bucket[name]) || 0 : 0;
+  Object.defineProperty(bucket, name, {
+    value: previous + delta,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  });
   return key;
 }
 

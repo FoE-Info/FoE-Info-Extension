@@ -11,7 +11,7 @@ const { rewardState } = require('../state/RewardState.js');
 let renderUnifiedReward = null;
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    ({ showReward: renderUnifiedReward } = require('./RewardRenderer.js'));
+    ({ showReward: renderUnifiedReward } = require('./RewardRenderer.mjs'));
   } catch {}
 }
 
