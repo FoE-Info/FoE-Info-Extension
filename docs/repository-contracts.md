@@ -14,7 +14,7 @@ This is a bounded structural check: aliases, computed imports, bare browser iden
 
 `npm run contracts:audit` scans all runtime `.js`, `.mjs` and `.cjs` modules and runs in the verification gate. Historical violations are printed as debt even when the command succeeds. Removed or reduced debt fails until its allowance is removed or lowered. Parse errors fail closed and identify the source path.
 
-Module line counts over 500 are informational cohesion prompts, never size gates. They appear with paths in JSON output. Follow the architecture's functional-cohesion guidance rather than splitting solely to lower a count.
+Module line counts over 500 are informational cohesion prompts, never size gates. They appear with paths in JSON output. Follow the functional-cohesion guidance below rather than splitting solely to lower a count.
 
 ## Baseline / Allowlist Policy
 
@@ -37,3 +37,9 @@ Findings name path, rule, exact target/global, current count, threshold, reason 
 ## Rollout Plan
 
 The full audit gate starts immediately with explicit historical allowances. Diff checks provide a faster local loop. Existing RPC/i18n, coverage and asset gates remain authoritative for their contracts; future checks should protect a demonstrated risk with a repeatable collector before adding thresholds.
+
+## Module cohesion
+
+- **Cohesion Over Line Count**: A module holds one thing that changes for one reason. Length is a symptom, not the defect. Split when two parts change independently or on different schedules — for example when a user would name them as separate features, or when one part is arithmetic and the other is markup. Do **not** split sequential phases of a single operation; that only adds coupling.
+  - Target range is 100–300 lines per module in `src/js/`. Modules that exceed it are expected: `msg/StartupService.js` and `msg/GuildBattlegroundService.js` are single-domain modules whose phases share one state owner, and `protocol/networkListener.js` is the intended result of consolidating that file's phases, which deliberately reversed an earlier micro-file split. Read current sizes from the audit below rather than from numbers copied here.
+  - `npm run audit:refs -- --strict` lists modules over 500 lines. Treat that list as a prompt to check for a feature boundary, not as a violation to fix by splitting.

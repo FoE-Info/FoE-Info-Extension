@@ -1,17 +1,20 @@
 # Project documentation
 
-| Responsibility                         | Owner                                                      | State / update rule                                                |
-| -------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------ |
-| Architecture and module decisions      | [Architecture](architecture.md)                            | Current design; update when boundaries change                      |
-| Observation and security boundaries    | [Security](../SECURITY.md)                                 | Current policy; overrides proposed features                        |
-| Direction, outcomes and sequencing     | [Roadmap](roadmap.md)                                      | Stable priorities and deferrals; update when direction changes     |
-| Tracked work, acceptance and execution | [Tasks](tasks.md)                                          | Task IDs, scope, dependencies, status and completion evidence      |
-| Enforced repository contracts          | [Repository contracts](repository-contracts.md)            | Implemented checks and debt policy                                 |
-| Diagnostics and evidence collection    | [Debugging](debugging.md)                                  | Current procedures and verification artifact semantics             |
-| Commit coupling and delivery policy    | [Contributing](../CONTRIBUTING.md#completing-tracked-work) | Required gate, exact staging, completion evidence and skip rules   |
-| Delivery record                        | PR description and commit body                             | Behavior, task ID, verification, artifact identity and limitations |
-| Release-facing changes                 | [Changelog](../CHANGELOG.md)                               | Release history; update for user-facing delivery                   |
-| Store listing and release assets       | [Chrome Web Store](chrome-web-store.md)                    | Listing metadata and asset requirements                            |
+| Responsibility                         | Owner                                                      | State / update rule                                                    |
+| -------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Application overview and usage         | [Application](application.md)                              | Features, installation, usage and source layout                        |
+| Architecture and module decisions      | [Architecture](architecture.md)                            | Current design; update when boundaries change                          |
+| Observation and security boundaries    | [Security architecture](security-architecture.md)          | Intake, trust, integrations, retention, permissions and product policy |
+| Vulnerability reporting                | [Security policy](../SECURITY.md)                          | Supported versions and private reporting                               |
+| Direction, outcomes and sequencing     | [Roadmap](roadmap.md)                                      | Stable priorities and deferrals; update when direction changes         |
+| Tracked work, acceptance and execution | [Tasks](tasks.md)                                          | Task IDs, scope, dependencies, status and completion evidence          |
+| Enforced repository contracts          | [Repository contracts](repository-contracts.md)            | Implemented checks and debt policy                                     |
+| Runtime diagnostics                    | [Debugging](debugging.md)                                  | Debug modes, synchronization, RPC filtering and panel behavior         |
+| Browser investigation                  | [Browser debugging](browser-debugging.md)                  | Attachment, bounded passive collection and investigation procedures    |
+| Commit coupling and delivery policy    | [Contributing](../CONTRIBUTING.md#completing-tracked-work) | Required gate, exact staging, completion evidence and skip rules       |
+| Delivery record                        | PR description and commit body                             | Behavior, task ID, verification, artifact identity and limitations     |
+| Release-facing changes                 | [Changelog](../CHANGELOG.md)                               | Release history; update for user-facing delivery                       |
+| Store listing and release assets       | [Chrome Web Store](chrome-web-store.md)                    | Listing metadata and asset requirements                                |
 
 ## Document lifecycle
 
@@ -29,10 +32,3 @@ New guides use descriptive names such as `feature-design.md`, not dated audit
 or generic TODO filenames. A new directory or ledger needs a concrete purpose.
 
 ## Artifact ownership
-
-Verification capture writes the latest run to `build/verify-evidence/`: its
-manifest identifies the run and source digest; stage logs and JUnit reports
-support the result. These local artifacts are replaced on rerun and removed by
-cleaning, so a delivery record must retain the run identity and publish or archive
-artifacts when durable review needs them. A local path alone is not a durable
-artifact link. CI artifacts use the identities documented in [debugging](debugging.md).
