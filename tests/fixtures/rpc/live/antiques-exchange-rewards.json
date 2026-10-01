@@ -1,0 +1,33 @@
+{
+  "requestClass": "RewardService",
+  "requestMethod": "collectReward",
+  "responseData": [
+    [
+      {
+        "type": "resource",
+        "subType": "trade_coins",
+        "amount": 21384,
+        "id": "resource#trade_coins#21384",
+        "name": "21,384 Trade Coins",
+        "description": "Use Trade Coins to purchase items in the Antiques Dealer’s shop. You can also use to Trade Coins to bid for auction items. You can obtain additional Trade Coins by exchanging items at the Antiques Dealer.",
+        "iconAssetName": "trade_coins",
+        "flags": [],
+        "boostValue": 1,
+        "__class__": "GenericReward"
+      },
+      {
+        "type": "resource",
+        "subType": "gemstones",
+        "amount": 32,
+        "id": "resource#gemstones#32",
+        "name": "32 Gemstones",
+        "description": "Use Gemstones to purchase rare items in the Antiques Dealer’s shop. You can obtain additional Gemstones by exchanging rare items at the Antiques Dealer.",
+        "iconAssetName": "gemstones",
+        "flags": [],
+        "boostValue": 1,
+        "__class__": "GenericReward"
+      }
+    ],
+    "item_exchange"
+  ]
+}

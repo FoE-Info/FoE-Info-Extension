@@ -1,0 +1,35 @@
+{
+  "requestClass": "RewardService",
+  "requestMethod": "collectReward",
+  "requestData": [
+    {
+      "__class__": "BattlegroundBattleType",
+      "attackerPlayerId": 0,
+      "defenderPlayerId": 0,
+      "type": "battleground",
+      "currentWaveId": 0,
+      "totalWaves": 0,
+      "provinceId": 15,
+      "battlesWon": 0,
+      "trial": 0
+    },
+    true
+  ],
+  "responseData": [
+    [
+      {
+        "type": "resource",
+        "subType": "gbg_gold_coin",
+        "amount": 108,
+        "id": "resource#gbg_gold_coin#108",
+        "name": "108 Battleground Gold Coins",
+        "description": "Collect Gold Coins as a reward in Guild Battlegrounds. This currency does not expire.",
+        "iconAssetName": "gbg_gold_coin",
+        "flags": [],
+        "boostValue": 1,
+        "__class__": "GenericReward"
+      }
+    ],
+    "battlegrounds_conquest"
+  ]
+}

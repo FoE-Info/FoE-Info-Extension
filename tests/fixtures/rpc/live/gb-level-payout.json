@@ -1,0 +1,65 @@
+{
+  "resources": {
+    "medals": 1956,
+    "__class__": "CityResource"
+  },
+  "blueprints": {
+    "buildingId": "X_FutureEra_Landmark2",
+    "found": [
+      {
+        "building_id": "X_FutureEra_Landmark2",
+        "piece_number": 1,
+        "amount": 1,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_FutureEra_Landmark2",
+        "piece_number": 2,
+        "amount": 1,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_FutureEra_Landmark2",
+        "amount": 1,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_FutureEra_Landmark2",
+        "piece_number": 6,
+        "amount": 1,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      },
+      {
+        "building_id": "X_FutureEra_Landmark2",
+        "piece_number": 4,
+        "amount": 2,
+        "tier": {
+          "__enum__": "GreatBuildingTier",
+          "value": "copper"
+        },
+        "__class__": "GreatBuildingBlueprint"
+      }
+    ]
+  },
+  "strategy_point_amount": 30,
+  "rank": 4,
+  "level": 28,
+  "cityentity_id": "X_FutureEra_Landmark2",
+  "__class__": "GreatBuildingReward"
+}

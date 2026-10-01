@@ -1,0 +1,154 @@
+[
+  {
+    "requestClass": "RewardService",
+    "requestMethod": "collectReward",
+    "responseData": [
+      [
+        {
+          "type": "building",
+          "subType": "D_MultiAge_ChristmasBonus16",
+          "amount": 1,
+          "id": "building_gift_tower",
+          "name": "Gift Tower",
+          "description": "",
+          "isHighlighted": true,
+          "flags": [
+            "common"
+          ],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "item_shop"
+    ]
+  },
+  {
+    "requestClass": "RewardService",
+    "requestMethod": "collectReward",
+    "responseData": [
+      [
+        {
+          "type": "consumable",
+          "subType": "upgrade_kit",
+          "amount": 1,
+          "id": "upgrade_kit_victory_tower",
+          "name": "Victory Tower Upgrade Kit",
+          "description": "Upgrades your Victory Tower to an improved version that will produce more medals.",
+          "iconAssetName": "upgrade_kit_victory_tower",
+          "isHighlighted": true,
+          "flags": [
+            "uncommon"
+          ],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "item_shop"
+    ]
+  },
+  {
+    "requestClass": "RewardService",
+    "requestMethod": "collectReward",
+    "responseData": [
+      [
+        {
+          "type": "consumable",
+          "subType": "selection_kit",
+          "amount": 1,
+          "id": "selection_kit_hanami_bridge",
+          "name": "Hanami Bridge Selection Kit",
+          "description": "Choose between an upgrade kit or the base building for the Hanami Bridge.",
+          "iconAssetName": "selection_kit_hanami_bridge",
+          "isHighlighted": true,
+          "flags": [
+            "epic"
+          ],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "item_shop"
+    ]
+  },
+  {
+    "requestClass": "RewardService",
+    "requestMethod": "collectReward",
+    "responseData": [
+      [
+        {
+          "type": "consumable",
+          "subType": "fragment",
+          "amount": 1,
+          "id": "fragment#building_wishing_well#1",
+          "name": "Fragment of Wishing Well",
+          "description": "Collect enough fragments to assemble Wishing Well",
+          "iconAssetName": "icon_fragment",
+          "isHighlighted": true,
+          "flags": [],
+          "boostValue": 1,
+          "assembledReward": {
+            "type": "building",
+            "subType": "W_AllAge_EasterBonus1",
+            "amount": 1,
+            "id": "building_wishing_well",
+            "name": "Wishing Well",
+            "description": "The wishing well produces a new surprise for you every day, maybe even Diamonds. And no need to ever renovate it: It progresses with you through all ages!",
+            "isHighlighted": true,
+            "flags": [
+              "uncommon"
+            ],
+            "boostValue": 1,
+            "__class__": "GenericReward"
+          },
+          "requiredAmount": 15,
+          "__class__": "FragmentReward"
+        }
+      ],
+      "item_shop"
+    ]
+  },
+  {
+    "requestClass": "RewardService",
+    "requestMethod": "collectReward",
+    "responseData": [
+      [
+        {
+          "type": "building",
+          "subType": "D_MultiAge_ChristmasBonusSet1b",
+          "amount": 1,
+          "id": "building_gate_statue_east",
+          "name": "Gate Statue East",
+          "description": "",
+          "isHighlighted": true,
+          "flags": [
+            "common"
+          ],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "item_shop"
+    ]
+  },
+  {
+    "requestClass": "RewardService",
+    "requestMethod": "collectReward",
+    "responseData": [
+      [
+        {
+          "type": "consumable",
+          "subType": "speedup_item",
+          "amount": 1,
+          "id": "rush_mass_coins_8h",
+          "name": "8h Mass Coin Rush",
+          "description": "Use this item to reduce the remaining coin production time of all buildings by 8h. This does not apply to special productions or Great Buildings.",
+          "iconAssetName": "rush_mass_coins_medium",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "item_shop"
+    ]
+  }
+]

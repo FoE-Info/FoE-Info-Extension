@@ -1,0 +1,111 @@
+[
+  {
+    "requestClass": "RewardService",
+    "requestMethod": "collectReward",
+    "responseData": [
+      [
+        {
+          "type": "good",
+          "subType": "deep_space_data",
+          "amount": 20,
+          "id": "resource#deep_space_data#20",
+          "name": "20 Deep Space Data",
+          "description": "20 of a random good from your age!",
+          "iconAssetName": "deep_space_data",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "pvp_arena"
+    ]
+  },
+  {
+    "requestClass": "RewardService",
+    "requestMethod": "collectReward",
+    "responseData": [
+      [
+        {
+          "type": "set",
+          "subType": "",
+          "amount": 1,
+          "id": "pvpa_personal_reward_chest_copper",
+          "name": "Copper League Chest",
+          "description": "",
+          "iconAssetName": "pvp_arena_chest_1",
+          "isHighlighted": true,
+          "flags": [
+            "rare"
+          ],
+          "boostValue": 1,
+          "totalAmount": 2040005,
+          "rewards": [
+            {
+              "type": "resource",
+              "subType": "pvp_arena_attempt",
+              "amount": 5,
+              "id": "resource#pvp_arena_attempt#5",
+              "name": "5 Attempts",
+              "description": "Free Attempts for the PvP Arena!",
+              "iconAssetName": "pvp_arena_attempt",
+              "flags": [],
+              "boostValue": 1,
+              "__class__": "GenericReward"
+            },
+            {
+              "type": "resource",
+              "subType": "money",
+              "amount": 710000,
+              "id": "large_coins",
+              "name": "710,000 Coins",
+              "description": "Coins are a main resource in the game.",
+              "iconAssetName": "large_coins",
+              "flags": [
+                "common"
+              ],
+              "boostValue": 1,
+              "__class__": "GenericReward"
+            },
+            {
+              "type": "resource",
+              "subType": "supplies",
+              "amount": 1330000,
+              "id": "large_supplies",
+              "name": "1,330,000 Supplies",
+              "description": "Supplies are a main resource in the game.",
+              "iconAssetName": "large_supplies",
+              "flags": [
+                "common"
+              ],
+              "boostValue": 1,
+              "__class__": "GenericReward"
+            }
+          ],
+          "__class__": "GenericRewardSet"
+        }
+      ],
+      "pvp_arena"
+    ]
+  },
+  {
+    "requestClass": "RewardService",
+    "requestMethod": "collectReward",
+    "responseData": [
+      [
+        {
+          "type": "resource",
+          "subType": "pvp_arena_attempt",
+          "amount": 2,
+          "id": "resource#pvp_arena_attempt#2",
+          "name": "2 Attempts",
+          "description": "Free Attempts for the PvP Arena!",
+          "iconAssetName": "pvp_arena_attempt",
+          "flags": [],
+          "boostValue": 1,
+          "__class__": "GenericReward"
+        }
+      ],
+      "pvp_arena"
+    ]
+  }
+]
