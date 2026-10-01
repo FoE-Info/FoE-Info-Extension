@@ -29,7 +29,7 @@ try {
 
 let collapse = {};
 try {
-  collapse = require('../fn/collapse.js');
+  collapse = require('../fn/collapse.mjs');
 } catch {}
 
 let post_webstore = {};
@@ -182,11 +182,7 @@ function buildTargetGeneratorTargets(params = {}) {
 // ============================================================================
 
 function targetCopy(copyToClipboard) {
-  copyToClipboard('#targetGenText');
-  if (typeof document !== 'undefined') {
-    const el = document.getElementById('targetGenText');
-    if (el) console.debug(el.innerHTML);
-  }
+  return copyToClipboard('#targetGenText');
 }
 
 function bindTargetGeneratorEvents({
@@ -195,15 +191,32 @@ function bindTargetGeneratorEvents({
   post_webstore: depPost = post_webstore,
   collapse: depCollapse = collapse,
   Tooltip = null,
+  state = guildBattlegroundState,
 } = {}) {
   if (typeof document === 'undefined') return;
 
   const copyBtn = document.getElementById('targetCopyID');
-  if (copyBtn && typeof onTargetCopy === 'function') {
-    copyBtn.addEventListener('click', onTargetCopy);
-  }
-
   const postBtn = document.getElementById('targetGenPostID');
+  if (copyBtn && typeof onTargetCopy === 'function') {
+    copyBtn.addEventListener('click', async (event) => {
+      const targetSnapshot = state?.getTargets?.();
+      try {
+        const copied = await onTargetCopy(event);
+        if (
+          copied === false ||
+          document.getElementById('targetCopyID') !== copyBtn ||
+          (targetSnapshot && state?.getTargets?.() !== targetSnapshot)
+        )
+          return;
+        state?.setTargetCopied?.(true);
+        if (postBtn) {
+          copyBtn.style.display = 'none';
+          postBtn.style.display =
+            depCollapse.collapseTargetGen ? 'none' : 'block';
+        }
+      } catch {}
+    });
+  }
   const postHandler =
     typeof onTargetPost === 'function' ? onTargetPost
     : typeof depPost?.postTargetGenToDiscord === 'function' ?
@@ -279,6 +292,7 @@ function renderTargetGeneratorCard({
   targetPost: onTargetPost = null,
   Tooltip = null,
   post_webstore: depPost = post_webstore,
+  state = guildBattlegroundState,
 } = {}) {
   if (textProvinceUnlocked || textProvinceLocked) {
     const markup = buildTargetGeneratorMarkup({
@@ -294,7 +308,19 @@ function renderTargetGeneratorCard({
       post_webstore: depPost,
       collapse: depCollapse,
       Tooltip,
+      state,
     });
+    const copied = state?.isTargetCopied?.() === true;
+    const postBtn = document.getElementById('targetGenPostID');
+    const copyBtn = document.getElementById('targetCopyID');
+    if (postBtn)
+      postBtn.style.display =
+        copied && !depCollapse.collapseTargetGen ? 'block' : 'none';
+    if (copyBtn)
+      copyBtn.style.display =
+        (!postBtn || !copied) && !depCollapse.collapseTargetGen ?
+          'block'
+        : 'none';
     return markup;
   }
   if (targetGenerator) targetGenerator.innerHTML = '';
@@ -378,7 +404,7 @@ function renderTargetGeneratorPanel(params = {}) {
         'targetCopyID',
         'primary',
         'right',
-        depCollapse.collapseBattleground,
+        depCollapse.collapseTargetGen,
       )
     : '';
   const iconHTML =
@@ -439,6 +465,7 @@ function renderTargetGeneratorPanel(params = {}) {
     helper: depHelper,
     url: depUrl,
     post_webstore: depPostWebstore,
+    state: params.guildBattlegroundState || guildBattlegroundState,
   });
 }
 

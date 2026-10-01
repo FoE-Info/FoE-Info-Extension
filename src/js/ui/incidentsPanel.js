@@ -167,7 +167,7 @@ function fShowIncidents(incidentsTarget = null, context = {}) {
 
       const incidentName = fIncidentName(incident.type);
       if (incidentName.type === '?') {
-        console.debug(incident);
+        logger?.debug('Unknown incident:', incident);
       }
 
       const startDate = resolveDate(incident.startTime);

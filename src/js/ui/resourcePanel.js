@@ -12,6 +12,7 @@ const { createLogger } = require('../utils/logger.js');
 const { resourceState } = require('../state/CityDomainState.js');
 const { SPECIAL_GOODS } = require('../calc/goods/goodsClassification.js');
 const { escapeHTML } = require('../utils/escape.js');
+const { applyCardVisibility, getCurrentView } = require('./cardVisibility.js');
 
 const logger = createLogger('ResourcePanel');
 
@@ -23,12 +24,12 @@ const safeRequire = (loader) => {
   }
 };
 
-const element = safeRequire(() => require('../fn/AddElement.js'));
-const collapse = safeRequire(() => require('../fn/collapse.js'));
+const element = safeRequire(() => require('../fn/AddElement.mjs'));
+const collapse = safeRequire(() => require('../fn/collapse.mjs'));
 const i18n = safeRequire(() => require('../fn/i18n.js'));
-const helper = safeRequire(() => require('../fn/helper.js'));
+const helper = safeRequire(() => require('../fn/helper.mjs'));
 const panelResize = safeRequire(() => require('./panelResize.js'));
-let globals = safeRequire(() => require('../fn/globals.js'));
+let globals = safeRequire(() => require('../fn/globals.mjs'));
 
 let activeResizeBinding = null;
 let activeResizeObserver = null;
@@ -223,7 +224,7 @@ function renderGoodsPanel(currentResources, context = {}) {
       document.getElementById('goods') || fallbackDiv
     : fallbackDiv);
 
-  if (!force && (showGoods === false || (!unlocked && !debug))) {
+  if (!force && (showGoods === false || !unlocked)) {
     if (targetDiv) {
       targetDiv.innerHTML = '';
       targetDiv.style.display = 'none';
@@ -241,7 +242,7 @@ function renderGoodsPanel(currentResources, context = {}) {
   );
   const rawSize = providedGoodsSize ?? globals?.toolOptions?.goodsSize;
   const goodsSize =
-    typeof rawSize === 'number' && rawSize >= 80 ? rawSize : 200;
+    typeof rawSize === 'number' && rawSize >= 80 ? rawSize : 290;
   const isCollapsed = collapse?.collapseGoods;
 
   const closeMarkup =
@@ -289,6 +290,7 @@ function renderGoodsPanel(currentResources, context = {}) {
     rowLength: goodsText.length,
     goodsSize,
   });
+  if (getCurrentView()) applyCardVisibility();
   return targetDiv;
 }
 

@@ -1,3 +1,4 @@
+const { sanitizeHTML } = require('../utils/html.mjs');
 /**
  * galaxyPanel.js
  *
@@ -206,10 +207,11 @@ function renderGalaxyPanel({
   const collapseClass = isCollapsed ? '' : 'show';
   const collapseIcon = isCollapsed ? '[+]' : '[-]';
 
-  el.innerHTML = `
+  el.innerHTML = sanitizeHTML(
+    `
     <div class="alert alert-success alert-dismissible show collapsed mb-2" role="status" aria-live="polite">${element.close()}
       <p id="galaxyTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#galaxyText" aria-expanded="${!isCollapsed}" aria-controls="galaxyText" class="cursor-pointer user-select-none mb-1" style="cursor: pointer; user-select: none;">
-        <span class="header-icon collapse-toggle fw-bold font-monospace" id="galaxyicon" role="button" tabindex="-1" aria-hidden="true" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="galaxyText" data-bs-target="#galaxyText" data-bs-toggle="collapse">${collapseIcon}</span>
+        <span class="header-icon collapse-toggle fw-bold font-monospace" id="galaxyicon" role="button" tabindex="-1" aria-label="Toggle section" aria-expanded="${!isCollapsed}" aria-controls="galaxyText" data-bs-target="#galaxyText" data-bs-toggle="collapse">${collapseIcon}</span>
         <strong><span data-i18n="galaxy_double_collection">${titleText}</span></strong>
       </p>
       <div id="galaxyText" class="resize collapse ${collapseClass}" style="max-height: 20em; overflow-y: auto;">
@@ -219,7 +221,8 @@ function renderGalaxyPanel({
         </div>
       </div>
     </div>
-  `.trim();
+  `.trim(),
+  );
 
   el.style.display = 'block';
   backfillPendingNames(el);
@@ -242,7 +245,7 @@ function showGalaxy({
   if (currentEpoch == null) {
     let globalEpoch = 0;
     try {
-      globalEpoch = require('../vars/state.js').EpocTime;
+      globalEpoch = require('../vars/state.mjs').EpocTime;
     } catch {}
     currentEpoch =
       globalEpoch && globalEpoch > 1000000000 ?
@@ -253,7 +256,7 @@ function showGalaxy({
   let debugFlag = isDebug;
   if (debugFlag == null) {
     try {
-      debugFlag = require('../vars/state.js').debugEnabled;
+      debugFlag = require('../vars/state.mjs').debugEnabled;
     } catch {
       debugFlag = false;
     }
@@ -266,7 +269,7 @@ function showGalaxy({
     onToggleCollapse = collapse.fCollapseGalaxy;
   } else {
     try {
-      const c = require('../fn/collapse.js');
+      const c = require('../fn/collapse.mjs');
       isCollapsed = c.collapseGalaxy;
       onToggleCollapse = c.fCollapseGalaxy;
     } catch {}
@@ -275,7 +278,7 @@ function showGalaxy({
   let opts = showOptions;
   if (opts == null) {
     try {
-      opts = require('../vars/showOptions.js').showOptions;
+      opts = require('../vars/showOptions.mjs').showOptions;
     } catch {}
   }
 
@@ -295,7 +298,7 @@ function showGalaxy({
     candidates: activeState ? activeState.candidates : [],
     charges: activeState ? activeState.charges : 0,
     currentEpoch,
-    isDebug: Boolean(debugFlag),
+    isDebug: Boolean(debugFlag && opts?.debugGalaxy === true),
     isCollapsed: Boolean(isCollapsed),
     onToggleCollapse,
     t: tFn,

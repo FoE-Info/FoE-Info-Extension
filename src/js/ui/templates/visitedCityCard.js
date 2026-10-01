@@ -17,7 +17,7 @@ const {
 
 let showOptions = {};
 try {
-  const showOptionsPkg = require('../../state/showOptions.js');
+  const showOptionsPkg = require('../../state/showOptions.mjs');
   if (showOptionsPkg?.showOptions) showOptions = showOptionsPkg.showOptions;
 } catch {}
 
@@ -117,29 +117,29 @@ function buildVisitedCityCard({
   const unitsLine = `<div><span data-i18n="stat_daily_units">Daily Units</span>: ${formatStatNumber(unitsTotal, { exact, comma: true })}</div>`;
 
   return `
-<div id="${prefix}-panel" class="foe-original-card">
+<div id="${prefix}-panel" class="foe-original-card foe-visited-city">
   <div class="d-flex align-items-center justify-content-between mb-1">
     <div class="d-flex align-items-center gap-1 text-truncate">
       <span role="button" tabindex="0" class="foe-collapse-icon header-icon collapse-toggle fw-bold font-monospace me-1 flex-shrink-0" id="${prefix}icon" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text"
         aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" title="Toggle Stats" data-i18n-title="toggle_stats">${isCollapsed ? '[+]' : '[-]'}</span>
-      <strong class="text-primary text-truncate cursor-pointer user-select-none" role="button" tabindex="0" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text" aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" style="cursor: pointer; user-select: none;">${headerTitleHTML}</strong>
+      <strong class="text-truncate cursor-pointer user-select-none" role="button" tabindex="0" data-bs-toggle="collapse" href="#${prefix}Text" data-bs-target="#${prefix}Text" aria-expanded="${!isCollapsed}" aria-controls="${prefix}Text" style="cursor: pointer; user-select: none;">${headerTitleHTML}</strong>
     </div>
     <div class="d-flex align-items-center gap-1 flex-shrink-0">
       <span id="${prefix}-copy-btn" role="button" tabindex="0" class="foe-copy-btn flex-shrink-0"
         data-i18n="copy" title="Copy Stats" data-i18n-title="copy_stats">Copy</span>
-      <button type="button" class="btn-close btn-close-white flex-shrink-0" id="${prefix}-close-btn" aria-label="Close" title="Close" data-i18n-title="close" data-i18n-aria-label="close"></button>
+      <button type="button" class="btn-close flex-shrink-0" id="${prefix}-close-btn" aria-label="Close" title="Close" data-i18n-title="close" data-i18n-aria-label="close"></button>
     </div>
   </div>
   <hr class="foe-card-divider my-1">
-  <div id="${prefix}Text" class="collapse ${isCollapsed ? '' : 'show'}">
+  <div id="${prefix}Text" data-panel-resizable class="collapse ${isCollapsed ? '' : 'show'}">
     <div class="foe-panel-body">
       <div class="d-flex align-items-center gap-1 text-truncate mb-1">
         <strong class="text-primary text-truncate">${originPrefix}${safePlayerName}</strong>
       </div>
       ${safeShield ? `<div>🛡 ${safeShield}</div>` : ''}
       ${safeGuild ? `<div><span data-i18n="guild">Guild</span>: ${safeGuild}</div>` : ''}
-      ${playerEra ? `<div><span data-i18n="age">Age</span>: ${formatEraName(playerEra)}</div>` : ''}
-      ${playerScore ? `<div><span data-i18n="score">Score</span>: ${playerScore}</div>` : ''}
+      ${playerEra ? `<div><span data-i18n="age">Age</span>: ${escapeHtml(formatEraName(playerEra))}</div>` : ''}
+      ${playerScore ? `<div><span data-i18n="score">Score</span>: ${escapeHtml(playerScore)}</div>` : ''}
       ${specBonusesHTML}
       <div class="foe-section-header"><span data-i18n="daily_production">Daily Production</span></div>
       ${dailyCoinsHTML}

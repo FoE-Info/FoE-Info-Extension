@@ -1,3 +1,4 @@
+const { sanitizeHTML } = require('../utils/html.mjs');
 /**
  * quantumPanel.js
  *
@@ -19,7 +20,7 @@ let showOptions = { showQIChanges: false };
 let GameOrigin = 'default';
 
 try {
-  collapse = require('../fn/collapse.js');
+  collapse = require('../fn/collapse.mjs');
 } catch {}
 try {
   element = require('./AddElement.js');
@@ -34,10 +35,10 @@ try {
   i18n = require('../utils/i18n.js');
 } catch {}
 try {
-  showOptions = require('../vars/showOptions.js').showOptions || showOptions;
+  showOptions = require('../vars/showOptions.mjs').showOptions || showOptions;
 } catch {}
 try {
-  GameOrigin = require('../vars/state.js').GameOrigin || GameOrigin;
+  GameOrigin = require('../vars/state.mjs').GameOrigin || GameOrigin;
 } catch {}
 
 let logger = null;
@@ -203,7 +204,7 @@ function renderQuantumContributionsCard(members, lastSavedTimestamp) {
   }
 
   cardHTML += `</tbody></table></div></div></div>`;
-  targetEl.innerHTML = cardHTML;
+  targetEl.innerHTML = sanitizeHTML(cardHTML);
 
   const contributionsCollapseEl = document.getElementById(
     'qiContributionsCollapse',
@@ -331,7 +332,7 @@ function renderQuantumLeaderboardCard(rankings) {
   }
 
   cardHTML += `</tbody></table></div></div></div>`;
-  targetEl.innerHTML = cardHTML;
+  targetEl.innerHTML = sanitizeHTML(cardHTML);
 
   const leaderboardCollapseEl = document.getElementById(
     'qiLeaderboardCollapse',

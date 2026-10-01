@@ -33,6 +33,10 @@ test('GBG target renderer escapes untrusted message and sender text', () => {
     );
     assert.match(targetContainer.innerHTML, /&lt;svg onload=alert\(2\)&gt;/);
     assert.doesNotMatch(targetContainer.innerHTML, /<(?:img|svg)\b/i);
+    assert.match(
+      targetContainer.innerHTML,
+      /<div id="targetText" class="collapse [^"]*"><p class="mb-0 overflow-hidden">/,
+    );
   } finally {
     if (previousDocument === undefined) {
       delete globalThis.document;

@@ -29,22 +29,22 @@ function safeRequire(loader) {
 }
 
 const element = safeRequire(() => require('./AddElement.js'));
-const collapse = safeRequire(() => require('../fn/collapse.js'));
-const copy = safeRequire(() => require('../fn/copy.js'));
+const collapse = safeRequire(() => require('../fn/collapse.mjs'));
+const copy = safeRequire(() => require('../fn/copy.mjs'));
 
 let showOptionsPkg = null;
 try {
-  showOptionsPkg = require('../vars/showOptions.js');
+  showOptionsPkg = require('../vars/showOptions.mjs');
 } catch {}
 
 let statePkg = null;
 try {
-  statePkg = require('../vars/state.js');
+  statePkg = require('../vars/state.mjs');
 } catch {}
 
 let globalsPkg = null;
 try {
-  globalsPkg = require('../fn/globals.js');
+  globalsPkg = require('../fn/globals.mjs');
 } catch {}
 
 let translateContainer = null;
@@ -123,7 +123,7 @@ function renderSocialListsPanel({
 
   const setFriendsSize =
     deps.setFriendsSize ||
-    safeRequire(() => require('../fn/globals.js')?.setFriendsSize) ||
+    safeRequire(() => require('../fn/globals.mjs')?.setFriendsSize) ||
     (() => {});
   const depElement = deps.element !== undefined ? deps.element : element;
   const depCollapse = deps.collapse !== undefined ? deps.collapse : collapse;

@@ -17,14 +17,14 @@ try {
   element = require('./AddElement.js');
 } catch {
   try {
-    element = require('../fn/AddElement.js');
+    element = require('../fn/AddElement.mjs');
   } catch {}
 }
 try {
-  collapse = require('../fn/collapse.js');
+  collapse = require('../fn/collapse.mjs');
 } catch {}
 try {
-  helper = require('../fn/helper.js');
+  helper = require('../fn/helper.mjs');
 } catch {}
 
 function unhideElement(container) {
@@ -109,7 +109,7 @@ function renderGuildPanel(clanData, deps = {}) {
   }
 
   const html = `<div id="guildOverviewCard" class="alert alert-success alert-dismissible show collapsed" role="status" aria-live="polite">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div class="guild-overview-header">
       <p id="guildOverviewTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#guildOverviewText" aria-expanded="${!isCollapsed}" aria-controls="guildOverviewText" class="cursor-pointer user-select-none mb-0 d-flex align-items-center gap-1 flex-grow-1 text-truncate" style="cursor: pointer; user-select: none;">
         ${iconHtml}
         <strong class="text-dark text-truncate">

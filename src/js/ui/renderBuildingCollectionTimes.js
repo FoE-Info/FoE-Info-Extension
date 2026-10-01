@@ -1,3 +1,4 @@
+const { sanitizeHTML } = require('../utils/html.mjs');
 /**
  * renderBuildingCollectionTimes.js
  *
@@ -8,12 +9,12 @@
 
 let defaultShowOptions = null;
 try {
-  defaultShowOptions = require('../vars/showOptions.js').showOptions;
+  defaultShowOptions = require('../vars/showOptions.mjs').showOptions;
 } catch {}
 
 let defaultCollapse = null;
 try {
-  defaultCollapse = require('../fn/collapse.js');
+  defaultCollapse = require('../fn/collapse.mjs');
 } catch {}
 
 let defaultFormatDateTime = (ts) => (ts ? String(ts) : '');
@@ -28,7 +29,7 @@ try {
 
 let defaultHelper = null;
 try {
-  defaultHelper = require('../fn/helper.js');
+  defaultHelper = require('../fn/helper.mjs');
 } catch {}
 
 // Mandatory, not an optional dependency: utils/escape.js is a pure leaf module
@@ -88,7 +89,7 @@ function renderBuildingCollectionTimes({
     }
   });
 
-  buildings.innerHTML = buildingsHTML + `</div></div>`;
+  buildings.innerHTML = sanitizeHTML(buildingsHTML + `</div></div>`);
   const labelEl = document.getElementById('buildingsTextLabel');
   if (labelEl && collapse?.fCollapseBuildings) {
     labelEl.addEventListener('click', (e) => {

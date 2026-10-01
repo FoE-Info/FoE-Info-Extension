@@ -18,7 +18,7 @@
 let showOptionsState = {};
 if (typeof __webpack_require__ !== 'undefined') {
   try {
-    const showOptModule = require('../state/showOptions.js');
+    const showOptModule = require('../state/showOptions.mjs');
     showOptionsState = showOptModule.showOptions || showOptModule;
   } catch {
     showOptionsState = {};
@@ -47,6 +47,7 @@ const {
 } = require('./cardVisibilityConfig.js');
 
 let currentView = null; // one of GAME_CONTEXTS or null (unconstrained default)
+const { treasuryState } = require('../state/GuildDomainState.js');
 const viewListeners = new Set();
 
 /**
@@ -68,10 +69,15 @@ function getCurrentView() {
   return currentView;
 }
 
+function markTreasuryOpened() {
+  if (currentView === 'OWN_CITY') treasuryState.opened = true;
+}
+
 function setCurrentView(view) {
   const normalized = normalizeContext(view);
   if (normalized === undefined) return;
   if (currentView === normalized) return;
+  treasuryState.opened = false;
   currentView = normalized;
   for (const fn of viewListeners) {
     try {
@@ -120,7 +126,26 @@ function applyContextVisibility(opts, activeView) {
       setElementDisplay(id, 'none');
       continue;
     }
-    const optionKey = PANEL_OPTION_KEY[id];
+    const optionKey =
+      activeView === 'GBG' && (id === 'rewards' || id === 'cityrewards') ?
+        'showGBGrewards'
+      : activeView === 'GE' && (id === 'rewards' || id === 'cityrewards') ?
+        'showGErewards'
+      : PANEL_OPTION_KEY[id];
+    if (
+      id === 'treasury' ||
+      id === 'treasuryLog' ||
+      id === 'treasuryContributions'
+    ) {
+      const permitted =
+        activeView === 'GBG' ?
+          opts.showGBGTreasury === true
+        : treasuryState.opened;
+      if (!permitted) {
+        setElementDisplay(id, 'none');
+        continue;
+      }
+    }
     if (optionKey && opts[optionKey] === false) {
       setElementDisplay(id, 'none');
       continue;
@@ -260,6 +285,7 @@ if (
 module.exports = {
   applyCardVisibility,
   getCurrentView,
+  markTreasuryOpened,
   setCurrentView,
   onViewChange,
   normalizeContext,

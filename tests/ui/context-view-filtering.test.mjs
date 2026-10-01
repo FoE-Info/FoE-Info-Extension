@@ -1,6 +1,7 @@
 import '../helpers/service-presentation.mjs';
 import assert from 'node:assert/strict';
 import { beforeEach, describe, it } from 'node:test';
+import { treasuryState } from '../../src/js/state/GuildDomainState.js';
 import {
   ALL_15_PANEL_IDS,
   applyCardVisibility,
@@ -8,6 +9,7 @@ import {
   GAME_CONTEXTS,
   getAllowedPanelsForView,
   getCurrentView,
+  markTreasuryOpened,
   onViewChange,
   setCurrentView,
 } from '../../src/js/ui/cardVisibility.js';
@@ -105,7 +107,6 @@ const DISALLOWED_BY_CONTEXT = {
   OTHER_PLAYER: [
     'incidents',
     'army',
-    'rewards',
     'bonus',
     'galaxy',
     'cultural',
@@ -219,8 +220,8 @@ describe('6-Context Panel Visibility Engine', () => {
         Array.isArray(CONTEXT_ALLOWED_PANELS[context]),
         `CONTEXT_ALLOWED_PANELS.${context} must be an array`,
       );
-      assert.ok(CONTEXT_ALLOWED_PANELS[context].includes('header'));
-      assert.ok(CONTEXT_ALLOWED_PANELS[context].includes('citystats'));
+      assert.equal(CONTEXT_ALLOWED_PANELS[context].includes('header'), true);
+      assert.equal(CONTEXT_ALLOWED_PANELS[context].includes('citystats'), true);
     }
 
     assert.ok(CONTEXT_ALLOWED_PANELS.GBG.includes('gbgTargetGenerator'));
@@ -285,7 +286,13 @@ describe('6-Context Panel Visibility Engine', () => {
         const el = document.getElementById(allowedId);
         assert.equal(
           el.style.display,
-          '',
+          (
+            ['treasury', 'treasuryLog', 'treasuryContributions'].includes(
+              allowedId,
+            )
+          ) ?
+            'none'
+          : '',
           `Allowed panel #${allowedId} must be visible in ${context}`,
         );
       }
@@ -300,6 +307,32 @@ describe('6-Context Panel Visibility Engine', () => {
       }
     });
   }
+
+  it('GBG treasury is opt-in, goods stay hidden, and costs obey their setting', () => {
+    setCurrentView('GBG');
+    applyCardVisibility({ showGBGTreasury: true, buildingCosts: true });
+    assert.equal(document.getElementById('treasury').style.display, '');
+    assert.equal(
+      document.getElementById('goodsInventory').style.display,
+      'none',
+    );
+    assert.equal(document.getElementById('goods').style.display, 'none');
+    assert.equal(document.getElementById('costs').style.display, '');
+    applyCardVisibility({ showGBGTreasury: false, buildingCosts: false });
+    assert.equal(document.getElementById('treasury').style.display, 'none');
+    assert.equal(document.getElementById('costs').style.display, 'none');
+  });
+
+  it('city treasury requires an explicit feature opening and resets on context changes', () => {
+    setCurrentView('OWN_CITY');
+    assert.equal(document.getElementById('treasury').style.display, 'none');
+    treasuryState.opened = true;
+    applyCardVisibility();
+    assert.equal(document.getElementById('treasury').style.display, '');
+    setCurrentView('GBG');
+    setCurrentView('OWN_CITY');
+    assert.equal(document.getElementById('treasury').style.display, 'none');
+  });
 
   it('debug mode respects context visibility without injecting stubs into panels', () => {
     setCurrentView('GBG');
@@ -468,4 +501,27 @@ describe('Protocol Route Context Wiring', () => {
     });
     assert.equal(getCurrentView(), 'OTHER_PLAYER');
   });
+});
+
+it('only explicit city treasury opening unlocks treasury, excluding hydration and GBG bags', async () => {
+  const { TreasuryService } =
+    await import('../../src/js/msg/TreasuryService.js');
+  const routes = new Map();
+  new TreasuryService().register(
+    {
+      register: (service, method, handler) =>
+        routes.set(`${service}.${method}`, handler),
+    },
+    { onTreasuryOpened: markTreasuryOpened },
+  );
+  setCurrentView('OWN_CITY');
+  treasuryState.opened = false;
+  const bag = { responseData: { resources: { medals: 10 } } };
+  routes.get('ResourceService.getTreasuryBag')(bag);
+  assert.equal(treasuryState.opened, false);
+  routes.get('ClanService.getTreasuryBag')(bag);
+  assert.equal(treasuryState.opened, true);
+  setCurrentView('GBG');
+  routes.get('ClanService.getTreasuryBag')(bag);
+  assert.equal(treasuryState.opened, false);
 });

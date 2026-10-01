@@ -17,7 +17,7 @@ try {
 
 let helper = null;
 try {
-  helper = require('../fn/helper.js');
+  helper = require('../fn/helper.mjs');
 } catch {
   try {
     helper = require('../calc/eraMapping.js');
@@ -67,7 +67,7 @@ let Goods = null;
 let stateModule = null;
 let availablePacksFP = 0;
 try {
-  stateModule = require('../vars/state.js');
+  stateModule = require('../vars/state.mjs');
   MyInfo = stateModule?.MyInfo;
   Goods = stateModule?.Goods;
   availablePacksFP = stateModule?.availablePacksFP || 0;

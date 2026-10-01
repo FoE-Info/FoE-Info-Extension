@@ -20,9 +20,9 @@ const safeRequire = (loader) => {
   }
 };
 
-const element = safeRequire(() => require('../fn/AddElement.js'));
-const collapse = safeRequire(() => require('../fn/collapse.js'));
-const helper = safeRequire(() => require('../fn/helper.js'));
+const element = safeRequire(() => require('../fn/AddElement.mjs'));
+const collapse = safeRequire(() => require('../fn/collapse.mjs'));
+const helper = safeRequire(() => require('../fn/helper.mjs'));
 
 // Parameterised strings need `t()` with arguments — `data-i18n` assigns
 // textContent with none, so a value containing $1/$2 would print them
@@ -36,7 +36,7 @@ function getResolvedShowOptions() {
   if (showOptions) return showOptions;
   if (typeof __webpack_require__ !== 'undefined') {
     try {
-      const showOptModule = require('../vars/showOptions.js');
+      const showOptModule = require('../vars/showOptions.mjs');
       return showOptModule.showOptions || showOptModule;
     } catch {}
   }

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import test from 'node:test';
 import vm from 'node:vm';
+import { parseDocument } from 'htmlparser2';
 import renderLivePkg from '../../src/js/ui/renderLiveCityStats.js';
 
 const { fGoodsText, fGoodsHTML, buildClanGoodsData } =
@@ -58,7 +59,11 @@ test('goods detail boosts the actual quantity and tooltip consistently', () => {
     25,
   );
   assert.match(html, />SAD:3550<\/span>/);
-  assert.match(html, /3550 Goods<br>/);
+  const span = parseDocument(html).children.find(
+    (node) => node.name === 'span',
+  );
+  assert.equal(span.attribs['data-bs-title'], '3550 Goods<br>');
+  assert.equal(span.attribs.title, '3550 Goods');
 });
 
 test('guild goods total preserves the sum of building contributions', () => {
@@ -83,8 +88,8 @@ function loadLiveRenderer(goods, boost, cityOverrides = {}) {
   // Replace browser-bound dependencies, executing the full renderer unchanged.
   const dependencies = {
     '../state/CityDomainState.js': { City: city },
-    '../vars/state.js': { Goods: goods },
-    '../fn/helper.js': {
+    '../vars/state.mjs': { Goods: goods },
+    '../fn/helper.mjs': {
       numAges: ages.length,
       fAgefromLevel: (level) => ages[level - 1],
       fGVGagesname: (age) => (age ? age.toUpperCase() : ''),

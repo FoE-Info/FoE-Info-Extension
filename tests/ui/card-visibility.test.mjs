@@ -373,3 +373,45 @@ test('Card Visibility Suite - Decoupling GBG from GB Donation', async (t) => {
     },
   );
 });
+
+test('GE reveals both reward wrapper and card using the GE option', async () => {
+  createMockDOM();
+  const { applyCardVisibility } =
+    await import('../../src/js/ui/cardVisibility.js');
+  applyCardVisibility(
+    { showGErewards: true, showGBRewards: false },
+    null,
+    'GE',
+  );
+  assert.equal(document.getElementById('rewards').style.display, '');
+  assert.equal(document.getElementById('cityrewards').style.display, '');
+  applyCardVisibility(
+    { showGErewards: false, showGBRewards: true },
+    null,
+    'GE',
+  );
+  assert.equal(document.getElementById('rewards').style.display, 'none');
+  assert.equal(document.getElementById('cityrewards').style.display, 'none');
+});
+
+test('City Overview stays visible in GE and Own City', async () => {
+  createMockDOM();
+  const { applyCardVisibility } =
+    await import('../../src/js/ui/cardVisibility.js');
+  applyCardVisibility({ showStats: true, showArmy: true }, null, 'GE');
+  assert.equal(document.getElementById('header').style.display, '');
+  assert.equal(document.getElementById('army').style.display, '');
+  applyCardVisibility({ showStats: true, showArmy: true }, null, 'OWN_CITY');
+  assert.equal(document.getElementById('header').style.display, '');
+});
+
+test('GB payout Rewards remain visible while viewing another player city', async () => {
+  createMockDOM();
+  const { applyCardVisibility } =
+    await import('../../src/js/ui/cardVisibility.js');
+  applyCardVisibility({ showGBRewards: true }, null, 'OTHER_PLAYER');
+  assert.equal(document.getElementById('rewards').style.display, '');
+  assert.equal(document.getElementById('cityrewards').style.display, '');
+  applyCardVisibility({ showGBRewards: false }, null, 'OTHER_PLAYER');
+  assert.equal(document.getElementById('rewards').style.display, 'none');
+});

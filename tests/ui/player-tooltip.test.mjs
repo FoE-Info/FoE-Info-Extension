@@ -42,10 +42,12 @@ test('Player Tooltip - ScoreDB retry behavior', async (t) => {
       assert.equal(formatPlayerLabel(501), '#501');
       await settle();
 
+      assert.notEqual(playerNameCache['501']?.notFound, true);
+      assert.equal(typeof playerNameCache['501'].scoreDBRetryAfter, 'number');
       assert.equal(
-        playerNameCache['501'],
-        undefined,
-        'a network failure is not evidence the player does not exist',
+        scoreDBRetryAfter.has('501'),
+        true,
+        'a network failure schedules a retry without marking the player missing',
       );
       assert.equal(
         pendingScoreDBFetches.has('501'),
@@ -61,7 +63,8 @@ test('Player Tooltip - ScoreDB retry behavior', async (t) => {
     assert.equal(formatPlayerLabel(502), '#502');
     await settle();
 
-    assert.equal(playerNameCache['502'], undefined);
+    assert.notEqual(playerNameCache['502']?.notFound, true);
+    assert.equal(typeof playerNameCache['502'].scoreDBRetryAfter, 'number');
     assert.equal(scoreDBRetryAfter.has('502'), true);
   });
 
@@ -137,6 +140,26 @@ test('Player Tooltip & Ignore List UI Suite', async (t) => {
   });
 
   await t.test(
+    'ignore popup omits missing and unresolved players while retaining IDs for retries',
+    async () => {
+      globalThis.fetch = async () => {
+        throw new TypeError('Temporary network failure');
+      };
+      updatePlayerNameCache(701, null, { notFound: true });
+      updatePlayerNameCache(702, 'Active Rival');
+      setIgnoredPlayers({ 0: 701 }, { 0: 702, 1: 703 });
+      const html = getUserTooltipHTML();
+      assert.match(html, /Active Rival/);
+      assert.doesNotMatch(html, /#701|#703|Player\/701|Player\/703/);
+      await settle();
+      assert.notEqual(playerNameCache['703']?.notFound, true);
+      assert.equal(typeof playerNameCache['703'].scoreDBRetryAfter, 'number');
+      updatePlayerNameCache(703, 'Recovered Rival');
+      assert.match(getUserTooltipHTML(), /Recovered Rival/);
+    },
+  );
+
+  await t.test(
     'getScoreDBOrigin handles URL formats, plain world codes, and falsy fallbacks',
     () => {
       // URL formats
@@ -192,7 +215,7 @@ test('Player Tooltip & Ignore List UI Suite', async (t) => {
       // Empty lists
       setIgnoredPlayers({}, {});
       const emptyHtml = getUserTooltipHTML();
-      assert.match(emptyHtml, /<p class="pop">/);
+      assert.match(emptyHtml, /<div class="pop foe-ignore-list">/);
       assert.match(emptyHtml, /<em>(?:<span data-i18n="none">)?None/);
 
       // Populated lists
@@ -205,6 +228,7 @@ test('Player Tooltip & Ignore List UI Suite', async (t) => {
       assert.match(populatedHtml, /RivalAlpha/);
       assert.match(populatedHtml, /<strong><span data-i18n="ignoring">/);
       assert.match(populatedHtml, /RivalBeta/);
+      assert.match(populatedHtml, /mt-2 pt-2 border-top/);
       assert.doesNotMatch(
         populatedHtml,
         /<em>(?:<span data-i18n="none">)?None/,

@@ -85,6 +85,7 @@ test('gbgRenderBinding - renders published payloads', async (t) => {
     assert.equal(calls[0].map, payload.map);
     assert.equal(calls[0].signals, payload.signals);
     assert.equal(calls[0].mapName, 'volcano');
+    assert.equal(calls[0].targetCopy, binding.targetCopy);
   });
 
   await t.test('forwards the result payload and onRow to the renderer', () => {

@@ -63,6 +63,22 @@ test('City Card Bonus Lines Suite', async (t) => {
     mil: createMockMilitary(),
   };
 
+  await t.test('both city cards escape unrecognized era markup', () => {
+    const era = '<img src=x onerror=evil>';
+    const own = buildOwnCityCard({
+      ...baseOwnParams,
+      playerInfo: { ...baseOwnParams.playerInfo, era },
+    });
+    const visited = buildVisitedCityCard({
+      ...baseVisitedParams,
+      playerEra: era,
+    });
+    for (const markup of [own, visited]) {
+      assert.doesNotMatch(markup, /<img src=x/);
+      assert.match(markup, /&lt;img src=x onerror=evil&gt;/);
+    }
+  });
+
   await t.test(
     'buildOwnCityCard: renders Arc and CF Bonus in separate consecutive divs',
     () => {

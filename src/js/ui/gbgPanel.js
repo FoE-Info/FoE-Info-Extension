@@ -15,15 +15,15 @@ const { escapeHTML } = require('../utils/escape.js');
 
 let collapse = {};
 try {
-  collapse = require('../fn/collapse.js');
+  collapse = require('../fn/collapse.mjs');
 } catch {}
 let copy = {};
 try {
-  copy = require('../fn/copy.js');
+  copy = require('../fn/copy.mjs');
 } catch {}
 let globals = {};
 try {
-  globals = require('../fn/globals.js');
+  globals = require('../fn/globals.mjs');
 } catch {}
 const { setBattlegroundSize, setBuildingCostSize, toolOptions = {} } = globals;
 let translateContainer = () => {};
@@ -40,21 +40,19 @@ try {
 } catch {}
 let showOptions = {};
 try {
-  showOptions = require('../vars/showOptions.js').showOptions || {};
+  showOptions = require('../vars/showOptions.mjs').showOptions || {};
 } catch {}
 
 let stateVars = {};
 try {
-  stateVars = require('../vars/state.js');
+  stateVars = require('../vars/state.mjs');
 } catch {}
 
 const {
   battlegroundDIV,
   BattlegroundPerformance = [],
-  BGtime,
   content,
   donationDIV,
-  GameOrigin = '',
   gbgLeaderboardDIV,
   GuildMembers = [],
   output,
@@ -68,7 +66,7 @@ try {
 } catch {}
 let helper = {};
 try {
-  helper = require('../fn/helper.js');
+  helper = require('../fn/helper.mjs');
 } catch {}
 
 let guildBattlegroundState = null;
@@ -96,18 +94,18 @@ const {
 // ============================================================================
 
 async function copyToClipboard(elementSelector) {
-  if (typeof document === 'undefined') return;
+  if (typeof document === 'undefined') return false;
   const el =
     typeof elementSelector === 'string' ?
       document.querySelector(elementSelector)
     : elementSelector;
-  if (!el) return;
+  if (!el) return false;
 
   const text = el.innerText || el.textContent || '';
   if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
     try {
       await navigator.clipboard.writeText(text);
-      return;
+      return true;
     } catch {}
   }
 
@@ -119,9 +117,11 @@ async function copyToClipboard(elementSelector) {
       sel.removeAllRanges();
       sel.addRange(range);
     }
-    document.execCommand('copy');
+    const copied = document.execCommand('copy');
     if (sel) sel.removeAllRanges();
+    return copied;
   } catch {}
+  return false;
 }
 
 function buildingCostCopy() {
@@ -215,10 +215,10 @@ function buildBuildingCostCardHTML({
       ${iconMarkup}
     <strong><span data-i18n="gbg_building_costs">GBG Building Costs</span>:</strong></p>` +
     copyBtn +
-    `<table style="height: ${height}px"  id="buildingCostText" class="overflow-y table collapse ${isShow}">` +
+    `<div style="height: ${height}px" id="buildingCostText" class="overflow-y resize collapse ${isShow}"><div class="overflow-auto"><table class="goods-table w-100">` +
     `<caption class="visually-hidden"><span data-i18n="gbg_building_costs">GBG Building Costs</span></caption>` +
     costsHTML +
-    `</table></div>`
+    `</table></div></div></div>`
   );
 }
 
@@ -510,6 +510,8 @@ function fshowBattlegroundChanges() {
 }
 
 function fshowBattleground() {
+  const GameOrigin = stateVars.GameOrigin || '';
+  const BGtime = stateVars.BGtime || '';
   const bgWorldMatch =
     GameOrigin ?
       GameOrigin.match(/^https?:\/\/([a-z0-9]+)\.forgeofempires\.com/i)
@@ -524,7 +526,7 @@ function fshowBattleground() {
   let battlegroundHTML = `<div class="alert alert-info alert-dismissible show collapsed" role="status" aria-live="polite">
 	<p id="battlegroundTextLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#battlegroundCollapse" aria-expanded="${!collapse.collapseBattleground}" aria-controls="battlegroundCollapse" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
 	${element.icon ? element.icon('battlegroundicon', 'battlegroundCollapse', collapse.collapseBattleground) : ''}
-	<strong><span data-i18n="battlegrounds">Battlegrounds</span>: [${bgWorldLabel}]</strong></p>${element.close ? element.close() : ''}`;
+	<strong><span data-i18n="battlegrounds">Battlegrounds</span>: [${escapeHTML(bgWorldLabel)}]</strong></p>${element.close ? element.close() : ''}`;
 
   if (url.sheetGuildURL && element.post)
     battlegroundHTML += element.post(
@@ -550,7 +552,7 @@ function fshowBattleground() {
   battlegroundHTML += `<div class="form-check form-check-inline showGBGchanges"><input class="form-check-input" type="checkbox" id="showGBGchanges" ${
     isChangesOnly ? 'checked' : ''
   }><label class="form-check-label small" for="showGBGchanges" data-i18n="show_changes_only">show changes only</label></div>
-	${BGtime ? '<p><span data-i18n="last_saved">Last Saved</span>: ' + BGtime + '</p>' : ''}
+	${BGtime ? '<p><span data-i18n="last_saved">Last Saved</span>: ' + escapeHTML(BGtime) + '</p>' : ''}
 	<div><table id="gbg-table" class="gbg-table w-100"><caption class="visually-hidden"><span data-i18n="member_activity">Member Activity</span></caption><thead><tr><th scope="col" class="text-start"><span data-i18n="member">Member</span></th><th scope="col" class="text-center"><span data-i18n="neg">Negs</span></th><th scope="col" class="text-center"><span data-i18n="fights">Fights</span></th><th scope="col" class="text-center"><span data-i18n="attrition">Attrition</span></th></tr></thead><tbody>`;
   let renderedRows = 0;
   (BattlegroundPerformance || []).forEach((entry) => {
@@ -566,26 +568,26 @@ function fshowBattleground() {
 
     let player = (GuildMembers || []).find((id) => id.name == entry.name);
     if (player) {
-      battleDiff = wonBattles - player.wonBattles;
-      negotiationsDiff = wonNegotiations - player.wonNegotiations;
-      attritionDiff = attrition - player.attrition;
+      battleDiff = wonBattles - (player.wonBattles ?? wonBattles);
+      negotiationsDiff =
+        wonNegotiations - (player.wonNegotiations ?? wonNegotiations);
+      attritionDiff = attrition - (player.attrition ?? attrition);
     }
     if (
       !showOptions.showBattlegroundChanges ||
-      battleDiff ||
-      negotiationsDiff ||
-      attritionDiff
+      battleDiff > 0 ||
+      negotiationsDiff > 0
     ) {
       renderedRows++;
       battlegroundHTML += `<tr><td class="text-start">${escapeHTML(entry.name)}</td><td class="text-center">${wonNegotiations}`;
       if (negotiationsDiff)
-        battlegroundHTML += ` <span class="red">+${negotiationsDiff}</span>`;
+        battlegroundHTML += ` <span class="red">${negotiationsDiff > 0 ? '+' : ''}${negotiationsDiff}</span>`;
       battlegroundHTML += `</td><td class="text-center">${wonBattles}`;
       if (battleDiff)
-        battlegroundHTML += ` <span class="red">+${battleDiff}</span>`;
+        battlegroundHTML += ` <span class="red">${battleDiff > 0 ? '+' : ''}${battleDiff}</span>`;
       battlegroundHTML += `</td><td class="text-center">${attrition}`;
       if (attritionDiff)
-        battlegroundHTML += ` <span class="red">+${attritionDiff}</span>`;
+        battlegroundHTML += ` <span class="red">${attritionDiff > 0 ? '+' : ''}${attritionDiff}</span>`;
       battlegroundHTML += `</td></tr>`;
     }
   });
@@ -737,7 +739,7 @@ function renderGbgLeaderboardPanel(leaderboard, options = {}) {
       </p>
       ${copyBtn}
       <div id="gbgLeaderboardCollapse" class="alert-info overflow resize collapse ${isCollapsed ? '' : 'show'}">
-        <div id="leaderboardText" class="mt-1">${tableMarkup}</div>
+        <div id="leaderboardText">${tableMarkup}</div>
       </div>
     </div>`;
 
@@ -787,8 +789,9 @@ function renderProvinceCosts(payload = {}) {
   if (!costsDiv) {
     costsDiv = doc.createElement('div');
     costsDiv.id = 'costs';
-    if (content && typeof content.appendChild === 'function') {
-      content.appendChild(costsDiv);
+    const parent = doc.getElementById('content') || content;
+    if (parent && typeof parent.appendChild === 'function') {
+      parent.appendChild(costsDiv);
     }
   }
 
@@ -831,6 +834,7 @@ function buildTargetParams(payload = {}) {
     helper,
     url,
     post_webstore,
+    targetCopy,
     targetPost: post_webstore?.postTargetGenToDiscord,
     Tooltip: resolveTooltip(),
     guildBattlegroundState,
@@ -919,7 +923,7 @@ function bindGuildBattlegroundPanels(
 // `targetCopy` previously closed over this module's copyToClipboard. Now that
 // the generator is its own module, the clipboard helper is injected instead.
 function targetCopy() {
-  targetGeneratorCopy(copyToClipboard);
+  return targetGeneratorCopy(copyToClipboard);
 }
 
 module.exports = {

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
+import { GuildBattlegroundState } from '../../src/js/state/GuildDomainState.js';
 import {
   buildBuildingCostsTableHTML,
   buildLeaderboardHTML,
@@ -7,6 +8,7 @@ import {
   buildTargetGeneratorMarkup,
   buildTargetGeneratorTargets,
   renderBuildingCostCard,
+  renderProvinceCosts,
   renderTargetGeneratorCard,
   renderTargetGeneratorPanel,
 } from '../../src/js/ui/gbgPanel.js';
@@ -127,6 +129,35 @@ describe('gbgProvinceView Suite', () => {
   });
 
   describe('Target Generator Rendering', () => {
+    it('shows Copy first, Post after successful copy, and Copy again after a marker change', async () => {
+      const state = new GuildBattlegroundState();
+      const targetGenerator = createMockElement('targetsGBG');
+      const render = (copyResult = true) =>
+        renderTargetGeneratorCard({
+          targetGenerator,
+          targetsHTML:
+            '<button id="targetCopyID">Copy</button><button id="targetGenPostID">Post</button>',
+          textProvinceUnlocked: 'A1S',
+          collapse: { collapseTargetGen: false },
+          state,
+          targetCopy: async () => copyResult,
+        });
+      render();
+      const copy = doc.getElementById('targetCopyID');
+      const post = doc.getElementById('targetGenPostID');
+      assert.equal(copy.style.display, 'block');
+      assert.equal(post.style.display, 'none');
+      await copy.listeners.click[0]();
+      assert.equal(copy.style.display, 'none');
+      assert.equal(post.style.display, 'block');
+      state.setTargets({ signalChanged: true });
+      render(false);
+      assert.equal(copy.style.display, 'block');
+      assert.equal(post.style.display, 'none');
+      await copy.listeners.click.at(-1)();
+      assert.equal(state.isTargetCopied(), false);
+      assert.equal(post.style.display, 'none');
+    });
     it('buildTargetGeneratorMarkup correctly combines unlocked and locked target strings', () => {
       const markup = buildTargetGeneratorMarkup({
         targetsHTML: '<div class="alert">header</div>',
@@ -336,6 +367,35 @@ describe('gbgProvinceView Suite', () => {
   });
 
   describe('Building Cost Card Rendering', () => {
+    it('mounts province costs in the live content container after module initialization', () => {
+      const mountedContent = doc.createElement('main');
+      mountedContent.id = 'content';
+      doc.body.appendChild(mountedContent);
+      const lookup = doc.getElementById.bind(doc);
+      doc.getElementById = (id) =>
+        id === 'content' ? mountedContent
+        : id === 'costs' ?
+          mountedContent.children.find((child) => child.id === id) || null
+        : lookup(id);
+      renderProvinceCosts({
+        map: [
+          {
+            id: 1,
+            availableBuildings: [
+              { buildingId: 'camp', costs: { resources: { stone: 25 } } },
+            ],
+          },
+        ],
+        provinceDefs: [{ id: 1, name: 'A1 Sector' }],
+        buildingDefs: { camp: { name: 'Siege camp' } },
+      });
+      const card = doc.getElementById('costs');
+      assert.ok(card);
+      assert.ok(mountedContent.contains(card));
+      assert.match(card.innerHTML, /Siege camp/);
+      assert.match(card.innerHTML, /25/);
+    });
+
     it('renderBuildingCostCard mounts card HTML, binds click listeners, and attaches ResizeObserver', () => {
       let costCopyClicked = false;
       let collapseCostClicked = false;
@@ -386,6 +446,10 @@ describe('gbgProvinceView Suite', () => {
         ),
       );
       assert.ok(costsDiv.innerHTML.includes('Sample Cost'));
+      assert.match(
+        costsDiv.innerHTML,
+        /id="buildingCostText" class="overflow-y resize collapse show"><div class="overflow-auto"><table class="goods-table w-100">/,
+      );
       assert.equal(observed, true);
       assert.equal(observedHeight, 180);
 

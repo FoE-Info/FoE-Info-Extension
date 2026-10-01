@@ -22,6 +22,7 @@ try {
 let GameOrigin = 'en7';
 let ignoredPlayers = {};
 let playerNameCache = {};
+let deletedPlayerIds = {};
 
 function setGameOrigin(origin) {
   GameOrigin = origin || 'en7';
@@ -34,11 +35,22 @@ let setIgnoredPlayers = function (by, ing) {
   };
 };
 
+let markDeletedPlayer = function (id) {
+  deletedPlayerIds[String(id)] = Date.now();
+};
+
 let updatePlayerNameCache = function (id, name, opts) {
   const key = String(id);
   playerNameCache[key] = {
     currentName: name,
     notFound: Boolean(opts?.notFound),
+    ...(opts?.permanent ? { permanent: true } : {}),
+    ...(typeof opts?.scoreDBFailureCount === 'number' ?
+      {
+        scoreDBFailureCount: opts.scoreDBFailureCount,
+        scoreDBRetryAfter: opts.scoreDBRetryAfter,
+      }
+    : {}),
     previousNames: opts?.previousNames || [],
     // Must match state/state.js:329-341, which already stamps `lastUpdated`.
     // A negative entry without one reads as stale and is refetched.
@@ -47,10 +59,12 @@ let updatePlayerNameCache = function (id, name, opts) {
 };
 
 try {
-  const state = require('../vars/state.js');
+  const state = require('../vars/state.mjs');
   if (state.GameOrigin) GameOrigin = state.GameOrigin;
   if (state.ignoredPlayers) ignoredPlayers = state.ignoredPlayers;
   if (state.playerNameCache) playerNameCache = state.playerNameCache;
+  if (state.deletedPlayerIds) deletedPlayerIds = state.deletedPlayerIds;
+  if (state.markDeletedPlayer) markDeletedPlayer = state.markDeletedPlayer;
   if (state.setIgnoredPlayers) setIgnoredPlayers = state.setIgnoredPlayers;
   if (state.updatePlayerNameCache)
     updatePlayerNameCache = state.updatePlayerNameCache;
@@ -65,11 +79,13 @@ const pendingScoreDBFetches = new Set();
 // released, nothing ever retried it. Three separate corrections:
 const NEGATIVE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const TRANSIENT_RETRY_MS = 60 * 1000;
+const MAX_SCOREDB_SERVER_FAILURES = 4;
 /** @type {Map<string, number>} key -> earliest retry time after a transient failure */
 const scoreDBRetryAfter = new Map();
 
 function isStaleNegative(cached, now) {
   if (!cached?.notFound) return false;
+  if (cached.permanent) return false;
   // No timestamp means a record written before this rule existed. Expiring it
   // is the safe reading: the cost of one extra lookup is a request, the cost of
   // trusting it is a permanently missing player.
@@ -88,8 +104,35 @@ function isTransientStatus(status) {
  */
 function scheduleRetry(key, status) {
   // A 429 means back off harder than a plain network failure.
-  const delay = status === 429 ? TRANSIENT_RETRY_MS * 5 : TRANSIENT_RETRY_MS;
-  scoreDBRetryAfter.set(key, Date.now() + delay);
+  const delay =
+    status >= 500 ? TRANSIENT_RETRY_MS * 30
+    : status === 429 ? TRANSIENT_RETRY_MS * 5
+    : TRANSIENT_RETRY_MS;
+  const retryAfter = Date.now() + delay;
+  scoreDBRetryAfter.set(key, retryAfter);
+  const cached = getPlayerNameCache()[key];
+  updatePlayerNameCache(key, null, {
+    scoreDBFailureCount: cached?.scoreDBFailureCount || 0,
+    scoreDBRetryAfter: retryAfter,
+  });
+}
+
+function getPlayerNameCache() {
+  if (typeof require !== 'undefined') {
+    try {
+      return require('../vars/state.mjs').playerNameCache || playerNameCache;
+    } catch {}
+  }
+  return playerNameCache;
+}
+
+function getDeletedPlayerIds() {
+  if (typeof require !== 'undefined') {
+    try {
+      return require('../vars/state.mjs').deletedPlayerIds || deletedPlayerIds;
+    } catch {}
+  }
+  return deletedPlayerIds;
 }
 
 function getScoreDBOrigin(customOrigin) {
@@ -98,7 +141,7 @@ function getScoreDBOrigin(customOrigin) {
     (typeof require !== 'undefined' ?
       (() => {
         try {
-          return require('../vars/state.js').GameOrigin;
+          return require('../vars/state.mjs').GameOrigin;
         } catch {
           return GameOrigin;
         }
@@ -113,16 +156,8 @@ function getScoreDBOrigin(customOrigin) {
 
 function formatPlayerLabel(id) {
   const key = String(id);
-  const cache =
-    (typeof require !== 'undefined' ?
-      (() => {
-        try {
-          return require('../vars/state.js').playerNameCache;
-        } catch {
-          return playerNameCache;
-        }
-      })()
-    : playerNameCache) || {};
+  if (getDeletedPlayerIds()[key]) return null;
+  const cache = getPlayerNameCache() || {};
 
   const cached = cache[key];
   const now = Date.now();
@@ -140,7 +175,10 @@ function formatPlayerLabel(id) {
     }
   }
 
-  if ((scoreDBRetryAfter.get(key) ?? 0) > now) {
+  if (
+    Math.max(scoreDBRetryAfter.get(key) ?? 0, cached?.scoreDBRetryAfter ?? 0) >
+    now
+  ) {
     return `#${id}`;
   }
 
@@ -155,6 +193,30 @@ function formatPlayerLabel(id) {
       })
         .then((res) => {
           if (!res.ok) {
+            // ScoreDB returns 500 for deleted players whose IDs remain in
+            // FoE's ignore list. Require repeated 500s before treating an ID
+            // as deleted because ScoreDB can also have short-lived failures.
+            if (res.status === 500) {
+              const attempts = (cached?.scoreDBFailureCount || 0) + 1;
+              if (attempts >= MAX_SCOREDB_SERVER_FAILURES) {
+                markDeletedPlayer(id);
+                updatePlayerNameCache(id, null, {
+                  notFound: true,
+                  permanent: true,
+                });
+              } else {
+                const retryDelays = [1, 5, 30];
+                const retryAfter =
+                  Date.now() + retryDelays[attempts - 1] * TRANSIENT_RETRY_MS;
+                scoreDBRetryAfter.set(key, retryAfter);
+                updatePlayerNameCache(id, null, {
+                  scoreDBFailureCount: attempts,
+                  scoreDBRetryAfter: retryAfter,
+                });
+              }
+              updateIgnoreListUI();
+              return null;
+            }
             if (isTransientStatus(res.status)) {
               // Rate limited or the service is down: the player may well exist.
               scheduleRetry(key, res.status);
@@ -171,17 +233,16 @@ function formatPlayerLabel(id) {
           const match = html.match(/<title>([^<-]+)\s*-\s*[^<]+<\/title>/i);
           if (match && match[1]) {
             const fetchedName = match[1].trim();
-            if (
-              fetchedName.toLowerCase() === 'error' ||
-              fetchedName.toLowerCase() === 'not found'
-            ) {
+            if (fetchedName.toLowerCase() === 'error') {
+              scheduleRetry(key, 0);
+            } else if (fetchedName.toLowerCase() === 'not found') {
               updatePlayerNameCache(id, null, { notFound: true });
             } else {
               scoreDBRetryAfter.delete(key);
               updatePlayerNameCache(id, fetchedName);
             }
           } else {
-            updatePlayerNameCache(id, null, { notFound: true });
+            scheduleRetry(key, 0);
           }
           updateIgnoreListUI();
         })
@@ -201,14 +262,14 @@ function formatPlayerLabel(id) {
 }
 
 function getUserTooltipHTML() {
-  let html = `<p class="pop">`;
+  let html = `<div class="pop foe-ignore-list">`;
   const origin = getScoreDBOrigin();
 
   const currentIgnored =
     (typeof require !== 'undefined' ?
       (() => {
         try {
-          return require('../vars/state.js').ignoredPlayers;
+          return require('../vars/state.mjs').ignoredPlayers;
         } catch {
           return ignoredPlayers;
         }
@@ -225,9 +286,9 @@ function getUserTooltipHTML() {
   let ignoredByCount = 0;
   ignoredByList.forEach((elem) => {
     const label = formatPlayerLabel(elem);
-    if (label) {
+    if (label && label !== `#${elem}`) {
       ignoredByCount++;
-      ignoredByHtml += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a><br>`;
+      ignoredByHtml += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a>`;
     }
   });
   if (ignoredByCount > 0) {
@@ -239,19 +300,22 @@ function getUserTooltipHTML() {
   let ignoringCount = 0;
   ignoringList.forEach((elem) => {
     const label = formatPlayerLabel(elem);
-    if (label) {
+    if (label && label !== `#${elem}`) {
       ignoringCount++;
-      ignoringHtml += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a><br>`;
+      ignoringHtml += `<a href="https://foe.scoredb.io/${origin}/Player/${elem}" target="_blank"><strong>${label}</strong></a>`;
     }
   });
   if (ignoringCount > 0) {
+    if (ignoredByCount > 0)
+      html +=
+        '<span class="d-block mt-2 pt-2 border-top" aria-hidden="true"></span>';
     html += `<strong><span data-i18n="ignoring">Ignoring:</span></strong><br>${ignoringHtml}`;
   }
 
   if (ignoredByCount === 0 && ignoringCount === 0) {
     html += `<em><span data-i18n="none">None</span></em>`;
   }
-  html += `</p>`;
+  html += `</div>`;
   return html;
 }
 
@@ -326,6 +390,7 @@ module.exports = {
   NEGATIVE_CACHE_TTL_MS,
   TRANSIENT_RETRY_MS,
   pendingScoreDBFetches,
+  deletedPlayerIds,
   setGameOrigin,
   setIgnoredPlayers,
   updatePlayerNameCache,

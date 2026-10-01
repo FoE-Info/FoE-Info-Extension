@@ -56,3 +56,75 @@ test('bonusRenderBinding - replays bonus state to the panel', async (t) => {
     assert.doesNotThrow(() => off());
   });
 });
+
+test('limited bonus rows show only reported bonuses and resolve building names from metadata', () => {
+  const { formatLimitedBonuses } = bindingPkg;
+  const store = {
+    entities: new Map([
+      [
+        'himeji',
+        {
+          name: 'Himeji Castle',
+          type: 'greatbuilding',
+          passive_bonus: { type: 'spoils_of_war' },
+        },
+      ],
+      [
+        'virgo',
+        {
+          name: 'The Virgo Project',
+          type: 'greatbuilding',
+          passive_bonus: { type: 'missile_launch' },
+        },
+      ],
+      [
+        'kraken',
+        {
+          name: 'The Kraken',
+          type: 'greatbuilding',
+          passive_bonus: { type: 'first_strike' },
+        },
+      ],
+    ]),
+  };
+  const html = formatLimitedBonuses(
+    [
+      { type: 'spoils_of_war', remaining: 9, value: 47 },
+      { type: 'missile_launch', remaining: 3 },
+      { type: 'double_collection', remaining: null },
+    ],
+    store,
+  );
+  assert.match(html, /Himeji Castle/);
+  assert.match(html, />9<\/strong>/);
+  assert.match(html, /The Virgo Project/);
+  assert.match(html, />3<\/strong>/);
+  assert.match(html, /—<\/strong>/);
+  assert.doesNotMatch(html, /Kraken|47/);
+});
+
+test('passive chances and shard spawning never render as remaining uses', () => {
+  const html = bindingPkg.formatLimitedBonuses(
+    [
+      {
+        type: 'helping_hands',
+        kind: 'passive',
+        buildingName: 'Seed Vault',
+        value: 10,
+      },
+      {
+        type: 'mysterious_shards',
+        kind: 'passive',
+        buildingName: 'Flying Island',
+        remaining: 19,
+        amount: 19,
+      },
+    ],
+    { entities: new Map() },
+  );
+  assert.match(html, /Seed Vault/);
+  assert.match(html, /10%/);
+  assert.match(html, /Flying Island/);
+  assert.match(html, /19%/);
+  assert.doesNotMatch(html, /Remaining/);
+});

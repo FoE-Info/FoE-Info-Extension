@@ -15,15 +15,15 @@ const logger = createLogger('RenderGbgTargets');
 
 let element = null;
 try {
-  element = require('../fn/AddElement.js');
+  element = require('../fn/AddElement.mjs');
 } catch {}
 let collapse = {};
 try {
-  collapse = require('../fn/collapse.js');
+  collapse = require('../fn/collapse.mjs');
 } catch {}
 let helper = null;
 try {
-  helper = require('../fn/helper.js');
+  helper = require('../fn/helper.mjs');
 } catch {}
 
 const { escapeHTML } = require('../utils/escape.js');
@@ -97,9 +97,9 @@ function renderTargetMessage(message, gbgState, onDismiss) {
 
   targetsHTML += `<p id="targetLabel" role="button" tabindex="0" data-bs-toggle="collapse" data-bs-target="#targetText" aria-expanded="${!collapse.collapseTarget}" aria-controls="targetText" class="cursor-pointer user-select-none mb-0" style="cursor: pointer; user-select: none;">
   ${iconHTML}
-            <strong><span data-i18n="gbg_targets">GBG Targets</span></strong> ${safeDate}</p><p id="targetText" class="collapse ${
+            <strong><span data-i18n="gbg_targets">GBG Targets</span></strong> ${safeDate}</p><div id="targetText" class="collapse ${
               collapse.collapseTarget ? '' : 'show'
-            }">${safeText}<br><span class="text-muted"><span data-i18n="by">by</span> ${safeSender}. <span data-i18n="alert_at">alert at</span> ${alertTime}</span></p></div>`;
+            }"><p class="mb-0 overflow-hidden">${safeText}<br><span class="text-muted"><span data-i18n="by">by</span> ${safeSender}. <span data-i18n="alert_at">alert at</span> ${alertTime}</span></p></div></div>`;
 
   // Delegate all DOM writes + event wiring to the bridge
   renderGbgTargetMessage({

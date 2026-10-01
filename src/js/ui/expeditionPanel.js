@@ -35,7 +35,7 @@ function wrapChampionshipCard(tableHtml, collapse = false, size = 200) {
 <strong><span data-i18n="ge_championship">GE Championship</span>:</strong></p>
 <span id="geChampionshipCopyID" role="button" tabindex="0" class="badge rounded-pill bg-info float-end right-button" data-i18n="copy">Copy</span>
 <div id="geChampionshipText" style="height: ${size}px" class="alert-info overflow resize collapse ${collapse ? '' : 'show'}">
-${tableHtml}
+<div class="overflow-hidden">${tableHtml}</div>
 </div></div>`;
 }
 
@@ -47,7 +47,7 @@ function wrapContributionCard(tableHtml, collapse = false, size = 200) {
 <strong><span data-i18n="ge_member_contributions">GE Leaderboard</span>:</strong></p>
 <span id="geContributionCopyID" role="button" tabindex="0" class="badge rounded-pill bg-info float-end right-button" data-i18n="copy">Copy</span>
 <div id="geContributionText" style="height: ${size}px" class="alert-info overflow resize collapse ${collapse ? '' : 'show'}">
-${tableHtml}
+<div class="overflow-hidden">${tableHtml}</div>
 </div></div>`;
 }
 
@@ -75,7 +75,7 @@ function buildSubpanel(prefix, titleKey, defaultTitle, tableHtml) {
 <span data-i18n="${titleKey}">${defaultTitle}</span>
 </p>
 <div id="ge${prefix}Collapse" class="collapse show resize">
-${tableHtml}
+<div class="overflow-hidden">${tableHtml}</div>
 </div></div>`;
 }
 
@@ -215,7 +215,7 @@ function getDonationDiv2() {
     if (el) return el;
   }
   try {
-    return require('../state/state.js').donationDIV2 || null;
+    return require('../state/state.mjs').donationDIV2 || null;
   } catch {
     return null;
   }
@@ -228,7 +228,7 @@ function attachTableHandlers(container) {
     copyBtn.addEventListener('click', (e) => {
       e.preventDefault();
       try {
-        require('../fn/copy.js')?.fExpeditionCopy?.();
+        require('../fn/copy.mjs')?.fExpeditionCopy?.();
       } catch {}
     });
   }
@@ -237,7 +237,7 @@ function attachTableHandlers(container) {
     copyChampBtn.addEventListener('click', (e) => {
       e.preventDefault();
       try {
-        require('../fn/copy.js')?.fGEChampionshipCopy?.();
+        require('../fn/copy.mjs')?.fGEChampionshipCopy?.();
       } catch {}
     });
   }
@@ -246,7 +246,7 @@ function attachTableHandlers(container) {
     copyContribBtn.addEventListener('click', (e) => {
       e.preventDefault();
       try {
-        require('../fn/copy.js')?.fGEContributionCopy?.();
+        require('../fn/copy.mjs')?.fGEContributionCopy?.();
       } catch {}
     });
   }
@@ -255,7 +255,7 @@ function attachTableHandlers(container) {
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
       try {
-        require('../fn/collapse.js')?.fCollapseExpedition?.();
+        require('../fn/collapse.mjs')?.fCollapseExpedition?.();
       } catch {}
     });
   }
@@ -291,7 +291,7 @@ function renderExpeditionPanel(contentHtml) {
   if (!container) return null;
 
   try {
-    const showOpt = require('../vars/showOptions.js');
+    const showOpt = require('../vars/showOptions.mjs');
     const opts = showOpt.showOptions || showOpt || {};
     if (opts.showExpedition === false) {
       container.style.display = 'none';
@@ -311,7 +311,7 @@ function renderExpeditionPanel(contentHtml) {
 
 function resolveShowOptions() {
   try {
-    const mod = require('../vars/showOptions.js');
+    const mod = require('../vars/showOptions.mjs');
     return mod.showOptions || mod || {};
   } catch {
     return {};
