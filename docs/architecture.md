@@ -2,10 +2,10 @@
 
 FoE-Info is a Chrome Manifest V3 (MV3) extension for Forge of Empires. It observes the game's live InnoGames JSON-RPC traffic and parses it into economic, combat, guild, and city state views, with no game mutation, request injection, or botting.
 
-Traffic reaches the pipeline over **two read-only intake paths**, both feeding the same dispatcher:
+Traffic reaches the pipeline over two read-only intake paths, both feeding the same dispatcher:
 
-1. **DevTools network listener** (`src/js/devtools.mjs`) — the documented primary path, consuming the inspected tab's network events.
-2. **MAIN-world content-script observer** (`src/js/protocol/xhrInterceptor.js` + `src/js/protocol/contentBridge.mjs`) — injected at `document_start` into `https://*.forgeofempires.com/game/*` in every build target. It wraps the page's `XMLHttpRequest`/`fetch`/`WebSocket` interfaces to observe traffic the DevTools listener may miss, and forwards envelopes through the ISOLATED-world bridge.
+1. The DevTools network listener (`src/js/devtools.mjs`) is the documented primary path. It consumes the inspected tab's network events.
+2. The MAIN-world content-script observer (`src/js/protocol/xhrInterceptor.js` + `src/js/protocol/contentBridge.mjs`) is injected at `document_start` into `https://*.forgeofempires.com/game/*` in every build target. It wraps the page's `XMLHttpRequest`/`fetch`/`WebSocket` interfaces to observe traffic the DevTools listener may miss, and forwards envelopes through the ISOLATED-world bridge.
 
 Neither path issues a game request or injects a DOM node. The [security architecture](security-architecture.md) describes what each path observes and authenticates.
 
@@ -70,8 +70,8 @@ priority is distinct from the listener's packet admission order.
 `protocol/dedupCache.js` defaults to a one-second window and 500 entries. Its key
 combines URL, decoded body length, a body sample (first and last 100 characters
 for bodies over 200 characters), and the first 120 characters of request data.
-This is bounded replay suppression rather than a full-payload equality check:
-equal-length bodies with matching samples can collide. Cache insertion precedes
+Replay suppression compares bounded samples, so equal-length bodies with
+matching samples can collide without full-payload equality. Cache insertion precedes
 JSON parsing, so even a parse failure can suppress an immediate matching replay.
 A cache hit does not extend its timestamp, and capacity eviction removes the
 first key in insertion order.
@@ -121,10 +121,10 @@ so callers must account for subscription lifecycle when resetting the store.
 
 Module cohesion is a development boundary; the decision procedure and historical debt policy live in [repository contracts](repository-contracts.md).
 
-- **Zero Static Game Metadata**: Game metadata streams strictly from the live InnoGames CDN and RPC responses. No entity dumps or static game JSON inside `src/`.
-- **Passive Observation Only**: No botting, automation, active clicking, or request injection into the game client. The MAIN-world interceptor observes the page's network interfaces; it never sends a request on the player's behalf.
-- **BigNumber Precision**: Forge points, Great Building locks, treasury deposits, and boost calculations must preserve exact arithmetic without floating-point drift.
-- **Strict Debuggability**: Every service, calculator, and renderer instantiates a scoped logger via `createLogger('ModuleName')`.
+- Game metadata streams strictly from the live InnoGames CDN and RPC responses. No entity dumps or static game JSON inside `src/`.
+- No botting, automation, active clicking, or request injection into the game client. The MAIN-world interceptor observes the page's network interfaces; it never sends a request on the player's behalf.
+- Forge points, Great Building locks, treasury deposits, and boost calculations must preserve exact arithmetic without floating-point drift.
+- Every service, calculator, and renderer instantiates a scoped logger via `createLogger('ModuleName')`.
 
 ## Module Loading Policy
 

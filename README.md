@@ -1,17 +1,26 @@
-# FoE-Info
+# FoE-Info Extension
 
-A passive Chrome Manifest V3 companion for Forge of Empires. Start with the [application guide](docs/application.md), [architecture](docs/architecture.md), [security architecture](docs/security-architecture.md), and [runtime debugging](docs/debugging.md).
+A passive Chrome Manifest V3 companion for Forge of Empires. Start with the
+[application guide](docs/application.md), [architecture](docs/architecture.md),
+[security architecture](docs/security-architecture.md), and
+[runtime debugging](docs/debugging.md).
 
-## Getting started
+## Development
 
-See [isolated workspace setup](CONTRIBUTING.md#isolated-workspace-setup), then build with `npm run build:dev` and load `build/FoE-Info-DEV` from `chrome://extensions`. Follow the [application guide](docs/application.md#using-the-extension) to use the panel.
+Install Node.js 26.8.2+, npm 9+, Git, and uv/uvx for font tooling, then run:
 
-## Development and verification
+```bash
+npm run setup
+npm run build:dev
+npm run verify
+```
 
-## Security
+Load `build/FoE-Info-DEV` in `chrome://extensions`. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for setup, tests, checks, and contribution policy,
+and the [documentation index](docs/index.md) for application and release guides.
 
-Please report vulnerabilities privately through GitHub's **Report a vulnerability** flow on the **Security** tab. See [SECURITY.md](SECURITY.md).
+## Security and license
 
-## License
-
-Licensed under the [GNU Affero General Public License v3.0 or later](LICENSE.md) (AGPL-3.0-or-later).
+Report vulnerabilities privately through GitHub's Security tab; see
+[SECURITY.md](SECURITY.md). Licensed under the
+[GNU Affero General Public License v3.0 or later](LICENSE.md).

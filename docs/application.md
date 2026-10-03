@@ -2,7 +2,7 @@
 
 # FoE-Info
 
-A passive Chrome Manifest V3 extension and real-time companion for [Forge of Empires](https://en.forgeofempires.com) players. FoE-Info reads the game's live network traffic and surfaces information the base game does not, without game mutation, botting, or automation. Traffic reaches the extension over two read-only intake paths. The [security architecture](security-architecture.md) describes their trust boundaries.
+FoE-Info is a passive Chrome Manifest V3 extension for [Forge of Empires](https://en.forgeofempires.com) players. It reads live network traffic to show information the base game does not provide, without game mutation, botting, or automation. Traffic reaches the extension over two read-only intake paths. The [security architecture](security-architecture.md) describes their trust boundaries.
 
 - Great Building investment, suggested donations, and 1.9x snipe math
 - City production, collection times, and harvest yields
@@ -14,11 +14,11 @@ A passive Chrome Manifest V3 extension and real-time companion for [Forge of Emp
 - Incidents, cultural settlement outposts, and historical allies
 - Resizable army inventory and player social rosters (Friends, Neighbors, Guild)
 
-- **Source code:** <https://github.com/FoE-Info/FoE-Info-Extension>
-- **Issues & support:** <https://github.com/FoE-Info/FoE-Info-Extension/issues>
-- **Architecture Guide:** [architecture.md](architecture.md)
-- **Debugging & Diagnostics:** [debugging.md](debugging.md)
-- **Web Store & Compliance:** [chrome-web-store.md](chrome-web-store.md)
+- Source code: <https://github.com/FoE-Info/FoE-Info-Extension>
+- Issues and support: <https://github.com/FoE-Info/FoE-Info-Extension/issues>
+- Architecture: [architecture.md](architecture.md)
+- Debugging and diagnostics: [debugging.md](debugging.md)
+- Web Store and compliance: [chrome-web-store.md](chrome-web-store.md)
 
 ## Installing the Extension
 

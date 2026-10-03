@@ -38,7 +38,7 @@ request/response traffic. This is the primary, documented path and the one the
 product is designed around.
 
 The DevTools listener and MAIN-world XHR bridge also observe the URL of the trusted InnoGames CDN
-`shop_inventory` UI atlas as a first-opening hint for Goods Inventory. It
+`shop_inventory` UI atlas as a first-opening hint for Goods Inventory. They
 forward no atlas body or headers. Cached window reopens and closes may produce
 no network signal; this hint does not establish the current window's visibility.
 
@@ -68,9 +68,9 @@ arrive from the **same window** and the **exact same origin**
 reject). The `FOE_INFO_XHR` channel is therefore not reachable from other
 frames, other tabs, or cross-origin pages.
 
-However, same-window/exact-origin is **not** an authenticated channel: any
-content script running in the game page — browser extensions the user has
-installed, page-injected code, or the game's own scripts — can synthesize a
+Same-window/exact-origin checks do not authenticate the sender. Browser
+extensions the user has installed, page-injected code, or the game's own scripts
+running in the game page can synthesize a
 `FOE_INFO_XHR` envelope (`{ type, url, body, ... }`) and it will be accepted
 and forwarded into FoE-Info's pipeline. There is no signature and no nonce.
 Treat all payloads arriving over this channel as **untrusted page-controlled
@@ -95,7 +95,7 @@ decoded once; unknown named entities stay literal. The result is plain text,
 never safe HTML, and must be escaped before HTML reuse. i18n tests separately use
 an HTML parser to inspect visible text and headings.
 
-This spoofing surface is inherent to the MAIN-world design, not authenticated
+The MAIN-world design allows this spoofing; accepted messages do not prove
 game-server provenance.
 
 ## External Publication & Enrichment
@@ -129,7 +129,7 @@ reporting, and no update pings beyond normal extension update mechanics.
 - **Game-derived caches**: player-name caches, Great Building registry
   entries, ScoreDB lookup results, and metadata responses are persisted in
   `chrome.storage.local` to survive restarts. Some of these caches are
-  currently unbounded or weakly bounded — they carry no retention policy.
+  currently unbounded or weakly bounded and carry no retention policy.
 - The extension does not sync data to any server run by the project. The only
   outbound writes are the user-configured external destinations above.
 
@@ -139,7 +139,7 @@ Remove, or clearing site/extension data) removes all persisted state.
 ## Permissions & CSP Rationale
 
 - **Host permissions / content-script matches**: the content-script matches are
-  limited to `https://*.forgeofempires.com/game/*` — the minimum needed to
+  limited to `https://*.forgeofempires.com/game/*`, the minimum needed to
   observe game traffic on real game pages, and the only page the MAIN-world
   observer is injected into. The extension also requests read access to the
   surfaces it actually calls: `https://*.innogamescdn.com/*` (entity and asset

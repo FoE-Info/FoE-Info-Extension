@@ -1,90 +1,49 @@
-# Contributing to FoE-Info
-
-Thanks for your interest in improving FoE-Info.
+# Contributing
 
 ## Getting started
 
-## Before you commit
+Install Node.js 26.8.2 or newer, npm 9 or newer, Git, and uv (which supplies
+`uvx` for the extension's font tooling). Use your ordinary user or system
+installation. npm and uv use their normal caches; no project Python environment
+is required. FontTools and Python may be downloaded by uvx on a cold run.
 
 ```bash
-npm run verify
+npm run setup
+npm run build:dev
 ```
 
-This checks environment readiness, then runs version and reference-integrity checks, formatting, linting, type
-checking, architecture boundaries and historical debt, the RPC contract check, i18n parity across
-all locales, the unit tests and focused coverage thresholds, and development
-and production builds with the production asset budget. All of it must pass.
+Setup checks Node, applies local rebase defaults, and runs `npm ci`. Load
+`build/FoE-Info-DEV` as an unpacked extension in `chrome://extensions`.
+See the [application guide](docs/application.md) for panel usage.
 
-Guidelines:
+## Verification
 
-- Organize modules by cohesion: a module holds one thing that changes for one reason. Large files are a prompt to check for a feature boundary (see [module cohesion](docs/repository-contracts.md#module-cohesion)), not a violation to fix by splitting.
-- Never bundle static game data into `src/`; the runtime is driven by live
-  InnoGames network payloads.
-- Use `bignumber.js` for Forge Point and reward math.
-- All user-visible strings must go through i18n (see `src/i18n/`).
+Run `npm run verify` before committing or pushing. It checks version consistency,
+published references, formatting, lint, types, architecture boundaries, RPC
+contracts, locale parity, tests, focused coverage, development builds, production
+builds, and bundle budgets. CI runs the same command after `npm ci` with hooks
+disabled. CodeQL and dependency review remain separate workflows.
 
-## External tool prerequisites
+Use `npm test` for all tests. For focused tests, run `node --test` with explicit
+paths. `npm run test:watch` and `npm run test:verbose` select Node reporters.
+After moving or deleting modules, run `npm run audit:refs`; after removing or
+renaming symbols, run `npm run audit:callsites`. Changes to parameter defaults
+also require `npm run audit:default-args`. These audits have bounded static
+coverage; review dynamic callers and transitive dependencies separately.
 
-Some developer workflows rely on tools that `npm install` does **not** provide.
-Install them separately if you need the matching workflows:
+Inspect the working tree and staged diff, preserve unrelated changes, and stage
+files for one logical purpose. Report checks actually run and unresolved
+limitations in the change description. Manual browser testing uses an existing
+game session and the [browser debugging guide](docs/browser-debugging.md).
 
-| Tool                                   | Required by                                                                            | Why                                                                                                                         |
-| :------------------------------------- | :------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
-| `zip`                                  | `npm run package:beta` / `scripts/package-extension.js`                                | Builds the release ZIP artifacts.                                                                                           |
-| `gh`                                   | `npm run release` / `scripts/release.mjs`                                              | Creates GitHub releases and uploads assets (requires `gh auth login` first).                                                |
-| CDP-enabled Chrome on `127.0.0.1:9222` | `npm run metadata:download` / `scripts/download-offline-metadata.mjs`                  | Drives a Chrome instance over the DevTools protocol to ingest live InnoGames entity datasets.                               |
+## Optional tools and release
 
-The core gate (`npm run verify`) needs Node.js, npm, Git, installed dependencies
-and Bash for shared shell harness fixtures, plus uv/uvx for font-subsetting tests.
-`uvx` obtains Python and FontTools on its first run when not cached; install uv
-through mise or the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/). A Chromium-based browser is needed
-separately for manual panel testing.
-
-### Node.js baseline
-
-The baseline is **Node 26.8.2**. The version sources are:
-
-- `package.json` `engines` — `>=26.8.2`
-- CI (`.github/workflows/ci.yml`) — `26.8.2`
-- `@types/node` — `^26.6.3` (Node 26 API declarations; package versions are
-  independent of runtime patch versions)
-
-CI and local mise verification use the same exact runtime. The engine range
-sets the minimum supported version; setup checks the major, minor, and patch
-before installing dependencies. Update the engine floor, CI pin, mise pin and
-lockfile, and Node API declarations together when changing the baseline.
-
-### Dependency install-script policy
-
-`package.json#allowScripts` is the project's single install-script approval
-policy. Keep its exact package/version approvals there. The repository `.npmrc`
-configures peer-dependency handling and the local npm cache; do not duplicate script approvals in it.
-A user/global `.npmrc` `allow-scripts` entry applies to one-off/global tooling and
-causes npm to warn when this project's package policy supersedes it. Remove stale
-user entries rather than disabling warnings or permitting every dependency script.
-Check an existing user policy before removing it: other tools may rely on those
-approvals. `scripts/setup.mjs` also removes inherited `npm_config_allow_scripts`
-from the nested `npm ci` environment, because npm treats that as a forbidden
-project-install CLI override.
-
-### Optional local CodeQL analysis
-
-CodeQL is separate from npm dependencies. Its CLI may live in an ignored build
-folder; the default query-pack cache is under `~/.codeql/packages`. A repository
-can keep query packs local too by explicitly selecting its ignored download and
-search directories:
-
-```bash
-codeql pack download --dir build/codeql-packs codeql/javascript-queries@2.4.6
-codeql database analyze <database> codeql/javascript-queries:codeql-suites/javascript-code-scanning.qls --search-path=build/codeql-packs/codeql/javascript-queries/2.4.6 --format=sarif-latest --output=build/codeql-results.sarif
-```
-
-These commands pin the validated query-pack version; update the download and
-search path together when upgrading it. Use the installed CLI executable's path
-when it is not on PATH. Keep binaries,
-query packs, databases and SARIF output out of Git. Record CLI/query-pack versions,
-source snapshot and results in the owning task; a local pass does not close GitHub
-alerts until the published commit is analyzed remotely.
+Browser helpers require a CDP-enabled Chrome session. Metadata downloads observe
+live CDN responses; see the [security architecture](docs/security-architecture.md).
+Release packaging requires `zip`; GitHub releases require authenticated `gh`.
+See the [store and release guide](docs/chrome-web-store.md). Runtime credentials
+may be exported in your shell or kept in ignored private environment files;
+setup does not generate or load them. Never commit credentials or captures.
 
 ## Source modules and tests
 
@@ -153,8 +112,3 @@ type(scope): imperative summary
 
 Open an issue at <https://github.com/FoE-Info/FoE-Info-Extension/issues>.
 For security issues, see [SECURITY.md](SECURITY.md).
-
-Mechanical layer checks and historical debt policy are documented in
-[repository contracts](docs/repository-contracts.md). Run `npm run contracts:diff` for
-a changed-file check and `npm run contracts:audit` for the full audit; the full
-audit is included in `npm run verify`.

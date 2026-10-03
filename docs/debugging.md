@@ -1,6 +1,6 @@
 # FoE-Info Debugging & Diagnostic Infrastructure
 
-This document describes the debug mode of the FoE-Info extension, the header icon toggle mechanism, console log filtering tags, and workflows for user support and runtime diagnostics.
+FoE-Info's debug mode uses a header icon toggle and console log filtering tags for user support and runtime diagnostics.
 
 For browser attachment and live investigation, use [browser debugging](browser-debugging.md).
 
@@ -8,17 +8,15 @@ For browser attachment and live investigation, use [browser debugging](browser-d
 
 FoE-Info operates with two distinct runtime modes:
 
-1. **Standard Mode (Default)**:
-   - **Performance**: Routine debug/info diagnostics are disabled.
-   - **Visibility**: Logger warnings and errors remain visible in the DevTools panel console.
-   - **Behavior**: Calculations and RPC handling execute silently in the background.
+1. Standard Mode (Default):
+   - Performance: Routine debug/info diagnostics are disabled.
+   - Visibility: Logger warnings and errors remain visible in the DevTools panel console.
+   - Behavior: Calculations and RPC handling execute silently in the background.
 
-2. **Debugging Mode (Toggled via Header Icon)**:
-   - **Performance**: High-resolution instrumentation across all extension layers.
-   - **Visibility**: Genuinely verbose diagnostics covering value computations, cache operations, async fetch resolutions, UI re-renders, and network RPC packets, emitted to the DevTools panel console.
-   - **Session synchronization**: Stored in `chrome.storage.local` under key `'debugEnabled'` to synchronize the current mode across extension contexts. Each newly loaded panel starts with debugging off, including development and beta builds.
-
----
+2. Debugging Mode (Toggled via Header Icon):
+   - Performance: High-resolution instrumentation across all extension layers.
+   - Visibility: Verbose diagnostics covering value computations, cache operations, async fetch resolutions, UI re-renders, and network RPC packets, emitted to the DevTools panel console.
+   - Session synchronization: Stored in `chrome.storage.local` under key `'debugEnabled'` to synchronize the current mode across extension contexts. Each newly loaded panel starts with debugging off, including development and beta builds.
 
 ## 2. Header Toggle Mechanism
 
@@ -35,17 +33,15 @@ The debug mode is controlled by clicking the logo icon in the top-left of the De
 └────────────────────────────────────────────────────────┘
 ```
 
-- **Enabling**:
+- Enabling:
   - Click the **FoE-Info logo** top-left in the panel header.
   - The icon switches to a **bug icon** (`bug_report`).
   - Verbose diagnostic logging activates across all modules in the DevTools panel console.
-- **Disabling**:
+- Disabling:
   - Click the **bug icon** again.
   - The icon returns to the default FoE-Info logo (`Icon48.png`).
-- **State Persistence**:
+- State Persistence:
   - Refreshing the game tab (F5) retains the active mode while the panel stays loaded. Reloading the extension or loading a new panel resets to standard mode; click the header icon to enable debugging again.
-
----
 
 ## 3. Filterable Console Tags Cheat-Sheet
 
@@ -72,12 +68,10 @@ To isolate logs from specific subsystems, type any of these tags into the DevToo
 | `[FoE-Info:ContentBridge]` | **Isolated Content Bridge** | Forwarding XHR/fetch events from page DOM to extension background/panel. |
 | `[FoE-Info:XHRInterceptor]` | **Page XHR/Fetch Monkeypatch** | Intercepted URLs and payload byte lengths directly from the page context. |
 
----
-
 ## 4. Out-of-Scope RPC Log Filtering
 
 Unhandled responses from 21 out-of-scope service classes (storefront, telemetry,
-tutorial, research, recruitment, etc. — see `IGNORED_RPC_CLASSES` in
+tutorial, research, recruitment, etc.; see `IGNORED_RPC_CLASSES` in
 `src/js/protocol/rpcRouter.js`) are **hidden by default** from both the
 `[FoE-Info:RPC]` console groups and the `window.foeRpcLog` buffer, so the debug
 console stays focused on in-domain traffic. In-domain unhandled RPCs (the
@@ -95,8 +89,6 @@ window.foeShowIgnoredRpc(); // toggle
 The choice persists across reloads in `chrome.storage.local` under
 `showIgnoredRpc`. The runtime class list is guarded against drift from the
 contract policy by `tests/protocol/rpc-scope.test.mjs`.
-
----
 
 ## 5. Architecture & Technical Design
 
@@ -129,7 +121,7 @@ contract policy by `tests/protocol/rpc-scope.test.mjs`.
 ### Console Debugging (`logger.js`)
 
 - `logger.js` emits gated, tagged log lines directly to the DevTools panel console. `debug`/`info` fire only in debug mode; `warn`/`error` always render.
-- **Hot-Path Discipline**: Routine lookups (e.g. per-entity cache hits in $O(1)$ maps across 500+ buildings) must never be logged individually. Log batch totals (`registerEntities`) or actionable misses (`Cache miss for entity: <id>`).
+- Hot-Path Discipline: Routine lookups (e.g. per-entity cache hits in $O(1)$ maps across 500+ buildings) must never be logged individually. Log batch totals (`registerEntities`) or actionable misses (`Cache miss for entity: <id>`).
 - Each module instantiates a scoped logger via `createLogger('<ModuleName>')`, producing `[FoE-Info:<ModuleName>]` entries for easy console filtering.
 
 ### Cross-Context Synchronization
@@ -138,8 +130,6 @@ contract policy by `tests/protocol/rpc-scope.test.mjs`.
   - The DevTools panel (`utils/logger.js` applies the flag; `state/storageListener.js` routes the key).
   - The content script bridge (`protocol/contentBridge.mjs`), which posts `FOE_INFO_DEBUG_SYNC` to the MAIN page world for `xhrInterceptor.js`.
 - Other `storage.onChanged` subscriptions are key-specific and are not debug toggles: `utils/worldStorage.js` watches `global:settings` and per-world keys, and `protocol/rpcRouter.js` watches `showIgnoredRpc`.
-
----
 
 [Browser attachment and investigation procedures](browser-debugging.md) cover bounded passive collection in an existing session. Follow the security architecture's observation and privacy boundaries.
 

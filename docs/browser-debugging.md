@@ -25,14 +25,14 @@ npm run browser:check    # is Brave / Chrome attachable right now?
 npm run browser:attach -- --world=en7  # attach FoE-Info before opening en7 (or en16)
 ```
 
-`scripts/lib/cdp.mjs` owns the transport. Two things about it are worth
-knowing before changing anything, because both cost real debugging time:
+`scripts/lib/cdp.mjs` owns the transport. Browser server behavior affects
+attachment and debugging:
 
 - **Brave and Chrome expose different servers.** Brave is started by
   `--remote-debugging-port=9222` (in `~/.var/app/com.brave.Browser/config/brave-flags.conf`)
   and serves both `/json/version` discovery and the WebSocket endpoint. Chrome
   is started by the `chrome://inspect` toggle and serves the **WebSocket
-  endpoint only** — its `/json/*` routes all return 404. That 404 looks exactly
+  endpoint only**; its `/json/*` routes all return 404. That 404 looks exactly
   like "the server is not running", and it is not.
 - **Chromium 136+ ignores `--remote-debugging-port` on a default
   user-data-dir.** That is why Chrome's port is chosen by the toggle (it is
@@ -56,5 +56,3 @@ the workflow intentionally changes that tab's page.
 After setup, game telemetry is observed passively: no clicks, typing, game
 requests, or gameplay automation. The setup navigation only loads the selected
 world after the DevTools panel is confirmed.
-
----

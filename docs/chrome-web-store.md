@@ -6,8 +6,6 @@ _Single source of truth for Chrome Web Store listing metadata, permissions justi
 **Extension Version:** `0.0.834` — the latest published release (tag `v0.0.834`). Update this line in the same change that publishes a version; between releases the working-tree `package.json` / `manifest.json` version is intentionally ahead of it.
 **Manifest Version:** 3
 
----
-
 ## 1. Store Listing Metadata
 
 - **Name:** FoE-Info
@@ -48,8 +46,6 @@ Every panel includes dedicated "Copy" buttons to quickly format and copy data to
 This extension is NOT a bot and does NOT automate any game actions or send unauthorized requests. It passively observes incoming game data packets inside your browser DevTools. No private credentials or personal data are collected or transmitted.
 ```
 
----
-
 ## 2. Permissions Justification
 
 Every permission declared in `src/chrome/manifest.json` serves a specific user-facing purpose:
@@ -59,8 +55,6 @@ Every permission declared in `src/chrome/manifest.json` serves a specific user-f
 | `storage`          | High         | Required to store user configuration preferences, panel toggle visibility, custom donation percentages (e.g. 1.9x), and user-configured Discord webhook URLs locally on the player's device.                            |
 | `unlimitedStorage` | Low          | Forge of Empires generates extensive daily guild battle logs, player contribution records, and game entity metadata caches. Unlimited local storage prevents data eviction and avoids truncating historical statistics. |
 | `clipboardWrite`   | Medium       | Allows players to click a single button to copy Great Building reward positions (e.g., Arc snipe spot callouts) or Guild Battleground target coordinates directly to their clipboard for pasting into game chat.        |
-
----
 
 ## 3. Host Permissions Justification
 
@@ -73,8 +67,6 @@ Every permission declared in `src/chrome/manifest.json` serves a specific user-f
 | `https://*.scoredb.io/*`                | Used for optional external lookups of historical player rankings and guild performance statistics.                                                                                                |
 | `https://script.google.com/macros/s/*`  | Narrowest grant that can execute a player-owned Google Sheets web app. Used only when the player configures a Sheets export URL and clicks export; no Google sign-in or Drive scope is requested. |
 
----
-
 ## 4. Privacy & Data Use Disclosure
 
 - **Single Purpose Policy**: FoE-Info exists solely as a game companion tool to calculate rewards, manage guild statistics, and display game data for Forge of Empires players.
@@ -84,16 +76,12 @@ Every permission declared in `src/chrome/manifest.json` serves a specific user-f
 - **Outbound Network Traffic**:
   - The extension only communicates with InnoGames game and CDN servers, the optional ScoreDB endpoint for player-ranking lookups, the Discord webhook endpoints explicitly configured by the user, and the Google Apps Script endpoint behind a user-configured Sheets URL. There is no telemetry, analytics, or advertising destination.
 
----
-
 ## 5. Store Assets & Visual Checklist
 
 - [x] Extension Icons: 16x16, 24x24, 32x32, 48x48, 64x64, 128x128 PNGs exist in `src/icons/foe-info/`.
 - [ ] Store Promo Tile (Small): 440×280 px PNG.
 - [ ] Store Screenshots: Minimum 1 screenshot (1280×800 or 640×400 px) showing DevTools panel in action.
 - [ ] Store Marquee Banner (Optional): 1400×560 px.
-
----
 
 ## 6. Version History
 

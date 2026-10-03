@@ -11,7 +11,7 @@ const privatePath =
   /(?:^|\/)\.env(?:\.|$)|\.(?:pem|key)$|^(?:node_modules|build|dist|coverage)\//;
 // Reject retired automation even if someone force-adds ignored files.
 const retiredPath =
-  /^(?:\.agents|\.codex|\.omp|\.opencode|\.claude|\.gemini|\.cursor|graphify-out|\.workspace|\.venv|\.uv|\.worktrees|worktrees)(?:\/|$)|^(?:AGENTS|CLAUDE|GEMINI)\.md$|^\.(?:graphifyignore|mise\.toml|audit-siblings)$|^(?:mise\.lock|pyproject\.toml|uv\.lock)$|^scripts\/graphify\//;
+  /^(?:\.agents|\.codex|\.omp|\.opencode|\.claude|\.gemini|\.cursor|graphify-out|\.workspace|\.venv|\.uv|\.worktrees|worktrees)(?:\/|$)|^(?:AGENTS|CLAUDE|GEMINI)\.md$|^\.(?:graphifyignore|mise\.toml|audit-siblings)$|^(?:mise\.lock|pyproject\.toml|uv\.lock)$|^scripts\/graphify\/|^docs\/(?:harness-assessment|tasks|roadmap|runtime-evidence|validation-harness)\.md$|^scripts\/(?:verify-isolated-export|verify-with-evidence|doctor)\.mjs$|^scripts\/lib\/(?:source-snapshot|validation-runner|validation-stages)\.mjs$|^tests\/opencode\//;
 const files = [
   ...new Set(
     execFileSync(
